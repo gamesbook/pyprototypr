@@ -23,17 +23,17 @@ class PyTest(TestCommand):
 
 
 def get_version():
-    import re
-    VERSIONFILE = 'pyprototypr/_version.py'
-    verstrline = open(VERSIONFILE, "rt").read()
-    VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"
-    mo = re.search(VSRE, verstrline, re.M)
-    if mo:
-        version_string = mo.group(1)
-    else:
+    import ast
+    try:
+        VERSIONFILE = 'pyprototypr/_version.py'
+        verstrline = open(VERSIONFILE, "rt").readlines()[0]
+        _ver = verstrline.split('__version_info__ = ')
+        version_tuple = ast.literal_eval(_ver[1])
+        version_string = '.'.join(map(str, version_tuple))
+        return version_string
+    except:
         raise RuntimeError('Unable to find version string in %s.' %
                            (VERSIONFILE,))
-    return version_string
 
 
 def read(*filenames, **kwargs):
