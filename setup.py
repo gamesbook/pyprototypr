@@ -1,5 +1,5 @@
 from __future__ import print_function
-from setuptools import setup
+from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 import io
 import os
@@ -59,7 +59,7 @@ setup(
     description='Python utility for designing and creating simple, regular,'
                 '  graphic outputs',
     long_description=LONG_DESCRIPTION,
-    packages=['pyprototypr'],
+    packages=find_packages(exclude=['dist', 'build', 'docs', 'examples']),
     include_package_data=True,
     test_suite='pyprototypr.test',
     classifiers=[
