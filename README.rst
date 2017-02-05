@@ -14,7 +14,7 @@ Requirements
 ============
 
 **pyprototypr** requires a version of Python 2.7.  If this is not your default
-Python version, you may want to use **pyenv** (see *Appendix VI* of the manual)
+Python version, you may want to use **pyenv** (see `Appendix VI <https://github.com/gamesbook/pyprototypr/blob/master/docs/manual.rst#appendix-vi-working-with-pyenv>`_. of the manual)
 to install that and then install and use **pyprototypr** in a `virtualenv
 <https://pypi.python.org/pypi/virtualenv/>`_.
 
@@ -22,8 +22,8 @@ to install that and then install and use **pyprototypr** in a `virtualenv
 Documentation
 =============
 
-See the ``docs`` directory for the `manual
-<https://github.com/gamesbook/pyprototypr/blob/master/docs/manual.rst#appendix-vi-working-with-pyenv>`_.
+See the ``docs`` directory for the full `manual
+<https://github.com/gamesbook/pyprototypr/blob/master/docs/manual.rst>`_.
 
 
 Quick Start (for the impatient)
@@ -33,7 +33,7 @@ As a quickstart test that **pyprototypr**  works, then you can use one (or
 more) of the files from any of the ``examples`` sub-directories.
 
 Make a copy of ``example1.py`` script in the ``examples/manual`` directory - open
-`example1.py <https://github.com/gamesbook/pyprototypr/examples/manual/example1.py>`_
+`example1.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/manual/example1.py>`_
 in your browser, click on the ``Raw`` button, and then save the file into a
 directory on your machine.
 
