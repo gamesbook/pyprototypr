@@ -27,14 +27,16 @@ The underlying availability of Python means that more complex scenarios can, if 
 Elements
 ========
 
-Primitives          Shapes             Elements
------------------------------------------------
-color               line               card
-position            hex                grid
-place               circle             image
-size                rectangle          deck
-                    oval               tile
-                    polygon            text
+========== ========== ========
+Primitives Shapes     Elements
+========== ========== ========
+color      line       card
+position   hex        grid
+place      circle     image
+size       rectangle  deck
+ -         oval       tile
+ -         polygon    text
+========== ========== ========
 
 All elements have defaults; sizes are based on 1cm (one centimeter) as a default; the default foreground color is black and the default background color is white.
 

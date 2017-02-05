@@ -64,9 +64,9 @@ setup(
     test_suite='pyprototypr.test',
     classifiers=[
         'Programming Language :: Python',
-        'Development Status :: 1 - Alpha',
+        'Development Status :: 3 - Alpha',
         'Natural Language :: English',
-        'Environment :: Desktop Environment',
+        'Environment :: Console',
         'Intended Audience :: End Users/Desktop',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
