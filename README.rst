@@ -32,7 +32,7 @@ As a quickstart test that **pyprototypr**  works, then you can use one (or
 more) of the files from any of the `examples` sub-directories.
 
 Make a copy of `example1.py` script in the `examples/manual` directory - open
-http://github.com/gamesbook/pyprototypr/pyprototypr/examples/manual/example1.py
+http://github.com/gamesbook/pyprototypr/examples/manual/example1.py
 in your browser, click on the `Raw` button, and then save the file into a
 directory on your machine.
 
