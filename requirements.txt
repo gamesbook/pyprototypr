@@ -1,3 +1,4 @@
+--index-url https://pypi.python.org/pypi
 reportlab>=3.3.0
 xlrd>=0.9.4
 boardgamegeek>=0.13.2

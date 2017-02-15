@@ -2,3 +2,5 @@ include requirements.txt
 include CHANGES.txt
 include contributors.txt
 include LICENSE
+include setup.py
+include README.rst
