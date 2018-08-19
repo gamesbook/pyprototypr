@@ -27,7 +27,7 @@ class Value(object):
 
     def __call__(self, cid):
         """Return datalist item number 'ID' (card number)."""
-        #print "shapes_152", self.datalist, ID
+        #print "shapes_30", self.datalist, ID
         try:
             x = self.datalist[cid]
             return x
@@ -43,7 +43,6 @@ class Query(object):
         self.result = kwargs.get('result', None)
         self.alternate = kwargs.get('alternate', None)
         self.members = []  # card IDs, of which affected card is a member
-        #self.
 
     def __call__(self, cid):
         """Process the query, for a given card 'ID' in the dataset."""
@@ -51,7 +50,7 @@ class Query(object):
         result = None
         results = []
         for _query in self.query:
-            print "shapes_54 _query", len(_query), '::', _query
+            if DEBUG: print "shapes_54 _query", len(_query), '::', _query
             if _query and len(_query) >= 4:
                 result = tools.comparer(
                     val=_query[0][cid], operator=_query[1], target=_query[2])
@@ -59,7 +58,7 @@ class Query(object):
             results.append(_query[3])
         # compare across all
         result = tools.boolean_join(results)
-        #print "shapes_187 cid %s Results %s" % (cid, results)
+        #print "shapes_61 cid %s Results %s" % (cid, results)
         if result is not None:
             if result:
                 return self.result
@@ -163,7 +162,7 @@ class LineShape(BaseShape):
         if self.col is not None and self.col >= 0:
             x = x + self.col * width
             x_1 = x_1 + self.col * width - margin_left
-        #if DEBUG: print self.row, self.col, "=", x, x_1, ":", y, y_1
+        #if DEBUG: print 165 self.row, self.col, "=", x, x_1, ":", y, y_1
         # canvas
         self.set_canvas_props()
         # draw line
@@ -244,11 +243,11 @@ class RectShape(BaseShape):
         delta_x = off_x + margin_left
         delta_y = off_y + margin_bottom
         # convert to using units
-        #print "shapes_216", self.height, self.width
+        #print "shapes_246", self.height, self.width
         height = self.unit(self.height)
         width = self.unit(self.width)
-        #print "shapes_216", height, width
-        #print "shapes_216 rect", ID, ':margin:', uni, self.margin_left
+        #print "shapes_249", height, width
+        #print "shapes_246 rect", ID, ':margin:', uni, self.margin_left
         if self.row is not None and self.col is not None:
             x = self.col * width + delta_x
             y = self.row * height + delta_y
@@ -646,7 +645,7 @@ class StarShape(BaseShape):
         pth.moveTo(x, y + radius)
         angle = (2 * math.pi) * 2.0 / 5.0
         start_angle = math.pi / 2.0
-        #if DEBUG: print 'star self.vertices', self.vertices
+        #if DEBUG: print '648 star self.vertices', self.vertices
         for vertex in range(self.vertices - 1):
             next_angle = angle * (vertex + 1) + start_angle
             x_1 = x + radius * math.cos(next_angle)
@@ -680,7 +679,7 @@ class TextShape(BaseShape):
 
     def __call__(self, *args, **kwargs):
         """do something when I'm called"""
-        print "679: calling TextShape..."
+        if DEBUG: print "shapes_679: calling TextShape..."
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw text on a given canvas."""
@@ -923,7 +922,7 @@ class CardShape(BaseShape):
                            stop=True)
         flat_elements = tools.flatten(self.elements)
         for flat_ele in flat_elements:
-            #print "shapes_918 flat_ele", flat_ele
+            #print "shapes_926 flat_ele", flat_ele
             members = flat_ele.members or self.members
             try:  # - normal element
                 iid = members.index(cid + 1)
@@ -934,7 +933,7 @@ class CardShape(BaseShape):
                     ID=iid)
             except AttributeError:
                 # query ... get a new element ... or not!?
-                #print "shapes_929 self.shape_id", self.shape_id
+                #print "shapes_937 self.shape_id", self.shape_id
                 new_ele = flat_ele(cid=self.shape_id)  # uses __call__ on Query
                 if new_ele:
                     flat_new_eles = tools.flatten(new_ele)
@@ -946,6 +945,10 @@ class CardShape(BaseShape):
                             off_x=col*self.width,
                             off_y=row*self.height,
                             ID=iid)
+            except ValueError:
+                tools.feedback('Unable to draw card #%s' % (cid + 1))
+            except Exception as err:
+                tools.feedback('Unable to draw card #%s (Error: %s' % ((cid + 1), err))
 
 
 class DeckShape(BaseShape):

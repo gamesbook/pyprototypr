@@ -664,11 +664,11 @@ def Lines(rows=1, cols=1, **kwargs):
 def BGG(ids=None, user=None, progress=False):
     gamelist = BGGGameList()
     if user:
-        print "Sorry - user collection is not ready yet!"
+        tools.feedback("Sorry - user collection function is not available yet!")
     if ids:
         for game_id in ids:
             if progress:
-                print "Retrieving game '%s' from BoardGameGeek..." % game_id
+                tools.feedback("Retrieving game '%s' from BoardGameGeek..." % game_id)
             _game = BGGGame(game_id=game_id)
             gamelist.set_values(_game)
     return gamelist

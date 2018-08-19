@@ -12,7 +12,7 @@ class LazyEval(object):
 
     Usage:
         def foo(x):
-            print x
+            #print x
             return x
 
         random.choice((LazyEval(foo, "spam"), LazyEval(foo, "eggs")))()
@@ -40,7 +40,7 @@ class LazyEval(object):
 
 """
 def foo(x):
-    print x
+    #print x
     return x
 
 

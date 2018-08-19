@@ -116,11 +116,10 @@ class BGGGame(object):
         elif isinstance(game_id, ""):
             self._game = self.bgg.game(name=game_id)
         else:
-            print
+            pass
         self.set_properties()
-        #except Exception, e:
-        #    print 'Unable to create game:', game_id
-        #    print e
+        #except Exception as err:
+        #    log.error('Unable to create game:%s (%s)', game_id, err)
 
     def get_description_short(self):
         """Create an abbreviated description for a game."""

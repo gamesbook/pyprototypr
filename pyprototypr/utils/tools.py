@@ -168,8 +168,7 @@ def sequence_split(string):
         return values
     except:
         _strings = _string.split(',')
-        if DEBUG:
-            print _strings
+        #log.debug('strings:%s', _strings)
         for item in _strings:
             if '-' in item:
                 _strs = item.split('-')

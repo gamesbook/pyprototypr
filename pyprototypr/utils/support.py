@@ -19,7 +19,7 @@ def feedback(item, stop=False):
 
 
 def base_fonts():
-    """On Ubuntu: sudo apt-get install msttcorefonts"""
+    """On Ubuntu: sudo apt-get install ttf-mscorefonts-installer"""
     fonts = [
         {'name': 'Ubuntu', 'file': 'Ubuntu-R.ttf'},
         {'name': 'Arial', 'file': 'Arial.ttf'},
@@ -34,8 +34,10 @@ def base_fonts():
     for _font in fonts:
         try:
             pdfmetrics.registerFont(TTFont(_font['name'], _font['file']))
-        except:
+        except Exception as err:
             pass
+            #log.error('Unable to register %s from %s (%s)', 
+            #    _font['name'], _font['file'], err)
 
 
 def numbers(*args):
