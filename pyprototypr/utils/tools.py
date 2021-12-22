@@ -6,7 +6,7 @@ Utility functions for pyprototypr
 # lib
 import csv
 import collections
-from itertools import izip_longest
+from itertools import zip_longest
 import math
 import os
 import sys
@@ -54,7 +54,7 @@ def grouper(n, iterable, fillvalue=None):
     #grouper(3, [1,3,2,4,5,7,6,8,0], None) --> 1 3 2   4 5 7   6 8 0
     # use: for item1, item2 in grouper(3, l):
     args = [iter(iterable)] * n
-    return izip_longest(fillvalue=fillvalue, *args)
+    return zip_longest(fillvalue=fillvalue, *args)
 
 
 def boolean_join(items):
@@ -172,7 +172,7 @@ def sequence_split(string):
         for item in _strings:
             if '-' in item:
                 _strs = item.split('-')
-                seq_range = range(int(_strs[0]), int(_strs[1]) + 1)
+                seq_range = list(range(int(_strs[0]), int(_strs[1]) + 1))
                 values = values + seq_range
             else:
                 values.append(int(item))

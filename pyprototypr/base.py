@@ -226,7 +226,7 @@ PAGES = {
 WIDTH = 0.1
 
 
-class BaseCanvas(object):
+class BaseCanvas:
     """Wrapper/extended class for a ReportLab canvas."""
 
     def __init__(self, filename=None, pagesize=None, **kwargs):
@@ -395,7 +395,7 @@ class BaseCanvas(object):
             return default
 
 
-class BaseShape(object):
+class BaseShape:
     """Base class for objects that are drawn on a given canvas."""
 
     def __init__(self, _object=None, canvas=None, **kwargs):

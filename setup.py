@@ -1,4 +1,3 @@
-from __future__ import print_function
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 import io
@@ -64,7 +63,7 @@ setup(
     install_requires=['reportlab', 'xlrd', 'boardgamegeek'],
     test_suite='pyprototypr.test',
     classifiers=[
-        'Programming Language :: Python',
+        'Programming Language :: Python :: 3.9',
         'Development Status :: 3 - Alpha',
         'Natural Language :: English',
         'Environment :: Console',

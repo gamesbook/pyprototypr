@@ -6,10 +6,10 @@ Dice functions for pyprototypr
 # lib
 import random
 # third party
-#project
+# project
 
 
-class Dice(object):
+class Dice:
     """Base class for a dice."""
 
     def __init__(self, **kwargs):

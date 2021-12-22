@@ -3,8 +3,6 @@
 """
 Create custom shapes for pyprototypr
 """
-# future
-from __future__ import division
 # lib
 import math
 # third party
@@ -18,7 +16,7 @@ from pyprototypr.base import BaseShape, BaseCanvas, UNITS, COLORS, PAGES
 DEBUG = False
 
 
-class Value(object):
+class Value:
     """Class wrapper for a list of values possible for a card attribute."""
 
     def __init__(self, **kwargs):
@@ -35,7 +33,7 @@ class Value(object):
             return None
 
 
-class Query(object):
+class Query:
     """Query to select an element or a value for a card attribute."""
 
     def __init__(self, **kwargs):
@@ -50,7 +48,7 @@ class Query(object):
         result = None
         results = []
         for _query in self.query:
-            if DEBUG: print "shapes_54 _query", len(_query), '::', _query
+            if DEBUG: print(("shapes_54 _query", len(_query), '::', _query))
             if _query and len(_query) >= 4:
                 result = tools.comparer(
                     val=_query[0][cid], operator=_query[1], target=_query[2])
@@ -162,7 +160,8 @@ class LineShape(BaseShape):
         if self.col is not None and self.col >= 0:
             x = x + self.col * width
             x_1 = x_1 + self.col * width - margin_left
-        #if DEBUG: print 165 self.row, self.col, "=", x, x_1, ":", y, y_1
+        if DEBUG:
+            print((self.row, self.col, "=", x, x_1, ":", y, y_1))
         # canvas
         self.set_canvas_props()
         # draw line
@@ -589,7 +588,8 @@ class HexShape(BaseShape):
         # hex centre
         x_d = x + half_side + side / 2.0
         y_d = y
-        #if DEBUG: print "442", x, y, half_height, half_side, side
+        if DEBUG:
+            print(("592", x, y, half_height, half_side, side))
         # canvas
         self.set_canvas_props()
         # draw horizontal hexagon (clockwise)
@@ -645,7 +645,7 @@ class StarShape(BaseShape):
         pth.moveTo(x, y + radius)
         angle = (2 * math.pi) * 2.0 / 5.0
         start_angle = math.pi / 2.0
-        #if DEBUG: print '648 star self.vertices', self.vertices
+        if DEBUG: print(('648 star self.vertices', self.vertices))
         for vertex in range(self.vertices - 1):
             next_angle = angle * (vertex + 1) + start_angle
             x_1 = x + radius * math.cos(next_angle)
@@ -679,7 +679,7 @@ class TextShape(BaseShape):
 
     def __call__(self, *args, **kwargs):
         """do something when I'm called"""
-        if DEBUG: print "shapes_679: calling TextShape..."
+        if DEBUG: print("shapes_679: calling TextShape...")
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw text on a given canvas."""
@@ -980,7 +980,8 @@ class DeckShape(BaseShape):
 
     def create(self, cards):
         """Create a new deck, based on number of `cards`"""
-        #if DEBUG: print "Cards are: %s" % self.sequence
+        if DEBUG:
+            print(("Cards are: %s" % self.sequence))
         self.deck = []
         #print "shapes_925:deck %s cards with kwargs %s" % (cards, self.kwargs)
         for card in range(0, cards):
@@ -1041,7 +1042,7 @@ class RepeatShape(BaseShape):
         # UPDATE SELF WITH COMMON
         if self.common:
             attrs = vars(self.common)
-            for attr in attrs.keys():
+            for attr in list(attrs.keys()):
                 if attr not in ['canvas', 'common', 'stylesheet'] and \
                         attr[0] != '_':
                     common_attr = getattr(self.common, attr)
@@ -1067,19 +1068,19 @@ class RepeatShape(BaseShape):
             self.across = kwargs.get('across', self.cols)
             self.down = kwargs.get('down', self.rows)
             try:
-                self.down = range(1, self.down + 1)
+                self.down = list(range(1, self.down + 1))
             except TypeError:
                 pass
             try:
-                self.across = range(1, self.across + 1)
+                self.across = list(range(1, self.across + 1))
             except TypeError:
                 pass
         #self.repeat_ = kwargs.get('repeat_', None)
         #self.repeat_ = kwargs.get('repeat_', None)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        print "1046", self.offset_across, self.offset_down
-        print "1047",self.gap_across, self.gap_down
+        print(("1046", self.offset_across, self.offset_down))
+        print(("1047",self.gap_across, self.gap_down))
         for col in range(self.cols):
             for row in range(self.rows):
                 if ((col+1) in self.across) and ((row+1) in self.down):
@@ -1174,10 +1175,10 @@ class ConnectShape(BaseShape):
                 ]
 
             if xc_f < xc_t and yc_f < yc_t:  # Q1
-                print "Q1"
+                print("Q1")
                 if edge_from['right'] < edge_to['left']:
                     if edge_from['top'] < edge_to['bottom']:
-                        print " A", edge_from['top'], edge_to['bottom']
+                        print((" A", edge_from['top'], edge_to['bottom']))
                         delta = (edge_to['bottom'] - edge_from['top']) / 2.0
                         points = [
                             self.key_positions(shape_from, 'TC'),
@@ -1186,7 +1187,7 @@ class ConnectShape(BaseShape):
                             self.key_positions(shape_to, 'BC')
                         ]
                     elif edge_from['top'] > edge_to['bottom']:
-                        print " B", edge_from['top'], edge_to['bottom']
+                        print((" B", edge_from['top'], edge_to['bottom']))
                         points = [
                             self.key_positions(shape_from, 'TC'),
                             (xc_f, yc_t),
@@ -1195,23 +1196,23 @@ class ConnectShape(BaseShape):
                     else:
                         pass
                 else:
-                    print " C", edge_from['top'], edge_to['bottom']
+                    print((" C", edge_from['top'], edge_to['bottom']))
                     points = [
                         self.key_positions(shape_from, 'TC'),
                         (xc_f, yc_t),
                         self.key_positions(shape_to, 'LC')
                     ]
             if xc_f < xc_t and yc_f > yc_t:  # Q2
-                print "Q2"
+                print("Q2")
 
             if xc_f > xc_t and yc_f > yc_t:  # Q3
-                print "Q3"
+                print("Q3")
 
             if xc_f > xc_t and yc_f < yc_t:  # Q4
-                print "Q4"
+                print("Q4")
                 if edge_from['left'] < edge_to['right']:
                     if edge_from['top'] < edge_to['bottom']:
-                        print " A", edge_from['top'], edge_to['bottom']
+                        print((" A", edge_from['top'], edge_to['bottom']))
                         delta = (edge_to['bottom'] - edge_from['top']) / 2.0
                         points = [
                             self.key_positions(shape_from, 'TC'),
@@ -1220,7 +1221,7 @@ class ConnectShape(BaseShape):
                             self.key_positions(shape_to, 'BC')
                         ]
                     elif edge_from['top'] > edge_to['bottom']:
-                        print " B", edge_from['top'], edge_to['bottom']
+                        print((" B", edge_from['top'], edge_to['bottom']))
                         points = [
                             self.key_positions(shape_from, 'TC'),
                             (xc_f, yc_t),
@@ -1229,7 +1230,7 @@ class ConnectShape(BaseShape):
                     else:
                         pass
                 else:
-                    print " C", edge_from['top'], edge_to['bottom']
+                    print((" C", edge_from['top'], edge_to['bottom']))
                     points = [
                         self.key_positions(shape_from, 'TC'),
                         (xc_f, yc_t),

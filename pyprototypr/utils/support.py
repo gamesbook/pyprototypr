@@ -13,7 +13,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 
 def feedback(item, stop=False):
     """Placeholder for more complete feedback."""
-    print 'FEEDBACK:: %s' % item
+    print('FEEDBACK:: %s' % item)
     if stop:
         sys.exit()
 
@@ -71,7 +71,7 @@ def numbers(*args):
 def letters(start='a', stop='z'):
     """Return list of characters between two."""
     def gen():
-        for c in xrange(ord(start), ord(stop) + 1):
+        for c in range(ord(start), ord(stop) + 1):
             yield chr(c)
     return list(gen())
 

@@ -11,19 +11,21 @@ from reportlab.lib.pagesizes import *
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.colors import *
+from reportlab.lib.colors import black
 # local
-from bgg import BGGGame, BGGGameList
-from base import BaseShape, BaseCanvas, GroupBase, UNITS, COLORS
-from shapes import \
-    BezierShape, CardShape, CircleShape, CommonShape, \
-    ConnectShape, DeckShape, EllipseShape, FooterShape, GridShape, HexShape, \
-    ArcShape, ImageShape, LineShape,PolygonShape, \
-    PolylineShape, Query, RectShape, RepeatShape, RhombusShape, ShapeShape, \
-    StarShape, TextShape, Value
-from dice import Dice, DiceD4, DiceD6, DiceD8, DiceD10, DiceD12, DiceD20, \
-    DiceD100
-from utils.support import numbers, letters, split, combinations, base_fonts
-from utils import tools
+from .bgg import BGGGame, BGGGameList
+from .base import BaseShape, BaseCanvas, GroupBase, UNITS, COLORS
+from .shapes import (
+    BezierShape, CardShape, CircleShape, CommonShape,
+    ConnectShape, DeckShape, EllipseShape, FooterShape, GridShape, HexShape,
+    ArcShape, ImageShape, LineShape, PolygonShape,
+    PolylineShape, Query, RectShape, RepeatShape, RhombusShape, ShapeShape,
+    StarShape, TextShape, Value)
+from .dice import (
+    Dice, DiceD4, DiceD6, DiceD8, DiceD10, DiceD12, DiceD20, DiceD100)
+from pyprototypr.utils.support import (
+    numbers, letters, split, combinations, base_fonts)
+from pyprototypr.utils import tools
 
 
 cnv = None  # will become a reportlab.canvas object
@@ -152,6 +154,14 @@ def margins(**kwargs):
     kwargs['margin_bottom'] = kwargs.get('margin_bottom', margin)
     kwargs['margin_right'] = kwargs.get('margin_right', margin)
     return kwargs
+
+
+def Font(face=None, **kwargs):
+    global cnv
+
+    cnv.font_face = face or 'Helvetica'
+    cnv.font_size = kwargs.get('size', 12)
+    cnv.stroke = COLORS.get(kwargs.get('color', 'black'))
 
 ### cards ====================================================================
 

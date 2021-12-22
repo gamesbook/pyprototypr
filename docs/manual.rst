@@ -153,7 +153,7 @@ contains these lines::
     # `example1` script for pyprototypr
     # Written by: Derek Hohls
     # Created on: 29 February 2016
-    from draw import *
+    from pyprototypr.draw import *
     Create()
     PageBreak()
     Save()
@@ -205,8 +205,8 @@ bottom edge of the page.  Similarly, for a letter-sized page of 8.5" by 11", a
 point in the middle of the page would have an **x-position** of 4.25" and a
 **y-position** of 5.5".
 
-Whats on a Page?
-----------------
+What's on a Page?
+-----------------
 
 Almost everything in **pyprototypr** that appears in the output is an `element`_
 of some sort.  Elements are often geometrical **shapes**, such lines, circles
@@ -296,10 +296,11 @@ In general, one line in the script will contain one instruction.
 
 The first line of every script **must** contain the phrase::
 
-    from draw import *
+    from pyprototypr.draw import *
 
 which is a special instruction, telling Python that it needs to use ("import")
-the functions available in **pyprototypr** when processing your instructions.
+the functions available in the **pyprototypr** `draw` module when processing
+your instructions.
 
 Each instruction will look something like this::
 
@@ -980,7 +981,7 @@ each line without any blank spaces at the start.
 
 .. code-block:: python
 
-    from draw import *
+    from pyprototypr.draw import *
     Create()
     Deck(cards=9)
     Save()
@@ -1012,7 +1013,7 @@ on OS X, use TextEdit) and type the following:
 
 .. code-block:: python
 
-    from draw import *
+    from pyprototypr.draw import *
 
     Create(pagesize=A3,
            filename="example2.pdf")
@@ -1057,7 +1058,7 @@ Create this text in a file called ``cards3.py``:
 
 .. code-block:: python
 
-    from draw import *
+    from pyprototypr.draw import *
 
     Create(filename='example3.pdf', offset=0.5)
 
@@ -1091,7 +1092,7 @@ Create this text in a file called ``cards4.py``:
 
 .. code-block:: python
 
-    from draw import *
+    from pyprototypr.draw import *
 
     # create the output card file
     Create(filename='example4.pdf', offset=0.5)
@@ -1110,7 +1111,7 @@ Create this text in a file called ``cards4.py``:
     Card("25", mytext)
 
     # specify a particular font; face and size and color
-    times = Font("Times New Roman", size=8, color=red)
+    times = Font("Times New Roman", size=8, color="red")
 
     # create more text, and display it using 'times' font
     mytext2 = text(text="I'm on cards 1-10", font=times, x=1.9)
