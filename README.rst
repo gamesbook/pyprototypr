@@ -13,7 +13,7 @@ regular or repeating elements; typically containing a mix of graphics and text.
 Requirements
 ============
 
-**pyprototypr** requires a version of Python 2.7.  If this is not your default
+**pyprototypr** requires a version of Python 3.9.  If this is not your default
 Python version, you may want to use **pyenv** (see `Appendix VI <https://github.com/gamesbook/pyprototypr/blob/master/docs/manual.rst#appendix-vi-working-with-pyenv>`_. of the manual)
 to install that and then install and use **pyprototypr** in a `virtualenv
 <https://pypi.python.org/pypi/virtualenv/>`_.
