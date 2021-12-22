@@ -2,7 +2,7 @@
 .. Shading in colors (start-end)
 
 .. header::
-    pyprototypr - Version 0.1 - May 2016
+    pyprototypr - Version 0.1.1 - December 2021
 
 .. footer::
 
@@ -65,7 +65,7 @@ Installing pyprototypr
 ======================
 
 **pyprototypr** requires a computing device that already has the correct version
-of Python (version 2.7.9) installed.  If your device does not have Python
+of Python (version 3.9) installed.  If your device does not have Python
 installed, it can be obtained from http://www.python.org/download/.
 
 It is recommended that you work with Python in a *virtualenv*; see
@@ -100,8 +100,8 @@ When the command-line window appears, type::
 
 You should see something like::
 
-    Python 2.7.9 (default, May 21 2016, 14:42:03)
-    [GCC 4.8.4] on linux2
+    Python 3.9.7 (default, Sep 16 2021, 13:09:58)
+    [GCC 7.5.0] :: Anaconda, Inc. on linux
     Type "help", "copyright", "credits" or "license" for more information.
 
 You can now close the command-line window.
