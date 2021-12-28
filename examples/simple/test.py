@@ -4,9 +4,10 @@
 Written by: Derek Hohls
 Created on: 29 February 2016
 """
-from pyprototypr.draw import Create, PageBreak, Arc, AutoGrid, Bezier, \
-    Circle, Ellipse, Grid, Hexagon, Hexagons, Line, Lines, Rhombus, \
-    Rectangle, Rectangles, Save, Star
+from pyprototypr.draw import (
+    Create, PageBreak,
+    Arc, AutoGrid, Bezier, Circle, Ellipse, Grid, Hexagon, Hexagons,
+    Line, Lines, Rhombus, Rectangle, Rectangles, Save, Star)
 
 Create()
 

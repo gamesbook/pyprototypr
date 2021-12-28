@@ -7,7 +7,7 @@ BoardGameGeek.com interface for pyprototypr
 from __future__ import division
 # lib
 # third party
-from boardgamegeek import BoardGameGeek
+from boardgamegeek import BGGClient
 
 
 class BGGGameList(object):
@@ -15,6 +15,7 @@ class BGGGameList(object):
 
     def __init__(self):
         """create empty lists to hold values"""
+        self.bgg = BGGClient()
         self.alternative_names = []
         self.artists = []
         self.average = []
@@ -110,7 +111,7 @@ class BGGGame(object):
         #try:
         self._game = None
         self.short = int(short) or 500
-        self.bgg = BoardGameGeek()
+        self.bgg = BGGClient()
         if isinstance(game_id, int):
             self._game = self.bgg.game(game_id=game_id)
         elif isinstance(game_id, ""):
@@ -139,12 +140,12 @@ class BGGGame(object):
             self.alternative_names = ', '.join(self._game.alternative_names)
             self._artists = self._game.artists
             self.artists = ', '.join(self._game.artists)
-            self._average = self._game.average
-            self.average = '%.3f' % self._game.average
-            self._averageweight = self._game.averageweight
-            self.averageweight = '%.3f' % self._game.averageweight
-            self._bayesaverage = self._game.bayesaverage
-            self.bayesaverage = '%.3f' % self._game.bayesaverage
+            self._average = self._game.stats['average']
+            self.average = '%.3f' % self._game.stats['average']
+            self._averageweight = self._game.stats['averageweight']
+            self.averageweight = '%.3f' % self._game.stats['averageweight']
+            self._bayesaverage = self._game.stats['bayesaverage']
+            self.bayesaverage = '%.3f' % self._game.stats['bayesaverage']
             self._categories = self._game.categories
             self.categories = ', '.join(self._game.categories)
             self._description = self._game.description
@@ -159,7 +160,13 @@ class BGGGame(object):
             else:
                 self.expansion = 'False'
             self._expansions = self._game.expansions
-            self.expansions = ', '.join(self._game.expansions)
+            if self._expansions:
+                names = []
+                for exp in self._expansions:
+                    names.append(exp.name)
+                self.expansions = ', '.join(names)
+            else:
+                self.expansions = ''
             self._families = self._game.families
             self.families = ', '.join(self._game.families)
             self._id = self._game.id
@@ -172,38 +179,38 @@ class BGGGame(object):
             self.maxplayers = '%s' % self._game.maxplayers
             self._mechanics = self._game.mechanics
             self.mechanics = ', '.join(self._game.mechanics)
-            self._median = self._game.median
-            self.median = '%.3f' % self._game.median
+            self._median = self._game.stats['median']
+            self.median = '%.3f' % self._game.stats['median']
             self._minage = self._game.minage
             self.minage = '%s' % self._game.minage
             self._minplayers = self._game.minplayers
             self.minplayers = '%s' % self._game.minplayers
             self._name = self._game.name
             self.name = '%s' % self._game.name
-            self._numcomments = self._game.numcomments
-            self.numcomments = '%s' % self._game.numcomments
-            self._numweights = self._game.numweights
-            self.numweights = '%s' % self._game.numweights
-            self._owned = self._game.owned
-            self.owned = '%s' % self._game.owned
+            self._numcomments = self._game.stats['numcomments']
+            self.numcomments = '%s' % self._game.stats['numcomments']
+            self._numweights = self._game.stats['numweights']
+            self.numweights = '%s' % self._game.stats['numweights']
+            self._owned = self._game.stats['owned']
+            self.owned = '%s' % self._game.stats['owned']
             self._playingtime = self._game.playingtime
             self.playingtime = '%s' % self._game.playingtime
             self._publishers = self._game.publishers
             self.publishers = ', '.join(self._game.publishers)
-            self._ranks = self._game.ranks
-            self.ranks = '%s' % self._game.ranks
-            self._stddev = self._game.stddev
-            self.stddev = '%.3f' % self._game.stddev
+            self._ranks = self._game.stats['ranks']
+            self.ranks = '%s' % self._game.stats['ranks']
+            self._stddev = self._game.stats['stddev']
+            self.stddev = '%.3f' % self._game.stats['stddev']
             self._thumbnail = self._game.thumbnail
             self.thumbnail = '%s' % self._game.thumbnail
-            self._trading = self._game.trading
-            self.trading = '%s' % self._game.trading
-            self._usersrated = self._game.usersrated
-            self.usersrated = '%s' % self._game.usersrated
-            self._wanting = self._game.wanting
-            self.wanting = '%s' % self._game.wanting
-            self._wishing = self._game.wishing
-            self.wishing = '%s' % self._game.wishing
+            self._trading = self._game.stats['trading']
+            self.trading = '%s' % self._game.stats['trading']
+            self._usersrated = self._game.stats['usersrated']
+            self.usersrated = '%s' % self._game.stats['usersrated']
+            self._wanting = self._game.stats['wanting']
+            self.wanting = '%s' % self._game.stats['wanting']
+            self._wishing = self._game.stats['wishing']
+            self.wishing = '%s' % self._game.stats['wishing']
             self._yearpublished = self._game.yearpublished
             self.yearpublished = '%s' % self._game.yearpublished
             # custom fields
@@ -217,4 +224,3 @@ class BGGGame(object):
             self._players = (self._game.minplayers, self._game.maxplayers)
             self.age = '%s+' % self._game.minage
             self._age = self._game.minage
-

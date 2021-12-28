@@ -1,5 +1,5 @@
 """
-Show various `game boards` examples for pyprototypr
+Show a `game board` example for pyprototypr
 
 Written by: Derek Hohls
 Created on: 29 February 2016

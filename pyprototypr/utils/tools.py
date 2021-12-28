@@ -284,7 +284,7 @@ def open_xls(filename, sheet=0, sheetname=None, headers=None, selected=None):
         start = 1
         if not headers:
             keys = [sheet.cell(0, col_index).value \
-                    for col_index in xrange(sheet.ncols)]
+                    for col_index in range(sheet.ncols)]
         else:
             start = 0
             keys = headers
@@ -294,9 +294,9 @@ def open_xls(filename, sheet=0, sheetname=None, headers=None, selected=None):
                 filename)
         else:
             dict_list = []
-            for row_index in xrange(start, sheet.nrows):
+            for row_index in range(start, sheet.nrows):
                 item = {keys[col_index]: sheet.cell(row_index, col_index).value
-                        for col_index in xrange(sheet.ncols)}
+                        for col_index in range(sheet.ncols)}
                 if not selected:
                     dict_list.append(item)
                 else:
@@ -316,7 +316,7 @@ def flatten(lst):
     try:
         for ele in lst:
             if isinstance(ele, collections.Iterable) and \
-                    not isinstance(ele, basestring):
+                    not isinstance(ele, str):
                 for sub in flatten(ele):
                     yield sub
             else:
@@ -431,10 +431,18 @@ def polygon_vertices(sides, radius, starting_angle, center):
         feedback("Polygon's sides must be an integer of 3 or more.")
         return []
     points = []
-    step = 360.0 / sides
+    _step = 360.0 / sides
     rotate = starting_angle  # this is effectively the "rotation"
-    for rotate in numbers(starting_angle, 360, step):  # go in a full circle
-        points.append(degrees_to_xy(rotate, radius, center))
+    data_generator = numbers(starting_angle, 360, _step)  # go in a full circle
+    try:
+        rotate = next(data_generator)
+        while True:
+            points.append(degrees_to_xy(rotate, radius, center))
+            rotate = next(data_generator)
+    except RuntimeError:
+        pass  # ignore StopIteration
+    finally:
+        del data_generator
     return points
 
 
@@ -455,7 +463,7 @@ def degrees_to_xy(degrees, radius, origin):
     Returns:
      *  (x,y) tuple
     """
-    radians = degrees * math.pi / 180.0
+    radians = float(degrees) * math.pi / 180.0
     x_o = math.cos(radians) * radius + origin[0]
     y_o = math.sin(-radians) * radius + origin[1]
     return (x_o, y_o)

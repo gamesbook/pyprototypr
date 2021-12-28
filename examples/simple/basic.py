@@ -92,7 +92,7 @@ Line(common=cmm, angle=90)
 PageBreak()
 
 # common, with a loop
-for angle in numbers(0, 100, 10):
+for angle in range(0, 100, 10):
     Line(common=cmm, angle=angle)
 PageBreak()
 

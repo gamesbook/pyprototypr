@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Base shape for pyprototypr
+Base shape class for pyprototypr
 """
 # lib
 import copy
@@ -10,37 +10,37 @@ import math
 # third party
 from reportlab.pdfgen import canvas as reportlab_canvas
 from reportlab.lib.units import cm, inch
-from reportlab.lib.pagesizes import A6, A5, A4, A3, A2, A1, A0, LETTER, LEGAL,\
-    ELEVENSEVENTEEN, letter, legal, elevenSeventeen, B6, B5, B4, B3, B2, B0,\
-    landscape
+from reportlab.lib.pagesizes import (
+    A6, A5, A4, A3, A2, A1, A0, LETTER, LEGAL, ELEVENSEVENTEEN,
+    letter, legal, elevenSeventeen, B6, B5, B4, B3, B2, B0, landscape)
 from reportlab.lib.utils import ImageReader
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY
-from reportlab.lib.colors import \
-    aliceblue, antiquewhite, aqua, aquamarine, azure, beige, bisque, black,\
-    blanchedalmond, blue, blueviolet, brown, burlywood, cadetblue, chartreuse,\
-    chocolate, coral, cornflowerblue, cornsilk, crimson, cyan, darkblue,\
-    darkcyan, darkgoldenrod, darkgray, darkgrey, darkgreen, darkkhaki,\
-    darkmagenta, darkolivegreen, darkorange, darkorchid, darkred, darksalmon,\
-    darkseagreen, darkslateblue, darkslategray, darkslategrey, darkturquoise,\
-    darkviolet, deeppink, deepskyblue, dimgray, dimgrey, dodgerblue, \
-    floralwhite, forestgreen, fuchsia, gainsboro, ghostwhite, gold, goldenrod,\
-    gray, grey, green, greenyellow, honeydew, hotpink, indianred, indigo,\
-    ivory, khaki, lavender, lavenderblush, lawngreen, lemonchiffon, lightblue,\
-    lightcoral, lightcyan, lightgoldenrodyellow, lightgreen, lightgrey,\
-    lightpink, lightsalmon, lightseagreen, lightskyblue, lightslategray,\
-    lightslategrey, lightsteelblue, lightyellow, lime, limegreen, linen,\
-    magenta, maroon, mediumaquamarine, mediumblue, mediumorchid, mediumpurple,\
-    mediumseagreen, mediumslateblue, mediumspringgreen, mediumturquoise,\
-    mediumvioletred, midnightblue, mintcream, mistyrose, moccasin,\
-    navajowhite, navy, oldlace, olive, olivedrab, orange, orangered, orchid,\
-    palegoldenrod, palegreen, paleturquoise, palevioletred, papayawhip,\
-    peachpuff, peru, pink, plum, powderblue, purple, red, rosybrown,\
-    royalblue, saddlebrown, salmon, sandybrown, seagreen, seashell, sienna,\
-    silver, skyblue, slateblue, slategray, slategrey, snow, springgreen,\
-    steelblue, tan, teal, thistle, tomato, turquoise, violet, wheat, white,\
-    whitesmoke, yellow, yellowgreen, fidblue, fidred, fidlightblue, \
-    cornflower, firebrick
+from reportlab.lib.colors import (
+    aliceblue, antiquewhite, aqua, aquamarine, azure, beige, bisque, black,
+    blanchedalmond, blue, blueviolet, brown, burlywood, cadetblue, chartreuse,
+    chocolate, coral, cornflowerblue, cornsilk, crimson, cyan, darkblue,
+    darkcyan, darkgoldenrod, darkgray, darkgrey, darkgreen, darkkhaki,
+    darkmagenta, darkolivegreen, darkorange, darkorchid, darkred, darksalmon,
+    darkseagreen, darkslateblue, darkslategray, darkslategrey, darkturquoise,
+    darkviolet, deeppink, deepskyblue, dimgray, dimgrey, dodgerblue,
+    floralwhite, forestgreen, fuchsia, gainsboro, ghostwhite, gold, goldenrod,
+    gray, grey, green, greenyellow, honeydew, hotpink, indianred, indigo,
+    ivory, khaki, lavender, lavenderblush, lawngreen, lemonchiffon, lightblue,
+    lightcoral, lightcyan, lightgoldenrodyellow, lightgreen, lightgrey,
+    lightpink, lightsalmon, lightseagreen, lightskyblue, lightslategray,
+    lightslategrey, lightsteelblue, lightyellow, lime, limegreen, linen,
+    magenta, maroon, mediumaquamarine, mediumblue, mediumorchid, mediumpurple,
+    mediumseagreen, mediumslateblue, mediumspringgreen, mediumturquoise,
+    mediumvioletred, midnightblue, mintcream, mistyrose, moccasin,
+    navajowhite, navy, oldlace, olive, olivedrab, orange, orangered, orchid,
+    palegoldenrod, palegreen, paleturquoise, palevioletred, papayawhip,
+    peachpuff, peru, pink, plum, powderblue, purple, red, rosybrown,
+    royalblue, saddlebrown, salmon, sandybrown, seagreen, seashell, sienna,
+    silver, skyblue, slateblue, slategray, slategrey, snow, springgreen,
+    steelblue, tan, teal, thistle, tomato, turquoise, violet, wheat, white,
+    whitesmoke, yellow, yellowgreen, fidblue, fidred, fidlightblue,
+    cornflower, firebrick)
 # local
 from pyprototypr.utils import tools
 
@@ -405,7 +405,7 @@ class BaseShape:
         # KEY
         self.canvas = canvas or BaseCanvas()  # BaseCanvas object
         cnv = self.canvas  # shortcut for use in getting defaults
-        #print "base_395 Base types", type(self.canvas),type(canvas),type(cnv)
+        #print("base_395 Base types", type(self.canvas),type(canvas),type(cnv))
         self._object = _object  # placeholder for an incoming Shape object
         self.kwargs = kwargs
         self.shape_id = None
@@ -537,7 +537,7 @@ class BaseShape:
 
     def unit(self, item, units=None, skip_none=False):
         """Convert an item into the appropriate unit system."""
-        #print "base_509", units, self.units
+        #print("base_509", units, self.units)
         if item is None and skip_none:
             return None
         else:
@@ -547,8 +547,8 @@ class BaseShape:
                 return item * units
             except (TypeError, ValueError):
                 tools.feedback(
-                    'Unable to set units for: "%s".'
-                    ' Please check that this is a valid number.' % item,
+                    'Unable to set units: "%s".'
+                    ' Please check that this is a valid value.' % item,
                     stop=True)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -559,8 +559,8 @@ class BaseShape:
                          stroke=None, stroke_width=None):
         """Set reportlab canvas properties for font and colors"""
         canvas = cnv if cnv else self.canvas.canvas
-        #print 'scp: ', self.font_face, self.font_size
-        #print 'scp: stroke / self.stroke', stroke, self.stroke
+        #print('scp: ', self.font_face, self.font_size)
+        #print('scp: stroke / self.stroke', stroke, self.stroke)
         try:
             canvas.setFont(self.font_face, self.font_size)
         except AttributeError:
@@ -674,7 +674,7 @@ class BaseShape:
     def textify(self, index=None, text=None):
         """Extract text from a list, or create string, based on index & type"""
         _text = text or self.text
-        #print "base_645 text", index, text, _text, type(_text)
+        #print("base_645 text", index, text, _text, type(_text))
         if not _text:
             return
         if hasattr(_text, 'lower'):
@@ -691,7 +691,7 @@ class BaseShape:
             return
         align = align or self.align
         mvy = copy.copy(y)
-        #print "base_655 string", type(string), string
+        #print("base_655 string", type(string), string)
         for ln in string.split('\n'):
             if align == 'centre':
                 canvas.drawCentredString(x, mvy, ln)

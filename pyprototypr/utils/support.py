@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Support utilities for draw
+Support utilities for draw module
 """
 # lib
 import itertools
@@ -36,7 +36,7 @@ def base_fonts():
             pdfmetrics.registerFont(TTFont(_font['name'], _font['file']))
         except Exception as err:
             pass
-            #log.error('Unable to register %s from %s (%s)', 
+            #log.error('Unable to register %s from %s (%s)',
             #    _font['name'], _font['file'], err)
 
 

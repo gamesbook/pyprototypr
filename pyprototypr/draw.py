@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Drawing interface for pyprototypr
+Primary drawing interface for pyprototypr
 """
 # future
 from __future__ import division
@@ -11,20 +11,19 @@ from reportlab.lib.pagesizes import *
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.colors import *
-from reportlab.lib.colors import black
+from reportlab.lib.units import cm, inch
 # local
 from .bgg import BGGGame, BGGGameList
-from .base import BaseShape, BaseCanvas, GroupBase, UNITS, COLORS
+from .base import BaseCanvas, GroupBase, COLORS
 from .shapes import (
-    BezierShape, CardShape, CircleShape, CommonShape,
+    BezierShape, CircleShape, CommonShape,
     ConnectShape, DeckShape, EllipseShape, FooterShape, GridShape, HexShape,
     ArcShape, ImageShape, LineShape, PolygonShape,
     PolylineShape, Query, RectShape, RepeatShape, RhombusShape, ShapeShape,
-    StarShape, TextShape, Value)
+    StarShape, TextShape)
 from .dice import (
     Dice, DiceD4, DiceD6, DiceD8, DiceD10, DiceD12, DiceD20, DiceD100)
-from pyprototypr.utils.support import (
-    numbers, letters, split, combinations, base_fonts)
+from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
 
 
@@ -81,8 +80,7 @@ def Create(**kwargs):
     if landscape:
         cnv.canvas.setPageSize(landscape(pagesize))
     if _cards:
-        Deck(canvas=cnv, sequence=range(1, _cards + 1),
-             **kwargs)  # set deck variable
+        Deck(canvas=cnv, sequence=range(1, _cards + 1), **kwargs)  # deck variable
 
 
 def create(**kwargs):
@@ -671,7 +669,7 @@ def Lines(rows=1, cols=1, **kwargs):
 ### BGG ======================================================================
 
 
-def BGG(ids=None, user=None, progress=False):
+def BGG(ids=None, user=None, progress=False, short=500):
     gamelist = BGGGameList()
     if user:
         tools.feedback("Sorry - user collection function is not available yet!")
@@ -679,7 +677,7 @@ def BGG(ids=None, user=None, progress=False):
         for game_id in ids:
             if progress:
                 tools.feedback("Retrieving game '%s' from BoardGameGeek..." % game_id)
-            _game = BGGGame(game_id=game_id)
+            _game = BGGGame(game_id=game_id, short=short)
             gamelist.set_values(_game)
     return gamelist
 
