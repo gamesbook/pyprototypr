@@ -21,9 +21,9 @@ pyprototypr
 Dedication
 ==========
 
-**pyprototypr** is dedicated to my Mom who, like many pre-war mothers, perhaps
-never really understood what her son was doing with that "strange little box"
-but nonetheless supported all my efforts!
+**pyprototypr** is dedicated to my Mom who, like many pre-WorldWar mothers,
+perhaps never really understood what her son was doing with that "strange
+little box" but nonetheless supported all my efforts!
 
 
 Introduction
@@ -115,13 +115,17 @@ Python that gives it extra or specialised functionality)::
 
     reportlab - see https://pypi.python.org/pypi/reportlab
     xlrd - see https://pypi.python.org/pypi/xlrd
-    boardgamegeek - see
+    boardgamegeek - see https://lcosmin.github.io/boardgamegeek/
 
 If you are working with a virtualenv as recommended, then running::
 
     pip install -r requirements.txt
 
 will install these for you.
+
+Finally, you can install **pyprototypr** itself, in the virtualenv, via::
+
+    python setup.py install
 
 Other Software Installs
 -----------------------
@@ -135,20 +139,21 @@ see http://mscorefonts2.sourceforge.net/ Ubuntu users can install these via::
 
     sudo apt-get install ttf-mscorefonts-installer
 
+Checking pyprototypr usage
+--------------------------
 
-Quick Start for the Truly Impatient
------------------------------------
-
-If you want to see **now** that `pyprototypr` works, then you can run one (or
-more) of the scripts (files) from the examples sub-directories.  By "run", its
-meant that you open a command-line window (see previous section) and type::
+To now check that `pyprototypr` works, then you can run one (or more) of the
+scripts (files) from the examples sub-directories.  By "run", its meant
+that you open a command-line window (see previous section) and type something
+like::
 
     python example1.py
 
 where you would replace the `example1.py` with the name of the script.
 
 For example, the `example1.py` script in the `examples/manual` directory
-contains these lines::
+contains these lines; each line in this script that does not start with a `#`
+is a called an instruction::
 
     # `example1` script for pyprototypr
     # Written by: Derek Hohls
@@ -162,6 +167,11 @@ and is designed to produce a single blank A4-sized page! If you run this script,
 it will create an output file called `test.pdf`, which will appear in the same
 directory as the script. You should be able to open and view this PDF file via
 a PDF viewer (see `Other Software Installs`_).
+
+The script also shows the two key instructions - *Create()* and *Save()* -
+that **must** appear atnear the start and at the end - respectively - of every
+script .
+
 
 Learning pyprototypr by example
 ===============================
@@ -200,10 +210,10 @@ things appear on a page.  Each page has an imaginary x-y (Cartesian) grid whose
 
 So, if you take an A4 page of about 21cm wide and 30cm tall; then a point in the
 middle of the page would have an **x-position** of 10.5cm - the distance from
-the left edge of the page; and a **y-position** of 15cm - the distance from the
-bottom edge of the page.  Similarly, for a letter-sized page of 8.5" by 11", a
-point in the middle of the page would have an **x-position** of 4.25" and a
-**y-position** of 5.5".
+the left edge of the page; and a **y-position** of about 15cm - the distance
+from the bottom edge of the page.  Similarly, for a letter-sized page of 8.5"
+by 11", a point in the middle of the page would have an **x-position** of 4.25"
+and a **y-position** of 5.5".
 
 What's on a Page?
 -----------------
@@ -250,8 +260,8 @@ please refer to http://www.w3.org/TR/css3-color.
 
 Colors in **pyprototypr** can also make use of names from a pre-defined list
 of colors - for example *#A0522D* is defined as the color *sienna*. A PDF
-called `colorset.pdf`, which shows all the named colors available, can be
-found in the `examples` directory.
+called `colorset.pdf`, which shows all the names of all the colors that are
+available, can be found in the `examples` directory.
 
 
 .. raw:: pdf
@@ -272,20 +282,22 @@ design "prototype".  Such a file is referred to in this manual as a *script*.
 You then use Python to *"run"* (process) that script, or file, to create an
 output file (in PDF format) with your resulting design.  If you want to
 make changes to the design, then you add to, delete or change the instructions
-in your script and then use Python to re-process it.
+in your script and then use Python to re-process it and update the PDF.
 
 The script concept
 ------------------
 
 The script is similar to the process of building a house; in the sense that the
 instructions which come first create layers that are "deeper down", in the same
-way that a foundation is below a floor, which is below a ceiling, which is below
-a roof. The lower layers are often not visible, even if they are there.
+way that a foundation is below a floor, which is below the walls, which are
+below the ceiling, which is below the roof. The lower layers are often not
+"visible", even if they are there.
 
 So, for example, a page may contain rectangles representing cards.  Each card may
 then have additional rectangles placed on it, representing some aspect that is
 part of your card design.  Those rectangles, in turn, could have images or icons
-placed on them. So, each item "obscures" part or all of the item it is placed on.
+placed on them. So, each item can "obscure" part or all of the item it is
+placed on.
 
 In summary - the *order* of instructions in a script is important!
 
@@ -417,9 +429,13 @@ page on which the design will be created, as well the details of the output file
 
 In **pyprototypr** it is defined by the instruction::
 
-    Create(filename = *filename*, pagesize = *pagesize*, margin = *margin*,
-           landscape = True|False, fonts= * fonts*
-           color = *color*, units = *units*)
+    Create(filename = *filename*,
+           pagesize = *pagesize*,
+           margin = *margin*,
+           landscape = True|False,
+           fonts= * fonts*
+           color = *color*,
+           units = *units*)
 
 where:
 
@@ -582,8 +598,13 @@ Rectangle
 
 A rectangle is defined by the `instruction`_::
 
-    rectangle(size = *size*, line = *line*, fill = *fill*, rounded = *rounding*,
-              rotate = *angle*, units = *units*, rounded = True|False,
+    rectangle(size = *size*,
+              line = *line*,
+              fill = *fill*,
+              rounded = *rounding*,
+              rotate = *angle*,
+              units = *units*,
+              rounded = True|False,
               pattern = *pattern*)
 
 where:
@@ -602,7 +623,10 @@ Circle
 
 A circle is defined by the `instruction`_::
 
-    circle(size = *size*, line = *line*, fill = *fill*, radius = *radius* ,
+    circle(size = *size*,
+           line = *line*,
+           fill = *fill*,
+           radius = *radius* ,
            units = *units*)
 
 For a circle, the centre is given by the *y* and *x* values in the **size**.
@@ -617,16 +641,24 @@ Ellipse
 
 An ellipse is defined by the `instruction`_::
 
-    ellipse(size = *size*, line = *line*, fill = *fill*,
-            rotate = *angle*, units = *units*, spec = *spec*)
+    ellipse(size = *size*,
+            line = *line*,
+            fill = *fill*,
+            rotate = *angle*,
+            units = *units*,
+            spec = *spec*)
 
 Star
 ~~~~
 
 A star is defined by the `instruction`_::
 
-    star(size = *size*, line = *line*, fill = *fill*,
-         rotate = *angle*, units = *units*, spec = *spec*)
+    star(size = *size*,
+         line = *line*,
+         fill = *fill*,
+         rotate = *angle*,
+         units = *units*,
+         spec = *spec*)
 
 The optional **spec** is defined as an `enclosure`_ of
 (`tips`, `angle`, `raster`), where:
@@ -639,8 +671,12 @@ Polygon
 
 A regular polygon is defined by the `instruction`_::
 
-    polygon(size = *size*, line = *line*, fill = *fill*,
-            rotate = *angle*, units = *units*, sides = *sides*)
+    polygon(size = *size*,
+            line = *line*,
+            fill = *fill*,
+            rotate = *angle*,
+            units = *units*,
+            sides = *sides*)
 
 The optional **sides** is the number of sides of the polygon (defaults to 3).
 If the **sides** is not provided, the default polygon will be an equilateral
@@ -656,8 +692,12 @@ Shape
 
 An irregular shape is defined by the `instruction`_::
 
-    shape("shape", line = *line*, fill = *fill*,
-          rotate = *angle*, units = *units*, points = *points*)
+    shape("shape",
+          line = *line*,
+          fill = *fill*,
+          rotate = *angle*,
+          units = *units*,
+          points = *points*)
 
 The required **points** is defined as an enclosure of **(x, y)** point enclosures,
 each point enclosure separated by commas.  There must be a minimum of three
@@ -743,8 +783,13 @@ individual cards (or ranges of cards) can be customized further using the
 
 A deck design is defined by the `instruction`_::
 
-    Deck(cards = *count*, height = *height*, width = *width*, units = *units*,
-         line = *stroke*, fill = *fill*, grid_markers = True|False)
+    Deck(cards = *count*,
+         height = *height*,
+         width = *width*,
+         units = *units*,
+         line = *stroke*,
+         fill = *fill*,
+         grid_markers = True|False)
 
 where:
 
@@ -765,7 +810,7 @@ where:
     from the edge of the page inwards for 5mm (one-fifth of an inch) in line
     with the tops and sides of the cards.  These help when cutting the cards.
 
-DELETE ???
+optional:
 
  *  **rounded** - this is optional; it can either be set to *True* or *False*
     (note that there is no "" around True or False).  If True, then rounded
@@ -954,9 +999,9 @@ vs.::
 
     Ellipse(x=5, y=14, x1=15, y1=23, radius=2.5, fill=tan, stroke=green)
 
-The second example is more "wordy" and takes you longer to write; but its
+The second example is more "wordy" and takes you longer to type; but its
 obvious what the numbers refer to, and then its easy, when reading this script
-a month later, to see what is meant to happen.
+some months later, to see what is meant to happen.
 
 
 .. raw:: pdf
@@ -1155,7 +1200,7 @@ when you need to refer to the same "thing" in diferent places in the script.
 Variable names can be arbitrarily long. They can contain both letters and numbers,
 but they have to begin with a letter.
 
-Python also has **keywords** that it uses to recognize the structure of the program,
+Python also has **keywords** that it uses to recognize the structure of a program,
 and these *cannot* be used as variable names.
 
 The list of Python keywords is::
@@ -1367,4 +1412,4 @@ To use `pyenv`, for example, in an environment called *myenv*::
 
 
 .. Use the following command to create the PDF version of this file
-.. rst2pdf manual.rst -s tenpoint
+.. rst2pdf docs/manual.rst -s tenpoint

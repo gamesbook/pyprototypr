@@ -3,7 +3,7 @@ pyprototypr
 ===========
 
 **pyprototypr** is a simple Python utility for designing and creating simple,
-regular, graphic output.
+regular, graphical output in PDF format.
 
 It was originally created to handle prototyping of cards, counters, tiles and
 boards for board games, but can be used for creation of any document that has
@@ -29,13 +29,18 @@ See the ``docs`` directory for the full `manual
 Quick Start (for the impatient)
 ===============================
 
+After downloading this package from git, creating and activating a virtual
+environment, you can install **pyprototypr** via::
+
+    python setup.py install
+
 As a quickstart test that **pyprototypr**  works, then you can use one (or
 more) of the files from any of the ``examples`` sub-directories.
 
 Make a copy of ``example1.py`` script in the ``examples/manual`` directory - open
 `example1.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/manual/example1.py>`_
 in your browser, click on the ``Raw`` button, and then save the file into a
-directory on your machine.
+local directory on your machine.
 
 Open a command-line window (aka terminal or console), activate the virtual
 environment, change to the directory where you saved that file and type::
@@ -47,7 +52,7 @@ This script is very simple; it contains these lines::
     # `example1` script for pyprototypr
     # Written by: Derek Hohls
     # Created on: 29 February 2016
-    from draw import *
+    from pyprototypr.draw import *
     Create()
     PageBreak()
     Save()
