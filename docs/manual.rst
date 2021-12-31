@@ -1188,41 +1188,64 @@ APPENDIX III: Python Basics
 Letters and Numbers
 -------------------
 
-**TO BE DONE**
+In Python, "letters" are referred to as characters (or 'char' for short),
+while numbers can either be integers ('int' for short) which are whole numbers,
+or floating-point numbers ('float' for short) which are numbers that have
+fractional or decimal components.
+
+What in English would be called a "word", in Python is referred to as a "string".
 
 Variables and Variable Names
 ----------------------------
 
 A variable is "shortcut" name that can be used to store things such as numbers
-or letters; or the results of some calculation or operation. They are useful
-when you need to refer to the same "thing" in diferent places in the script.
+or strings; or the results of some calculation or operation. They are useful
+when you need to refer to the same "thing" in different places in the script.
 
-Variable names can be arbitrarily long. They can contain both letters and numbers,
-but they have to begin with a letter.
+Variable names can be arbitrarily long. They can contain both characters and
+numbers, but they have to begin with a character.
 
 Python also has **keywords** that it uses to recognize the structure of a program,
 and these *cannot* be used as variable names.
 
 The list of Python keywords is::
 
-	and       del       from      not       while
-	as        elif      global    or        with
-	assert    else      if        pass      yield
-	break     except    import    print
-	class     exec      in        raise
-	continue  finally   is        return
-	def       for       lambda    try
+    False               def                 if                  raise
+    None                del                 import              return
+    True                elif                in                  try
+    and                 else                is                  while
+    as                  except              lambda              with
+    assert              finally             nonlocal            yield
+    break               for                 not
+    class               from                or
+    continue            global              pass
 
+For more reading, see https://www.tutorialspoint.com/python/python_variable_types.htm
 
 Indenting Lines
 ---------------
 
-**TO BE DONE**
+Indentation refers to the spaces at the beginning of a line.
+
+In some programming languages the indentation is for "readability", but in
+in Python the indentation is very important.
+
+Python uses indentation to indicate a block of code; that is a set of lines
+that all operate in sequence to achieve something.
+
+You must use the same number of spaces in the same block of code, otherwise
+you get an error.  Python programs typically use 4 spaces throughout.
 
 Functions
 ---------
 
-**TO BE DONE**
+Writing functions requires more understanding of how Python - and programming
+languages in general - works.  There are many online tutorials and books that
+cover this subject. Some examples are:
+
+ * https://www.programiz.com/python-programming/function
+ * https://www.tutorialspoint.com/python/python_functions.htm
+ * https://www.w3schools.com/python/python_functions.asp
 
 More Reading
 ------------
@@ -1258,7 +1281,8 @@ Comments
 
 A line in a **pyprototypr** file that starts with the **#** character is
 called a "comment".  This line will be ignored by **pyprototypr**, but is
-something you need to appear, probably as a reminder or explanation.
+something you want to appear, probably as a reminder or explanation to yourself
+or someone else.
 
 Enclosure
 ---------
@@ -1310,7 +1334,8 @@ In running a script, you may encounter errors such as following::
     SyntaxError: invalid syntax
 
 This is where you have left out a comma after the "r1" (the caret symbol "^"
-tries to point to where it thinks the error is happening).
+tries to point to the place where it thinks the error is happening but it may
+not always be accurate).
 
 Another example::
 
@@ -1399,9 +1424,9 @@ To use `pyenv`, for example, in an environment called *myenv*::
 
     cd ~
     # get correct Python version
-    pyenv install 2.7.9
+    pyenv install 3.9.11
     # make new virtualenv called "myvenev"
-    pyenv virtualenv 2.7.9 myvenev
+    pyenv virtualenv 3.9.11 myvenev
     #list existing virtualenvs
     pyenv virtualenvs
     #start using a virtualenv
