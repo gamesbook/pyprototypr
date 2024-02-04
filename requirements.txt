@@ -1,6 +1,4 @@
 --index-url https://pypi.python.org/pypi
 reportlab>=3.3.0
 xlrd>=0.9.4
-#boardgamegeek>=0.13.2
-# use forked version with patched cache
-git+git://github.com/Irazall/boardgamegeek.git@87bcdfed39e958e578cda0bd8f9be25aa2f12c6c
+bgg-api>=1.1.6

@@ -349,7 +349,7 @@ class BGGGame(object):
             self.description_short = self.get_description_short()
             self._description_short = self.description_short
             if self._game.minplayers == self._game.maxplayers:
-                    self.players = f"{self._game.maxplayers}"
+                self.players = f"{self._game.maxplayers}"
             else:
                 self.players = f"{self._game.minplayers}-{self._game.maxplayers}"
             self._players = (self._game.minplayers, self._game.maxplayers)

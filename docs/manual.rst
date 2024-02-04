@@ -2,7 +2,7 @@
 .. Shading in colors (start-end)
 
 .. header::
-    pyprototypr - Version 0.1.1 - December 2021
+    pyprototypr - Version 0.1.2 - February 2023
 
 .. footer::
 
@@ -31,9 +31,10 @@ Introduction
 
 **pyprototypr** is a program for designing & creating simple graphical outputs.
 
-**pyprototypr** allows you to easily write a script - i.e. a recipe or list of
-instructions - in a text file, that creates a game board, a set of cards or tiles,
-or any other, similar, regular graphical designs.
+**pyprototypr** allows you to easily write a *script* i.e. a recipe or list of
+instructions in a text file, that defines a game board, or a set of cards or tiles,
+or any other, similar, regular graphical designs.  When the script is "run" (or
+executed) it will create a PDF document containing this design.
 
 In more technical terms, **pyprototypr** is a Python module which makes use
 of third-party graphical and font modules - primarily the excellent ReportLab
@@ -65,7 +66,7 @@ Installing pyprototypr
 ======================
 
 **pyprototypr** requires a computing device that already has the correct version
-of Python (version 3.9) installed.  If your device does not have Python
+of Python (version 3.11) installed.  If your device does not have Python
 installed, it can be obtained from http://www.python.org/download/.
 
 It is recommended that you work with Python in a *virtualenv*; see
@@ -100,32 +101,33 @@ When the command-line window appears, type::
 
 You should see something like::
 
-    Python 3.9.7 (default, Sep 16 2021, 13:09:58)
-    [GCC 7.5.0] :: Anaconda, Inc. on linux
+    Python 3.11.7 (main, Dec 15 2023, 18:12:31) [GCC 11.2.0]
     Type "help", "copyright", "credits" or "license" for more information.
+
 
 You can now close the command-line window.
 
 After Python is installed
 -------------------------
 
-In addition, once you have successfully installed Python, you will also need
-to install these graphics and font modules (a **module** is an "add-on" to
-Python that gives it extra or specialised functionality)::
+The simplest way to install **pyprototypr** itself, in the virtualenv, is via::
+
+    python setup.py install
+
+Alternatively, for a manual approach, you can install these graphics and font
+modules (a **module** is an add-on to Python that gives it extra or specialised
+functionality)::
 
     reportlab - see https://pypi.python.org/pypi/reportlab
     xlrd - see https://pypi.python.org/pypi/xlrd
-    boardgamegeek - see https://lcosmin.github.io/boardgamegeek/
+    boardgamegeek - see https://github.com/SukiCZ/boardgamegeek
 
 If you are working with a virtualenv as recommended, then running::
 
     pip install -r requirements.txt
 
-will install these for you.
+will install all of these for you.
 
-Finally, you can install **pyprototypr** itself, in the virtualenv, via::
-
-    python setup.py install
 
 Other Software Installs
 -----------------------
@@ -143,17 +145,18 @@ Checking pyprototypr usage
 --------------------------
 
 To now check that `pyprototypr` works, then you can run one (or more) of the
-scripts (files) from the examples sub-directories.  By "run", its meant
-that you open a command-line window (see previous section) and type something
-like::
+scripts (files) from any of the `examples` sub-directories.
+
+By "run", its meant that you open a command-line window (see previous section)
+and type something like::
 
     python example1.py
 
-where you would replace the `example1.py` with the name of the script.
+where you would replace the `example1.py` with the name of the example file.
 
-For example, the `example1.py` script in the `examples/manual` directory
-contains these lines; each line in this script that does not start with a `#`
-is a called an instruction::
+For example, the `example1.py` file in the `examples/manual` directory
+contains these lines; each line in this Python script that does not start with
+a `#` is a called an **instruction**::
 
     # `example1` script for pyprototypr
     # Written by: Derek Hohls
@@ -164,12 +167,12 @@ is a called an instruction::
     Save()
 
 and is designed to produce a single blank A4-sized page! If you run this script,
-it will create an output file called `test.pdf`, which will appear in the same
+it will create an output file called `example1.pdf`, which will appear in the same
 directory as the script. You should be able to open and view this PDF file via
 a PDF viewer (see `Other Software Installs`_).
 
 The script also shows the two key instructions - *Create()* and *Save()* -
-that **must** appear atnear the start and at the end - respectively - of every
+that **must** appear near the start and at the end - respectively - of every
 script .
 
 
@@ -181,15 +184,15 @@ pyprototypr`_), you're now ready to start using it!
 
 This manual includes a set of simple examples, for creating card designs, that
 you can work through (see `APPENDIX II: Card Examples`_). These examples start
-off very simply and each new one adds new options. Its therefore best to try
+off very simply and each new one adds new options. It's therefore best to try
 and work through these in order; and check that **pyprototypr** produces the
 expected results as you follow along.
 
 In general, what you are doing is typing a set of instructions into a text file
-(a script), saving that file, and then using Python to process the file to
-create your output (a PDF file) containing the results of those instructions.
+(a Python script), saving that file, and then using Python to process the file
+to create your output (a PDF file) containing the results of the instructions.
 
-If the examples don't make sense, or if you are ready to learn the ins-and-outs
+If the examples make sense, and you are ready to learn the ins-and-outs
 of `pyprototypr` to tackle your own projects, please keep reading ...
 
 
@@ -501,12 +504,14 @@ uses a set of default values for common properties.  These are as follows:
  *  The default units are **cm**
  *  The default values for most length or position measurements is **1** (which
     corresponds to 1cm if you are using the default units)
- *  The default card size is 8.8 high and 6.3 wide which, assuming units of cm,
-    corresponds to a standard Poker card size.
+ *  The default card size is **8.8** high and **6.3** wide which, assuming the
+    default units of cm, corresponds to a standard Poker card size.
+ *  The default page size for output to PDF is *A4*.
  *  All line thicknesses default to **0.1** (which corresponds to 1mm if you
     are using the default units)
  *  All line colors default to *black* (**#000000** in hexadecimal format)
- *  All fill colors default to *white* (**#FFFFFF** in hexadecimal format)
+ *  All fill (background) colors default to *white* (**#FFFFFF** in hexadecimal
+    format)
  *  The default angle of rotation is zero (0) degrees
 
 
@@ -1043,11 +1048,11 @@ directory where the file is installed. Type the following::
 
     python cards1.py
 
-An output PDF file should now have been created in the same directory as your
-``cards1.py`` file - it will be called ``cards.pdf``. If you open this in a PDF
+An output PDF file should now have been created, in the same directory as your
+``cards1.py`` file, called ``cards1.pdf``. If you open this in a PDF
 reader program, you should see that it contains a set of 9 blank, poker-card
-sized, rectangular outlines (which we are calling "cards") laid out on an
-A4-sized page (*A4* being the default page size for **pyprototypr**).
+sized, rectangular outlines (which we are calling "cards") laid out in a grid
+on an A4-sized page (*A4* being the default page size for **pyprototypr**).
 
 
 A simple card deck example: Take 2
@@ -1087,8 +1092,8 @@ where the file is installed. Type the following::
     python cards2.py
 
 An output PDF file should now have been created in the same directory as your
-``cards2.py`` file - it will be called ``test2.pdf``. It should contain a set
-of 9 blank cards appearing on one A3-sized page.
+``cards2.py`` file - it will be called ``example2.pdf``. It should contain a set
+of 9 blank cards appearing near the bottom corner on one A3-sized page.
 
 
 A simple card deck example: Take 3
@@ -1124,7 +1129,14 @@ be ignored by **pyprototypr**. The comments are included to provide some more
 explanation as to what the next line, or lines, are doing.
 
 The resulting ``example3.pdf`` will show two pages of small, blank, purple
-cards, approximately 2 inches by 1.5 inches.
+cards, approximately 2 inches by 1.5 inches, with 25 cards per page, for a
+total of 50 cards.  Note that the **pyprototypr** will calculate how many
+cards will fit on page to make up the total number of cards for the deck.
+
+
+.. raw:: pdf
+
+    PageBreak
 
 
 A simple card deck example: Take 4
@@ -1169,12 +1181,15 @@ Create this text in a file called ``cards4.py``:
 
 This script also shows the use of a `reference`_: a reference is just
 a name, followed by an "=" sign, and then an instruction.  You can see that the
-*mydesign* reference is used further on when specifying the design via the
-*design* property of the `Deck`_ instruction.
+*mydesign* reference is used further on when specifying the design for a
+`Card`_; this requires a card number (or numbers) followed by the details of
+what is required for the card - in this case, the text stored in *mydesign*.
 
-The resulting ``example4.pdf`` file will show a page of small, wihite-bordered,
+The resulting ``example4.pdf`` file will show a page of small, white-bordered,
 light-blue cards - with the same text appearing on cards one to ten,
-but different text on card twenty-five.
+but different text on card number 25 (twenty-five). **Note** that cards are
+displayed from the bottom-left upwards;  that is why the first cards appear on
+the bottom rows and the last card is on the top-right.
 
 
 .. raw:: pdf

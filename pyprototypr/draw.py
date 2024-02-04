@@ -5,7 +5,11 @@ Primary drawing interface for pyprototypr
 """
 # future
 from __future__ import division
+import logging
 # lib
+import os
+import sys
+import pathlib
 # third party
 from reportlab.lib.pagesizes import *
 from reportlab.pdfbase import pdfmetrics
@@ -26,6 +30,7 @@ from .dice import (
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
 
+log = logging.getLogger(__name__)
 
 cnv = None  # will become a reportlab.canvas object
 deck = None  # will become a shapes.DeckShape object
@@ -60,22 +65,29 @@ def Create(**kwargs):
     margin_top = kwargs.get('margin_top', margin)
     margin_bottom = kwargs.get('margin_bottom', margin)
     margin_right = kwargs.get('margin_right', margin)
-    # cards etc
+    # cards and page
     _cards = kwargs.get('cards', 0)
-    filename = kwargs.get('filename', None)
     fonts = kwargs.get('fonts', [])
     landscape = kwargs.get('landscape', False)
     kwargs = margins(**kwargs)
+    pagesize = kwargs.get('pagesize', A4)
+    defaults = kwargs.get('defaults', None)
+    # fonts
     base_fonts()
     for _font in fonts:
         pdfmetrics.registerFont(TTFont(_font[0], _font[1]))
+    # filename and fallback
+    filename = kwargs.get('filename', None)
     if not filename:
-        if _cards:
-            filename = 'cards.pdf'
+        basename = 'test'
+        log.debug('basename: "%s" sys.argv[0]: "%s"', basename, sys.argv[0])
+        if sys.argv[0]:
+            basename = os.path.basename(sys.argv[0]).split('.')[0]
         else:
-            filename = 'test.pdf'
-    pagesize = kwargs.get('pagesize', A4)
-    defaults = kwargs.get('defaults', None)
+            if _cards:
+                basename = 'cards'
+        filename = f'{basename}.pdf'
+    # Canvas and Deck
     cnv = BaseCanvas(filename, pagesize=pagesize, defaults=defaults)
     if landscape:
         cnv.canvas.setPageSize(landscape(pagesize))
@@ -701,7 +713,7 @@ def dice(dice='1d6', rolls=None):
         dice = dice.replace(' ', '').replace('D', 'd')
         _list = dice.split('d')
         _type, pips = int(_list[0]), int(_list[1])
-    except:
+    except Exception:
         tools.feedback('Unable to determine dice type/roll for "%s"' % dice)
         return None
     return Dice().multi_roll(count=rolls, pips=pips, dice=_type)

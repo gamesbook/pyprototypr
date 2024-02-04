@@ -6,7 +6,9 @@ Base shape class for pyprototypr
 # lib
 import copy
 import json
+import logging
 import math
+import os
 # third party
 from reportlab.pdfgen import canvas as reportlab_canvas
 from reportlab.lib.units import cm, inch
@@ -43,6 +45,8 @@ from reportlab.lib.colors import (
     cornflower, firebrick)
 # local
 from pyprototypr.utils import tools
+
+log = logging.getLogger(__name__)
 
 DEBUG = False
 UNITS = {
@@ -239,12 +243,16 @@ class BaseCanvas:
             try:
                 with open(self.jsonfile) as data_file:
                     self.defaults = json.load(data_file)
-            except IOError:
-                tools.feedback('Unable to find or load the file: "%s"' %
-                               self.jsonfile)
-            except ValueError:
-                tools.feedback('Unable to load data from the file: "%s"' %
-                               self.jsonfile)
+            except (IOError, ValueError):
+                filepath = tools.script_path()
+                _jsonfile = os.path.join(filepath, self.jsonfile)
+                try:
+                    with open(_jsonfile) as data_file:
+                        self.defaults = json.load(data_file)
+                except (IOError, ValueError):
+                    tools.feedback(
+                        f'Unable to find or load the file "{self.jsonfile}"'
+                        f' - also checked in "{filepath}"')
         # constants
         self.default_length = 1
         self.show_id = False  # True
@@ -405,7 +413,7 @@ class BaseShape:
         # KEY
         self.canvas = canvas or BaseCanvas()  # BaseCanvas object
         cnv = self.canvas  # shortcut for use in getting defaults
-        #print("base_395 Base types", type(self.canvas),type(canvas),type(cnv))
+        log.debug("Base types %s %s %s", type(self.canvas), type(canvas), type(cnv))
         self._object = _object  # placeholder for an incoming Shape object
         self.kwargs = kwargs
         self.shape_id = None
@@ -537,7 +545,7 @@ class BaseShape:
 
     def unit(self, item, units=None, skip_none=False):
         """Convert an item into the appropriate unit system."""
-        #print("base_509", units, self.units)
+        log.debug("units %s %s", units, self.units)
         if item is None and skip_none:
             return None
         else:
@@ -559,8 +567,8 @@ class BaseShape:
                          stroke=None, stroke_width=None):
         """Set reportlab canvas properties for font and colors"""
         canvas = cnv if cnv else self.canvas.canvas
-        #print('scp: ', self.font_face, self.font_size)
-        #print('scp: stroke / self.stroke', stroke, self.stroke)
+        log.debug('scp: %s %s', self.font_face, self.font_size)
+        log.debug('scp: stroke %s / self.stroke %s', stroke, self.stroke)
         try:
             canvas.setFont(self.font_face, self.font_size)
         except AttributeError:
@@ -624,14 +632,23 @@ class BaseShape:
         return self._alignment
 
     def load_image(self, source=None):
-        """Load an image from file or website."""
+        """Load an image from file or website.
+
+        If source not found; try path in which script located"""
         img = None
         if source:
             try:
                 img = ImageReader(source)
+                return img
             except IOError:
-                tools.feedback('Unable to find or open image: "%s"' %
-                               self.source)
+                filepath = tools.script_path()
+                _source = os.path.join(filepath, source)
+                try:
+                    img = ImageReader(_source)
+                    return img
+                except IOError:
+                    tools.feedback(
+                        f'Unable to find or open image "{_source}"; including {filepath}')
         return img
 
     def process_template(self, _dict):
@@ -648,7 +665,7 @@ class BaseShape:
             self.radius = _dict.get('radius', 1)
         if _dict.get('rounding'):
             self.rounding = _dict.get('rounding', None)
-        #if _dict.get('x'):
+        # if _dict.get('x'):
         #    self.x = _dict.get('x', 1)
 
     def get_center(self):
@@ -674,7 +691,7 @@ class BaseShape:
     def textify(self, index=None, text=None):
         """Extract text from a list, or create string, based on index & type"""
         _text = text or self.text
-        #print("base_645 text", index, text, _text, type(_text))
+        log.debug("text %s %s %", index, text, _text, type(_text))
         if not _text:
             return
         if hasattr(_text, 'lower'):
@@ -691,7 +708,7 @@ class BaseShape:
             return
         align = align or self.align
         mvy = copy.copy(y)
-        #print("base_655 string", type(string), string)
+        log.debug("string %s %s", type(string), string)
         for ln in string.split('\n'):
             if align == 'centre':
                 canvas.drawCentredString(x, mvy, ln)

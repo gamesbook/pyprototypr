@@ -7,15 +7,25 @@ Utility functions for pyprototypr
 import csv
 import collections
 from itertools import zip_longest
+import logging
 import math
 import os
+import pathlib
 import sys
 import xlrd
 # local
 from pyprototypr.utils.support import numbers, feedback
+from pyprototypr.utils import tools
 
-
+log = logging.getLogger(__name__)
 DEBUG = False
+
+
+def script_path():
+    """Get the path for a script being called from command line."""
+    fname = os.path.abspath(sys.argv[0])
+    if fname:
+        return pathlib.Path(fname).resolve().parent
 
 
 def load_data(datasource=None, **kwargs):
@@ -23,7 +33,7 @@ def load_data(datasource=None, **kwargs):
     Load data from a 'tabular' source (CSV, XLS) into a dict
     """
     dataset = {}
-    #print "tools_21: Load data from a 'tabular' source (CSV, XLS)", datasource
+    log.debug("Load data from a 'tabular' source (CSV, XLS) %s", datasource)
     if datasource:
         filename, file_ext = os.path.splitext(datasource)
         if file_ext.lower() == '.csv':
@@ -50,8 +60,8 @@ def grouper(n, iterable, fillvalue=None):
         http://stackoverflow.com/questions/2990121/~
         how-do-i-loop-through-a-python-list-by-twos
     """
-    #grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx
-    #grouper(3, [1,3,2,4,5,7,6,8,0], None) --> 1 3 2   4 5 7   6 8 0
+    # grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx
+    # grouper(3, [1,3,2,4,5,7,6,8,0], None) --> 1 3 2   4 5 7   6 8 0
     # use: for item1, item2 in grouper(3, l):
     args = [iter(iterable)] * n
     return zip_longest(fillvalue=fillvalue, *args)
@@ -134,7 +144,7 @@ def tuple_split(string):
                 _items = [float(itm) for itm in items]
                 values.append(tuple(_items))
             return values
-        except:
+        except Exception:
             return values
     else:
         return values
@@ -159,16 +169,16 @@ def sequence_split(string):
         try:
             _string = string.replace(' ', '').replace('"', '').\
                 replace("'", '').replace(';', ',')
-        except:
+        except Exception:
             return values
     else:
         return values
     try:
         values.append(int(_string))
         return values
-    except:
+    except Exception:
         _strings = _string.split(',')
-        #log.debug('strings:%s', _strings)
+        # log.debug('strings:%s', _strings)
         for item in _strings:
             if '-' in item:
                 _strs = item.split('-')
@@ -194,7 +204,7 @@ def splitq(seq, sep=None, pairs=("()", "[]", "{}"), quote='"\''):
         yield []
     else:
         lsep = len(sep) if sep is not None else 1
-        lpair, rpair = zip(*pairs)
+        lpair, _ = zip(*pairs)
         pairs = dict(pairs)
         start = index = 0
         while 0 <= index < len(seq):
@@ -202,7 +212,7 @@ def splitq(seq, sep=None, pairs=("()", "[]", "{}"), quote='"\''):
             if (sep and seq[index:].startswith(sep)) or \
                     (sep is None and c.isspace()):
                 yield seq[start:index]
-                #pass multiple separators as single one
+                # pass multiple separators as single one
                 if sep is None:
                     index = len(seq) - len(seq[index:].lstrip())
                 else:
@@ -242,13 +252,25 @@ def open_csv(filename, headers=None, selected=None):
       * headers is a list of strings to use instead of the first row
       * selected is a list of desired rows e.g. [2,4,7]
     """
+    if not filename:
+        feedback('A valid CSV filename must be supplied!')
+
     dict_list = []
+    _file_with_path = None
+    norm_filename = os.path.normpath(filename)
+    if not os.path.exists(norm_filename):
+        filepath = tools.script_path()
+        _file_with_path = os.path.join(filepath, norm_filename)
+        if not os.path.exists(_file_with_path):
+            feedback(
+                f'Unable to find CSV "{filename}", including in {filepath}')
+
     try:
-        _filename = os.path.normpath(filename)
+        csv_filename = _file_with_path or norm_filename
         if headers:
-            reader = csv.DictReader(open(_filename), fieldnames=headers)
+            reader = csv.DictReader(open(csv_filename), fieldnames=headers)
         else:
-            reader = csv.DictReader(open(_filename))
+            reader = csv.DictReader(open(csv_filename))
         for key, item in enumerate(reader):
             if not selected:
                 dict_list.append(item)
@@ -256,7 +278,7 @@ def open_csv(filename, headers=None, selected=None):
                 if key + 1 in selected:
                     dict_list.append(item)
     except IOError:
-        feedback('Unable to find or open "%s"' % filename)
+        feedback('Unable to find or open CSV "%s"' % csv_filename)
     return dict_list
 
 
@@ -270,10 +292,23 @@ def open_xls(filename, sheet=0, sheetname=None, headers=None, selected=None):
       * headers is a list of strings to use instead of the first row
       * selected is a list of desired rows e.g. [2,4,7]
     """
+    if not filename:
+        feedback('A valid Excel filename must be supplied!')
+
     dict_list = []
+
+    _file_with_path = None
+    norm_filename = os.path.normpath(filename)
+    if not os.path.exists(norm_filename):
+        filepath = tools.script_path()
+        _file_with_path = os.path.join(filepath, norm_filename)
+        if not os.path.exists(_file_with_path):
+            feedback(
+                f'Unable to find "{filename}", including in {filepath}')
+
     try:
-        _filename = os.path.normpath(filename)
-        book = xlrd.open_workbook(_filename)
+        excel_filename = _file_with_path or norm_filename
+        book = xlrd.open_workbook(excel_filename)
         if sheet:
             sheet = sheet - 1
             sheet = book.sheet_by_index(sheet)
@@ -283,7 +318,7 @@ def open_xls(filename, sheet=0, sheetname=None, headers=None, selected=None):
             sheet = book.sheet_by_index(0)
         start = 1
         if not headers:
-            keys = [sheet.cell(0, col_index).value \
+            keys = [sheet.cell(0, col_index).value
                     for col_index in range(sheet.ncols)]
         else:
             start = 0
@@ -303,7 +338,7 @@ def open_xls(filename, sheet=0, sheetname=None, headers=None, selected=None):
                     if row_index + 1 in selected:
                         dict_list.append(item)
     except IOError:
-        feedback('Unable to find or open "%s"' % filename)
+        feedback('Unable to find or open Excel "%s"' % excel_filename)
     except IndexError:
         feedback('Unable to open sheet "%s"' % (sheet or sheetname))
     except xlrd.biffh.XLRDError:
@@ -315,7 +350,7 @@ def flatten(lst):
     """Flatten nested lists into a single list of lists."""
     try:
         for ele in lst:
-            if isinstance(ele, collections.Iterable) and \
+            if isinstance(ele, collections.abc.Iterable) and \
                     not isinstance(ele, str):
                 for sub in flatten(ele):
                     yield sub
@@ -354,11 +389,11 @@ def comparer(val, operator, target):
         """Get length of object."""
         try:
             val = len(val)
-        except:
+        except Exception:
             pass
         try:
             target = len(target)
-        except:
+        except Exception:
             pass
         return val, target
 
@@ -378,11 +413,11 @@ def comparer(val, operator, target):
 
     try:
         val = float(val)
-    except:
+    except Exception:
         pass
     try:
         target = float(target)
-    except:
+    except Exception:
         pass
     if operator == '=':
         if val == target:
