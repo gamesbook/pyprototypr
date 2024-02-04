@@ -13,7 +13,7 @@ regular or repeating elements; typically containing a mix of graphics and text.
 Requirements
 ============
 
-**pyprototypr** requires a version of Python 3.9.  If this is not your default
+**pyprototypr** requires a version of Python 3.11.  If this is not your default
 Python version, you may want to use **pyenv** (see `Appendix VI <https://github.com/gamesbook/pyprototypr/blob/master/docs/manual.rst#appendix-vi-working-with-pyenv>`_. of the manual)
 to install that and then install and use **pyprototypr** in a `virtualenv
 <https://pypi.python.org/pypi/virtualenv/>`_.
@@ -24,6 +24,9 @@ Documentation
 
 See the ``docs`` directory for the full `manual
 <https://github.com/gamesbook/pyprototypr/blob/master/docs/manual.rst>`_.
+
+This is also available as PDF:
+<https://github.com/gamesbook/pyprototypr/blob/master/docs/manual.pdf>`_.
 
 
 Quick Start (for the impatient)
@@ -37,7 +40,7 @@ environment, you can install **pyprototypr** via::
 As a quickstart test that **pyprototypr**  works, then you can use one (or
 more) of the files from any of the ``examples`` sub-directories.
 
-Make a copy of ``example1.py`` script in the ``examples/manual`` directory - open
+Make a copy of ``example1.py`` script from the ``examples/manual`` directory - open
 `example1.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/manual/example1.py>`_
 in your browser, click on the ``Raw`` button, and then save the file into a
 local directory on your machine.
@@ -58,10 +61,10 @@ This script is very simple; it contains these lines::
     Save()
 
 and is designed to produce a single, blank A4-sized page. It should create an
-output file called ``test.pdf``, which will appear in the same directory as the
-script. You should be able to open and view this PDF file via any PDF viewer
+output file called ``example1.pdf``, which will appear in the same directory as
+the script. You should be able to open and view this file via any PDF viewer
 program or app.
 
 If this works, then try out other examples from any of the ``examples``
-sub-directories (note that some examples may require additional files such
+sub-directories (**note** that some examples may use additional files such
 as images or spreadsheets).
