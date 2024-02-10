@@ -22,17 +22,15 @@ to install that and then install and use **pyprototypr** in a `virtualenv
 Documentation
 =============
 
-See the ``docs`` directory for the full `manual
-<https://github.com/gamesbook/pyprototypr/blob/master/docs/manual.rst>`_.
+See the ``docs`` directory for the full `manual <https://github.com/gamesbook/pyprototypr/blob/master/docs/manual.rst>`_.
 
-This is also available as PDF:
-<https://github.com/gamesbook/pyprototypr/blob/master/docs/manual.pdf>`_.
+This is also available as a `PDF <https://github.com/gamesbook/pyprototypr/blob/master/docs/manual.pdf>`_.
 
 
 Quick Start (for the impatient)
 ===============================
 
-After downloading this package from git, creating and activating a virtual
+After downloading this package via git, and creating and activating a virtual
 environment, you can install **pyprototypr** via::
 
     python setup.py install

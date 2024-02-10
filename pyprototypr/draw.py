@@ -30,6 +30,7 @@ from .dice import (
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
 
+
 log = logging.getLogger(__name__)
 
 cnv = None  # will become a reportlab.canvas object
@@ -173,7 +174,7 @@ def Font(face=None, **kwargs):
     cnv.font_size = kwargs.get('size', 12)
     cnv.stroke = COLORS.get(kwargs.get('color', 'black'))
 
-### cards ====================================================================
+# ---- cards ====================================================================
 
 
 def Card(sequence, *elements):
@@ -235,7 +236,7 @@ def group(*args):
         g.append(arg)
     return g
 
-### data and functions  ======================================================
+# ---- data and functions  ======================================================
 
 
 def Data(source=None, **kwargs):
@@ -292,7 +293,7 @@ def Set(_object, **kwargs):
         setattr(_object, kw, kwargs[kw])
     return _object
 
-### shapes ===================================================================
+# ---- shapes ===================================================================
 
 
 def Common(source=None, **kwargs):
@@ -617,7 +618,7 @@ def text(*args, **kwargs):
     _obj = args[0] if args else None
     return TextShape(_object=_obj, canvas=cnv, **kwargs)
 
-### connect===================================================================
+# ---- connect===================================================================
 
 
 def Connect(shape_from, shape_to, **kwargs):
@@ -639,7 +640,7 @@ def connect(shape_from, shape_to, **kwargs):
     kwargs['shape_to'] = shape_to
     return ConnectShape(canvas=cnv, **kwargs)
 
-### repeats ==================================================================
+# ---- repeats ==================================================================
 
 
 def Repeat(_object, **kwargs):
@@ -649,7 +650,7 @@ def Repeat(_object, **kwargs):
     repeat = RepeatShape(_object=_object, **kwargs)
     repeat.draw()
 
-### patterns =================================================================
+# ---- patterns =================================================================
 
 
 def Hexagons(rows=1, cols=1, **kwargs):
@@ -678,7 +679,7 @@ def Lines(rows=1, cols=1, **kwargs):
         for col in range(cols):
             Line(row=row, col=col, **kwargs)
 
-### BGG ======================================================================
+# ---- BGG ======================================================================
 
 
 def BGG(ids=None, user=None, progress=False, short=500):
@@ -693,7 +694,7 @@ def BGG(ids=None, user=None, progress=False, short=500):
             gamelist.set_values(_game)
     return gamelist
 
-### dice =====================================================================
+# ---- dice =====================================================================
 
 
 def dice(dice='1d6', rolls=None):
@@ -745,3 +746,7 @@ def d20(rolls=None):
 
 def d100(rolls=None):
     return DiceD100().roll(count=rolls)
+
+
+def named(variable):
+    return f'{variable=}'.split('=')[0]
