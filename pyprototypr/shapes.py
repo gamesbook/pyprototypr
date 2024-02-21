@@ -4,6 +4,7 @@
 Create custom shapes for pyprototypr
 """
 # lib
+import logging
 import math
 # third party
 from reportlab.platypus import Paragraph
@@ -11,6 +12,8 @@ from reportlab.lib.styles import ParagraphStyle
 # local
 from pyprototypr.utils import tools
 from pyprototypr.base import BaseShape, BaseCanvas, UNITS, COLORS, PAGES
+
+log = logging.getLogger(__name__)
 
 
 DEBUG = False
@@ -25,7 +28,7 @@ class Value:
 
     def __call__(self, cid):
         """Return datalist item number 'ID' (card number)."""
-        #print "shapes_30", self.datalist, ID
+        log.debug("datalist:%s cid:%s", self.datalist, cid)
         try:
             x = self.datalist[cid]
             return x
@@ -48,7 +51,7 @@ class Query:
         result = None
         results = []
         for _query in self.query:
-            if DEBUG: print(("shapes_54 _query", len(_query), '::', _query))
+            log.debug("_query %s %s", len(_query), _query)
             if _query and len(_query) >= 4:
                 result = tools.comparer(
                     val=_query[0][cid], operator=_query[1], target=_query[2])
@@ -56,15 +59,14 @@ class Query:
             results.append(_query[3])
         # compare across all
         result = tools.boolean_join(results)
-        #print "shapes_61 cid %s Results %s" % (cid, results)
+        log.debug("cid %s Results %s", cid, results)
         if result is not None:
             if result:
                 return self.result
             else:
                 return self.alternate
         else:
-            tools.feedback('Query "%s" is incorrectly constructed.' %
-                           self.query)
+            tools.feedback(f'Query "{self.query}" is incorrectly constructed.')
 
 
 class ImageShape(BaseShape):
@@ -91,7 +93,7 @@ class ImageShape(BaseShape):
             y = self.unit(self.cy) - height / 2.0 + delta_y
         elif self.cx and self.cy and not(width or height):
             tools.feedback(
-                'Must supply width and height for use with cx and cy',
+                'Must supply width and height for use with cx and cy.',
                 stop=True)
         else:
             x = self.unit(self.x) + delta_x
@@ -139,7 +141,7 @@ class LineShape(BaseShape):
         y = self.unit(self.y) + delta_y
         height = self.unit(self.height)
         width = self.unit(self.width)
-        #print "shapes_126 line", ID, ':margin:', uni, self.margin_left
+        log.debug("line: %s units margin: %s", ID, self.margin_left)
         if self.length:
             length = self.unit(self.length)
             angle = math.radians(self.angle)
@@ -160,8 +162,7 @@ class LineShape(BaseShape):
         if self.col is not None and self.col >= 0:
             x = x + self.col * width
             x_1 = x_1 + self.col * width - margin_left
-        if DEBUG:
-            print((self.row, self.col, "=", x, x_1, ":", y, y_1))
+        log.debug("x:%s x1:%s y:%s y1:%s", x, x_1, y, y_1)
         # canvas
         self.set_canvas_props()
         # draw line
@@ -242,11 +243,11 @@ class RectShape(BaseShape):
         delta_x = off_x + margin_left
         delta_y = off_y + margin_bottom
         # convert to using units
-        #print "shapes_246", self.height, self.width
+        log.debug("h:%s w:%s", self.height, self.width)
         height = self.unit(self.height)
         width = self.unit(self.width)
-        #print "shapes_249", height, width
-        #print "shapes_246 rect", ID, ':margin:', uni, self.margin_left
+        log.debug("h:%s w:%s", height, width)
+        log.debug("line: %s units margin: %s", ID, self.margin_left)
         if self.row is not None and self.col is not None:
             x = self.col * width + delta_x
             y = self.row * height + delta_y
@@ -302,7 +303,7 @@ class RectShape(BaseShape):
         # pattern
         img = self.load_image(self.pattern)
         if img:
-            #print "shapes_355", type(img._image), img._image.size
+            log.debug("IMG %s s%s %s", type(img._image), img._image.size)
             iwidth = img._image.size[0]
             iheight = img._image.size[1]
             # repeat?
@@ -588,8 +589,7 @@ class HexShape(BaseShape):
         # hex centre
         x_d = x + half_side + side / 2.0
         y_d = y
-        if DEBUG:
-            print(("592", x, y, half_height, half_side, side))
+        log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_height, half_side, side)
         # canvas
         self.set_canvas_props()
         # draw horizontal hexagon (clockwise)
@@ -645,7 +645,7 @@ class StarShape(BaseShape):
         pth.moveTo(x, y + radius)
         angle = (2 * math.pi) * 2.0 / 5.0
         start_angle = math.pi / 2.0
-        if DEBUG: print(('648 star self.vertices', self.vertices))
+        log.debug("Start self.vertices:%s", self.vertices)
         for vertex in range(self.vertices - 1):
             next_angle = angle * (vertex + 1) + start_angle
             x_1 = x + radius * math.cos(next_angle)
@@ -679,7 +679,7 @@ class TextShape(BaseShape):
 
     def __call__(self, *args, **kwargs):
         """do something when I'm called"""
-        if DEBUG: print("shapes_679: calling TextShape...")
+        log.debug("calling TextShape...")
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw text on a given canvas."""
@@ -769,7 +769,7 @@ class CircleShape(BaseShape):
         if self.row is not None and self.col is not None:
             x_c = self.col * 2.0 * radius + radius + delta_x
             y_c = self.row * 2.0 * radius + radius + delta_y
-            #print "shapes_735", self.col, self.row, "::", x_c, y_c
+            log.debug("row:%s col:%s x:%s y:%s", self.col, self.row, x_c, y_c)
         elif self.cx and self.cy:
             x_c = self.unit(self.cx) + delta_x
             y_c = self.unit(self.cy) + delta_y
@@ -895,7 +895,7 @@ class CardShape(BaseShape):
 
     def draw_card(self, cnv, row, col, cid):
         """Draw a card on a given canvas."""
-        #print "shapes_857  Card cnv", cnv, row, col, cid, self.shape
+        log.debug("Card cnv:%s r:%s c:%s id:%s shp:%s", cnv, row, col, cid, self.shape)
         # draw outline
         label = "ID:%s" % cid if self.show_id else ''
         if self.shape == 'rectangle':
@@ -918,11 +918,10 @@ class CardShape(BaseShape):
                                canvas=cnv, col=col, row=row, **self.kwargs)
             outline.draw(is_cards=True)
         else:
-            tools.feedback('Unable to draw a %s-shaped card.' % self.shape,
-                           stop=True)
+            tools.feedback('Unable to draw a {self.shape}-shaped card.', stop=True)
         flat_elements = tools.flatten(self.elements)
         for flat_ele in flat_elements:
-            #print "shapes_926 flat_ele", flat_ele
+            log.debug("flat_ele %s", flat_ele)
             members = flat_ele.members or self.members
             try:  # - normal element
                 iid = members.index(cid + 1)
@@ -933,7 +932,7 @@ class CardShape(BaseShape):
                     ID=iid)
             except AttributeError:
                 # query ... get a new element ... or not!?
-                #print "shapes_937 self.shape_id", self.shape_id
+                log.debug("self.shape_id:%s", self.shape_id)
                 new_ele = flat_ele(cid=self.shape_id)  # uses __call__ on Query
                 if new_ele:
                     flat_new_eles = tools.flatten(new_ele)
@@ -946,9 +945,9 @@ class CardShape(BaseShape):
                             off_y=row*self.height,
                             ID=iid)
             except ValueError:
-                tools.feedback('Unable to draw card #%s' % (cid + 1))
+                tools.feedback(f'Unable to draw card #{cid + 1}.')
             except Exception as err:
-                tools.feedback('Unable to draw card #%s (Error: %s' % ((cid + 1), err))
+                tools.feedback(f'Unable to draw card #{cid + 1}. (Error:{err})')
 
 
 class DeckShape(BaseShape):
@@ -980,10 +979,9 @@ class DeckShape(BaseShape):
 
     def create(self, cards):
         """Create a new deck, based on number of `cards`"""
-        if DEBUG:
-            print(("Cards are: %s" % self.sequence))
+        log.debug("Cards are: %s", self.sequence)
         self.deck = []
-        #print "shapes_925:deck %s cards with kwargs %s" % (cards, self.kwargs)
+        log.debug("deck %s cards with kwargs %s", cards, self.kwargs)
         for card in range(0, cards):
             _card = CardShape(**self.kwargs)
             _card.shape_id = card
@@ -991,7 +989,7 @@ class DeckShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         cnv = cnv if cnv else self.canvas
-        #print "base_935 Deck cnv", type(self.canvas), type(cnv)
+        log.debug("Deck cnv:%s type:%s", type(self.canvas), type(cnv))
         # user-defined rows and cols
         max_rows = self.card_rows
         max_cols = self.card_cols
@@ -1004,8 +1002,8 @@ class DeckShape(BaseShape):
             col_space = \
                 float(self.page_width) - self.margin_left - self.margin_right
             max_cols = int(col_space / float(self.width))
-        #print "shapes_961:", self.page_width, col_space, max_cols
-        #print "shapes_962:", self.page_height, row_space, max_rows
+        log.debug("w:%s cs:%s mc:%s", self.page_width, col_space, max_cols)
+        log.debug("h:%s rs:%s mr:%s", self.page_height, row_space, max_rows)
         row, col = 0, 0
         # generate cards
         for key, card in enumerate(self.deck):
@@ -1079,8 +1077,9 @@ class RepeatShape(BaseShape):
         #self.repeat_ = kwargs.get('repeat_', None)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        print(("1046", self.offset_across, self.offset_down))
-        print(("1047",self.gap_across, self.gap_down))
+        log.debug("oc:%s od:%s", self.offset_across, self.offset_down)
+        log.debug("ga:%s gd:%s", self.gap_across, self.gap_down)
+
         for col in range(self.cols):
             for row in range(self.rows):
                 if ((col+1) in self.across) and ((row+1) in self.down):
@@ -1089,20 +1088,20 @@ class RepeatShape(BaseShape):
                     off_y = row*self.height + \
                         row*(self.offset_down - self.margin_bottom)
                     flat_elements = tools.flatten(self._object)
-                    #print "shapes_893", flat_elements
+                    log.debug("fes:%s", flat_elements)
                     for flat_ele in flat_elements:
-                        #print "shapes_895", flat_ele
+                        log.debug("fe:%s", flat_ele)
                         try:  # normal element
                             flat_ele.draw(off_x=off_x, off_y=off_y,
                                           ID=self.shape_id)
                         except AttributeError:
                             new_ele = flat_ele(cid=self.shape_id)
-                            #print "shapes_899", new_ele, type(new_ele)
+                            log.debug("%s %s", new_ele, type(new_ele))
                             if new_ele:
                                 flat_new_eles = tools.flatten(new_ele)
-                                #print "shapes_902", flat_new_eles
+                                log.debug("%s", flat_new_eles)
                                 for flat_new_ele in flat_new_eles:
-                                    #print "shapes_569", flat_new_ele
+                                    log.debug("%s", flat_new_ele)
                                     flat_new_ele.draw(off_x=off_x, off_y=off_y,
                                                       ID=self.shape_id)
 
@@ -1175,10 +1174,9 @@ class ConnectShape(BaseShape):
                 ]
 
             if xc_f < xc_t and yc_f < yc_t:  # Q1
-                print("Q1")
                 if edge_from['right'] < edge_to['left']:
                     if edge_from['top'] < edge_to['bottom']:
-                        print((" A", edge_from['top'], edge_to['bottom']))
+                        log.debug("A t:%s b:%s", edge_from['top'], edge_to['bottom'])
                         delta = (edge_to['bottom'] - edge_from['top']) / 2.0
                         points = [
                             self.key_positions(shape_from, 'TC'),
@@ -1187,7 +1185,7 @@ class ConnectShape(BaseShape):
                             self.key_positions(shape_to, 'BC')
                         ]
                     elif edge_from['top'] > edge_to['bottom']:
-                        print((" B", edge_from['top'], edge_to['bottom']))
+                        log.debug("B t:%s b:%s", edge_from['top'], edge_to['bottom'])
                         points = [
                             self.key_positions(shape_from, 'TC'),
                             (xc_f, yc_t),
@@ -1196,23 +1194,23 @@ class ConnectShape(BaseShape):
                     else:
                         pass
                 else:
-                    print((" C", edge_from['top'], edge_to['bottom']))
+                    log.debug("C t:%s b:%s", edge_from['top'], edge_to['bottom'])
                     points = [
                         self.key_positions(shape_from, 'TC'),
                         (xc_f, yc_t),
                         self.key_positions(shape_to, 'LC')
                     ]
             if xc_f < xc_t and yc_f > yc_t:  # Q2
-                print("Q2")
+                log.debug("Q2")
 
             if xc_f > xc_t and yc_f > yc_t:  # Q3
-                print("Q3")
+                log.debug("Q3")
 
             if xc_f > xc_t and yc_f < yc_t:  # Q4
-                print("Q4")
+                log.debug("Q4")
                 if edge_from['left'] < edge_to['right']:
                     if edge_from['top'] < edge_to['bottom']:
-                        print((" A", edge_from['top'], edge_to['bottom']))
+                        log.debug(" A t:%s b:%s", edge_from['top'], edge_to['bottom'])
                         delta = (edge_to['bottom'] - edge_from['top']) / 2.0
                         points = [
                             self.key_positions(shape_from, 'TC'),
@@ -1221,7 +1219,7 @@ class ConnectShape(BaseShape):
                             self.key_positions(shape_to, 'BC')
                         ]
                     elif edge_from['top'] > edge_to['bottom']:
-                        print((" B", edge_from['top'], edge_to['bottom']))
+                        log.debug(" B t:%s b:%s", edge_from['top'], edge_to['bottom'])
                         points = [
                             self.key_positions(shape_from, 'TC'),
                             (xc_f, yc_t),
@@ -1230,7 +1228,7 @@ class ConnectShape(BaseShape):
                     else:
                         pass
                 else:
-                    print((" C", edge_from['top'], edge_to['bottom']))
+                    log.debug(" C t:%s b:%s", edge_from['top'], edge_to['bottom'])
                     points = [
                         self.key_positions(shape_from, 'TC'),
                         (xc_f, yc_t),
@@ -1250,7 +1248,7 @@ class ConnectShape(BaseShape):
             lin = LineShape(None, cnv, **self.kwargs)
             lin.draw(ID=ID)
         else:
-            tools.feedback('Style "%s" is not known.' % style)
+            tools.feedback('Style "{style}" is unknown.')
 
     def key_positions(self, _shape, location=None):
         """Calculate a dictionary of key positions around a Rectangle.

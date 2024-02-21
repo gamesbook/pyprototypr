@@ -126,13 +126,13 @@ def tuple_split(string):
     Split a string into a list of tuple values
 
     from utils.tools import tuple_split
-    print tuple_split('')
+    print(tuple_split(''))
     #[]
-    print tuple_split('3')
+    print(tuple_split('3'))
     #[3]
-    print tuple_split('3,4')
+    print(tuple_split('3,4'))
     #[(3, 4)]
-    print tuple_split('3,5 6,1 4,2')
+    print(tuple_split('3,5 6,1 4,2'))
     #[(3, 5), (6, 1), (4, 2)]
     """
     values = []
@@ -155,13 +155,13 @@ def sequence_split(string):
     Split a string into a list of individual values
 
     import tools
-    print tools.sequence_split('')
+    print(tools.sequence_split(''))
     #[]
-    print tools.sequence_split('3')
+    print(tools.sequence_split('3'))
     #[3]
-    print tools.sequence_split('3,4,5')
+    print(tools.sequence_split('3,4,5'))
     #[3, 4, 5]
-    print tools.sequence_split('3-5,6,1-4')
+    print(tools.sequence_split('3-5,6,1-4'))
     #[1, 2, 3, 4, 5, 6]
     """
     values = []

@@ -12,7 +12,6 @@ class LazyEval(object):
 
     Usage:
         def foo(x):
-            #print x
             return x
 
         random.choice((LazyEval(foo, "spam"), LazyEval(foo, "eggs")))()
@@ -36,16 +35,4 @@ class LazyEval(object):
         return self.value
 
     def __unicode__(self):
-        return unicode(self._exec())
-
-"""
-def foo(x):
-    #print x
-    return x
-
-
-a = LazyEval(foo, "spam")
-a()   # execute it !
-
-random.choice((LazyEval(foo, "spam"), LazyEval(foo, "eggs")))()
-"""
+        return str(self._exec())

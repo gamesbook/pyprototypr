@@ -252,7 +252,7 @@ class BaseCanvas:
                 except (IOError, ValueError):
                     tools.feedback(
                         f'Unable to find or load the file "{self.jsonfile}"'
-                        f' - also checked in "{filepath}"')
+                        f' - also checked in "{filepath}".')
         # constants
         self.default_length = 1
         self.show_id = False  # True
@@ -385,22 +385,19 @@ class BaseCanvas:
         """Get a color by name from a pre-defined dictionary."""
         if name:
             return COLORS.get(name, default)
-        else:
-            return default
+        return default
 
     def get_units(self, name=None, default=cm):
         """Get units by name from a pre-defined dictionary."""
         if name:
             return UNITS.get(name, default)
-        else:
-            return default
+        return default
 
     def get_page(self, name=None, default=A4):
         """Get a page-size by name from a pre-defined dictionary."""
         if name:
             return PAGES.get(name, default)
-        else:
-            return default
+        return default
 
 
 class BaseShape:
@@ -531,7 +528,7 @@ class BaseShape:
         # CHECK
         correct, issue = self.check_settings()
         if not correct:
-            tools.feedback("Problem with settings: %s" % issue)
+            tools.feedback(f"Problem with settings: {issue}.")
         # UPDATE SELF WITH COMMON
         if self.common:
             attrs = vars(self.common)
@@ -548,16 +545,15 @@ class BaseShape:
         log.debug("units %s %s", units, self.units)
         if item is None and skip_none:
             return None
-        else:
-            if not units:
-                units = self.units
-            try:
-                return item * units
-            except (TypeError, ValueError):
-                tools.feedback(
-                    'Unable to set units: "%s".'
-                    ' Please check that this is a valid value.' % item,
-                    stop=True)
+        if not units:
+            units = self.units
+        try:
+            return item * units
+        except (TypeError, ValueError):
+            tools.feedback(
+                f'Unable to set units: "{item}".'
+                ' Please check that this is a valid value.',
+                stop=True)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an element on a given canvas."""
@@ -575,9 +571,8 @@ class BaseShape:
             pass
         except KeyError:
             tools.feedback(
-                'Unable to find font: "%s".'
-                ' Please check that this is installed on your system.' %
-                self.font_face,
+                f'Unable to find font: "{self.font_face}".'
+                ' Please check that this is installed on your system.',
                 stop=True)
         try:
             canvas.setFillColor(fill or self.fill)
@@ -648,7 +643,7 @@ class BaseShape:
                     return img
                 except IOError:
                     tools.feedback(
-                        f'Unable to find or open image "{_source}"; including {filepath}')
+                        f'Unable to find or open image "{_source}"; including {filepath}.')
         return img
 
     def process_template(self, _dict):
@@ -691,16 +686,15 @@ class BaseShape:
     def textify(self, index=None, text=None):
         """Extract text from a list, or create string, based on index & type"""
         _text = text or self.text
-        log.debug("text %s %s %", index, text, _text, type(_text))
+        log.debug("text %s %s %s %s", index, text, _text, type(_text))
         if not _text:
             return
         if hasattr(_text, 'lower'):
             return _text
-        else:
-            try:
-                return _text[index]
-            except TypeError:
-                return _text
+        try:
+            return _text[index]
+        except TypeError:
+            return _text
 
     def draw_multi_string(self, canvas, x, y, string, align=None):
         """Draw a string, split if needed, with a given alignment."""
@@ -719,26 +713,25 @@ class BaseShape:
             mvy -= canvas._leading
 
     def draw_label(self, canvas, x, y, string, align=None):
-        self.draw_multi_string(canvas=canvas, x=y, y=y, string=string,
-                               align=align)
+        """Draw a multi-string on the canvas"""
+        self.draw_multi_string(canvas=canvas, x=x, y=y, string=string, align=align)
 
     def V(self, *args):
         """Placeholder for value evaluator."""
         try:
             return self.dataset[self.shape_id].get(args[0], '')
-        except:
+        except Exception:
             if not self.shape_id:
                 tools.feedback('No ID - unable to locate item!')
             elif self.dataset[self.shape_id]:
-                tools.feedback('Unable to locate item #%s in dataset!' %
-                               self.shape_id)
+                tools.feedback(f'Unable to locate item #{self.shape_id} in dataset!')
             else:
-                tools.feedback('Unable to locate column %s!' % args[0])
+                tools.feedback(f'Unable to locate column {args[0]}!')
         return ''
 
     def Q(self, *args):
         """Placeholder for query evaluator."""
-        tools.feedback('TO DO! %s' % args)
+        tools.feedback(f'TO DO! {args}')
 
 
 class GroupBase(list):

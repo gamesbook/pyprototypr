@@ -9,7 +9,6 @@ import logging
 # lib
 import os
 import sys
-import pathlib
 # third party
 from reportlab.lib.pagesizes import *
 from reportlab.pdfbase import pdfmetrics
@@ -19,14 +18,15 @@ from reportlab.lib.units import cm, inch
 # local
 from .bgg import BGGGame, BGGGameList
 from .base import BaseCanvas, GroupBase, COLORS
+from .dice import (
+    Dice, DiceD4, DiceD6, DiceD8, DiceD10, DiceD12, DiceD20, DiceD100)
 from .shapes import (
     BezierShape, CircleShape, CommonShape,
     ConnectShape, DeckShape, EllipseShape, FooterShape, GridShape, HexShape,
     ArcShape, ImageShape, LineShape, PolygonShape,
     PolylineShape, Query, RectShape, RepeatShape, RhombusShape, ShapeShape,
     StarShape, TextShape)
-from .dice import (
-    Dice, DiceD4, DiceD6, DiceD8, DiceD10, DiceD12, DiceD20, DiceD100)
+from ._version import __version__
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
 
@@ -90,8 +90,16 @@ def Create(**kwargs):
         filename = f'{basename}.pdf'
     # Canvas and Deck
     cnv = BaseCanvas(filename, pagesize=pagesize, defaults=defaults)
+    page_width = pagesize[0]  # units = 1/72 of an inch
+    page_height = pagesize[1]  # units = 1/72 of an inch
     if landscape:
         cnv.canvas.setPageSize(landscape(pagesize))
+        page_width = pagesize[1]  # units = 1/72 of an inch
+        page_height = pagesize[0]  # units = 1/72 of an inch
+    if kwargs.get('fill'):
+        cnv.setFillColor(kwargs.get('fill'))
+        cnv.rect(
+            0, 0, page_width, page_height, stroke=0, fill=1)
     if _cards:
         Deck(canvas=cnv, sequence=range(1, _cards + 1), **kwargs)  # deck variable
 
@@ -174,7 +182,17 @@ def Font(face=None, **kwargs):
     cnv.font_size = kwargs.get('size', 12)
     cnv.stroke = COLORS.get(kwargs.get('color', 'black'))
 
-# ---- cards ====================================================================
+
+def Version():
+    global cnv
+    tools.feedback(f'Running pyprototyper version {__version__}.')
+
+
+def Feedback(msg):
+    global cnv
+    tools.feedback(msg)
+
+# ---- cards =====
 
 
 def Card(sequence, *elements):
@@ -187,7 +205,7 @@ def Card(sequence, *elements):
     try:
         _card = int(sequence)
         _cards = range(_card, _card + 1)
-    except:
+    except Exception:
         pass
     # string - either 'all' or a range: '1', '1-2', '1-3,5-6'
     if not _cards:
@@ -196,10 +214,9 @@ def Card(sequence, *elements):
                 _cards = range(1, len(dataset) + 1)
             else:
                 _cards = tools.sequence_split(sequence)
-        except:
+        except Exception:
             tools.feedback(
-                'Unable to convert "%s"" into a card or range or cards' %
-                sequence)
+                f'Unable to convert "{sequence}"" into a card or range or cards.')
     for _card in _cards:
         card = deck.get(_card - 1)  # cards internally number from ZERO
         if card:
@@ -208,7 +225,8 @@ def Card(sequence, *elements):
                 card.members = _cards
                 card.elements.append(element)  # may be Group or Shape or Query
         else:
-            tools.feedback("Cannot find card# %s" % _card)
+            tools.feedback(f'Cannot find card#{_card}.'
+                           ' (Check "cards" setting in Deck)')
 
 
 def Deck(**kwargs):
@@ -236,7 +254,7 @@ def group(*args):
         g.append(arg)
     return g
 
-# ---- data and functions  ======================================================
+# ---- data and functions  =====
 
 
 def Data(source=None, **kwargs):
@@ -245,7 +263,7 @@ def Data(source=None, **kwargs):
     global deck
     global dataset
     dataset = tools.load_data(source, **kwargs)
-    #print "draw_142:dataset loaded", dataset
+    log.debug("dataset loaded: %s", dataset)
     if len(dataset) == 0:
         tools.feedback("Dataset is empty or cannot be loaded!")
     else:
@@ -256,7 +274,7 @@ def Data(source=None, **kwargs):
 def V(*args):
     """Expect args[0] to be the name (string) of a column in the dataset."""
     global dataset
-    #print "draw_239 ... V", args, type(dataset), len(dataset)
+    log.debug("V %s %s %s", args, type(dataset), len(dataset))
     if dataset and len(dataset) > 0:
         return [item.get(args[0], '') for item in dataset]
     return []
@@ -289,11 +307,11 @@ def Q(query='', result=None, alternate=None):
 def Set(_object, **kwargs):
     """Overwrite one or more properties for a Shape/object with new value(s)"""
     for kw in kwargs.keys():
-        #print "draw_271", kw, kwargs[kw], type(kwargs[kw])
+        log.debug("Set: %s %s %s", kw, kwargs[kw], type(kwargs[kw]))
         setattr(_object, kw, kwargs[kw])
     return _object
 
-# ---- shapes ===================================================================
+# ---- shapes ====
 
 
 def Common(source=None, **kwargs):
@@ -618,7 +636,7 @@ def text(*args, **kwargs):
     _obj = args[0] if args else None
     return TextShape(_object=_obj, canvas=cnv, **kwargs)
 
-# ---- connect===================================================================
+# ---- connect ====
 
 
 def Connect(shape_from, shape_to, **kwargs):
@@ -640,7 +658,7 @@ def connect(shape_from, shape_to, **kwargs):
     kwargs['shape_to'] = shape_to
     return ConnectShape(canvas=cnv, **kwargs)
 
-# ---- repeats ==================================================================
+# ---- repeats ====
 
 
 def Repeat(_object, **kwargs):
@@ -650,7 +668,7 @@ def Repeat(_object, **kwargs):
     repeat = RepeatShape(_object=_object, **kwargs)
     repeat.draw()
 
-# ---- patterns =================================================================
+# ---- patterns ====
 
 
 def Hexagons(rows=1, cols=1, **kwargs):
@@ -679,22 +697,22 @@ def Lines(rows=1, cols=1, **kwargs):
         for col in range(cols):
             Line(row=row, col=col, **kwargs)
 
-# ---- BGG ======================================================================
+# ---- BGG ====
 
 
 def BGG(ids=None, user=None, progress=False, short=500):
     gamelist = BGGGameList()
     if user:
-        tools.feedback("Sorry - user collection function is not available yet!")
+        tools.feedback("Sorry - BGG user collection function is not available yet!")
     if ids:
         for game_id in ids:
             if progress:
-                tools.feedback("Retrieving game '%s' from BoardGameGeek..." % game_id)
+                tools.feedback(f"Retrieving game '{game_id}' from BoardGameGeek...")
             _game = BGGGame(game_id=game_id, short=short)
             gamelist.set_values(_game)
     return gamelist
 
-# ---- dice =====================================================================
+# ---- dice ====
 
 
 def dice(dice='1d6', rolls=None):
@@ -715,7 +733,7 @@ def dice(dice='1d6', rolls=None):
         _list = dice.split('d')
         _type, pips = int(_list[0]), int(_list[1])
     except Exception:
-        tools.feedback('Unable to determine dice type/roll for "%s"' % dice)
+        tools.feedback(f'Unable to determine dice type/roll for "{dice}"')
         return None
     return Dice().multi_roll(count=rolls, pips=pips, dice=_type)
 
