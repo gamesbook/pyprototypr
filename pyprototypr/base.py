@@ -275,7 +275,7 @@ class BaseCanvas:
         self.grid_color = self.get_color(
             self.defaults.get('grid_color'), grey)
         self.grid_stroke_width = self.defaults.get('grid_stroke_width', WIDTH)
-        self.grid_length = self.defaults.get('grid_length', 0.33)
+        self.grid_length = self.defaults.get('grid_length', 0.85)  # 1/3 inch
         # sizes and positions
         self.units = self.get_units(self.defaults.get('units'), cm)
         self.row = self.defaults.get('row', None)
