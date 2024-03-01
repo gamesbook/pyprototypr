@@ -58,10 +58,13 @@ Rectangles(rows=13, cols=6, width=3, height=2, rounding=0.4, margin=1,
            fill=lightyellow, stroke=green)
 PageBreak()
 
-# ~2cm hex grid - tactical "wargame" style
-Hexagons(rows=11, cols=9, side=1.686, margin_left=-1.686, margin_bottom=-1.686,
+# ~2cm hex grid - numbered "wargame" style
+Hexagons(rows=11, cols=9, side=1.69,
+         margin_left=-1.69, margin_bottom=-2.529,
          dot_size=0.04, dot_color=black,
-         fill="#C9EC9A", stroke=darkslategrey)
+         coord_position="top", coord_font_size=9,
+         coord_stroke=darkslategrey,
+         fill=white, stroke=darkslategrey)
 PageBreak()
 
 # lines

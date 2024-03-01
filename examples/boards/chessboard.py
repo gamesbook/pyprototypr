@@ -8,7 +8,7 @@ Notes:
 """
 from pyprototypr.draw import *
 
-Create(filename='boards.pdf', margin=1.25)
+Create(filename='chessboard.pdf', margin=1.25)
 
 # chess
 rect = rectangle(x=0, y=4, width=2.25, height=2.25, stroke_width=2,

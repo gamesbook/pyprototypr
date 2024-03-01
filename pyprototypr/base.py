@@ -238,7 +238,7 @@ class BaseCanvas:
             filename=filename, pagesize=pagesize or A4)
         self.jsonfile = kwargs.get('defaults', None)
         self.defaults = {}
-        # override
+        # ---- override
         if self.jsonfile:
             try:
                 with open(self.jsonfile) as data_file:
@@ -253,10 +253,10 @@ class BaseCanvas:
                     tools.feedback(
                         f'Unable to find or load the file "{self.jsonfile}"'
                         f' - also checked in "{filepath}".')
-        # constants
+        # ---- constants
         self.default_length = 1
         self.show_id = False  # True
-        # general
+        # ---- general
         self.shape = self.defaults.get('shape', 'rectangle')
         self.shape_id = None
         self.sequence = self.defaults.get('sequence', [])
@@ -264,7 +264,7 @@ class BaseCanvas:
         self.members = []  # card IDs, of which current card is a member
         self._object = None
         self.kwargs = kwargs
-        # page
+        # ---- page
         self.pagesize = self.get_page(self.defaults.get('pagesize'), A4)
         self.margin = self.defaults.get('margin', 1)
         self.margin_top = self.defaults.get('margin_top', self.margin)
@@ -276,7 +276,7 @@ class BaseCanvas:
             self.defaults.get('grid_color'), grey)
         self.grid_stroke_width = self.defaults.get('grid_stroke_width', WIDTH)
         self.grid_length = self.defaults.get('grid_length', 0.85)  # 1/3 inch
-        # sizes and positions
+        # ---- sizes and positions
         self.units = self.get_units(self.defaults.get('units'), cm)
         self.row = self.defaults.get('row', None)
         self.col = self.defaults.get('col', self.defaults.get('column', None))
@@ -287,19 +287,19 @@ class BaseCanvas:
         self.y = self.defaults.get('y', self.defaults.get('bottom', 1))
         self.cx = self.defaults.get('cx', None)
         self.cy = self.defaults.get('cy', None)
-        # repeats
+        # ---- repeats
         self.offset = self.defaults.get('offset', 0)
         self.offset_across = self.defaults.get('offset_across', self.offset)
         self.offset_down = self.defaults.get('offset_down', self.offset)
         self.gap = self.defaults.get('gap', 0)
         self.gap_across = self.defaults.get('gap_across', self.gap)
         self.gap_down = self.defaults.get('gap_down', self.gap)
-        # rotate in degrees
+        # ---- rotate in degrees
         self.rotate = self.defaults.get('rotate',
                                         self.defaults.get('rotation', 0))
         self.orientation = self.defaults.get('orientation', 'vertical')
         self.position = self.defaults.get('position', None)
-        # line
+        # ---- line
         self.line_color = self.defaults.get('line_color', WIDTH)
         self.line_width = self.defaults.get('line_width', WIDTH)
         self.line_dots = self.defaults.get('line_dots',
@@ -311,12 +311,12 @@ class BaseCanvas:
         self.line_dotdash = self.defaults.get('line_dotdash',
                                               self.defaults.get('dotdash',
                                                                 None))
-        # color and fill
+        # ---- color and fill
         fill = self.defaults.get('fill', self.defaults.get('fill_color'))
         self.fill = self.get_color(fill, white)
         self.pattern = self.defaults.get('pattern', None)
         self.repeat = self.defaults.get('repeat', True)
-        # text
+        # ---- text
         self.align = self.defaults.get('align', 'centre')  # left,right,justify
         self._alignment = TA_LEFT  # see to_alignment()
         self.font_face = self.defaults.get('font_face', 'Helvetica')
@@ -330,11 +330,11 @@ class BaseCanvas:
         self.heading = self.defaults.get('heading', '')
         self.style = self.defaults.get('style', None)  # Normal? from reportlab
         self.wrap = self.defaults.get('wrap', False)
-        # text block
+        # ---- text block
         self.outline_color = self.defaults.get('outline_color', self.fill)
         self.outline_width = self.defaults.get('outline_width', 0)
         self.leading = self.defaults.get('leading', 12)
-        # line colors
+        # ---- line colors
         stroke = self.defaults.get('stroke', self.defaults.get('stroke_color'))
         self.stroke = self.get_color(stroke, black)
         self.stroke_width = self.defaults.get('stroke_width', WIDTH)
@@ -346,36 +346,47 @@ class BaseCanvas:
             self.defaults.get('stroke_title'), self.stroke)
         self.stroke_heading = self.get_color(
             self.defaults.get('stroke_heading'), self.stroke)
-        # line and fill
+        # ---- line and fill
         self.transparent = self.defaults.get('transparent', False)
-        # image / file
+        # ---- image / file
         self.source = self.defaults.get('source', None)  # file or http://
-        # line / ellipse / bezier
+        # ---- line / ellipse / bezier
         self.length = self.defaults.get('length', 0)
         self.angle = self.defaults.get('angle', 0)
         self.x_1 = self.defaults.get('x1', 1)
         self.y_1 = self.defaults.get('y1', 1)
-        # bezier
+        # ---- bezier
         self.x_2 = self.defaults.get('x2', 1)
         self.y_2 = self.defaults.get('y2', 1)
         self.x_3 = self.defaults.get('x3', 1)
         self.y_3 = self.defaults.get('y3', 1)
-        # rect / card
+        # ---- rect / card
         self.rounding = self.defaults.get('rounding', 0)
         self.rounded = self.defaults.get('rounded', False)
-        # grid / card layout
+        # ---- grid / card layout
         self.rows = self.defaults.get('rows', 1)
         self.cols = self.defaults.get('cols', self.defaults.get('columns', 1))
-        # circle / star / poly
+        # ---- circle / star / poly
         self.radius = self.defaults.get('radius', 1)
         self.vertices = self.defaults.get('vertices', 5)
         self.sides = self.defaults.get('sides', 6)
         self.points = self.defaults.get('points', [])
-        # hexes
+        # ---- hexes
+        self.hid = self.defaults.get('id', '')  # HEX ID
+        self.hex_rows = self.defaults.get('hex_rows', 0)
+        self.hex_cols = self.defaults.get('hex_cols', 0)
         self.side = self.defaults.get('side', 1)  # length of sides
+        self.dot_shape = self.defaults.get('dot_shape', '')
         self.dot_color = self.get_color(self.defaults.get('dot_color'), black)
         self.dot_size = self.defaults.get('dot_size', 0)
-        self.hid = self.defaults.get('id', '')  # HEX ID
+        self.coord_type_x = self.defaults.get('coord_type_x', 'number')  # number,letter
+        self.coord_type_y = self.defaults.get('coord_type_y', 'number')  # number,letter
+        self.coord_position = self.defaults.get('coord_position', None)  # top, middle, bottom
+        self.coord_offset = self.defaults.get('coord_offset', 0)
+        self.coord_font_face = self.defaults.get('coord_font_face', 'Helvetica')
+        self.coord_font_size = self.defaults.get('coord_font_size', 10)
+        self.coord_stroke = self.get_color(self.defaults.get('coord_stroke'), black)
+        self.coord_padding = self.defaults.get('coord_padding', 2)
 
     def get_canvas(self):
         """Return reportlab canvas object"""
@@ -404,10 +415,10 @@ class BaseShape:
     """Base class for objects that are drawn on a given canvas."""
 
     def __init__(self, _object=None, canvas=None, **kwargs):
-        # constants
+        # ---- constants
         self.default_length = 1
         self.show_id = False  # True
-        # KEY
+        # ---- KEY
         self.canvas = canvas or BaseCanvas()  # BaseCanvas object
         cnv = self.canvas  # shortcut for use in getting defaults
         log.debug("Base types %s %s %s", type(self.canvas), type(canvas), type(cnv))
@@ -418,10 +429,10 @@ class BaseShape:
         self.sequence = kwargs.get('sequence', [])  # e.g. card numbers
         self.dataset = []  # list of dict data (loaded from file)
         self.members = []  # card IDs, of which current card is a member
-        # general
+        # ---- general
         self.common = kwargs.get('common', None)
         self.shape = kwargs.get('shape', cnv.shape)
-        # page
+        # ---- page
         self.pagesize = kwargs.get('pagesize', cnv.pagesize)
         self.margin = kwargs.get('margin', cnv.margin)
         self.margin_top = kwargs.get('margin_top', cnv.margin_top)
@@ -433,7 +444,7 @@ class BaseShape:
         self.grid_stroke_width = kwargs.get('grid_stroke_width',
                                             cnv.grid_stroke_width)
         self.grid_length = kwargs.get('grid_length', cnv.grid_length)
-        # sizes and positions
+        # ---- sizes and positions
         self.units = kwargs.get('units', cnv.units)
         self.row = kwargs.get('row', cnv.row)
         self.col = kwargs.get('col', kwargs.get('column', cnv.col))
@@ -444,19 +455,19 @@ class BaseShape:
         self.y = kwargs.get('y', kwargs.get('bottom', cnv.y))
         self.cx = kwargs.get('cx', cnv.cx)
         self.cy = kwargs.get('cy', cnv.cy)
-        # repeats
+        # ---- repeats
         self.offset = kwargs.get('offset', cnv.offset)
         self.offset_across = kwargs.get('offset_down', cnv.offset_down)
         self.offset_down = kwargs.get('offset_across', cnv.offset_across)
         self.gap = kwargs.get('gap', cnv.gap)
         self.gap_across = kwargs.get('gap_down', cnv.gap_down)
         self.gap_down = kwargs.get('gap_across', cnv.gap_across)
-        # rotate in degrees
+        # ---- rotate in degrees
         self.rotate = kwargs.get('rotate', kwargs.get('rotation', cnv.rotate))
-        self._rotate_theta = self.rotate * math.pi / 180.0  # radians
+        self._rotate_theta = self.rotate * math.pi / 180.0  # ---- radians
         self.orientation = kwargs.get('orientation', cnv.orientation)
         self.position = kwargs.get('position', cnv.position)
-        # line
+        # ---- line
         self.line_width = kwargs.get('line_width', cnv.line_width)
         self.line_dots = kwargs.get('line_dots',
                                     kwargs.get('dots', cnv.line_dots))
@@ -464,7 +475,7 @@ class BaseShape:
                                       kwargs.get('dashes', cnv.line_dashes))
         self.line_dotdash = kwargs.get('line_dotdash',
                                        kwargs.get('dotdash', cnv.line_dotdash))
-        # text
+        # ---- text
         self.align = kwargs.get('align', cnv.align)  # left, right, justify
         self._alignment = TA_LEFT  # see to_alignment()
         self.font_face = kwargs.get('font_face', cnv.font_face)
@@ -478,15 +489,15 @@ class BaseShape:
         self.heading = kwargs.get('heading', cnv.heading)
         self.style = kwargs.get('style', cnv.style)  # Normal? from reportlab
         self.wrap = kwargs.get('wrap', cnv.wrap)
-        # text block
+        # ---- text block
         self.outline_color = kwargs.get('outline_color', cnv.outline_color)
         self.outline_width = kwargs.get('outline_width', cnv.outline_width)
         self.leading = kwargs.get('leading', cnv.leading)
-        # color and fill
+        # ---- color and fill
         self.fill = kwargs.get('fill', kwargs.get('fill_color', cnv.fill))
         self.pattern = kwargs.get('pattern', cnv.pattern)
         self.repeat = kwargs.get('repeat', cnv.repeat)
-        # lines
+        # ---- lines
         self.stroke = kwargs.get('stroke', kwargs.get('stroke_color',
                                                       cnv.stroke))
         self.stroke_width = kwargs.get('stroke_width', cnv.stroke_width)
@@ -494,42 +505,54 @@ class BaseShape:
         self.stroke_label = kwargs.get('stroke_label', cnv.stroke_label)
         self.stroke_title = kwargs.get('stroke_title', cnv.stroke_title)
         self.stroke_heading = kwargs.get('stroke_heading', cnv.stroke_heading)
-        # line and fill
+        # ---- line and fill
         self.transparent = kwargs.get('transparent', cnv.transparent)
-        # image / file
+        # ---- image / file
         self.source = kwargs.get('source', cnv.source)  # file or http://
-        # line / ellipse / bezier
+        # ---- line / ellipse / bezier
         self.length = kwargs.get('length', cnv.length)
         self.angle = kwargs.get('angle', cnv.angle)  # anti-clock from flat
         self._angle_theta = self.angle * math.pi / 180.0  # radians
         self.x_1 = kwargs.get('x1', cnv.x_1)
         self.y_1 = kwargs.get('y1', cnv.y_1)
-        # bezier
+        # ---- bezier
         self.x_2 = kwargs.get('x2', cnv.x_2)
         self.y_2 = kwargs.get('y2', cnv.y_2)
         self.x_3 = kwargs.get('x3', cnv.x_3)
         self.y_3 = kwargs.get('y3', cnv.y_3)
-        # rect / card
+        # ---- rect / card
         self.rounding = kwargs.get('rounding', cnv.rounding)
         self.rounded = kwargs.get('rounded', cnv.rounded)
-        # grid / card layout
+        # ---- grid / card layout
         self.rows = kwargs.get('rows', cnv.rows)
         self.cols = kwargs.get('cols', kwargs.get('columns', cnv.cols))
-        # circle / star / poly
+        # ---- circle / star / poly
         self.radius = kwargs.get('radius', cnv.radius)
         self.vertices = kwargs.get('vertices', cnv.vertices)
         self.sides = kwargs.get('sides', cnv.sides)
         self.points = kwargs.get('points', cnv.points)
-        # hexes
+        # ---- hexes
+        self.hex_rows = kwargs.get('hex_rows', 0)
+        self.hex_cols = kwargs.get('hex_cols', 0)
         self.side = kwargs.get('side', cnv.side)  # length of sides
+        self.dot_shape = kwargs.get('dot_shape', '')
         self.dot_color = kwargs.get('dot_color', cnv.dot_color)
         self.dot_size = kwargs.get('dot_size', cnv.dot_size)
+        self.coord_type_x = kwargs.get('coord_type_x', 'number')  # number, letter
+        self.coord_type_y = kwargs.get('coord_type_y', 'number')  # number, letter
+        self.coord_position = kwargs.get('coord_position', None)  # top, middle, bottom
+        self.coord_offset = kwargs.get('coord_offset', 0)
+        self.coord_font_face = kwargs.get('coord_font_face', cnv.font_face)
+        self.coord_font_size = kwargs.get('coord_font_size', cnv.font_size)
+        self.coord_stroke = kwargs.get('coord_stroke', cnv.stroke)
+        self.coord_padding = kwargs.get('coord_padding', 2)
+        # self. = kwargs.get('', )
         self.hid = kwargs.get('id', cnv.hid)  # HEX ID
-        # CHECK
+        # ---- CHECK
         correct, issue = self.check_settings()
         if not correct:
             tools.feedback(f"Problem with settings: {issue}.")
-        # UPDATE SELF WITH COMMON
+        # ---- UPDATE SELF WITH COMMON
         if self.common:
             attrs = vars(self.common)
             for attr in attrs.keys():

@@ -478,6 +478,7 @@ def Hexagon(row=None, col=None, **kwargs):
     global cnv
     global deck
     kwargs = margins(**kwargs)
+    # tools.feedback(f'Will draw HexShape: {kwargs}')
     kwargs['row'] = row
     kwargs['col'] = col
     hexagon = HexShape(canvas=cnv, **kwargs)
@@ -675,9 +676,10 @@ def Hexagons(rows=1, cols=1, **kwargs):
     global cnv
     global deck
     kwargs = kwargs
+    # tools.feedback(f'Will draw hexagons: {kwargs}')
     for row in range(rows):
         for col in range(cols):
-            Hexagon(row=row, col=col, **kwargs)
+            Hexagon(row=row, col=col, hex_rows=rows, hex_cols=cols, **kwargs)
 
 
 def Rectangles(rows=1, cols=1, **kwargs):
