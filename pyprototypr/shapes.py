@@ -264,8 +264,6 @@ class RectShape(BaseShape):
         if kwargs.get("cx") and kwargs.get("cy"):
             x = kwargs.get("cx") - width / 2.0
             y = kwargs.get("cy") - height / 2.0
-            tools.feedback(f"DRAW New {x=} {y=}")
-            tools.feedback("~~~~")
         # canvas
         self.set_canvas_props()
         fill = 0 if self.transparent else 1
@@ -558,18 +556,18 @@ class HexShape(BaseShape):
         # tools.feedback(f'Will draw a hex shape: {kwargs} {off_x} {off_y} {ID}')
         is_cards = kwargs.get("is_cards", False)
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # offset
+        # ---- offset for grid
         margin_left = self.unit(self.margin_left)
         margin_bottom = self.unit(self.margin_bottom)
         off_x = self.unit(off_x)
         off_y = self.unit(off_y)
         delta_x = off_x + margin_left
         delta_y = off_y + margin_bottom
-        # Calculate half_height and half_side from side
+        # ---- calculate half_height and half_side from side
         side = self.unit(self.side)
         half_height = side * math.sqrt(3) / 2.0
         half_side = side / 2.0
-        # Get coords for leftmost point
+        # ---- coords for leftmost point
         #         __
         # x,y .. /  \
         #        \__/
@@ -577,13 +575,27 @@ class HexShape(BaseShape):
             x = self.col * 2.0 * side + delta_x
             y = half_height + self.row * 2.0 * half_height + delta_x
         elif self.row is not None and self.col is not None:
-            x = self.col * (half_side + side) + delta_x
-            y = (
-                half_height
-                + half_height * self.row * 2.0
-                + (self.col % 2.0) * half_height
-                + delta_y
-            )
+            if self.hex_offset in ['o', 'O', 'odd']:
+                # TODO - adjust odd column up / even col down
+                x = self.col * (half_side + side) + delta_x
+                y = (
+                    half_height
+                    + half_height * self.row * 2.0
+                    + (self.col % 2) * half_height
+                    + delta_y
+                )
+                if (self.col + 1) & 1:  # odd
+                    y = y - half_height
+                else:
+                    y = y - 3 * half_height
+            else:  # self.hex_offset in ['e', 'E', 'even']
+                x = self.col * (half_side + side) + delta_x
+                y = (
+                    half_height
+                    + half_height * self.row * 2.0
+                    + (self.col % 2) * half_height
+                    + delta_y
+                )
         elif self.cx and self.cy:
             # cx,cy are centred; create x_d,y_d as the unit-formatted hex centre
             x_d = self.unit(self.cx)
@@ -594,30 +606,43 @@ class HexShape(BaseShape):
             # x and y are at the bottom-left corner of the box around the hex
             x = self.unit(self.x) + delta_x
             y = self.unit(self.y) + delta_y + half_height
-        # hex centre
+        # ---- calculate hex centre
         x_d = x + half_side + side / 2.0
         y_d = y
         log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_height, half_side, side)
         # canvas
         self.set_canvas_props()
-        # draw horizontal hexagon (clockwise)
-        pth = cnv.beginPath()
-        pth.moveTo(x, y)
-        pth.lineTo(x + half_side, y + half_height)
-        pth.lineTo(x + half_side + side, y + half_height)
-        pth.lineTo(x + half_side + side + half_side, y)
-        pth.lineTo(x + half_side + side, y - half_height)
-        pth.lineTo(x + half_side, y - half_height)
-        pth.close()
+        # ---- draw vertical hexagon (clockwise)
+        if self.hex_orientation in ['p', 'P', 'pointy']:
+            pth = cnv.beginPath()
+            pth.moveTo(x, y)
+            pth.lineTo(x + half_side, y + half_height)
+            pth.lineTo(x + half_side + side, y + half_height)
+            pth.lineTo(x + half_side + side + half_side, y)
+            pth.lineTo(x + half_side + side, y - half_height)
+            pth.lineTo(x + half_side, y - half_height)
+            pth.close()
+        # ---- draw horizontal hexagon (clockwise)
+        else:   #  self.hex_orientation in ['f', 'F', 'flat']:
+            pth = cnv.beginPath()
+            pth.moveTo(x, y)
+            pth.lineTo(x + half_side, y + half_height)
+            pth.lineTo(x + half_side + side, y + half_height)
+            pth.lineTo(x + half_side + side + half_side, y)
+            pth.lineTo(x + half_side + side, y - half_height)
+            pth.lineTo(x + half_side, y - half_height)
+            pth.close()
         cnv.drawPath(pth, stroke=1, fill=1)
 
-        # ---- centred shape
-        # if self.dot_shape:
-        #     tools.feedback(f'DRAW centred shape:{self.dot_shape} at ({x_d=},{y_d=})')
-        #     self.dot_shape.draw(cx=x_d, cy=y_d)
+        # ---- centred shape (with offset)
+        if self.centre_shape:
+            # tools.feedback(f'DRAW shape:{self.dot_shape} at ({x_d=},{y_d=})')
+            self.centre_shape.draw(
+                cx=x_d + self.unit(self.centre_shape_x),
+                cy=y_d + self.unit(self.centre_shape_y))
 
-        # ----  centre dot
-        if self.dot_size:
+        # ---- centre dot
+        elif self.dot_size:
             dot_size = self.unit(self.dot_size)
             cnv.setFillColor(self.dot_color)
             cnv.setStrokeColor(self.dot_color)
@@ -634,15 +659,17 @@ class HexShape(BaseShape):
 
         # ----  numbering
         if self.coord_position:
-            row = self.hex_rows - self.row
-            col = self.col + 1
-            _x = chr(64 + col)
-            _y = chr(64 + row)
+            # label
+            _row = self.hex_rows - self.row + self.coord_start_y
+            _col = self.col + 1 if not self.coord_start_x else self.col + self.coord_start_x
+            _x = chr(64 + _col)
+            _y = chr(64 + _row)
             if self.coord_type_x in ['n', 'number']:
-                _x = str(col).zfill(self.coord_padding)
+                _x = str(_col).zfill(self.coord_padding)
             if self.coord_type_y in ['n', 'number']:
-                _y = str(row).zfill(self.coord_padding)
+                _y = str(_row).zfill(self.coord_padding)
             number_text = _x + _y
+            # props
             cnv.setFont(self.coord_font_face, self.coord_font_size)
             cnv.setFillColor(self.coord_stroke)
             if self.coord_position in ['t', 'top']:
@@ -651,11 +678,11 @@ class HexShape(BaseShape):
             elif self.coord_position in ['m', 'middle', 'mid']:
                 self.draw_multi_string(
                     cnv, x_d, y_d + self.coord_offset, number_text)
-            elif self.coord_position in ['b', 'bottom']:
+            elif self.coord_position in ['b', 'bottom', 'bot']:
                 self.draw_multi_string(
                     cnv, x_d, y_d - half_height * 0.8 + self.coord_offset, number_text)
             else:
-                tools.feedback(f'Cannot handle coord_position of "{self.coord_position}"')
+                tools.feedback(f'Cannot handle a coord_position of "{self.coord_position}"')
 
 
 class StarShape(BaseShape):

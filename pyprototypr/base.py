@@ -371,22 +371,29 @@ class BaseCanvas:
         self.vertices = self.defaults.get('vertices', 5)
         self.sides = self.defaults.get('sides', 6)
         self.points = self.defaults.get('points', [])
-        # ---- hexes
+        # ---- hexagons
         self.hid = self.defaults.get('id', '')  # HEX ID
         self.hex_rows = self.defaults.get('hex_rows', 0)
         self.hex_cols = self.defaults.get('hex_cols', 0)
+        self.hex_orientation = self.defaults.get('hex_orientation', 'flat')  # flat|pointy
+        self.hex_offset = self.defaults.get('hex_offset', 'even')  # even|odd
         self.side = self.defaults.get('side', 1)  # length of sides
-        self.dot_shape = self.defaults.get('dot_shape', '')
+        self.centre_shape = self.defaults.get('centre_shape', '')
+        self.centre_shape_x = self.defaults.get('centre_shape_x', 0)
+        self.centre_shape_y = self.defaults.get('centre_shape_y', 0)
         self.dot_color = self.get_color(self.defaults.get('dot_color'), black)
         self.dot_size = self.defaults.get('dot_size', 0)
-        self.coord_type_x = self.defaults.get('coord_type_x', 'number')  # number,letter
-        self.coord_type_y = self.defaults.get('coord_type_y', 'number')  # number,letter
-        self.coord_position = self.defaults.get('coord_position', None)  # top, middle, bottom
+        self.coord_type_x = self.defaults.get('coord_type_x', 'number')  # number|letter
+        self.coord_type_y = self.defaults.get('coord_type_y', 'number')  # number|letter
+        self.coord_start_x = self.defaults.get('coord_start_x', 0)
+        self.coord_start_y = self.defaults.get('coord_start_y', 0)
+        self.coord_position = self.defaults.get('coord_position', None)  # top|middle|bottom
         self.coord_offset = self.defaults.get('coord_offset', 0)
         self.coord_font_face = self.defaults.get('coord_font_face', 'Helvetica')
         self.coord_font_size = self.defaults.get('coord_font_size', 10)
         self.coord_stroke = self.get_color(self.defaults.get('coord_stroke'), black)
         self.coord_padding = self.defaults.get('coord_padding', 2)
+
 
     def get_canvas(self):
         """Return reportlab canvas object"""
@@ -531,24 +538,29 @@ class BaseShape:
         self.vertices = kwargs.get('vertices', cnv.vertices)
         self.sides = kwargs.get('sides', cnv.sides)
         self.points = kwargs.get('points', cnv.points)
-        # ---- hexes
+        # ---- hexagons
         self.hex_rows = kwargs.get('hex_rows', 0)
         self.hex_cols = kwargs.get('hex_cols', 0)
+        self.hex_orientation = kwargs.get('hex_orientation', 'flat')
+        self.hex_offset = kwargs.get('hex_offset', 'even')  # even|odd
         self.side = kwargs.get('side', cnv.side)  # length of sides
-        self.dot_shape = kwargs.get('dot_shape', '')
+        self.centre_shape = kwargs.get('centre_shape', '')
+        self.centre_shape_x = kwargs.get('centre_shape_x', 0)
+        self.centre_shape_y = kwargs.get('centre_shape_y', 0)
         self.dot_color = kwargs.get('dot_color', cnv.dot_color)
         self.dot_size = kwargs.get('dot_size', cnv.dot_size)
-        self.coord_type_x = kwargs.get('coord_type_x', 'number')  # number, letter
-        self.coord_type_y = kwargs.get('coord_type_y', 'number')  # number, letter
-        self.coord_position = kwargs.get('coord_position', None)  # top, middle, bottom
+        self.coord_type_x = kwargs.get('coord_type_x', 'number')  # number|letter
+        self.coord_type_y = kwargs.get('coord_type_y', 'number')  # number|letter
+        self.coord_start_x = kwargs.get('coord_start_x', 0)
+        self.coord_start_y = kwargs.get('coord_start_y', 0)
+        self.coord_position = kwargs.get('coord_position', None)  # top|middle|bottom
         self.coord_offset = kwargs.get('coord_offset', 0)
         self.coord_font_face = kwargs.get('coord_font_face', cnv.font_face)
         self.coord_font_size = kwargs.get('coord_font_size', cnv.font_size)
         self.coord_stroke = kwargs.get('coord_stroke', cnv.stroke)
         self.coord_padding = kwargs.get('coord_padding', 2)
-        # self. = kwargs.get('', )
         self.hid = kwargs.get('id', cnv.hid)  # HEX ID
-        # ---- CHECK
+        # ---- CHECK ALL
         correct, issue = self.check_settings()
         if not correct:
             tools.feedback(f"Problem with settings: {issue}.")
@@ -607,6 +619,8 @@ class BaseShape:
             pass
         try:
             canvas.setLineWidth(stroke_width or self.stroke_width)
+        except TypeError:
+            tools.feedback('Please check your stroke_width setting - should be a number')
         except AttributeError:
             pass
         if self.line_dashes:
