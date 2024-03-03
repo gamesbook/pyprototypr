@@ -676,10 +676,19 @@ def Hexagons(rows=1, cols=1, **kwargs):
     global cnv
     global deck
     kwargs = kwargs
-    # tools.feedback(f'Will draw hexagons: {kwargs}')
-    for row in range(rows):
-        for col in range(cols):
-            Hexagon(row=row, col=col, hex_rows=rows, hex_cols=cols, **kwargs)
+    if kwargs.get('hex_layout') in ['c', 'cir', 'circle']:
+        tools.feedback(f'Cannot draw circle-pattern hexagons: {kwargs}', True)
+
+    elif kwargs.get('hex_layout') in ['d', 'dia', 'diamond']:
+        tools.feedback(f'Cannot draw diamond-pattern hexagons: {kwargs}', True)
+
+    elif kwargs.get('hex_layout') in ['t', 'tri', 'triangle']:
+        tools.feedback(f'Cannot draw diamond-pattern hexagons: {kwargs}', True)
+
+    else:
+        for row in range(rows):
+            for col in range(cols):
+                Hexagon(row=row, col=col, hex_rows=rows, hex_cols=cols, **kwargs)
 
 
 def Rectangles(rows=1, cols=1, **kwargs):

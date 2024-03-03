@@ -563,9 +563,17 @@ class HexShape(BaseShape):
         off_y = self.unit(off_y)
         delta_x = off_x + margin_left
         delta_y = off_y + margin_bottom
-        # ---- calculate half_height and half_side from side
-        side = self.unit(self.side)
-        half_height = side * math.sqrt(3) / 2.0
+        # ---- calculate half_height and half_side from side or height
+        if self.side:
+            side = self.unit(self.side)
+            half_height = side * math.sqrt(3) / 2.0
+        elif self.height:
+            height = self.unit(self.height)
+            side = height / math.sqrt(3)
+            half_height = height / 2.0
+        else:
+            tools.feedback('No value for either side or height supplied for hexagon.',
+                           True)
         half_side = side / 2.0
         # ---- coords for leftmost point
         #         __
@@ -612,7 +620,8 @@ class HexShape(BaseShape):
         log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_height, half_side, side)
         # canvas
         self.set_canvas_props()
-        # ---- draw vertical hexagon (clockwise)
+        # ---- calculate vertical hexagon (clockwise)
+        # TODO not done !!!
         if self.hex_orientation in ['p', 'P', 'pointy']:
             pth = cnv.beginPath()
             pth.moveTo(x, y)
@@ -622,7 +631,7 @@ class HexShape(BaseShape):
             pth.lineTo(x + half_side + side, y - half_height)
             pth.lineTo(x + half_side, y - half_height)
             pth.close()
-        # ---- draw horizontal hexagon (clockwise)
+        # ---- calculate horizontal hexagon (clockwise)
         else:   #  self.hex_orientation in ['f', 'F', 'flat']:
             pth = cnv.beginPath()
             pth.moveTo(x, y)
@@ -632,7 +641,11 @@ class HexShape(BaseShape):
             pth.lineTo(x + half_side + side, y - half_height)
             pth.lineTo(x + half_side, y - half_height)
             pth.close()
-        cnv.drawPath(pth, stroke=1, fill=1)
+        # ---- draw hexagon
+        if self.fill:
+            cnv.drawPath(pth, stroke=1, fill=1)
+        else:
+            cnv.drawPath(pth, stroke=1, fill=0)
 
         # ---- centred shape (with offset)
         if self.centre_shape:
@@ -672,15 +685,17 @@ class HexShape(BaseShape):
             # props
             cnv.setFont(self.coord_font_face, self.coord_font_size)
             cnv.setFillColor(self.coord_stroke)
+            # coords
+            coord_offset = self.unit(self.coord_offset)
             if self.coord_position in ['t', 'top']:
                 self.draw_multi_string(
-                    cnv, x_d, y_d + half_height * 0.75 + self.coord_offset, number_text)
+                    cnv, x_d, y_d + half_height * 0.75 + coord_offset, number_text)
             elif self.coord_position in ['m', 'middle', 'mid']:
                 self.draw_multi_string(
-                    cnv, x_d, y_d + self.coord_offset, number_text)
+                    cnv, x_d, y_d + coord_offset, number_text)
             elif self.coord_position in ['b', 'bottom', 'bot']:
                 self.draw_multi_string(
-                    cnv, x_d, y_d - half_height * 0.8 + self.coord_offset, number_text)
+                    cnv, x_d, y_d - half_height * 0.8 + coord_offset, number_text)
             else:
                 tools.feedback(f'Cannot handle a coord_position of "{self.coord_position}"')
 

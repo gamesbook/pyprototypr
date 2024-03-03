@@ -2,7 +2,7 @@
 Show a `game board` example for pyprototypr
 
 Written by: Derek Hohls
-Created on: 1 February 2024
+Created on: 21 February 2024
 Notes:
 """
 from pyprototypr.draw import *

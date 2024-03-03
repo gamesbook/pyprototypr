@@ -377,7 +377,8 @@ class BaseCanvas:
         self.hex_cols = self.defaults.get('hex_cols', 0)
         self.hex_orientation = self.defaults.get('hex_orientation', 'flat')  # flat|pointy
         self.hex_offset = self.defaults.get('hex_offset', 'even')  # even|odd
-        self.side = self.defaults.get('side', 1)  # length of sides
+        self.hex_layout = self.defaults.get('hex_layout', 'rectangle')  # rectangle|circle|diamond|triangle
+        self.side = self.defaults.get('side', 0)  # length of sides
         self.centre_shape = self.defaults.get('centre_shape', '')
         self.centre_shape_x = self.defaults.get('centre_shape_x', 0)
         self.centre_shape_y = self.defaults.get('centre_shape_y', 0)
@@ -541,9 +542,10 @@ class BaseShape:
         # ---- hexagons
         self.hex_rows = kwargs.get('hex_rows', 0)
         self.hex_cols = kwargs.get('hex_cols', 0)
+        self.hex_layout = kwargs.get('hex_layout', 'rectangle')  # rectangle|circle|diamond|triangle
         self.hex_orientation = kwargs.get('hex_orientation', 'flat')
         self.hex_offset = kwargs.get('hex_offset', 'even')  # even|odd
-        self.side = kwargs.get('side', cnv.side)  # length of sides
+        self.side = kwargs.get('side', 0)  # length of sides
         self.centre_shape = kwargs.get('centre_shape', '')
         self.centre_shape_x = kwargs.get('centre_shape_x', 0)
         self.centre_shape_y = kwargs.get('centre_shape_y', 0)
@@ -610,7 +612,9 @@ class BaseShape:
                 ' Please check that this is installed on your system.',
                 stop=True)
         try:
-            canvas.setFillColor(fill or self.fill)
+            _fill = fill or self.fill
+            if _fill:
+                canvas.setFillColor(_fill)
         except AttributeError:
             pass
         try:
