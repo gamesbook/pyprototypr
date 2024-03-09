@@ -272,8 +272,7 @@ class BaseCanvas:
         self.margin_left = self.defaults.get('margin_left', self.margin)
         self.margin_right = self.defaults.get('margin_right', self.margin)
         self.grid_marks = self.defaults.get('grid_marks', 0)
-        self.grid_color = self.get_color(
-            self.defaults.get('grid_color'), grey)
+        self.grid_color = self.get_color(self.defaults.get('grid_color'), grey)
         self.grid_stroke_width = self.defaults.get('grid_stroke_width', WIDTH)
         self.grid_length = self.defaults.get('grid_length', 0.85)  # 1/3 inch
         # ---- sizes and positions
@@ -299,6 +298,7 @@ class BaseCanvas:
                                         self.defaults.get('rotation', 0))
         self.orientation = self.defaults.get('orientation', 'vertical')
         self.position = self.defaults.get('position', None)
+        self.flip = self.defaults.get('flip', 'up')
         # ---- line
         self.line_color = self.defaults.get('line_color', WIDTH)
         self.line_width = self.defaults.get('line_width', WIDTH)
@@ -371,6 +371,9 @@ class BaseCanvas:
         self.vertices = self.defaults.get('vertices', 5)
         self.sides = self.defaults.get('sides', 6)
         self.points = self.defaults.get('points', [])
+        # ---- triangle
+        self.flip = self.defaults.get('flip', None)
+        self.hand = self.defaults.get('hand', None)
         # ---- hexagons
         self.hid = self.defaults.get('id', '')  # HEX ID
         self.hex_rows = self.defaults.get('hex_rows', 0)
@@ -506,8 +509,7 @@ class BaseShape:
         self.pattern = kwargs.get('pattern', cnv.pattern)
         self.repeat = kwargs.get('repeat', cnv.repeat)
         # ---- lines
-        self.stroke = kwargs.get('stroke', kwargs.get('stroke_color',
-                                                      cnv.stroke))
+        self.stroke = kwargs.get('stroke', kwargs.get('stroke_color', cnv.stroke))
         self.stroke_width = kwargs.get('stroke_width', cnv.stroke_width)
         self.stroke_text = kwargs.get('stroke_text', cnv.stroke_text)
         self.stroke_label = kwargs.get('stroke_label', cnv.stroke_label)
@@ -539,6 +541,9 @@ class BaseShape:
         self.vertices = kwargs.get('vertices', cnv.vertices)
         self.sides = kwargs.get('sides', cnv.sides)
         self.points = kwargs.get('points', cnv.points)
+        # ---- triangle
+        self.flip = kwargs.get('flip', None)
+        self.hand = kwargs.get('hand', None)
         # ---- hexagons
         self.hex_rows = kwargs.get('hex_rows', 0)
         self.hex_cols = kwargs.get('hex_cols', 0)
@@ -565,7 +570,7 @@ class BaseShape:
         # ---- CHECK ALL
         correct, issue = self.check_settings()
         if not correct:
-            tools.feedback(f"Problem with settings: {issue}.")
+            tools.feedback("Problem with settings: %s." % '; '.join(issue))
         # ---- UPDATE SELF WITH COMMON
         if self.common:
             attrs = vars(self.common)
@@ -641,17 +646,27 @@ class BaseShape:
         if self.position:
             if str(self.position).lower() not in \
                     ['top', 'bottom', 'center', 'middle']:
-                issue.append('Invalid position!')
+                issue.append(f'"{self.position}" is an invalid position!')
                 correct = False
         if self.align:
             if str(self.align).lower() not in \
                     ['left', 'right', 'justify', 'centre']:
-                issue.append('Invalid align!')
+                issue.append(f'"{self.align}" is an invalid align!')
                 correct = False
         if self.orientation:
             if str(self.orientation).lower() not in \
                     ['vertical', 'horizontal']:
-                issue.append('Invalid orientation!')
+                issue.append(f'"{self.orientation}" is an invalid orientation!')
+                correct = False
+        if self.flip:
+            if str(self.flip).lower() not in \
+                    ['up', 'down', ]:
+                issue.append(f'"{self.flip}" is an invalid flip!')
+                correct = False
+        if self.hand:
+            if str(self.hand).lower() not in \
+                    ['left', 'right', ]:
+                issue.append(f'"{self.hand}" is an invalid hand!')
                 correct = False
         return correct, issue
 

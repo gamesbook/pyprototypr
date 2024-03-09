@@ -23,9 +23,9 @@ from .dice import (
 from .shapes import (
     BezierShape, CircleShape, CommonShape,
     ConnectShape, DeckShape, EllipseShape, FooterShape, GridShape, HexShape,
-    ArcShape, ImageShape, LineShape, PolygonShape,
-    PolylineShape, Query, RectShape, RepeatShape, RhombusShape, ShapeShape,
-    StarShape, TextShape)
+    ArcShape, ImageShape, LineShape, PolygonShape, PolylineShape,
+    Query, RectShape, RepeatShape, RhombusShape, RightAngledTriangleShape,
+    ShapeShape, StarShape, TextShape)
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
@@ -549,6 +549,24 @@ def polyline(row=None, col=None, **kwargs):
     return PolylineShape(canvas=cnv, **kwargs)
 
 
+def RightAngledTriangle(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    kwargs['row'] = row
+    kwargs['col'] = col
+    rat = RightAngledTriangleShape(canvas=cnv, **kwargs)
+    rat.draw()
+    return rat
+
+
+def rightangledtriangle(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    return RightAngledTriangleShape(canvas=cnv, **kwargs)
+
+
 def Rhombus(row=None, col=None, **kwargs):
     global cnv
     global deck
@@ -556,7 +574,6 @@ def Rhombus(row=None, col=None, **kwargs):
     rhomb = rhombus(row=row, col=col, **kwargs)
     rhomb.draw()
     return rhomb
-
 
 def rhombus(row=None, col=None, **kwargs):
     global cnv
@@ -680,12 +697,28 @@ def Hexagons(rows=1, cols=1, **kwargs):
         tools.feedback(f'Cannot draw circle-pattern hexagons: {kwargs}', True)
 
     elif kwargs.get('hex_layout') in ['d', 'dia', 'diamond']:
-        tools.feedback(f'Cannot draw diamond-pattern hexagons: {kwargs}', True)
+        cols = rows * 2 - 1
+        top_row = 0
+        end_row = rows - 1
+        the_cols = list(range(rows, 0, -1 )) + list(range(rows + 1, cols + 1))
+        # print(the_cols)
+        for ccol in the_cols:
+            top_row = top_row + 1 if ccol & 1 != 0 else top_row  # odd col
+            end_row = end_row - 1 if ccol & 1 == 0 else end_row  # even col
+            for row in range(top_row - 1, end_row + 1):
+                # print(ccol, row + 1 )  # label values (non-zero)
+                Hexagon(row=row, col=ccol - 1, hex_rows=rows, hex_cols=cols, **kwargs)
+            if ccol - 1 == 0:  # reached leftmost -> reset counters
+                top_row = 1
+                end_row = rows - 1
 
     elif kwargs.get('hex_layout') in ['t', 'tri', 'triangle']:
         tools.feedback(f'Cannot draw diamond-pattern hexagons: {kwargs}', True)
 
-    else:
+    elif kwargs.get('hex_layout') in ['l', 'loz', 'lozenge']:
+        tools.feedback(f'Cannot draw lozenge-pattern hexagons: {kwargs}', True)
+
+    else:  # default to rectangular layout
         for row in range(rows):
             for col in range(cols):
                 Hexagon(row=row, col=col, hex_rows=rows, hex_cols=cols, **kwargs)

@@ -552,7 +552,7 @@ class HexShape(BaseShape):
     """
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Draw an hexagon on a given canvas."""
+        """Draw a hexagon on a given canvas."""
         # tools.feedback(f'Will draw a hex shape: {kwargs} {off_x} {off_y} {ID}')
         is_cards = kwargs.get("is_cards", False)
         cnv = cnv.canvas if cnv else self.canvas.canvas
@@ -584,7 +584,6 @@ class HexShape(BaseShape):
             y = half_height + self.row * 2.0 * half_height + delta_x
         elif self.row is not None and self.col is not None:
             if self.hex_offset in ['o', 'O', 'odd']:
-                # TODO - adjust odd column up / even col down
                 x = self.col * (half_side + side) + delta_x
                 y = (
                     half_height
@@ -748,6 +747,60 @@ class StarShape(BaseShape):
             cnv.setFont(self.font_face, self.heading_size)
             cnv.setFillColor(self.stroke_heading)
             self.draw_multi_string(cnv, x, y + 1.3 * radius, self.heading)
+
+
+class RightAngledTriangleShape(BaseShape):
+    """
+    A right-angled triangle on a given canvas.
+    """
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        # offset
+        margin_left = self.unit(self.margin_left)
+        margin_bottom = self.unit(self.margin_bottom)
+        off_x = self.unit(off_x)
+        off_y = self.unit(off_y)
+        delta_x = off_x + margin_left
+        delta_y = off_y + margin_bottom
+        # convert to using units
+        if self.height and not self.width:
+            self.width = self.height
+        if self.width and not self.height:
+            self.height = self.width
+        # calculate points
+        x, y = self.unit(self.x), self.unit(self.y)
+        points = []
+        points.append((x, y))
+        if not self.hand or not self.flip:
+            tools.feedback('Need to supply both "flip" and "hand" options! for triangle.',
+                           stop=True)
+        hand = self.hand.lower()
+        flip = self.flip.lower()
+        if hand == 'left':
+            x2 = x + self.unit(self.width)
+        elif hand == 'right':
+            x2 = x - self.unit(self.width)
+        if flip == 'up':
+            y2 = y + self.unit(self.height)
+        elif flip == 'down':
+            y2 = y - self.unit(self.height)
+        points.append((x2, y2))
+        points.append((x2, y))
+        # canvas
+        self.set_canvas_props()
+        fill = 0 if self.transparent else 1
+        # draw points
+        pth = cnv.beginPath()
+        for key, vertex in enumerate(points):
+            x, y = vertex
+            # shift to relative position
+            x = x + delta_x
+            y = y + delta_y
+            if key == 0:
+                pth.moveTo(x, y)
+            pth.lineTo(x, y)
+        cnv.drawPath(pth, stroke=1, fill=fill)
 
 
 class TextShape(BaseShape):

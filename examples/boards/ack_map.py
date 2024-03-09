@@ -24,14 +24,14 @@ Rectangle(x=15, y=27.5, width=22.5, height=1.5, stroke=darkgrey, stroke_width=1.
 # Base Map (small numbered hexes)
 Hexagons(
     rows=16, cols=25,
-    height=1.66,  # ~half-inch
+    height=1.66,  # ~two-thirds of an inch
     margin_bottom=0.25, margin_left=2.0,
     coord_position="top", coord_offset=-0.1,
     coord_font_size=8, coord_stroke=deepgrey,
     coord_padding=2,
     fill=white, stroke=deepgrey, stroke_width=1.2)
 
-# Overlay (large hex)
+# Overlay (large hexes)
 Hexagons(
     rows=4, cols=6,
     height=6.64,  # 4 small hexes high
