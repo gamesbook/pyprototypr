@@ -689,28 +689,58 @@ def Repeat(_object, **kwargs):
 # ---- patterns ====
 
 
-def Hexagons(rows=1, cols=1, **kwargs):
+def Hexagons(rows=1, cols=1, sides=None, **kwargs):
     global cnv
     global deck
     kwargs = kwargs
-    if kwargs.get('hex_layout') in ['c', 'cir', 'circle']:
-        tools.feedback(f'Cannot draw circle-pattern hexagons: {kwargs}', True)
 
-    elif kwargs.get('hex_layout') in ['d', 'dia', 'diamond']:
-        cols = rows * 2 - 1
+    def draw_hexagons(rows: int, cols: int, stop: int, the_cols: list, odd_mid: bool = True):
+        """Draw rows of hexagons for each column in `the_cols`"""
         top_row = 0
         end_row = rows - 1
-        the_cols = list(range(rows, 0, -1 )) + list(range(rows + 1, cols + 1))
-        # print(the_cols)
+        if not odd_mid:
+            end_row = rows
+            top_row = 1
         for ccol in the_cols:
             top_row = top_row + 1 if ccol & 1 != 0 else top_row  # odd col
             end_row = end_row - 1 if ccol & 1 == 0 else end_row  # even col
+            # print('ccol, top_row, end_row', ccol, top_row, end_row)
             for row in range(top_row - 1, end_row + 1):
                 # print(ccol, row + 1 )  # label values (non-zero)
                 Hexagon(row=row, col=ccol - 1, hex_rows=rows, hex_cols=cols, **kwargs)
-            if ccol - 1 == 0:  # reached leftmost -> reset counters
+            if ccol - 1 == stop:  # reached "leftmost" -> reset counters
                 top_row = 1
                 end_row = rows - 1
+
+    if kwargs.get('hex_layout') in ['c', 'cir', 'circle']:
+        if not sides and (
+            (rows is not None and rows < 3) and
+            (cols is not None and cols < 3)):
+            tools.feedback(f'The minimum values for rows/cols is 3!', True)
+        if rows and rows > 1:
+            cols = rows
+        if cols and cols > 1:
+            rows = cols
+        if rows != cols:
+            rows = cols
+        if sides:
+            if sides < 2:
+                tools.feedback(f'The minimum value for sides is 2!', True)
+            rows = 2 * sides - 1
+            cols = rows
+        else:
+            if rows & 1 == 0:
+                tools.feedback(f'An odd number is needed for rows!', True)
+            if cols & 1 == 0:
+                tools.feedback(f'An odd number is needed for cols!', True)
+            sides = rows // 2 + 1
+        the_cols = list(range(sides, 0, -1 )) + list(range(sides + 1, rows + 1))
+        draw_hexagons(rows, cols, 0, the_cols, odd_mid=False)
+
+    elif kwargs.get('hex_layout') in ['d', 'dia', 'diamond']:
+        cols = rows * 2 - 1
+        the_cols = list(range(rows, 0, -1 )) + list(range(rows + 1, cols + 1))
+        draw_hexagons(rows, cols, 0, the_cols)
 
     elif kwargs.get('hex_layout') in ['t', 'tri', 'triangle']:
         tools.feedback(f'Cannot draw diamond-pattern hexagons: {kwargs}', True)

@@ -584,6 +584,7 @@ class HexShape(BaseShape):
             y = half_height + self.row * 2.0 * half_height + delta_x
         elif self.row is not None and self.col is not None:
             if self.hex_offset in ['o', 'O', 'odd']:
+                print('using hex_offset=odd')
                 x = self.col * (half_side + side) + delta_x
                 y = (
                     half_height
