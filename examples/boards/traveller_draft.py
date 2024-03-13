@@ -6,12 +6,10 @@ Created on: 2 March 2024
 Notes:
     * Draft style; 'B' sector
 """
+
 from pyprototypr.draw import *
 
-Create(
-    filename='traveller_draft.pdf',
-    margin=0.5,
-    pagesize=A4)
+Create(filename="traveller_draft.pdf", margin=0.5, pagesize=A4)
 
 # set colors
 map_fill = "#FAEBD7"
@@ -21,13 +19,18 @@ map_border = "#C8605A"
 Rectangle(x=0.0, y=-0.05, width=20, height=29.2, stroke=map_fill, fill=map_fill)
 
 Hexagons(
-    rows=11, cols=8,
+    cols=8,
+    rows=11,
     side=1.6,
     hex_offset="odd",
-    coord_position="t", coord_offset=0,
-    coord_font_size=11, coord_stroke=hex_lines,
+    coord_position="t",
+    coord_offset=0,
+    coord_font_size=11,
+    coord_stroke=hex_lines,
     coord_padding=2,
-    fill=map_fill, stroke=hex_lines)
+    fill=map_fill,
+    stroke=hex_lines,
+)
 
 # Map "edge" lines
 Line(x=0.4, y=-0.05, x1=0.4, y1=29.05, stroke=map_border, stroke_width=3)
