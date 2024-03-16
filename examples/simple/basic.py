@@ -36,7 +36,7 @@ PageBreak()
 # simple shapes
 Line(x=11, y=17, x1=11, y1=20, stroke=yellow, stroke_width=2)
 Line(x=11, y=17, x1=15, y1=17, stroke=red, stroke_width=2)
-Line(x=11, y=20, length=5, angle=-36.86, stroke=blue, stroke_width=2)
+Line(x=11, y=20, length=5, angle=-36.86, stroke=blue, stroke_width=2, dot_size=0.1, dot_color=blue)
 
 Rectangle(x=6, y=8, width=5, height=3, stroke_width=2, dot_size=0.1)
 Rhombus(x=1, y=7, width=3, height=5, stroke_width=1, ill=lightyellow, dot_size=0.1)

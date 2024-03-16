@@ -22,7 +22,9 @@ DEBUG = False
 
 
 class Value:
-    """Class wrapper for a list of values possible for a card attribute."""
+    """
+    Class wrapper for a list of values possible for a card attribute.
+    """
 
     def __init__(self, **kwargs):
         self.datalist = kwargs.get("datalist", [])
@@ -39,7 +41,9 @@ class Value:
 
 
 class Query:
-    """Query to select an element or a value for a card attribute."""
+    """
+    Query to select an element or a value for a card attribute.
+    """
 
     def __init__(self, **kwargs):
         self.query = kwargs.get("query", [])
@@ -49,7 +53,6 @@ class Query:
 
     def __call__(self, cid):
         """Process the query, for a given card 'ID' in the dataset."""
-        # raise NotImplementedError
         result = None
         results = []
         for _query in self.query:
@@ -74,7 +77,7 @@ class Query:
 
 class ImageShape(BaseShape):
     """
-    Show an image on a given canvas.
+    Image (bitmap or SVG) on a given canvas.
     """
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -129,7 +132,7 @@ class ImageShape(BaseShape):
 
 class LineShape(BaseShape):
     """
-    Draw a line on a given canvas.
+    Line on a given canvas.
     """
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -178,11 +181,13 @@ class LineShape(BaseShape):
         cnv.drawPath(pth, stroke=1, fill=1)
         # ----  text
         self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
+        # ----  dot
+        self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
 
 
 class RhombusShape(BaseShape):
     """
-    Draw a rhombus on a given canvas.
+    Rhombus on a given canvas.
     """
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -225,7 +230,7 @@ class RhombusShape(BaseShape):
 
 class RectangleShape(BaseShape):
     """
-    Draw a rectangle on a given canvas.
+    Rectangle on a given canvas.
     """
 
     def __init__(self, _object=None, canvas=None, **kwargs):
@@ -334,7 +339,7 @@ class RectangleShape(BaseShape):
 
 class OctagonShape(BaseShape):
     """
-    Draw an octagon on a given canvas.
+    Octagon on a given canvas.
     """
 
     def __init__(self, _object=None, canvas=None, **kwargs):
@@ -413,7 +418,7 @@ class OctagonShape(BaseShape):
 
 class ShapeShape(BaseShape):
     """
-    Draw an irregular polygon, based on a set of points, on a given canvas.
+    Irregular polygon, based on a set of points, on a given canvas.
     """
 
     def __init__(self, _object=None, canvas=None, **kwargs):
@@ -490,12 +495,12 @@ class ArcShape(BaseShape):
 
 class BezierShape(BaseShape):
     """
-    A Bezier curve on a given canvas.
+    Bezier curve on a given canvas.
 
     A Bezier curve is specified by four control points:
         (x1,y1), (x2,y2), (x3,y3), (x4,y4).
-    The curve starts at (x1,y1) and ends at (x4,y4) and the line segment
-    from (x1,y1) to (x2,y2) and the line segment from (x3,y3) to (x4,y4)
+    The curve starts at (x1,y1) and ends at (x4,y4) with a line segment
+    from (x1,y1) to (x2,y2) and a line segment from (x3,y3) to (x4,y4)
     """
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -529,7 +534,7 @@ class BezierShape(BaseShape):
 
 class PolygonShape(BaseShape):
     """
-    A regular polygon on a given canvas.
+    Regular polygon on a given canvas.
     """
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -583,7 +588,7 @@ class PolygonShape(BaseShape):
 
 class PolylineShape(BaseShape):
     """
-    A multi-part line on a given canvas.
+    Multi-part line on a given canvas.
     """
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -620,7 +625,7 @@ class PolylineShape(BaseShape):
 
 class HexShape(BaseShape):
     """
-    A hexagon on a given canvas.
+    Hexagon on a given canvas.
 
     See: http://powerfield-software.com/?p=851
     """
@@ -779,7 +784,7 @@ class HexShape(BaseShape):
 
 class StarShape(BaseShape):
     """
-    A star on a given canvas.
+    Star on a given canvas.
     """
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -828,7 +833,7 @@ class StarShape(BaseShape):
 
 class RightAngledTriangleShape(BaseShape):
     """
-    A right-angled triangle on a given canvas.
+    Right-angled Triangle on a given canvas.
     """
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -1034,7 +1039,7 @@ class EllipseShape(BaseShape):
 
 class GridShape(BaseShape):
     """
-    A grid on a given canvas.
+    Grid on a given canvas.
     """
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -1084,7 +1089,7 @@ class CommonShape(BaseShape):
 
 class CardShape(BaseShape):
     """
-    Card attributes.
+    Card shape on a given canvas.
     """
 
     def __init__(self, _object=None, canvas=None, **kwargs):
@@ -1162,7 +1167,9 @@ class CardShape(BaseShape):
 
 
 class DeckShape(BaseShape):
-    """Placeholder for the deck design; list of CardShapes and Shapes."""
+    """
+    Placeholder for the deck design; list of CardShapes and Shapes.
+    """
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(DeckShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
@@ -1241,7 +1248,9 @@ class DeckShape(BaseShape):
 
 
 class RepeatShape(BaseShape):
-    """Draw a Shape multiple times."""
+    """
+    Draw a Shape multiple times.
+    """
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(RepeatShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
@@ -1318,8 +1327,7 @@ class RepeatShape(BaseShape):
                                         off_x=off_x, off_y=off_y, ID=self.shape_id
                                     )
 
-
-### other ====================================================================
+# --- Other ----
 
 
 class ConnectShape(BaseShape):

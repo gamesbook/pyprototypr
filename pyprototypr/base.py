@@ -468,7 +468,7 @@ class BaseShape:
         self.y = kwargs.get('y', kwargs.get('bottom', cnv.y))
         self.cx = kwargs.get('cx', cnv.cx)
         self.cy = kwargs.get('cy', cnv.cy)
-        self.scaling = kwargs.get('scaling', None)
+        self.scaling = kwargs.get('scaling', None)  # SVG images
         # ---- repeats
         self.offset = kwargs.get('offset', cnv.offset)
         self.offset_across = kwargs.get('offset_down', cnv.offset_down)
@@ -632,7 +632,7 @@ class BaseShape:
         try:
             canvas.setLineWidth(stroke_width or self.stroke_width)
         except TypeError:
-            tools.feedback('Please check your stroke_width setting - should be a number')
+            tools.feedback('Please check your stroke_width setting; should be a number')
         except AttributeError:
             pass
         if self.line_dashes:
@@ -674,8 +674,8 @@ class BaseShape:
         return correct, issue
 
     def to_alignment(self):
-        """Convert local, English-friendly alignments to reportlab enums."""
-        if self.align == 'centre':
+        """Convert local, English-friendly alignments to Reportlab enums."""
+        if self.align == 'centre' or self.align == 'center':
             self._alignment = TA_CENTER
         elif self.align == 'right':
             self._alignment = TA_RIGHT
@@ -716,7 +716,7 @@ class BaseShape:
             # tools.feedback(f'Loading type: {source_ext}')
             if source_ext.lower() == 'svg':
                 svg = True
-        except:
+        except Exception:
             pass
         if source:
             try:
@@ -745,7 +745,8 @@ class BaseShape:
                 except IOError:
                     ftype = 'SVG ' if svg else ''
                     tools.feedback(
-                        f'Unable to find or open {ftype}image "{_source}"; including {filepath}.')
+                        f'Unable to find or open {ftype}image "{_source}";'
+                        f' including {filepath}.')
         return img, svg
 
     def process_template(self, _dict):
@@ -753,7 +754,7 @@ class BaseShape:
         if _dict.get('x'):
             self.x = _dict.get('x', 1)
         if _dict.get('y'):
-            self.y = _dict.get('x', 1)
+            self.y = _dict.get('y', 1)
         if _dict.get('height'):
             self.height = _dict.get('height', 1)
         if _dict.get('width'):
