@@ -23,8 +23,8 @@ from .dice import (
 from .shapes import (
     BezierShape, CircleShape, CommonShape,
     ConnectShape, DeckShape, EllipseShape, FooterShape, GridShape, HexShape,
-    ArcShape, ImageShape, LineShape, PolygonShape, PolylineShape,
-    Query, RectShape, RepeatShape, RhombusShape, RightAngledTriangleShape,
+    ArcShape, ImageShape, LineShape, OctagonShape, PolygonShape, PolylineShape,
+    Query, RectangleShape, RepeatShape, RhombusShape, RightAngledTriangleShape,
     ShapeShape, StarShape, TextShape)
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
@@ -453,7 +453,7 @@ def AutoGrid(**kwargs):
     cols = int(_cols)
     kwargs['rows'] = kwargs.get('rows', rows)
     kwargs['cols'] = kwargs.get('cols', cols)
-    kwargs['stroke_width'] = kwargs.get('stroke_width', 0.33)
+    kwargs['stroke_width'] = kwargs.get('stroke_width', 0.05)  # fine line
     kwargs['font_size'] = kwargs.get('font_size', 10)
     grid = GridShape(canvas=cnv, **kwargs)
     grid.draw()
@@ -511,6 +511,24 @@ def line(row=None, col=None, **kwargs):
     kwargs['row'] = row
     kwargs['col'] = col
     return LineShape(canvas=cnv, **kwargs)
+
+
+def Octagon(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    octg = octagon(row=row, col=col, **kwargs)
+    octg.draw()
+    return octg
+
+
+def octagon(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    kwargs['row'] = row
+    kwargs['col'] = col
+    return OctagonShape(canvas=cnv, **kwargs)
 
 
 def Polygon(row=None, col=None, **kwargs):
@@ -597,7 +615,7 @@ def rectangle(row=None, col=None, **kwargs):
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return RectShape(canvas=cnv, **kwargs)
+    return RectangleShape(canvas=cnv, **kwargs)
 
 
 def Shape(row=None, col=None, **kwargs):

@@ -13,16 +13,19 @@ Hexagon(cx=9.5, cy=13.8, side=8, label="WELCOME!\nto the basic demo...",
 PageBreak()
 
 # test default labels and autogrid
-AutoGrid()
 Polygon(x=4, y=25, radius=2, rotate=30, label="polygon6")
 Polygon(x=9, y=25, radius=2, sides=8, rotate=22.5, label="polygon8")
-Polygon(x=14, y=25, radius=2, sides=3, rotate=30, label="polygon3")
-Rectangle(x=5, y=19, width=9, height=3, label="rectangle")
-Hexagon(cx=9.5, cy=16, side=2, label="hexagon")
-Star(x=10, y=12, vertices=5, radius=2, label="star")
+Polygon(x=14, y=24.5, radius=2.5, sides=2.5, rotate=30, label="polygon3")
+Rectangle(x=5.5, y=18.5, width=9, height=3, label="rectangle")
+Hexagon(cx=3, cy=14, side=2, label="hexagon")
+Star(x=10, y=14, vertices=5, radius=2, label="star")
+Octagon(cx=16, cy=14, width=3.5, height=3.5, label="octagon")
 Circle(cx=14, cy=7, radius=2, label="circle")
 Ellipse(x=2, y=5, x1=9, y1=9, label="ellipse")
 Rhombus(x=8.5, y=0, width=3, height=5, label="rhombus")
+
+AutoGrid()
+
 PageBreak()
 
 # simple shapes
@@ -116,13 +119,24 @@ Grid(rows=135, cols=95, size=0.2, stroke=mediumseagreen, stroke_width=0.9)
 Grid(rows=27, cols=19, size=1.0, stroke=mediumseagreen, stroke_width=1.5)
 PageBreak()
 
-# image
-Image("sholes_typewriter.png", x=6, y=11, width=7, height=6,
+# PNG image and various text positions
+Image("sholes_typewriter.png",
+      x=6, y=11, width=7, height=6,
       label="sholes typewriter", stroke_label=red,
       heading="Sholes Typewriter", stroke_heading=blue,
       title="Fig 1. Sholes typewriter", stroke_title=green)
 Rectangle(x=6, y=11, width=7, height=6, transparent=True, stroke=silver)
 PageBreak()
+
+# Devin McElheran, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
+Image("Typewriter_Vector.svg",
+      x=6, y=11, width=7, height=6,
+      label="wiki typewriter", stroke_label=red,
+      heading="Wiki Typewriter", stroke_heading=blue,
+      title="Fig 2. Wiki typewriter (Devin McElheran, CC BY-SA 4.0)", stroke_title=green)
+Rectangle(x=6, y=11, width=7, height=6, transparent=True, stroke=silver)
+PageBreak()
+
 
 # text wrapping & justification
 LATIN = """At cum perfecto

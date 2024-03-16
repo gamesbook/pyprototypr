@@ -219,19 +219,19 @@ class RhombusShape(BaseShape):
             self.draw_multi_string(cnv, x_c, y_c, self.label)
 
 
-class RectShape(BaseShape):
+class RectangleShape(BaseShape):
     """
     Draw a rectangle on a given canvas.
     """
 
     def __init__(self, _object=None, canvas=None, **kwargs):
-        super(RectShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        super(RectangleShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # overrides to centre shape
         if self.cx and self.cy:
             x, y = self.x, self.y
             self.x = self.cx - self.width / 2.0
             self.y = self.cy - self.height / 2.0
-            tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
+            # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
         self.kwargs = kwargs
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -329,6 +329,100 @@ class RectShape(BaseShape):
             x_t = x + width / 2.0
             y_t = y + height / 2.0
             self.draw_multi_string(cnv, x_t, y_t, self.label)
+        # dot
+        if self.dot_size:
+            dot_size = self.unit(self.dot_size)
+            cnv.setFillColor(self.dot_color)
+            cnv.setStrokeColor(self.dot_color)
+            cnv.circle(x, y, dot_size, stroke=1, fill=1)
+
+
+class OctagonShape(BaseShape):
+    """
+    Draw an octagon on a given canvas.
+    """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(OctagonShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        # overrides to centre shape
+        if self.cx and self.cy:
+            x, y = self.x, self.y
+            self.x = self.cx - self.width / 2.0
+            self.y = self.cy - self.height / 2.0
+            # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
+        self.kwargs = kwargs
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw an octagon on a given canvas."""
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        # offset
+        margin_left = self.unit(self.margin_left)
+        margin_bottom = self.unit(self.margin_bottom)
+        off_x = self.unit(off_x)
+        off_y = self.unit(off_y)
+        delta_x = off_x + margin_left
+        delta_y = off_y + margin_bottom
+        # convert to using units
+        log.debug("h:%s w:%s", self.height, self.width)
+        height = self.unit(self.height)
+        width = self.unit(self.width)
+        width = height
+        log.debug("h:%s w:%s", height, width)
+        log.debug("line: %s units margin: %s", ID, self.margin_left)
+        if self.row is not None and self.col is not None:
+            x = self.col * width + delta_x
+            y = self.row * height + delta_y
+            c_x, c_y = x + width / 2.0, y + height / 2.0
+        elif self.cx and self.cy:
+            x = self.unit(self.cx) - width / 2.0 + delta_x
+            y = self.unit(self.cy) - height / 2.0 + delta_y
+            c_x, c_y = self.unit(self.cx) + delta_x, self.unit(self.cy) + delta_y
+        else:
+            x = self.unit(self.x) + delta_x
+            y = self.unit(self.y) + delta_y
+            c_x, c_y = x + width / 2.0, y + height / 2.0
+        # tools.feedback(f"DRAW Old {x=} {y=} {cx=} {cy=}")
+        # overrides to centre the shape
+        if kwargs.get("cx") and kwargs.get("cy"):
+            x = self.unit(kwargs.get("cx")) - width / 2.0 + delta_x
+            y = self.unit(kwargs.get("cy")) + height / 2.0 + delta_y
+            c_x = self.unit(kwargs.get("cx")) + delta_x
+            c_y = self.unit(kwargs.get("cy")) + delta_y
+        # canvas
+        self.set_canvas_props()
+        fill = 0 if self.transparent else 1
+        # draw
+        side = height / (1 + math.sqrt(2.0))
+        zzz = math.sqrt((side * side) / 2.0)
+        vertices = [  # clockwise from bottom-left; relative to centre
+            (c_x - side / 2.0, c_y - height / 2.0),  # 1
+            (c_x - width / 2.0, c_y - height / 2.0 + zzz),  # 2
+            (c_x - width / 2.0, c_y - height / 2.0 + zzz + side),  # 3
+            (c_x - side / 2.0, c_y + height / 2.0),  # 4
+            (c_x + side / 2.0, c_y + height / 2.0),  # 5
+            (c_x + width / 2.0, c_y - height / 2.0 + zzz + side),  # 6
+            (c_x + width / 2.0, c_y - height / 2.0 + zzz),  # 7
+            (c_x + side / 2.0, c_y - height / 2.0),  # 8
+        ]
+        pth = cnv.beginPath()
+        pth.moveTo(*vertices[0])
+        for vertex in vertices:
+            pth.lineTo(*vertex)
+        pth.close()
+        cnv.drawPath(pth, stroke=1, fill=fill)
+        # text
+        if self.label:
+            cnv.setFont(self.font_face, self.label_size)
+            cnv.setFillColor(self.stroke_label)
+            x_t = x + width / 2.0
+            y_t = y + height / 2.0
+            self.draw_multi_string(cnv, x_t, y_t, self.label)
+        # dot
+        if self.dot_size:
+            dot_size = self.unit(self.dot_size)
+            cnv.setFillColor(self.dot_color)
+            cnv.setStrokeColor(self.dot_color)
+            cnv.circle(x, y, dot_size, stroke=1, fill=1)
 
 
 class ShapeShape(BaseShape):
@@ -1031,7 +1125,7 @@ class CardShape(BaseShape):
         # draw outline
         label = "ID:%s" % cid if self.show_id else ""
         if self.shape == "rectangle":
-            outline = RectShape(
+            outline = RectangleShape(
                 label=label,
                 height=self.height,
                 width=self.width,
