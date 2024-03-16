@@ -2,3 +2,4 @@
 reportlab>=3.3.0
 xlrd>=0.9.4
 bgg-api>=1.1.6
+svglib>=1.5.1

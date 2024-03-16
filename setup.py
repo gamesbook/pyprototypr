@@ -73,11 +73,11 @@ setup(
     tests_require=['pytest'],
     cmdclass={'test': PyTest},
     description='Python utility for designing and creating simple, regular,'
-                '  graphic outputs',
+                '  graphic outputs as PDF files',
     long_description=LONG_DESCRIPTION,
     packages=find_packages(exclude=['dist', 'build', 'docs', 'examples']),
     include_package_data=True,
-    install_requires=['reportlab', 'xlrd', 'bgg-api'],
+        install_requires=['reportlab', 'xlrd', 'bgg-api', 'svglib', 'lxml'],
     test_suite='pyprototypr.test',
     classifiers=[
         'Programming Language :: Python :: 3.11',

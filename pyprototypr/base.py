@@ -10,6 +10,7 @@ import logging
 import math
 import os
 # third party
+from svglib.svglib import svg2rlg
 from reportlab.pdfgen import canvas as reportlab_canvas
 from reportlab.lib.units import cm, inch
 from reportlab.lib.pagesizes import (
@@ -286,6 +287,7 @@ class BaseCanvas:
         self.y = self.defaults.get('y', self.defaults.get('bottom', 1))
         self.cx = self.defaults.get('cx', None)
         self.cy = self.defaults.get('cy', None)
+        self.scaling = self.defaults.get('scaling', None)
         # ---- repeats
         self.offset = self.defaults.get('offset', 0)
         self.offset_across = self.defaults.get('offset_across', self.offset)
@@ -466,6 +468,7 @@ class BaseShape:
         self.y = kwargs.get('y', kwargs.get('bottom', cnv.y))
         self.cx = kwargs.get('cx', cnv.cx)
         self.cy = kwargs.get('cy', cnv.cy)
+        self.scaling = kwargs.get('scaling', None)
         # ---- repeats
         self.offset = kwargs.get('offset', cnv.offset)
         self.offset_across = kwargs.get('offset_down', cnv.offset_down)
@@ -682,25 +685,68 @@ class BaseShape:
             self._alignment = TA_LEFT
         return self._alignment
 
-    def load_image(self, source=None):
+    def load_image(self, source=None, scaling=None) -> tuple:
         """Load an image from file or website.
 
-        If source not found; try path in which script located"""
+        If source not found; try path in which script located.
+
+        Returns:
+            tuple: Image or SVG; boolean (True if file type is SVG)
+        """
+
+        def scale_image(drawing, scaling_factor):
+            """Scale a shapes.Drawing() while maintaining aspect ratio
+            """
+            try:
+                _scaling_factor = float(scaling_factor)
+            except Exception:
+                tools.feedback(
+                    f'Cannot scale an image with a value of {scaling_factor}', True)
+            scaling_x = _scaling_factor
+            scaling_y = _scaling_factor
+            drawing.width = drawing.minWidth() * scaling_x
+            drawing.height = drawing.height * scaling_y
+            drawing.scale(scaling_x, scaling_y)
+            return drawing
+
         img = None
+        try:
+            svg = False
+            source_ext = source.strip()[-3:]
+            # tools.feedback(f'Loading type: {source_ext}')
+            if source_ext.lower() == 'svg':
+                svg = True
+        except:
+            pass
         if source:
             try:
-                img = ImageReader(source)
-                return img
+                if svg:
+                    if not os.path.exists(source):
+                        raise IOError
+                    img = svg2rlg(source)
+                    if scaling:
+                        img = scale_image(img, scaling)
+                else:
+                    img = ImageReader(source)
+                return img, svg
             except IOError:
                 filepath = tools.script_path()
                 _source = os.path.join(filepath, source)
                 try:
-                    img = ImageReader(_source)
-                    return img
+                    if svg:
+                        if not os.path.exists(_source):
+                            raise IOError
+                        img = svg2rlg(_source)
+                        if scaling:
+                            img = scale_image(img, scaling_factor=scaling)
+                    else:
+                        img = ImageReader(_source)
+                    return img, svg
                 except IOError:
+                    ftype = 'SVG ' if svg else ''
                     tools.feedback(
-                        f'Unable to find or open image "{_source}"; including {filepath}.')
-        return img
+                        f'Unable to find or open {ftype}image "{_source}"; including {filepath}.')
+        return img, svg
 
     def process_template(self, _dict):
         """Set values for properties based on those defined in a dictionary."""
@@ -768,9 +814,24 @@ class BaseShape:
                 canvas.drawString(x, mvy, ln)
             mvy -= canvas._leading
 
-    def draw_label(self, canvas, x, y, string, align=None):
+    def draw_string(self, canvas, x, y, string, align=None):
         """Draw a multi-string on the canvas"""
         self.draw_multi_string(canvas=canvas, x=x, y=y, string=string, align=align)
+
+    def draw_label(self, canvas, x, y):
+        """Draw the auto-label on a shape (normally the centre)"""
+        if self.label:
+            canvas.setFont(self.font_face, self.label_size)
+            canvas.setFillColor(self.stroke_label)
+            self.draw_multi_string(canvas, x, y, self.label)
+
+    def draw_dot(self, canvas, x, y):
+        """Draw a small dot on a shape (normally the centre)"""
+        if self.dot_size:
+            dot_size = self.unit(self.dot_size)
+            canvas.setFillColor(self.dot_color)
+            canvas.setStrokeColor(self.dot_color)
+            canvas.circle(x, y, dot_size, stroke=1, fill=1)
 
     def V(self, *args):
         """Placeholder for value evaluator."""

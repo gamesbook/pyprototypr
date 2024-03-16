@@ -101,12 +101,17 @@ class ImageShape(BaseShape):
         else:
             x = self.unit(self.x) + delta_x
             y = self.unit(self.y) + delta_y
-        # draw
-        img = self.load_image(self.source)
+        # ---- draw image
+        # tools.feedback(f'{self.scaling} scaling')
+        img, is_svg = self.load_image(self.source, self.scaling)
         if img:
             # assumes 1 pt == 1 pixel ?
-            cnv.drawImage(img, x=x, y=y, width=width, height=height, mask="auto")
-        # text
+            if is_svg:
+                from reportlab.graphics import renderPDF
+                renderPDF.draw(img, cnv, x=x, y=y)
+            else:
+                cnv.drawImage(img, x=x, y=y, width=width, height=height, mask="auto")
+        # ---- text
         xc = x + width / 2.0
         if self.label:
             cnv.setFont(self.font_face, self.label_size)
@@ -166,11 +171,13 @@ class LineShape(BaseShape):
         log.debug("x:%s x1:%s y:%s y1:%s", x, x_1, y, y_1)
         # canvas
         self.set_canvas_props()
-        # draw line
+        # ---- draw line
         pth = cnv.beginPath()
         pth.moveTo(x, y)
         pth.lineTo(x_1, y_1)
         cnv.drawPath(pth, stroke=1, fill=1)
+        # ----  text
+        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
 
 
 class RhombusShape(BaseShape):
@@ -200,7 +207,7 @@ class RhombusShape(BaseShape):
         # canvas
         self.set_canvas_props()
         fill = 0 if self.transparent else 1
-        # draw
+        # ---- draw rhombus
         x_s, y_s = x, y + height / 2.0
         pth = cnv.beginPath()
         pth.moveTo(x_s, y_s)
@@ -210,13 +217,10 @@ class RhombusShape(BaseShape):
         pth.lineTo(x_s, y_s)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=fill)
-        # text
-        if self.label:
-            x_c = x + width / 2.0
-            y_c = y + height / 2.0
-            cnv.setFont(self.font_face, self.label_size)
-            cnv.setFillColor(self.stroke_label)
-            self.draw_multi_string(cnv, x_c, y_c, self.label)
+        # ---- text
+        self.draw_label(cnv, x + width / 2.0, y + height / 2.0)
+        # ---- dot
+        self.draw_dot(cnv, x + width / 2.0, y + height / 2.0)
 
 
 class RectangleShape(BaseShape):
@@ -267,7 +271,7 @@ class RectangleShape(BaseShape):
         # canvas
         self.set_canvas_props()
         fill = 0 if self.transparent else 1
-        # draw
+        # ---- draw rectangle
         if self.rounding:
             rounding = self.unit(self.rounding)
             cnv.roundRect(x, y, width, height, rounding, stroke=1, fill=fill)
@@ -305,8 +309,8 @@ class RectangleShape(BaseShape):
             pth.lineTo(gx + width, gy + deltag)
             # done
             cnv.drawPath(pth, stroke=1, fill=1)
-        # pattern
-        img = self.load_image(self.pattern)
+        # ---- fill pattern?
+        img, is_svg = self.load_image(self.pattern)
         if img:
             log.debug("IMG %s s%s %s", type(img._image), img._image.size)
             iwidth = img._image.size[0]
@@ -322,19 +326,10 @@ class RectangleShape(BaseShape):
                 # w, h = yourImage.size
                 # yourImage.crop((0, 30, w, h-30)).save(...)
                 cnv.drawImage(img, x=x, y=y, width=width, height=height, mask="auto")
-        # text
-        if self.label:
-            cnv.setFont(self.font_face, self.label_size)
-            cnv.setFillColor(self.stroke_label)
-            x_t = x + width / 2.0
-            y_t = y + height / 2.0
-            self.draw_multi_string(cnv, x_t, y_t, self.label)
-        # dot
-        if self.dot_size:
-            dot_size = self.unit(self.dot_size)
-            cnv.setFillColor(self.dot_color)
-            cnv.setStrokeColor(self.dot_color)
-            cnv.circle(x, y, dot_size, stroke=1, fill=1)
+        # ---- text
+        self.draw_label(cnv, x + width / 2.0, y + height / 2.0)
+        # ---- dot
+        self.draw_dot(cnv, x + width / 2.0, y + height / 2.0)
 
 
 class OctagonShape(BaseShape):
@@ -391,7 +386,7 @@ class OctagonShape(BaseShape):
         # canvas
         self.set_canvas_props()
         fill = 0 if self.transparent else 1
-        # draw
+        # ---- draw octagon
         side = height / (1 + math.sqrt(2.0))
         zzz = math.sqrt((side * side) / 2.0)
         vertices = [  # clockwise from bottom-left; relative to centre
@@ -410,19 +405,10 @@ class OctagonShape(BaseShape):
             pth.lineTo(*vertex)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=fill)
-        # text
-        if self.label:
-            cnv.setFont(self.font_face, self.label_size)
-            cnv.setFillColor(self.stroke_label)
-            x_t = x + width / 2.0
-            y_t = y + height / 2.0
-            self.draw_multi_string(cnv, x_t, y_t, self.label)
-        # dot
-        if self.dot_size:
-            dot_size = self.unit(self.dot_size)
-            cnv.setFillColor(self.dot_color)
-            cnv.setStrokeColor(self.dot_color)
-            cnv.circle(x, y, dot_size, stroke=1, fill=1)
+        # ---- text
+        self.draw_label(cnv, x + width / 2.0, y + height / 2.0)
+        # ---- dot
+        self.draw_dot(cnv, x + width / 2.0, y + height / 2.0)
 
 
 class ShapeShape(BaseShape):
@@ -451,7 +437,7 @@ class ShapeShape(BaseShape):
         # canvas
         self.set_canvas_props()
         fill = 0 if self.transparent else 1
-        # draw
+        # ---- draw Shape
         if isinstance(self.points, str):
             # SPLIT STRING e.g. "1,2  3,4  4.5,8.8"
             _points = self.points.split(" ")
@@ -573,18 +559,16 @@ class PolygonShape(BaseShape):
         # canvas
         self.set_canvas_props()
         fill = 0 if self.transparent else 1
-        # draw
+        # ---- draw polygon
         pth = cnv.beginPath()
         pth.moveTo(*vertices[0])
         for vertex in vertices:
             pth.lineTo(*vertex)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=fill)
-        #  text
-        if self.label:
-            cnv.setFont(self.font_face, self.label_size)
-            cnv.setFillColor(self.stroke_label)
-            self.draw_multi_string(cnv, x, y, self.label)
+        # ---- text
+        self.draw_label(cnv, x, y)
+
         if self.title:
             cnv.setFont(self.font_face, self.title_size)
             cnv.setFillColor(self.stroke_title)
@@ -593,12 +577,8 @@ class PolygonShape(BaseShape):
             cnv.setFont(self.font_face, self.heading_size)
             cnv.setFillColor(self.stroke_heading)
             self.draw_multi_string(cnv, x, y + 1.3 * radius, self.heading)
-        # dot
-        if self.dot_size:
-            dot_size = self.unit(self.dot_size)
-            cnv.setFillColor(self.dot_color)
-            cnv.setStrokeColor(self.dot_color)
-            cnv.circle(x, y, dot_size, stroke=1, fill=1)
+        # ---- dot
+        self.draw_dot(cnv, x, y)
 
 
 class PolylineShape(BaseShape):
@@ -748,21 +728,24 @@ class HexShape(BaseShape):
                 cx=x_d + self.unit(self.centre_shape_x),
                 cy=y_d + self.unit(self.centre_shape_y))
 
-        # ---- centre dot
-        elif self.dot_size:
-            dot_size = self.unit(self.dot_size)
-            cnv.setFillColor(self.dot_color)
-            cnv.setStrokeColor(self.dot_color)
-            cnv.circle(x_d, y_d, dot_size, stroke=1, fill=1)
-        if DEBUG:
-            cnv.setStrokeColorRGB(0, 0, 0)
-            cnv.drawCentredString(x - 10, y, "%s.%s" % (self.row, self.col))
+        # ---- text
+        self.draw_label(cnv, x_d, y_d)
 
-        # ----  text
-        if self.label:
-            cnv.setFont(self.font_face, self.label_size)
-            cnv.setFillColor(self.stroke_label)
-            self.draw_multi_string(cnv, x_d, y_d, self.label)
+        # ---- dot
+        self.draw_dot(cnv, x_d, y_d)
+
+        # # ---- centre dot
+        # elif self.dot_size:
+        #     dot_size = self.unit(self.dot_size)
+        #     cnv.setFillColor(self.dot_color)
+        #     cnv.setStrokeColor(self.dot_color)
+        #     cnv.circle(x_d, y_d, dot_size, stroke=1, fill=1)
+
+        # # ----  text
+        # if self.label:
+        #     cnv.setFont(self.font_face, self.label_size)
+        #     cnv.setFillColor(self.stroke_label)
+        #     self.draw_multi_string(cnv, x_d, y_d, self.label)
 
         # ----  numbering
         if self.coord_position:
@@ -816,7 +799,7 @@ class StarShape(BaseShape):
         radius = self.unit(self.radius)
         # canvas
         self.set_canvas_props()
-        # draw
+        # ---- draw star
         pth = cnv.beginPath()
         pth.moveTo(x, y + radius)
         angle = (2 * math.pi) * 2.0 / 5.0
@@ -829,11 +812,8 @@ class StarShape(BaseShape):
             pth.lineTo(x_1, y_1)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1)
-        # text
-        if self.label:
-            cnv.setFont(self.font_face, self.label_size)
-            cnv.setFillColor(self.stroke_label)
-            self.draw_multi_string(cnv, x, y, self.label)
+        # ---- text
+        self.draw_label(cnv, x, y)
         if self.title:
             cnv.setFont(self.font_face, self.title_size)
             cnv.setFillColor(self.stroke_title)
@@ -842,6 +822,8 @@ class StarShape(BaseShape):
             cnv.setFont(self.font_face, self.heading_size)
             cnv.setFillColor(self.stroke_heading)
             self.draw_multi_string(cnv, x, y + 1.3 * radius, self.heading)
+        # ---- dot
+        self.draw_dot(cnv, x, y)
 
 
 class RightAngledTriangleShape(BaseShape):
@@ -885,7 +867,7 @@ class RightAngledTriangleShape(BaseShape):
         # canvas
         self.set_canvas_props()
         fill = 0 if self.transparent else 1
-        # draw points
+        # ---- draw RA triangle
         pth = cnv.beginPath()
         for key, vertex in enumerate(points):
             x, y = vertex
@@ -1006,13 +988,12 @@ class CircleShape(BaseShape):
             y_c = self.unit(self.y) + delta_y + radius
         # canvas
         self.set_canvas_props()
-        # draw
+        # ---- draw circle
         cnv.circle(x_c, y_c, radius, stroke=1, fill=1)
-        # text
-        if self.label:
-            cnv.setFont(self.font_face, self.label_size)
-            cnv.setFillColor(self.stroke_label)
-            self.draw_multi_string(cnv, x_c, y_c, self.label)
+        # ---- text
+        self.draw_label(cnv, x_c, y_c)
+        # ---- dot
+        self.draw_dot(cnv, x_c, y_c)
 
 
 class EllipseShape(BaseShape):
@@ -1041,15 +1022,14 @@ class EllipseShape(BaseShape):
         y_2 = self.unit(self.y_1) + delta_y
         # canvas
         self.set_canvas_props()
-        # draw
+        # ---- draw ellipse
         cnv.ellipse(x_1, y_1, x_2, y_2, stroke=1, fill=1)
-        # text
-        if self.label:
-            cnv.setFont(self.font_face, self.label_size)
-            cnv.setFillColor(self.stroke_label)
-            x_c = (x_2 - x_1) / 2.0 + x_1
-            y_c = (y_2 - y_1) / 2.0 + y_1
-            self.draw_multi_string(cnv, x_c, y_c, self.label)
+        x_c = (x_2 - x_1) / 2.0 + x_1
+        y_c = (y_2 - y_1) / 2.0 + y_1
+        # ---- text
+        self.draw_label(cnv, x_c, y_c)
+        # ---- dot
+        self.draw_dot(cnv, x_c, y_c)
 
 
 class GridShape(BaseShape):
