@@ -178,7 +178,7 @@ class LineShape(BaseShape):
         pth = cnv.beginPath()
         pth.moveTo(x, y)
         pth.lineTo(x_1, y_1)
-        cnv.drawPath(pth, stroke=1, fill=1)
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ----  text
         self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
         # ----  dot
@@ -211,7 +211,6 @@ class RhombusShape(BaseShape):
             y = self.unit(self.y) + delta_y
         # canvas
         self.set_canvas_props()
-        fill = 0 if self.transparent else 1
         # ---- draw rhombus
         x_s, y_s = x, y + height / 2.0
         pth = cnv.beginPath()
@@ -221,7 +220,7 @@ class RhombusShape(BaseShape):
         pth.lineTo(x_s + width / 2.0, y_s - height / 2.0)
         pth.lineTo(x_s, y_s)
         pth.close()
-        cnv.drawPath(pth, stroke=1, fill=fill)
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- text
         self.draw_label(cnv, x + width / 2.0, y + height / 2.0)
         # ---- dot
@@ -275,16 +274,15 @@ class RectangleShape(BaseShape):
             y = kwargs.get("cy") - height / 2.0
         # canvas
         self.set_canvas_props()
-        fill = 0 if self.transparent else 1
         # ---- draw rectangle
         if self.rounding:
             rounding = self.unit(self.rounding)
-            cnv.roundRect(x, y, width, height, rounding, stroke=1, fill=fill)
+            cnv.roundRect(x, y, width, height, rounding, stroke=1, fill=1 if self.fill else 0)
         elif self.rounded:
             _rounding = width * 0.08
-            cnv.roundRect(x, y, width, height, _rounding, stroke=1, fill=fill)
+            cnv.roundRect(x, y, width, height, _rounding, stroke=1, fill=1 if self.fill else 0)
         else:
-            cnv.rect(x, y, width, height, stroke=1, fill=fill)
+            cnv.rect(x, y, width, height, stroke=1, fill=1 if self.fill else 0)
         # grid marks
         self.set_canvas_props(
             stroke=self.grid_color, stroke_width=self.grid_stroke_width
@@ -390,7 +388,6 @@ class OctagonShape(BaseShape):
             c_y = self.unit(kwargs.get("cy")) + delta_y
         # canvas
         self.set_canvas_props()
-        fill = 0 if self.transparent else 1
         # ---- draw octagon
         side = height / (1 + math.sqrt(2.0))
         zzz = math.sqrt((side * side) / 2.0)
@@ -409,7 +406,7 @@ class OctagonShape(BaseShape):
         for vertex in vertices:
             pth.lineTo(*vertex)
         pth.close()
-        cnv.drawPath(pth, stroke=1, fill=fill)
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- text
         self.draw_label(cnv, x + width / 2.0, y + height / 2.0)
         # ---- dot
@@ -441,7 +438,6 @@ class ShapeShape(BaseShape):
         delta_y = off_y + margin_bottom + y
         # canvas
         self.set_canvas_props()
-        fill = 0 if self.transparent else 1
         # ---- draw Shape
         if isinstance(self.points, str):
             # SPLIT STRING e.g. "1,2  3,4  4.5,8.8"
@@ -460,7 +456,7 @@ class ShapeShape(BaseShape):
                     pth.moveTo(x, y)
                 pth.lineTo(x, y)
             pth.close()
-            cnv.drawPath(pth, stroke=1, fill=fill)
+            cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
 
 
 class ArcShape(BaseShape):
@@ -489,7 +485,7 @@ class ArcShape(BaseShape):
         y_2 = self.unit(self.y_1) + delta_y
         # canvas
         self.set_canvas_props()
-        # draw
+        # ---- draw arc
         cnv.arc(x_1, y_1, x_2, y_2)
 
 
@@ -528,7 +524,7 @@ class BezierShape(BaseShape):
         y_4 = self.unit(self.y_3) + delta_y
         # canvas
         self.set_canvas_props()
-        # draw
+        # ---- draw bezier
         cnv.bezier(x_1, y_1, x_2, y_2, x_3, y_3, x_4, y_4)
 
 
@@ -563,14 +559,13 @@ class PolygonShape(BaseShape):
             return
         # canvas
         self.set_canvas_props()
-        fill = 0 if self.transparent else 1
         # ---- draw polygon
         pth = cnv.beginPath()
         pth.moveTo(*vertices[0])
         for vertex in vertices:
             pth.lineTo(*vertex)
         pth.close()
-        cnv.drawPath(pth, stroke=1, fill=fill)
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- text
         self.draw_label(cnv, x, y)
 
@@ -609,8 +604,7 @@ class PolylineShape(BaseShape):
         delta_y = off_y + margin_bottom
         # canvas
         self.set_canvas_props()
-        fill = 0 if self.transparent else 1
-        # draw
+        # ---- draw polyline
         pth = cnv.beginPath()
         for key, vertex in enumerate(points):
             x, y = vertex
@@ -620,7 +614,7 @@ class PolylineShape(BaseShape):
             if key == 0:
                 pth.moveTo(x, y)
             pth.lineTo(x, y)
-        cnv.drawPath(pth, stroke=1, fill=fill)
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
 
 
 class HexShape(BaseShape):
@@ -779,7 +773,8 @@ class HexShape(BaseShape):
                 self.draw_multi_string(
                     cnv, x_d, y_d - half_height * 0.8 + coord_offset, number_text)
             else:
-                tools.feedback(f'Cannot handle a coord_position of "{self.coord_position}"')
+                tools.feedback(
+                    f'Cannot handle a coord_position of "{self.coord_position}"')
 
 
 class StarShape(BaseShape):
@@ -816,7 +811,7 @@ class StarShape(BaseShape):
             y_1 = y + radius * math.sin(next_angle)
             pth.lineTo(x_1, y_1)
         pth.close()
-        cnv.drawPath(pth, stroke=1, fill=1)
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- text
         self.draw_label(cnv, x, y)
         if self.title:
@@ -855,14 +850,15 @@ class RightAngledTriangleShape(BaseShape):
         points = []
         points.append((x, y))
         if not self.hand or not self.flip:
-            tools.feedback('Need to supply both "flip" and "hand" options! for triangle.',
-                           stop=True)
+            tools.feedback(
+                'Need to supply both "flip" and "hand" options! for triangle.',
+                stop=True)
         hand = self.hand.lower()
         flip = self.flip.lower()
         if hand == 'left':
-            x2 = x + self.unit(self.width)
-        elif hand == 'right':
             x2 = x - self.unit(self.width)
+        elif hand == 'right':
+            x2 = x + self.unit(self.width)
         if flip == 'up':
             y2 = y + self.unit(self.height)
         elif flip == 'down':
@@ -871,18 +867,26 @@ class RightAngledTriangleShape(BaseShape):
         points.append((x2, y))
         # canvas
         self.set_canvas_props()
-        fill = 0 if self.transparent else 1
         # ---- draw RA triangle
+        x_sum, y_sum = 0, 0
         pth = cnv.beginPath()
         for key, vertex in enumerate(points):
             x, y = vertex
             # shift to relative position
             x = x + delta_x
             y = y + delta_y
+            x_sum += x
+            y_sum += y
             if key == 0:
                 pth.moveTo(x, y)
             pth.lineTo(x, y)
-        cnv.drawPath(pth, stroke=1, fill=fill)
+        pth.close()
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        x_c, y_c = x_sum / 3.0, y_sum / 3.0  # centroid
+        # ---- text
+        self.draw_label(cnv, x_c, y_c)
+        # ---- dot
+        self.draw_dot(cnv, x_c, y_c)
 
 
 class TextShape(BaseShape):
@@ -962,6 +966,7 @@ class CircleShape(BaseShape):
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(CircleShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # overrides
+        self.radius = self.radius or self.diameter/ 2.0
         if self.cx and self.cy:
             self.x = self.cx - self.radius
             self.y = self.cy - self.radius
@@ -994,7 +999,7 @@ class CircleShape(BaseShape):
         # canvas
         self.set_canvas_props()
         # ---- draw circle
-        cnv.circle(x_c, y_c, radius, stroke=1, fill=1)
+        cnv.circle(x_c, y_c, radius, stroke=1, fill=1 if self.fill else 0)
         # ---- text
         self.draw_label(cnv, x_c, y_c)
         # ---- dot
@@ -1016,19 +1021,20 @@ class EllipseShape(BaseShape):
         off_y = self.unit(off_y)
         delta_x = off_x + margin_left
         delta_y = off_y + margin_bottom
-        # convert to using units
+        # create key points using units
         x_1 = self.unit(self.x) + delta_x
         y_1 = self.unit(self.y) + delta_y
-        if not self.x_1:
-            self.x_1 = self.x + self.default_length
-        if not self.y_1:
-            self.y_1 = self.y + self.default_length
-        x_2 = self.unit(self.x_1) + delta_x
-        y_2 = self.unit(self.y_1) + delta_y
+        if not self.xe:
+            self.xe = self.x + self.default_length
+        if not self.ye:
+            self.ye = self.y + self.default_length
+        x_2 = self.unit(self.xe) + delta_x
+        y_2 = self.unit(self.ye) + delta_y
+        tools.feedback(f'{x_1=},{y_1=}  {x_2=},{y_2=} ({self.xe=}.{self.ye=}; {self.default_length=}')
         # canvas
         self.set_canvas_props()
         # ---- draw ellipse
-        cnv.ellipse(x_1, y_1, x_2, y_2, stroke=1, fill=1)
+        cnv.ellipse(x_1, y_1, x_2, y_2, stroke=1, fill=1 if self.fill else 0)
         x_c = (x_2 - x_1) / 2.0 + x_1
         y_c = (y_2 - y_1) / 2.0 + y_1
         # ---- text
@@ -1084,7 +1090,7 @@ class CommonShape(BaseShape):
         tools.feedback("This shape cannot be drawn.")
 
 
-### deck/card ================================================================
+# ---- deck/card related-----
 
 
 class CardShape(BaseShape):
@@ -1249,7 +1255,7 @@ class DeckShape(BaseShape):
 
 class RepeatShape(BaseShape):
     """
-    Draw a Shape multiple times.
+    Shape is drawn multiple times.
     """
 
     def __init__(self, _object=None, canvas=None, **kwargs):
@@ -1327,7 +1333,7 @@ class RepeatShape(BaseShape):
                                         off_x=off_x, off_y=off_y, ID=self.shape_id
                                     )
 
-# --- Other ----
+# ---- Other ----
 
 
 class ConnectShape(BaseShape):

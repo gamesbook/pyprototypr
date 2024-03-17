@@ -348,16 +348,16 @@ class BaseCanvas:
             self.defaults.get('stroke_title'), self.stroke)
         self.stroke_heading = self.get_color(
             self.defaults.get('stroke_heading'), self.stroke)
-        # ---- line and fill
-        self.transparent = self.defaults.get('transparent', False)
         # ---- image / file
         self.source = self.defaults.get('source', None)  # file or http://
         # ---- line / ellipse / bezier
         self.length = self.defaults.get('length', 0)
         self.angle = self.defaults.get('angle', 0)
+        self.xe = self.defaults.get('xe', 0)
+        self.ye = self.defaults.get('ye', 0)
+        # ---- bezier
         self.x_1 = self.defaults.get('x1', 1)
         self.y_1 = self.defaults.get('y1', 1)
-        # ---- bezier
         self.x_2 = self.defaults.get('x2', 1)
         self.y_2 = self.defaults.get('y2', 1)
         self.x_3 = self.defaults.get('x3', 1)
@@ -368,14 +368,15 @@ class BaseCanvas:
         # ---- grid / card layout
         self.rows = self.defaults.get('rows', 1)
         self.cols = self.defaults.get('cols', self.defaults.get('columns', 1))
-        # ---- circle / star / poly
-        self.radius = self.defaults.get('radius', 1)
+        # ---- circle / star / polygon
+        self.diameter = self.defaults.get('diameter', 1)
+        self.radius = self.defaults.get('radius', self.diameter / 2.0)
         self.vertices = self.defaults.get('vertices', 5)
         self.sides = self.defaults.get('sides', 6)
         self.points = self.defaults.get('points', [])
         # ---- triangle
-        self.flip = self.defaults.get('flip', None)
-        self.hand = self.defaults.get('hand', None)
+        self.flip = self.defaults.get('flip', 'up')
+        self.hand = self.defaults.get('hand', 'right')
         # ---- hexagons
         self.hid = self.defaults.get('id', '')  # HEX ID
         self.hex_rows = self.defaults.get('hex_rows', 0)
@@ -518,17 +519,17 @@ class BaseShape:
         self.stroke_label = kwargs.get('stroke_label', cnv.stroke_label)
         self.stroke_title = kwargs.get('stroke_title', cnv.stroke_title)
         self.stroke_heading = kwargs.get('stroke_heading', cnv.stroke_heading)
-        # ---- line and fill
-        self.transparent = kwargs.get('transparent', cnv.transparent)
         # ---- image / file
         self.source = kwargs.get('source', cnv.source)  # file or http://
         # ---- line / ellipse / bezier
         self.length = kwargs.get('length', cnv.length)
         self.angle = kwargs.get('angle', cnv.angle)  # anti-clock from flat
         self._angle_theta = self.angle * math.pi / 180.0  # radians
+        self.xe = kwargs.get('xe', cnv.xe)
+        self.ye = kwargs.get('ye', cnv.ye)
+        # ---- bezier
         self.x_1 = kwargs.get('x1', cnv.x_1)
         self.y_1 = kwargs.get('y1', cnv.y_1)
-        # ---- bezier
         self.x_2 = kwargs.get('x2', cnv.x_2)
         self.y_2 = kwargs.get('y2', cnv.y_2)
         self.x_3 = kwargs.get('x3', cnv.x_3)
@@ -539,14 +540,15 @@ class BaseShape:
         # ---- grid / card layout
         self.rows = kwargs.get('rows', cnv.rows)
         self.cols = kwargs.get('cols', kwargs.get('columns', cnv.cols))
-        # ---- circle / star / poly
+        # ---- circle / star / polygon
+        self.diameter = kwargs.get('diameter', cnv.diameter)
         self.radius = kwargs.get('radius', cnv.radius)
         self.vertices = kwargs.get('vertices', cnv.vertices)
         self.sides = kwargs.get('sides', cnv.sides)
         self.points = kwargs.get('points', cnv.points)
         # ---- triangle
-        self.flip = kwargs.get('flip', None)
-        self.hand = kwargs.get('hand', None)
+        self.flip = kwargs.get('flip', 'up')
+        self.hand = kwargs.get('hand', 'right')
         # ---- hexagons
         self.hex_rows = kwargs.get('hex_rows', 0)
         self.hex_cols = kwargs.get('hex_cols', 0)
@@ -759,8 +761,10 @@ class BaseShape:
             self.height = _dict.get('height', 1)
         if _dict.get('width'):
             self.width = _dict.get('width', 1)
+        if _dict.get('diameter'):
+            self.diameter = _dict.get('diameter', 1)
         if _dict.get('radius'):
-            self.radius = _dict.get('radius', 1)
+            self.radius = _dict.get('radius', self.diameter / 2.0 or 1)
         if _dict.get('rounding'):
             self.rounding = _dict.get('rounding', None)
         # if _dict.get('x'):

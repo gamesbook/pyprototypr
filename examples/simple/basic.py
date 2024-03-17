@@ -62,7 +62,7 @@ points = [
 ]
 Shape(points=points, stroke=indianred, fill=red)
 pointstr = "0,0 0,1 2,0 2,1 0,0"
-Shape(x=9, y=4, points=pointstr, stroke=blue, transparent=True)
+Shape(x=9, y=4, points=pointstr, stroke=blue, fill=None)
 PageBreak()
 
 # pentangle star
@@ -70,13 +70,13 @@ Star(
     x=9.5,
     y=13.8,
     vertices=5,
-    radius=2,
+    radius=3,
     fill=gold,
     stroke=red,
-    label="10",
+    label="Radius:5",
     stroke_label=red,
     heading="Star!",
-    title="Fig 1.0: Five-pointed star",
+    title="Fig 1: Five-pointed star",
 )
 PageBreak()
 
@@ -182,10 +182,10 @@ Image(
     stroke_label=red,
     heading="Sholes Typewriter",
     stroke_heading=blue,
-    title="Fig 1. Sholes typewriter",
+    title="Fig 2. Sholes typewriter",
     stroke_title=green,
 )
-Rectangle(x=6, y=11, width=7, height=6, transparent=True, stroke=silver)
+Rectangle(x=6, y=11, width=7, height=6, fill=None, stroke=silver)
 PageBreak()
 
 # SVG image
@@ -202,11 +202,11 @@ Image(
     stroke_label=red,
     heading="Noun Typewriter",
     stroke_heading=blue,
-    title="Fig 2. nounproject.com typewriter (AlekZakaUddin, CC BY 3.0)",
+    title="Fig 3. nounproject.com typewriter (AlekZakaUddin, CC BY 3.0)",
     stroke_title=green,
     scaling=0.6,
 )
-Rectangle(x=6, y=11, width=7, height=6.25, transparent=True, stroke=silver)
+Rectangle(x=6, y=11, width=7, height=6.25, fill=None, stroke=silver)
 PageBreak()
 
 

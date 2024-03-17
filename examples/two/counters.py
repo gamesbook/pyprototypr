@@ -20,7 +20,7 @@ brown = "#B6A378"
 german = rectangle(x=0, y=0, width=2.6, height=2.6, stroke_width=1, fill=grey)
 russian = rectangle(x=0, y=0, width=2.6, height=2.6, stroke_width=1, fill=brown)
 
-out = rectangle(x=0.8, y=1.2, width=1.0, height=0.6, stroke_width=0.5, transparent=1)
+out = rectangle(x=0.8, y=1.2, width=1.0, height=0.6, stroke_width=0.5, fill=None)
 lu = line(x=0.8, y=1.2, x1=1.8, y1=1.8, stroke=black, stroke_width=0.5)
 ld = line(x=0.8, y=1.8, x1=1.8, y1=1.2, stroke=black, stroke_width=0.5)
 rect1 = rectangle(x=0.8, y=1.2, width=1.0, height=0.3, stroke_width=0.5, fill=black)
