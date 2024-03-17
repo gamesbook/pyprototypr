@@ -1006,6 +1006,199 @@ class CircleShape(BaseShape):
         self.draw_dot(cnv, x_c, y_c)
 
 
+class CompassShape(BaseShape):
+    """
+    Compass on a given canvas.
+    """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(CompassShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        # overrides
+        self.radius = self.radius or self.diameter/ 2.0
+        if self.cx and self.cy:
+            self.x = self.cx - self.radius
+            self.y = self.cy - self.radius
+            self.width = 2.0 * self.radius
+            self.height = 2.0 * self.radius
+        self.kwargs = kwargs
+        self.x_c = None
+        self.y_c = None
+
+    def circle_radius(self, cnv, angle):
+        """Calc x,y on circle and draw line from centre to it."""
+        x = self.unit(self.radius) * math.sin(math.radians(angle))
+        y = self.unit(self.radius) * math.cos(math.radians(angle))
+        pth = cnv.beginPath()
+        pth.moveTo(self.x_c, self.y_c)
+        pth.lineTo(x + self.x_c, y + self.y_c)
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+
+    def rectangle_ranges(self, height, width):
+        """Calculate angle ranges inside rectangle."""
+        ranges = []
+        first = math.degrees(math.atan((width / 2.0) / (height / 2.0)))
+        ranges.append((0, first))
+        half_second = math.degrees(math.atan((height / 2.0) / (width / 2.0)))
+        second = 2 * half_second + first
+        ranges.append((first, second))
+        third = second + 2 * first
+        ranges.append((second, third))
+        fourth = third + 2 * half_second
+        ranges.append((third, fourth))
+        ranges.append((fourth, 360.0))
+        tools.feedback(f'{ranges=}')
+        return ranges
+
+    def rectangle_radius(self, cnv, ranges, angle, height, width):
+        """Calc x,y on rectangle and draw line from centre to it."""
+        radians = math.radians(angle)
+        if angle == 0:
+            radius = 0.5 * height
+        elif angle == 90:
+            radius = 0.5 * width
+        elif angle == 180:
+            radius = 0.5 * height
+        elif angle == 270:
+            radius = 0.5 * width
+        elif angle > ranges[0][0] and angle <= ranges[0][1]:
+            radius = (0.5 * height) /  math.sin(radians)
+        else:
+            tools.feedback(f'{angle} not in range', True)
+
+        x = radius * math.sin(radians)
+        y = radius * math.cos(radians)
+        pth = cnv.beginPath()
+        tools.feedback(f'{self.x_c=}, {self.y_c=}')
+        pth.moveTo(self.x_c, self.y_c)
+        pth.lineTo(x + self.x_c, y + self.y_c)
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw compass on a given canvas."""
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        # offset
+        margin_left = self.unit(self.margin_left)
+        margin_bottom = self.unit(self.margin_bottom)
+        off_x = self.unit(off_x)
+        off_y = self.unit(off_y)
+        delta_x = off_x + margin_left
+        delta_y = off_y + margin_bottom
+        # convert to using units
+        radius = self.unit(self.radius)
+        # convert to using units
+        height = self.unit(self.height)
+        width = self.unit(self.width)
+        radius = self.unit(self.radius)
+        if self.row is not None and self.col is not None:
+            self.x_c = self.col * 2.0 * radius + radius + delta_x
+            self.y_c = self.row * 2.0 * radius + radius + delta_y
+            log.debug("row:%s col:%s x:%s y:%s", self.col, self.row, self.x_c, self.y_c)
+        elif self.cx and self.cy:
+            self.x_c = self.unit(self.cx) + delta_x
+            self.y_c = self.unit(self.cy) + delta_y
+        else:
+            if self.perimeter == 'rectangle':
+                # x, y = self.x, self.y
+                # if self.cx and self.cy:
+                #     x = self.cx - self.width / 2.0
+                #     y = self.cy - self.height / 2.0
+                self.x_c = self.unit(self.x) + width / 2.0 + delta_x
+                self.y_c = self.unit(self.y) + height / 2.0 + delta_x
+            else:
+                self.x_c = self.unit(self.x) + delta_x + radius
+                self.y_c = self.unit(self.y) + delta_y + radius
+        # canvas
+        self.set_canvas_props()
+        if self.perimeter == 'circle':
+            cnv.circle(self.x_c, self.y_c, radius, stroke=1, fill=1 if self.fill else 0)
+        # ---- get directions
+        if self.directions:
+            if isinstance(self.directions, str):
+                _dirs = self.directions.split(' ')
+                _directions = [str(_dir).lower() for _dir in _dirs]
+            elif isinstance(self.directions, list):
+                _directions = [str(_dir).lower() for _dir in self.directions]
+            else:
+                tools.feedback(
+                    f'Unable to process compass directions "{self.directions}"',
+                    True)
+        else:
+            _directions = [str(num) for num in range(0, 9)]  # ALL directions
+        # ---- draw compass in circle
+        if self.perimeter == 'circle' or self.perimeter == 'octagon':
+            for direction in _directions:
+                match direction:
+                    case 'n' | '0':
+                        self.circle_radius(cnv, 0)
+                    case 'ne' | '1':
+                        self.circle_radius(cnv, 45)
+                    case 'e' | '2':
+                        self.circle_radius(cnv, 90)
+                    case 'se' | '3':
+                        self.circle_radius(cnv, 135)
+                    case 's' | '4':
+                        self.circle_radius(cnv, 180)
+                    case 'sw' | '5':
+                        self.circle_radius(cnv, 225)
+                    case 'w' | '6':
+                        self.circle_radius(cnv, 270)
+                    case 'nw' | '7':
+                        self.circle_radius(cnv, 315)
+                    case _:
+                        pass
+        # ---- draw compass in rect
+        if self.perimeter == 'rectangle':
+            ranges = self.rectangle_ranges(height, width)
+            for direction in _directions:
+                match direction:
+                    case 'n' | '0':
+                        self.rectangle_radius(cnv, ranges, 0, height, width)
+                    case 'ne' | '1':
+                        self.rectangle_radius(cnv, ranges, 45, height, width)
+                    case 'e' | '2':
+                        self.rectangle_radius(cnv, ranges, 90, height, width)
+                    case 'se' | '3':
+                        pass
+                    case 's' | '4':
+                        self.rectangle_radius(cnv, ranges, 180, height, width)
+                    case 'sw' | '5':
+                        pass
+                    case 'w' | '6':
+                        self.rectangle_radius(cnv, ranges, 270, height, width)
+                    case 'nw' | '7':
+                        pass
+                    case _:
+                        pass
+
+        # ---- draw compass in hex
+        if self.perimeter == 'hexagon':
+            for direction in _directions:
+                match direction:
+                    case 'n' | '0':
+                        self.circle_radius(cnv, 0)
+                    case 'ne' | '1':
+                        self.circle_radius(cnv, 60)
+                    case 'e' | '2':
+                        pass
+                    case 'se' | '3':
+                        self.circle_radius(cnv, 120)
+                    case 's' | '4':
+                        self.circle_radius(cnv, 180)
+                    case 'sw' | '5':
+                        self.circle_radius(cnv, 240)
+                    case 'w' | '6':
+                        pass
+                    case 'nw' | '7':
+                        self.circle_radius(cnv, 300)
+                    case _:
+                        pass
+
+        # ---- text
+        self.draw_label(cnv, self.x_c, self.y_c)
+        # ---- dot
+        self.draw_dot(cnv, self.x_c, self.y_c)
+
+
 class EllipseShape(BaseShape):
     """
     Ellipse on a given canvas.
@@ -1030,7 +1223,7 @@ class EllipseShape(BaseShape):
             self.ye = self.y + self.default_length
         x_2 = self.unit(self.xe) + delta_x
         y_2 = self.unit(self.ye) + delta_y
-        tools.feedback(f'{x_1=},{y_1=}  {x_2=},{y_2=} ({self.xe=}.{self.ye=}; {self.default_length=}')
+        # tools.feedback(f'{x_1=},{y_1=}  {x_2=},{y_2=} ({self.xe=}.{self.ye=}; {self.default_length=}')
         # canvas
         self.set_canvas_props()
         # ---- draw ellipse

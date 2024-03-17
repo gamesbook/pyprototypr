@@ -21,8 +21,8 @@ from .base import BaseCanvas, GroupBase, COLORS
 from .dice import (
     Dice, DiceD4, DiceD6, DiceD8, DiceD10, DiceD12, DiceD20, DiceD100)
 from .shapes import (
-    BezierShape, CircleShape, CommonShape,
-    ConnectShape, DeckShape, EllipseShape, FooterShape, GridShape, HexShape,
+    BezierShape, CircleShape, CommonShape, ConnectShape, CompassShape,
+    DeckShape, EllipseShape, FooterShape, GridShape, HexShape,
     ArcShape, ImageShape, LineShape, OctagonShape, PolygonShape, PolylineShape,
     Query, RectangleShape, RepeatShape, RhombusShape, RightAngledTriangleShape,
     ShapeShape, StarShape, TextShape)
@@ -396,6 +396,22 @@ def circle(**kwargs):
     global deck
     kwargs = margins(**kwargs)
     return CircleShape(canvas=cnv, **kwargs)
+
+
+def Compass(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    cmpss = compass(row=row, col=col, **kwargs)
+    cmpss.draw()
+    return cmpss
+
+
+def compass(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    return CompassShape(canvas=cnv, **kwargs)
 
 
 def Ellipse(**kwargs):

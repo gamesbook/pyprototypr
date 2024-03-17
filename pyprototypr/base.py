@@ -54,6 +54,7 @@ UNITS = {
     "cm": cm,
     "inch": inch
 }
+# ---- colors from ReportLab; 18xx Games
 COLORS = {
     "aliceblue": aliceblue,
     "antiquewhite": antiquewhite,
@@ -205,6 +206,17 @@ COLORS = {
     "white": white,
     "yellowgreen": yellowgreen,
     "yellow": yellow,
+    # 18xx colors from https://github.com/XeryusTC/map18xx/blob/master/src/tile.rs
+    "GROUND_18XX": "#FDD9B5",  # Sandy Tan
+    "YELLOW_18XX": "#FDEE00",  # Aureolin
+    "GREEN_18XX": "#00A550",  # Pigment Green
+    "RUSSET_18XX": "#CD7F32",  # Bronze
+    "GREY_18XX": "#ACACAC",  # Silver Chalice
+    "BROWN_18XX": "#7B3F00",  # Chocolate
+    "RED_18XX": "#DC143C",  # Crimson
+    "BLUE_18XX": "#007FFF",  # Azure
+    "BARRIER_18XX": "#660000",  # Blood Red
+    "WHITE_18XX": "#FFFFFF",  # White
 }
 PAGES = {
     "LETTER": LETTER,
@@ -374,6 +386,9 @@ class BaseCanvas:
         self.vertices = self.defaults.get('vertices', 5)
         self.sides = self.defaults.get('sides', 6)
         self.points = self.defaults.get('points', [])
+        # ---- compass
+        self.perimeter = self.defaults.get('perimeter', 'circle')
+        self.directions = self.defaults.get('directions', None)
         # ---- triangle
         self.flip = self.defaults.get('flip', 'up')
         self.hand = self.defaults.get('hand', 'right')
@@ -549,6 +564,9 @@ class BaseShape:
         # ---- triangle
         self.flip = kwargs.get('flip', 'up')
         self.hand = kwargs.get('hand', 'right')
+        # ---- compass
+        self.perimeter = kwargs.get('perimeter', 'circle')  # circle|rectangle|hexagon
+        self.directions = kwargs.get('directions', None)
         # ---- hexagons
         self.hex_rows = kwargs.get('hex_rows', 0)
         self.hex_cols = kwargs.get('hex_cols', 0)
@@ -673,6 +691,11 @@ class BaseShape:
                     ['left', 'right', ]:
                 issue.append(f'"{self.hand}" is an invalid hand!')
                 correct = False
+        if self.perimeter:
+            if str(self.perimeter).lower() not in \
+                    ['circle', 'rectangle', 'hexagon', 'octagon', 'c', 'r', 'h', 'o', '']:
+                issue.append(f'"{self.perimeter}" is an invalid perimeter!')
+                correct = False
         return correct, issue
 
     def to_alignment(self):
@@ -694,6 +717,9 @@ class BaseShape:
 
         Returns:
             tuple: Image or SVG; boolean (True if file type is SVG)
+
+        Notes:
+            * https://www.blog.pythonlibrary.org/2018/04/12/adding-svg-files-in-reportlab/
         """
 
         def scale_image(drawing, scaling_factor):
