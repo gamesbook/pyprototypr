@@ -624,6 +624,39 @@ class HexShape(BaseShape):
     See: http://powerfield-software.com/?p=851
     """
 
+    def calculate_caltrops(self, side, size=None, fraction=None, invert=False):
+        """Calculate settings for caltrops (the hex "corner").
+
+        Note: `side` must be in unconverted (user) form e.g. cm or inches
+        """
+        array = []
+        match size:
+            case "large" | "l":
+                part = side / 3.0
+                array = [part, part, part]
+            case "medium" | "m":
+                part = side / 5.0
+                array = [part, part * 3.0, part]
+            case "small" | "s":
+                part = side / 7.0
+                array = [part, part * 5.0, part]
+            case _:
+                pass
+        if fraction:
+            try:
+                float(fraction)
+            except Exception:
+                tools.feedback(f'Cannot use "{fraction}" for a caltrops fraction', True)
+            fraction = min(fraction, 0.5)  # caltrops might meet in the middle
+            if fraction < 1.0:
+                part = fraction * side
+                middle = (1.0 - 2.0 * fraction) * side
+                array = [part, middle, part]
+        array.insert(0, 0) if invert else array.append(0)
+        # convert to points!
+        points = self.values_to_points(array)
+        return points
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a hexagon on a given canvas."""
         # tools.feedback(f'Will draw a hex shape: {kwargs} {off_x} {off_y} {ID}')
@@ -642,6 +675,7 @@ class HexShape(BaseShape):
             half_height = side * math.sqrt(3) / 2.0
         elif self.height:
             height = self.unit(self.height)
+            self.side = self.height / math.sqrt(3)
             side = height / math.sqrt(3)
             half_height = height / 2.0
         else:
@@ -691,8 +725,12 @@ class HexShape(BaseShape):
         x_d = x + half_side + side / 2.0
         y_d = y
         log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_height, half_side, side)
-        # canvas
+        # ---- canvas
         self.set_canvas_props()
+        if self.caltrops or self.caltrops_fraction:
+            line_dashes = self.calculate_caltrops(
+                self.side, self.caltrops, self.caltrops_fraction, self.caltrops_invert)
+            cnv.setDash(array=line_dashes)
         # ---- calculate vertical hexagon (clockwise)
         # TODO not done !!!
         if self.hex_orientation in ['p', 'P', 'pointy']:

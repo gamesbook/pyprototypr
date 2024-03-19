@@ -107,6 +107,7 @@ Hexagons(
     coord_stroke=darkslategrey,
     fill=white,
     stroke=darkslategrey,
+    caltrops="medium",
 )
 PageBreak()
 
@@ -123,12 +124,11 @@ Line(
     y=9,
     x1=19,
     y1=9,
-    line_dotdash=[2, 2, 2, 2, 10],
+    dashes=[0.2, 0.2, 0.2, 0.2, 1.0, 0.0],
     stroke=green,
     stroke_width=2,
-    label="dotdash=[2, 2, 2, 2, 10]",
+    label="dashes=[0.2, 0.2, 0.2, 0.2, 1, 0]",
 )
-Line(x=0, y=7, x1=19, y1=7, dashes=True, stroke=blue, stroke_width=2, label="dashes")
 Line(x=0, y=5, x1=19, y1=5, line_dots=True, stroke=blue, stroke_width=2, label="dots")
 PageBreak()
 
@@ -139,7 +139,7 @@ Arc(x=1, y=7, x1=4, y1=4, stroke=red, stroke_width=2)
 PageBreak()
 
 # common
-cmm = Common(x=0, y=0, length=19, dashes=True, stroke=blue, stroke_width=2)
+cmm = Common(x=0, y=0, length=19, dots=True, stroke=blue, stroke_width=2)
 Line(common=cmm)
 Line(common=cmm, angle=15)
 Line(common=cmm, angle=30)

@@ -50,11 +50,12 @@ from pyprototypr.utils import tools
 log = logging.getLogger(__name__)
 
 DEBUG = False
+# ---- units
 UNITS = {
     "cm": cm,
     "inch": inch
 }
-# ---- colors from ReportLab; 18xx Games
+# ---- colors (ReportLab; 18xx Games)
 COLORS = {
     "aliceblue": aliceblue,
     "antiquewhite": antiquewhite,
@@ -218,6 +219,7 @@ COLORS = {
     "BARRIER_18XX": "#660000",  # Blood Red
     "WHITE_18XX": "#FFFFFF",  # White
 }
+# ---- page sizes
 PAGES = {
     "LETTER": LETTER,
     "landscape": landscape,
@@ -319,12 +321,7 @@ class BaseCanvas:
         self.line_dots = self.defaults.get('line_dots',
                                            self.defaults.get('dots',
                                                              False))
-        self.line_dashes = self.defaults.get('line_dashes',
-                                             self.defaults.get('dashes',
-                                                               False))
-        self.line_dotdash = self.defaults.get('line_dotdash',
-                                              self.defaults.get('dotdash',
-                                                                None))
+        self.dashes = self.defaults.get('dashes', None)
         # ---- color and fill
         fill = self.defaults.get('fill', self.defaults.get('fill_color'))
         self.fill = self.get_color(fill, white)
@@ -365,7 +362,7 @@ class BaseCanvas:
         # ---- line / ellipse / bezier
         self.length = self.defaults.get('length', 0)
         self.angle = self.defaults.get('angle', 0)
-        self.xe = self.defaults.get('xe', 0)
+        self.xe = self.defaults.get('xe', 0)  # second point for ellipse
         self.ye = self.defaults.get('ye', 0)
         # ---- bezier
         self.x_1 = self.defaults.get('x1', 1)
@@ -415,7 +412,9 @@ class BaseCanvas:
         self.coord_font_size = self.defaults.get('coord_font_size', 10)
         self.coord_stroke = self.get_color(self.defaults.get('coord_stroke'), black)
         self.coord_padding = self.defaults.get('coord_padding', 2)
-
+        self.caltrops = self.defaults.get('caltrops', None)
+        self.caltrops_fraction = self.defaults.get('caltrops_fraction', None)
+        self.caltrops_invert = kwargs.get('caltrops_invert', False)
 
     def get_canvas(self):
         """Return reportlab canvas object"""
@@ -492,19 +491,16 @@ class BaseShape:
         self.gap = kwargs.get('gap', cnv.gap)
         self.gap_across = kwargs.get('gap_down', cnv.gap_down)
         self.gap_down = kwargs.get('gap_across', cnv.gap_across)
-        # ---- rotate in degrees
+        # ---- rotate in degrees / radians
         self.rotate = kwargs.get('rotate', kwargs.get('rotation', cnv.rotate))
-        self._rotate_theta = self.rotate * math.pi / 180.0  # ---- radians
+        self._rotate_theta = math.radians(self.rotate)  # radians
         self.orientation = kwargs.get('orientation', cnv.orientation)
         self.position = kwargs.get('position', cnv.position)
         # ---- line
         self.line_width = kwargs.get('line_width', cnv.line_width)
         self.line_dots = kwargs.get('line_dots',
                                     kwargs.get('dots', cnv.line_dots))
-        self.line_dashes = kwargs.get('line_dashes',
-                                      kwargs.get('dashes', cnv.line_dashes))
-        self.line_dotdash = kwargs.get('line_dotdash',
-                                       kwargs.get('dotdash', cnv.line_dotdash))
+        self.dashes = kwargs.get('dashes', None)
         # ---- text
         self.align = kwargs.get('align', cnv.align)  # left, right, justify
         self._alignment = TA_LEFT  # see to_alignment()
@@ -539,7 +535,7 @@ class BaseShape:
         # ---- line / ellipse / bezier
         self.length = kwargs.get('length', cnv.length)
         self.angle = kwargs.get('angle', cnv.angle)  # anti-clock from flat
-        self._angle_theta = self.angle * math.pi / 180.0  # radians
+        self._angle_theta = math.radians(self.angle)
         self.xe = kwargs.get('xe', cnv.xe)
         self.ye = kwargs.get('ye', cnv.ye)
         # ---- bezier
@@ -568,6 +564,7 @@ class BaseShape:
         self.perimeter = kwargs.get('perimeter', 'circle')  # circle|rectangle|hexagon
         self.directions = kwargs.get('directions', None)
         # ---- hexagons
+        self.hid = kwargs.get('id', cnv.hid)  # HEX ID
         self.hex_rows = kwargs.get('hex_rows', 0)
         self.hex_cols = kwargs.get('hex_cols', 0)
         self.hex_layout = kwargs.get('hex_layout', 'rectangle')  # rectangle|circle|diamond|triangle
@@ -589,7 +586,10 @@ class BaseShape:
         self.coord_font_size = kwargs.get('coord_font_size', cnv.font_size)
         self.coord_stroke = kwargs.get('coord_stroke', cnv.stroke)
         self.coord_padding = kwargs.get('coord_padding', 2)
-        self.hid = kwargs.get('id', cnv.hid)  # HEX ID
+        self.caltrops = kwargs.get('caltrops', None)
+        self.caltrops_fraction = kwargs.get('caltrops_fraction', None)
+        self.caltrops_invert = kwargs.get('caltrops_invert', False)
+
         # ---- CHECK ALL
         correct, issue = self.check_settings()
         if not correct:
@@ -655,12 +655,13 @@ class BaseShape:
             tools.feedback('Please check your stroke_width setting; should be a number')
         except AttributeError:
             pass
-        if self.line_dashes:
-            canvas.setDash(array=[6, 2])
+        # ---- set line dots / dashes
         if self.line_dots:
-            canvas.setDash(array=[1, 1])
-        if self.line_dotdash:
-            canvas.setDash(array=self.line_dotdash)
+            _dots = self.values_to_points([0.1, 0.1])
+            canvas.setDash(array=_dots)
+        if self.dashes:
+            _dashes = self.values_to_points(self.dashes)
+            canvas.setDash(array=_dashes)
 
     def check_settings(self):
         """Check that the user-supplied parameters are correct"""
@@ -695,6 +696,11 @@ class BaseShape:
             if str(self.perimeter).lower() not in \
                     ['circle', 'rectangle', 'hexagon', 'octagon', 'c', 'r', 'h', 'o', '']:
                 issue.append(f'"{self.perimeter}" is an invalid perimeter!')
+                correct = False
+        if self.caltrops:
+            if str(self.caltrops).lower() not in \
+                    ['large', 'medium', 'small', 's', 'm', 'l', ]:
+                issue.append(f'"{self.caltrops}" is an invalid caltrops sie!')
                 correct = False
         return correct, issue
 
@@ -817,7 +823,7 @@ class BaseShape:
         return {}
 
     def textify(self, index=None, text=None):
-        """Extract text from a list, or create string, based on index & type"""
+        """Extract text from a list, or create string, based on index & type."""
         _text = text or self.text
         log.debug("text %s %s %s %s", index, text, _text, type(_text))
         if not _text:
@@ -828,6 +834,19 @@ class BaseShape:
             return _text[index]
         except TypeError:
             return _text
+
+    def values_to_points(self, items: list) -> list:
+        """Convert a list of values to points."""
+        try:
+            if self.units == cm:
+                return [float(item) * 28.3465 for item in items]
+            elif self.units == inch:
+                return [float(item) * 72.0 for item in items]
+            else:
+                tools.feedback(f'Unable to convert {self.units} to points!', True)
+        except Exception as err:
+            log.exception(err)
+            tools.feedback(f'Unable to convert "{items}" to points!', True)
 
     def draw_multi_string(self, canvas, x, y, string, align=None):
         """Draw a string, split if needed, with a given alignment."""
@@ -846,18 +865,18 @@ class BaseShape:
             mvy -= canvas._leading
 
     def draw_string(self, canvas, x, y, string, align=None):
-        """Draw a multi-string on the canvas"""
+        """Draw a multi-string on the canvas."""
         self.draw_multi_string(canvas=canvas, x=x, y=y, string=string, align=align)
 
     def draw_label(self, canvas, x, y):
-        """Draw the auto-label on a shape (normally the centre)"""
+        """Draw the auto-label on a shape (normally the centre)."""
         if self.label:
             canvas.setFont(self.font_face, self.label_size)
             canvas.setFillColor(self.stroke_label)
             self.draw_multi_string(canvas, x, y, self.label)
 
     def draw_dot(self, canvas, x, y):
-        """Draw a small dot on a shape (normally the centre)"""
+        """Draw a small dot on a shape (normally the centre)."""
         if self.dot_size:
             dot_size = self.unit(self.dot_size)
             canvas.setFillColor(self.dot_color)
