@@ -345,7 +345,7 @@ class BaseCanvas:
         self.outline_color = self.defaults.get('outline_color', self.fill)
         self.outline_width = self.defaults.get('outline_width', 0)
         self.leading = self.defaults.get('leading', 12)
-        # ---- line colors
+        # ---- path colors
         stroke = self.defaults.get('stroke', self.defaults.get('stroke_color'))
         self.stroke = self.get_color(stroke, black)
         self.stroke_width = self.defaults.get('stroke_width', WIDTH)
@@ -360,13 +360,14 @@ class BaseCanvas:
         # ---- image / file
         self.source = self.defaults.get('source', None)  # file or http://
         # ---- line / ellipse / bezier
-        self.length = self.defaults.get('length', 0)
+        self.length = self.defaults.get('length', self.default_length)
         self.angle = self.defaults.get('angle', 0)
         self.xe = self.defaults.get('xe', 0)  # second point for ellipse
         self.ye = self.defaults.get('ye', 0)
+        # ---- line / bezier
+        self.x_1 = self.defaults.get('x1', 0)
+        self.y_1 = self.defaults.get('y1', 0)
         # ---- bezier
-        self.x_1 = self.defaults.get('x1', 1)
-        self.y_1 = self.defaults.get('y1', 1)
         self.x_2 = self.defaults.get('x2', 1)
         self.y_2 = self.defaults.get('y2', 1)
         self.x_3 = self.defaults.get('x3', 1)
@@ -538,9 +539,10 @@ class BaseShape:
         self._angle_theta = math.radians(self.angle)
         self.xe = kwargs.get('xe', cnv.xe)
         self.ye = kwargs.get('ye', cnv.ye)
-        # ---- bezier
+        # ---- line / bezier
         self.x_1 = kwargs.get('x1', cnv.x_1)
         self.y_1 = kwargs.get('y1', cnv.y_1)
+        # ---- bezier
         self.x_2 = kwargs.get('x2', cnv.x_2)
         self.y_2 = kwargs.get('y2', cnv.y_2)
         self.x_3 = kwargs.get('x3', cnv.x_3)

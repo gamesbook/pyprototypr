@@ -150,21 +150,19 @@ class LineShape(BaseShape):
         y = self.unit(self.y) + delta_y
         height = self.unit(self.height)
         width = self.unit(self.width)
+        length = self.unit(self.length)
         log.debug("line: %s units margin: %s", ID, self.margin_left)
-        if self.length:
-            length = self.unit(self.length)
-            angle = math.radians(self.angle)
-            x_1 = x + (length * math.cos(angle))
-            y_1 = y + (length * math.sin(angle))
+        if self.x_1 and self.y_1:
+            x_1 = self.unit(self.x_1) + delta_x
+            y_1 = self.unit(self.y_1) + delta_y
         else:
-            if self.x_1:
-                x_1 = self.unit(self.x_1) + delta_x
+            if self.angle > 0:
+                angle = math.radians(self.angle)
+                x_1 = x + (length * math.cos(angle))
+                y_1 = y + (length * math.sin(angle))
             else:
-                x_1 = x + width
-            if self.y_1:
-                y_1 = self.unit(self.y_1) + delta_y
-            else:
-                y_1 = y + height
+                x_1 = x + length
+                y_1 = y
         if self.row is not None and self.row >= 0:
             y = y + self.row * height
             y_1 = y_1 + self.row * height - margin_bottom
@@ -175,6 +173,61 @@ class LineShape(BaseShape):
         # canvas
         self.set_canvas_props()
         # ---- draw line
+        pth = cnv.beginPath()
+        pth.moveTo(x, y)
+        pth.lineTo(x_1, y_1)
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        # ----  text
+        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
+        # ----  dot
+        self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
+
+
+
+class ArrowShape(BaseShape):
+    """
+    Arrow on a given canvas.
+    """
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw an arrow on a given canvas."""
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        # offset
+        margin_left = self.unit(self.margin_left)
+        margin_bottom = self.unit(self.margin_bottom)
+        off_x = self.unit(off_x)
+        off_y = self.unit(off_y)
+        delta_x = off_x + margin_left
+        delta_y = off_y + margin_bottom
+        # convert to using units
+        x = self.unit(self.x) + delta_x
+        y = self.unit(self.y) + delta_y
+        height = self.unit(self.height)
+        width = self.unit(self.width)
+        length = self.unit(self.length)
+        log.debug("line: %s units margin: %s", ID, self.margin_left)
+        if self.x_1 and self.y_1:
+            x_1 = self.unit(self.x_1) + delta_x
+            y_1 = self.unit(self.y_1) + delta_y
+        else:
+            if self.angle > 0:
+                angle = math.radians(self.angle)
+                x_1 = x + (length * math.cos(angle))
+                y_1 = y + (length * math.sin(angle))
+            else:
+                x_1 = x + length
+                y_1 = y
+        if self.row is not None and self.row >= 0:
+            y = y + self.row * height
+            y_1 = y_1 + self.row * height - margin_bottom
+        if self.col is not None and self.col >= 0:
+            x = x + self.col * width
+            x_1 = x_1 + self.col * width - margin_left
+        # canvas
+        self.set_canvas_props()
+        # ---- draw arrow
+        log.debug("angle:%s length:%s x:%s y:%s x_1:%s y_1:%s",
+                  self.angle, length, x, y, x_1, y_1)
         pth = cnv.beginPath()
         pth.moveTo(x, y)
         pth.lineTo(x_1, y_1)
@@ -771,21 +824,8 @@ class HexShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_d, y_d)
 
-        # # ---- centre dot
-        # elif self.dot_size:
-        #     dot_size = self.unit(self.dot_size)
-        #     cnv.setFillColor(self.dot_color)
-        #     cnv.setStrokeColor(self.dot_color)
-        #     cnv.circle(x_d, y_d, dot_size, stroke=1, fill=1)
-
-        # # ----  text
-        # if self.label:
-        #     cnv.setFont(self.font_face, self.label_size)
-        #     cnv.setFillColor(self.stroke_label)
-        #     self.draw_multi_string(cnv, x_d, y_d, self.label)
-
         # ----  numbering
-        if self.coord_position:
+        if self.coord_position and self.row and self.col:
             # label
             _row = self.hex_rows - self.row + self.coord_start_y
             _col = self.col + 1 if not self.coord_start_x else self.col + self.coord_start_x

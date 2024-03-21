@@ -21,8 +21,8 @@ from .base import BaseCanvas, GroupBase, COLORS
 from .dice import (
     Dice, DiceD4, DiceD6, DiceD8, DiceD10, DiceD12, DiceD20, DiceD100)
 from .shapes import (
-    BezierShape, CircleShape, CommonShape, ConnectShape, CompassShape,
-    DeckShape, EllipseShape, FooterShape, GridShape, HexShape,
+    ArrowShape, BezierShape, CircleShape, CommonShape, ConnectShape,
+    CompassShape, DeckShape, EllipseShape, FooterShape, GridShape, HexShape,
     ArcShape, ImageShape, LineShape, OctagonShape, PolygonShape, PolylineShape,
     Query, RectangleShape, RepeatShape, RhombusShape, RightAngledTriangleShape,
     ShapeShape, StarShape, TextShape)
@@ -364,6 +364,24 @@ def arc(**kwargs):
     global deck
     kwargs = margins(**kwargs)
     return ArcShape(canvas=cnv, **kwargs)
+
+
+def Arrow(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    arr = arrow(row=row, col=col, **kwargs)
+    arr.draw()
+    return arr
+
+
+def arrow(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    kwargs['row'] = row
+    kwargs['col'] = col
+    return ArrowShape(canvas=cnv, **kwargs)
 
 
 def Bezier(**kwargs):
