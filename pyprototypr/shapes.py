@@ -189,6 +189,14 @@ class ArrowShape(BaseShape):
     Arrow on a given canvas.
     """
 
+    def arrow_head(self):
+        """Draw head of arrow."""
+
+
+    def arrow_tail(self):
+        """Draw head of arrow."""
+
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an arrow on a given canvas."""
         cnv = cnv.canvas if cnv else self.canvas.canvas
@@ -232,9 +240,13 @@ class ArrowShape(BaseShape):
         pth.moveTo(x, y)
         pth.lineTo(x_1, y_1)
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-        # ----  text
+        # ---- head
+        self.arrow_head()
+        # ---- tail
+        self.arrow_tail()
+        # ---- text
         self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
-        # ----  dot
+        # ---- dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
 
 
@@ -710,6 +722,38 @@ class HexShape(BaseShape):
         points = self.values_to_points(array)
         return points
 
+
+    def draw_coord(self, cnv, x_d, y_d, half_height):
+        """Draw the coord inside the hexagon."""
+        if self.coord_position:
+            # ---- set coord value
+            _row = self.hex_rows - self.row + self.coord_start_y
+            _col = self.col + 1 if not self.coord_start_x else self.col + self.coord_start_x
+            _x = chr(96 + _col) if self.coord_type_x in ['l', 'lower'] else chr(64 + _col)
+            _y = chr(96 + _row) if self.coord_type_y in ['l', 'lower'] else chr(64 + _row)
+            if self.coord_type_x in ['n', 'number']:
+                _x = str(_col).zfill(self.coord_padding)
+            if self.coord_type_y in ['n', 'number']:
+                _y = str(_row).zfill(self.coord_padding)
+            _coord_text = _x + str(self.coord_separator) + _y
+            # ---- set coord props
+            cnv.setFont(self.coord_font_face, self.coord_font_size)
+            cnv.setFillColor(self.coord_stroke)
+            # ---- draw coord
+            coord_offset = self.unit(self.coord_offset)
+            if self.coord_position in ['t', 'top']:
+                self.draw_multi_string(
+                    cnv, x_d, y_d + half_height * 0.7 + coord_offset, _coord_text)
+            elif self.coord_position in ['m', 'middle', 'mid']:
+                self.draw_multi_string(
+                    cnv, x_d, y_d + coord_offset - self.coord_font_size / 2.0, _coord_text)
+            elif self.coord_position in ['b', 'bottom', 'bot']:
+                self.draw_multi_string(
+                    cnv, x_d, y_d - half_height * 0.9 + coord_offset, _coord_text)
+            else:
+                tools.feedback(
+                    f'Cannot handle a coord_position of "{self.coord_position}"')
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a hexagon on a given canvas."""
         # tools.feedback(f'Will draw a hex shape: {kwargs} {off_x} {off_y} {ID}')
@@ -744,7 +788,6 @@ class HexShape(BaseShape):
             y = half_height + self.row * 2.0 * half_height + delta_x
         elif self.row is not None and self.col is not None:
             if self.hex_offset in ['o', 'O', 'odd']:
-                print('using hex_offset=odd')
                 x = self.col * (half_side + side) + delta_x
                 y = (
                     half_height
@@ -786,7 +829,7 @@ class HexShape(BaseShape):
             cnv.setDash(array=line_dashes)
         # ---- calculate vertical hexagon (clockwise)
         # TODO not done !!!
-        if self.hex_orientation in ['p', 'P', 'pointy']:
+        if self.hex_orientation.lower() in ['p', 'pointy']:
             pth = cnv.beginPath()
             pth.moveTo(x, y)
             pth.lineTo(x + half_side, y + half_height)
@@ -810,49 +853,18 @@ class HexShape(BaseShape):
             cnv.drawPath(pth, stroke=1, fill=1)
         else:
             cnv.drawPath(pth, stroke=1, fill=0)
-
         # ---- centred shape (with offset)
         if self.centre_shape:
             # tools.feedback(f'DRAW shape:{self.dot_shape} at ({x_d=},{y_d=})')
             self.centre_shape.draw(
                 cx=x_d + self.unit(self.centre_shape_x),
                 cy=y_d + self.unit(self.centre_shape_y))
-
         # ---- text
         self.draw_label(cnv, x_d, y_d)
-
         # ---- dot
         self.draw_dot(cnv, x_d, y_d)
-
         # ----  numbering
-        if self.coord_position and self.row and self.col:
-            # label
-            _row = self.hex_rows - self.row + self.coord_start_y
-            _col = self.col + 1 if not self.coord_start_x else self.col + self.coord_start_x
-            _x = chr(64 + _col)
-            _y = chr(64 + _row)
-            if self.coord_type_x in ['n', 'number']:
-                _x = str(_col).zfill(self.coord_padding)
-            if self.coord_type_y in ['n', 'number']:
-                _y = str(_row).zfill(self.coord_padding)
-            number_text = _x + _y
-            # props
-            cnv.setFont(self.coord_font_face, self.coord_font_size)
-            cnv.setFillColor(self.coord_stroke)
-            # coords
-            coord_offset = self.unit(self.coord_offset)
-            if self.coord_position in ['t', 'top']:
-                self.draw_multi_string(
-                    cnv, x_d, y_d + half_height * 0.75 + coord_offset, number_text)
-            elif self.coord_position in ['m', 'middle', 'mid']:
-                self.draw_multi_string(
-                    cnv, x_d, y_d + coord_offset, number_text)
-            elif self.coord_position in ['b', 'bottom', 'bot']:
-                self.draw_multi_string(
-                    cnv, x_d, y_d - half_height * 0.8 + coord_offset, number_text)
-            else:
-                tools.feedback(
-                    f'Cannot handle a coord_position of "{self.coord_position}"')
+        self.draw_coord(cnv, x_d, y_d, half_height)
 
 
 class StarShape(BaseShape):

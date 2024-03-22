@@ -364,6 +364,19 @@ class BaseCanvas:
         self.angle = self.defaults.get('angle', 0)
         self.xe = self.defaults.get('xe', 0)  # second point for ellipse
         self.ye = self.defaults.get('ye', 0)
+        # ---- arrow
+        self.head_style = self.defaults.get('head_style', 'triangle')
+        self.tail_style = self.defaults.get('tail_style', None)
+        self.head_fraction = self.defaults.get('head_fraction', 0.1)
+        self.tail_fraction = self.defaults.get('tail_fraction', 0.1)
+        self.head_height = self.defaults.get('head_height', None)
+        self.tail_height = self.defaults.get('tail_height', None)
+        self.head_width = self.defaults.get('head_width', None)
+        self.tail_width = self.defaults.get('tail_width', None)
+        self.tail_fill = self.defaults.get('tail_fill', self.fill)
+        self.head_fill = self.defaults.get('head_fill', self.fill)
+        self.head_stroke = self.defaults.get('head_stroke', self.stroke)
+        self.tail_stroke = self.defaults.get('tail_stroke', self.stroke)
         # ---- line / bezier
         self.x_1 = self.defaults.get('x1', 0)
         self.y_1 = self.defaults.get('y1', 0)
@@ -390,19 +403,24 @@ class BaseCanvas:
         # ---- triangle
         self.flip = self.defaults.get('flip', 'up')
         self.hand = self.defaults.get('hand', 'right')
-        # ---- hexagons
-        self.hid = self.defaults.get('id', '')  # HEX ID
-        self.hex_rows = self.defaults.get('hex_rows', 0)
-        self.hex_cols = self.defaults.get('hex_cols', 0)
-        self.hex_orientation = self.defaults.get('hex_orientation', 'flat')  # flat|pointy
-        self.hex_offset = self.defaults.get('hex_offset', 'even')  # even|odd
-        self.hex_layout = self.defaults.get('hex_layout', 'rectangle')  # rectangle|circle|diamond|triangle
+        # ---- hexagon|circle|diamond|triangle
         self.side = self.defaults.get('side', 0)  # length of sides
         self.centre_shape = self.defaults.get('centre_shape', '')
         self.centre_shape_x = self.defaults.get('centre_shape_x', 0)
         self.centre_shape_y = self.defaults.get('centre_shape_y', 0)
         self.dot_color = self.get_color(self.defaults.get('dot_color'), black)
         self.dot_size = self.defaults.get('dot_size', 0)
+        # ---- hexagon
+        self.caltrops = self.defaults.get('caltrops', None)
+        self.caltrops_fraction = self.defaults.get('caltrops_fraction', None)
+        self.caltrops_invert = kwargs.get('caltrops_invert', False)
+        # ---- hexagons
+        self.hid = self.defaults.get('id', '')  # HEX ID
+        self.hex_rows = self.defaults.get('hex_rows', 0)
+        self.hex_cols = self.defaults.get('hex_cols', 0)
+        self.hex_orientation = self.defaults.get('hex_orientation', 'flat')  # flat|pointy
+        self.hex_offset = self.defaults.get('hex_offset', 'even')  # even|odd
+        self.hex_layout = self.defaults.get('hex_layout', 'rectangle')  # rectangle
         self.coord_type_x = self.defaults.get('coord_type_x', 'number')  # number|letter
         self.coord_type_y = self.defaults.get('coord_type_y', 'number')  # number|letter
         self.coord_start_x = self.defaults.get('coord_start_x', 0)
@@ -410,12 +428,11 @@ class BaseCanvas:
         self.coord_position = self.defaults.get('coord_position', None)  # top|middle|bottom
         self.coord_offset = self.defaults.get('coord_offset', 0)
         self.coord_font_face = self.defaults.get('coord_font_face', 'Helvetica')
-        self.coord_font_size = self.defaults.get('coord_font_size', 10)
+        self.coord_font_size = self.defaults.get('coord_font_size',
+                                                 int(self.font_size * 0.5))
         self.coord_stroke = self.get_color(self.defaults.get('coord_stroke'), black)
         self.coord_padding = self.defaults.get('coord_padding', 2)
-        self.caltrops = self.defaults.get('caltrops', None)
-        self.caltrops_fraction = self.defaults.get('caltrops_fraction', None)
-        self.caltrops_invert = kwargs.get('caltrops_invert', False)
+        self.coord_separator = kwargs.get('coord_separator', '')
 
     def get_canvas(self):
         """Return reportlab canvas object"""
@@ -539,6 +556,19 @@ class BaseShape:
         self._angle_theta = math.radians(self.angle)
         self.xe = kwargs.get('xe', cnv.xe)
         self.ye = kwargs.get('ye', cnv.ye)
+        # ---- arrow
+        self.head_style = kwargs.get('head_style', cnv.head_style)
+        self.tail_style = kwargs.get('tail_style', cnv.tail_style)
+        self.head_fraction = kwargs.get('head_fraction', cnv.head_fraction)
+        self.tail_fraction = kwargs.get('tail_fraction', cnv.tail_fraction)
+        self.head_height = kwargs.get('head_height', cnv.head_height)
+        self.tail_height = kwargs.get('tail_height', cnv.tail_width)
+        self.head_width = kwargs.get('head_width', cnv.head_width)
+        self.tail_width = kwargs.get('tail_width', cnv.tail_width)
+        self.tail_fill = kwargs.get('tail_fill', cnv.tail_fill)
+        self.head_fill = kwargs.get('head_fill', cnv.head_fill)
+        self.head_stroke = kwargs.get('head_stroke', cnv.stroke)
+        self.tail_stroke = kwargs.get('tail_stroke', cnv.stroke)
         # ---- line / bezier
         self.x_1 = kwargs.get('x1', cnv.x_1)
         self.y_1 = kwargs.get('y1', cnv.y_1)
@@ -565,32 +595,34 @@ class BaseShape:
         # ---- compass
         self.perimeter = kwargs.get('perimeter', 'circle')  # circle|rectangle|hexagon
         self.directions = kwargs.get('directions', None)
-        # ---- hexagons
-        self.hid = kwargs.get('id', cnv.hid)  # HEX ID
-        self.hex_rows = kwargs.get('hex_rows', 0)
-        self.hex_cols = kwargs.get('hex_cols', 0)
-        self.hex_layout = kwargs.get('hex_layout', 'rectangle')  # rectangle|circle|diamond|triangle
-        self.hex_orientation = kwargs.get('hex_orientation', 'flat')
-        self.hex_offset = kwargs.get('hex_offset', 'even')  # even|odd
+        # ---- hexagon
         self.side = kwargs.get('side', 0)  # length of sides
         self.centre_shape = kwargs.get('centre_shape', '')
-        self.centre_shape_x = kwargs.get('centre_shape_x', 0)
-        self.centre_shape_y = kwargs.get('centre_shape_y', 0)
+        self.centre_shape_x = kwargs.get('centre_shape_x', cnv.centre_shape_x)
+        self.centre_shape_y = kwargs.get('centre_shape_y', cnv.centre_shape_y)
         self.dot_color = kwargs.get('dot_color', cnv.dot_color)
         self.dot_size = kwargs.get('dot_size', cnv.dot_size)
-        self.coord_type_x = kwargs.get('coord_type_x', 'number')  # number|letter
-        self.coord_type_y = kwargs.get('coord_type_y', 'number')  # number|letter
-        self.coord_start_x = kwargs.get('coord_start_x', 0)
-        self.coord_start_y = kwargs.get('coord_start_y', 0)
-        self.coord_position = kwargs.get('coord_position', None)  # top|middle|bottom
-        self.coord_offset = kwargs.get('coord_offset', 0)
-        self.coord_font_face = kwargs.get('coord_font_face', cnv.font_face)
-        self.coord_font_size = kwargs.get('coord_font_size', cnv.font_size)
-        self.coord_stroke = kwargs.get('coord_stroke', cnv.stroke)
-        self.coord_padding = kwargs.get('coord_padding', 2)
-        self.caltrops = kwargs.get('caltrops', None)
-        self.caltrops_fraction = kwargs.get('caltrops_fraction', None)
-        self.caltrops_invert = kwargs.get('caltrops_invert', False)
+        self.hex_orientation = kwargs.get('hex_orientation', cnv.hex_orientation)
+        self.caltrops = kwargs.get('caltrops', cnv.caltrops)
+        self.caltrops_fraction = kwargs.get('caltrops_fraction', cnv.caltrops_fraction)
+        self.caltrops_invert = kwargs.get('caltrops_invert', cnv.caltrops_invert)
+        # ---- hexagons
+        self.hid = kwargs.get('id', cnv.hid)  # HEX ID
+        self.hex_rows = kwargs.get('hex_rows', cnv.hex_rows)
+        self.hex_cols = kwargs.get('hex_cols', cnv.hex_cols)
+        self.hex_layout = kwargs.get('hex_layout', cnv.hex_layout)  # rectangle|circle|diamond|triangle
+        self.hex_offset = kwargs.get('hex_offset', cnv.hex_offset)  # even|odd
+        self.coord_type_x = kwargs.get('coord_type_x', cnv.coord_type_x)  # number|letter
+        self.coord_type_y = kwargs.get('coord_type_y', cnv.coord_type_y)  # number|letter
+        self.coord_start_x = kwargs.get('coord_start_x', cnv.coord_start_x)
+        self.coord_start_y = kwargs.get('coord_start_y', cnv.coord_start_y)
+        self.coord_position = kwargs.get('coord_position', cnv.coord_position)  # top|middle|bottom
+        self.coord_offset = kwargs.get('coord_offset', cnv.coord_offset)
+        self.coord_font_face = kwargs.get('coord_font_face', cnv.coord_font_face)
+        self.coord_font_size = kwargs.get('coord_font_size', cnv.coord_font_size)
+        self.coord_stroke = kwargs.get('coord_stroke', cnv.coord_stroke)
+        self.coord_padding = kwargs.get('coord_padding', cnv.coord_padding)
+        self.coord_separator = kwargs.get('coord_separator', cnv.coord_separator)
 
         # ---- CHECK ALL
         correct, issue = self.check_settings()
@@ -704,6 +736,21 @@ class BaseShape:
                     ['large', 'medium', 'small', 's', 'm', 'l', ]:
                 issue.append(f'"{self.caltrops}" is an invalid caltrops sie!')
                 correct = False
+        # ---- arrows
+        if self.head_style:
+            if str(self.head_style).lower() not in \
+                    ['line', 'l', 'line2', 'l2', 'line3', 'l3', 'triangle', 't',
+                     'diamond', 'd', 'notch', 'n', 'spear', 's', 'circle', 'c', ]:
+                issue.append(f'"{self.head_style}" is an invalid arrow head_style!')
+                correct = False
+        if self.tail_style:
+            if str(self.tail_style).lower() not in \
+                    ['line', 'l', 'line2', 'l2', 'line3', 'l3', 'feather', 'f',
+                     'circle', 'c', ]:
+                issue.append(f'"{self.tail_style}" is an invalid arrow tail_style!')
+                correct = False
+
+
         return correct, issue
 
     def to_alignment(self):

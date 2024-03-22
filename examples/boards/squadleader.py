@@ -24,8 +24,6 @@ Hexagons(
     coord_type_x="letter",
     coord_font_size=7,
     coord_padding=0,
-    coord_font_size=7,
-    coord_padding=0,
     fill=darkseagreen,
     stroke=black,
 )
