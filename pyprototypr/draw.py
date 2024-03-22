@@ -7,6 +7,7 @@ Primary drawing interface for pyprototypr
 from __future__ import division
 import logging
 # lib
+from copy import copy
 import os
 import sys
 # third party
@@ -487,10 +488,9 @@ def AutoGrid(**kwargs):
     cols = int(_cols)
     kwargs['rows'] = kwargs.get('rows', rows)
     kwargs['cols'] = kwargs.get('cols', cols)
-    kwargs['stroke_width'] = kwargs.get('stroke_width', 0.05)  # fine line
+    kwargs['stroke_width'] = kwargs.get('stroke_width', 0.2)  # fine line
     kwargs['font_size'] = kwargs.get('font_size', 10)
-    grid = GridShape(canvas=cnv, **kwargs)
-    grid.draw()
+    # ---- numbering
     if numbering:
         common = Common(font_size=kwargs['font_size'],
                         stroke=kwargs['stroke'],
@@ -502,9 +502,28 @@ def AutoGrid(**kwargs):
                  common=common)
         for y in range(0, kwargs['rows'] + 1):
             Text(x=kwargs['x'] - kwargs['size'] / 2.0,
-                 y=y*size,
+                 y=y*size - common.points_to_value(kwargs['font_size']) / 2.0,
                  text=str(y*size),
                  common=common)
+
+    # ---- subgrid
+    if kwargs.get('subdivisions'):
+        local_kwargs = copy(kwargs)
+        local_kwargs['size'] = size / int(kwargs.get('subdivisions'))
+        for col in range(0, cols):
+            for row in range(0, rows):
+                off_x = float(kwargs['size']) * col
+                off_y = float(kwargs['size']) * row
+                # log.warning("col:%s row:%s off_x:%s off_y:%s", col, row, off_x, off_y)
+                local_kwargs['rows'] = int(kwargs.get('subdivisions'))
+                local_kwargs['cols'] = int(kwargs.get('subdivisions'))
+                local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
+                subgrid = GridShape(canvas=cnv, **local_kwargs)
+                subgrid.draw(off_x=off_x, off_y=off_y)
+
+    # ---- draw Grid
+    grid = GridShape(canvas=cnv, **kwargs)
+    grid.draw()
     return grid
 
 

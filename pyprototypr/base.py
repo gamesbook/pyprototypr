@@ -12,7 +12,7 @@ import os
 # third party
 from svglib.svglib import svg2rlg
 from reportlab.pdfgen import canvas as reportlab_canvas
-from reportlab.lib.units import cm, inch
+from reportlab.lib.units import cm, inch, mm
 from reportlab.lib.pagesizes import (
     A6, A5, A4, A3, A2, A1, A0, LETTER, LEGAL, ELEVENSEVENTEEN,
     letter, legal, elevenSeventeen, B6, B5, B4, B3, B2, B0, landscape)
@@ -53,7 +53,9 @@ DEBUG = False
 # ---- units
 UNITS = {
     "cm": cm,
-    "inch": inch
+    "inch": inch,
+    "mm": mm,
+    "points": "points"
 }
 # ---- colors (ReportLab; 18xx Games)
 COLORS = {
@@ -883,6 +885,21 @@ class BaseShape:
             return _text[index]
         except TypeError:
             return _text
+
+    def points_to_value(self, value: float) -> float:
+        """Convert a point value to a units-based value."""
+        try:
+            if self.units == cm:
+                return float(value) / 28.3465
+            if self.units == mm:
+                return float(value) / 2.83465
+            elif self.units == inch:
+                return float(value) / 72.0
+            else:
+                return float(value)
+        except Exception as err:
+            log.exception(err)
+            tools.feedback(f'Unable to convert "{value}" to {self.units}!', True)
 
     def values_to_points(self, items: list) -> list:
         """Convert a list of values to points."""

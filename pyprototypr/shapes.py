@@ -1356,7 +1356,8 @@ class GridShape(BaseShape):
             x_cols.append(x + x_col * width)
         # canvas
         self.set_canvas_props()
-        # draw
+        # ---- draw grid
+        # log.debug("x_cols:%s, y_cols:%s", x_cols, y_cols)
         cnv.grid(x_cols, y_cols)  # , stroke=1, fill=1)
 
 
@@ -1396,7 +1397,7 @@ class CardShape(BaseShape):
     def draw_card(self, cnv, row, col, cid):
         """Draw a card on a given canvas."""
         log.debug("Card cnv:%s r:%s c:%s id:%s shp:%s", cnv, row, col, cid, self.shape)
-        # draw outline
+        # ---- draw outline
         label = "ID:%s" % cid if self.show_id else ""
         if self.shape == "rectangle":
             outline = RectangleShape(
@@ -1425,6 +1426,7 @@ class CardShape(BaseShape):
             outline.draw(is_cards=True)
         else:
             tools.feedback("Unable to draw a {self.shape}-shaped card.", stop=True)
+        # ---- draw card elements
         flat_elements = tools.flatten(self.elements)
         for flat_ele in flat_elements:
             log.debug("flat_ele %s", flat_ele)
