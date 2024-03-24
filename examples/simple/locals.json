@@ -1,5 +1,5 @@
 {
     "stroke": "red",
-    "stroke_label" : "blue",
+    "label_stroke" : "blue",
     "fill": "yellow",
 }

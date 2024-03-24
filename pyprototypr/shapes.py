@@ -118,15 +118,15 @@ class ImageShape(BaseShape):
         xc = x + width / 2.0
         if self.label:
             cnv.setFont(self.font_face, self.label_size)
-            cnv.setFillColor(self.stroke_label)
+            cnv.setFillColor(self.label_stroke)
             self.draw_multi_string(cnv, xc, y + height / 2.0, self.label)
         if self.title:
             cnv.setFont(self.font_face, self.title_size)
-            cnv.setFillColor(self.stroke_title)
+            cnv.setFillColor(self.title_stroke)
             self.draw_multi_string(cnv, xc, y - cnv._leading, self.title)
         if self.heading:
             cnv.setFont(self.font_face, self.heading_size)
-            cnv.setFillColor(self.stroke_heading)
+            cnv.setFillColor(self.heading_stroke)
             self.draw_multi_string(cnv, xc, y + height + cnv._leading, self.heading)
 
 
@@ -636,11 +636,11 @@ class PolygonShape(BaseShape):
 
         if self.title:
             cnv.setFont(self.font_face, self.title_size)
-            cnv.setFillColor(self.stroke_title)
+            cnv.setFillColor(self.title_stroke)
             self.draw_multi_string(cnv, x, y - 1.4 * radius, self.title)
         if self.heading:
             cnv.setFont(self.font_face, self.heading_size)
-            cnv.setFillColor(self.stroke_heading)
+            cnv.setFillColor(self.heading_stroke)
             self.draw_multi_string(cnv, x, y + 1.3 * radius, self.heading)
         # ---- dot
         self.draw_dot(cnv, x, y)
@@ -906,11 +906,11 @@ class StarShape(BaseShape):
         self.draw_label(cnv, x, y)
         if self.title:
             cnv.setFont(self.font_face, self.title_size)
-            cnv.setFillColor(self.stroke_title)
+            cnv.setFillColor(self.title_stroke)
             self.draw_multi_string(cnv, x, y - 1.4 * radius, self.title)
         if self.heading:
             cnv.setFont(self.font_face, self.heading_size)
-            cnv.setFillColor(self.stroke_heading)
+            cnv.setFillColor(self.heading_stroke)
             self.draw_multi_string(cnv, x, y + 1.3 * radius, self.heading)
         # ---- dot
         self.draw_dot(cnv, x, y)

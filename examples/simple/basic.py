@@ -74,7 +74,7 @@ Star(
     fill=gold,
     stroke=red,
     label="Radius:5",
-    stroke_label=red,
+    label_stroke=red,
     heading="Star!",
     title="Fig 1: Five-pointed star",
 )
@@ -179,11 +179,11 @@ Image(
     width=7,
     height=6,
     label="sholes typewriter",
-    stroke_label=red,
+    label_stroke=red,
     heading="Sholes Typewriter",
-    stroke_heading=blue,
+    heading_stroke=blue,
     title="Fig 2. Sholes typewriter",
-    stroke_title=green,
+    title_stroke=green,
 )
 Rectangle(x=6, y=11, width=7, height=6, fill=None, stroke=silver)
 PageBreak()
@@ -199,11 +199,11 @@ Image(
     width=7,
     height=6,
     label="noun typewriter",
-    stroke_label=red,
+    label_stroke=red,
     heading="Noun Typewriter",
-    stroke_heading=blue,
+    heading_stroke=blue,
     title="Fig 3. nounproject.com typewriter (AlekZakaUddin, CC BY 3.0)",
-    stroke_title=green,
+    title_stroke=green,
     scaling=0.6,
 )
 Rectangle(x=6, y=11, width=7, height=6.25, fill=None, stroke=silver)
