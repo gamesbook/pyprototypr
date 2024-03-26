@@ -270,7 +270,7 @@ class RhombusShape(BaseShape):
         width = self.unit(self.width)
         if self.cx and self.cy:
             x = self.unit(self.cx) - width / 2.0 + delta_x
-            y = self.unit(self.cy) + height / 2.0 + delta_y
+            y = self.unit(self.cy) - height / 2.0 + delta_y
         else:
             x = self.unit(self.x) + delta_x
             y = self.unit(self.y) + delta_y
@@ -722,15 +722,16 @@ class HexShape(BaseShape):
         points = self.values_to_points(array)
         return points
 
-
     def draw_coord(self, cnv, x_d, y_d, half_height):
         """Draw the coord inside the hexagon."""
         if self.coord_position:
             # ---- set coord value
             _row = self.hex_rows - self.row + self.coord_start_y
             _col = self.col + 1 if not self.coord_start_x else self.col + self.coord_start_x
-            _x = chr(96 + _col) if self.coord_type_x in ['l', 'lower'] else chr(64 + _col)
-            _y = chr(96 + _row) if self.coord_type_y in ['l', 'lower'] else chr(64 + _row)
+            _x = tools.sheet_column(_col, True) \
+                if self.coord_type_x in ['l', 'lower'] else tools.sheet_column(_col)
+            _y = tools.sheet_column(_row, True) \
+                if self.coord_type_y in ['l', 'lower'] else tools.sheet_column(_row)
             if self.coord_type_x in ['n', 'number']:
                 _x = str(_col).zfill(self.coord_padding)
             if self.coord_type_y in ['n', 'number']:

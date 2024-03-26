@@ -10,7 +10,7 @@ popular game *"Catan"*, first released as *"Settlers of Catan"*" in the early
 1990s.
 
 There are in fact a number of software tools available for creating hexagonal
-grids. A few of them are listed below:
+grids of various kinds. A few of them are listed below:
 
 * *HEXGRID* (https://hamhambone.github.io/hexgrid/) - an online hex grid
   generator which interactively creates a display, downloadable as a PNG image.
@@ -19,6 +19,8 @@ grids. A few of them are listed below:
 * *Hex Map Extension* (https://github.com/lifelike/hexmapextension/tree/master) -
   an extension for creating hex grids in *Inkscape* that can also be used to make
   brick patterns of staggered rectangles.
+* *hexboard* (https://www.ctan.org/pkg/hexboard) - 
+  a package for LATEX that provides functionality for drawing Hex boards and games. 
 * *map18xx* (https://github.com/XeryusTC/map18xx) - a 18xx hex map and tile
   generator that outputs to SVG files, scaled to fit A4 paper.
 * *18xx Maker* (https://www.18xx-maker.com/) - uses 18xx game definitions written
@@ -35,6 +37,7 @@ other tools would be of better use.
 
 A quick footnote.  The 18xx train games hex maps are often criticised for their
 poor aesthetic. A fascinating article that enages with this topic - and perhaps
-relevant even at a prototyping stage - is https://medium.com/grandtrunkgames/mawgd4-18xx-tiles-and-18xx-maps-8a409bba4230
+relevant even at a prototyping stage - is available at 
+https://medium.com/grandtrunkgames/mawgd4-18xx-tiles-and-18xx-maps-8a409bba4230
 
 ## A Basic Hexagonal Grid

@@ -11,6 +11,7 @@ import logging
 import math
 import os
 import pathlib
+import string
 import sys
 import xlrd
 # local
@@ -502,3 +503,29 @@ def degrees_to_xy(degrees, radius, origin):
     x_o = math.cos(radians) * radius + origin[0]
     y_o = math.sin(-radians) * radius + origin[1]
     return (x_o, y_o)
+
+
+def sheet_column(num: int, lower: bool = False) -> string:
+    """Convert a spreadsheet number to a column letter
+
+    Ref:
+        https://stackoverflow.com/questions/23861680/
+    """
+
+    def converter(num, lower):
+        if lower:
+            return (
+                ""
+                if num == 0
+                else converter((num - 1) // 26, lower) +
+                string.ascii_lowercase[(num - 1) % 26]
+            )
+        else:
+            return (
+                ""
+                if num == 0
+                else converter((num - 1) // 26, lower) +
+                string.ascii_uppercase[(num - 1) % 26]
+            )
+
+    return converter(num, lower)
