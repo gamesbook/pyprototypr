@@ -6,7 +6,8 @@ please first see the [Setting Up](setting_up.md) document.
 
 > **Remember** when you create and edit your file, do **not** use a word processor
 > such as "Word", "Pages" or "LibreOffice" - but a text file editor instead e.g.
-> on Windows, use *NotePad* or *NotePad++*; and on OS X, use *TextEdit*!
+> on Windows, use *NotePad* or *[NotePad++](https://notepad-plus-plus.org/)*;
+> and on OS X, use *TextEdit*!
 
 
 ## A simple card deck example: Take 1
