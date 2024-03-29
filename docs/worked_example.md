@@ -4,8 +4,8 @@ This example assumes that you have set-up your computer with Python and have
 tested to check that you can create a test file which generates a PDF. If not,
 please first see the [Setting Up](setting_up.md) document.
 
-> **Remember** to create your file do **not** use a word processor such as
-> "Word", "Pages" or "LibreOffice" - but a text file editor instead e.g.
+> **Remember** when you create and edit your file, do **not** use a word processor
+> such as "Word", "Pages" or "LibreOffice" - but a text file editor instead e.g.
 > on Windows, use *NotePad* or *NotePad++*; and on OS X, use *TextEdit*!
 
 
@@ -214,7 +214,7 @@ but with different text on card number 25 (twenty-five).
 If you are interested in carrying on with design of card decks, then the section on
 [Card Decks](card_decks.md) will be helpful for you (bear in mind that that section
 assumes you are familiar with all the core concepts and program usage described in
-earlier sections).
+the earlier sections of the documentation).
 
 There are also card-related examples in the [Available Examples](available_examples.md)
 section.

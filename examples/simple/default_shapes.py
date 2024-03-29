@@ -93,11 +93,6 @@ Text(common=header, text="Ellipse: cx=1, cy=1")
 Ellipse(cx=1, cy=1)
 PageBreak()
 
-# AutoGrid(stroke_width=0.5)
-# Text(common=header, text="Ellipse: xe=3,ye=2")
-# Ellipse(cx=2, cy=1, xe=4, ye=3)
-# PageBreak()
-
 AutoGrid(stroke_width=0.5)
 Text(common=header, text="Polygon")
 Polygon()
@@ -113,44 +108,14 @@ Text(common=header, text="RightAngledTriangle")
 RightAngledTriangle()
 PageBreak()
 
-# RightAngledTriangle(flip="up", hand="right", label="UR")
-# RightAngledTriangle(flip="down", hand="right", label="DR")
-# RightAngledTriangle(flip="up", hand="left", label="UL")
-# RightAngledTriangle(flip="down", hand="left", label="DL")
-
 AutoGrid(stroke_width=0.5)
 Text(common=header, text="Compass")
 Compass()
 PageBreak()
 
-# Compass(perimeter='hexagon')
-# Compass(perimeter='octagon')
-# Compass(perimeter='rectangle', height=2, width=3)
-
 AutoGrid(stroke_width=0.5)
 Text(common=header, text="Hexagons: rows=2, cols=2")
 Hexagons(rows=2, cols=2)
-PageBreak()
-
-AutoGrid(stroke_width=0.5)
-Text(common=header, font_size=8,
-     text="Hexagons: coordinates")
-Hexagons(
-    rows=2,
-    cols=2,
-    coord_position="middle",
-    coord_type_x="lower",
-)
-PageBreak()
-
-AutoGrid(stroke_width=0.5)
-Text(common=header, text="Hexagons: caltrops and dots")
-Hexagons(
-    rows=2,
-    cols=2,
-    dot_size=0.04,
-    caltrops="medium",
-)
 PageBreak()
 
 # -- no defaults

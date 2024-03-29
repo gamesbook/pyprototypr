@@ -1137,7 +1137,7 @@ class CompassShape(BaseShape):
         fourth = third + 2 * half_second
         ranges.append((third, fourth))
         ranges.append((fourth, 360.0))
-        tools.feedback(f'{ranges=}')
+        # tools.feedback(f'{ranges=}')
         return ranges
 
     def rectangle_radius(self, cnv, ranges, angle, height, width):
@@ -1159,7 +1159,7 @@ class CompassShape(BaseShape):
         x = radius * math.sin(radians)
         y = radius * math.cos(radians)
         pth = cnv.beginPath()
-        tools.feedback(f'{self.x_c=}, {self.y_c=}')
+        # tools.feedback(f'{self.x_c=}, {self.y_c=}')
         pth.moveTo(self.x_c, self.y_c)
         pth.lineTo(x + self.x_c, y + self.y_c)
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)

@@ -6,23 +6,29 @@ These descriptions of the available shapes assume you are familiar with the conc
 terms and ideas presented in [Basic Concepts](basic_concepts.md) - especially
 *units*, *properties* and *defaults*.
 
-Where possible, basic examples show how a shape would appear on a page when only the
-defaults are used.  This means for most cases, *lines* are drawn in black, with a width
-of 1mm (0.1cm) and shapes are *filled* with a white color.
+Where possible, basic examples show how a shape would appear on a page when **only**
+the default properties are used.  This means for most cases, *lines* are drawn in black,
+with a width of 1mm (0.1cm) and shapes are *filled* with a white color.
 
 To make it easier to see where and how a shape has been drawn, these examples have
 been created with a background grid for reference: the values of **x** appear across
 the bottom of the grid; those for **y** up along the left side.
 
+> The graphics for the examples here were generated from the scripts in the `examples`
+> directory - look in the `simple` sub-directory for the `default_shapes.py` and
+> `customised_shapes.py` files.
+
+
 ## Commonalities
 
-There are some properties that can be set for many of the shapes; example of these
-are presented at the end, rather than being repeated across shape.
+There are some properties that can be set for many of the shapes; examples of these
+are presented at the end, rather than being repeated across every shape.
+
 
 ## Linear Shapes
 
 These shapes are created from a line of some sort; the most basic being a simple line.
-They effectively only have 1 dimension.
+They effectively have only 1 dimension.
 
 ### Line
 
@@ -204,4 +210,5 @@ Further information about using hexagons can be found in the section on
   </tr>
 </table>
 
-## Other Shapes
+
+## Common Properties for Shapes
