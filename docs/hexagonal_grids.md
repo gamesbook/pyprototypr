@@ -5,9 +5,9 @@
 
 Hexagonal grids are now widely used in the gaming industry.  They are particularly
 suitable in providing an overlay for maps. As such they have been used for war
-games and role playing games.  One of the more well-known uses of them is in the
-popular game *"Catan"*, first released as *"Settlers of Catan"*" in the early
-1990s.
+games and role playing games, but also as grids or tiles in board games - one of the
+more well-known examples of this is in the popular game *"Catan"*, first released as
+*"Settlers of Catan"*" in the early 1990s.
 
 There are in fact a number of software tools available for creating hexagonal
 grids of various kinds. A few of them are listed below:
@@ -19,8 +19,8 @@ grids of various kinds. A few of them are listed below:
 * *Hex Map Extension* (https://github.com/lifelike/hexmapextension/tree/master) -
   an extension for creating hex grids in *Inkscape* that can also be used to make
   brick patterns of staggered rectangles.
-* *hexboard* (https://www.ctan.org/pkg/hexboard) - 
-  a package for LATEX that provides functionality for drawing Hex boards and games. 
+* *hexboard* (https://www.ctan.org/pkg/hexboard) -
+  a package for LATEX that provides functionality for drawing Hex boards and games.
 * *map18xx* (https://github.com/XeryusTC/map18xx) - a 18xx hex map and tile
   generator that outputs to SVG files, scaled to fit A4 paper.
 * *18xx Maker* (https://www.18xx-maker.com/) - uses 18xx game definitions written
@@ -37,7 +37,10 @@ other tools would be of better use.
 
 A quick footnote.  The 18xx train games hex maps are often criticised for their
 poor aesthetic. A fascinating article that enages with this topic - and perhaps
-relevant even at a prototyping stage - is available at 
-https://medium.com/grandtrunkgames/mawgd4-18xx-tiles-and-18xx-maps-8a409bba4230
+relevant even at a prototyping stage - is available at
+https://medium.com/grandtrunkgames/mawgd4-18xx-tiles-and-18xx-maps-8a409bba4230 .
+
 
 ## A Basic Hexagonal Grid
+
+**To Be Done**

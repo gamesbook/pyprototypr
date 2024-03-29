@@ -58,11 +58,28 @@ This script is very simple - it just contains these lines::
     PageBreak()
     Save()
 
-and is designed to produce a single, blank A4-sized page. It should create an
-output file called ``example1.pdf``, which will appear in the same directory as
-the script. You should be able to open and view this file via any PDF viewer
-program or app.
+and is designed to produce a single, blank A4-sized page in a PDF.
+
+It should create an output file called ``example1.pdf``, which will appear in the
+same directory as the script. You should be able to open and view this file using
+any PDF viewer program or application.
 
 If this works, then try out other examples from any of the ``examples``
 sub-directories (**note** that some examples may use additional files such
 as images or spreadsheets).
+
+
+Ackknowledgements
+=================
+
+As always, with Python, you are building "on the shoulders of giants". In this case,
+the `ReportLab PDF Toolkit <https://https://docs.reportlab.com/reportlab/userguide/ch1_intro/>`_
+provides all of the underlying infrastructure to do the graphics work; **pyprototypr**
+is really a thin wrapper around its numerous and extensive capabilities.
+
+Additional libraries used include:
+
+* `svglib <https://pypi.org/project/svglib/>`_ - support for drawing SVG images
+* `bgg-api <https://pypi.org/project/bgg-api/>`_ - support for access to the BoardGameGeek API
+* `xlrd <https://pypi.org/project/xlrd/>`_ - support for access to `.xls` files
+* `openpyxl <https://pypi.org/project/openpyxl/>`_ - support for access to `.xlsx` files

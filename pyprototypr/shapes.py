@@ -1305,7 +1305,7 @@ class EllipseShape(BaseShape):
         off_y = self.unit(off_y)
         delta_x = off_x + margin_left
         delta_y = off_y + margin_bottom
-        # create key points using units
+        # ---- create key points
         x_1 = self.unit(self.x) + delta_x
         y_1 = self.unit(self.y) + delta_y
         if not self.xe:
@@ -1314,7 +1314,16 @@ class EllipseShape(BaseShape):
             self.ye = self.y + self.default_length
         x_2 = self.unit(self.xe) + delta_x
         y_2 = self.unit(self.ye) + delta_y
-        # tools.feedback(f'{x_1=},{y_1=}  {x_2=},{y_2=} ({self.xe=}.{self.ye=}; {self.default_length=}')
+        x_c = (x_2 - x_1) / 2.0 + x_1
+        y_c = (y_2 - y_1) / 2.0 + y_1
+        # ---- overrides to centre the shape
+        if self.cx and self.cy:
+            dx = (self.unit(self.cx) + delta_x - x_c)
+            dy = (self.unit(self.cy) + delta_y - y_c)
+            x_1 = x_1 + dx
+            y_1 = y_1 + dy
+            x_2 = x_2 + dx
+            y_2 = y_2 + dy
         # canvas
         self.set_canvas_props()
         # ---- draw ellipse
