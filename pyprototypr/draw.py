@@ -163,6 +163,7 @@ def save():
 
 
 def margins(**kwargs):
+    """Add margins to a set of kwargs, if not present."""
     global margin
     global margin_left
     global margin_top
@@ -470,6 +471,8 @@ def AutoGrid(**kwargs):
     global margin_bottom
     global margin_right
     kwargs = margins(**kwargs)
+    if kwargs.get('common'):
+        tools.feedback('The "common" property cannot be used with AutoGrid.', True)
     kwargs['units'] = kwargs.get('units', cm)
     size = 1.0
     if kwargs['units'] == inch:
@@ -492,20 +495,19 @@ def AutoGrid(**kwargs):
     kwargs['font_size'] = kwargs.get('font_size', 10)
     # ---- numbering
     if numbering:
-        common = Common(font_size=kwargs['font_size'],
-                        stroke=kwargs['stroke'],
-                        units=kwargs['units'])
+        _common = Common(font_size=kwargs['font_size'],
+                         stroke=kwargs['stroke'],
+                         units=kwargs['units'])
         for x in range(0, kwargs['cols'] + 1):
             Text(x=x*size,
                  y=kwargs['y'] - kwargs['size'] / 2.0,
                  text=str(x*size),
-                 common=common)
+                 common=_common)
         for y in range(0, kwargs['rows'] + 1):
             Text(x=kwargs['x'] - kwargs['size'] / 2.0,
-                 y=y*size - common.points_to_value(kwargs['font_size']) / 2.0,
+                 y=y*size - _common.points_to_value(kwargs['font_size']) / 2.0,
                  text=str(y*size),
-                 common=common)
-
+                 common=_common)
     # ---- subgrid
     if kwargs.get('subdivisions'):
         local_kwargs = copy(kwargs)
@@ -520,7 +522,6 @@ def AutoGrid(**kwargs):
                 local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
                 subgrid = GridShape(canvas=cnv, **local_kwargs)
                 subgrid.draw(off_x=off_x, off_y=off_y)
-
     # ---- draw Grid
     grid = GridShape(canvas=cnv, **kwargs)
     grid.draw()

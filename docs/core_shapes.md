@@ -53,6 +53,29 @@ They effectively have only 1 dimension.
   </tr>
 </table>
 
+### Polyline
+
+<table>
+  <tr>
+    <th width="30%">Example #1</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/examples/simple/defaults/polyline.png"></td>
+    <td>
+    <p>This example shows the shape constructed using the command with defaults,
+       as well as the points for the line (if the points are <b>not</b> defined
+       the script will not work and show an error message):</p>
+    <pre>Polyline()</pre>
+    <p>It has the following properties based on the defaults:
+      <ul>
+        <li>a series of points; </li>,
+      </ul>
+    </p>
+    </td>
+  </tr>
+</table>
+
 ### AutoGrid
 
 <table>

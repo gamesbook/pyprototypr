@@ -122,6 +122,10 @@ Hexagons(
 )
 PageBreak()
 
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Lines")
+Lines(x=0, x1=6, y=0, y1=0, rows=7, height=1.0)
+PageBreak()
 # -- no defaults
 # Arc()
 # Polyline() # will get FEEDBACK

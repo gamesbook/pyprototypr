@@ -488,9 +488,10 @@ class BaseShape:
         # ---- KEY
         self.canvas = canvas or BaseCanvas()  # BaseCanvas object
         cnv = self.canvas  # shortcut for use in getting defaults
-        log.debug("Base types %s %s %s", type(self.canvas), type(canvas), type(cnv))
+        log.debug("BaseShape types %s %s %s", type(self.canvas), type(canvas), type(cnv))
         self._object = _object  # placeholder for an incoming Shape object
         self.kwargs = kwargs
+        log.debug("BaseShape kwargs:%s", self.kwargs)
         self.shape_id = None
         self.stylesheet = getSampleStyleSheet()
         self.sequence = kwargs.get('sequence', [])  # e.g. card numbers
@@ -663,7 +664,11 @@ class BaseShape:
             tools.feedback("Problem with settings: %s." % '; '.join(issue))
         # ---- UPDATE SELF WITH COMMON
         if self.common:
-            attrs = vars(self.common)
+            try:
+                attrs = vars(self.common)
+            except TypeError:
+                tools.feedback(f'Cannot process the Common property "{self.common}"'
+                               ' - please check!', True)
             for attr in attrs.keys():
                 if attr not in ['canvas', 'common', 'stylesheet'] and \
                         attr[0] != '_':

@@ -117,4 +117,4 @@ actual name of the file you created.
 There should now be a new file called `test.pdf` in the same directory.
 
 You should be able to open and view this PDF file via your PDF viewer. It should
-be a mostly blank page with the phrase _Hello World_ at the bottom-left.
+be a mostly blank page with the phrase *Hello World* at the bottom-left.

@@ -16,6 +16,8 @@ Hexagons(
     cols=16,
     rows=10,
     side=1.15,
+    stroke=black,
+    fill=darkseagreen,
     hex_offset="odd",
     margin_bottom=1.75,
     dot_size=0.04,
@@ -24,8 +26,6 @@ Hexagons(
     coord_type_x="letter",
     coord_font_size=7,
     coord_padding=0,
-    fill=darkseagreen,
-    stroke=black,
 )
 
 Save()

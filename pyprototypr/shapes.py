@@ -658,7 +658,7 @@ class PolylineShape(BaseShape):
         if not points:
             points = self.points
         if not points or len(points) == 0:
-            tools.feedback("No points to draw or points are incorrect!")
+            tools.feedback("No Polyline points to draw - or points are incorrect!")
             return
         # offset
         margin_left = self.unit(self.margin_left)
@@ -679,7 +679,7 @@ class PolylineShape(BaseShape):
             if key == 0:
                 pth.moveTo(x, y)
             pth.lineTo(x, y)
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1, fill=0)
 
 
 class HexShape(BaseShape):
@@ -1367,7 +1367,6 @@ class GridShape(BaseShape):
         # canvas
         self.set_canvas_props()
         # ---- draw grid
-        # log.debug("x_cols:%s, y_cols:%s", x_cols, y_cols)
         cnv.grid(x_cols, y_cols)  # , stroke=1, fill=1)
 
 
@@ -1377,7 +1376,11 @@ class CommonShape(BaseShape):
     """
 
     def __init__(self, _object=None, canvas=None, **kwargs):
+        self._kwargs = kwargs
         super(CommonShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+
+    def __str__(self):
+        return f'{self._kwargs}'
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Not applicable."""

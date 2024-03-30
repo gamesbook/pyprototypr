@@ -27,7 +27,7 @@ updated PDF file.
 Creating a *script* is similar to the process of building a house; in the sense
 that the instructions which come first create underlying parts that are "deeper
 down"; in the same way that a foundation is below a floor, which in turn is below
-the  walls, which are below the ceiling, which is below the roof. The lower
+the walls, which are below the ceiling, which is below the roof. The lower
 layers are often not "visible", even if they are there and are just as important!
 
 So, for example, a page may contain rectangles representing cards.  Each card may

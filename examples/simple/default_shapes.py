@@ -118,8 +118,33 @@ Text(common=header, text="Hexagons: rows=2, cols=2")
 Hexagons(rows=2, cols=2)
 PageBreak()
 
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Grid")
+Grid()
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Arc")
+Arc()
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Bezier")
+Bezier()
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Polyline")
+# Polyline() # will get FEEDBACK
+Polyline(points=[(0, 0), (1, 1), (2, 0)])
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Shape")
+Shape(points="0,0 1,1 2,0")
+PageBreak()
+
 # -- no defaults
 # Arc()
-# Polyline() # will get FEEDBACK
 
 Save()

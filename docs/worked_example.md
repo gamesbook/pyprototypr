@@ -67,7 +67,7 @@ Save()
 You can see that the `Create()` instruction has now been expanded with a list of
 new details appearing inside the brackets. These items are called *properties*
 and each item is separated by a ",".  Each **property** is defined by a name,
-followed by an "=" sign, and then a value of some kind.
+followed by an "=" (equals) sign, and then a value of some kind.
 
 In this case, the `pagesize` property has been set equal to a value of *A3*
 (note, there are **no** *""* delimiters around the term *A3*), and a specific
