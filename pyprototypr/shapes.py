@@ -301,12 +301,13 @@ class RectangleShape(BaseShape):
         super(RectangleShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # overrides to centre shape
         if self.cx and self.cy:
-            x, y = self.x, self.y
+            # x, y = self.x, self.y
             self.x = self.cx - self.width / 2.0
             self.y = self.cy - self.height / 2.0
             # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
         self.kwargs = kwargs
 
+    '''
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a rectangle on a given canvas."""
         cnv = cnv.canvas if cnv else self.canvas.canvas
@@ -348,7 +349,7 @@ class RectangleShape(BaseShape):
             cnv.roundRect(x, y, width, height, _rounding, stroke=1, fill=1 if self.fill else 0)
         else:
             cnv.rect(x, y, width, height, stroke=1, fill=1 if self.fill else 0)
-        # grid marks
+        # ---- grid marks
         self.set_canvas_props(
             stroke=self.grid_color, stroke_width=self.grid_stroke_width
         )
@@ -398,6 +399,115 @@ class RectangleShape(BaseShape):
         self.draw_label(cnv, x + width / 2.0, y + height / 2.0)
         # ---- dot
         self.draw_dot(cnv, x + width / 2.0, y + height / 2.0)
+        '''
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw a rectangle on a given canvas."""
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        # ---- adjust start
+        if self.row is not None and self.col is not None:
+            x = self.col * self._size.width + self._dlt.x
+            y = self.row * self._size.height + self._dlt.y
+        elif self.cx and self.cy:
+            x = self._cnt.x - self._size.width / 2.0 + self._dlt.x
+            y = self._cnt.y + self._size.height / 2.0 + self._dlt.y
+        else:
+            x = self._pnt.x + self._dlt.x
+            y = self._pnt.y + self._dlt.y
+        # ---- overrides to centre the shape
+        if kwargs.get("cx") and kwargs.get("cy"):
+            x = kwargs.get("cx") - self._size.width / 2.0
+            y = kwargs.get("cy") - self._size.height / 2.0
+        # canvas
+        self.set_canvas_props()
+        # ---- draw rectangle
+        if self.rounding:
+            rounding = self.unit(self.rounding)
+            cnv.roundRect(
+                x,
+                y,
+                self._size.width,
+                self._size.height,
+                rounding,
+                stroke=1,
+                fill=1 if self.fill else 0,
+            )
+        elif self.rounded:
+            _rounding = self._size.width * 0.08
+            cnv.roundRect(
+                x,
+                y,
+                self._size.width,
+                self._size.height,
+                _rounding,
+                stroke=1,
+                fill=1 if self.fill else 0,
+            )
+        else:
+            cnv.rect(
+                x,
+                y,
+                self._size.width,
+                self._size.height,
+                stroke=1,
+                fill=1 if self.fill else 0,
+            )
+        # ---- grid marks
+        self.set_canvas_props(
+            stroke=self.grid_color, stroke_width=self.grid_stroke_width)
+        if self.grid_marks:
+            deltag = self.unit(self.grid_length)
+            pth = cnv.beginPath()
+            gx, gy = 0, y  # left-side
+            pth.moveTo(gx, gy)
+            pth.lineTo(deltag, gy)
+            pth.moveTo(0, gy + self._size.height)
+            pth.lineTo(deltag, gy + self._size.height)
+            gx, gy = x, self.pagesize[1]  # top-side
+            pth.moveTo(gx, gy)
+            pth.lineTo(gx, gy - deltag)
+            pth.moveTo(gx + self._size.width, gy)
+            pth.lineTo(gx + self._size.width, gy - deltag)
+            gx, gy = self.pagesize[0], y  # right-side
+            pth.moveTo(gx, gy)
+            pth.lineTo(gx - deltag, gy)
+            pth.moveTo(gx, gy + self._size.height)
+            pth.lineTo(gx - deltag, gy + self._size.height)
+            gx, gy = x, 0  # bottom-side
+            pth.moveTo(gx, gy)
+            pth.lineTo(gx, gy + deltag)
+            pth.moveTo(gx + self._size.width, gy)
+            pth.lineTo(gx + self._size.width, gy + deltag)
+            # done
+            cnv.drawPath(pth, stroke=1, fill=1)
+        # ---- fill pattern?
+        img, is_svg = self.load_image(self.pattern)
+        if img:
+            log.debug("IMG %s s%s %s", type(img._image), img._image.size)
+            iwidth = img._image.size[0]
+            iheight = img._image.size[1]
+            # repeat?
+            if self.repeat:
+                cnv.drawImage(img, x=x, y=y, width=iwidth, height=iheight, mask="auto")
+            else:
+                # stretch
+                # TODO - work out how to (a) fill and (b) cut off -- mask?
+                # assume DPI = 300?  72pt = 1" = 300px -see
+                # http://two.pairlist.net/pipermail/reportlab-users/2006-January/004670.html
+                # w, h = yourImage.size
+                # yourImage.crop((0, 30, w, h-30)).save(...)
+                cnv.drawImage(
+                        img,
+                        x=x,
+                        y=y,
+                        width=self._size.width,
+                        height=self._size.height,
+                        mask="auto",
+                    )
+        # ---- text
+        self.draw_label(cnv, x + self._size.width / 2.0, y + self._size.height / 2.0)
+        # ---- dot
+        self.draw_dot(cnv, x + self._size.width / 2.0, y + self._size.height / 2.0)
 
 
 class OctagonShape(BaseShape):

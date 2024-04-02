@@ -66,8 +66,9 @@ They effectively have only 1 dimension.
     <p>This example shows the shape constructed using the command with defaults,
        as well as the points for the line (if the points are <b>not</b> defined
        the script will not work and show an error message):</p>
-    <pre>Polyline()</pre>
-    <p>It has the following properties based on the defaults:
+    <pre>Polyline(points=[(0, 0), (1, 1), (2, 0)])</pre>
+    <p>It's not really useful to draw a *Polyline* with only default properties; at a
+    miniumm, you need to use three point location:
       <ul>
         <li>a series of points; </li>,
       </ul>
@@ -88,9 +89,9 @@ They effectively have only 1 dimension.
     <td>
     <p>This example shows the shape constructed using the command with all defaults:</p>
     <pre>AutoGrid()</pre>
-    <p>This grid is designed to quickly construct a grid that can act as a "backround"
-    reference on which other shapes can be drawn and position.  Its unlikely to be used
-    for a final drawing!</p>
+    <p>This grid is designed to quickly construct a grid that can act as a "background"
+    reference on which other shapes can be drawn and positioned.  Its unlikely to be
+    used as part of a final drawing!</p>
     <p>It has the following properties based on the defaults:
       <ul>
         <li>grid interval of 1cm</li>,
@@ -98,6 +99,15 @@ They effectively have only 1 dimension.
         <li>heading/default direction is 90&deg; (clockwise from 0&deg; "north").</li>
       </ul>
     </p>
+    </td>
+  </tr>
+  <tr>
+    <th width="30%">Example #2</th>
+    <th>Description</th>
+  </tr>
+    <td><img src="images/examples/simple/defaults/autogrid.png"></td>
+    <td>
+      <pre>AutoGrid(subdivisions=5, stroke_width=0.8)</pre>
     </td>
   </tr>
 </table>

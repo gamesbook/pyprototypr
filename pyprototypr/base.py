@@ -4,6 +4,7 @@
 Base shape class for pyprototypr
 """
 # lib
+from collections import namedtuple
 import copy
 import json
 import logging
@@ -50,6 +51,10 @@ from pyprototypr.utils import tools
 log = logging.getLogger(__name__)
 
 DEBUG = False
+# ---- tuples
+Margin = namedtuple('Margin', ['left', 'right', 'bottom', 'top'])
+Point = namedtuple('Point', ['x', 'y'])
+Size = namedtuple('Point', ['height', 'width', 'radius', 'diameter'])
 # ---- units
 UNITS = {
     "cm": cm,
@@ -694,7 +699,25 @@ class BaseShape:
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an element on a given canvas."""
-        raise NotImplementedError
+        # ---- convert key properties to correct units
+        self._mrg = Margin(
+            self.unit(self.margin_left),
+            self.unit(self.margin_right),
+            self.unit(self.margin_bottom),
+            self.unit(self.margin_top))
+        self._pnt = Point(self.unit(self.x), self.unit(self.y))
+        self._cnt = Point(
+            self.unit(self.cx) if self.cx else None,
+            self.unit(self.cy) if self.cy else None)
+        self._size = Size(
+            self.unit(self.height),
+            self.unit(self.width),
+            self.unit(self.radius) if self.radius else None,
+            self.unit(self.diameter) if self.diameter else None)
+        self.off_u = Point(self.unit(off_x), self.unit(off_y))
+        self._dlt = Point(
+            off_x + self._mrg.left,
+            off_y + self._mrg.bottom)
 
     def set_canvas_props(self, cnv=None, fill=None,
                          stroke=None, stroke_width=None):
