@@ -3,30 +3,27 @@ pyprototypr
 ===========
 
 **pyprototypr** is a simple Python utility for designing and creating simple,
-regular, graphical output in PDF format.
+regular, graphical output in PDF format via a script.
 
 It was originally created to handle prototyping of cards, counters, tiles and
 boards for board games, but can be used for creation of any document that has
 regular or repeating elements; typically containing a mix of graphics and text.
-
 
 Requirements
 ============
 
 **pyprototypr** requires a version of Python 3.11.  If this is **not** your default
 Python version, you may want to use **pyenv** to install and use **pyprototypr**
-in a `virtual environment.
-
+in a virtual environment.
 
 Documentation
 =============
 
-The online documentation starts here: `table of contents <https://github.com/gamesbook/pyprototypr/blob/master/docs/index.md>`_.
+The online documentation starts here: `Table of Contents <https://github.com/gamesbook/pyprototypr/blob/master/docs/index.md>`_.
 
 See the ``docs`` directory for the full `technical manual <https://github.com/gamesbook/pyprototypr/blob/master/docs/manual_technical.rst>`_.
 
 This is also available as a `PDF <https://github.com/gamesbook/pyprototypr/blob/master/docs/manual_technical.pdf>`_.
-
 
 Quick Start (for the impatient)
 ===============================
@@ -58,7 +55,7 @@ This script is very simple - it just contains these lines::
     PageBreak()
     Save()
 
-and is designed to produce a single, blank A4-sized page in a PDF.
+and is designed to produce a single, blank, A4-sized page in a PDF.
 
 It should create an output file called ``example1.pdf``, which will appear in the
 same directory as the script. You should be able to open and view this file using
@@ -68,6 +65,38 @@ If this works, then try out other examples from any of the ``examples``
 sub-directories (**note** that some examples may use additional files such
 as images or spreadsheets).
 
+Planned/Potential Features
+==========================
+
+These are not guaranteed to be addressed, but they are potential areas of
+work for future development.
+
+* Page numbering (with styles)
+* New shapes:
+    * Equilateral Triangle shape
+    * Sector shape (slice of a circle)
+    * Clock shape
+    * Wave shape
+    * Domino shape
+* Arrow: styling
+* Rectangle: create interior lines
+* Rectangle: create notches
+* Line: join and end styles
+* Polyline: add arcs
+* Arcs (pathways) for Hexagon
+* Shortcut notation for styling of: area, line, text
+* Track feature: layout shapes along a rectangle or circle
+* Interior hatching for: hexagon, rhombus, equilateral triangle
+* hexgrid: virtual grid for handling row/col layout
+* rectgrid: virtual grid for handling row/col layout
+
+Planned/Potential Examples
+==========================
+
+* Abstract boards: Go, Ludo, 9 Mens Morris, Wari, Queens Guard, Backgammon
+* Wargame board: Squad Leader with terrain features
+* Traveller board: showiing a fully styled Star system
+* Dartboard: using Sector shape
 
 Ackknowledgements
 =================
