@@ -52,9 +52,28 @@ log = logging.getLogger(__name__)
 
 DEBUG = False
 # ---- tuples
-Margin = namedtuple('Margin', ['left', 'right', 'bottom', 'top'])
-Point = namedtuple('Point', ['x', 'y'])
-Size = namedtuple('Point', ['height', 'width', 'radius', 'diameter'])
+UnitProperties = namedtuple(
+    'UnitProperties', [
+        'margin_left',
+        'margin_right',
+        'margin_bottom',
+        'margin_top',
+        'x',
+        'y',
+        'cx',
+        'cy',
+        'height',
+        'width',
+        'radius',
+        'diameter',
+        'side',
+        'length',
+        'off_x',
+        'off_y',
+        'delta_x',
+        'delta_y',
+    ]
+)
 # ---- units
 UNITS = {
     "cm": cm,
@@ -700,24 +719,29 @@ class BaseShape:
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an element on a given canvas."""
         # ---- convert key properties to correct units
-        self._mrg = Margin(
-            self.unit(self.margin_left),
-            self.unit(self.margin_right),
-            self.unit(self.margin_bottom),
-            self.unit(self.margin_top))
-        self._pnt = Point(self.unit(self.x), self.unit(self.y))
-        self._cnt = Point(
-            self.unit(self.cx) if self.cx else None,
-            self.unit(self.cy) if self.cy else None)
-        self._size = Size(
-            self.unit(self.height),
-            self.unit(self.width),
-            self.unit(self.radius) if self.radius else None,
-            self.unit(self.diameter) if self.diameter else None)
-        self.off_u = Point(self.unit(off_x), self.unit(off_y))
-        self._dlt = Point(
-            off_x + self._mrg.left,
-            off_y + self._mrg.bottom)
+        margin_left = self.unit(self.margin_left) if self.margin_left is not None else None
+        margin_right = self.unit(self.margin_right) if self.margin_right is not None else None
+        off_x = self.unit(off_x) if off_x is not None else None
+        off_y = self.unit(off_y) if off_y is not None else None
+        self._u = UnitProperties(
+            margin_left,
+            margin_right,
+            self.unit(self.margin_bottom) if self.margin_bottom is not None else None,
+            self.unit(self.margin_top) if self.margin_top else None,
+            self.unit(self.x) if self.x is not None else None,
+            self.unit(self.y) if self.y is not None else None,
+            self.unit(self.cx) if self.cx is not None else None,
+            self.unit(self.cy) if self.cy is not None else None,
+            self.unit(self.height) if self.height is not None else None,
+            self.unit(self.width) if self.width is not None else None,
+            self.unit(self.radius) if self.radius is not None else None,
+            self.unit(self.diameter) if self.diameter is not None else None,
+            self.unit(self.side) if self.side is not None else None,
+            self.unit(self.length) if self.length is not None else None,
+            off_x,
+            off_y,
+            off_x + margin_left,
+            off_y + margin_right)
 
     def set_canvas_props(self, cnv=None, fill=None,
                          stroke=None, stroke_width=None):
@@ -764,32 +788,32 @@ class BaseShape:
         issue = []
         if self.position:
             if str(self.position).lower() not in \
-                    ['top', 'bottom', 'center', 'middle']:
+                    ['top', 'bottom', 'center', 'middle',  't', 'b', 'c', 'm', ]:
                 issue.append(f'"{self.position}" is an invalid position!')
                 correct = False
         if self.align:
             if str(self.align).lower() not in \
-                    ['left', 'right', 'justify', 'centre']:
+                    ['left', 'right', 'justify', 'centre', 'l', 'r', 'j', 'c', ]:
                 issue.append(f'"{self.align}" is an invalid align!')
                 correct = False
         if self.orientation:
             if str(self.orientation).lower() not in \
-                    ['vertical', 'horizontal']:
+                    ['vertical', 'horizontal', 'v', 'h', ]:
                 issue.append(f'"{self.orientation}" is an invalid orientation!')
                 correct = False
         if self.flip:
             if str(self.flip).lower() not in \
-                    ['up', 'down', ]:
+                    ['up', 'down', 'u', 'd', ]:
                 issue.append(f'"{self.flip}" is an invalid flip!')
                 correct = False
         if self.hand:
             if str(self.hand).lower() not in \
-                    ['left', 'right', ]:
+                    ['left', 'right', 'l', 'r', ]:
                 issue.append(f'"{self.hand}" is an invalid hand!')
                 correct = False
         if self.perimeter:
             if str(self.perimeter).lower() not in \
-                    ['circle', 'rectangle', 'hexagon', 'octagon', 'c', 'r', 'h', 'o', '']:
+                    ['circle', 'rectangle', 'hexagon', 'octagon', 'c', 'r', 'h', 'o', ]:
                 issue.append(f'"{self.perimeter}" is an invalid perimeter!')
                 correct = False
         if self.caltrops:
@@ -810,7 +834,6 @@ class BaseShape:
                      'circle', 'c', ]:
                 issue.append(f'"{self.tail_style}" is an invalid arrow tail_style!')
                 correct = False
-
 
         return correct, issue
 
@@ -961,7 +984,7 @@ class BaseShape:
             tools.feedback(f'Unable to convert "{value}" to {self.units}!', True)
 
     def values_to_points(self, items: list) -> list:
-        """Convert a list of values to points."""
+        """Convert a list of values to point units."""
         try:
             if self.units == cm:
                 return [float(item) * 28.3465 for item in items]
@@ -974,7 +997,10 @@ class BaseShape:
             tools.feedback(f'Unable to convert "{items}" to points!', True)
 
     def draw_multi_string(self, canvas, x, y, string, align=None):
-        """Draw a string, split if needed, with a given alignment."""
+        """Draw a string, split if needed, with a given alignment.
+
+        Requires native units (points)!
+        """
         if not string:
             return
         align = align or self.align
@@ -990,11 +1016,17 @@ class BaseShape:
             mvy -= canvas._leading
 
     def draw_string(self, canvas, x, y, string, align=None):
-        """Draw a multi-string on the canvas."""
+        """Draw a multi-string on the canvas.
+
+        Requires native units (points)!
+        """
         self.draw_multi_string(canvas=canvas, x=x, y=y, string=string, align=align)
 
     def draw_label(self, canvas, x, y):
-        """Draw the auto-label on a shape (normally the centre)."""
+        """Draw the auto-label on a shape (normally the centre).
+
+        Requires native units (points)!
+        """
         if self.label:
             canvas.setFont(self.font_face, self.label_size)
             canvas.setFillColor(self.label_stroke)
