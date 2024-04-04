@@ -1022,10 +1022,30 @@ class BaseShape:
         """
         self.draw_multi_string(canvas=canvas, x=x, y=y, string=string, align=align)
 
-    def draw_label(self, canvas, x, y):
-        """Draw the auto-label on a shape (normally the centre).
+    def draw_title(self, canvas, x, y, y_offset):
+        """Draw the title for a shape (normally below the shape).
 
-        Requires native units (points)!
+        Requires native units (i.e. points)!
+        """
+        if self.title:
+            canvas.setFont(self.font_face, self.title_size)
+            canvas.setFillColor(self.title_stroke)
+            self.draw_multi_string(canvas, x, y - y_offset, self.title)
+
+    def draw_heading(self, canvas, x, y, y_offset):
+        """Draw the heading for a shape (normally above the shape).
+
+        Requires native units (i.e. points)!
+        """
+        if self.heading:
+            canvas.setFont(self.font_face, self.heading_size)
+            canvas.setFillColor(self.heading_stroke)
+            self.draw_multi_string(canvas, x, y + y_offset, self.heading)
+
+    def draw_label(self, canvas, x, y):
+        """Draw the label for a shape (normally the centre of the shape).
+
+        Requires native units (i.e. points)!
         """
         if self.label:
             canvas.setFont(self.font_face, self.label_size)
@@ -1033,7 +1053,10 @@ class BaseShape:
             self.draw_multi_string(canvas, x, y, self.label)
 
     def draw_dot(self, canvas, x, y):
-        """Draw a small dot on a shape (normally the centre)."""
+        """Draw a small dot on a shape (normally the centre).
+
+        Requires native units (i.e. points)!
+        """
         if self.dot_size:
             dot_size = self.unit(self.dot_size)
             canvas.setFillColor(self.dot_color)

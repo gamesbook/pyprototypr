@@ -85,15 +85,12 @@ class ImageShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         img = None
-        # offset
-        off_x = self.unit(off_x)
-        off_y = self.unit(off_y)
         # convert to using units
-        height = self.unit(self.height, skip_none=True)
-        width = self.unit(self.width, skip_none=True)
+        height = self._u.height
+        width = self._u.width
         if self.cx and self.cy and width and height:
-            x = self.unit(self.cx) - width / 2.0 + self._u.delta_x
-            y = self.unit(self.cy) - height / 2.0 + self._u.delta_y
+            x = self._u.cx - width / 2.0 + self._u.delta_x
+            y = self._u.cy - height / 2.0 + self._u.delta_y
         elif self.cx and self.cy and not (width or height):
             tools.feedback(
                 "Must supply width and height for use with cx and cy.", stop=True
@@ -549,17 +546,14 @@ class PolygonShape(BaseShape):
         """Draw a regular polygon on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # offset
-        off_x = self.unit(off_x)
-        off_y = self.unit(off_y)
         # convert to using units
         x = self._u.x + self._u.delta_x
         y = self._u.y + self._u.delta_y
         # calc - assumes x and y are the centre
         if self.radius:
-            radius = self.unit(self.radius)
+            radius = self._u.radius
         else:
-            side = self.unit(self.side)
+            side = self._u.side
             sides = int(self.sides)
             # 180 degrees is math.pi radians
             radius = side / (2.0 * math.sin(math.pi / sides))
@@ -577,15 +571,8 @@ class PolygonShape(BaseShape):
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- text
         self.draw_label(cnv, x, y)
-
-        if self.title:
-            cnv.setFont(self.font_face, self.title_size)
-            cnv.setFillColor(self.title_stroke)
-            self.draw_multi_string(cnv, x, y - 1.4 * radius, self.title)
-        if self.heading:
-            cnv.setFont(self.font_face, self.heading_size)
-            cnv.setFillColor(self.heading_stroke)
-            self.draw_multi_string(cnv, x, y + 1.3 * radius, self.heading)
+        self.draw_title(cnv, x, y, 1.4 * radius)
+        self.draw_heading(cnv, x, y, 1.3 * radius)
         # ---- dot
         self.draw_dot(cnv, x, y)
 
@@ -605,9 +592,6 @@ class PolylineShape(BaseShape):
         if not points or len(points) == 0:
             tools.feedback("No Polyline points to draw - or points are incorrect!")
             return
-        # offset
-        off_x = self.unit(off_x)
-        off_y = self.unit(off_y)
         # canvas
         self.set_canvas_props()
         # ---- draw polyline
@@ -702,9 +686,6 @@ class HexShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         is_cards = kwargs.get("is_cards", False)
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # ---- offset for grid
-        off_x = self.unit(off_x)
-        off_y = self.unit(off_y)
         # ---- calculate half_height and half_side from self.side or self.height
         if self.side:
             side = self._u.side
@@ -716,6 +697,7 @@ class HexShape(BaseShape):
             tools.feedback('No value for either side or height supplied for hexagon.',
                            True)
         half_side = side / 2.0
+        diameter = 2.0 * side
         # ---- coords for leftmost point
         #         __
         # x,y .. /  \
@@ -798,6 +780,8 @@ class HexShape(BaseShape):
                 cy=y_d + self.unit(self.centre_shape_y))
         # ---- text
         self.draw_label(cnv, x_d, y_d)
+        self.draw_title(cnv, x_d, y_d, 1.4 * diameter / 2.0)
+        self.draw_heading(cnv, x_d, y_d, 1.3 * diameter / 2.0)
         # ---- dot
         self.draw_dot(cnv, x_d, y_d)
         # ----  numbering
@@ -813,14 +797,11 @@ class StarShape(BaseShape):
         """Draw a star on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # offset
-        off_x = self.unit(off_x)
-        off_y = self.unit(off_y)
         # convert to using units
         x = self._u.x + self._u.delta_x
         y = self._u.y + self._u.delta_y
         # calc - assumes x and y are the centre
-        radius = self.unit(self.radius)
+        radius = self._u.radius
         # canvas
         self.set_canvas_props()
         # ---- draw star
@@ -858,14 +839,11 @@ class RightAngledTriangleShape(BaseShape):
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
-        # offset
-        off_x = self.unit(off_x)
-        off_y = self.unit(off_y)
-        # convert to using units
+        # set sizes
         if self.height and not self.width:
-            self.width = self.height
+            self._u.width = self._u.height
         if self.width and not self.height:
-            self.height = self.width
+            self._u.height = self._u.width
         # calculate points
         x, y = self._u.x, self._u.y
         points = []
@@ -877,13 +855,13 @@ class RightAngledTriangleShape(BaseShape):
         hand = self.hand.lower()
         flip = self.flip.lower()
         if hand == 'left':
-            x2 = x - self.unit(self.width)
+            x2 = x - self._u.width
         elif hand == 'right':
-            x2 = x + self.unit(self.width)
+            x2 = x + self._u.width
         if flip == 'up':
-            y2 = y + self.unit(self.height)
+            y2 = y + self._u.height
         elif flip == 'down':
-            y2 = y - self.unit(self.height)
+            y2 = y - self._u.height
         points.append((x2, y2))
         points.append((x2, y))
         # canvas
@@ -926,16 +904,13 @@ class TextShape(BaseShape):
         """Draw text on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # offset
-        off_x = self.unit(off_x)
-        off_y = self.unit(off_y)
         # convert to using units
         x_t = self._u.x + self._u.delta_x
         y_t = self._u.y + self._u.delta_y
         if self.height:
-            height = self.unit(self.height)
+            height = self._u.height
         if self.width:
-            width = self.unit(self.width)
+            width = self._u.width
         # canvas
         self.set_canvas_props(cnv)
         # text
@@ -996,18 +971,15 @@ class CircleShape(BaseShape):
         """Draw circle on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # offset
-        off_x = self.unit(off_x)
-        off_y = self.unit(off_y)
         # convert to using units
-        radius = self.unit(self.radius)
+        radius = self._u.radius
         if self.row is not None and self.col is not None:
             x_c = self.col * 2.0 * radius + radius + self._u.delta_x
             y_c = self.row * 2.0 * radius + radius + self._u.delta_y
             log.debug("row:%s col:%s x:%s y:%s", self.col, self.row, x_c, y_c)
         elif self.cx and self.cy:
-            x_c = self.unit(self.cx) + self._u.delta_x
-            y_c = self.unit(self.cy) + self._u.delta_y
+            x_c = self._u.cx + self._u.delta_x
+            y_c = self._u.cy + self._u.delta_y
         else:
             x_c = self._u.x + self._u.delta_x + radius
             y_c = self._u.y + self._u.delta_y + radius
@@ -1017,6 +989,8 @@ class CircleShape(BaseShape):
         cnv.circle(x_c, y_c, radius, stroke=1, fill=1 if self.fill else 0)
         # ---- text
         self.draw_label(cnv, x_c, y_c)
+        self.draw_title(cnv, x_c, y_c, 1.4 * radius)
+        self.draw_heading(cnv, x_c, y_c, 1.3 * radius)
         # ---- dot
         self.draw_dot(cnv, x_c, y_c)
 
@@ -1041,8 +1015,8 @@ class CompassShape(BaseShape):
 
     def circle_radius(self, cnv, angle):
         """Calc x,y on circle and draw line from centre to it."""
-        x = self.unit(self.radius) * math.sin(math.radians(angle))
-        y = self.unit(self.radius) * math.cos(math.radians(angle))
+        x = self._u.radius * math.sin(math.radians(angle))
+        y = self._u.radius * math.cos(math.radians(angle))
         pth = cnv.beginPath()
         pth.moveTo(self.x_c, self.y_c)
         pth.lineTo(x + self.x_c, y + self.y_c)
@@ -1092,28 +1066,19 @@ class CompassShape(BaseShape):
         """Draw compass on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # offset
-        off_x = self.unit(off_x)
-        off_y = self.unit(off_y)
         # convert to using units
-        radius = self.unit(self.radius)
-        # convert to using units
-        height = self.unit(self.height)
-        width = self.unit(self.width)
-        radius = self.unit(self.radius)
+        height = self._u.height
+        width = self._u.width
+        radius = self._u.radius
         if self.row is not None and self.col is not None:
             self.x_c = self.col * 2.0 * radius + radius + self._u.delta_x
             self.y_c = self.row * 2.0 * radius + radius + self._u.delta_y
             log.debug("row:%s col:%s x:%s y:%s", self.col, self.row, self.x_c, self.y_c)
         elif self.cx and self.cy:
-            self.x_c = self.unit(self.cx) + self._u.delta_x
-            self.y_c = self.unit(self.cy) + self._u.delta_y
+            self.x_c = self._u.cx + self._u.delta_x
+            self.y_c = self._u.cy + self._u.delta_y
         else:
             if self.perimeter == 'rectangle':
-                # x, y = self.x, self.y
-                # if self.cx and self.cy:
-                #     x = self.cx - self.width / 2.0
-                #     y = self.cy - self.height / 2.0
                 self.x_c = self._u.x + width / 2.0 + self._u.delta_x
                 self.y_c = self._u.y + height / 2.0 + self._u.delta_x
             else:
@@ -1207,6 +1172,8 @@ class CompassShape(BaseShape):
 
         # ---- text
         self.draw_label(cnv, self.x_c, self.y_c)
+        self.draw_title(cnv, self.x_c, self.y_c, 1.4 * radius)
+        self.draw_heading(cnv, self.x_c, self.y_c, 1.3 * radius)
         # ---- dot
         self.draw_dot(cnv, self.x_c, self.y_c)
 
@@ -1220,9 +1187,6 @@ class EllipseShape(BaseShape):
         """Draw ellipse on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # offset
-        off_x = self.unit(off_x)
-        off_y = self.unit(off_y)
         # ---- create key points
         x_1 = self._u.x + self._u.delta_x
         y_1 = self._u.y + self._u.delta_y
@@ -1236,8 +1200,8 @@ class EllipseShape(BaseShape):
         y_c = (y_2 - y_1) / 2.0 + y_1
         # ---- overrides to centre the shape
         if self.cx and self.cy:
-            dx = (self.unit(self.cx) + self._u.delta_x - x_c)
-            dy = (self.unit(self.cy) + self._u.delta_y - y_c)
+            dx = self._u.cx + self._u.delta_x - x_c
+            dy = self._u.cy + self._u.delta_y - y_c
             x_1 = x_1 + dx
             y_1 = y_1 + dy
             x_2 = x_2 + dx
@@ -1263,14 +1227,11 @@ class GridShape(BaseShape):
         """Draw a grid on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # offset
-        off_x = self.unit(off_x)
-        off_y = self.unit(off_y)
         # convert to using units
         x = self._u.x + self._u.delta_x
         y = self._u.y + self._u.delta_y
-        height = self.unit(self.height)  # of each grid item
-        width = self.unit(self.width)  # of each grid item
+        height = self._u.height  # of each grid item
+        width = self._u.width  # of each grid item
         if self.size:  # square grid
             size = self.unit(self.size)
             height, width = size, size

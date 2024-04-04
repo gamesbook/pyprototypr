@@ -10,7 +10,7 @@ Source:
 
 from pyprototypr.draw import *
 
-Create(filename="basic.pdf", margin=1)
+Create(filename="basic.pdf", margin=1, margin_top=0.25)
 Footer()
 
 # one big hex
@@ -18,18 +18,18 @@ Hexagon(cx=9.5, cy=13.8, side=8, label="WELCOME!\nto the basic pyprototypr demo.
 PageBreak()
 
 # test default labels and autogrid
-Polygon(x=4, y=25, radius=2, rotate=30, label="polygon6")
-Polygon(x=9, y=25, radius=2, sides=8, rotate=22.5, label="polygon8")
-Polygon(x=14, y=24.5, radius=2.5, sides=2.5, rotate=30, label="polygon3")
-Rectangle(x=5.5, y=18.5, width=9, height=3, label="rectangle")
-Hexagon(cx=3, cy=14, side=2, label="hexagon")
-Star(x=10, y=14, vertices=5, radius=2, label="star")
-Octagon(cx=16, cy=14, width=3.5, height=3.5, label="octagon")
-Circle(cx=14, cy=7, radius=2, label="circle")
-Ellipse(x=2, y=5, x1=9, y1=9, label="ellipse")
-Rhombus(x=8.5, y=0, width=3, height=5, label="rhombus")
-
 AutoGrid()
+Polygon(x=4, y=25, radius=2, rotate=30, label="polygon6")
+Polygon(x=10, y=25, radius=2, sides=8, rotate=22.5, label="polygon8")
+Polygon(x=16, y=24.5, radius=2.5, sides=2.5, rotate=30, label="polygon3")
+Rectangle(x=5.5, y=18.5, width=9, height=3, label="rectangle")
+Hexagon(cx=4, cy=15, side=2, label="hexagon")
+Star(x=10, y=15, vertices=5, radius=2, label="star")
+Octagon(cx=16, cy=15, width=3.5, height=3.5, label="octagon")
+Circle(cx=16, cy=9, radius=2, label="circle")
+Ellipse(x=1, y=7, xe=8, ye=11, label="ellipse")
+Rhombus(x=8.5, y=1, width=3, height=5, label="rhombus")
+Compass(cx=4, cy=3, radius=2, title="compass")
 
 PageBreak()
 
@@ -139,7 +139,8 @@ Arc(x=1, y=7, x1=4, y1=4, stroke=red, stroke_width=2)
 PageBreak()
 
 # common
-cmm = Common(x=0, y=0, length=19, dots=True, stroke=blue, stroke_width=2)
+AutoGrid()
+cmm = Common(x=0, y=0, length=19, dots=True, stroke=darkmagenta, stroke_width=2)
 Line(common=cmm)
 Line(common=cmm, angle=15)
 Line(common=cmm, angle=30)
@@ -150,8 +151,9 @@ Line(common=cmm, angle=90)
 PageBreak()
 
 # common, with a loop
+AutoGrid()
 for angle in range(0, 100, 10):
-    Line(common=cmm, angle=angle)
+    Line(common=cmm, angle=angle, stroke=darkmagenta)
 PageBreak()
 
 # school book page

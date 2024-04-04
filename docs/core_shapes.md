@@ -8,16 +8,22 @@ terms and ideas presented in [Basic Concepts](basic_concepts.md) - especially
 
 Where possible, basic examples show how a shape would appear on a page when **only**
 the default properties are used.  This means for most cases, *lines* are drawn in black,
-with a width of 1mm (0.1cm) and shapes are *filled* with a white color.
+with a width of 1mm (0.1cm) and shapes are *filled* with a white color. The default
+length is 1cm.
 
 To make it easier to see where and how a shape has been drawn, these examples have
 been created with a background grid for reference: the values of **x** appear across
-the bottom of the grid; those for **y** up along the left side.
+the lower eddge of the grid (left tp right); those for **y** along the left side (bottom
+to top).
 
-> The graphics for the examples here were generated from the scripts in the `examples`
+> The graphics for these examples were generated from the scripts in the `examples`
 > directory - look in the `simple` sub-directory for the `default_shapes.py` and
 > `customised_shapes.py` files.
 
+
+## Index of Shapes
+
+**TBD**
 
 ## Commonalities
 
@@ -28,7 +34,7 @@ are presented at the end, rather than being repeated across every shape.
 ## Linear Shapes
 
 These shapes are created from a line of some sort; the most basic being a simple line.
-They effectively have only 1 dimension.
+A line effectively has only 1 dimension.
 
 ### Line
 
@@ -63,14 +69,16 @@ They effectively have only 1 dimension.
   <tr>
     <td><img src="images/examples/simple/defaults/polyline.png"></td>
     <td>
-    <p>This example shows the shape constructed using the command with defaults,
-       as well as the points for the line (if the points are <b>not</b> defined
-       the script will not work and show an error message):</p>
+    <p>This example shows an example of the shape can be constructed using a series of
+       points for the line (<b>Note</b> if the points are <b>not</b> defined, then
+       the script will not work and will show an error message):</p>
     <pre>Polyline(points=[(0, 0), (1, 1), (2, 0)])</pre>
-    <p>It's not really useful to draw a *Polyline* with only default properties; at a
-    miniumm, you need to use three point location:
+    <p>As can be seen from the example; at a minimum, you need to use three points
+    to draw a *Polyline*:
       <ul>
-        <li>a series of points; </li>,
+        <li>points are supplied in a list of <b>x</b> and <b>y</b> values; each point is
+        wrapped with <b>( )</b> brackets, and the whole list is wrapped with
+        <b>[ ]</b> brackets</li>
       </ul>
     </p>
     </td>
@@ -105,9 +113,13 @@ They effectively have only 1 dimension.
     <th width="30%">Example #2</th>
     <th>Description</th>
   </tr>
-    <td><img src="images/examples/simple/defaults/autogrid.png"></td>
+    <td><img src="images/examples/simple/defaults/autogrid-sub.png"></td>
     <td>
       <pre>AutoGrid(subdivisions=5, stroke_width=0.8)</pre>
+       <p>In this example, the AutoGrid shows how additional lines can be added; their
+       width is set to a fraction of the normal grid lines ("stroke_width").  For this
+       example, the <i>stroke_width</i> has been made thicker than usual.
+       </p>
     </td>
   </tr>
 </table>
@@ -237,6 +249,40 @@ Further information about using hexagons can be found in the section on
             left-point of the hexagon is at x-position 1cm and the bottom flat edge
             is at y-position 1cm </li>,
         <li>fill color is white.</li>
+      </ul>
+    </p>
+    </td>
+  </tr>
+</table>
+
+
+## Compound Shapes
+
+These shapes are created by combining a single shape into a multiple repeated pattern.
+
+### Hexagons
+
+Hexagons are often drawn in a "honeycomb" arrangement to form a grid - for games this
+is often used to delineate the spaces in which playing pieces can be placed and their
+movement regulated.
+
+Further information about using hexagons can be found in the section on
+[Hexagonal Grids](hexagonal_grids.md).
+
+<table>
+  <tr>
+    <th width="30%">Example #1</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/examples/simple/defaults/hexagons-2x2.png"></td>
+    <td>
+    <p>This example shows the shape constructed using the command:</p>
+    <pre>Hexagons(rows=2, cols=2)</pre>
+    <p>Each hexagon has the usual default properties, but the grid itself also has the
+       following defaults:
+      <ul>
+        <li><i>orientation</i> - </li>,
       </ul>
     </p>
     </td>
