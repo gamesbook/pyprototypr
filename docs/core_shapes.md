@@ -2,34 +2,13 @@
 
 ## Table of Contents
 
-* [Overview](#overview)
 * [Index of Shapes](#index_shapes)
+* [Overview](#overview)
 * [Commonalities](#commonalties)
 * [Linear Shapes](#linear_shapes)
 * [Enclosed Shapes](#enclosed_shapes)
 * [Compound Shapes](#compound_shapes)
-* [Common Shape Properties](#common_properties)
-
-
-## Overview <a name="overview"></a>
-
-These descriptions of the available shapes assume you are familiar with the concepts,
-terms and ideas presented in [Basic Concepts](basic_concepts.md) - especially
-*units*, *properties* and *defaults*.
-
-Where possible, basic examples show how a shape would appear on a page when **only**
-the default properties are used.  This means for most cases, *lines* are drawn in black,
-with a width of 1mm (0.1cm) and shapes are *filled* with a white color. The default
-length in most cases is 1cm.
-
-To make it easier to see where and how a shape has been drawn, these examples have
-been created with a background grid for reference: the values of **x** appear across
-the lower edge of the grid (left tp right); those for **y** along the left side (bottom
-to top).
-
-> The graphics for these examples were generated from the scripts in the `examples`
-> directory - look at the [default_shapes](../examples/simple/default_shapes.py) and
-> [customised_shapes](../examples/simple/dcustomised_shapes.py) files.
+* [Shapes' Common Properties](#common_properties)
 
 
 ## Index of Shapes <a name="index_shapes"></a>
@@ -52,6 +31,27 @@ to top).
 * [](#)
 
 
+## Overview <a name="overview"></a>
+
+These descriptions of the available shapes assume you are familiar with the concepts,
+terms and ideas presented in [Basic Concepts](basic_concepts.md) - especially
+*units*, *properties* and *defaults*.
+
+Where possible, basic examples show how a shape would appear on a page when **only**
+the default properties are used.  This means for most cases, *lines* are drawn in black,
+with a width of 1mm (0.1cm) and shapes are *filled* with a white color. The default
+length in most cases is 1cm.
+
+To make it easier to see where and how a shape has been drawn, these examples have
+been created with a background grid for reference: the values of **x** appear across
+the lower edge of the grid (left tp right); those for **y** along the left side (bottom
+to top).
+
+> The graphics for these examples were generated from the scripts in the `examples`
+> directory - look at the [default_shapes](../examples/simple/default_shapes.py) and
+> [customised_shapes](../examples/simple/customised_shapes.py) files.
+
+
 ## Commonalities <a name="commonalties"></a>
 
 There are some properties that can be set for many of the shapes; examples of these
@@ -63,7 +63,7 @@ are presented at the end, rather than being repeated across every shape.
 These shapes are created from a line of some sort; the most basic being a simple line.
 A line effectively has only 1 dimension.
 
-### Line <a name="line"></a>
+### Line [&#9650;](#index_shapes) <a name="line"></a>
 
 <table>
   <tr>
@@ -86,7 +86,7 @@ A line effectively has only 1 dimension.
   </tr>
 </table>
 
-### Polyline <a name="polyline"></a>
+### Polyline [&#9650;](#index_shapes) <a name="polyline"></a>
 
 <table>
   <tr>
@@ -112,7 +112,7 @@ A line effectively has only 1 dimension.
   </tr>
 </table>
 
-### AutoGrid <a name="autogrid"></a>
+### AutoGrid [&#9650;](#index_shapes) <a name="autogrid"></a>
 
 <table>
   <tr>
@@ -158,7 +158,7 @@ These shapes are created by enclosing an area; the most basic being a simple rec
 They effectively have 2 dimensions. The difference between these and linear shapes is
 that the area enclosed can be filled with a color; the default fill color is white.
 
-### Rectangle <a name="rectangle"></a>
+### Rectangle [&#9650;](#index_shapes) <a name="rectangle"></a>
 
 <table>
   <tr>
@@ -181,7 +181,7 @@ that the area enclosed can be filled with a color; the default fill color is whi
   </tr>
 </table>
 
-### Circle <a name="circle"></a>
+### Circle [&#9650;](#index_shapes) <a name="circle"></a>
 
 <table>
   <tr>
@@ -204,7 +204,7 @@ that the area enclosed can be filled with a color; the default fill color is whi
   </tr>
 </table>
 
-### Octagon <a name="octagon"></a>
+### Octagon [&#9650;](#index_shapes) <a name="octagon"></a>
 
 <table>
   <tr>
@@ -227,7 +227,7 @@ that the area enclosed can be filled with a color; the default fill color is whi
   </tr>
 </table>
 
-### Ellipse <a name="ellipse"></a>
+### Ellipse [&#9650;](#index_shapes) <a name="ellipse"></a>
 
 <table>
   <tr>
@@ -250,7 +250,7 @@ that the area enclosed can be filled with a color; the default fill color is whi
   </tr>
 </table>
 
-### Hexagon <a name="hexagon"></a>
+### Hexagon [&#9650;](#index_shapes) <a name="hexagon"></a>
 
 Hexagons are a shape widely used in gaming, second only to squares, because of their
 ability to create a uniform grid. There is therefore some focus in **pyprototypr** on
@@ -287,7 +287,7 @@ Further information about using hexagons can be found in the section on
 
 These shapes are created by combining a single shape into a multiple repeated pattern.
 
-### Hexagons <a name="hexagons"></a>
+### Hexagons [&#9650;](#index_shapes) <a name="hexagons"></a>
 
 Hexagons are often drawn in a "honeycomb" arrangement to form a grid - for games this
 is often used to delineate the spaces in which playing pieces can be placed and their
@@ -317,4 +317,4 @@ Further information about using hexagons can be found in the section on
 </table>
 
 
-## Common Shape Properties <a name="common_properties"></a>
+## Shapes' Common Properties <a name="common_properties"></a>
