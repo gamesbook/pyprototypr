@@ -1,6 +1,17 @@
 # pyprototypr: Core Shapes
 
-## Overview
+## Table of Contents
+
+* [Overview](#overview)
+* [Index of Shapes](#index_shapes)
+* [Commonalities](#commonalties)
+* [Linear Shapes](#linear_shapes)
+* [Enclosed Shapes](#enclosed_shapes)
+* [Compound Shapes](#compound_shapes)
+* [Common Shape Properties](#common_properties)
+
+
+## Overview <a name="overview"></a>
 
 These descriptions of the available shapes assume you are familiar with the concepts,
 terms and ideas presented in [Basic Concepts](basic_concepts.md) - especially
@@ -9,34 +20,50 @@ terms and ideas presented in [Basic Concepts](basic_concepts.md) - especially
 Where possible, basic examples show how a shape would appear on a page when **only**
 the default properties are used.  This means for most cases, *lines* are drawn in black,
 with a width of 1mm (0.1cm) and shapes are *filled* with a white color. The default
-length is 1cm.
+length in most cases is 1cm.
 
 To make it easier to see where and how a shape has been drawn, these examples have
 been created with a background grid for reference: the values of **x** appear across
-the lower eddge of the grid (left tp right); those for **y** along the left side (bottom
+the lower edge of the grid (left tp right); those for **y** along the left side (bottom
 to top).
 
 > The graphics for these examples were generated from the scripts in the `examples`
-> directory - look in the `simple` sub-directory for the `default_shapes.py` and
-> `customised_shapes.py` files.
+> directory - look at the [default_shapes](../examples/simple/default_shapes.py) and
+> [customised_shapes](../examples/simple/dcustomised_shapes.py) files.
 
 
-## Index of Shapes
+## Index of Shapes <a name="index_shapes"></a>
 
-**TBD**
+* [Arc](#arc)
+* [AutoGrid](#autogrid)
+* [Bezier](#bezier)
+* [Circle](#circle)
+* [Circle](#circle)
+* [Ellipse](#ellipse)
+* [Hexagon](#hexagon)
+* [Hexagons](#hexagons)
+* [Line](#line)
+* [Octagon](#)
+* [PolyLine](#polyline)
+* [Rectangle](#rectangle)
 
-## Commonalities
+* [](#)
+* [](#)
+* [](#)
+
+
+## Commonalities <a name="commonalties"></a>
 
 There are some properties that can be set for many of the shapes; examples of these
 are presented at the end, rather than being repeated across every shape.
 
 
-## Linear Shapes
+## Linear Shapes <a name="linear_shapes"></a>
 
 These shapes are created from a line of some sort; the most basic being a simple line.
 A line effectively has only 1 dimension.
 
-### Line
+### Line <a name="line"></a>
 
 <table>
   <tr>
@@ -59,7 +86,7 @@ A line effectively has only 1 dimension.
   </tr>
 </table>
 
-### Polyline
+### Polyline <a name="polyline"></a>
 
 <table>
   <tr>
@@ -85,7 +112,7 @@ A line effectively has only 1 dimension.
   </tr>
 </table>
 
-### AutoGrid
+### AutoGrid <a name="autogrid"></a>
 
 <table>
   <tr>
@@ -125,13 +152,13 @@ A line effectively has only 1 dimension.
 </table>
 
 
-## Enclosed Shapes
+## Enclosed Shapes <a name="enclosed_shapes"></a>
 
 These shapes are created by enclosing an area; the most basic being a simple rectangle.
 They effectively have 2 dimensions. The difference between these and linear shapes is
 that the area enclosed can be filled with a color; the default fill color is white.
 
-### Rectangle
+### Rectangle <a name="rectangle"></a>
 
 <table>
   <tr>
@@ -154,7 +181,7 @@ that the area enclosed can be filled with a color; the default fill color is whi
   </tr>
 </table>
 
-### Circle
+### Circle <a name="circle"></a>
 
 <table>
   <tr>
@@ -177,7 +204,7 @@ that the area enclosed can be filled with a color; the default fill color is whi
   </tr>
 </table>
 
-### Octagon
+### Octagon <a name="octagon"></a>
 
 <table>
   <tr>
@@ -200,7 +227,7 @@ that the area enclosed can be filled with a color; the default fill color is whi
   </tr>
 </table>
 
-### Ellipse
+### Ellipse <a name="ellipse"></a>
 
 <table>
   <tr>
@@ -223,7 +250,7 @@ that the area enclosed can be filled with a color; the default fill color is whi
   </tr>
 </table>
 
-### Hexagon
+### Hexagon <a name="hexagon"></a>
 
 Hexagons are a shape widely used in gaming, second only to squares, because of their
 ability to create a uniform grid. There is therefore some focus in **pyprototypr** on
@@ -256,11 +283,11 @@ Further information about using hexagons can be found in the section on
 </table>
 
 
-## Compound Shapes
+## Compound Shapes <a name="compound_shapes"></a>
 
 These shapes are created by combining a single shape into a multiple repeated pattern.
 
-### Hexagons
+### Hexagons <a name="hexagons"></a>
 
 Hexagons are often drawn in a "honeycomb" arrangement to form a grid - for games this
 is often used to delineate the spaces in which playing pieces can be placed and their
@@ -290,4 +317,4 @@ Further information about using hexagons can be found in the section on
 </table>
 
 
-## Common Properties for Shapes
+## Common Shape Properties <a name="common_properties"></a>
