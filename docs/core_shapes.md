@@ -17,7 +17,7 @@
 * [AutoGrid](#autogrid)
 * [Bezier](#bezier)
 * [Circle](#circle)
-* [Circle](#circle)
+* [Compass](#compass)
 * [Ellipse](#ellipse)
 * [Hexagon](#hexagon)
 * [Hexagons](#hexagons)
@@ -25,6 +25,7 @@
 * [Octagon](#octagon)
 * [PolyLine](#polyline)
 * [Rectangle](#rectangle)
+* [Star](#star)
 * [](#)
 
 
@@ -228,6 +229,31 @@ is white.
   </tr>
 </table>
 
+
+### Compass [&#9650;](#index_shapes) <a name="compass"></a>
+
+<table>
+  <tr>
+    <th width="30%">Example #1</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/examples/simple/defaults/compass.png"></td>
+    <td>
+    <p>This example shows the shape constructed using the command with all defaults:</p>
+    <pre>Compass()</pre>
+    <p>It has the following properties based on the defaults:
+      <ul>
+        <li>diameter of 1cm,</li>
+        <li>the "bounding" square has a bottom-left corner x-position 1cm and y-position 1cm,</li>
+        <li>fill color is white,</li>
+        <li>all directions are displayed.</li>
+      </ul>
+    </p>
+    </td>
+  </tr>
+</table>
+
 ### Octagon [&#9650;](#index_shapes) <a name="octagon"></a>
 
 <table>
@@ -299,6 +325,30 @@ being able to set special properties for them (that are not applicable to other 
         <li>fill color is white.</li>
         <li><i>orientation</i> is flat; the top of the hexagon is parallel to the bottom
             of the page,</li>
+      </ul>
+    </p>
+    </td>
+  </tr>
+</table>
+
+### Star [&#9650;](#index_shapes) <a name="star"></a>
+
+<table>
+  <tr>
+    <th width="30%">Example #1</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/examples/simple/defaults/star.png"></td>
+    <td>
+    <p>This example shows the shape constructed using the command with all defaults:</p>
+    <pre>Star()</pre>
+    <p>It has the following properties based on the defaults:
+      <ul>
+        <li>diameter of 1cm,</li>
+        <li>the "bounding" square has a bottom-left corner x-position 1cm and y-position 1cm,</li>
+        <li>fill color is white,</li>
+        <li>there are 5 "arms" for the star.</li>
       </ul>
     </p>
     </td>
