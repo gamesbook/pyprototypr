@@ -22,12 +22,9 @@
 * [Hexagon](#hexagon)
 * [Hexagons](#hexagons)
 * [Line](#line)
-* [Octagon](#)
+* [Octagon](#octagon)
 * [PolyLine](#polyline)
 * [Rectangle](#rectangle)
-
-* [](#)
-* [](#)
 * [](#)
 
 
@@ -112,6 +109,29 @@ A line effectively has only 1 dimension.
   </tr>
 </table>
 
+### Arc [&#9650;](#index_shapes) <a name="arc"></a>
+
+<table>
+  <tr>
+    <th width="30%">Example #1</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/examples/simple/defaults/arc.png"></td>
+    <td>
+    <p>This example shows the shape constructed using the command with all defaults:</p>
+    <pre>Arc()</pre>
+    <p>It has the following properties based on the defaults:
+      <ul>
+        <li>starts at x-position 1cm and at y-position 1cm</li>,
+        <li>end at x-position 2cm and at y-position 2cm - based on a default length
+            of 1cm</li>,
+      </ul>
+    </p>
+    </td>
+  </tr>
+</table>
+
 ### AutoGrid [&#9650;](#index_shapes) <a name="autogrid"></a>
 
 <table>
@@ -156,7 +176,11 @@ A line effectively has only 1 dimension.
 
 These shapes are created by enclosing an area; the most basic being a simple rectangle.
 They effectively have 2 dimensions. The difference between these and linear shapes is
-that the area enclosed can be filled with a color; the default fill color is white.
+that the area enclosed by the shape can be filled with a color; the default fill color
+is white.
+
+> **pyprototypr** comes with a predefined set of named colors, shown in the
+> [colors](../examples/colorset.pdf) document.
 
 ### Rectangle [&#9650;](#index_shapes) <a name="rectangle"></a>
 
