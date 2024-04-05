@@ -74,8 +74,8 @@ A line effectively has only 1 dimension.
     <pre>Line()</pre>
     <p>It has the following properties based on the defaults:
       <ul>
-        <li>length of 1cm</li>,
-        <li>starts at x-position 1cm and at y-position 1cm</li>,
+        <li>length of 1cm,</li>
+        <li>starts at x-position 1cm and at y-position 1cm,</li>
         <li>heading/default direction is 90&deg; (clockwise from 0&deg; "north").</li>
       </ul>
     </p>
@@ -123,9 +123,9 @@ A line effectively has only 1 dimension.
     <pre>Arc()</pre>
     <p>It has the following properties based on the defaults:
       <ul>
-        <li>starts at x-position 1cm and at y-position 1cm</li>,
+        <li>starts at x-position 1cm and at y-position 1cm,</li>
         <li>end at x-position 2cm and at y-position 2cm - based on a default length
-            of 1cm</li>,
+            of 1cm,</li>
       </ul>
     </p>
     </td>
@@ -149,8 +149,8 @@ A line effectively has only 1 dimension.
     used as part of a final drawing!</p>
     <p>It has the following properties based on the defaults:
       <ul>
-        <li>grid interval of 1cm</li>,
-        <li>starts at x-position 1cm and at y-position 1cm</li>,
+        <li>grid interval of 1cm,</li>
+        <li>starts at x-position 1cm and at y-position 1cm,</li>
         <li>heading/default direction is 90&deg; (clockwise from 0&deg; "north").</li>
       </ul>
     </p>
@@ -196,8 +196,8 @@ is white.
     <pre>Rectangle()</pre>
     <p>It has the following properties based on the defaults:
       <ul>
-        <li>length of 1cm and height of 1cm</li>,
-        <li>bottom-left corner at x-position 1cm and at y-position 1cm</li>,
+        <li>length of 1cm and height of 1cm,</li>
+        <li>bottom-left corner at x-position 1cm and at y-position 1cm,</li>
         <li>fill color is white.</li>
       </ul>
     </p>
@@ -219,8 +219,8 @@ is white.
     <pre>Circle()</pre>
     <p>It has the following properties based on the defaults:
       <ul>
-        <li>diameter of 1cm</li>,
-        <li>the "bounding" square has a bottom-left corner x-position 1cm and y-position 1cm</li>,
+        <li>diameter of 1cm,</li>
+        <li>the "bounding" square has a bottom-left corner x-position 1cm and y-position 1cm,</li>
         <li>fill color is white.</li>
       </ul>
     </p>
@@ -242,8 +242,8 @@ is white.
     <pre>Octagon()</pre>
     <p>It has the following properties based on the defaults:
       <ul>
-        <li>height and width of 1cm</li>,
-        <li>bottom-left "corner" at x-position 1cm and at y-position 1cm</li>,
+        <li>height and width of 1cm,</li>
+        <li>bottom-left "corner" at x-position 1cm and at y-position 1cm,</li>
         <li>fill color is white.</li>
       </ul>
     </p>
@@ -265,8 +265,8 @@ is white.
     <pre>Ellipse()</pre>
     <p>It has the following properties based on the defaults:
       <ul>
-        <li>starts at x-position 1cm and at y-position 1cm</li>,
-        <li>ends at x-position 2cm and at y-position 2cm</li>,
+        <li>starts at x-position 1cm and at y-position 1cm,</li>
+        <li>ends at x-position 2cm and at y-position 2cm,</li>
         <li>fill color is white.</li>
       </ul>
     </p>
@@ -278,10 +278,7 @@ is white.
 
 Hexagons are a shape widely used in gaming, second only to squares, because of their
 ability to create a uniform grid. There is therefore some focus in **pyprototypr** on
-being able to set various properties for them that are less applicable to other shapes.
-
-Further information about using hexagons can be found in the section on
-[Hexagonal Grids](hexagonal_grids.md).
+being able to set special properties for them (that are not applicable to other shapes).
 
 <table>
   <tr>
@@ -295,11 +292,13 @@ Further information about using hexagons can be found in the section on
     <pre>Hexagon()</pre>
     <p>It has the following properties based on the defaults:
       <ul>
-        <li>height - from flat edge to flat edge - of 1cm</li>,
+        <li>height - from flat edge to flat edge - of 1cm,</li>
         <li>bottom-left "corner" at x-position 1cm and at y-position 1cm; so the
             left-point of the hexagon is at x-position 1cm and the bottom flat edge
-            is at y-position 1cm </li>,
+            is at y-position 1cm ,</li>
         <li>fill color is white.</li>
+        <li><i>orientation</i> is flat; the top of the hexagon is parallel to the bottom
+            of the page,</li>
       </ul>
     </p>
     </td>
@@ -317,8 +316,8 @@ Hexagons are often drawn in a "honeycomb" arrangement to form a grid - for games
 is often used to delineate the spaces in which playing pieces can be placed and their
 movement regulated.
 
-Further information about using hexagons can be found in the section on
-[Hexagonal Grids](hexagonal_grids.md).
+> Further information about using hexagons in grids can be found in the section on
+> [Hexagonal Grids](hexagonal_grids.md).
 
 <table>
   <tr>
@@ -333,7 +332,8 @@ Further information about using hexagons can be found in the section on
     <p>Each hexagon has the usual default properties, but the grid itself also has the
        following defaults:
       <ul>
-        <li><i>orientation</i> - </li>,
+        <li><i>orientation</i> is flat; the top of the hexagon is parallel to the bottom
+            of the page,</li>
       </ul>
     </p>
     </td>
