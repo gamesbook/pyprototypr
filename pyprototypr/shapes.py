@@ -6,6 +6,7 @@ Create custom shapes for pyprototypr
 # lib
 import logging
 import math
+import random
 
 # third party
 from reportlab.platypus import Paragraph
@@ -13,7 +14,7 @@ from reportlab.lib.styles import ParagraphStyle
 
 # local
 from pyprototypr.utils import tools
-from pyprototypr.base import BaseShape, BaseCanvas, UNITS, COLORS, PAGES
+from pyprototypr.base import Point, BaseShape, BaseCanvas, UNITS, COLORS, PAGES
 
 log = logging.getLogger(__name__)
 
@@ -89,15 +90,15 @@ class ImageShape(BaseShape):
         height = self._u.height
         width = self._u.width
         if self.cx and self.cy and width and height:
-            x = self._u.cx - width / 2.0 + self._u.delta_x
-            y = self._u.cy - height / 2.0 + self._u.delta_y
+            x = self._u.cx - width / 2.0 + self._o.delta_x
+            y = self._u.cy - height / 2.0 + self._o.delta_y
         elif self.cx and self.cy and not (width or height):
             tools.feedback(
                 "Must supply width and height for use with cx and cy.", stop=True
             )
         else:
-            x = self._u.x + self._u.delta_x
-            y = self._u.y + self._u.delta_y
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
         # ---- draw image
         # tools.feedback(f'{self.scaling} scaling')
         img, is_svg = self.load_image(self.source, self.scaling)
@@ -133,11 +134,11 @@ class LineShape(BaseShape):
         """Draw a line on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        x = self._u.x + self._u.delta_x
-        y = self._u.y + self._u.delta_y
+        x = self._u.x + self._o.delta_x
+        y = self._u.y + self._o.delta_y
         if self.x_1 and self.y_1:
-            x_1 = self.unit(self.x_1) + self._u.delta_x
-            y_1 = self.unit(self.y_1) + self._u.delta_y
+            x_1 = self.unit(self.x_1) + self._o.delta_x
+            y_1 = self.unit(self.y_1) + self._o.delta_y
         else:
             if self.angle > 0:
                 angle = math.radians(self.angle)
@@ -181,11 +182,11 @@ class ArrowShape(BaseShape):
         """Draw an arrow on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        x = self._u.x + self._u.delta_x
-        y = self._u.y + self._u.delta_y
+        x = self._u.x + self._o.delta_x
+        y = self._u.y + self._o.delta_y
         if self.x_1 and self.y_1:
-            x_1 = self.unit(self.x_1) + self._u.delta_x
-            y_1 = self.unit(self.y_1) + self._u.delta_y
+            x_1 = self.unit(self.x_1) + self._o.delta_x
+            y_1 = self.unit(self.y_1) + self._o.delta_y
         else:
             if self.angle > 0:
                 angle = math.radians(self.angle)
@@ -230,13 +231,15 @@ class RhombusShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         if self.cx and self.cy:
-            x = self._u.cx - self._u.width / 2.0 + self._u.delta_x
-            y = self._u.cy - self._u.height / 2.0 + self._u.delta_y
+            x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
+            y = self._u.cy - self._u.height / 2.0 + self._o.delta_y
         else:
-            x = self._u.x + self._u.delta_x
-            y = self._u.y + self._u.delta_y
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
         # canvas
         self.set_canvas_props()
+        # ---- calculated properties
+        self.area = (self._u.width * self._u.height) / 2.0
         # ---- draw rhombus
         x_s, y_s = x, y + self._u.height / 2.0
         pth = cnv.beginPath()
@@ -267,24 +270,32 @@ class RectangleShape(BaseShape):
             # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
         self.kwargs = kwargs
 
+    def __str__(self):
+        return f'{self.__class__.__name__}::{self.kwargs}'
+
+    def calculate_area(self):
+        return self._u.width * self._u.height
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a rectangle on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # ---- adjust start
         if self.row is not None and self.col is not None:
-            x = self.col * self._u.width + self._u.delta_x
-            y = self.row * self._u.height + self._u.delta_y
+            x = self.col * self._u.width + self._o.delta_x
+            y = self.row * self._u.height + self._o.delta_y
         elif self.cx and self.cy:
-            x = self._u.cx - self._u.width / 2.0 + self._u.delta_x
-            y = self._u.cy + self._u.height / 2.0 + self._u.delta_y
+            x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
+            y = self._u.cy + self._u.height / 2.0 + self._o.delta_y
         else:
-            x = self._u.x + self._u.delta_x
-            y = self._u.y + self._u.delta_y
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
         # ---- overrides to centre the shape
         if kwargs.get("cx") and kwargs.get("cy"):
             x = self._u.cx - self._u.width / 2.0
             y = self._u.cy - self._u.height / 2.0
+        # ---- calculated properties
+        self.area = self.calculate_area()
         # canvas
         self.set_canvas_props()
         # ---- draw rectangle
@@ -389,38 +400,40 @@ class OctagonShape(BaseShape):
             self.x = self.cx - self.width / 2.0
             self.y = self.cy - self.height / 2.0
             # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
-        self.kwargs = kwargs
+
+    def calculate_area(self):
+        side = self._u.height / (1 + math.sqrt(2.0))
+        return 2 * side * side * (1 + math.sqrt(2))
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an octagon on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         if self.row is not None and self.col is not None:
-            x = self.col * self._u.width + self._u.delta_x
-            y = self.row * self._u.height + self._u.delta_y
+            x = self.col * self._u.width + self._o.delta_x
+            y = self.row * self._u.height + self._o.delta_y
             c_x, c_y = x + self._u.width / 2.0, y + self._u.height / 2.0
         elif self.cx and self.cy:
-            x = self._u.cx - self._u.width / 2.0 + self._u.delta_x
-            y = self._u.cy - self._u.height / 2.0 + self._u.delta_y
-            c_x = self._u.cx + self._u.delta_x
-            c_y = self._u.cy + self._u.delta_y
+            x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
+            y = self._u.cy - self._u.height / 2.0 + self._o.delta_y
+            c_x = self._u.cx + self._o.delta_x
+            c_y = self._u.cy + self._o.delta_y
         else:
-            x = self._u.x + self._u.delta_x
-            y = self._u.y + self._u.delta_y
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
             c_x, c_y = x + self._u.width / 2.0, y + self._u.height / 2.0
         # tools.feedback(f"DRAW Old {x=} {y=} {cx=} {cy=}")
-        # overrides to centre the shape
+        # ---- overrides to centre the shape
         if kwargs.get("cx") and kwargs.get("cy"):
-            x = self.unit(kwargs.get("cx")) - self._u.width / 2.0 + self._u.delta_x
-            y = self.unit(kwargs.get("cy")) + self._u.height / 2.0 + self._u.delta_y
-            c_x = self.unit(kwargs.get("cx")) + self._u.delta_x
-            c_y = self.unit(kwargs.get("cy")) + self._u.delta_y
-        # canvas
-        self.set_canvas_props()
-        # ---- draw octagon
+            x = self.unit(kwargs.get("cx")) - self._u.width / 2.0 + self._o.delta_x
+            y = self.unit(kwargs.get("cy")) + self._u.height / 2.0 + self._o.delta_y
+            c_x = self.unit(kwargs.get("cx")) + self._o.delta_x
+            c_y = self.unit(kwargs.get("cy")) + self._o.delta_y
+        # ---- calculated properties
         side = self._u.height / (1 + math.sqrt(2.0))
+        self.area = self.calculate_area()
         zzz = math.sqrt((side * side) / 2.0)
-        vertices = [  # clockwise from bottom-left; relative to centre
+        self.vertices = [  # clockwise from bottom-left; relative to centre
             (c_x - side / 2.0, c_y - self._u.height / 2.0),  # 1
             (c_x - self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz),  # 2
             (c_x - self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz + side),  # 3
@@ -430,9 +443,12 @@ class OctagonShape(BaseShape):
             (c_x + self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz),  # 7
             (c_x + side / 2.0, c_y - self._u.height / 2.0),  # 8
         ]
+        # canvas
+        self.set_canvas_props()
+        # ---- draw octagon
         pth = cnv.beginPath()
-        pth.moveTo(*vertices[0])
-        for vertex in vertices:
+        pth.moveTo(*self.vertices[0])
+        for vertex in self.vertices:
             pth.lineTo(*vertex)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
@@ -471,8 +487,8 @@ class ShapeShape(BaseShape):
             for key, vertex in enumerate(points):
                 _x0, _y0 = float(vertex[0]), float(vertex[1])
                 # convert to using units
-                x = self.unit(_x0) + self._u.delta_x
-                y = self.unit(_y0) + self._u.delta_y
+                x = self.unit(_x0) + self._o.delta_x
+                y = self.unit(_y0) + self._o.delta_y
                 if key == 0:
                     pth.moveTo(x, y)
                 pth.lineTo(x, y)
@@ -490,14 +506,14 @@ class ArcShape(BaseShape):
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         # convert to using units
-        x_1 = self._u.x + self._u.delta_x
-        y_1 = self._u.y + self._u.delta_y
+        x_1 = self._u.x + self._o.delta_x
+        y_1 = self._u.y + self._o.delta_y
         if not self.x_1:
             self.x_1 = self.x + self.default_length
         if not self.y_1:
             self.y_1 = self.y + self.default_length
-        x_2 = self.unit(self.x_1) + self._u.delta_x
-        y_2 = self.unit(self.y_1) + self._u.delta_y
+        x_2 = self.unit(self.x_1) + self._o.delta_x
+        y_2 = self.unit(self.y_1) + self._o.delta_y
         # canvas
         self.set_canvas_props()
         # ---- draw arc
@@ -519,18 +535,18 @@ class BezierShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # convert to using units
-        x_1 = self._u.x + self._u.delta_x
-        y_1 = self._u.y + self._u.delta_y
+        x_1 = self._u.x + self._o.delta_x
+        y_1 = self._u.y + self._o.delta_y
         if not self.x_1:
             self.x_1 = self.x + self.default_length
         if not self.y_1:
             self.y_1 = self.y + self.default_length
-        x_2 = self.unit(self.x_1) + self._u.delta_x
-        y_2 = self.unit(self.y_1) + self._u.delta_y
-        x_3 = self.unit(self.x_2) + self._u.delta_x
-        y_3 = self.unit(self.y_2) + self._u.delta_y
-        x_4 = self.unit(self.x_3) + self._u.delta_x
-        y_4 = self.unit(self.y_3) + self._u.delta_y
+        x_2 = self.unit(self.x_1) + self._o.delta_x
+        y_2 = self.unit(self.y_1) + self._o.delta_y
+        x_3 = self.unit(self.x_2) + self._o.delta_x
+        y_3 = self.unit(self.y_2) + self._o.delta_y
+        x_4 = self.unit(self.x_3) + self._o.delta_x
+        y_4 = self.unit(self.y_3) + self._o.delta_y
         # canvas
         self.set_canvas_props()
         # ---- draw bezier
@@ -547,8 +563,8 @@ class PolygonShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # convert to using units
-        x = self._u.x + self._u.delta_x
-        y = self._u.y + self._u.delta_y
+        x = self._u.x + self._o.delta_x
+        y = self._u.y + self._o.delta_y
         # calc - assumes x and y are the centre
         if self.radius:
             radius = self._u.radius
@@ -599,8 +615,8 @@ class PolylineShape(BaseShape):
         for key, vertex in enumerate(points):
             x, y = vertex
             # convert to using units
-            x = self.unit(x) + self._u.delta_x
-            y = self.unit(y) + self._u.delta_y
+            x = self.unit(x) + self._o.delta_x
+            y = self.unit(y) + self._o.delta_y
             if key == 0:
                 pth.moveTo(x, y)
             pth.lineTo(x, y)
@@ -680,6 +696,13 @@ class HexShape(BaseShape):
                 tools.feedback(
                     f'Cannot handle a coord_position of "{self.coord_position}"')
 
+    def calculate_area(self):
+        if self.side:
+            side = self._u.side
+        elif self.height:
+            side = self._u.height / math.sqrt(3)
+        return (3.0 * math.sqrt(3.0) * side * side) / 2.0
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a hexagon on a given canvas."""
         # tools.feedback(f'Will draw a hex shape: {kwargs} {off_x} {off_y} {ID}')
@@ -703,43 +726,45 @@ class HexShape(BaseShape):
         # x,y .. /  \
         #        \__/
         if self.row is not None and self.col is not None and is_cards:
-            x = self.col * 2.0 * side + self._u.delta_x
-            y = half_height + self.row * 2.0 * half_height + self._u.delta_x
+            x = self.col * 2.0 * side + self._o.delta_x
+            y = half_height + self.row * 2.0 * half_height + self._o.delta_x
         elif self.row is not None and self.col is not None:
             if self.hex_offset in ['o', 'O', 'odd']:
-                x = self.col * (half_side + side) + self._u.delta_x
+                x = self.col * (half_side + side) + self._o.delta_x
                 y = (
                     half_height
                     + half_height * self.row * 2.0
                     + (self.col % 2) * half_height
-                    + self._u.delta_y
+                    + self._o.delta_y
                 )
                 if (self.col + 1) & 1:  # odd
                     y = y - half_height
                 else:
                     y = y - 3 * half_height
             else:  # self.hex_offset in ['e', 'E', 'even']
-                x = self.col * (half_side + side) + self._u.delta_x
+                x = self.col * (half_side + side) + self._o.delta_x
                 y = (
                     half_height
                     + half_height * self.row * 2.0
                     + (self.col % 2) * half_height
-                    + self._u.delta_y
+                    + self._o.delta_y
                 )
         elif self.cx and self.cy:
             # cx,cy are centred; create x_d,y_d as the unit-formatted hex centre
             x_d = self._u.cx
             y_d = self._u.cy
-            x = x_d - half_side - side / 2.0 + self._u.delta_x
-            y = y_d + self._u.delta_y
+            x = x_d - half_side - side / 2.0 + self._o.delta_x
+            y = y_d + self._o.delta_y
         else:
             # x and y are at the bottom-left corner of the box around the hex
-            x = self._u.x + self._u.delta_x
-            y = self._u.y + self._u.delta_y + half_height
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y + half_height
         # ---- calculate hex centre
         x_d = x + half_side + side / 2.0
         y_d = y
         log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_height, half_side, side)
+        # ---- calculate area
+        self.area = self.calculate_area()
         # ---- canvas
         self.set_canvas_props()
         if self.caltrops or self.caltrops_fraction:
@@ -758,7 +783,7 @@ class HexShape(BaseShape):
             pth.lineTo(x + half_side, y - half_height)
             pth.close()
         # ---- calculate horizontal hexagon (clockwise)
-        else:   # self.hex_orientation in ['f', 'F', 'flat']:
+        else:   # self.hex_orientationn.lower() in ['f',  'flat']:
             pth = cnv.beginPath()
             pth.moveTo(x, y)
             pth.lineTo(x + half_side, y + half_height)
@@ -798,8 +823,8 @@ class StarShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # convert to using units
-        x = self._u.x + self._u.delta_x
-        y = self._u.y + self._u.delta_y
+        x = self._u.x + self._o.delta_x
+        y = self._u.y + self._o.delta_y
         # calc - assumes x and y are the centre
         radius = self._u.radius
         # canvas
@@ -872,8 +897,8 @@ class RightAngledTriangleShape(BaseShape):
         for key, vertex in enumerate(points):
             x, y = vertex
             # shift to relative position
-            x = x + self._u.delta_x
-            y = y + self._u.delta_y
+            x = x + self._o.delta_x
+            y = y + self._o.delta_y
             x_sum += x
             y_sum += y
             if key == 0:
@@ -905,8 +930,8 @@ class TextShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # convert to using units
-        x_t = self._u.x + self._u.delta_x
-        y_t = self._u.y + self._u.delta_y
+        x_t = self._u.x + self._o.delta_x
+        y_t = self._u.y + self._o.delta_y
         if self.height:
             height = self._u.height
         if self.width:
@@ -958,41 +983,52 @@ class CircleShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(CircleShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        # overrides
+        # ---- perform overrides
         self.radius = self.radius or self.diameter / 2.0
         if self.cx and self.cy:
             self.x = self.cx - self.radius
             self.y = self.cy - self.radius
             self.width = 2.0 * self.radius
             self.height = 2.0 * self.radius
-        self.kwargs = kwargs
+        # ---- calcuate centre
+        radius = self._u.radius
+        if self.row is not None and self.col is not None:
+            self.x_c = self.col * 2.0 * radius + radius
+            self.y_c = self.row * 2.0 * radius + radius
+            # log.debug(f"{self.col=}, {self.row=}, {self.x_c=}, {self.y_c=}")
+        elif self.cx and self.cy:
+            self.x_c = self._u.cx
+            self.y_c = self._u.cy
+        else:
+            self.x_c = self._u.x + radius
+            self.y_c = self._u.y + radius
+
+    def __str__(self):
+        return f'{self.__class__.__name__}::{self.kwargs}'
+
+    def calculate_area(self):
+        return math.pi * self._u.radius * self._u.radius
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw circle on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # convert to using units
-        radius = self._u.radius
-        if self.row is not None and self.col is not None:
-            x_c = self.col * 2.0 * radius + radius + self._u.delta_x
-            y_c = self.row * 2.0 * radius + radius + self._u.delta_y
-            log.debug("row:%s col:%s x:%s y:%s", self.col, self.row, x_c, y_c)
-        elif self.cx and self.cy:
-            x_c = self._u.cx + self._u.delta_x
-            y_c = self._u.cy + self._u.delta_y
-        else:
-            x_c = self._u.x + self._u.delta_x + radius
-            y_c = self._u.y + self._u.delta_y + radius
+        # ---- calculated properties
+        self.area = self.calculate_area()
+        if self._o.delta_x or self._o.delta_y:
+            self.x_c = self.x_c + self._o.delta_x
+            self.y_c = self.y_c + self._o.delta_y
         # canvas
         self.set_canvas_props()
         # ---- draw circle
-        cnv.circle(x_c, y_c, radius, stroke=1, fill=1 if self.fill else 0)
+        cnv.circle(
+            self.x_c, self.y_c, self._u.radius, stroke=1, fill=1 if self.fill else 0)
         # ---- text
-        self.draw_label(cnv, x_c, y_c)
-        self.draw_title(cnv, x_c, y_c, 1.4 * radius)
-        self.draw_heading(cnv, x_c, y_c, 1.3 * radius)
+        self.draw_label(cnv, self.x_c, self.y_c)
+        self.draw_title(cnv, self.x_c, self.y_c, 1.4 * self._u.radius)
+        self.draw_heading(cnv, self.x_c, self.y_c, 1.3 * self._u.radius)
         # ---- dot
-        self.draw_dot(cnv, x_c, y_c)
+        self.draw_dot(cnv, self.x_c, self.y_c)
 
 
 class CompassShape(BaseShape):
@@ -1009,7 +1045,6 @@ class CompassShape(BaseShape):
             self.y = self.cy - self.radius
             self.width = 2.0 * self.radius
             self.height = 2.0 * self.radius
-        self.kwargs = kwargs
         self.x_c = None
         self.y_c = None
 
@@ -1071,19 +1106,19 @@ class CompassShape(BaseShape):
         width = self._u.width
         radius = self._u.radius
         if self.row is not None and self.col is not None:
-            self.x_c = self.col * 2.0 * radius + radius + self._u.delta_x
-            self.y_c = self.row * 2.0 * radius + radius + self._u.delta_y
+            self.x_c = self.col * 2.0 * radius + radius + self._o.delta_x
+            self.y_c = self.row * 2.0 * radius + radius + self._o.delta_y
             log.debug("row:%s col:%s x:%s y:%s", self.col, self.row, self.x_c, self.y_c)
         elif self.cx and self.cy:
-            self.x_c = self._u.cx + self._u.delta_x
-            self.y_c = self._u.cy + self._u.delta_y
+            self.x_c = self._u.cx + self._o.delta_x
+            self.y_c = self._u.cy + self._o.delta_y
         else:
             if self.perimeter == 'rectangle':
-                self.x_c = self._u.x + width / 2.0 + self._u.delta_x
-                self.y_c = self._u.y + height / 2.0 + self._u.delta_x
+                self.x_c = self._u.x + width / 2.0 + self._o.delta_x
+                self.y_c = self._u.y + height / 2.0 + self._o.delta_x
             else:
-                self.x_c = self._u.x + self._u.delta_x + radius
-                self.y_c = self._u.y + self._u.delta_y + radius
+                self.x_c = self._u.x + self._o.delta_x + radius
+                self.y_c = self._u.y + self._o.delta_y + radius
         # canvas
         self.set_canvas_props()
         if self.perimeter == 'circle':
@@ -1183,29 +1218,34 @@ class EllipseShape(BaseShape):
     Ellipse on a given canvas.
     """
 
+    def calculate_area(self):
+        return math.pi * self._u.height * self._u.width
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw ellipse on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # ---- create key points
-        x_1 = self._u.x + self._u.delta_x
-        y_1 = self._u.y + self._u.delta_y
+        x_1 = self._u.x + self._o.delta_x
+        y_1 = self._u.y + self._o.delta_y
         if not self.xe:
             self.xe = self.x + self.default_length
         if not self.ye:
             self.ye = self.y + self.default_length
-        x_2 = self.unit(self.xe) + self._u.delta_x
-        y_2 = self.unit(self.ye) + self._u.delta_y
+        x_2 = self.unit(self.xe) + self._o.delta_x
+        y_2 = self.unit(self.ye) + self._o.delta_y
         x_c = (x_2 - x_1) / 2.0 + x_1
         y_c = (y_2 - y_1) / 2.0 + y_1
         # ---- overrides to centre the shape
         if self.cx and self.cy:
-            dx = self._u.cx + self._u.delta_x - x_c
-            dy = self._u.cy + self._u.delta_y - y_c
+            dx = self._u.cx + self._o.delta_x - x_c
+            dy = self._u.cy + self._o.delta_y - y_c
             x_1 = x_1 + dx
             y_1 = y_1 + dy
             x_2 = x_2 + dx
             y_2 = y_2 + dy
+        # ---- calculated properties
+        self.area = self.calculate_area()
         # canvas
         self.set_canvas_props()
         # ---- draw ellipse
@@ -1218,6 +1258,78 @@ class EllipseShape(BaseShape):
         self.draw_dot(cnv, x_c, y_c)
 
 
+class StarFieldShape(BaseShape):
+    """
+    StarField pattern on a given canvas.
+
+    A StarField is specified by the following properties:
+     * density (average number of stars per square unit; default is 10)
+     * colors (list of individual star colors; default is [white])
+     * enclosure (regular shape inside which it is drawn; default is a rectangle)
+     * sizes (list of individual star sizes; default is [0.1])
+     * star_pattern (random | cluster | )
+
+    Ref:
+        https://codeboje.de/starfields-and-galaxies-python/
+    """
+
+    def __str__(self):
+        return f'{self._kwargs}'
+
+    def draw_star(self, cnv, position: Point):
+        """Draw a single star at a Point (x,y)."""
+        color = self.colors[random.randint(0, len(self.colors) - 1)]
+        size = self.sizes[random.randint(0, len(self.sizes) - 1)]
+        # tools.feedback(f'{color=} {size=} {position=}')
+        cnv.setFillColor(color)
+        cnv.setStrokeColor(color)
+        cnv.circle(position.x, position.y, size, stroke=1, fill=1)
+
+    def cluster_stars(self, cnv):
+        tools.feedback('CLUSTER NOT IMPLEMENTED', True)
+        for star in range(0, self.star_count):
+            pass
+
+    def random_stars(self, cnv):
+        # tools.feedback(f'{self.enclosure=}')
+        for star in range(0, self.star_count):
+            if isinstance(self.enclosure, RectangleShape):
+                x_y = Point(
+                    random.random() * self.enclosure._u.width + self._o.delta_x,
+                    random.random() * self.enclosure._u.height + self._o.delta_y
+                    )
+            elif isinstance(self.enclosure, CircleShape):
+                r_fraction = random.random() * self.enclosure._u.radius
+                angle = math.radians(random.random() * 360.0)
+                x = r_fraction * math.cos(angle) + self.enclosure.x_c + self._o.delta_x
+                y = r_fraction * math.sin(angle) + self.enclosure.y_c + self._o.delta_y
+                x_y = Point(x, y)
+            else:
+                tools.feedback(f'{self.enclosure} IS NOT IMPLEMENTED', True)
+            self.draw_star(cnv, x_y)
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw StarField pattern on a given canvas."""
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        # ---- settings
+        if self.enclosure is None:
+            self.enclosure = RectangleShape()
+        # ---- calculations
+        random.seed()
+        area = math.sqrt(self.enclosure.calculate_area())
+        self.star_count = round(self.density * self.points_to_value(area))
+        # tools.feedback(f'{self.star_pattern =} {self.enclosure} ')
+        # tools.feedback(f'{area=} {self.density=} {self.star_count=}')
+        # ---- set canvas
+        self.set_canvas_props()
+        # ---- draw StarField on canvas
+        if self.star_pattern in ['r', 'random']:
+            self.random_stars(cnv)
+        if self.star_pattern in ['c', 'cluster']:
+            self.cluster_stars(cnv)
+
+
 class GridShape(BaseShape):
     """
     Grid on a given canvas.
@@ -1228,8 +1340,8 @@ class GridShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # convert to using units
-        x = self._u.x + self._u.delta_x
-        y = self._u.y + self._u.delta_y
+        x = self._u.x + self._o.delta_x
+        y = self._u.y + self._o.delta_y
         height = self._u.height  # of each grid item
         width = self._u.width  # of each grid item
         if self.size:  # square grid
@@ -1523,7 +1635,6 @@ class ConnectShape(BaseShape):
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(ConnectShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # overrides
-        self.kwargs = kwargs
         self.shape_from = kwargs.get("shape_from", None)
         self.shape_to = kwargs.get("shape_to", None)
 

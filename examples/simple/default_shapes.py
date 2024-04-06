@@ -144,6 +144,13 @@ Text(common=header, text="Shape")
 Shape(points="0,0 1,1 2,0")
 PageBreak()
 
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="StarField")
+Rectangle(x=0, y=0, fill=black)
+# StarField(colors=[red], sizes=[0.25])
+StarField()
+PageBreak()
+
 # -- no defaults
 # Arc()
 

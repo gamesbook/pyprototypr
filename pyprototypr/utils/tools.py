@@ -4,6 +4,7 @@
 Utility functions for pyprototypr
 """
 # lib
+import cmath
 import csv
 import collections
 from itertools import zip_longest
@@ -529,3 +530,32 @@ def sheet_column(num: int, lower: bool = False) -> string:
             )
 
     return converter(num, lower)
+
+
+def is_inside_polygon(point: tuple, vertices: list, valid_border=False) -> bool:
+    """Check if point inside a polygon defined by set of vertices.
+
+    Ref:
+        https://www.linkedin.com/pulse/~
+        short-formula-check-given-point-lies-inside-outside-polygon-ziemecki/
+    """
+    def _is_point_in_segment(point, point_0, point_1):
+        p_0 = point_0[0] - point[0], point_0[1] - point[1]
+        p_1 = point_1[0] - point[0], point_1[1] - point[1]
+        det = p_0[0] * p_1[1] - p_1[0] * p_0[1]
+        prod = p_0[0] * p_1[0] + p_0[1] * p_1[1]
+        return (
+            (det == 0 and prod < 0)
+            or (p_0[0] == 0 and p_0[1] == 0)
+            or (p_1[0] == 0 and p_1[1] == 0)
+        )
+
+    sum_ = complex(0, 0)
+    for vertex in range(1, len(vertices) + 1):
+        v0, v1 = vertices[vertex - 1], vertices[vertex % len(vertices)]
+        if _is_point_in_segment(point, v0, v1):
+            return valid_border
+        sum_ += cmath.log(
+            (complex(*v1) - complex(*point)) / (complex(*v0) - complex(*point))
+        )
+    return abs(sum_) > 1

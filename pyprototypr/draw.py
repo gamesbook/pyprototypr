@@ -26,7 +26,7 @@ from .shapes import (
     CompassShape, DeckShape, EllipseShape, FooterShape, GridShape, HexShape,
     ArcShape, ImageShape, LineShape, OctagonShape, PolygonShape, PolylineShape,
     Query, RectangleShape, RepeatShape, RhombusShape, RightAngledTriangleShape,
-    ShapeShape, StarShape, TextShape)
+    ShapeShape, StarShape, StarFieldShape, TextShape)
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
@@ -708,6 +708,22 @@ def star(row=None, col=None, **kwargs):
     kwargs['row'] = row
     kwargs['col'] = col
     return StarShape(canvas=cnv, **kwargs)
+
+
+def StarField(**kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    starfield = StarFieldShape(canvas=cnv, **kwargs)
+    starfield.draw()
+    return starfield
+
+
+def starfield(**kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    return StarFieldShape(canvas=cnv, **kwargs)
 
 
 def Text(**kwargs):

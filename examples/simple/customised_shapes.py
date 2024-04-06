@@ -118,7 +118,7 @@ Hexagons(
     rows=2,
     cols=2,
     dot_size=0.04,
-    caltrops="medium",
+    #caltrops="medium",
 )
 PageBreak()
 
@@ -129,5 +129,25 @@ PageBreak()
 # -- no defaults
 # Arc()
 # Polyline() # will get FEEDBACK
+
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="StarField")
+Rectangle(x=0, y=0, height=3, width=3, fill=black)
+StarField(
+    density=20,
+    enclosure=rectangle(x=0, y=0, height=3, width=3),
+    colors=[white, white, white, red, blue],
+    sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="StarField")
+Circle(x=0, y=0, radius=1.5, fill=black)
+StarField(
+    density=20,
+    enclosure=circle(x=0, y=0, radius=1.5),
+    colors=[white, white, white, green, blue],
+    sizes=[0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
+PageBreak()
 
 Save()

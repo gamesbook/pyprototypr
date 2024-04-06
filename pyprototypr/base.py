@@ -52,6 +52,12 @@ log = logging.getLogger(__name__)
 
 DEBUG = False
 # ---- tuples
+Point = namedtuple(
+    'Point', [
+    'x',
+    'y'
+    ]
+)
 UnitProperties = namedtuple(
     'UnitProperties', [
         'margin_left',
@@ -68,6 +74,10 @@ UnitProperties = namedtuple(
         'diameter',
         'side',
         'length',
+    ]
+)
+OffsetProperties = namedtuple(
+    'OffsetProperties', [
         'off_x',
         'off_y',
         'delta_x',
@@ -330,6 +340,9 @@ class BaseCanvas:
         self.cx = self.defaults.get('cx', None)
         self.cy = self.defaults.get('cy', None)
         self.scaling = self.defaults.get('scaling', None)
+        # ---- to be calculated ...
+        self.area = None
+        self.vertices = []
         # ---- repeats
         self.pattern = self.defaults.get('pattern', None)
         self.repeat = self.defaults.get('repeat', True)
@@ -478,6 +491,12 @@ class BaseCanvas:
         self.coord_stroke = self.get_color(self.defaults.get('coord_stroke'), black)
         self.coord_padding = self.defaults.get('coord_padding', 2)
         self.coord_separator = kwargs.get('coord_separator', '')
+        # ---- starfield
+        self.enclosure = None
+        self.colors = [white]
+        self.sizes = [self.defaults.get('stroke_width', WIDTH)]
+        self.density = 10
+        self.star_pattern = 'random'
 
     def get_canvas(self):
         """Return reportlab canvas object"""
@@ -506,6 +525,7 @@ class BaseShape:
     """Base class for objects that are drawn on a given canvas."""
 
     def __init__(self, _object=None, canvas=None, **kwargs):
+        self.kwargs = kwargs
         # ---- constants
         self.default_length = 1
         self.show_id = False  # True
@@ -514,7 +534,6 @@ class BaseShape:
         cnv = self.canvas  # shortcut for use in getting defaults
         log.debug("BaseShape types %s %s %s", type(self.canvas), type(canvas), type(cnv))
         self._object = _object  # placeholder for an incoming Shape object
-        self.kwargs = kwargs
         log.debug("BaseShape kwargs:%s", self.kwargs)
         self.shape_id = None
         self.stylesheet = getSampleStyleSheet()
@@ -548,6 +567,9 @@ class BaseShape:
         self.cx = kwargs.get('cx', cnv.cx)
         self.cy = kwargs.get('cy', cnv.cy)
         self.scaling = kwargs.get('scaling', None)  # SVG images
+        # ---- to be calculated ...
+        self.area = cnv.area
+        self.vertices = cnv.vertices
         # ---- repeats
         self.pattern = kwargs.get('pattern', cnv.pattern)
         self.repeat = kwargs.get('repeat', cnv.repeat)
@@ -681,7 +703,12 @@ class BaseShape:
         self.coord_stroke = kwargs.get('coord_stroke', cnv.coord_stroke)
         self.coord_padding = kwargs.get('coord_padding', cnv.coord_padding)
         self.coord_separator = kwargs.get('coord_separator', cnv.coord_separator)
-
+        # ---- starfield
+        self.enclosure = kwargs.get('enclosure', cnv.enclosure)
+        self.colors = kwargs.get('colors', cnv.colors)
+        self.sizes = kwargs.get('sizes', cnv.sizes)
+        self.density = kwargs.get('density', cnv.density)
+        self.star_pattern = kwargs.get('star_pattern', cnv.star_pattern)
         # ---- CHECK ALL
         correct, issue = self.check_settings()
         if not correct:
@@ -700,6 +727,11 @@ class BaseShape:
                     base_attr = getattr(BaseCanvas(), attr)
                     if common_attr != base_attr:
                         setattr(self, attr, common_attr)
+        # ---- SET UNIT PROPS (last!)
+        self.set_unit_properties()
+
+    def __str__(self):
+        return f'{self.__class__.__name__}::{self.kwargs}'
 
     def unit(self, item, units=None, skip_none=False):
         """Convert an item into the appropriate unit system."""
@@ -716,13 +748,10 @@ class BaseShape:
                 ' Please check that this is a valid value.',
                 stop=True)
 
-    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Draw an element on a given canvas."""
-        # ---- convert key properties to correct units
+    def set_unit_properties(self):
+        """Convert base properties into unit-based values."""
         margin_left = self.unit(self.margin_left) if self.margin_left is not None else None
         margin_right = self.unit(self.margin_right) if self.margin_right is not None else None
-        off_x = self.unit(off_x) if off_x is not None else None
-        off_y = self.unit(off_y) if off_y is not None else None
         self._u = UnitProperties(
             margin_left,
             margin_right,
@@ -737,7 +766,16 @@ class BaseShape:
             self.unit(self.radius) if self.radius is not None else None,
             self.unit(self.diameter) if self.diameter is not None else None,
             self.unit(self.side) if self.side is not None else None,
-            self.unit(self.length) if self.length is not None else None,
+            self.unit(self.length) if self.length is not None else None)
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw an element on a given canvas."""
+        # ---- convert offset properties to correct units
+        margin_left = self.unit(self.margin_left) if self.margin_left is not None else None
+        margin_right = self.unit(self.margin_right) if self.margin_right is not None else None
+        off_x = self.unit(off_x) if off_x is not None else None
+        off_y = self.unit(off_y) if off_y is not None else None
+        self._o = OffsetProperties(
             off_x,
             off_y,
             off_x + margin_left,
@@ -833,6 +871,12 @@ class BaseShape:
                     ['line', 'l', 'line2', 'l2', 'line3', 'l3', 'feather', 'f',
                      'circle', 'c', ]:
                 issue.append(f'"{self.tail_style}" is an invalid arrow tail_style!')
+                correct = False
+        # ---- starfield
+        if self.star_pattern:
+            if str(self.star_pattern).lower() not in \
+                    ['random', 'r', 'cluster', 'c', ]:
+                issue.append(f'"{self.pattern}" is an invalid starfield pattern!')
                 correct = False
 
         return correct, issue
@@ -1022,17 +1066,7 @@ class BaseShape:
         """
         self.draw_multi_string(canvas=canvas, x=x, y=y, string=string, align=align)
 
-    def draw_title(self, canvas, x, y, y_offset):
-        """Draw the title for a shape (normally below the shape).
-
-        Requires native units (i.e. points)!
-        """
-        if self.title:
-            canvas.setFont(self.font_face, self.title_size)
-            canvas.setFillColor(self.title_stroke)
-            self.draw_multi_string(canvas, x, y - y_offset, self.title)
-
-    def draw_heading(self, canvas, x, y, y_offset):
+    def draw_heading(self, canvas, x, y, y_offset=0):
         """Draw the heading for a shape (normally above the shape).
 
         Requires native units (i.e. points)!
@@ -1051,6 +1085,16 @@ class BaseShape:
             canvas.setFont(self.font_face, self.label_size)
             canvas.setFillColor(self.label_stroke)
             self.draw_multi_string(canvas, x, y, self.label)
+
+    def draw_title(self, canvas, x, y, y_offset=0):
+        """Draw the title for a shape (normally below the shape).
+
+        Requires native units (i.e. points)!
+        """
+        if self.title:
+            canvas.setFont(self.font_face, self.title_size)
+            canvas.setFillColor(self.title_stroke)
+            self.draw_multi_string(canvas, x, y - y_offset, self.title)
 
     def draw_dot(self, canvas, x, y):
         """Draw a small dot on a shape (normally the centre).

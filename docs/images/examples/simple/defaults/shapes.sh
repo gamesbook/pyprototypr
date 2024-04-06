@@ -2,7 +2,7 @@
 # updated: 2024-03-29
 # input: PDF from examples/simple/default_shapes.py
 # requires: https://imagemagick.org/
-# uses: .png files created by https://cloudconvert.com/pdf-to-png
+# uses: default_shapes-*.png created by https://cloudconvert.com/pdf-to-png
 #  * 296 pixels high by 420 pixels wide
 #  * 600 dpi
 magick default_shapes-1.png -crop 200x200+0+220 +repage autogrid.png
@@ -34,4 +34,4 @@ magick default_shapes-23.png -crop 200x200+0+220 +repage arc.png
 magick default_shapes-24.png -crop 200x200+0+220 +repage bezier.png
 magick default_shapes-25.png -crop 200x200+0+220 +repage polyline.png
 magick default_shapes-26.png -crop 200x200+0+220 +repage shape.png
-
+magick default_shapes-27.png -crop 200x200+0+220 +repage starfield.png
