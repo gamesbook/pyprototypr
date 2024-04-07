@@ -147,8 +147,12 @@ PageBreak()
 AutoGrid(stroke_width=0.5)
 Text(common=header, text="StarField")
 Rectangle(x=0, y=0, fill=black)
-# StarField(colors=[red], sizes=[0.25])
 StarField()
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Square")
+Square()
 PageBreak()
 
 # -- no defaults

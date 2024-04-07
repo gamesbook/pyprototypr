@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# updated: 2024-03-29
 # input: PDF from examples/simple/default_shapes.py
 # requires: https://imagemagick.org/
 # uses: default_shapes-*.png created by https://cloudconvert.com/pdf-to-png
@@ -26,12 +25,10 @@ magick default_shapes-18.png -crop 200x200+0+220 +repage arrow.png
 magick default_shapes-19.png -crop 200x200+0+220 +repage rightangle.png
 magick default_shapes-20.png -crop 200x200+0+220 +repage compass.png
 magick default_shapes-21.png -crop 200x200+0+220 +repage hexagons-2x2.png
-# magick default_shapes-22.png -crop 200x200+0+220 +repage hexagons-coords.png
-# magick default_shapes-23.png -crop 200x200+0+220 +repage hexagons-caltrops.png
-# magick default_shapes-?.png -crop 200x200+0+220 +repage ?.png
 magick default_shapes-22.png -crop 200x200+0+220 +repage grid.png
 magick default_shapes-23.png -crop 200x200+0+220 +repage arc.png
 magick default_shapes-24.png -crop 200x200+0+220 +repage bezier.png
 magick default_shapes-25.png -crop 200x200+0+220 +repage polyline.png
 magick default_shapes-26.png -crop 200x200+0+220 +repage shape.png
 magick default_shapes-27.png -crop 200x200+0+220 +repage starfield.png
+magick default_shapes-28.png -crop 200x200+0+220 +repage square.png

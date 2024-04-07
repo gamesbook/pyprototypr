@@ -25,6 +25,7 @@
 * [Octagon](#octagon)
 * [PolyLine](#polyline)
 * [Rectangle](#rectangle)
+* [Square](#square)
 * [Star](#star)
 * [](#)
 
@@ -202,6 +203,31 @@ is white.
         <li>fill color is white.</li>
       </ul>
     </p>
+    </td>
+  </tr>
+</table>
+
+### Square [&#9650;](#index_shapes) <a name="square"></a>
+
+<table>
+  <tr>
+    <th width="30%">Example #1</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/examples/simple/defaults/square.png"></td>
+    <td>
+    <p>This example shows the shape constructed using the command with all defaults:</p>
+    <pre>Square()</pre>
+    <p>It has the following properties based on the defaults:
+      <ul>
+        <li>length of 1cm and height of 1cm and side of 1cm,</li>
+        <li>bottom-left corner at x-position 1cm and at y-position 1cm,</li>
+        <li>fill color is white.</li>
+      </ul>
+    </p>
+    <p>A square can be constructing by setting any one of <i>side</i>, <i>height</i>
+       or <i>width</i>, as they will all be set equal to each other.
     </td>
   </tr>
 </table>

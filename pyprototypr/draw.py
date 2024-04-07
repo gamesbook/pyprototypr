@@ -22,11 +22,11 @@ from .base import BaseCanvas, GroupBase, COLORS
 from .dice import (
     Dice, DiceD4, DiceD6, DiceD8, DiceD10, DiceD12, DiceD20, DiceD100)
 from .shapes import (
-    ArrowShape, BezierShape, CircleShape, CommonShape, ConnectShape,
-    CompassShape, DeckShape, EllipseShape, FooterShape, GridShape, HexShape,
+    ArrowShape, BezierShape, CircleShape, CommonShape, ConnectShape, CompassShape,
+    DeckShape, EllipseShape, EquilateralTriangleShape, FooterShape, GridShape, HexShape,
     ArcShape, ImageShape, LineShape, OctagonShape, PolygonShape, PolylineShape,
     Query, RectangleShape, RepeatShape, RhombusShape, RightAngledTriangleShape,
-    ShapeShape, StarShape, StarFieldShape, TextShape)
+    ShapeShape, SquareShape, StarShape, StarFieldShape, TextShape)
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
@@ -61,35 +61,35 @@ def Create(**kwargs):
     global margin_bottom
     global margin_right
     global pagesize
-    # margin
+    # ---- margin
     margin = kwargs.get('margin', margin)
     margin_left = kwargs.get('margin_left', margin)
     margin_top = kwargs.get('margin_top', margin)
     margin_bottom = kwargs.get('margin_bottom', margin)
     margin_right = kwargs.get('margin_right', margin)
-    # cards and page
+    # ---- cards and page
     _cards = kwargs.get('cards', 0)
     fonts = kwargs.get('fonts', [])
     landscape = kwargs.get('landscape', False)
     kwargs = margins(**kwargs)
     pagesize = kwargs.get('pagesize', A4)
     defaults = kwargs.get('defaults', None)
-    # fonts
+    # ---- fonts
     base_fonts()
     for _font in fonts:
         pdfmetrics.registerFont(TTFont(_font[0], _font[1]))
-    # filename and fallback
+    # ---- filename and fallback
     filename = kwargs.get('filename', None)
     if not filename:
         basename = 'test'
-        log.debug('basename: "%s" sys.argv[0]: "%s"', basename, sys.argv[0])
+        # log.debug('basename: "%s" sys.argv[0]: "%s"', basename, sys.argv[0])
         if sys.argv[0]:
             basename = os.path.basename(sys.argv[0]).split('.')[0]
         else:
             if _cards:
                 basename = 'cards'
         filename = f'{basename}.pdf'
-    # Canvas and Deck
+    # ---- canvas and deck
     cnv = BaseCanvas(filename, pagesize=pagesize, defaults=defaults)
     page_width = pagesize[0]  # units = 1/72 of an inch
     page_height = pagesize[1]  # units = 1/72 of an inch
@@ -450,6 +450,24 @@ def ellipse(**kwargs):
     return EllipseShape(canvas=cnv, **kwargs)
 
 
+def EquilateralTriangle(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    kwargs['row'] = row
+    kwargs['col'] = col
+    eqt = EquilateralTriangleShape(canvas=cnv, **kwargs)
+    eqt.draw()
+    return eqt
+
+
+def rightangledtriangle(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    return EquilateralTriangleShape(canvas=cnv, **kwargs)
+
+
 def Grid(**kwargs):
     global cnv
     global deck
@@ -670,6 +688,24 @@ def rectangle(row=None, col=None, **kwargs):
     kwargs['row'] = row
     kwargs['col'] = col
     return RectangleShape(canvas=cnv, **kwargs)
+
+
+def Square(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    sqr = square(row=row, col=col, **kwargs)
+    sqr.draw()
+    return sqr
+
+
+def square(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    kwargs['row'] = row
+    kwargs['col'] = col
+    return SquareShape(canvas=cnv, **kwargs)
 
 
 def Shape(row=None, col=None, **kwargs):

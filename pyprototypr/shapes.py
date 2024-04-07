@@ -388,6 +388,40 @@ class RectangleShape(BaseShape):
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
 
 
+# class SquareShape(BaseShape):
+#     pass
+
+#     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+#         """Draw a square on a given canvas."""
+#         pass
+
+class SquareShape(RectangleShape):
+    """
+    Square on a given canvas.
+    """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(SquareShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        # overrides to make a "square rectangle"
+        if self.width and not self.side:
+            self.side = self.width
+        if self.height and not self.side:
+            self.side = self.height
+        self.height, self.width = self.side, self.side
+        self.set_unit_properties()
+        self.kwargs = kwargs
+
+    def __str__(self):
+        return f'{self.__class__.__name__}::{self.kwargs}'
+
+    def calculate_area(self):
+        return self._u.width * self._u.height
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw a square on a given canvas."""
+        super().draw(cnv, off_x, off_y, ID, **kwargs)
+
+
 class OctagonShape(BaseShape):
     """
     Octagon on a given canvas.
@@ -913,6 +947,14 @@ class RightAngledTriangleShape(BaseShape):
         self.draw_dot(cnv, x_c, y_c)
 
 
+class EquilateralTriangleShape(BaseShape):
+    pass
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw an equilateraltriangle on a given canvas."""
+        pass
+
+
 class TextShape(BaseShape):
     """
     Text on a given canvas.
@@ -1271,6 +1313,9 @@ class StarFieldShape(BaseShape):
 
     Ref:
         https://codeboje.de/starfields-and-galaxies-python/
+
+    TODO:
+        Implement : createElipticStarfield()
     """
 
     def __str__(self):
@@ -1319,11 +1364,11 @@ class StarFieldShape(BaseShape):
         random.seed()
         area = math.sqrt(self.enclosure.calculate_area())
         self.star_count = round(self.density * self.points_to_value(area))
-        # tools.feedback(f'{self.star_pattern =} {self.enclosure} ')
+        # tools.feedback(f'{self.star_pattern =} {self.enclosure}')
         # tools.feedback(f'{area=} {self.density=} {self.star_count=}')
         # ---- set canvas
         self.set_canvas_props()
-        # ---- draw StarField on canvas
+        # ---- draw starfield
         if self.star_pattern in ['r', 'random']:
             self.random_stars(cnv)
         if self.star_pattern in ['c', 'cluster']:
