@@ -4,6 +4,7 @@
 Utility functions for pyprototypr
 """
 # lib
+from collections import namedtuple
 import cmath
 import csv
 import collections
@@ -22,6 +23,12 @@ from pyprototypr.utils import tools
 log = logging.getLogger(__name__)
 DEBUG = False
 
+Point = namedtuple(
+    'Point', [
+    'x',
+    'y'
+    ]
+)
 
 def script_path():
     """Get the path for a script being called from command line."""
@@ -559,3 +566,21 @@ def is_inside_polygon(point: tuple, vertices: list, valid_border=False) -> bool:
             (complex(*v1) - complex(*point)) / (complex(*v0) - complex(*point))
         )
     return abs(sum_) > 1
+
+
+def point_on_line(point_start: Point, point_end: Point, distance: float) -> Point:
+    """Calculate new Point at a distance along a line defined by its Points
+
+    >>> P = Point(0,2)
+    >>> Q = Point(4,4)
+    >>> D = 3
+    >>> R = point_on_line(P, Q, D)
+    >>> assert round(R.x, 4) == 2.6833
+    >>> assert round(R.y, 4) == 3.3416
+    """
+    line = math.sqrt(
+        (point_end.x - point_start.x) ** 2 + (point_end.y - point_start.y) ** 2)
+    ratio = distance / line
+    x = (1.0 - ratio) * point_start.x + ratio * point_end.y
+    y = (1.0 - ratio) * point_start.y + ratio * point_end.y
+    return Point(x, y)

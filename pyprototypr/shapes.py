@@ -13,8 +13,9 @@ from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle
 
 # local
+from pyprototypr.utils.tools import Point
 from pyprototypr.utils import tools
-from pyprototypr.base import Point, BaseShape, BaseCanvas, UNITS, COLORS, PAGES
+from pyprototypr.base import BaseShape, BaseCanvas, UNITS, COLORS, PAGES
 
 log = logging.getLogger(__name__)
 

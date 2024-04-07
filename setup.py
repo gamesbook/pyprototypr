@@ -62,7 +62,7 @@ def read(*filenames, **kwargs):
 
 
 VERSION = get_version()
-LONG_DESCRIPTION = read('README.rst', 'CHANGES.txt')
+LONG_DESCRIPTION = read('README.md', 'CHANGES.txt')
 
 setup(
     name='pyprototypr',

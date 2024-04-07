@@ -52,12 +52,6 @@ log = logging.getLogger(__name__)
 
 DEBUG = False
 # ---- tuples
-Point = namedtuple(
-    'Point', [
-    'x',
-    'y'
-    ]
-)
 UnitProperties = namedtuple(
     'UnitProperties', [
         'margin_left',
