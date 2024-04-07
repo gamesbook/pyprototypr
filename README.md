@@ -69,7 +69,7 @@ work for future development.
 
 * [ ] Page numbering (with styles)
 * [ ] New shapes:
-    * [ ] Square shape
+    * [x] Square shape
     * [ ] Equilateral Triangle shape
     * [ ] Sector shape (slice of a circle)
     * [ ] Clock shape
@@ -95,10 +95,10 @@ work for future development.
 
 ## Acknowledgements
 
-As always, with Python, you are building "on the shoulders of giants". In this case,
-the `ReportLab PDF Toolkit <https://https://docs.reportlab.com/reportlab/userguide/ch1_intro/>`_
-provides all of the underlying infrastructure to do the graphics work; **pyprototypr**
-is really a thin wrapper around its numerous and extensive capabilities.
+As always, with Python, you are building "on the shoulders of giants". In this case, the
+[ReportLab PDF Toolkit](https://https://docs.reportlab.com/reportlab/userguide/ch1_intro/)
+provides all of the core, underlying infrastructure to do the graphics work;
+**pyprototypr** is really a thin wrapper around its numerous and extensive capabilities.
 
 Additional libraries used include:
 
