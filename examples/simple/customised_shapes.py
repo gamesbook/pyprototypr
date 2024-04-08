@@ -150,4 +150,13 @@ StarField(
     sizes=[0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
 PageBreak()
 
+# hatching
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Rectangle: hatching")
+Rectangle(
+    height=3, width=2,
+    hatch=15, hatch_width=0.1, hatch_stroke=black,
+    stroke=saddlebrown, stroke_width=0.1, fill=lightcyan)
+PageBreak()
+
 Save()

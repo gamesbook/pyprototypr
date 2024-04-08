@@ -581,6 +581,6 @@ def point_on_line(point_start: Point, point_end: Point, distance: float) -> Poin
     line = math.sqrt(
         (point_end.x - point_start.x) ** 2 + (point_end.y - point_start.y) ** 2)
     ratio = distance / line
-    x = (1.0 - ratio) * point_start.x + ratio * point_end.y
+    x = (1.0 - ratio) * point_start.x + ratio * point_end.x
     y = (1.0 - ratio) * point_start.y + ratio * point_end.y
     return Point(x, y)

@@ -64,6 +64,11 @@ Hexagon()
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
+Text(common=header, text="Hexagon: vertical")
+Hexagon(hex_orientation="pointy")
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
 Text(common=header, text="Hexagon: cx=1, cy=1")
 Hexagon(cx=1, cy=1)
 PageBreak()

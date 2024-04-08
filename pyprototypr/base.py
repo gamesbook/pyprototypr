@@ -355,6 +355,7 @@ class BaseCanvas:
         # ---- line
         self.line_color = self.defaults.get('line_color', WIDTH)
         self.line_width = self.defaults.get('line_width', WIDTH)
+        self.line_cap = self.defaults.get('line_cap', None)
         self.line_dots = self.defaults.get('line_dots',
                                            self.defaults.get('dots',
                                                              False))
@@ -491,6 +492,14 @@ class BaseCanvas:
         self.sizes = [self.defaults.get('stroke_width', WIDTH)]
         self.density = 10
         self.star_pattern = 'random'
+        # ---- hatches
+        self.hatch = self.defaults.get('hatch', 0)
+        self.hatch_directions = self.defaults.get('hatch_directions', 'n ne e se')
+        self.hatch_width = self.defaults.get('hatch_width', self.stroke_width)
+        self.hatch_stroke = self.defaults.get('hatch_stroke', self.stroke)
+        self.hatch_dots = self.defaults.get('hatch_dots', None)
+        self.hatch_cap = self.defaults.get('hatch_cap', self.line_cap)
+        self.hatch_dashes = self.defaults.get('hatch_dashes', None)
 
     def get_canvas(self):
         """Return reportlab canvas object"""
@@ -580,6 +589,7 @@ class BaseShape:
         self.position = kwargs.get('position', cnv.position)
         # ---- line
         self.line_width = kwargs.get('line_width', cnv.line_width)
+        self.line_cap = kwargs.get('line_cap', cnv.line_cap)
         self.line_dots = kwargs.get('line_dots',
                                     kwargs.get('dots', cnv.line_dots))
         self.dashes = kwargs.get('dashes', None)
@@ -703,6 +713,15 @@ class BaseShape:
         self.sizes = kwargs.get('sizes', cnv.sizes)
         self.density = kwargs.get('density', cnv.density)
         self.star_pattern = kwargs.get('star_pattern', cnv.star_pattern)
+        # ---- hatches
+        self.hatch = kwargs.get('hatch', cnv.hatch)
+        self.hatch_directions = kwargs.get('hatch_directions', cnv.hatch_directions)
+        self.hatch_width = kwargs.get('hatch_width', cnv.hatch_width)
+        self.hatch_stroke = kwargs.get('hatch_stroke', cnv.stroke)
+        self.hatch_cap = kwargs.get('hatch_cap', cnv.hatch_cap)
+        self.hatch_dots = kwargs.get('hatch_dots', cnv.line_dots)
+        self.hatch_dashes = kwargs.get('hatch_dashes', cnv.dashes)
+
         # ---- CHECK ALL
         correct, issue = self.check_settings()
         if not correct:
@@ -775,8 +794,15 @@ class BaseShape:
             off_x + margin_left,
             off_y + margin_right)
 
-    def set_canvas_props(self, cnv=None, fill=None,
-                         stroke=None, stroke_width=None):
+    def set_canvas_props(
+            self,
+            cnv=None,
+            fill=None,
+            stroke=None,
+            stroke_width=None,
+            stroke_cap=None,
+            line_dots=None,
+            dashes=None):
         """Set reportlab canvas properties for font and colors"""
         canvas = cnv if cnv else self.canvas.canvas
         log.debug('scp: %s %s', self.font_face, self.font_size)
@@ -806,12 +832,21 @@ class BaseShape:
             tools.feedback('Please check your stroke_width setting; should be a number')
         except AttributeError:
             pass
+        # ---- line cap
+        if stroke_cap:
+            if stroke_cap in ['r', 'rounded']:
+                canvas.setLineCap(1)
+            elif stroke_cap in ['s', 'square']:
+                canvas.setLineCap(2)
+            else:
+                tools.feedback(f'Line cap type "{stroke_cap}" cannot be used.', False)
         # ---- set line dots / dashes
-        if self.line_dots:
+        if line_dots or self.line_dots:
             _dots = self.values_to_points([0.1, 0.1])
             canvas.setDash(array=_dots)
-        if self.dashes:
-            _dashes = self.values_to_points(self.dashes)
+        if dashes or self.dashes:
+            dash_values = dashes or self.dashes
+            _dashes = self.values_to_points(dash_values)
             canvas.setDash(array=_dashes)
 
     def check_settings(self):

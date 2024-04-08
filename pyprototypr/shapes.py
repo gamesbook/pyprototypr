@@ -277,6 +277,81 @@ class RectangleShape(BaseShape):
     def calculate_area(self):
         return self._u.width * self._u.height
 
+    def draw_hatching(self, cnv, vertices: list, num: int):
+        from reportlab.lib.colors import black, blue, red
+        if self.rounding or self.rounded:
+            tools.feedback('No hatching permissible with a rounded Rectangle', True)
+        self.set_canvas_props(
+            stroke=self.hatch_stroke,
+            stroke_width=self.hatch_width,
+            stroke_cap=self.hatch_cap)
+        _dirs = self.hatch_directions.lower().split()
+        if num >=1:
+            if 'ne' or 'sw' in _dirs:  # slope UP to the right
+                pth = cnv.beginPath()
+                pth.moveTo(vertices[0].x, vertices[0].y)
+                pth.lineTo(vertices[2].x, vertices[2].y)
+                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+            if 'se' or 'nw' in _dirs:  # slope down to the right
+                pth = cnv.beginPath()
+                pth.moveTo(vertices[1].x, vertices[1].y)
+                pth.lineTo(vertices[3].x, vertices[3].y)
+                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+            if 'n' or 's' in _dirs:  # vertical
+                x_dist = self._u.width / (num + 1)
+                for i in range(1, num + 1):
+                    pth = cnv.beginPath()
+                    pth.moveTo(vertices[0].x + i * x_dist, vertices[1].y)
+                    pth.lineTo(vertices[0].x + i * x_dist, vertices[0].y)
+                    cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+            if 'e' or 'w' in _dirs:  # horizontal
+                y_dist = self._u.height / (num + 1)
+                for i in range(1, num + 1):
+                    pth = cnv.beginPath()
+                    pth.moveTo(vertices[0].x, vertices[0].y + i * y_dist)
+                    pth.lineTo(vertices[0].x + self._u.width, vertices[0].y + i * y_dist)
+                    cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        if num >= 2:
+            diag_num = int((num - 1) / 2 + 1)
+            x_dist = self._u.width / diag_num
+            y_dist = self._u.height / diag_num
+            top_pt, btm_pt, left_pt, rite_pt = [], [],[], []
+            for number in range(0, diag_num + 1):
+                left_pt.append(
+                    tools.point_on_line(vertices[0], vertices[1], y_dist * number))
+                top_pt.append(
+                    tools.point_on_line(vertices[1], vertices[2], x_dist * number))
+                rite_pt.append(
+                    tools.point_on_line(vertices[3], vertices[2], y_dist * number))
+                btm_pt.append(
+                    tools.point_on_line(vertices[0], vertices[3], x_dist * number))
+
+        if 'ne' or 'sw' in _dirs:  # slope UP to the right
+            for i in range(1, diag_num):  # top-left side
+                j = diag_num - i
+                pth = cnv.beginPath()
+                pth.moveTo(left_pt[i].x, left_pt[i].y)
+                pth.lineTo(top_pt[j].x, top_pt[j].y)
+                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+            for i in range(1, diag_num):  # bottom-right side
+                j = diag_num - i
+                pth = cnv.beginPath()
+                pth.moveTo(btm_pt[i].x, btm_pt[i].y)
+                pth.lineTo(rite_pt[j].x, rite_pt[j].y)
+                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+
+        if 'se' or 'nw' in _dirs:  # slope down to the right
+            for i in range(1, diag_num):  # bottom-left side
+                pth = cnv.beginPath()
+                pth.moveTo(left_pt[i].x, left_pt[i].y)
+                pth.lineTo(btm_pt[i].x, btm_pt[i].y)
+                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+            for i in range(1, diag_num):  # top-right side
+                pth = cnv.beginPath()
+                pth.moveTo(top_pt[i].x, top_pt[i].y)
+                pth.lineTo(rite_pt[i].x, rite_pt[i].y)
+                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a rectangle on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
@@ -297,6 +372,12 @@ class RectangleShape(BaseShape):
             y = self._u.cy - self._u.height / 2.0
         # ---- calculated properties
         self.area = self.calculate_area()
+        self.vertices = [  # clockwise from bottom-left; relative to centre
+            Point(x, y),
+            Point(x, y + self._u.height),
+            Point(x + self._u.width, y + self._u.height),
+            Point(x + self._u.width, y),
+        ]
         # canvas
         self.set_canvas_props()
         # ---- draw rectangle
@@ -331,6 +412,9 @@ class RectangleShape(BaseShape):
                 stroke=1,
                 fill=1 if self.fill else 0,
             )
+        # ---- draw hatches
+        if self.hatch:
+            self.draw_hatching(cnv, self.vertices, self.hatch)
         # ---- grid marks
         self.set_canvas_props(
             stroke=self.grid_color, stroke_width=self.grid_stroke_width)
@@ -698,7 +782,7 @@ class HexShape(BaseShape):
         points = self.values_to_points(array)
         return points
 
-    def draw_coord(self, cnv, x_d, y_d, half_height):
+    def draw_coord(self, cnv, x_d, y_d, half_flat):
         """Draw the coord inside the hexagon."""
         if self.coord_position:
             # ---- set coord value
@@ -720,13 +804,13 @@ class HexShape(BaseShape):
             coord_offset = self.unit(self.coord_offset)
             if self.coord_position in ['t', 'top']:
                 self.draw_multi_string(
-                    cnv, x_d, y_d + half_height * 0.7 + coord_offset, _coord_text)
+                    cnv, x_d, y_d + half_flat * 0.7 + coord_offset, _coord_text)
             elif self.coord_position in ['m', 'middle', 'mid']:
                 self.draw_multi_string(
                     cnv, x_d, y_d + coord_offset - self.coord_font_size / 2.0, _coord_text)
             elif self.coord_position in ['b', 'bottom', 'bot']:
                 self.draw_multi_string(
-                    cnv, x_d, y_d - half_height * 0.9 + coord_offset, _coord_text)
+                    cnv, x_d, y_d - half_flat * 0.9 + coord_offset, _coord_text)
             else:
                 tools.feedback(
                     f'Cannot handle a coord_position of "{self.coord_position}"')
@@ -744,60 +828,88 @@ class HexShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         is_cards = kwargs.get("is_cards", False)
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # ---- calculate half_height and half_side from self.side or self.height
+        # ---- calculate half_flat & half_side from self.side, self.diameter, self.height
         if self.side:
             side = self._u.side
-            half_height = self._u.side * math.sqrt(3) / 2.0
+            half_flat = self._u.side * math.sqrt(3) / 2.0
         elif self.height:
             side = self._u.height / math.sqrt(3)
-            half_height = self._u.height / 2.0
+            half_flat = self._u.height / 2.0
+        elif self.diameter:
+            side = self._u.diameter / 2.0
+            half_flat = self._u.side * math.sqrt(3) / 2.0
         else:
-            tools.feedback('No value for either side or height supplied for hexagon.',
-                           True)
+            tools.feedback(
+                'No value for side or height or diameter supplied for hexagon.',
+                True)
         half_side = side / 2.0
+        height_flat = self._u.height
         diameter = 2.0 * side
+        z_fraction = (diameter - side) / 2.0
         # ---- coords for leftmost point
-        #         __
-        # x,y .. /  \
-        #        \__/
-        if self.row is not None and self.col is not None and is_cards:
-            x = self.col * 2.0 * side + self._o.delta_x
-            y = half_height + self.row * 2.0 * half_height + self._o.delta_x
-        elif self.row is not None and self.col is not None:
-            if self.hex_offset in ['o', 'O', 'odd']:
-                x = self.col * (half_side + side) + self._o.delta_x
-                y = (
-                    half_height
-                    + half_height * self.row * 2.0
-                    + (self.col % 2) * half_height
-                    + self._o.delta_y
-                )
-                if (self.col + 1) & 1:  # odd
-                    y = y - half_height
-                else:
-                    y = y - 3 * half_height
-            else:  # self.hex_offset in ['e', 'E', 'even']
-                x = self.col * (half_side + side) + self._o.delta_x
-                y = (
-                    half_height
-                    + half_height * self.row * 2.0
-                    + (self.col % 2) * half_height
-                    + self._o.delta_y
-                )
-        elif self.cx and self.cy:
-            # cx,cy are centred; create x_d,y_d as the unit-formatted hex centre
-            x_d = self._u.cx
-            y_d = self._u.cy
-            x = x_d - half_side - side / 2.0 + self._o.delta_x
-            y = y_d + self._o.delta_y
-        else:
+        if self.hex_orientation.lower() in ['p', 'pointy']:
+            #         /\
+            # x,y .. | |
+            #        \/
             # x and y are at the bottom-left corner of the box around the hex
             x = self._u.x + self._o.delta_x
-            y = self._u.y + self._o.delta_y + half_height
-        # ---- calculate hex centre
-        x_d = x + half_side + side / 2.0
-        y_d = y
-        log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_height, half_side, side)
+            y = self._u.y + self._o.delta_y
+            # ---- calculate hex centre
+            x_d = x + half_flat
+            y_d = y + side
+            log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_flat, half_side, side)
+            tools.feedback(
+                f'The hexagon orientation "{self.hex_orientation}" is not implemented',
+                True)
+            if self.cx and self.cy:
+                # cx,cy are centred; create x_d,y_d as the unit-formatted hex centre
+                x_d = self._u.cx
+                y_d = self._u.cy
+                x = x_d - half_flat + self._o.delta_x
+                y = y_d - side + self._o.delta_y
+        else:
+            #         __
+            # x,y .. /  \
+            #        \__/
+            # x and y are at the bottom-left corner of the box around the hex
+            if self.row is not None and self.col is not None and is_cards:
+                x = self.col * 2.0 * side + self._o.delta_x
+                y = half_flat + self.row * 2.0 * half_flat + self._o.delta_x
+            elif self.row is not None and self.col is not None:
+                if self.hex_offset in ['o', 'O', 'odd']:
+                    x = self.col * (half_side + side) + self._o.delta_x
+                    y = (
+                        half_flat
+                        + half_flat * self.row * 2.0
+                        + (self.col % 2) * half_flat
+                        + self._o.delta_y
+                    )
+                    if (self.col + 1) & 1:  # odd
+                        y = y - half_flat
+                    else:
+                        y = y - 3 * half_flat
+                else:  # self.hex_offset in ['e', 'E', 'even']
+                    x = self.col * (half_side + side) + self._o.delta_x
+                    y = (
+                        half_flat
+                        + half_flat * self.row * 2.0
+                        + (self.col % 2) * half_flat
+                        + self._o.delta_y
+                    )
+            elif self.cx and self.cy:
+                # cx,cy are centred; create x_d,y_d as the unit-formatted hex centre
+                x_d = self._u.cx
+                y_d = self._u.cy
+                x = x_d - half_side - side / 2.0 + self._o.delta_x
+                y = y_d + self._o.delta_y
+            else:
+                # x and y are at the bottom-left corner of the box around the hex
+                x = self._u.x + self._o.delta_x
+                y = self._u.y + self._o.delta_y
+                # ---- calculate hex centre
+                x_d = x + side
+                y_d = y + half_flat
+            log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_flat, half_side, side)
         # ---- calculate area
         self.area = self.calculate_area()
         # ---- canvas
@@ -807,31 +919,33 @@ class HexShape(BaseShape):
                 self.side, self.caltrops, self.caltrops_fraction, self.caltrops_invert)
             cnv.setDash(array=line_dashes)
         # ---- calculate vertical hexagon (clockwise)
-        # TODO not done !!!
         if self.hex_orientation.lower() in ['p', 'pointy']:
-            pth = cnv.beginPath()
-            pth.moveTo(x, y)
-            pth.lineTo(x + half_side, y + half_height)
-            pth.lineTo(x + half_side + side, y + half_height)
-            pth.lineTo(x + half_side + side + half_side, y)
-            pth.lineTo(x + half_side + side, y - half_height)
-            pth.lineTo(x + half_side, y - half_height)
-            pth.close()
+            self.vertices = [  # clockwise from bottom-left; relative to centre
+                Point(x, y + z_fraction),
+                Point(x, y + z_fraction + side),
+                Point(x + half_flat, y + diameter),
+                Point(x + height_flat, y  + z_fraction + side),
+                Point(x + height_flat, y + z_fraction),
+                Point(x + half_flat, y),
+            ]
         # ---- calculate horizontal hexagon (clockwise)
-        else:   # self.hex_orientationn.lower() in ['f',  'flat']:
-            pth = cnv.beginPath()
-            pth.moveTo(x, y)
-            pth.lineTo(x + half_side, y + half_height)
-            pth.lineTo(x + half_side + side, y + half_height)
-            pth.lineTo(x + half_side + side + half_side, y)
-            pth.lineTo(x + half_side + side, y - half_height)
-            pth.lineTo(x + half_side, y - half_height)
-            pth.close()
+        else:   # self.hex_orientation.lower() in ['f',  'flat']:
+            self.vertices = [  # clockwise from left; relative to centre
+                Point(x, y + half_flat),
+                Point(x + z_fraction, y + height_flat),
+                Point(x + z_fraction + side, y + height_flat),
+                Point(x + diameter, y + half_flat),
+                Point(x + z_fraction + side, y),
+                Point(x + z_fraction, y),
+            ]
         # ---- draw hexagon
-        if self.fill:
-            cnv.drawPath(pth, stroke=1, fill=1)
-        else:
-            cnv.drawPath(pth, stroke=1, fill=0)
+        tools.feedback(f'{x=} {y=} {self.vertices=}')
+        pth = cnv.beginPath()
+        pth.moveTo(*self.vertices[0])
+        for vertex in self.vertices:
+            pth.lineTo(*vertex)
+        pth.close()
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- centred shape (with offset)
         if self.centre_shape:
             # tools.feedback(f'DRAW shape:{self.dot_shape} at ({x_d=},{y_d=})')
@@ -845,7 +959,7 @@ class HexShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_d, y_d)
         # ----  numbering
-        self.draw_coord(cnv, x_d, y_d, half_height)
+        self.draw_coord(cnv, x_d, y_d, half_flat)
 
 
 class StarShape(BaseShape):
