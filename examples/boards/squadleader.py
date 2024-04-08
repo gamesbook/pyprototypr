@@ -8,7 +8,7 @@ Notes:
 
 from pyprototypr.draw import *
 
-Create(filename="squadleader.pdf", margin=0.5, pagesize=landscape(A4))
+Create(filename="squadleader.pdf", margin=0.5, margin_bottom=0, pagesize=landscape(A4))
 
 Rectangle(x=-0.05, y=0.2, width=29, height=20, stroke=darkseagreen, fill=darkseagreen)
 
@@ -19,7 +19,8 @@ Hexagons(
     stroke=black,
     fill=darkseagreen,
     hex_offset="odd",
-    margin_bottom=1.75,
+    y=-0.8,
+    x=-0.0,
     dot_size=0.04,
     dot_color=white,
     coord_position="t",

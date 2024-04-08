@@ -118,7 +118,7 @@ Hexagons(
     rows=2,
     cols=2,
     dot_size=0.04,
-    #caltrops="medium",
+    caltrops="medium",
 )
 PageBreak()
 

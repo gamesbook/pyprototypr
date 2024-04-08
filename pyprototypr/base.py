@@ -271,6 +271,7 @@ PAGES = {
     "B2": B2,
     "B3": B3,
     "ELEVENSEVENTEEN": ELEVENSEVENTEEN,
+    "tabloid": elevenSeventeen,
 }
 WIDTH = 0.1
 
@@ -763,11 +764,9 @@ class BaseShape:
 
     def set_unit_properties(self):
         """Convert base properties into unit-based values."""
-        margin_left = self.unit(self.margin_left) if self.margin_left is not None else None
-        margin_right = self.unit(self.margin_right) if self.margin_right is not None else None
         self._u = UnitProperties(
-            margin_left,
-            margin_right,
+            self.unit(self.margin_left) if self.margin_left is not None else None,
+            self.unit(self.margin_right) if self.margin_right is not None else None,
             self.unit(self.margin_bottom) if self.margin_bottom is not None else None,
             self.unit(self.margin_top) if self.margin_top else None,
             self.unit(self.x) if self.x is not None else None,
@@ -785,14 +784,14 @@ class BaseShape:
         """Draw an element on a given canvas."""
         # ---- convert offset properties to correct units
         margin_left = self.unit(self.margin_left) if self.margin_left is not None else None
-        margin_right = self.unit(self.margin_right) if self.margin_right is not None else None
+        margin_bottom = self.unit(self.margin_bottom) if self.margin_bottom is not None else None
         off_x = self.unit(off_x) if off_x is not None else None
         off_y = self.unit(off_y) if off_y is not None else None
         self._o = OffsetProperties(
             off_x,
             off_y,
             off_x + margin_left,
-            off_y + margin_right)
+            off_y + margin_bottom)
 
     def set_canvas_props(
             self,

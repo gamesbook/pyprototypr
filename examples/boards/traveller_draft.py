@@ -20,8 +20,10 @@ Rectangle(x=0.0, y=-0.05, width=20, height=29.2, stroke=map_fill, fill=map_fill)
 
 Hexagons(
     cols=8,
-    rows=11,
+    rows=10,
     side=1.6,
+    y=0.0,
+    x=0.0,
     hex_offset="odd",
     coord_position="t",
     coord_offset=0,

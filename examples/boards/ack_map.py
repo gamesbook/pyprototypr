@@ -29,6 +29,8 @@ Rectangle(x=15, y=27.5, width=22.5, height=1.5, stroke=darkgrey, stroke_width=1.
 Hexagons(
     cols=25,
     rows=16,
+    y=0,
+    x=0,
     height=1.66,  # approx. two-thirds of an inch
     margin_bottom=0.25,
     margin_left=2,
@@ -46,9 +48,11 @@ Hexagons(
 Hexagons(
     rows=4,
     cols=6,
+    y=-2.49,  # 2.5 small hexes
+    x=0,
     height=6.64,  # 4 x small hexes high
-    margin_bottom=4.4,
-    margin_left=2.0,
+    margin_bottom=0.25,
+    margin_left=2,
     hex_offset="odd",
     fill=None,
     stroke=darkgrey,

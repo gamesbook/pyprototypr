@@ -843,10 +843,10 @@ class HexShape(BaseShape):
                 'No value for side or height or diameter supplied for hexagon.',
                 True)
         half_side = side / 2.0
-        height_flat = self._u.height
+        height_flat = 2 * half_flat
         diameter = 2.0 * side
         z_fraction = (diameter - side) / 2.0
-        # ---- coords for leftmost point
+        # ---- POINTY
         if self.hex_orientation.lower() in ['p', 'pointy']:
             #         /\
             # x,y .. | |
@@ -854,10 +854,10 @@ class HexShape(BaseShape):
             # x and y are at the bottom-left corner of the box around the hex
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
-            # ---- calculate hex centre
+            # ---- + calculate hex centre
             x_d = x + half_flat
             y_d = y + side
-            log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_flat, half_side, side)
+            tools.feedback(f"{x=} {y=} {half_flat=} {side=} ")
             tools.feedback(
                 f'The hexagon orientation "{self.hex_orientation}" is not implemented',
                 True)
@@ -867,49 +867,42 @@ class HexShape(BaseShape):
                 y_d = self._u.cy
                 x = x_d - half_flat + self._o.delta_x
                 y = y_d - side + self._o.delta_y
+            # ---- FLAT
         else:
             #         __
             # x,y .. /  \
             #        \__/
             # x and y are at the bottom-left corner of the box around the hex
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
+            # tools.feedback(f"{x=} {y=} {half_flat=} {side=} {self.row=} {self.col=}")
             if self.row is not None and self.col is not None and is_cards:
                 x = self.col * 2.0 * side + self._o.delta_x
                 y = half_flat + self.row * 2.0 * half_flat + self._o.delta_x
             elif self.row is not None and self.col is not None:
                 if self.hex_offset in ['o', 'O', 'odd']:
-                    x = self.col * (half_side + side) + self._o.delta_x
-                    y = (
-                        half_flat
-                        + half_flat * self.row * 2.0
-                        + (self.col % 2) * half_flat
-                        + self._o.delta_y
-                    )
+                    x = self.col * (half_side + side) + self._u.x + self._o.delta_x
+                    y = self.row * half_flat * 2.0 + self._u.y + self._o.delta_y
                     if (self.col + 1) & 1:  # odd
-                        y = y - half_flat
-                    else:
-                        y = y - 3 * half_flat
+                        y = y + half_flat
                 else:  # self.hex_offset in ['e', 'E', 'even']
-                    x = self.col * (half_side + side) + self._o.delta_x
-                    y = (
-                        half_flat
-                        + half_flat * self.row * 2.0
-                        + (self.col % 2) * half_flat
-                        + self._o.delta_y
-                    )
-            elif self.cx and self.cy:
+                    x = self.col * (half_side + side) + self._u.x + self._o.delta_x
+                    y = self.row * half_flat * 2.0 + self._u.y + self._o.delta_y
+                    if (self.col + 1) & 1:  # odd
+                        pass
+                    else:
+                        y = y + half_flat
+            # ----  + calculate hex centre
+            x_d = x + side
+            y_d = y + half_flat
+            # ----  + recalculate centre if preset
+            if self.cx and self.cy:
                 # cx,cy are centred; create x_d,y_d as the unit-formatted hex centre
                 x_d = self._u.cx
                 y_d = self._u.cy
                 x = x_d - half_side - side / 2.0 + self._o.delta_x
                 y = y_d + self._o.delta_y
-            else:
-                # x and y are at the bottom-left corner of the box around the hex
-                x = self._u.x + self._o.delta_x
-                y = self._u.y + self._o.delta_y
-                # ---- calculate hex centre
-                x_d = x + side
-                y_d = y + half_flat
-            log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_flat, half_side, side)
+            # log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_flat, half_side, side)
         # ---- calculate area
         self.area = self.calculate_area()
         # ---- canvas
@@ -924,7 +917,7 @@ class HexShape(BaseShape):
                 Point(x, y + z_fraction),
                 Point(x, y + z_fraction + side),
                 Point(x + half_flat, y + diameter),
-                Point(x + height_flat, y  + z_fraction + side),
+                Point(x + height_flat, y + z_fraction + side),
                 Point(x + height_flat, y + z_fraction),
                 Point(x + half_flat, y),
             ]
@@ -939,7 +932,7 @@ class HexShape(BaseShape):
                 Point(x + z_fraction, y),
             ]
         # ---- draw hexagon
-        tools.feedback(f'{x=} {y=} {self.vertices=}')
+        # tools.feedback(f'{x=} {y=} {self.vertices=}')
         pth = cnv.beginPath()
         pth.moveTo(*self.vertices[0])
         for vertex in self.vertices:
