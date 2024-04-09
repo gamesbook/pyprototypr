@@ -58,9 +58,9 @@ It should create an output file called `example1.pdf`, which will appear in the
 same directory as the script. You should be able to open and view this file using
 any PDF viewer program or application.
 
-If this works, then try out other examples from any of the ``examples``
-sub-directories (please **note** that some examples may use additional files such
-as images or spreadsheets).
+If this works, then try out other examples from any of the `examples`
+sub-directories (**note** some examples may require additional files such as
+images or spreadsheets).
 
 ## Planned/Potential Features
 
@@ -76,15 +76,16 @@ work for future development.
     * [ ] Wave shape
     * [ ] Domino shape
 * [ ] Arrow: styling
-* [ ] Rectangle: create notches
+* [ ] Rectangle: with notches
+* [ ] Hexagons: "pointy" layout
 * [ ] Line: join and end styles
 * [ ] Polyline: add arcs
 * [ ] Arcs (pathways) for a Hexagon
 * [ ] Shortcut notation for styling of: area, line, text
 * [ ] Track feature: layout shapes along a rectangle or circle
 * [ ] Interior hatching for: hexagon, rectangle, equilateral triangle
-* [ ] hexgrid: virtual grid for handling row/col layout
-* [ ] rectgrid: virtual grid for handling row/col layout
+* [ ] hexgrid: virtual grid for handling layout in rows/cols
+* [ ] rectgrid: virtual grid for handling layout in rows/cols
 
 ## Planned/Potential Examples
 
