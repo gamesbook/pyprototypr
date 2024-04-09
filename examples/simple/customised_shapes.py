@@ -93,21 +93,17 @@ AutoGrid(stroke_width=0.5)
 Text(common=header, text="Hexagons: coordinates")
 Hexagons(
     height=1.1,
-    rows=2,
-    cols=2,
+    x=0, y=0,
+    rows=2, cols=2,
     coord_position="middle",
 )
 Hexagons(
     side=0.6,
-    margin_left=3,
-    margin_bottom=4.5,
-    rows=2,
-    cols=2,
+    x=2, y=3,
+    rows=2, cols=2,
     fill=darkseagreen,
     hex_offset="odd",
-    coord_position="top",
-    coord_type_x="upper",
-    coord_separator=':',
+    coord_position="top", coord_type_x="upper", coord_separator='::',
 )
 PageBreak()
 
@@ -115,8 +111,8 @@ AutoGrid(stroke_width=0.5)
 Text(common=header, text="Hexagons: caltrops and dots")
 Hexagons(
     height=1.5,
-    rows=2,
-    cols=2,
+    rows=2,cols=2,
+    x=0, y=0,
     dot_size=0.04,
     caltrops="medium",
 )
@@ -150,13 +146,23 @@ StarField(
     sizes=[0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
 PageBreak()
 
-# hatching
 AutoGrid(stroke_width=0.5)
 Text(common=header, text="Rectangle: hatching")
 Rectangle(
     height=3, width=2,
     hatch=15, hatch_width=0.1, hatch_stroke=black,
-    stroke=saddlebrown, stroke_width=0.1, fill=lightcyan)
+    stroke=saddlebrown, stroke_width=0.2, fill=lightcyan)
 PageBreak()
+
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Hexagons: pointy")
+Hexagons(
+    height=1,
+    x=0, y=0,
+    rows=3, cols=3,
+    dot_size=0.04,
+    hex_orientation='pointy',
+    coord_position="middle", coord_separator='- -',
+)
 
 Save()

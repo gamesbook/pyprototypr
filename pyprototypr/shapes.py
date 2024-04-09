@@ -754,6 +754,7 @@ class HexShape(BaseShape):
 
         Note: `side` must be in unconverted (user) form e.g. cm or inches
         """
+        # tools.feedback(f'*** {side=} {size=} {fraction=}')
         array = []
         match size:
             case "large" | "l":
@@ -833,9 +834,11 @@ class HexShape(BaseShape):
             side = self._u.side
             half_flat = self._u.side * math.sqrt(3) / 2.0
         elif self.height:
+            self.side = self.height / math.sqrt(3)
             side = self._u.height / math.sqrt(3)
             half_flat = self._u.height / 2.0
         elif self.diameter:
+            self.side = self.diameter / 2.0
             side = self._u.diameter / 2.0
             half_flat = self._u.side * math.sqrt(3) / 2.0
         else:
@@ -854,13 +857,38 @@ class HexShape(BaseShape):
             # x and y are at the bottom-left corner of the box around the hex
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
+            # ---- + draw point by row/col
+            if self.row is not None and self.col is not None and is_cards:
+                x = self.col * height_flat + self._o.delta_x
+                y = self.row * diameter + self._o.delta_x
+            elif self.row is not None and self.col is not None:
+                if self.hex_offset in ['o', 'O', 'odd']:
+                    # downshift applies from first even row - NOT the very first one!
+                    downshift = diameter - z_fraction if self.row >=1 else 0
+                    downshift = downshift * self.row if self.row >=2 else downshift
+                    y = self.row * (diameter + side) - downshift + self._u.y + self._o.delta_y
+                    if (self.row + 1) & 1:  # odd row; row are 0-base numbered!
+                        x = self.col * height_flat + self._u.x + self._o.delta_x
+                    else:  # even row
+                        x = self.col * height_flat + half_flat + self._u.x + self._o.delta_x
+                else:  # self.hex_offset in ['e', 'E', 'even']
+                    # TODO => calculate!
+                    # downshift applies from first even row - NOT the very first one!
+                    downshift = diameter - z_fraction if self.row >=1 else 0
+                    downshift = downshift * self.row if self.row >=2 else downshift
+                    y = self.row * (diameter + side) - downshift + self._u.y + self._o.delta_y
+                    if (self.row + 1) & 1:  # odd row; row are 0-base numbered!
+                        x = self.col * height_flat + self._u.x + self._o.delta_x
+                    else:  # even row
+                        x = self.col * height_flat + half_flat + self._u.x + self._o.delta_x
+
             # ---- + calculate hex centre
             x_d = x + half_flat
             y_d = y + side
-            tools.feedback(f"{x=} {y=} {half_flat=} {side=} ")
+            # tools.feedback(f"{x=} {y=} {half_flat=} {side=} ")
             tools.feedback(
                 f'The hexagon orientation "{self.hex_orientation}" is not implemented',
-                True)
+                False)
             if self.cx and self.cy:
                 # cx,cy are centred; create x_d,y_d as the unit-formatted hex centre
                 x_d = self._u.cx
@@ -876,6 +904,7 @@ class HexShape(BaseShape):
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
             # tools.feedback(f"{x=} {y=} {half_flat=} {side=} {self.row=} {self.col=}")
+            # ---- + draw flat by row/col
             if self.row is not None and self.col is not None and is_cards:
                 x = self.col * 2.0 * side + self._o.delta_x
                 y = half_flat + self.row * 2.0 * half_flat + self._o.delta_x
