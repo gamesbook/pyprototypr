@@ -830,11 +830,22 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
             end_row = end_row - 1 if ccol & 1 == 0 else end_row  # even col
             # print('ccol, top_row, end_row', ccol, top_row, end_row)
             for row in range(top_row - 1, end_row + 1):
-                # print(ccol, row + 1 )  # label values (non-zero)
-                Hexagon(row=row, col=ccol - 1, hex_rows=rows, hex_cols=cols, **kwargs)
+                _row = row + 1
+                tools.feedback(f'{ccol=}, {_row=}')
+                if kwargs.get('masked') and [_row, ccol] in kwargs.get('masked'):
+                    pass
+                else:
+                    Hexagon(row=row, col=ccol - 1, hex_rows=rows, hex_cols=cols, **kwargs)
             if ccol - 1 == stop:  # reached "leftmost" -> reset counters
                 top_row = 1
                 end_row = rows - 1
+
+    if kwargs.get('hex_layout') and kwargs.get('hex_orientation'):
+        if kwargs.get('hex_orientation').lower() in ['p', 'pointy'] and \
+            kwargs.get('hex_layout') not in ['r', 'rec', 'rect', 'rectangle']:
+                tools.feedback(
+                    f'Cannot use this custom hex_layout with pointy hexagons!',
+                    True)
 
     if kwargs.get('hex_layout') in ['c', 'cir', 'circle']:
         if not sides and (
@@ -875,7 +886,10 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
     else:  # default to rectangular layout
         for row in range(rows):
             for col in range(cols):
-                Hexagon(row=row, col=col, hex_rows=rows, hex_cols=cols, **kwargs)
+                if kwargs.get('masked') and [row + 1, col + 1] in kwargs.get('masked'):
+                    pass
+                else:
+                    Hexagon(row=row, col=col, hex_rows=rows, hex_cols=cols, **kwargs)
 
 
 def Rectangles(rows=1, cols=1, **kwargs):

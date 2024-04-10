@@ -120,9 +120,36 @@ PageBreak()
 AutoGrid(stroke_width=0.5)
 Text(common=header, text="Rectangle: hatching")
 Rectangle(
-    height=3, width=2,
+    height=2, width=2,
     hatch=15, hatch_width=0.1, hatch_stroke=black,
     stroke=saddlebrown, stroke_width=0.2, fill=lightcyan)
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Hexagon: hatching")
+Hexagon(
+    height=2,
+    hatch=15, hatch_width=0.1, hatch_stroke=black,
+    stroke=saddlebrown, stroke_width=0.2, fill=lightcyan)
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Hexagon: flat: text")
+Hexagon(
+    height=2,
+    title="Title",
+    label="Label",
+    heading="Heading")
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Hexagon: pointy: text")
+Hexagon(
+    height=2,
+    hex_orientation='pointy',
+    title="Title",
+    label="Label",
+    heading="Heading")
 PageBreak()
 
 Save()
