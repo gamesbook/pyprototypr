@@ -491,6 +491,7 @@ class BaseCanvas:
         self.coord_stroke = self.get_color(self.defaults.get('coord_stroke'), black)
         self.coord_padding = self.defaults.get('coord_padding', 2)
         self.coord_separator = kwargs.get('coord_separator', '')
+        self.coord_prefix = kwargs.get('coord_prefix', '')
         # ---- starfield
         self.enclosure = None
         self.colors = [white]
@@ -712,6 +713,7 @@ class BaseShape:
         self.coord_stroke = kwargs.get('coord_stroke', cnv.coord_stroke)
         self.coord_padding = kwargs.get('coord_padding', cnv.coord_padding)
         self.coord_separator = kwargs.get('coord_separator', cnv.coord_separator)
+        self.coord_prefix = kwargs.get('coord_prefix', cnv.coord_prefix)
         # ---- starfield
         self.enclosure = kwargs.get('enclosure', cnv.enclosure)
         self.colors = kwargs.get('colors', cnv.colors)

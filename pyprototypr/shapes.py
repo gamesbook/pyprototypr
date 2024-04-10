@@ -797,7 +797,7 @@ class HexShape(BaseShape):
                 _x = str(_col).zfill(self.coord_padding)
             if self.coord_type_y in ['n', 'number']:
                 _y = str(_row).zfill(self.coord_padding)
-            _coord_text = _x + str(self.coord_separator) + _y
+            _coord_text = str(self.coord_prefix) + _x + str(self.coord_separator) + _y
             # ---- set coord props
             cnv.setFont(self.coord_font_face, self.coord_font_size)
             cnv.setFillColor(self.coord_stroke)
@@ -857,22 +857,22 @@ class HexShape(BaseShape):
             # x and y are at the bottom-left corner of the box around the hex
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
-            # ---- + draw point by row/col
+            # ---- + draw pointy by row/col
             if self.row is not None and self.col is not None and is_cards:
                 x = self.col * height_flat + self._o.delta_x
                 y = self.row * diameter + self._o.delta_x
             elif self.row is not None and self.col is not None:
                 if self.hex_offset in ['o', 'O', 'odd']:
+                    # TODO => calculate!
                     # downshift applies from first even row - NOT the very first one!
                     downshift = diameter - z_fraction if self.row >=1 else 0
                     downshift = downshift * self.row if self.row >=2 else downshift
                     y = self.row * (diameter + side) - downshift + self._u.y + self._o.delta_y
                     if (self.row + 1) & 1:  # odd row; row are 0-base numbered!
-                        x = self.col * height_flat + self._u.x + self._o.delta_x
-                    else:  # even row
                         x = self.col * height_flat + half_flat + self._u.x + self._o.delta_x
+                    else:  # even row
+                        x = self.col * height_flat  + self._u.x + self._o.delta_x
                 else:  # self.hex_offset in ['e', 'E', 'even']
-                    # TODO => calculate!
                     # downshift applies from first even row - NOT the very first one!
                     downshift = diameter - z_fraction if self.row >=1 else 0
                     downshift = downshift * self.row if self.row >=2 else downshift
@@ -886,9 +886,6 @@ class HexShape(BaseShape):
             x_d = x + half_flat
             y_d = y + side
             # tools.feedback(f"{x=} {y=} {half_flat=} {side=} ")
-            tools.feedback(
-                f'The hexagon orientation "{self.hex_orientation}" is not implemented',
-                False)
             if self.cx and self.cy:
                 # cx,cy are centred; create x_d,y_d as the unit-formatted hex centre
                 x_d = self._u.cx
