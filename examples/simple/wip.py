@@ -15,15 +15,14 @@ Create(filename="wip.pdf",
 header = Common(x=0, y=6, font_size=8, align="left")
 
 AutoGrid(stroke_width=0.2, subdivisions=10)
-#Text(common=header, text="Hexagon: vertical")
-#Hexagon(hex_orientation="pointy", dot_size=0.1,)
+Text(common=header, text="Hexagon: pointy")
+# Hexagon(hex_orientation="pointy", dot_size=0.1,)
 
 Hexagons(
     side=0.6,
-    rows=4,
-    cols=3,
-    y=0.0,
-    x=0.0,
+    rows=3, cols=3,
+    y=0, x=0,
+    hex_orientation="pointy",
     hex_offset="even",
     dot_size=0.04,
 )

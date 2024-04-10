@@ -52,18 +52,19 @@ The position of something is *where* it will be drawn on the page.  To do this,
 you provide both an **x** - the horizontal position - and a **y** - the vertical
 position - for each thing that you want to show.
 
-So, if you look at an A4 page of about 21cm wide and just less that 30cm high;
+So, if you look at an A4 page of 21cm wide and just less than 30cm high;
 then a point in the middle of the page would have an **x position** of 10.5cm -
 the distance from the left edge of the page; and a **y position** of 14.8cm -
 the distance from the bottom edge of the page.  Similarly, for a letter-sized
-page of 8.5" by 11", a point in the middle of the page would have an **x-position**
-of 4.25" and a **y-position** of 5.5".
+page of 8.5" by 11", a point in the middle of the page would have an **x position**
+of 4.25" and a **y position** of 5.5".
 
-As use of margins is common for most documents and drawings, *all* distances in
+As the use of margins is common for most documents and drawings, *all* distances in
 **pyprototypr** are considered to be relative to the margin settings i.e. if the
-default page margin in the previous example was 2.5cm (1"), then to locate a point
-at those same distances would mean using **x position** of 8cm and a **y position**
-of 12.3cm .
+default page margin, for all edges of the the page in the previous example, was
+2.5cm (1") then to locate a point at those same distances would mean using an
+**x position** of 8cm and a **y position** of 12.3cm, as the position values will
+effectively be increased by the margin size.
 
 
 ## The "element" concept
@@ -91,14 +92,15 @@ section on [Core Shapes](core_shapes.md).
 
 ## Defining elements' properties
 
-Elements have other settings apart from their position.
+Elements can have other settings apart from their position.
 
 For example, the rectangle which represents the outline of a card has a *size*.
 The rectangle's size is measured in terms of its *height* and *width*.  The line
 used to draw the rectangle also has a *thickness* and a *color* (see below for
-more about color).  A circle will have a *radius*  which defines how big it is,
-and so on. Many elements also have a *fill* that is the color with which they will
-be "filled".
+more about color).  A circle will have a *radius*  or *diameter* which defines how big
+it is, and so on.
+
+Many elements also have a *fill* that is the color with which they will be "filled".
 
 All of these kinds of settings are called **properties**.
 
@@ -111,12 +113,12 @@ Color in **pyprototypr**, is defined the same way as it is in pages that appear
 on the web i.e. in RGB (red-green-blue) *hexadecimal* format - for example,
 *#A0522D* represents a shade of the color we would call "brown".
 
-> For more details on *hexadecimal* colors, you can refer to http://www.w3.org/TR/css3-color.
+> For more details on hexadecimal colors, you can refer to http://www.w3.org/TR/css3-color.
 
-Colors in **pyprototypr** can also make use of names from a pre-defined list
-of colors - for example *#A0522D* is defined as the color *sienna*. A PDF
-called [colorset.pdf](../examples/colorset.pdf), which shows all the names of
-all the colors that are available, can be found in the `examples` directory.
+Colors in **pyprototypr** can also make use of names from a pre-defined list - for
+example *#A0522D* is defined as the color *sienna*.  A PDF name
+[colorset.pdf](../examples/colorset.pdf), shows all the names and colors that are
+available.
 
 
 ## Working with units
@@ -126,30 +128,32 @@ lengths or sizes all need to be measured in a particular set of **units**.
 
 In the USA, people tend to use the so-called Imperial System. In
 **pyprototypr** this means that distances might be measured in units of inches
-(inches are often shown with an *"* symbol, but in **pyprototypr** inches are
-abbreviated as *in*).
+(inches are often shown with an *"* symbol in documents, but in **pyprototypr** inches
+are referred to using the term *inch*).
 
-In the rest of the world, everyone uses the Metric System.
-In **pyprototypr** this means that distances would be measured in units of
-centimetres (abbreviated as *cm*) or millimetres (abbreviated as *mm*)
+In the rest of the world, everyone uses the Metric System. In **pyprototypr** this
+means that distances will be measured in units of centimetres (abbreviated in
+**pyprototypr** as *cm*). Alternatively, you can choose to use millimetres
+(abbreviated in **pyprototypr** as *mm*).
 
-> For conversion purposes, 1 inch equals 25.4 centimetres or 25 millimetres.
+> For conversion purposes, 1 inch equals 25.4 centimetres or 25.4 millimetres.
 
-**pyprototypr** also allows units of *points*, which are measurement units
+**pyprototypr** also allows units of *points*, which are the measurement units
 traditionally used in the printing industry.  There are 72 points in 1 inch.
 
 
 ## The ""defaults" concept
 
 A "default", in terms of **pyprototypr**, is a value or setting for something
-which is used unless you specify otherwise.  This is helpful in quickly drawing
-or testing something until you're ready to make decisions about your own settings.
+(usually a *property*) which is used unless you specify otherwise.  This is helpful
+in quickly drawing or testing something until you're ready to make decisions about
+your own settings.
 
 Some examples of defaults are:
 
 * the default *margin* for pages in the output PDF is 1.25cm / half of 1 inch
 * the default *units* are centimetres (*cm*)
-* the default *x* and *y* positions are each 1 (one) - with default units that is 1cm
+* the default *x* and *y* positions are each 1 (one) - with default units that means 1cm
 * the default line *length* is 1 (one) - with default units that is 1cm
 * the default line *thickness* is 0.1 - with default units that is 1mm
 * the default *line *color* is black (hexadecimal value of **#000000**)
