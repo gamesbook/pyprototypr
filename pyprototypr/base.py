@@ -25,6 +25,7 @@ from reportlab.lib.utils import ImageReader
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY
 from reportlab.lib.colors import (
+    Color,
     aliceblue, antiquewhite, aqua, aquamarine, azure, beige, bisque, black,
     blanchedalmond, blue, blueviolet, brown, burlywood, cadetblue, chartreuse,
     chocolate, coral, cornflowerblue, cornsilk, crimson, cyan, darkblue,
@@ -365,9 +366,10 @@ class BaseCanvas:
                                            self.defaults.get('dots',
                                                              False))
         self.dashes = self.defaults.get('dashes', None)
-        # ---- fill color
+        # ---- fill color and transparency
         fill = self.defaults.get('fill', self.defaults.get('fill_color'))
         self.fill = self.get_color(fill, white)
+        self.transparency = self.defaults.get('transparency', None)
         # ---- stroke
         stroke = self.defaults.get('stroke', self.defaults.get('stroke_color'))
         self.stroke = self.get_color(stroke, black)
@@ -604,6 +606,8 @@ class BaseShape:
         self.line_dots = kwargs.get('line_dots',
                                     kwargs.get('dots', cnv.line_dots))
         self.dashes = kwargs.get('dashes', None)
+        # ---- transparency
+        self.transparency = kwargs.get('transparency', cnv.transparency)
         # ---- stroke
         self.stroke = kwargs.get('stroke', kwargs.get('stroke_color', cnv.stroke))
         self.stroke_width = kwargs.get('stroke_width', cnv.stroke_width)
@@ -834,6 +838,14 @@ class BaseShape:
         try:
             _fill = fill or self.fill
             if _fill:
+                if self.transparency:
+                    try:
+                        alpha = float(self.transparency) / 100.0
+                    except Exception:
+                        tools.feedback(
+                            f'Unable to use "{self.transparency}" as the transparency'
+                            ' - must be from 1 to 100', True)
+                    _fill = Color(_fill.red, _fill.green, _fill.blue, alpha)
                 canvas.setFillColor(_fill)
         except AttributeError:
             pass
