@@ -356,6 +356,12 @@ class RectangleShape(BaseShape):
         """Draw a rectangle on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
+        # ---- check properties
+        is_notched = True if (self.notch or self.notch_x or self.notch_y) else False
+        if (self.rounding or self.rounded) and is_notched:
+            tools.feedback("Cannot use rounding/ed with notch.", True)
+        if self.hatch and is_notched:
+            tools.feedback("Cannot use hatch with notch.", True)
         # ---- adjust start
         if self.row is not None and self.col is not None:
             x = self.col * self._u.width + self._o.delta_x
@@ -372,16 +378,55 @@ class RectangleShape(BaseShape):
             y = self._u.cy - self._u.height / 2.0
         # ---- calculated properties
         self.area = self.calculate_area()
-        self.vertices = [  # clockwise from bottom-left; relative to centre
-            Point(x, y),
-            Point(x, y + self._u.height),
-            Point(x + self._u.width, y + self._u.height),
-            Point(x + self._u.width, y),
-        ]
+        if is_notched:
+            if self.notch_corners:
+                _notches = self.notch_corners.split()
+            #tools.feedback(f'{self.notch=} {self.notch_corners=} ')
+            n_x = self.unit(self.notch_x) if self.notch_x else self.unit(self.notch)
+            n_y = self.unit(self.notch_y) if self.notch_y else self.unit(self.notch)
+            self.vertices = []
+            if 'sw' or 'SW' in _notches:
+                self.vertices.append(Point(x + n_x, y))
+            else:
+                self.vertices.append(Point(x, y))
+            if 'nw' or 'NW' in _notches:
+                self.vertices.append(Point(x, y + self._u.height - n_y))
+                self.vertices.append(Point(x + n_x, y + self._u.height))
+            else:
+                self.vertices.append(Point(x, y + self._u.height))
+            if 'ne' or 'NE' in _notches:
+                self.vertices.append(Point(x + self._u.width - n_x, y + self._u.height))
+                self.vertices.append(Point(x + self._u.width, y + self._u.height - n_y))
+            else:
+                self.vertices.append(Point(x + self._u.width, y + self._u.height))
+            if 'se' or 'SE' in _notches:
+                self.vertices.append(Point(x + self._u.width, y + n_y))
+                self.vertices.append(Point(x + self._u.width - n_x, y))
+            else:
+                self.vertices.append(Point(x + self._u.width, y))
+            if 'sw' or 'SW' in _notches:
+                self.vertices.append(Point(x + n_x, y))
+            else:
+                self.vertices.append(Point(x, y))
+            #tools.feedback(f'{self.vertices=}')
+        else:
+            self.vertices = [  # clockwise from bottom-left; relative to centre
+                Point(x, y),
+                Point(x, y + self._u.height),
+                Point(x + self._u.width, y + self._u.height),
+                Point(x + self._u.width, y),
+            ]
         # canvas
         self.set_canvas_props()
         # ---- draw rectangle
-        if self.rounding:
+        if is_notched:
+            pth = cnv.beginPath()
+            pth.moveTo(*self.vertices[0])
+            for vertex in self.vertices:
+                pth.lineTo(*vertex)
+            pth.close()
+            cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        elif self.rounding:
             rounding = self.unit(self.rounding)
             cnv.roundRect(
                 x,

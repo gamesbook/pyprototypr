@@ -831,7 +831,7 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
             # print('ccol, top_row, end_row', ccol, top_row, end_row)
             for row in range(top_row - 1, end_row + 1):
                 _row = row + 1
-                tools.feedback(f'{ccol=}, {_row=}')
+                # tools.feedback(f'{ccol=}, {_row=}')
                 if kwargs.get('masked') and [_row, ccol] in kwargs.get('masked'):
                     pass
                 else:

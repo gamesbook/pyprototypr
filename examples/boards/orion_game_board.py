@@ -23,8 +23,9 @@ Hexagons(
     fill=black,
     stroke=white,
     height=1.5,
-    margin_bottom=6.5,
-    margin_left=3.2,
+    margin_bottom=5.5,
+    margin_left=2.2,
+    masked=[[4, 1], [9, 1], [1, 6], [11, 6], [4, 11], [9, 11]]
 )
 
 Save()

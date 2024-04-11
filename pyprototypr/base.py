@@ -446,6 +446,10 @@ class BaseCanvas:
         # ---- rect / card
         self.rounding = self.defaults.get('rounding', 0)
         self.rounded = self.defaults.get('rounded', False)
+        self.notch = self.defaults.get('notch', 0)
+        self.notch_corners = self.defaults.get('notch_corners', 'SW NW NE SE')
+        self.notch_x = self.defaults.get('notch_x', 0)
+        self.notch_y = self.defaults.get('notch_y', 0)
         # ---- grid / card layout
         self.rows = self.defaults.get('rows', 1)
         self.cols = self.defaults.get('cols', self.defaults.get('columns', 1))
@@ -670,6 +674,10 @@ class BaseShape:
         # ---- rect / card
         self.rounding = kwargs.get('rounding', cnv.rounding)
         self.rounded = kwargs.get('rounded', cnv.rounded)
+        self.notch = kwargs.get('notch', cnv.notch)
+        self.notch_corners = kwargs.get('notch_corners', cnv.notch_corners)
+        self.notch_x = kwargs.get('notch_x', cnv.notch_x)
+        self.notch_y = kwargs.get('notch_y', cnv.notch_y)
         # ---- grid / card layout
         self.rows = kwargs.get('rows', cnv.rows)
         self.cols = kwargs.get('cols', kwargs.get('columns', cnv.cols))

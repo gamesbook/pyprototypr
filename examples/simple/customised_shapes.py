@@ -31,7 +31,15 @@ PageBreak()
 
 AutoGrid(stroke_width=0.5)
 Text(common=header, text="Rectangle")
-Rectangle()
+Rectangle(height=2, width=1, x=0, y=0, label="x:0 y:0", label_size=5)
+
+Rectangle(
+    x=1, y=1,
+    height=2, width=1,
+    notch=0.25,
+    label="notch:0.5",
+    label_size=5,
+    )
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
