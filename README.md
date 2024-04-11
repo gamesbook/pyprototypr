@@ -32,7 +32,7 @@ pip install pyprototypr
 As a quick check that **pyprototypr**  works, you can use one (or more) of the files
 from any of the `examples` sub-directories.
 
-Make a copy of ``example1.py`` script from the ``examples/manual`` directory - open
+Make a copy of `example1.py` script from the `examples/manual` directory - open
 [example1.py](https://github.com/gamesbook/pyprototypr/blob/master/examples/manual/example1.py)
 in your browser, click on the `Raw` button, and then save the file into a
 local directory on your machine.
@@ -72,18 +72,23 @@ work for future development.
     * [x] Square shape
     * [ ] Equilateral Triangle shape
     * [ ] Sector shape (slice of a circle)
-    * [ ] Clock shape
     * [ ] Wave shape
     * [ ] Domino shape
 * [ ] Arrow: styling
-* [ ] Rectangle: with notches
-* [ ] Hexagons: "pointy" layout
-* [ ] Line: join and end styles
+* [x] Rectangle: with notches
+* [x] Hexagons: "pointy" layout
+* [ ] Hexagons: 18xx tick labels
+* [ ] Line:
+    * [x] end style
+    * [ ] join style
 * [ ] Polyline: add arcs
-* [ ] Arcs (pathways) for a Hexagon
+* [ ] Arcs (pathways): for a hexagon
 * [ ] Shortcut notation for styling of: area, line, text
 * [ ] Track feature: layout shapes along a rectangle or circle
-* [ ] Interior hatching for: hexagon, rectangle, equilateral triangle
+* [ ] Interior hatching:
+    * [x] rectangle
+    * [ ] hexagon
+    * [ ] equilateral triangle
 * [ ] hexgrid: virtual grid for handling layout in rows/cols
 * [ ] rectgrid: virtual grid for handling layout in rows/cols
 
@@ -91,8 +96,10 @@ work for future development.
 
 * Abstract boards: Go, Ludo, 9 Mens Morris, Wari, Queens Guard, Backgammon
 * Wargame board: Squad Leader with terrain features
-* Traveller board: showiing a fully styled Star system
+* Traveller board: showing a fully styled Star system
+* 18xx board: show a basic map with tracks, towns and off-map areas
 * Dartboard: using Sector shape
+
 
 ## Acknowledgements
 

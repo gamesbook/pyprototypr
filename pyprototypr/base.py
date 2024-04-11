@@ -1097,9 +1097,12 @@ class BaseShape:
             tools.feedback(f'Unable to convert "{items}" to points!', True)
 
     def draw_multi_string(self, canvas, x, y, string, align=None):
-        """Draw a string, split if needed, with a given alignment.
+        """Low-level string drawing, split string (\n) if needed, with an alignment.
 
-        Requires native units (points)!
+        Notes:
+            * canvas (reportlab.pdfgen.canvas.Canvas) - usually the calling
+              function should access cnv.canvas i.e. attribute of BaseCanvas
+            * x and y must be in native units (points)!
         """
         if not string:
             return

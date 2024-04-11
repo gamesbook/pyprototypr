@@ -11,6 +11,7 @@ import random
 # third party
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle
+from reportlab.lib.colors import black, white
 
 # local
 from pyprototypr.utils.tools import Point
@@ -380,35 +381,35 @@ class RectangleShape(BaseShape):
         self.area = self.calculate_area()
         if is_notched:
             if self.notch_corners:
-                _notches = self.notch_corners.split()
-            #tools.feedback(f'{self.notch=} {self.notch_corners=} ')
+                _ntches = self.notch_corners.split()
+                _notches = [str(ntc).upper() for ntc in _ntches]
+            # tools.feedback(f'{self.notch_x=} {self.notch_y=} {_notches=} ')
             n_x = self.unit(self.notch_x) if self.notch_x else self.unit(self.notch)
             n_y = self.unit(self.notch_y) if self.notch_y else self.unit(self.notch)
             self.vertices = []
-            if 'sw' or 'SW' in _notches:
-                self.vertices.append(Point(x + n_x, y))
+            if 'SW' in _notches:
+                self.vertices.append(Point(x, y + n_y))
             else:
                 self.vertices.append(Point(x, y))
-            if 'nw' or 'NW' in _notches:
+            if 'NW' in _notches:
                 self.vertices.append(Point(x, y + self._u.height - n_y))
                 self.vertices.append(Point(x + n_x, y + self._u.height))
             else:
                 self.vertices.append(Point(x, y + self._u.height))
-            if 'ne' or 'NE' in _notches:
+            if 'NE' in _notches:
                 self.vertices.append(Point(x + self._u.width - n_x, y + self._u.height))
                 self.vertices.append(Point(x + self._u.width, y + self._u.height - n_y))
             else:
                 self.vertices.append(Point(x + self._u.width, y + self._u.height))
-            if 'se' or 'SE' in _notches:
+            if 'SE' in _notches:
                 self.vertices.append(Point(x + self._u.width, y + n_y))
                 self.vertices.append(Point(x + self._u.width - n_x, y))
             else:
                 self.vertices.append(Point(x + self._u.width, y))
-            if 'sw' or 'SW' in _notches:
+            if 'SW' in _notches:
                 self.vertices.append(Point(x + n_x, y))
             else:
                 self.vertices.append(Point(x, y))
-            #tools.feedback(f'{self.vertices=}')
         else:
             self.vertices = [  # clockwise from bottom-left; relative to centre
                 Point(x, y),
@@ -416,6 +417,7 @@ class RectangleShape(BaseShape):
                 Point(x + self._u.width, y + self._u.height),
                 Point(x + self._u.width, y),
             ]
+        # tools.feedback(f'{len(self.vertices)=}')
         # canvas
         self.set_canvas_props()
         # ---- draw rectangle
@@ -2021,15 +2023,14 @@ class FooterShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(FooterShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        # overrides
-        page_width = self.pagesize[0]
-        self.kwargs["x"] = self.kwargs.get("x", page_width / 2.0)
-        self.kwargs["y"] = self.margin_bottom / 2.0
+        self.page_width = kwargs.get('pagesize', (canvas.width, canvas.height))[0]
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw footer on a given canvas page."""
         cnv = cnv if cnv else self.canvas
+        x = self.kwargs.get("x",  self.page_width / 2.0)  # centre across page
+        y = self.unit(self.margin_bottom) / 2.0   # centre in margin
         if not self.kwargs.get("text"):
             self.kwargs["text"] = "Page %s" % ID
-        text = TextShape(_object=None, canvas=cnv, kwargs=self.kwargs)
-        text.draw()
+        # tools.feedback(f'FooterShape {type(cnv)=}')
+        self.draw_multi_string(cnv.canvas, x, y, self.kwargs["text"], align='centre')

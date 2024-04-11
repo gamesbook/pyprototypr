@@ -43,7 +43,6 @@ margin_left = margin
 margin_top = margin
 margin_bottom = margin
 margin_right = margin
-is_footer = False
 footer = None
 page_count = 0
 
@@ -118,9 +117,9 @@ def Footer(**kwargs):
     global margin_bottom
     global margin_right
     global pagesize
-    global is_footer
     global footer
-    is_footer = True
+
+    kwargs['pagesize'] = pagesize
     footer = FooterShape(_object=None, canvas=cnv, **kwargs)
 
 
@@ -132,16 +131,20 @@ def Header(**kwargs):
     global margin_right
 
 
-def PageBreak():
+def PageBreak(**kwargs):
     global cnv
     global deck
-    global is_footer
     global page_count
+    global pagesize
     global footer
 
-    if is_footer is True:
-        page_count += 1
-        footer.draw(cnv=cnv, ID=page_count)
+    page_count += 1
+    kwargs = margins(**kwargs)
+    # tools.feedback(f'PageBreak {type(cnv)=}')
+    if kwargs.get("footer", False):
+        kwargs['pagesize'] = pagesize
+        footer = FooterShape(_object=None, canvas=cnv, **kwargs)
+        footer.draw(cnv=cnv, ID=page_count, **kwargs)
     cnv.canvas.showPage()
 
 

@@ -15,8 +15,13 @@ Create(filename="customised_shapes.pdf",
 
 header = Common(x=0, y=6, font_size=8, align="left")
 
+Text(common=header, text="START...")
+PageBreak(footer=True)
+
 AutoGrid(subdivisions=5, stroke_width=0.8)
+Rectangle(height=2, width=1, x=0, y=0, label="x:0 y:0")
 Text(common=header, text="AutoGrid: subdivisions=5")
+Footer()
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
@@ -30,14 +35,22 @@ Line()
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
-Text(common=header, text="Rectangle")
+Text(common=header, text="Rectangle & Notches")
 Rectangle(height=2, width=1, x=0, y=0, label="x:0 y:0", label_size=5)
-
 Rectangle(
-    x=1, y=1,
+    x=2, y=1,
     height=2, width=1,
     notch=0.25,
     label="notch:0.5",
+    label_size=5,
+    )
+Rectangle(
+    x=1, y=4,
+    height=1, width=2,
+    notch_y=0.25,
+    notch_x=0.5,
+    notch_corners="NW SE",
+    label="notch:.25/.5 loc: NW, SE",
     label_size=5,
     )
 PageBreak()
@@ -106,23 +119,22 @@ PageBreak()
 # Polyline() # will get FEEDBACK
 
 AutoGrid(stroke_width=0.5)
-Text(common=header, text="StarField")
+Text(common=header, text="StarField: Rectangle; multicolor")
 Rectangle(x=0, y=0, height=3, width=3, fill=black)
 StarField(
     density=20,
     enclosure=rectangle(x=0, y=0, height=3, width=3),
-    colors=[white, white, white, red, blue],
-    sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
+    colors=[white, white, white, red, green, blue],
+    sizes=[0.2])
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
-Text(common=header, text="StarField")
+Text(common=header, text="StarField: Circle; multisize")
 Circle(x=0, y=0, radius=1.5, fill=black)
 StarField(
     density=20,
     enclosure=circle(x=0, y=0, radius=1.5),
-    colors=[white, white, white, green, blue],
-    sizes=[0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
+    sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
@@ -159,5 +171,8 @@ Hexagon(
     label="Label",
     heading="Heading")
 PageBreak()
+
+Text(common=header, text="END...")
+PageBreak(footer=True)
 
 Save()
