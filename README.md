@@ -91,6 +91,7 @@ work for future development.
     * [ ] equilateral triangle
 * [ ] hexgrid: virtual grid for handling layout in rows/cols
 * [ ] rectgrid: virtual grid for handling layout in rows/cols
+* [ ] rotations: e.g. of text along a line (NOT understood)
 
 ## Planned/Potential Examples
 

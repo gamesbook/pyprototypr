@@ -584,3 +584,56 @@ def point_on_line(point_start: Point, point_end: Point, distance: float) -> Poin
     x = (1.0 - ratio) * point_start.x + ratio * point_end.x
     y = (1.0 - ratio) * point_start.y + ratio * point_end.y
     return Point(x, y)
+
+
+def angles_from_points(x1, y1, x2, y2, radians=False):
+    """Given two points, calculate the angles between them
+
+    Returns:
+        compass (float): degrees clockwise from North
+        rotation (float): degrees anti-clockwise from East
+
+    >>> # clockwise around circle from 0 degrees at North
+    >>> angles_from_points(0, 0, 0, 4)
+    (0.0, 90.0)
+    >>> angles_from_points(0, 0, 4, 4)
+    (45.0, 45.0)
+    >>> angles_from_points(0, 0, 4, 0)
+    (90.0, 0.0)
+    >>> angles_from_points(0, 0, 4, -4)
+    (135.0, 315.0)
+    >>> angles_from_points(0, 0, 0, -4)
+    (180.0, 270.0)
+    >>> angles_from_points(0, 0, -4, -4)
+    (225.0, 225.0)
+    >>> angles_from_points(0, 0, -4, 0)
+    (270.0, 180.0)
+    >>> angles_from_points(0, 0, -4, 4)
+    (315.0, 135.0)
+    """
+    a, b = x2 - x1, y2 - y1
+    if x2 != x1:
+        gradient = (y2 - y1) / (x2 - x1)
+        theta = math.atan(gradient)
+        angle = theta * 180.0 / math.pi
+        # feedback(f'{x1-x1=} {y1-y1=} {a=} {b=} {angle=}')
+        if a > 0 and b >= 0:
+            compass = 90.0 - angle
+        if a > 0 and b < 0:
+            compass = 90 - angle
+        if a < 0 and b < 0:
+            compass = 270.0 - angle
+        if a < 0 and b >= 0:
+            compass = 270.0 - angle
+    else:
+        compass = 0.0
+        if y2 - y1 < 0:
+            compass = 180.0
+    rotation = (450 - compass) % 360.0
+    # feedback(f'angle fn: {compass=}, {rotation=}')
+    return compass, rotation
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

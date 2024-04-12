@@ -1096,36 +1096,42 @@ class BaseShape:
             log.exception(err)
             tools.feedback(f'Unable to convert "{items}" to points!', True)
 
-    def draw_multi_string(self, canvas, x, y, string, align=None):
+    def draw_multi_string(self, canvas, x, y, string, align=None, rotate=0):
         """Low-level string drawing, split string (\n) if needed, with an alignment.
 
         Notes:
-            * canvas (reportlab.pdfgen.canvas.Canvas) - usually the calling
-              function should access cnv.canvas i.e. attribute of BaseCanvas
-            * x and y must be in native units (points)!
+            * canvas (reportlab.pdfgen.canvas.Canvas): usually the calling
+              function should access cnv.canvas i.e. an attribute of BaseCanvas
+            * x (float) and y (float): must be in native units (i.e. points)!
+            * rotate (float): an angle in degrees; anti-clockwise from East
         """
         if not string:
             return
+        rotate = 0   # FIXME - canvas rotates (?!) but then string is missing ...
         align = align or self.align
         mvy = copy.copy(y)
-        log.debug("string %s %s", type(string), string)
+        # tools.feedback("string %s %s rotate:%s" % (type(string), string, rotate))
         for ln in string.split('\n'):
             if align == 'centre':
+                canvas.rotate(rotate)
                 canvas.drawCentredString(x, mvy, ln)
+                canvas.rotate(-rotate)
             elif align == 'right':
+                canvas.rotate(rotate)
                 canvas.drawRightString(x, mvy, ln)
+                canvas.rotate(-rotate)
             else:
+                canvas.rotate(rotate)
                 canvas.drawString(x, mvy, ln)
+                canvas.rotate(-rotate)
             mvy -= canvas._leading
 
     def draw_string(self, canvas, x, y, string, align=None):
         """Draw a multi-string on the canvas.
-
-        Requires native units (points)!
         """
         self.draw_multi_string(canvas=canvas, x=x, y=y, string=string, align=align)
 
-    def draw_heading(self, canvas, x, y, y_offset=0):
+    def draw_heading(self, canvas, x, y, y_offset=0, rotate=0):
         """Draw the heading for a shape (normally above the shape).
 
         Requires native units (i.e. points)!
@@ -1133,9 +1139,9 @@ class BaseShape:
         if self.heading:
             canvas.setFont(self.font_face, self.heading_size)
             canvas.setFillColor(self.heading_stroke)
-            self.draw_multi_string(canvas, x, y + y_offset, self.heading)
+            self.draw_multi_string(canvas, x, y + y_offset, self.heading, rotate=rotate)
 
-    def draw_label(self, canvas, x, y):
+    def draw_label(self, canvas, x, y, rotate=0):
         """Draw the label for a shape (normally the centre of the shape).
 
         Requires native units (i.e. points)!
@@ -1143,9 +1149,9 @@ class BaseShape:
         if self.label:
             canvas.setFont(self.font_face, self.label_size)
             canvas.setFillColor(self.label_stroke)
-            self.draw_multi_string(canvas, x, y, self.label)
+            self.draw_multi_string(canvas, x, y, self.label, rotate=rotate)
 
-    def draw_title(self, canvas, x, y, y_offset=0):
+    def draw_title(self, canvas, x, y, y_offset=0, rotate=0):
         """Draw the title for a shape (normally below the shape).
 
         Requires native units (i.e. points)!
@@ -1153,7 +1159,7 @@ class BaseShape:
         if self.title:
             canvas.setFont(self.font_face, self.title_size)
             canvas.setFillColor(self.title_stroke)
-            self.draw_multi_string(canvas, x, y - y_offset, self.title)
+            self.draw_multi_string(canvas, x, y - y_offset, self.title, rotate=rotate)
 
     def draw_dot(self, canvas, x, y):
         """Draw a small dot on a shape (normally the centre).

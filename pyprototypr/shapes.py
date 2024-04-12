@@ -151,10 +151,10 @@ class LineShape(BaseShape):
                 y_1 = y
         if self.row is not None and self.row >= 0:
             y = y + self.row * self._u.height
-            y_1 = y_1 + self.row * self._u.height - self._u.margin_bottom
+            y_1 = y_1 + self.row * self._u.height #- self._u.margin_bottom
         if self.col is not None and self.col >= 0:
             x = x + self.col * self._u.width
-            x_1 = x_1 + self.col * self._u.width - self._u.margin_left
+            x_1 = x_1 + self.col * self._u.width #- self._u.margin_left
         log.debug("x:%s x1:%s y:%s y1:%s", x, x_1, y, y_1)
         # canvas
         self.set_canvas_props()
@@ -163,8 +163,10 @@ class LineShape(BaseShape):
         pth.moveTo(x, y)
         pth.lineTo(x_1, y_1)
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        # ---- calculate line rotation
+        compass, rotate = tools.angles_from_points(x, y, x_1, y_1)
         # ----  text
-        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
+        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate)
         # ----  dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
 
@@ -1159,6 +1161,7 @@ class TextShape(BaseShape):
             height = self._u.height
         if self.width:
             width = self._u.width
+        rotate = kwargs.get('rotate', 0)
         # canvas
         self.set_canvas_props(cnv)
         # text
@@ -1196,7 +1199,7 @@ class TextShape(BaseShape):
             para.drawOn(cnv, x_t, y_t)
         else:
             cnv.setFillColor(self.stroke)
-            self.draw_multi_string(cnv, x_t, y_t, _text)
+            self.draw_multi_string(cnv, x_t, y_t, _text, rotate)
 
 
 class CircleShape(BaseShape):

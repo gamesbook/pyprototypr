@@ -112,11 +112,9 @@ PageBreak()
 
 AutoGrid(stroke_width=0.5)
 Text(common=header, text="Lines")
-Lines(x=0, x1=6, y=0, y1=0, rows=7, height=1.0)
+Lines(x=1, x1=4, y=1, y1=1, rows=2, height=1.0, label_size=8, label="rows; ht=1.0")
+Lines(x=1, x1=1, y=3, y1=6, cols=2, width=1.5, label_size=8, label="col; wd=1.5")
 PageBreak()
-# -- no defaults
-# Arc()
-# Polyline() # will get FEEDBACK
 
 AutoGrid(stroke_width=0.5)
 Text(common=header, text="StarField: Rectangle; multicolor")
