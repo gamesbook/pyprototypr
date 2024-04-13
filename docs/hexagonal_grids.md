@@ -10,7 +10,8 @@ more well-known examples of this is in the popular game *"Catan"*, first release
 *"Settlers of Catan"*" in the early 1990s.
 
 There are in fact a number of software tools available for creating hexagonal
-grids of various kinds. A few of them are listed below:
+grids of various kinds. A few of them, some of which are game-specific,
+are listed below:
 
 * *HEXGRID* (https://hamhambone.github.io/hexgrid/) - an online hex grid
   generator which interactively creates a display, downloadable as a PNG image.
@@ -25,6 +26,8 @@ grids of various kinds. A few of them are listed below:
   generator that outputs to SVG files, scaled to fit A4 paper.
 * *18xx Maker* (https://www.18xx-maker.com/) - uses 18xx game definitions written
   in JSON, displays them, and renders them for printing.
+* *ps18xx* (https://github.com/18xx/ps18xx/tree/master) - software for running 18XX
+  email games, and creating maps and tile sheets.
 
 The options and facilities provided by these tools have been the primary
 inspiration for how hexagonal grids work in **pyprototypr**. So if the
