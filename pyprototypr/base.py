@@ -472,8 +472,11 @@ class BaseCanvas:
         self.centre_shape = self.defaults.get('centre_shape', '')
         self.centre_shape_x = self.defaults.get('centre_shape_x', 0)
         self.centre_shape_y = self.defaults.get('centre_shape_y', 0)
-        self.dot_color = self.get_color(self.defaults.get('dot_color'), black)
         self.dot_size = self.defaults.get('dot_size', 0)
+        self.dot_color = self.get_color(self.defaults.get('dot_color'), black)
+        self.cross_size = self.defaults.get('cross_size', 0)
+        self.cross_stroke = self.get_color(self.defaults.get('cross_stroke'), black)
+        self.cross_stroke_width = self.defaults.get('cross_stroke_width', self.stroke_width)
         # ---- hexagon
         self.hex_orientation = self.defaults.get('hex_orientation', 'flat')  # flat|pointy
         self.caltrops = self.defaults.get('caltrops', None)
@@ -704,6 +707,9 @@ class BaseShape:
         self.centre_shape_y = kwargs.get('centre_shape_y', cnv.centre_shape_y)
         self.dot_color = kwargs.get('dot_color', cnv.dot_color)
         self.dot_size = kwargs.get('dot_size', cnv.dot_size)
+        self.cross_stroke = kwargs.get('cross_stroke', cnv.cross_stroke)
+        self.cross_stroke_width = kwargs.get('cross_stroke_width', cnv.cross_stroke_width)
+        self.cross_size = kwargs.get('cross_size', cnv.cross_size)
         # ---- hexagon
         self.hex_orientation = kwargs.get('hex_orientation', cnv.hex_orientation)
         self.caltrops = kwargs.get('caltrops', cnv.caltrops)
@@ -1097,39 +1103,48 @@ class BaseShape:
             tools.feedback(f'Unable to convert "{items}" to points!', True)
 
     def draw_multi_string(self, canvas, x, y, string, align=None, rotate=0):
-        """Low-level string drawing, split string (\n) if needed, with an alignment.
+        """Low-level text drawing, split string (\n) if needed, with align and rotate.
 
-        Notes:
+        Args:
             * canvas (reportlab.pdfgen.canvas.Canvas): usually the calling
               function should access cnv.canvas i.e. an attribute of BaseCanvas
             * x (float) and y (float): must be in native units (i.e. points)!
+            * string (str): the text to draw/write
+            * align (str): one of [centre|right|left|None] alignment of text
             * rotate (float): an angle in degrees; anti-clockwise from East
         """
         if not string:
             return
-        rotate = 0   # FIXME - canvas rotates (?!) but then string is missing ...
+        # rotate = 0   # FIXME - canvas rotates (?!) but then string is missing ...
         align = align or self.align
         mvy = copy.copy(y)
         # tools.feedback("string %s %s rotate:%s" % (type(string), string, rotate))
         for ln in string.split('\n'):
-            if align == 'centre':
+            if rotate:
+                canvas.saveState()
+                canvas.translate(x, mvy)
                 canvas.rotate(rotate)
-                canvas.drawCentredString(x, mvy, ln)
-                canvas.rotate(-rotate)
-            elif align == 'right':
-                canvas.rotate(rotate)
-                canvas.drawRightString(x, mvy, ln)
-                canvas.rotate(-rotate)
+                if align == 'centre':
+                    canvas.drawCentredString(0, 0, ln)
+                elif align == 'right':
+                    canvas.drawRightString(0, 0, ln)
+                else:
+                    canvas.drawString(0, 0, ln)
+                canvas.restoreState()
             else:
-                canvas.rotate(rotate)
-                canvas.drawString(x, mvy, ln)
-                canvas.rotate(-rotate)
+                if align == 'centre':
+                    canvas.drawCentredString(x, mvy, ln)
+                elif align == 'right':
+                    canvas.drawRightString(x, mvy, ln)
+                else:
+                    canvas.drawString(x, mvy, ln)
             mvy -= canvas._leading
 
-    def draw_string(self, canvas, x, y, string, align=None):
+    def draw_string(self, canvas, x, y, string, align=None, rotate=0):
         """Draw a multi-string on the canvas.
         """
-        self.draw_multi_string(canvas=canvas, x=x, y=y, string=string, align=align)
+        self.draw_multi_string(
+            canvas=canvas, x=x, y=y, string=string, align=align, rotate=rotate)
 
     def draw_heading(self, canvas, x, y, y_offset=0, rotate=0):
         """Draw the heading for a shape (normally above the shape).
@@ -1141,17 +1156,17 @@ class BaseShape:
             canvas.setFillColor(self.heading_stroke)
             self.draw_multi_string(canvas, x, y + y_offset, self.heading, rotate=rotate)
 
-    def draw_label(self, canvas, x, y, rotate=0):
-        """Draw the label for a shape (normally the centre of the shape).
+    def draw_label(self, canvas, x, y, align=None, rotate=0):
+        """Draw the label for a shape (usually at the centre of the shape).
 
         Requires native units (i.e. points)!
         """
         if self.label:
             canvas.setFont(self.font_face, self.label_size)
             canvas.setFillColor(self.label_stroke)
-            self.draw_multi_string(canvas, x, y, self.label, rotate=rotate)
+            self.draw_multi_string(canvas, x, y, self.label, align=align, rotate=rotate)
 
-    def draw_title(self, canvas, x, y, y_offset=0, rotate=0):
+    def draw_title(self, canvas, x, y, y_offset=0, align=None, rotate=0):
         """Draw the title for a shape (normally below the shape).
 
         Requires native units (i.e. points)!
@@ -1159,7 +1174,8 @@ class BaseShape:
         if self.title:
             canvas.setFont(self.font_face, self.title_size)
             canvas.setFillColor(self.title_stroke)
-            self.draw_multi_string(canvas, x, y - y_offset, self.title, rotate=rotate)
+            self.draw_multi_string(
+                canvas, x, y - y_offset, self.title, align=align, rotate=rotate)
 
     def draw_dot(self, canvas, x, y):
         """Draw a small dot on a shape (normally the centre).
@@ -1171,6 +1187,31 @@ class BaseShape:
             canvas.setFillColor(self.dot_color)
             canvas.setStrokeColor(self.dot_color)
             canvas.circle(x, y, dot_size, stroke=1, fill=1)
+
+    def draw_cross(self, canvas, x, y):
+        """Draw a cross on a shape (normally the centre).
+
+        Requires native units (i.e. points)!
+        """
+        if self.cross_size:
+            cross_size = self.unit(self.cross_size)
+            canvas.setFillColor(self.cross_stroke)
+            canvas.setStrokeColor(self.cross_stroke)
+            canvas.setLineWidth(self.cross_stroke_width)
+            # horizontal
+            pth = canvas.beginPath()
+            x1, y1 = x - cross_size / 2.0, y
+            x2, y2 = x + cross_size / 2.0, y
+            pth.moveTo(x1, y1)
+            pth.lineTo(x2, y2)
+            canvas.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+            # vertical
+            pth = canvas.beginPath()
+            x1, y1 = x, y - cross_size / 2.0
+            x2, y2 = x, y + cross_size / 2.0
+            pth.moveTo(x1, y1)
+            pth.lineTo(x2, y2)
+            canvas.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
 
     def V(self, *args):
         """Placeholder for value evaluator."""

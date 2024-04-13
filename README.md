@@ -67,40 +67,42 @@ images or spreadsheets).
 These are not guaranteed to be addressed, but they are potential areas of
 work for future development.
 
-* [ ] Page numbering (with styles)
+* [x] Page numbering
 * [ ] New shapes:
     * [x] Square shape
     * [ ] Equilateral Triangle shape
-    * [ ] Sector shape (slice of a circle)
+    * [ ] Sector shape (wedge of a circle)
     * [ ] Wave shape
-    * [ ] Domino shape
+    * [ ] Domino shape (with outline?)
+    * [ ] Cross shape
 * [ ] Arrow: styling
+* [x] Circle, Rectangle, Hexagon: centre cross
 * [x] Rectangle: with notches
 * [x] Hexagons: "pointy" layout
-* [ ] Hexagons: 18xx tick labels
+* [ ] Hexagons: 18xx tick labels on grid
 * [ ] Line:
     * [x] end style
     * [ ] join style
 * [ ] Polyline: add arcs
 * [ ] Arcs (pathways): for a hexagon
-* [ ] Shortcut notation for styling of: area, line, text
+* [ ] Shortcut notation for styling of: area, line, text, etc.
 * [ ] Track feature: layout shapes along a rectangle or circle
 * [ ] Interior hatching:
     * [x] rectangle
     * [ ] hexagon
     * [ ] equilateral triangle
-* [ ] hexgrid: virtual grid for handling layout in rows/cols
-* [ ] rectgrid: virtual grid for handling layout in rows/cols
-* [ ] rotations: e.g. of text along a line (NOT understood)
+* [ ] layout: a virtual grid for putting shapes into rows/cols in different patterns
+* [x] rotation:
+    * [x] text along a line
+    * [ ] shape labels (in centre of shape)
 
 ## Planned/Potential Examples
 
 * Abstract boards: Go, Ludo, 9 Mens Morris, Wari, Queens Guard, Backgammon
-* Wargame board: Squad Leader with terrain features
-* Traveller board: showing a fully styled Star system
+* Wargame board: Squad Leader with terrain features (vector/bitmap)
+* Traveller board: showing a fully styled Star system (custom Shape?)
 * 18xx board: show a basic map with tracks, towns and off-map areas
 * Dartboard: using Sector shape
-
 
 ## Acknowledgements
 

@@ -516,11 +516,12 @@ class RectangleShape(BaseShape):
                         height=self._u.height,
                         mask="auto",
                     )
-        # ---- text
-        self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        # ---- cross
+        self.draw_cross(cnv,  x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
-
+        # ---- text
+        self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
 
 # class SquareShape(BaseShape):
 #     pass
@@ -620,10 +621,12 @@ class OctagonShape(BaseShape):
             pth.lineTo(*vertex)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-        # ---- text
-        self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        # ---- cross
+        self.draw_cross(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        # ---- text
+        self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
 
 
 class ShapeShape(BaseShape):
@@ -1020,12 +1023,14 @@ class HexShape(BaseShape):
             self.centre_shape.draw(
                 cx=x_d + self.unit(self.centre_shape_x),
                 cy=y_d + self.unit(self.centre_shape_y))
+        # ---- cross
+        self.draw_cross(cnv, x_d, y_d)
+        # ---- dot
+        self.draw_dot(cnv, x_d, y_d)
         # ---- text
         self.draw_label(cnv, x_d, y_d)
         self.draw_title(cnv, x_d, y_d, 1.4 * diameter / 2.0)
         self.draw_heading(cnv, x_d, y_d, 1.3 * diameter / 2.0)
-        # ---- dot
-        self.draw_dot(cnv, x_d, y_d)
         # ----  numbering
         self.draw_coord(cnv, x_d, y_d, half_flat)
 
@@ -1249,12 +1254,14 @@ class CircleShape(BaseShape):
         # ---- draw circle
         cnv.circle(
             self.x_c, self.y_c, self._u.radius, stroke=1, fill=1 if self.fill else 0)
+        # ---- cross
+        self.draw_cross(cnv, self.x_c, self.y_c)
+        # ---- dot
+        self.draw_dot(cnv, self.x_c, self.y_c)
         # ---- text
         self.draw_label(cnv, self.x_c, self.y_c)
         self.draw_title(cnv, self.x_c, self.y_c, 1.4 * self._u.radius)
         self.draw_heading(cnv, self.x_c, self.y_c, 1.3 * self._u.radius)
-        # ---- dot
-        self.draw_dot(cnv, self.x_c, self.y_c)
 
 
 class CompassShape(BaseShape):
