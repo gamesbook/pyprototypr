@@ -843,8 +843,8 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
                 top_row = 1
                 end_row = rows - 1
 
-    if kwargs.get('hex_layout') and kwargs.get('hex_orientation'):
-        if kwargs.get('hex_orientation').lower() in ['p', 'pointy'] and \
+    if kwargs.get('hex_layout') and kwargs.get('hex_top'):
+        if kwargs.get('hex_top').lower() in ['p', 'pointy'] and \
             kwargs.get('hex_layout') not in ['r', 'rec', 'rect', 'rectangle']:
                 tools.feedback(
                     f'Cannot use this custom hex_layout with pointy hexagons!',

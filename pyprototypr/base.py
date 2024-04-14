@@ -478,7 +478,7 @@ class BaseCanvas:
         self.cross_stroke = self.get_color(self.defaults.get('cross_stroke'), black)
         self.cross_stroke_width = self.defaults.get('cross_stroke_width', self.stroke_width)
         # ---- hexagon
-        self.hex_orientation = self.defaults.get('hex_orientation', 'flat')  # flat|pointy
+        self.hex_top = self.defaults.get('hex_top', 'flat')  # flat|pointy
         self.caltrops = self.defaults.get('caltrops', None)
         self.caltrops_fraction = self.defaults.get('caltrops_fraction', None)
         self.caltrops_invert = kwargs.get('caltrops_invert', False)
@@ -711,7 +711,7 @@ class BaseShape:
         self.cross_stroke_width = kwargs.get('cross_stroke_width', cnv.cross_stroke_width)
         self.cross_size = kwargs.get('cross_size', cnv.cross_size)
         # ---- hexagon
-        self.hex_orientation = kwargs.get('hex_orientation', cnv.hex_orientation)
+        self.hex_top = kwargs.get('hex_top', cnv.hex_top)
         self.caltrops = kwargs.get('caltrops', cnv.caltrops)
         self.caltrops_fraction = kwargs.get('caltrops_fraction', cnv.caltrops_fraction)
         self.caltrops_invert = kwargs.get('caltrops_invert', cnv.caltrops_invert)
@@ -1115,7 +1115,6 @@ class BaseShape:
         """
         if not string:
             return
-        # rotate = 0   # FIXME - canvas rotates (?!) but then string is missing ...
         align = align or self.align
         mvy = copy.copy(y)
         # tools.feedback("string %s %s rotate:%s" % (type(string), string, rotate))

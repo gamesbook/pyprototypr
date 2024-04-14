@@ -160,28 +160,30 @@ PageBreak()
 
 AutoGrid(stroke_width=0.5)
 Text(common=header, text="Hexagon: hatch")
-Hexagon(x=0, y=0, height=1.5, hex_orientation='flat', hatch=5, hatch_directions='e')
-Hexagon(x=2, y=0, height=1.5, hex_orientation='pointy', hatch=5, hatch_directions='e')
-Hexagon(x=0, y=2, height=1.5, hex_orientation='flat', hatch=5, hatch_directions='ne')
-Hexagon(x=2, y=2, height=1.5, hex_orientation='pointy', hatch=5, hatch_directions='ne')
-Hexagon(x=0, y=4, height=1.5, hex_orientation='flat', hatch=5, hatch_directions='nw')
-Hexagon(x=2, y=4, height=1.5, hex_orientation='pointy', hatch=5, hatch_directions='nw')
+Hexagon(x=0, y=0, height=1.5, hex_top='flat', hatch=5, hatch_directions='e', label="e")
+Hexagon(x=2, y=0, height=1.5, hex_top='pointy', hatch=5, hatch_directions='n', label="n")
+Hexagon(x=0, y=2, height=1.5, hex_top='flat', hatch=5, hatch_directions='ne', label="ne")
+Hexagon(x=2, y=2, height=1.5, hex_top='pointy', hatch=5, hatch_directions='ne', label="ne")
+Hexagon(x=0, y=4, height=1.5, hex_top='flat', hatch=5, hatch_directions='nw', label="nw")
+Hexagon(x=2, y=4, height=1.5, hex_top='pointy', hatch=5, hatch_directions='nw', label="nw")
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
-Text(common=header, text="Hexagon: flat: text")
+Text(common=header, text="Hexagon: flat; text; hatch")
 Hexagon(
     height=2,
+    hatch=3,
     title="Title",
     label="Label",
     heading="Heading")
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
-Text(common=header, text="Hexagon: pointy: text")
+Text(common=header, text="Hexagon: pointy; text; hatch")
 Hexagon(
     height=2,
-    hex_orientation='pointy',
+    hatch=3,
+    hex_top='pointy',
     title="Title",
     label="Label",
     heading="Heading")
