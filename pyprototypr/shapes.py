@@ -281,15 +281,16 @@ class RectangleShape(BaseShape):
         return self._u.width * self._u.height
 
     def draw_hatching(self, cnv, vertices: list, num: int):
-        from reportlab.lib.colors import black, blue, red
         if self.rounding or self.rounded:
             tools.feedback('No hatching permissible with a rounded Rectangle', True)
+        if self.notch or self.notch_x or self.notch_y:
+            tools.feedback('No hatching permissible with a notched Rectangle', True)
         self.set_canvas_props(
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_width,
             stroke_cap=self.hatch_cap)
         _dirs = self.hatch_directions.lower().split()
-        if num >=1:
+        if num >= 1:
             if 'ne' or 'sw' in _dirs:  # slope UP to the right
                 pth = cnv.beginPath()
                 pth.moveTo(vertices[0].x, vertices[0].y)
@@ -318,7 +319,7 @@ class RectangleShape(BaseShape):
             diag_num = int((num - 1) / 2 + 1)
             x_dist = self._u.width / diag_num
             y_dist = self._u.height / diag_num
-            top_pt, btm_pt, left_pt, rite_pt = [], [],[], []
+            top_pt, btm_pt, left_pt, rite_pt = [], [], [], []
             for number in range(0, diag_num + 1):
                 left_pt.append(
                     tools.point_on_line(vertices[0], vertices[1], y_dist * number))
@@ -875,6 +876,77 @@ class HexShape(BaseShape):
             side = self._u.height / math.sqrt(3)
         return (3.0 * math.sqrt(3.0) * side * side) / 2.0
 
+    def draw_hatching(self, cnv, vertices: list, num: int):
+
+        def make_path_pt(p1: Point, p2: Point):
+            pth = cnv.beginPath()
+            pth.moveTo(p1.x, p1.y)
+            pth.lineTo(p2.x, p2.y)
+            cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+
+        def make_path(v1: int, v2: int):
+            make_path_pt(vertices[v1], vertices[v2])
+
+        def draw_lines(dist: float, v_tl: tuple, v_tr: tuple, v_bl: tuple, v_br: tuple):
+            """Draw lines between opposing sides of hexagon
+
+            Args:
+                dist: length of hexagon side
+                v_*: ID's of hexagon vertices on either end of the side
+
+            Note: Vertices are-based, clockwise from bottom left
+            """
+            for number in range(0, diag_num + 1):
+                top_left_pt = tools.point_on_line(
+                    vertices[v_tl[0]], vertices[v_tl[1]], dist * number)
+                btm_left_pt = tools.point_on_line(
+                    vertices[v_bl[0]], vertices[v_bl[1]], dist * number)
+                top_rite_pt = tools.point_on_line(
+                    vertices[v_tr[0]], vertices[v_tr[1]], dist * number)
+                btm_rite_pt = tools.point_on_line(
+                    vertices[v_br[0]], vertices[v_br[1]], dist * number)
+                make_path_pt(top_left_pt, btm_left_pt)
+                make_path_pt(top_rite_pt, btm_rite_pt)
+
+        self.set_canvas_props(
+            stroke=self.hatch_stroke,
+            stroke_width=self.hatch_width,
+            stroke_cap=self.hatch_cap)
+        _dirs = self.hatch_directions.lower().split()
+        if num >= 1:
+            if self.orientation in ['p', 'pointy']:
+                if 'ne' or 'sw' in _dirs:  # slope UP to the right
+                    make_path(0, 3)
+                if 'se' or 'nw' in _dirs:  # slope down to the right
+                    make_path(1, 3)
+                if 'n' or 's' in _dirs:  # vertical
+                    make_path(2, 5)
+            if self.orientation in ['f', 'flat']:
+                if 'ne' or 'sw' in _dirs:  # slope UP to the right
+                    make_path(2, 5)
+                if 'se' or 'nw' in _dirs:  # slope down to the right
+                    make_path(0, 3)
+                if 'e' or 'w' in _dirs:  # horizontal
+                    make_path(1, 4)
+        if num >= 3:
+            diag_num = int((num - 1) / 2 + 1)
+            dist = self.side / diag_num
+            # v_tl, v_tr, v_bl, v_br
+            if self.orientation in ['p', 'pointy']:
+                if 'ne' or 'sw' in _dirs:  # slope UP to the right
+                    draw_lines(dist, (2, 3), (3, 4), (1, 0), (0, 5))
+                if 'se' or 'nw' in _dirs:  # slope down to the right
+                    draw_lines(dist, (0, 1), (1, 2), (5, 4), (4, 3))
+                if 'n' or 's' in _dirs:  # vertical
+                    draw_lines(dist, (1, 2), (2, 3), (0, 5), (5, 4))
+            if self.orientation in ['f', 'flat']:
+                if 'ne' or 'sw' in _dirs:  # slope UP to the right
+                    pass
+                if 'se' or 'nw' in _dirs:  # slope down to the right
+                    pass
+                if 'e' or 'w' in _dirs:  # horizontal
+                    pass
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a hexagon on a given canvas."""
         # tools.feedback(f'Will draw a hex shape: {kwargs} {off_x} {off_y} {ID}')
@@ -1017,6 +1089,9 @@ class HexShape(BaseShape):
             pth.lineTo(*vertex)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        # ---- draw hatches
+        if self.hatch:
+            self.draw_hatching(cnv, self.vertices, self.hatch)
         # ---- centred shape (with offset)
         if self.centre_shape:
             # tools.feedback(f'DRAW shape:{self.dot_shape} at ({x_d=},{y_d=})')

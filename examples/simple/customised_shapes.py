@@ -151,7 +151,7 @@ StarField(
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
-Text(common=header, text="Rectangle: hatching")
+Text(common=header, text="Rectangle: hatch")
 Rectangle(
     height=2, width=2,
     hatch=15, hatch_width=0.1, hatch_stroke=black,
@@ -159,11 +159,13 @@ Rectangle(
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
-Text(common=header, text="Hexagon: hatching")
-Hexagon(
-    height=2,
-    hatch=15, hatch_width=0.1, hatch_stroke=black,
-    stroke=saddlebrown, stroke_width=0.2, fill=lightcyan)
+Text(common=header, text="Hexagon: hatch")
+Hexagon(x=0, y=0, height=1.5, hex_orientation='flat', hatch=5, hatch_directions='e')
+Hexagon(x=2, y=0, height=1.5, hex_orientation='pointy', hatch=5, hatch_directions='e')
+Hexagon(x=0, y=2, height=1.5, hex_orientation='flat', hatch=5, hatch_directions='ne')
+Hexagon(x=2, y=2, height=1.5, hex_orientation='pointy', hatch=5, hatch_directions='ne')
+Hexagon(x=0, y=4, height=1.5, hex_orientation='flat', hatch=5, hatch_directions='nw')
+Hexagon(x=2, y=4, height=1.5, hex_orientation='pointy', hatch=5, hatch_directions='nw')
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
