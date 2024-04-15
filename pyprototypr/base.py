@@ -1215,6 +1215,49 @@ class BaseShape:
             pth.lineTo(x2, y2)
             canvas.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
 
+    def make_path_pt(self, cnv, p1: tools.Point, p2: tools.Point):
+        pth = cnv.beginPath()
+        pth.moveTo(p1.x, p1.y)
+        pth.lineTo(p2.x, p2.y)
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+
+    def make_path(self, cnv, vertices: list, v1: int, v2: int):
+        self.make_path_pt(cnv, vertices[v1], vertices[v2])
+
+    def draw_lines_between_sides(
+            self,
+            cnv,
+            side: float,
+            lines: int,
+            vertices: list,
+            v_tl: tuple,
+            v_tr: tuple,
+            v_bl: tuple,
+            v_br: tuple):
+        """Draw lines between opposing sides of a shape
+
+        Args:
+            side: length of a side
+            lines: number of lines extending from the side
+            vertices: list of Points making up the shape
+            v_*: ID's of vertices on either end of the side
+
+        Note: Vertices are-based, clockwise from bottom left
+        """
+        delta = side / (lines + 1)  # diag_num
+        # tools.feedback(f'{side=} {diag_num=} {delta=}')
+        for number in range(1, lines + 1):
+            top_left_pt = tools.point_on_line(
+                vertices[v_tl[0]], vertices[v_tl[1]], delta * number)
+            btm_left_pt = tools.point_on_line(
+                vertices[v_bl[0]], vertices[v_bl[1]], delta * number)
+            top_rite_pt = tools.point_on_line(
+                vertices[v_tr[0]], vertices[v_tr[1]], delta * number)
+            btm_rite_pt = tools.point_on_line(
+                vertices[v_br[0]], vertices[v_br[1]], delta * number)
+            self.make_path_pt(cnv, top_left_pt, btm_left_pt)
+            self.make_path_pt(cnv, top_rite_pt, btm_rite_pt)
+
     def V(self, *args):
         """Placeholder for value evaluator."""
         try:
