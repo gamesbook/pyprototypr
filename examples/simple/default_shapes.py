@@ -114,6 +114,11 @@ RightAngledTriangle()
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
+Text(common=header, text="EquilateralTriangle")
+EquilateralTriangle()
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
 Text(common=header, text="Compass")
 Compass()
 PageBreak()

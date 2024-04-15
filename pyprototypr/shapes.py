@@ -467,7 +467,8 @@ class RectangleShape(BaseShape):
             self.draw_hatching(cnv, self.vertices, self.hatch)
         # ---- grid marks
         self.set_canvas_props(
-            stroke=self.grid_color, stroke_width=self.grid_stroke_width)
+            stroke=self.grid_color,
+            stroke_width=self.grid_stroke_width)
         if self.grid_marks:
             deltag = self.unit(self.grid_length)
             pth = cnv.beginPath()
@@ -1178,8 +1179,8 @@ class RightAngledTriangleShape(BaseShape):
             self._u.height = self._u.width
         # calculate points
         x, y = self._u.x, self._u.y
-        points = []
-        points.append((x, y))
+        self.vertices = []
+        self.vertices.append(Point(x, y))
         if not self.hand or not self.flip:
             tools.feedback(
                 'Need to supply both "flip" and "hand" options! for triangle.',
@@ -1194,18 +1195,17 @@ class RightAngledTriangleShape(BaseShape):
             y2 = y + self._u.height
         elif flip == 'down':
             y2 = y - self._u.height
-        points.append((x2, y2))
-        points.append((x2, y))
+        self.vertices.append(Point(x2, y2))
+        self.vertices.append(Point(x2, y))
         # canvas
         self.set_canvas_props()
         # ---- draw RA triangle
         x_sum, y_sum = 0, 0
         pth = cnv.beginPath()
-        for key, vertex in enumerate(points):
-            x, y = vertex
+        for key, vertex in enumerate(self.vertices):
             # shift to relative position
-            x = x + self._o.delta_x
-            y = y + self._o.delta_y
+            x = vertex.x + self._o.delta_x
+            y = vertex.y + self._o.delta_y
             x_sum += x
             y_sum += y
             if key == 0:
@@ -1225,7 +1225,54 @@ class EquilateralTriangleShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an equilateraltriangle on a given canvas."""
-        pass
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        # calculate points
+        x, y = self._u.x, self._u.y
+        hand = self.hand.lower() if self.hand else 'right'
+        flip = self.flip.lower() if self.flip else 'up'
+        angle = self.angle
+        side = self._u.side if self._u.side else self._u.width
+        height = 0.5 * math.sqrt(3) * side  # ½√3(a)
+        # tools.feedback(f'{hand=} {flip=} {side=} {height=} {self.fill=} {self.stroke=}')
+
+        self.vertices = []
+        self.vertices.append(Point(x, y))
+        if hand == 'left':
+            x2 = x - side
+            y2 = y
+            x3 = x + 0.5 * side
+        elif hand == 'right':
+            x2 = x + side
+            y2 = y
+            x3 = x2 - 0.5 * side
+        if flip == 'up':
+            y3 = y + height
+        elif flip == 'down':
+            y3 = y - height
+        self.vertices.append(Point(x2, y2))
+        self.vertices.append(Point(x3, y3))
+        # canvas
+        self.set_canvas_props()
+        # ---- draw equilateral triangle
+        x_sum, y_sum = 0, 0
+        pth = cnv.beginPath()
+        for key, vertex in enumerate(self.vertices):
+            # shift to relative position
+            x = vertex.x + self._o.delta_x
+            y = vertex.y + self._o.delta_y
+            x_sum += x
+            y_sum += y
+            if key == 0:
+                pth.moveTo(x, y)
+            pth.lineTo(x, y)
+        pth.close()
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        x_c, y_c = x_sum / 3.0, y_sum / 3.0  # centroid
+        # ---- text
+        self.draw_label(cnv, x_c, y_c)
+        # ---- dot
+        self.draw_dot(cnv, x_c, y_c)
 
 
 class TextShape(BaseShape):
@@ -1253,7 +1300,7 @@ class TextShape(BaseShape):
             width = self._u.width
         rotate = kwargs.get('rotate', 0)
         # canvas
-        self.set_canvas_props(cnv)
+        self.set_canvas_props()
         # text
         _text = self.textify(ID)
         if self.wrap:

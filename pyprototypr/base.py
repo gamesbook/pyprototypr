@@ -827,8 +827,9 @@ class BaseShape:
             stroke_width=None,
             stroke_cap=None,
             line_dots=None,
-            dashes=None):
-        """Set reportlab canvas properties for font and colors"""
+            dashes=None,
+            debug=False):
+        """Set reportlab canvas properties for font, line and colors"""
         canvas = cnv if cnv else self.canvas.canvas
         log.debug('scp: %s %s', self.font_face, self.font_size)
         log.debug('scp: stroke %s / self.stroke %s', stroke, self.stroke)
@@ -852,7 +853,9 @@ class BaseShape:
                             f'Unable to use "{self.transparency}" as the transparency'
                             ' - must be from 1 to 100', True)
                     _fill = Color(_fill.red, _fill.green, _fill.blue, alpha)
-                canvas.setFillColor(_fill)
+            canvas.setFillColor(_fill)
+            if debug:
+                tools.feedback(f'Fill color set: {_fill}')
         except AttributeError:
             pass
         try:

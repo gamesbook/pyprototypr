@@ -464,7 +464,7 @@ def EquilateralTriangle(row=None, col=None, **kwargs):
     return eqt
 
 
-def rightangledtriangle(row=None, col=None, **kwargs):
+def equilateraltriangle(row=None, col=None, **kwargs):
     global cnv
     global deck
     kwargs = margins(**kwargs)
