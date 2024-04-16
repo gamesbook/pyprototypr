@@ -199,6 +199,15 @@ Hexagon(
     heading="Heading")
 PageBreak()
 
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Right Angled Triangle")
+EquilateralTriangle(x=1, y=3, side=2, hatch=3, title='Title', heading='Heading')
+EquilateralTriangle(x=1, y=1, flip="up", hand="right", label="UR", fill="yellow")
+EquilateralTriangle(x=1, y=1, flip="down", hand="right", label="DR", fill="green")
+EquilateralTriangle(x=1, y=1, flip="up", hand="left", label="UL", fill="red")
+EquilateralTriangle(x=1, y=1, flip="down", hand="left", label="DL", fill="blue")
+PageBreak()
+
 Text(common=header, text="END...")
 PageBreak(footer=True)
 

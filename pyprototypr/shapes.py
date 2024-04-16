@@ -1107,8 +1107,12 @@ class HexShape(BaseShape):
         self.draw_dot(cnv, x_d, y_d)
         # ---- text
         self.draw_label(cnv, x_d, y_d)
-        self.draw_title(cnv, x_d, y_d, 1.4 * diameter / 2.0)
-        self.draw_heading(cnv, x_d, y_d, 1.3 * diameter / 2.0)
+        self.draw_title(cnv, x_d, y_d, + 0.75 * self.heading_size + diameter / 2.0)
+        if self.hex_top.lower() in ['p', 'pointy']:
+            head_off = 0.5 * self.heading_size + diameter / 2.0
+        else:
+            head_off = 0.01 * self.heading_size + diameter / 2.0
+        self.draw_heading(cnv, x_d, y_d, head_off)
         # ----  numbering
         self.draw_coord(cnv, x_d, y_d, half_flat)
 
@@ -1215,26 +1219,23 @@ class RightAngledTriangleShape(BaseShape):
 class EquilateralTriangleShape(BaseShape):
 
     def draw_hatching(self, cnv, side: float, vertices: list, num: int):
-
         self.set_canvas_props(
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_width,
             stroke_cap=self.hatch_cap)
         _dirs = self.hatch_directions.lower().split()
-        lines = int((num - 1) / 2 + 1)
-
+        lines = int(num) + 1
         if num >= 1:
             # v_tl, v_tr, v_bl, v_br
             if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
-                self.draw_lines_between_sides(
-                    cnv, side, lines, vertices, (2, 3), (3, 4), (1, 0), (0, 5))
+                self.lines_between_sides(
+                    cnv, side, lines, vertices, (0, 1), (2, 1))
             if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
-                self.draw_lines_between_sides(
-                    cnv, side, lines, vertices, (0, 1), (1, 2), (5, 4), (4, 3))
+                self.lines_between_sides(
+                    cnv, side, lines, vertices, (0, 2), (0, 1))
             if 'e' in _dirs or 'w' in _dirs:  # horizontal
-                self.draw_lines_between_sides_between_sides(
-                    cnv, side, lines, vertices, (1, 2), (2, 3), (0, 5), (5, 4))
-
+                self.lines_between_sides(
+                    cnv, side, lines, vertices, (0, 2), (1, 2))
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an equilateraltriangle on a given canvas."""
@@ -1248,21 +1249,21 @@ class EquilateralTriangleShape(BaseShape):
         side = self._u.side if self._u.side else self._u.width
         height = 0.5 * math.sqrt(3) * side  # ½√3(a)
         # tools.feedback(f'{hand=} {flip=} {side=} {height=} {self.fill=} {self.stroke=}')
-
         self.vertices = []
-        self.vertices.append(Point(x, y))
+        pt0 = Point(x + self._o.delta_x, y + self._o.delta_y)
+        self.vertices.append(pt0)
         if hand == 'left':
-            x2 = x - side
-            y2 = y
-            x3 = x + 0.5 * side
+            x2 = pt0.x - side
+            y2 = pt0.y
+            x3 = pt0.x - 0.5 * side
         elif hand == 'right':
-            x2 = x + side
-            y2 = y
+            x2 = pt0.x + side
+            y2 = pt0.y
             x3 = x2 - 0.5 * side
         if flip == 'up':
-            y3 = y + height
+            y3 = pt0.y + height
         elif flip == 'down':
-            y3 = y - height
+            y3 = pt0.y - height
         self.vertices.append(Point(x2, y2))
         self.vertices.append(Point(x3, y3))
         # canvas
@@ -1270,23 +1271,24 @@ class EquilateralTriangleShape(BaseShape):
         # ---- draw equilateral triangle
         x_sum, y_sum = 0, 0
         pth = cnv.beginPath()
+        pth.moveTo(self.vertices[0].x, self.vertices[0].y)
         for key, vertex in enumerate(self.vertices):
-            # shift to relative position
-            x = vertex.x + self._o.delta_x
-            y = vertex.y + self._o.delta_y
-            x_sum += x
-            y_sum += y
-            if key == 0:
-                pth.moveTo(x, y)
-            pth.lineTo(x, y)
+            pth.lineTo(vertex.x, vertex.y)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-        x_c, y_c = x_sum / 3.0, y_sum / 3.0  # centroid
+        # ---- calculate centroid
+        x_c = (self.vertices[0].x + self.vertices[1].x + self.vertices[2].x) / 3.0
+        y_c = (self.vertices[0].y + self.vertices[1].y + self.vertices[2].y) / 3.0
+        # tools.feedback(f'{x_c=} {y_c=}')
+        # ---- debug
+        self.debug(cnv, vertices=self.vertices)
         # ---- draw hatches
         if self.hatch:
             self.draw_hatching(cnv, side, self.vertices, self.hatch)
         # ---- text
         self.draw_label(cnv, x_c, y_c)
+        self.draw_title(cnv, x_c, y_c, height / 2.0 + 0.25 * self.heading_size)
+        self.draw_heading(cnv, x_c, y_c,  height / 2.0 + 0.75 * self.heading_size)
         # ---- dot
         self.draw_dot(cnv, x_c, y_c)
 
