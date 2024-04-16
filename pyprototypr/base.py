@@ -314,6 +314,7 @@ class BaseCanvas:
         self.members = []  # card IDs, of which current card is a member
         self._object = None
         self.kwargs = kwargs
+        self.run_debug = False
         # ---- page
         self.pagesize = self.get_page(self.defaults.get('pagesize'), A4)
         self.margin = self.defaults.get('margin', 1)
@@ -550,7 +551,7 @@ class BaseShape:
         # ---- KEY
         self.canvas = canvas or BaseCanvas()  # BaseCanvas object
         cnv = self.canvas  # shortcut for use in getting defaults
-        log.debug("BaseShape types %s %s %s", type(self.canvas), type(canvas), type(cnv))
+        # log.debug("BaseShape types %s %s %s", type(self.canvas), type(canvas), type(cnv))
         self._object = _object  # placeholder for an incoming Shape object
         log.debug("BaseShape kwargs:%s", self.kwargs)
         self.shape_id = None
@@ -561,6 +562,7 @@ class BaseShape:
         # ---- general
         self.common = kwargs.get('common', None)
         self.shape = kwargs.get('shape', cnv.shape)
+        self.run_debug = kwargs.get("debug", cnv.run_debug)
         # ---- page
         self.pagesize = kwargs.get('pagesize', cnv.pagesize)
         self.margin = kwargs.get('margin', cnv.margin)
@@ -1063,6 +1065,17 @@ class BaseShape:
             return edges
         return {}
 
+    def make_path_points(self, cnv, p1: tools.Point, p2: tools.Point):
+        """Draw line between two Points"""
+        pth = cnv.beginPath()
+        pth.moveTo(p1.x, p1.y)
+        pth.lineTo(p2.x, p2.y)
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+
+    def make_path_vertices(self, cnv, vertices: list, v1: int, v2: int):
+        """Draw line between two vertices"""
+        self.make_path_points(cnv, vertices[v1], vertices[v2])
+
     def textify(self, index=None, text=None):
         """Extract text from a list, or create string, based on index & type."""
         _text = text or self.text
@@ -1200,62 +1213,53 @@ class BaseShape:
             canvas.setStrokeColor(self.cross_stroke)
             canvas.setLineWidth(self.cross_stroke_width)
             # horizontal
-            pth = canvas.beginPath()
-            x1, y1 = x - cross_size / 2.0, y
-            x2, y2 = x + cross_size / 2.0, y
-            pth.moveTo(x1, y1)
-            pth.lineTo(x2, y2)
-            canvas.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+            pt1 = tools.Point(x - cross_size / 2.0, y)
+            pt2 = tools.Point(x + cross_size / 2.0, y)
+            self.make_path_points(canvas, pt1, pt2)
             # vertical
-            pth = canvas.beginPath()
-            x1, y1 = x, y - cross_size / 2.0
-            x2, y2 = x, y + cross_size / 2.0
-            pth.moveTo(x1, y1)
-            pth.lineTo(x2, y2)
-            canvas.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+            pt1 = tools.Point(x, y - cross_size / 2.0)
+            pt2 = tools.Point(x, y + cross_size / 2.0)
+            self.make_path_points(canvas, pt1, pt2)
 
-    def make_path_pt(self, cnv, p1: tools.Point, p2: tools.Point):
-        pth = cnv.beginPath()
-        pth.moveTo(p1.x, p1.y)
-        pth.lineTo(p2.x, p2.y)
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-
-    def make_path(self, cnv, vertices: list, v1: int, v2: int):
-        self.make_path_pt(cnv, vertices[v1], vertices[v2])
-
-    def draw_lines_between_sides(
+    def lines_between_sides(
             self,
             cnv,
             side: float,
             lines: int,
             vertices: list,
-            v_tl: tuple,
-            v_tr: tuple,
-            v_bl: tuple,
-            v_br: tuple):
-        """Draw lines between opposing sides of a shape
+            left_nodes: tuple,
+            right_nodes: tuple,
+            ):
+        """Draw lines between opposing (left and right) sides of a shape
 
         Args:
             side: length of a side
             lines: number of lines extending from the side
-            vertices: list of Points making up the shape
-            v_*: ID's of vertices on either end of the side
+            vertices: list of the Points making up the shape
+            left_nodes: ID's of vertices on either end of the left side
+            right_nodes: ID's of vertices on either end of the right side
 
-        Note: Vertices are-based, clockwise from bottom left
+        Note:
+            * Vertices normally go clockwise from bottom/lower left
+            * Direction of vertex indices in left- and right-nodes must be the same
         """
-        delta = side / (lines + 1)  # diag_num
-        # tools.feedback(f'{side=} {diag_num=} {delta=}')
-        for number in range(1, lines + 1):
-            top_left_pt = tools.point_on_line(
-                vertices[v_tl[0]], vertices[v_tl[1]], delta * number)
-            btm_left_pt = tools.point_on_line(
-                vertices[v_bl[0]], vertices[v_bl[1]], delta * number)
-            top_rite_pt = tools.point_on_line(
-                vertices[v_tr[0]], vertices[v_tr[1]], delta * number)
-            btm_rite_pt = tools.point_on_line(
-                vertices[v_br[0]], vertices[v_br[1]], delta * number)
-            self.make_path_pt(cnv, top_left_pt, btm_left_pt)
-            self.make_path_pt(cnv, top_rite_pt, btm_rite_pt)
+        delta = side / lines
+        # tools.feedback(f'{side=} {lines=} {delta=}')
+        for number in range(0, lines + 1):
+            left_pt = tools.point_on_line(
+                 vertices[left_nodes[0]], vertices[left_nodes[1]], delta * number)
+            right_pt = tools.point_on_line(
+                 vertices[right_nodes[0]], vertices[right_nodes[1]], delta * number)
+            self.make_path_points(cnv, left_pt, right_pt)
+
+    def debug(self, canvas, **kwargs):
+        """Execute any debug statements."""
+        if self.run_debug:
+            if kwargs.get('vertices', []):  # display vertex index number next to vertex
+                canvas.setFillColor(lightsteelblue)
+                canvas.setFont(self.font_face, 10)
+                for key, vert in enumerate(kwargs.get('vertices')):
+                    self.draw_multi_string(canvas, vert.x, vert.y, f'{key}')
 
     def V(self, *args):
         """Placeholder for value evaluator."""

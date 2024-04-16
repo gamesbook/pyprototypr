@@ -575,6 +575,23 @@ class OctagonShape(BaseShape):
         side = self._u.height / (1 + math.sqrt(2.0))
         return 2 * side * side * (1 + math.sqrt(2))
 
+    def draw_hatching(self, cnv, side: float, vertices: list, num: int):
+        self.set_canvas_props(
+            stroke=self.hatch_stroke,
+            stroke_width=self.hatch_width,
+            stroke_cap=self.hatch_cap)
+        _dirs = self.hatch_directions.lower().split()
+        lines = int(num)
+        if num >= 1:
+            if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
+                self.lines_between_sides(cnv, side, lines, vertices, (0, 1), (5, 4))
+            if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
+                self.lines_between_sides(cnv, side, lines, vertices, (2, 3), (7, 6))
+            if 'n' in _dirs or 's' in _dirs:  # vertical
+                self.lines_between_sides(cnv, side, lines, vertices, (3, 4), (0, 7))
+            if 'e' in _dirs or 'w' in _dirs:  # horizontal
+                self.lines_between_sides(cnv, side, lines, vertices, (1, 2), (6, 5))
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an octagon on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
@@ -603,15 +620,15 @@ class OctagonShape(BaseShape):
         side = self._u.height / (1 + math.sqrt(2.0))
         self.area = self.calculate_area()
         zzz = math.sqrt((side * side) / 2.0)
-        self.vertices = [  # clockwise from bottom-left; relative to centre
-            (c_x - side / 2.0, c_y - self._u.height / 2.0),  # 1
-            (c_x - self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz),  # 2
-            (c_x - self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz + side),  # 3
-            (c_x - side / 2.0, c_y + self._u.height / 2.0),  # 4
-            (c_x + side / 2.0, c_y + self._u.height / 2.0),  # 5
-            (c_x + self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz + side),  # 6
-            (c_x + self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz),  # 7
-            (c_x + side / 2.0, c_y - self._u.height / 2.0),  # 8
+        self.vertices = [  # Points clockwise from bottom-left; relative to centre
+            Point(c_x - side / 2.0, c_y - self._u.height / 2.0),  # 1
+            Point(c_x - self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz),  # 2
+            Point(c_x - self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz + side),  # 3
+            Point(c_x - side / 2.0, c_y + self._u.height / 2.0),  # 4
+            Point(c_x + side / 2.0, c_y + self._u.height / 2.0),  # 5
+            Point(c_x + self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz + side),  # 6
+            Point(c_x + self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz),  # 7
+            Point(c_x + side / 2.0, c_y - self._u.height / 2.0),  # 8
         ]
         # canvas
         self.set_canvas_props()
@@ -619,9 +636,14 @@ class OctagonShape(BaseShape):
         pth = cnv.beginPath()
         pth.moveTo(*self.vertices[0])
         for vertex in self.vertices:
-            pth.lineTo(*vertex)
+            pth.lineTo(vertex.x, vertex.y)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        # ---- debug
+        self.debug(cnv, vertices=self.vertices)
+        # ---- draw hatches
+        if self.hatch:
+            self.draw_hatching(cnv, side, self.vertices, self.hatch)
         # ---- cross
         self.draw_cross(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- dot
@@ -889,40 +911,39 @@ class HexShape(BaseShape):
             # tools.feedback(f'{vertices=} {num=} {_dirs=}')
             if self.hex_top in ['p', 'pointy']:
                 if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
-                    self.make_path(cnv, vertices, 0, 3)
+                    self.make_path_vertices(cnv, vertices, 0, 3)
                 if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
-                    self.make_path(cnv, vertices, 1, 4)
+                    self.make_path_vertices(cnv, vertices, 1, 4)
                 if 'n' in _dirs or 's' in _dirs:  # vertical
-                    self.make_path(cnv, vertices, 2, 5)
+                    self.make_path_vertices(cnv, vertices, 2, 5)
             if self.hex_top in ['f', 'flat']:
                 if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
-                    self.make_path(cnv, vertices, 2, 5)
+                    self.make_path_vertices(cnv, vertices, 2, 5)
                 if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
-                    self.make_path(cnv, vertices, 1, 4)
+                    self.make_path_vertices(cnv, vertices, 1, 4)
                 if 'e' in _dirs or 'w' in _dirs:  # horizontal
-                    self.make_path(cnv, vertices, 0, 3)
+                    self.make_path_vertices(cnv, vertices, 0, 3)
         if num >= 3:
-            # v_tl, v_tr, v_bl, v_br
             if self.hex_top in ['p', 'pointy']:
                 if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
-                    self.draw_lines_between_sides(
-                        cnv, side, lines, vertices, (2, 3), (3, 4), (1, 0), (0, 5))
+                    self.lines_between_sides(cnv, side, lines, vertices, (2, 3), (1, 0))
+                    self.lines_between_sides(cnv, side, lines, vertices, (3, 4), (0, 5))
                 if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
-                    self.draw_lines_between_sides(
-                        cnv, side, lines, vertices, (0, 1), (1, 2), (5, 4), (4, 3))
+                    self.lines_between_sides(cnv, side, lines, vertices, (0, 1), (5, 4))
+                    self.lines_between_sides(cnv, side, lines, vertices, (1, 2), (4, 3))
                 if 'n' in _dirs or 's' in _dirs:  # vertical
-                    self.draw_lines_between_sides(
-                        cnv, side, lines, vertices, (1, 2), (2, 3), (0, 5), (5, 4))
+                    self.lines_between_sides(cnv, side, lines, vertices, (1, 2), (0, 5))
+                    self.lines_between_sides(cnv, side, lines, vertices, (2, 3), (5, 4))
             if self.hex_top in ['f', 'flat']:
                 if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
-                    self.draw_lines_between_sides(
-                        cnv, side, lines, vertices, (2, 1), (2, 3), (5, 0), (5, 4))
+                    self.lines_between_sides(cnv, side, lines, vertices, (2, 1), (5, 0))
+                    self.lines_between_sides(cnv, side, lines, vertices, (2, 3), (5, 4))
                 if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
-                    self.draw_lines_between_sides(
-                        cnv, side, lines, vertices, (4, 5), (1, 2), (1, 0), (4, 3))
+                    self.lines_between_sides(cnv, side, lines, vertices, (4, 5), (1, 0))
+                    self.lines_between_sides(cnv, side, lines, vertices, (1, 2), (4, 3))
                 if 'e' in _dirs or 'w' in _dirs:  # horizontal
-                    self.draw_lines_between_sides(
-                        cnv, side, lines, vertices, (0, 1), (0, 5), (3, 2), (3, 4))
+                    self.lines_between_sides(cnv, side, lines, vertices, (0, 1), (3, 2))
+                    self.lines_between_sides(cnv, side, lines, vertices, (0, 5), (3, 4))
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a hexagon on a given canvas."""
@@ -1068,13 +1089,11 @@ class HexShape(BaseShape):
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- debug
-        if kwargs.get('debug', False):
-            cnv.setFillColor(lightsteelblue)
-            cnv.setFont(self.font_face, 10)
-            for key, vert in enumerate(self.vertices):
-                self.draw_multi_string(cnv, vert.x, vert.y, f'{key}')
+        self.debug(cnv, vertices=self.vertices)
         # ---- draw hatches
         if self.hatch:
+            if not self.hatch & 1:
+                tools.feedback('Hatch must be an odd number for a Hexagon', True)
             self.draw_hatching(cnv, side, self.vertices, self.hatch)
         # ---- centred shape (with offset)
         if self.centre_shape:

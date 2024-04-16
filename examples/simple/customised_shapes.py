@@ -159,6 +159,15 @@ Rectangle(
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
+Text(common=header, text="Octagon: hatch")
+Octagon(x=0, y=0, height=1.5, width=1.5, hatch=4, hatch_directions='e', label="e")
+Octagon(x=2, y=0, height=1.5, width=1.5, hatch=4, hatch_directions='n', label="n")
+Octagon(x=0, y=2, height=1.5, width=1.5, hatch=4, hatch_directions='ne', label="ne")
+Octagon(x=2, y=2, height=1.5, width=1.5, hatch=4, hatch_directions='nw', label="nw")
+Octagon(x=1, y=4, height=1.5, width=1.5, hatch=4)
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
 Text(common=header, text="Hexagon: hatch")
 Hexagon(x=0, y=0, height=1.5, hex_top='flat', hatch=5, hatch_directions='e', label="e")
 Hexagon(x=2, y=0, height=1.5, hex_top='pointy', hatch=5, hatch_directions='n', label="n")
@@ -173,6 +182,7 @@ Text(common=header, text="Hexagon: flat; text; hatch")
 Hexagon(
     height=2,
     hatch=3,
+    debug=True,
     title="Title",
     label="Label",
     heading="Heading")

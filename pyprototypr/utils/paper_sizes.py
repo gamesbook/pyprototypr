@@ -1,7 +1,6 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Also see: http://resources.printhandbook.com/pages/paper-size-chart.php 
+# Also see: http://resources.printhandbook.com/pages/paper-size-chart.php
 #   http://www.printernational.org/american-paper-sizes.php
 
 paper_sizes = {

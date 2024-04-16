@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 colors_hex = {
@@ -150,4 +149,3 @@ colors_hex = {
     "ivory": "#fffff0",
     "white": "#ffffff",
 }
-
