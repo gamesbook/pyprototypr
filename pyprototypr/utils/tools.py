@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Utility functions for pyprototypr
 """
@@ -23,12 +21,7 @@ from pyprototypr.utils import tools
 log = logging.getLogger(__name__)
 DEBUG = False
 
-Point = namedtuple(
-    'Point', [
-    'x',
-    'y'
-    ]
-)
+Point = namedtuple('Point', ['x', 'y'])
 
 def script_path():
     """Get the path for a script being called from command line."""

@@ -1,12 +1,10 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Pre-defined templates for pyprototypr
 """
 # lib
 # third party
 from reportlab.lib.units import cm, inch
-#project
+# project
 
 
 CARDS = [
