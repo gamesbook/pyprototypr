@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Create custom shapes for pyprototypr
 """

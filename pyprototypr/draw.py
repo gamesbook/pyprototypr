@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Primary drawing interface for pyprototypr
 """
