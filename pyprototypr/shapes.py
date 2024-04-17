@@ -990,7 +990,7 @@ class HexShape(BaseShape):
                     downshift = diameter - z_fraction if self.row >=1 else 0
                     downshift = downshift * self.row if self.row >=2 else downshift
                     y = self.row * (diameter + side) - downshift + self._u.y + self._o.delta_y
-                    if (self.row + 1) & 1:  # odd row; row are 0-base numbered!
+                    if (self.row + 1) & 1:  # is odd row; row are 0-base numbered!
                         x = self.col * height_flat + half_flat + self._u.x + self._o.delta_x
                     else:  # even row
                         x = self.col * height_flat  + self._u.x + self._o.delta_x
@@ -999,7 +999,7 @@ class HexShape(BaseShape):
                     downshift = diameter - z_fraction if self.row >=1 else 0
                     downshift = downshift * self.row if self.row >=2 else downshift
                     y = self.row * (diameter + side) - downshift + self._u.y + self._o.delta_y
-                    if (self.row + 1) & 1:  # odd row; row are 0-base numbered!
+                    if (self.row + 1) & 1:  # is odd row; row are 0-base numbered!
                         x = self.col * height_flat + self._u.x + self._o.delta_x
                     else:  # even row
                         x = self.col * height_flat + half_flat + self._u.x + self._o.delta_x
@@ -1031,12 +1031,12 @@ class HexShape(BaseShape):
                 if self.hex_offset in ['o', 'O', 'odd']:
                     x = self.col * (half_side + side) + self._u.x + self._o.delta_x
                     y = self.row * half_flat * 2.0 + self._u.y + self._o.delta_y
-                    if (self.col + 1) & 1:  # odd
+                    if (self.col + 1) & 1:  # is odd
                         y = y + half_flat
                 else:  # self.hex_offset in ['e', 'E', 'even']
                     x = self.col * (half_side + side) + self._u.x + self._o.delta_x
                     y = self.row * half_flat * 2.0 + self._u.y + self._o.delta_y
-                    if (self.col + 1) & 1:  # odd
+                    if (self.col + 1) & 1:  # is odd
                         pass
                     else:
                         y = y + half_flat
@@ -1390,6 +1390,38 @@ class CircleShape(BaseShape):
     def calculate_area(self):
         return math.pi * self._u.radius * self._u.radius
 
+    def draw_hatching(self, cnv, num: int):
+
+        self.set_canvas_props(
+            stroke=self.hatch_stroke,
+            stroke_width=self.hatch_width,
+            stroke_cap=self.hatch_cap)
+        _dirs = self.hatch_directions.lower().split()
+        lines = int(num)
+        dist = (self._u.radius * 2.0) / (lines + 1)
+        partial = lines //  2
+
+        # first quadrant vertices
+        vertices = []
+        for line in range(1, partial + 1):
+            _dist = dist * 0.5 if line == 1 and not (lines & 1) else dist
+            y = math.sqrt(_dist * _dist + self._u.radius * self._u.radius) + self.y_c
+            vertices.append(Point(self.x_c + _dist, y))
+
+        if num >= 1:
+            if 'e' in _dirs or 'w' in _dirs:  # horizontal
+                if lines & 1:  # is odd - draw centre line
+                    self.make_path_points(
+                        cnv,
+                        Point(self.x_c + self._u.radius, self.y_c),
+                        Point(self.x_c - self._u.radius, self.y_c))
+            if 'n' in _dirs or 's' in _dirs:  # vertical
+                if lines & 1:  # is odd - draw centre line
+                    self.make_path_points(
+                        cnv,
+                        Point(self.x_c, self.y_c + self._u.radius),
+                        Point(self.x_c, self.y_c - self._u.radius))
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw circle on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
@@ -1404,6 +1436,9 @@ class CircleShape(BaseShape):
         # ---- draw circle
         cnv.circle(
             self.x_c, self.y_c, self._u.radius, stroke=1, fill=1 if self.fill else 0)
+        # ---- draw hatches
+        if self.hatch:
+            self.draw_hatching(cnv, self.hatch)
         # ---- cross
         self.draw_cross(cnv, self.x_c, self.y_c)
         # ---- dot

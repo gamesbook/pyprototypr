@@ -61,6 +61,13 @@ Circle(cx=2, cy=3)
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
+Text(common=header, text="Circle: hatch")
+Circle(cx=1, cy=1, radius=.7, hatch=5, label='5')
+Circle(cx=2, cy=2, radius=.7, hatch=5, hatch_directions='e', label='e')
+Circle(cx=3, cy=3, radius=.7, hatch=5, hatch_directions='n', label='n')
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
 Text(common=header, text="Rectangle: dot & cross")
 Rectangle(height=3, width=2, x=1, y=1, cross_size=0.75, dot_size=0.15)
 PageBreak()
