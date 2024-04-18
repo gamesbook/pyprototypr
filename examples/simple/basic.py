@@ -14,7 +14,9 @@ Create(filename="basic.pdf", margin=1, margin_top=0.25)
 Footer()
 
 # one big hex
-Hexagon(cx=9.5, cy=13.8, side=8, label="WELCOME!\nto the basic pyprototypr demo...", label_size=16)
+Hexagon(x=2, y=8, side=8,
+        label="WELCOME!\nto the basic pyprototypr demo...",
+        label_size=16)
 PageBreak()
 
 # test default labels and autogrid
@@ -23,13 +25,14 @@ Polygon(x=4, y=25, radius=2, rotate=30, label="polygon6")
 Polygon(x=10, y=25, radius=2, sides=8, rotate=22.5, label="polygon8")
 Polygon(x=16, y=24.5, radius=2.5, sides=2.5, rotate=30, label="polygon3")
 Rectangle(x=5.5, y=18.5, width=9, height=3, label="rectangle")
-Hexagon(cx=4, cy=15, side=2, label="hexagon")
+Hexagon(x=2, y=13, side=2, label="hexagon")
 Star(x=10, y=15, vertices=5, radius=2, label="star")
 Octagon(cx=16, cy=15, width=3.5, height=3.5, label="octagon")
 Circle(cx=16, cy=9, radius=2, label="circle")
 Ellipse(x=1, y=7, xe=8, ye=11, label="ellipse")
 Rhombus(x=8.5, y=1, width=3, height=5, label="rhombus")
 Compass(cx=4, cy=3, radius=2, title="compass")
+Square(x=14, y=1, side=4, label="square")
 
 PageBreak()
 
@@ -62,7 +65,7 @@ points = [
 ]
 Shape(points=points, stroke=indianred, fill=red)
 pointstr = "0,0 0,1 2,0 2,1 0,0"
-Shape(x=9, y=4, points=pointstr, stroke=blue, fill=None)
+Shape(x=9, y=4, points=pointstr, stroke=blue)
 PageBreak()
 
 # pentangle star
@@ -174,6 +177,7 @@ Grid(rows=27, cols=19, size=1.0, stroke=mediumseagreen, stroke_width=1.5)
 PageBreak()
 
 # PNG image and various text positions
+Rectangle(x=5.9, y=10.9, width=7.2, height=6.2, stroke=silver)
 Image(
     "sholes_typewriter.png",
     x=6,
@@ -187,12 +191,12 @@ Image(
     title="Fig 2. Sholes typewriter",
     title_stroke=green,
 )
-Rectangle(x=6, y=11, width=7, height=6, fill=None, stroke=silver)
 PageBreak()
 
 # SVG image
 # Typewriter by ZakaUddin from
 # <a href="https://thenounproject.com/browse/icons/term/typewriter/" target="_blank" title="Typewriter Icons">Noun Project</a> (CC BY 3.0)
+Rectangle(x=6, y=11, width=7, height=6.25, stroke=silver)
 Image(
     # "Typewriter_Vector.svg",
     "noun-typewriter-3933515.svg",
@@ -208,21 +212,19 @@ Image(
     title_stroke=green,
     scaling=0.6,
 )
-Rectangle(x=6, y=11, width=7, height=6.25, fill=None, stroke=silver)
 PageBreak()
 
 
 # text wrapping & justification
-LATIN = """At cum perfecto
-praesent, ne causae voluptua reprimique usu, his id odio tamquam
-<strike>senserit</strike>.<br/>
+LATIN = """At cum perfecto praesent, ne causae voluptua reprimique usu,
+his id odio tamquam <strike>senserit</strike>.<br/>
 <br/>
-Eu facete audire assentor usu. Legendos reformidans et vel. Ignota reprehendunt
+Eu facete audire assentor usu. Legendos reformidans et vel. Ignota <u>seprehendunt</u>
 nam an, vix ad veri maiorum vivendo. Per at ullum iracundia intellegam, alii
-nonumy deterruisset ne sed, cum cu stet reque <b>signiferumque</b>.<br/>
+nonumy deterruisset ne sed, cum cu quet reque <b>signiferumque</b>.<br/>
 <br/>
-Qui at primis regione consetetur. Id vis viris antiopam gloriatur, suscipit
-ex has, an ius mazim <i>similique</i>.
+<font face="times" color="red">Qui at primis regione consetetur. </font>
+Id vis viris antiopam gloriatur, muscipit ex has, an ius mazim <i>similique</i>.
 """
 Rectangle(x=4.5, y=0, width=10, height=5, stroke_width=1, stroke=grey)
 Text(
@@ -235,11 +237,11 @@ Text(x=4.5, y=12.25, width=10, height=5, wrap=True, align="centre", text=LATIN)
 Rectangle(x=4.5, y=18, width=10, height=5, stroke_width=1, stroke=grey)
 Text(x=4.5, y=18.25, width=10, height=5, wrap=True, align="justify", text=LATIN)
 
-# text alignment (default is centre); add line break via \n
-Text(text="<sholes typewriter!", x=4.5, y=24, align="left")
-Text(text="sholes typewriter!>", x=4.5, y=24.5, align="right")
+# text alignment (default is centre);
+Text(text="sholes\ntypewriter!", x=4.5, y=26)  #  add line break via \n
 Text(text="sholes typewriter!", x=4.5, y=25, align="centre")
-Text(text="sholes\ntypewriter!", x=4.5, y=26)
+Text(text="sholes typewriter!>", x=4.5, y=24.5, align="right")
+Text(text="<sholes typewriter!", x=4.5, y=24, align="left")
 PageBreak()
 
 Save()

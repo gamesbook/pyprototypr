@@ -1170,15 +1170,17 @@ class BaseShape:
             canvas.setFillColor(self.heading_stroke)
             self.draw_multi_string(canvas, x, y + y_offset, self.heading, rotate=rotate)
 
-    def draw_label(self, canvas, x, y, align=None, rotate=0):
-        """Draw the label for a shape (usually at the centre of the shape).
+    def draw_label(self, canvas, x, y, align=None, rotate=0, centred=True):
+        """Draw the label for a shape (usually at the centre).
 
         Requires native units (i.e. points)!
         """
         if self.label:
+            y = y - (self.label_size / 3.0) if centred else y
             canvas.setFont(self.font_face, self.label_size)
             canvas.setFillColor(self.label_stroke)
-            self.draw_multi_string(canvas, x, y, self.label, align=align, rotate=rotate)
+            self.draw_multi_string(
+                canvas, x, y, self.label, align=align, rotate=rotate)
 
     def draw_title(self, canvas, x, y, y_offset=0, align=None, rotate=0):
         """Draw the title for a shape (normally below the shape).

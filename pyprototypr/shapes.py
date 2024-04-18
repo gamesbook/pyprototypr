@@ -165,7 +165,7 @@ class LineShape(BaseShape):
         # ---- calculate line rotation
         compass, rotate = tools.angles_from_points(x, y, x_1, y_1)
         # ----  text
-        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate)
+        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False)
         # ----  dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
 
@@ -218,8 +218,10 @@ class ArrowShape(BaseShape):
         self.arrow_head()
         # ---- tail
         self.arrow_tail()
+        # ---- calculate line rotation
+        compass, rotate = tools.angles_from_points(x, y, x_1, y_1)
         # ---- text
-        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
+        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False)
         # ---- dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
 
@@ -279,7 +281,7 @@ class RectangleShape(BaseShape):
     def calculate_area(self):
         return self._u.width * self._u.height
 
-    def draw_hatching(self, cnv, vertices: list, num: int):
+    def draw_hatch(self, cnv, vertices: list, num: int):
         if self.rounding or self.rounded:
             tools.feedback('No hatching permissible with a rounded Rectangle', True)
         if self.notch or self.notch_x or self.notch_y:
@@ -461,9 +463,9 @@ class RectangleShape(BaseShape):
                 stroke=1,
                 fill=1 if self.fill else 0,
             )
-        # ---- draw hatches
+        # ---- draw hatch
         if self.hatch:
-            self.draw_hatching(cnv, self.vertices, self.hatch)
+            self.draw_hatch(cnv, self.vertices, self.hatch)
         # ---- grid marks
         self.set_canvas_props(
             stroke=self.grid_color,
@@ -575,7 +577,7 @@ class OctagonShape(BaseShape):
         side = self._u.height / (1 + math.sqrt(2.0))
         return 2 * side * side * (1 + math.sqrt(2))
 
-    def draw_hatching(self, cnv, side: float, vertices: list, num: int):
+    def draw_hatch(self, cnv, side: float, vertices: list, num: int):
         self.set_canvas_props(
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_width,
@@ -641,9 +643,9 @@ class OctagonShape(BaseShape):
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- debug
         self.debug(cnv, vertices=self.vertices)
-        # ---- draw hatches
+        # ---- draw hatch
         if self.hatch:
-            self.draw_hatching(cnv, side, self.vertices, self.hatch)
+            self.draw_hatch(cnv, side, self.vertices, self.hatch)
         # ---- cross
         self.draw_cross(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- dot
@@ -898,7 +900,7 @@ class HexShape(BaseShape):
             side = self._u.height / math.sqrt(3)
         return (3.0 * math.sqrt(3.0) * side * side) / 2.0
 
-    def draw_hatching(self, cnv, side: float, vertices: list, num: int):
+    def draw_hatch(self, cnv, side: float, vertices: list, num: int):
 
         self.set_canvas_props(
             stroke=self.hatch_stroke,
@@ -1090,11 +1092,11 @@ class HexShape(BaseShape):
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- debug
         self.debug(cnv, vertices=self.vertices)
-        # ---- draw hatches
+        # ---- draw hatch
         if self.hatch:
             if not self.hatch & 1:
                 tools.feedback('Hatch must be an odd number for a Hexagon', True)
-            self.draw_hatching(cnv, side, self.vertices, self.hatch)
+            self.draw_hatch(cnv, side, self.vertices, self.hatch)
         # ---- centred shape (with offset)
         if self.centre_shape:
             # tools.feedback(f'DRAW shape:{self.dot_shape} at ({x_d=},{y_d=})')
@@ -1218,7 +1220,7 @@ class RightAngledTriangleShape(BaseShape):
 
 class EquilateralTriangleShape(BaseShape):
 
-    def draw_hatching(self, cnv, side: float, vertices: list, num: int):
+    def draw_hatch(self, cnv, side: float, vertices: list, num: int):
         self.set_canvas_props(
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_width,
@@ -1282,9 +1284,9 @@ class EquilateralTriangleShape(BaseShape):
         # tools.feedback(f'{x_c=} {y_c=}')
         # ---- debug
         self.debug(cnv, vertices=self.vertices)
-        # ---- draw hatches
+        # ---- draw hatch
         if self.hatch:
-            self.draw_hatching(cnv, side, self.vertices, self.hatch)
+            self.draw_hatch(cnv, side, self.vertices, self.hatch)
         # ---- text
         self.draw_label(cnv, x_c, y_c)
         self.draw_title(cnv, x_c, y_c, height / 2.0 + 0.25 * self.heading_size)
@@ -1390,8 +1392,14 @@ class CircleShape(BaseShape):
     def calculate_area(self):
         return math.pi * self._u.radius * self._u.radius
 
-    def draw_hatching(self, cnv, num: int):
+    def draw_hatch(self, cnv, num: int, x_c: float, y_c: float):
+        """Draw hatch lines from one edge to the other.
 
+        Args:
+            num: number of lines
+            x_c: x-centre of circle
+            y_c: y-centre of circle
+        """
         self.set_canvas_props(
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_width,
@@ -1399,28 +1407,56 @@ class CircleShape(BaseShape):
         _dirs = self.hatch_directions.lower().split()
         lines = int(num)
         dist = (self._u.radius * 2.0) / (lines + 1)
-        partial = lines //  2
+        partial = lines // 2
 
-        # first quadrant vertices
-        vertices = []
-        for line in range(1, partial + 1):
-            _dist = dist * 0.5 if line == 1 and not (lines & 1) else dist
-            y = math.sqrt(_dist * _dist + self._u.radius * self._u.radius) + self.y_c
-            vertices.append(Point(self.x_c + _dist, y))
+        # calculate relative distances for each line - (x, y) tuples
+        vertical_distances, horizontal_distances = [], []
+        for line_no in range(1, partial + 1):
+            if lines & 1:
+                dist_h = dist * line_no
+            else:
+                dist_h = dist * 0.5 if line_no == 1 else dist * line_no - dist * 0.5
+            dist_v = math.sqrt(self._u.radius * self._u.radius - dist_h * dist_h)
+            vertical_distances.append((dist_h, dist_v))
+            horizontal_distances.append((dist_v, dist_h))
 
-        if num >= 1:
+        if num >= 1 and lines & 1:  # is odd - draw centre lines
             if 'e' in _dirs or 'w' in _dirs:  # horizontal
-                if lines & 1:  # is odd - draw centre line
-                    self.make_path_points(
-                        cnv,
-                        Point(self.x_c + self._u.radius, self.y_c),
-                        Point(self.x_c - self._u.radius, self.y_c))
+                self.make_path_points(
+                    cnv,
+                    Point(x_c + self._u.radius, y_c),
+                    Point(x_c - self._u.radius, y_c))
             if 'n' in _dirs or 's' in _dirs:  # vertical
-                if lines & 1:  # is odd - draw centre line
-                    self.make_path_points(
-                        cnv,
-                        Point(self.x_c, self.y_c + self._u.radius),
-                        Point(self.x_c, self.y_c - self._u.radius))
+                self.make_path_points(
+                    cnv,
+                    Point(x_c, y_c + self._u.radius),
+                    Point(x_c, y_c - self._u.radius))
+
+        if num <= 1:
+            return
+
+        if 'e' in _dirs or 'w' in _dirs:  # horizontal
+            for dist in horizontal_distances:
+                self.make_path_points(  # "above" diameter
+                    cnv,
+                    Point(x_c - dist[0], y_c + dist[1]),
+                    Point(x_c + dist[0], y_c + dist[1]))
+                self.make_path_points(  # "below" diameter
+                    cnv,
+                    Point(x_c - dist[0], y_c - dist[1]),
+                    Point(x_c + dist[0], y_c - dist[1]))
+
+        if 'n' in _dirs or 's' in _dirs:  # vertical
+            for dist in vertical_distances:
+                self.make_path_points(  # "right" of diameter
+                    cnv,
+                    Point(x_c + dist[0], y_c + dist[1]),
+                    Point(x_c + dist[0], y_c - dist[1]))
+                self.make_path_points(  # "left" of diameter
+                    cnv,
+                    Point(x_c - dist[0], y_c + dist[1]),
+                    Point(x_c - dist[0], y_c - dist[1]))
+
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw circle on a given canvas."""
@@ -1436,9 +1472,17 @@ class CircleShape(BaseShape):
         # ---- draw circle
         cnv.circle(
             self.x_c, self.y_c, self._u.radius, stroke=1, fill=1 if self.fill else 0)
-        # ---- draw hatches
+        # ---- draw hatch
         if self.hatch:
-            self.draw_hatching(cnv, self.hatch)
+            if self.rotate:
+                # tools.feedback(f'{self.hatch=}, {self.rotate=}, {type(cnv)}')
+                cnv.saveState()
+                cnv.translate(self.x_c, self.y_c)
+                self.draw_hatch(cnv, self.hatch, 0, 0)
+                cnv.rotate(self.rotate)
+                cnv.restoreState()
+            else:
+                self.draw_hatch(cnv, self.hatch, self.x_c, self.y_c)
         # ---- cross
         self.draw_cross(cnv, self.x_c, self.y_c)
         # ---- dot
