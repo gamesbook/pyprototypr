@@ -167,6 +167,11 @@ Square()
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
+Text(common=header, text="Sector")
+Sector()
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
 Text(common=header, text="Fill & Stroke")
 Rectangle(fill=yellow, stroke=red, stroke_width=5)
 PageBreak()

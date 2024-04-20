@@ -749,6 +749,64 @@ class BezierShape(BaseShape):
         cnv.bezier(x_1, y_1, x_2, y_2, x_3, y_3, x_4, y_4)
 
 
+class SectorShape(BaseShape):
+    """
+    Sector on a given canvas. Aka "wedge". Aka "slice" or "pie slice".
+
+    Note:
+        * User supplies a "compass" angle i.e. degrees clockwise from North - but this
+          must be converted to a "reportlab" angle i.e. degrees anti-clockwise from East
+    """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(SectorShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        # ---- perform overrides
+        self.radius = self.radius or self.diameter / 2.0
+        if self.cx is None and self.x is None:
+            tools.feedback('Either provide x or cx for Sector', True)
+        if self.cy is None and self.y is None:
+            tools.feedback('Either provide y or cy for Sector', True)
+        if self.cx and self.cy:
+            self.x = self.cx - self.radius
+            self.y = self.cy - self.radius
+            self.x1 = self.cx + self.radius
+            self.y1 = self.cy + self.radius
+            # tools.feedback(f'{self.x=} {self.y=} {self.x1=} {self.y1=}')
+        else:
+            self.x1 = self.x + 2.0 * self.radius
+            self.y1 = self.y + 2.0 * self.radius
+        # ---- calcuate centre
+        radius = self._u.radius
+        if self.row is not None and self.col is not None:
+            self.x_c = self.col * 2.0 * radius + radius
+            self.y_c = self.row * 2.0 * radius + radius
+            # log.debug(f"{self.col=}, {self.row=}, {self.x_c=}, {self.y_c=}")
+        elif self.cx and self.cy:
+            self.x_c = self._u.cx
+            self.y_c = self._u.cy
+        else:
+            self.x_c = self._u.x + radius
+            self.y_c = self._u.y + radius
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw sector on a given canvas."""
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        # convert to using units
+        x_1 = self.unit(self.x) + self._o.delta_x
+        y_1 = self.unit(self.y) + self._o.delta_y
+        x_2 = self.unit(self.x1) + self._o.delta_x
+        y_2 = self.unit(self.y1) + self._o.delta_y
+        # angles
+        start = (450 - self.angle) % 360.0 - self.angle_width
+        width = self.angle_width
+        # canvas
+        self.set_canvas_props()
+        # ---- draw sector
+        cnv.wedge(
+            x_1, y_1, x_2, y_2, start, width, stroke=1, fill=1 if self.fill else 0)
+
+
 class PolygonShape(BaseShape):
     """
     Regular polygon on a given canvas.

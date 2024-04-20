@@ -415,9 +415,10 @@ class BaseCanvas:
         self.leading = self.defaults.get('leading', 12)
         # ---- image / file
         self.source = self.defaults.get('source', None)  # file or http://
-        # ---- line / ellipse / bezier
+        # ---- line / ellipse / bezier / sector
         self.length = self.defaults.get('length', self.default_length)
         self.angle = self.defaults.get('angle', 0)
+        self.angle_width = self.defaults.get('angle_width', 90)
         self.xe = self.defaults.get('xe', 0)  # second point for ellipse
         self.ye = self.defaults.get('ye', 0)
         # ---- arrow: head and tail
@@ -653,6 +654,7 @@ class BaseShape:
         # ---- line / ellipse / bezier
         self.length = kwargs.get('length', cnv.length)
         self.angle = kwargs.get('angle', cnv.angle)  # anti-clock from flat
+        self.angle_width = kwargs.get('angle_width', cnv.angle_width)  # delta degrees
         self._angle_theta = math.radians(self.angle)
         self.xe = kwargs.get('xe', cnv.xe)
         self.ye = kwargs.get('ye', cnv.ye)
@@ -671,10 +673,10 @@ class BaseShape:
         self.tail_stroke = kwargs.get('tail_stroke', cnv.stroke)
         self.head_stroke_width = kwargs.get('head_stroke_width', cnv.stroke_width)
         self.tail_stroke_width = kwargs.get('tail_stroke_width', cnv.stroke_width)
-        # ---- line / bezier
+        # ---- line / bezier / sector
         self.x_1 = kwargs.get('x1', cnv.x_1)
         self.y_1 = kwargs.get('y1', cnv.y_1)
-        # ---- bezier
+        # ---- bezier / sector
         self.x_2 = kwargs.get('x2', cnv.x_2)
         self.y_2 = kwargs.get('y2', cnv.y_2)
         self.x_3 = kwargs.get('x3', cnv.x_3)

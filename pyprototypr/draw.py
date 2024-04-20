@@ -25,7 +25,7 @@ from .shapes import (
     DeckShape, EllipseShape, EquilateralTriangleShape, FooterShape, GridShape, HexShape,
     ArcShape, ImageShape, LineShape, OctagonShape, PolygonShape, PolylineShape,
     Query, RectangleShape, RepeatShape, RhombusShape, RightAngledTriangleShape,
-    ShapeShape, SquareShape, StarShape, StarFieldShape, TextShape)
+    SectorShape, ShapeShape, SquareShape, StarShape, StarFieldShape, TextShape)
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
@@ -690,6 +690,24 @@ def rectangle(row=None, col=None, **kwargs):
     kwargs['row'] = row
     kwargs['col'] = col
     return RectangleShape(canvas=cnv, **kwargs)
+
+
+def Sector(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    sct = sector(row=row, col=col, **kwargs)
+    sct.draw()
+    return sct
+
+
+def sector(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    kwargs['row'] = row
+    kwargs['col'] = col
+    return SectorShape(canvas=cnv, **kwargs)
 
 
 def Square(row=None, col=None, **kwargs):

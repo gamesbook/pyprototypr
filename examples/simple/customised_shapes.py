@@ -217,6 +217,13 @@ EquilateralTriangle(x=1, y=1, flip="up", hand="left", label="UL", fill="red")
 EquilateralTriangle(x=1, y=1, flip="down", hand="left", label="DL", fill="blue")
 PageBreak()
 
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Sector; same centre")
+Sector(cx=2, cy=3, radius=2, fill=black, angle=45, angle_width=30)
+Sector(cx=2, cy=3, radius=2, fill=black, angle=165, angle_width=30)
+Sector(cx=2, cy=3, radius=2, fill=black, angle=285, angle_width=30)
+PageBreak()
+
 Text(common=header, text="END...")
 PageBreak(footer=True)
 

@@ -14,7 +14,18 @@ Create(filename="wip.pdf",
 
 header = Common(x=0, y=6, font_size=8, align="left")
 
-# AutoGrid(stroke_width=0.5)
+AutoGrid(stroke_width=0.5)
+Text(common=header, text="Sector")
+# Sector(cx=1, cy=1, radius=1, angle=0, angle_width=90)
+# Sector(cx=2, cy=3, radius=1, angle=30, angle_width=90)
+# Sector(cx=3, cy=5, radius=1, angle=60, angle_width=90)
+
+
+Sector()
+#Sector(cx=1, cy=1, radius=1, angle=270, angle_width=30)
+Sector(cx=2, cy=3, radius=1, angle=300, angle_width=30)
+Sector(cx=3, cy=5, radius=1, angle=330, angle_width=30)
+
 # Lines(x=1, x1=1, y=3, y1=6, cols=2, height=1.5, label_size=8, label="col; h=1.5")
 # Lines(x=1, x1=4, y=1, y1=1, rows=2, height=1.0, label_size=8, label="rows; h=1.0")
 # Text(common=header, text="Lines")
