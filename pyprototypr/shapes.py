@@ -713,7 +713,7 @@ class ArcShape(BaseShape):
         # canvas
         self.set_canvas_props()
         # ---- draw arc
-        cnv.arc(x_1, y_1, x_2, y_2)
+        cnv.arc(x_1, y_1, x_2, y_2, startAng=0, extent=self.angle_width) # anti-clock from flat; 90°
 
 
 class BezierShape(BaseShape):
@@ -733,10 +733,10 @@ class BezierShape(BaseShape):
         # convert to using units
         x_1 = self._u.x + self._o.delta_x
         y_1 = self._u.y + self._o.delta_y
-        if not self.x_1:
-            self.x_1 = self.x + self.default_length
+        if not self.x1:
+            self.x1 = self.x + self.default_length
         if not self.y_1:
-            self.y_1 = self.y + self.default_length
+            self.y1 = self.y + self.default_length
         x_2 = self.unit(self.x_1) + self._o.delta_x
         y_2 = self.unit(self.y_1) + self._o.delta_y
         x_3 = self.unit(self.x_2) + self._o.delta_x

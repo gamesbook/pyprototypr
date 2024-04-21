@@ -546,6 +546,7 @@ class BaseShape:
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         self.kwargs = kwargs
+        # tools.feedback(f'*** BaseShape {kwargs=}')
         # ---- constants
         self.default_length = 1
         self.show_id = False  # True
@@ -554,7 +555,6 @@ class BaseShape:
         cnv = self.canvas  # shortcut for use in getting defaults
         # log.debug("BaseShape types %s %s %s", type(self.canvas), type(canvas), type(cnv))
         self._object = _object  # placeholder for an incoming Shape object
-        log.debug("BaseShape kwargs:%s", self.kwargs)
         self.shape_id = None
         self.stylesheet = getSampleStyleSheet()
         self.sequence = kwargs.get('sequence', [])  # e.g. card numbers
@@ -649,9 +649,10 @@ class BaseShape:
         self.leading = kwargs.get('leading', cnv.leading)
         # ---- fill color
         self.fill = kwargs.get('fill', kwargs.get('fill_color', cnv.fill))
+        # tools.feedback(f"***  BShp init {kwargs.get('fill')=} {self.fill=} {kwargs.get('fill_color')=}")
         # ---- image / file
         self.source = kwargs.get('source', cnv.source)  # file or http://
-        # ---- line / ellipse / bezier
+        # ---- line / ellipse / bezier / arc
         self.length = kwargs.get('length', cnv.length)
         self.angle = kwargs.get('angle', cnv.angle)  # anti-clock from flat
         self.angle_width = kwargs.get('angle_width', cnv.angle_width)  # delta degrees
@@ -825,7 +826,7 @@ class BaseShape:
     def set_canvas_props(
             self,
             cnv=None,
-            fill=None,
+            fill=None,  # reserve None for 'no fill at all'
             stroke=None,
             stroke_width=None,
             stroke_cap=None,
@@ -834,8 +835,6 @@ class BaseShape:
             debug=False):
         """Set reportlab canvas properties for font, line and colors"""
         canvas = cnv if cnv else self.canvas.canvas
-        log.debug('scp: %s %s', self.font_face, self.font_size)
-        log.debug('scp: stroke %s / self.stroke %s', stroke, self.stroke)
         try:
             canvas.setFont(self.font_face, self.font_size)
         except AttributeError:
@@ -846,8 +845,12 @@ class BaseShape:
                 ' Please check that this is installed on your system.',
                 stop=True)
         try:
-            _fill = fill or self.fill
-            if _fill:
+            if fill is None and self.fill is None:
+                canvas.setFillColor(white, 0)  # full transparency
+                if debug:
+                    tools.feedback('~~~ NO fill color set!')
+            else:
+                _fill = fill or self.fill
                 if self.transparency:
                     try:
                         alpha = float(self.transparency) / 100.0
@@ -855,14 +858,17 @@ class BaseShape:
                         tools.feedback(
                             f'Unable to use "{self.transparency}" as the transparency'
                             ' - must be from 1 to 100', True)
-                    _fill = Color(_fill.red, _fill.green, _fill.blue, alpha)
-            canvas.setFillColor(_fill)
-            if debug:
-                tools.feedback(f'Fill color set: {_fill}')
+                    _fill = Color(fill.red, fill.green, fill.blue, alpha)
+                else:
+                    canvas.setFillColor(_fill)
+                if debug:
+                    tools.feedback(f'~~~ Fill color set: {_fill}')
         except AttributeError:
-            pass
+            tools.feedback('Unable to set fill color ')
         try:
             canvas.setStrokeColor(stroke or self.stroke)
+        except TypeError:
+            tools.feedback('Please check your stroke setting; should be a color value')
         except AttributeError:
             pass
         try:

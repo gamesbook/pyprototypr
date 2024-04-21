@@ -49,3 +49,28 @@ groceries =  ['apples', 'oranges', 'bananas', 'plums']
 ```
 This is so that the list can be referred to using this shorthand reference.  There
 are examples of the use of lists of elsewhere in the documents and the coded examples.
+
+
+## Errors
+
+While **pyprototypr** will attempt to check the details of the script, its unlikely to
+be able to catch every mistake; under the hood, Python will also report on errors,
+for example:
+```
+    Arc(x=1, y=1, x=2, y1=3)
+                  ^^^
+SyntaxError: keyword argument repeated: x
+```
+It will attempt to identify the type and location of the error - a `SyntaxError` is
+really a grammar error of same type - as well as what the cause might be. Here, you'd
+need to change this to `x1` which is the intended property.
+
+Another example:
+```
+    Rectangle(height=1.5, stroke=green, fill=bred)
+                                             ^^^^
+NameError: name 'bred' is not defined
+```
+In this case, the script uses the name of something - `bred` - which is unknown. It
+could be a simple spelling mistake e.g. it should be `red` or possibly you'd meant to
+define `bred` as special color before using it for the rectangle.
