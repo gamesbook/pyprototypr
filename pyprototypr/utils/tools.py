@@ -23,6 +23,8 @@ log = logging.getLogger(__name__)
 DEBUG = False
 
 Point = namedtuple('Point', ['x', 'y'])
+Link = namedtuple('Link', ['a', 'b', 'style'])
+
 
 def script_path():
     """Get the path for a script being called from command line."""
@@ -587,6 +589,8 @@ def angles_from_points(x1, y1, x2, y2, radians=False):
         compass (float): degrees clockwise from North
         rotation (float): degrees anti-clockwise from East
 
+    Doc Test:
+
     >>> # clockwise around circle from 0 degrees at North
     >>> angles_from_points(0, 0, 0, 4)
     (0.0, 90.0)
@@ -626,6 +630,50 @@ def angles_from_points(x1, y1, x2, y2, radians=False):
     rotation = (450 - compass) % 360.0
     # feedback(f'angle fn: {compass=}, {rotation=}')
     return compass, rotation
+
+
+def arc_angle_between_hexsides(side_a, side_b):
+    """Arc of angle between two sides of a hexagon.
+
+    Notes:
+        Sides are numbered from 1 to 6 (by convention starting at lower left).
+
+    Doc Test:
+
+    >>> arc_angle_between_hexsides(1, 1)
+    0.0
+    >>> arc_angle_between_hexsides(1, 2)
+    60.0
+    >>> arc_angle_between_hexsides(1, 3)
+    120.0
+    >>> arc_angle_between_hexsides(1, 4)
+    180.0
+    >>> arc_angle_between_hexsides(1, 5)
+    120.0
+    >>> arc_angle_between_hexsides(1, 6)
+    60.0
+    >>> arc_angle_between_hexsides(6, 1)
+    60.0
+    >>> arc_angle_between_hexsides('a', 1)
+    """
+    try:
+        _side_a = 6 if (side_a % 6 == 0) else side_a % 6
+        _side_b = 6 if (side_b % 6 == 0) else side_b % 6
+    except TypeError:
+        # tools.feedback(f'Cannot use {side_a} and/or {side_b} as side numbers.', True)
+        return None
+    if _side_a - _side_b > 3:
+        result = (_side_b, _side_a)
+    else:
+        result = (_side_b, _side_a) if _side_b > _side_a else (_side_a, _side_b)
+    dist = (result[0] - result[1]) % 6
+    if _side_a == 2 and _side_b == 6:
+        dist = 2
+    if _side_a == 1 and _side_b == 5:
+        dist = 2
+    if _side_a == 1 and _side_b == 6:
+        dist = 1
+    return dist * 60.0
 
 
 if __name__ == "__main__":

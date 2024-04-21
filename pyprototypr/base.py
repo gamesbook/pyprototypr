@@ -483,6 +483,10 @@ class BaseCanvas:
         self.caltrops = self.defaults.get('caltrops', None)
         self.caltrops_fraction = self.defaults.get('caltrops_fraction', None)
         self.caltrops_invert = kwargs.get('caltrops_invert', False)
+        self.links = self.defaults.get('links', None)
+        self.link_width = self.defaults.get('link_width', self.stroke_width)
+        self.link_stroke = self.defaults.get('link_stroke', self.stroke)
+        self.link_cap = self.defaults.get('link_cap', self.line_cap)
         # ---- hexagons
         self.hid = self.defaults.get('id', '')  # HEX ID
         self.hex_rows = self.defaults.get('hex_rows', 0)
@@ -719,6 +723,10 @@ class BaseShape:
         self.caltrops = kwargs.get('caltrops', cnv.caltrops)
         self.caltrops_fraction = kwargs.get('caltrops_fraction', cnv.caltrops_fraction)
         self.caltrops_invert = kwargs.get('caltrops_invert', cnv.caltrops_invert)
+        self.links = kwargs.get('links', cnv.links)
+        self.link_width = kwargs.get('link_width', cnv.link_width)
+        self.link_stroke = kwargs.get('link_stroke', cnv.stroke)
+        self.link_cap = kwargs.get('link_cap', cnv.link_cap)
         # ---- hexagons
         self.hid = kwargs.get('id', cnv.hid)  # HEX ID
         self.hex_rows = kwargs.get('hex_rows', cnv.hex_rows)
@@ -1266,10 +1274,12 @@ class BaseShape:
         """Execute any debug statements."""
         if self.run_debug:
             if kwargs.get('vertices', []):  # display vertex index number next to vertex
-                canvas.setFillColor(lightsteelblue)
-                canvas.setFont(self.font_face, 10)
+                canvas.setFillColor(red)  # lightsteelblue)
+                canvas.setFont(self.font_face, 4)
                 for key, vert in enumerate(kwargs.get('vertices')):
-                    self.draw_multi_string(canvas, vert.x, vert.y, f'{key}')
+                    x = self.points_to_value(vert.x)
+                    y = self.points_to_value(vert.y)
+                    self.draw_multi_string(canvas, vert.x, vert.y, f'{key}:{x:.2f},{y:.2f}')
 
     def V(self, *args):
         """Placeholder for value evaluator."""

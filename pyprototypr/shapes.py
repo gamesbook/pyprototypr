@@ -13,7 +13,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.colors import black, white, lightsteelblue
 
 # local
-from pyprototypr.utils.tools import Point
+from pyprototypr.utils.tools import Point, Link  # named tuples
 from pyprototypr.utils import tools
 from pyprototypr.base import BaseShape, BaseCanvas, UNITS, COLORS, PAGES
 
@@ -701,6 +701,7 @@ class ArcShape(BaseShape):
         """Draw arc on a given canvas."""
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        tools.feedback(f'*** ARC {self.x=} {self.y=} {self.x_1=} {self.y_1=} {self.angle_width=} ')
         # convert to using units
         x_1 = self._u.x + self._o.delta_x
         y_1 = self._u.y + self._o.delta_y
@@ -958,6 +959,67 @@ class HexShape(BaseShape):
             side = self._u.height / math.sqrt(3)
         return (3.0 * math.sqrt(3.0) * side * side) / 2.0
 
+    def draw_links(self, cnv, side: float, vertices: list, links: list):
+        """Draw arcs or lines to link two sides of a hexagon."""
+        self.set_canvas_props(
+            stroke=self.link_stroke,
+            stroke_width=self.link_width,
+            stroke_cap=self.link_cap)
+        _links = links.split(",")
+        for _link in _links:
+            parts = _link.split()
+            try:
+                the_link = Link(
+                    a=int(parts[0]),
+                    b=int(parts[1]),
+                    style=parts[2] if len(parts) > 2 else None)
+                tools.feedback(f'{the_link=}')
+            except TypeError:
+                tools.feedback(
+                    f'Cannot use {parts[0]} and/or {parts[1]} as hex side numbers.',
+                    True)
+            arc_angle = tools.arc_angle_between_hexsides(the_link.a, the_link.b)
+
+            va_start = the_link.a - 1
+            va_end = the_link.a % 6
+            vb_start = the_link.b - 1
+            vb_end = the_link.b % 6
+
+            a_mid = tools.point_on_line(
+                vertices[va_start], vertices[va_end], side / 2.0)
+            b_mid = tools.point_on_line(
+                vertices[vb_start], vertices[vb_end], side / 2.0)
+
+            a_x, a_y = self.points_to_value(a_mid.x), self.points_to_value(a_mid.y)
+            b_x, b_y = self.points_to_value(b_mid.x), self.points_to_value(b_mid.y)
+            vas_x, vas_y = self.points_to_value(vertices[va_start].x  - self._u.margin_left), self.points_to_value(vertices[va_start].y  - self._u.margin_bottom)
+            vae_x, vae_y = self.points_to_value(vertices[va_end].x), self.points_to_value(vertices[va_end].y)
+            vbs_x, vbs_y = self.points_to_value(vertices[vb_start].x), self.points_to_value(vertices[vb_start].y)
+            vbe_x, vbe_y = self.points_to_value(vertices[vb_end].x), self.points_to_value(vertices[vb_end].y)
+
+            tools.feedback(f'{va_start=} {va_end=}')
+            tools.feedback(f'vas_x={vas_x:.2f} vas_y={vas_y:.2f} // vae_x={vae_x:.2f} vae_y={vae_y:.2f} ')
+            tools.feedback(f'ax={a_x:.2f} ay={a_y:.2f}')
+            tools.feedback(f'{arc_angle=}')
+            tools.feedback(f'{vb_start=} {vb_end=}')
+            tools.feedback(f'vbs_x={vbs_x:.2f} vbs_y={vbs_y:.2f} // vbe_x={vbe_x:.2f} vbe_y={vbe_y:.2f} ')
+            tools.feedback(f'bx={b_x:.2f} by={b_y:.2f}')
+
+            #tools.feedback(f'vb_start=} {vb_end=} ')
+            #tools.feedback(f'{b_x=} {b_y=} ')
+
+            the_arc = ArcShape(
+                x=self.points_to_value(a_mid.x),
+                y=self.points_to_value(a_mid.y),
+                x1=self.points_to_value(b_mid.x),
+                y1=self.points_to_value(b_mid.y),
+                stroke=self.link_stroke,
+                stroke_width=self.link_width,
+                stroke_cap=self.link_cap,
+                angle_width=arc_angle)
+            the_arc.draw()
+            # TODO - handle style!
+
     def draw_hatch(self, cnv, side: float, vertices: list, num: int):
 
         self.set_canvas_props(
@@ -1155,6 +1217,9 @@ class HexShape(BaseShape):
             if not self.hatch & 1:
                 tools.feedback('Hatch must be an odd number for a Hexagon', True)
             self.draw_hatch(cnv, side, self.vertices, self.hatch)
+        # ---- draw links
+        if self.links:
+            self.draw_links(cnv, side, self.vertices, self.links)
         # ---- centred shape (with offset)
         if self.centre_shape:
             # tools.feedback(f'DRAW shape:{self.dot_shape} at ({x_d=},{y_d=})')
