@@ -58,6 +58,8 @@ DEBUG = False
 # ---- tuples
 UnitProperties = namedtuple(
     'UnitProperties', [
+        'page_width',
+        'page_height',
         'margin_left',
         'margin_right',
         'margin_bottom',
@@ -315,8 +317,11 @@ class BaseCanvas:
         self._object = None
         self.kwargs = kwargs
         self.run_debug = False
+        self.units = self.get_units(self.defaults.get('units'), cm)
         # ---- page
         self.pagesize = self.get_page(self.defaults.get('pagesize'), A4)
+        self.page_width = self.pagesize[0] / self.units
+        self.page_height = self.pagesize[1] / self.units
         self.margin = self.defaults.get('margin', 1)
         self.margin_top = self.defaults.get('margin_top', self.margin)
         self.margin_bottom = self.defaults.get('margin_bottom', self.margin)
@@ -329,7 +334,6 @@ class BaseCanvas:
         self.grid_length = self.defaults.get('grid_length', 0.85)  # 1/3 inch
         self.grid_offset = self.defaults.get('grid_offset', 0)
         # ---- sizes and positions
-        self.units = self.get_units(self.defaults.get('units'), cm)
         self.row = self.defaults.get('row', None)
         self.col = self.defaults.get('col', self.defaults.get('column', None))
         self.height = self.defaults.get('height', 1)
@@ -454,8 +458,8 @@ class BaseCanvas:
         self.notch_x = self.defaults.get('notch_x', 0)
         self.notch_y = self.defaults.get('notch_y', 0)
         # ---- grid / card layout
-        self.rows = self.defaults.get('rows', 1)
-        self.cols = self.defaults.get('cols', self.defaults.get('columns', 1))
+        self.rows = self.defaults.get('rows', 0)
+        self.cols = self.defaults.get('cols', self.defaults.get('columns', 0))
         # ---- circle / star / polygon
         self.diameter = self.defaults.get('diameter', 1)
         self.radius = self.defaults.get('radius', self.diameter / 2.0)
@@ -568,6 +572,7 @@ class BaseShape:
         self.common = kwargs.get('common', None)
         self.shape = kwargs.get('shape', cnv.shape)
         self.run_debug = kwargs.get("debug", cnv.run_debug)
+        self.units = kwargs.get('units', cnv.units)
         # ---- page
         self.pagesize = kwargs.get('pagesize', cnv.pagesize)
         self.margin = kwargs.get('margin', cnv.margin)
@@ -580,8 +585,9 @@ class BaseShape:
         self.grid_stroke_width = kwargs.get('grid_stroke_width',
                                             cnv.grid_stroke_width)
         self.grid_length = kwargs.get('grid_length', cnv.grid_length)
+        self.page_width = self.pagesize[0] / self.units
+        self.page_height = self.pagesize[1] / self.units
         # ---- sizes and positions
-        self.units = kwargs.get('units', cnv.units)
         self.row = kwargs.get('row', cnv.row)
         self.col = kwargs.get('col', kwargs.get('column', cnv.col))
         self.height = kwargs.get('height', cnv.height)
@@ -803,6 +809,8 @@ class BaseShape:
     def set_unit_properties(self):
         """Convert base properties into unit-based values."""
         self._u = UnitProperties(
+            self.pagesize[0],
+            self.pagesize[1],
             self.unit(self.margin_left) if self.margin_left is not None else None,
             self.unit(self.margin_right) if self.margin_right is not None else None,
             self.unit(self.margin_bottom) if self.margin_bottom is not None else None,
@@ -866,9 +874,10 @@ class BaseShape:
                         tools.feedback(
                             f'Unable to use "{self.transparency}" as the transparency'
                             ' - must be from 1 to 100', True)
-                    _fill = Color(fill.red, fill.green, fill.blue, alpha)
-                else:
-                    canvas.setFillColor(_fill)
+                    z = Color(_fill.red, _fill.green, _fill.blue, alpha)
+                    # tools.feedback(f'~~~ Transp. color set: {z} vs. {_fill}')
+                    _fill = z
+                canvas.setFillColor(_fill)
                 if debug:
                     tools.feedback(f'~~~ Fill color set: {_fill}')
         except AttributeError:

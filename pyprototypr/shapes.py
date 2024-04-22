@@ -126,6 +126,26 @@ class ImageShape(BaseShape):
             self.draw_multi_string(cnv, xc, y + height + cnv._leading, self.heading)
 
 
+class DotShape(BaseShape):
+    """
+    Dot on a given canvas.
+    """
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw a dot on a given canvas."""
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        x = self._u.x + self._o.delta_x
+        y = self._u.y + self._o.delta_y
+        self.fill = self.stroke
+        self.set_canvas_props()
+        size = self.unit(0.1) / 2.0
+        # ---- draw dot
+        cnv.circle(x, y, size, stroke=1, fill=1 if self.fill else 0)
+        # ---- text
+        self.draw_label(cnv, self.x, self.y)
+
+
 class LineShape(BaseShape):
     """
     Line on a given canvas.
@@ -701,7 +721,7 @@ class ArcShape(BaseShape):
         """Draw arc on a given canvas."""
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
-        tools.feedback(f'*** ARC {self.x=} {self.y=} {self.x_1=} {self.y_1=} {self.angle_width=} ')
+        # tools.feedback(f'*** ARC {self.x=} {self.y=} {self.x_1=} {self.y_1=} {self.angle_width=} ')
         # convert to using units
         x_1 = self._u.x + self._o.delta_x
         y_1 = self._u.y + self._o.delta_y
@@ -734,8 +754,8 @@ class BezierShape(BaseShape):
         # convert to using units
         x_1 = self._u.x + self._o.delta_x
         y_1 = self._u.y + self._o.delta_y
-        if not self.x1:
-            self.x1 = self.x + self.default_length
+        if not self.x_1:
+            self.x_1 = self.x + self.default_length
         if not self.y_1:
             self.y1 = self.y + self.default_length
         x_2 = self.unit(self.x_1) + self._o.delta_x
@@ -770,12 +790,12 @@ class SectorShape(BaseShape):
         if self.cx and self.cy:
             self.x = self.cx - self.radius
             self.y = self.cy - self.radius
-            self.x1 = self.cx + self.radius
-            self.y1 = self.cy + self.radius
+            self.x_1 = self.cx + self.radius
+            self.y_1 = self.cy + self.radius
             # tools.feedback(f'{self.x=} {self.y=} {self.x1=} {self.y1=}')
         else:
-            self.x1 = self.x + 2.0 * self.radius
-            self.y1 = self.y + 2.0 * self.radius
+            self.x_1 = self.x + 2.0 * self.radius
+            self.y_1 = self.y + 2.0 * self.radius
         # ---- calcuate centre
         radius = self._u.radius
         if self.row is not None and self.col is not None:
@@ -796,8 +816,8 @@ class SectorShape(BaseShape):
         # convert to using units
         x_1 = self.unit(self.x) + self._o.delta_x
         y_1 = self.unit(self.y) + self._o.delta_y
-        x_2 = self.unit(self.x1) + self._o.delta_x
-        y_2 = self.unit(self.y1) + self._o.delta_y
+        x_2 = self.unit(self.x_1) + self._o.delta_x
+        y_2 = self.unit(self.y_1) + self._o.delta_y
         # angles
         start = (450 - self.angle) % 360.0 - self.angle_width
         width = self.angle_width
@@ -1927,7 +1947,7 @@ class GridShape(BaseShape):
         """Draw a grid on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # convert to using units
+        # ---- convert to using units
         x = self._u.x + self._o.delta_x
         y = self._u.y + self._o.delta_y
         height = self._u.height  # of each grid item
@@ -1935,6 +1955,16 @@ class GridShape(BaseShape):
         if self.size:  # square grid
             size = self.unit(self.size)
             height, width = size, size
+        # ---- number of blocks in grid:
+        if self.rows == 0:
+            self.rows = int(
+                (self.page_height - self.margin_bottom - self.margin_top)
+                / self.points_to_value(height))
+        if self.cols == 0:
+            self.cols = int(
+                (self.page_width - self.margin_left - self.margin_right)
+                / self.points_to_value(width))
+        # tools.feedback(f'{self.rows=} {self.cols=}')
         y_cols, x_cols = [], []
         for y_col in range(0, self.rows + 1):
             y_cols.append(y + y_col * height)
@@ -2053,9 +2083,6 @@ class DeckShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(DeckShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        # page
-        self.page_width = self.pagesize[0] / self.units
-        self.page_height = self.pagesize[1] / self.units
         # cards
         self.deck = []  # container for CardShape objects
         self.cards = kwargs.get("cards", 9)  # default total number of cards

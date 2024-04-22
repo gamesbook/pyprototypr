@@ -21,11 +21,12 @@ from .base import BaseCanvas, GroupBase, COLORS
 from .dice import (
     Dice, DiceD4, DiceD6, DiceD8, DiceD10, DiceD12, DiceD20, DiceD100)
 from .shapes import (
-    ArrowShape, BezierShape, CircleShape, CommonShape, ConnectShape, CompassShape,
-    DeckShape, EllipseShape, EquilateralTriangleShape, FooterShape, GridShape, HexShape,
-    ArcShape, ImageShape, LineShape, OctagonShape, PolygonShape, PolylineShape,
-    Query, RectangleShape, RepeatShape, RhombusShape, RightAngledTriangleShape,
-    SectorShape, ShapeShape, SquareShape, StarShape, StarFieldShape, TextShape)
+    ArcShape, ArrowShape, BezierShape, CircleShape, CommonShape, ConnectShape,
+    CompassShape, DeckShape, DotShape, EllipseShape, EquilateralTriangleShape,
+    FooterShape, GridShape, HexShape, ImageShape, LineShape, OctagonShape,
+    PolygonShape, PolylineShape, Query, RectangleShape, RepeatShape, RhombusShape,
+    RightAngledTriangleShape, SectorShape, ShapeShape, SquareShape, StarShape,
+    StarFieldShape, TextShape)
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
@@ -434,6 +435,22 @@ def compass(row=None, col=None, **kwargs):
     global deck
     kwargs = margins(**kwargs)
     return CompassShape(canvas=cnv, **kwargs)
+
+
+def Dot(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    dtt = dot(row=row, col=col, **kwargs)
+    dtt.draw()
+    return dtt
+
+
+def dot(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    return DotShape(canvas=cnv, **kwargs)
 
 
 def Ellipse(**kwargs):
