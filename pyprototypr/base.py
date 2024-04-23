@@ -457,6 +457,8 @@ class BaseCanvas:
         self.notch_corners = self.defaults.get('notch_corners', 'SW NW NE SE')
         self.notch_x = self.defaults.get('notch_x', 0)
         self.notch_y = self.defaults.get('notch_y', 0)
+        # ---- lozenge
+        self.edges = self.defaults.get('edges', 'L R')
         # ---- grid / card layout
         self.rows = self.defaults.get('rows', 0)
         self.cols = self.defaults.get('cols', self.defaults.get('columns', 0))
@@ -699,6 +701,8 @@ class BaseShape:
         self.notch_corners = kwargs.get('notch_corners', cnv.notch_corners)
         self.notch_x = kwargs.get('notch_x', cnv.notch_x)
         self.notch_y = kwargs.get('notch_y', cnv.notch_y)
+        # ---- lozenge
+        self.edges = kwargs.get('edges', cnv.edges)
         # ---- grid / card layout
         self.rows = kwargs.get('rows', cnv.rows)
         self.cols = kwargs.get('cols', kwargs.get('columns', cnv.cols))
@@ -915,21 +919,26 @@ class BaseShape:
         """Check that the user-supplied parameters are correct"""
         correct = True
         issue = []
-        if self.position:
-            if str(self.position).lower() not in \
-                    ['top', 'bottom', 'center', 'middle',  't', 'b', 'c', 'm', ]:
-                issue.append(f'"{self.position}" is an invalid position!')
-                correct = False
         if self.align:
             if str(self.align).lower() not in \
                     ['left', 'right', 'justify', 'centre', 'l', 'r', 'j', 'c', ]:
                 issue.append(f'"{self.align}" is an invalid align!')
                 correct = False
-        if self.orientation:
-            if str(self.orientation).lower() not in \
-                    ['vertical', 'horizontal', 'v', 'h', ]:
-                issue.append(f'"{self.orientation}" is an invalid orientation!')
+        if self.caltrops:
+            if str(self.caltrops).lower() not in \
+                    ['large', 'medium', 'small', 's', 'm', 'l', ]:
+                issue.append(f'"{self.caltrops}" is an invalid caltrops sie!')
                 correct = False
+        if self.edges:
+            if not isinstance(self.edges, list):
+                _edges = self.edges.split()
+            else:
+                _edges = self.edges
+            for edge in _edges:
+                if str(edge).lower() not in \
+                        ['left', 'right', 'top', 'bottom', 'l', 'r', 't', 'b', ]:
+                    issue.append(f'"{edge}" is an invalid option in {self.edges}!')
+                    correct = False
         if self.flip:
             if str(self.flip).lower() not in \
                     ['up', 'down', 'u', 'd', ]:
@@ -940,15 +949,20 @@ class BaseShape:
                     ['left', 'right', 'l', 'r', ]:
                 issue.append(f'"{self.hand}" is an invalid hand!')
                 correct = False
+        if self.orientation:
+            if str(self.orientation).lower() not in \
+                    ['vertical', 'horizontal', 'v', 'h', ]:
+                issue.append(f'"{self.orientation}" is an invalid orientation!')
+                correct = False
         if self.perimeter:
             if str(self.perimeter).lower() not in \
                     ['circle', 'rectangle', 'hexagon', 'octagon', 'c', 'r', 'h', 'o', ]:
                 issue.append(f'"{self.perimeter}" is an invalid perimeter!')
                 correct = False
-        if self.caltrops:
-            if str(self.caltrops).lower() not in \
-                    ['large', 'medium', 'small', 's', 'm', 'l', ]:
-                issue.append(f'"{self.caltrops}" is an invalid caltrops sie!')
+        if self.position:
+            if str(self.position).lower() not in \
+                    ['top', 'bottom', 'center', 'middle',  't', 'b', 'c', 'm', ]:
+                issue.append(f'"{self.position}" is an invalid position!')
                 correct = False
         # ---- arrows
         if self.head_style:

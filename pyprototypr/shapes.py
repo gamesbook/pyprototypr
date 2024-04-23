@@ -128,7 +128,7 @@ class ImageShape(BaseShape):
 
 class DotShape(BaseShape):
     """
-    Dot on a given canvas.
+    Dot of fixed radius on a given canvas.
     """
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -137,13 +137,13 @@ class DotShape(BaseShape):
         cnv = cnv.canvas if cnv else self.canvas.canvas
         x = self._u.x + self._o.delta_x
         y = self._u.y + self._o.delta_y
+        size = 3.0 / 2.0  # diameter is 3 points ~ 1mm or 1/32"
         self.fill = self.stroke
         self.set_canvas_props()
-        size = self.unit(0.1) / 2.0
         # ---- draw dot
         cnv.circle(x, y, size, stroke=1, fill=1 if self.fill else 0)
         # ---- text
-        self.draw_label(cnv, self.x, self.y)
+        self.draw_label(cnv, x, y)
 
 
 class LineShape(BaseShape):
@@ -279,6 +279,77 @@ class RhombusShape(BaseShape):
         self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+
+
+class LozengeShape(BaseShape):
+    """
+    Lozenge on a given canvas.
+    """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(LozengeShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        # overrides to centre shape
+        if self.cx and self.cy:
+            self.x = self.cx - self.width / 2.0
+            self.y = self.cy - self.height / 2.0
+            # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
+        self.kwargs = kwargs
+
+    def __str__(self):
+        return f'{self.__class__.__name__}::{self.kwargs}'
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw a lozenge on a given canvas."""
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        # ---- adjust start
+        if self.row is not None and self.col is not None:
+            x = self.col * self._u.width + self._o.delta_x
+            y = self.row * self._u.height + self._o.delta_y
+        elif self.cx and self.cy:
+            x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
+            y = self._u.cy + self._u.height / 2.0 + self._o.delta_y
+        else:
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
+        # ---- overrides to centre the shape
+        if kwargs.get("cx") and kwargs.get("cy"):
+            x = self._u.cx - self._u.width / 2.0
+            y = self._u.cy - self._u.height / 2.0
+        # ---- vertices
+        self.vertices = [  # clockwise from bottom-left; relative to centre
+            Point(x, y),
+            Point(x, y + self._u.height),
+            Point(x + self._u.width, y + self._u.height),
+            Point(x + self._u.width, y),
+        ]
+        # tools.feedback(f'{len(self.vertices)=}')
+        # ---- edges
+        if self.edges:
+            if not isinstance(self.edges, list):
+                _edges = self.edges.split()
+            else:
+                _edges = self.edges
+        # canvas
+        self.set_canvas_props()
+        # ---- draw lozenge
+        pth = cnv.beginPath()
+        pth.moveTo(*self.vertices[0])
+        for vertex in self.vertices:
+            # draw arcs depending on chosen lozenge self.edges
+            if self.edges:
+                pass  # TODO
+            pth.lineTo(*vertex)
+        pth.close()
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        # ---- cross
+        self.draw_cross(cnv,  x + self._u.width / 2.0, y + self._u.height / 2.0)
+        # ---- dot
+        self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        # ---- text
+        self.draw_heading(cnv, x + self._u.width / 2.0, self._u.height)
+        self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        self.draw_title(cnv, x + self._u.width / 2.0, y)
 
 
 class RectangleShape(BaseShape):
@@ -544,7 +615,9 @@ class RectangleShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- text
+        self.draw_heading(cnv, x + self._u.width / 2.0, self._u.height)
         self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        self.draw_title(cnv, x + self._u.width / 2.0, y)
 
 # class SquareShape(BaseShape):
 #     pass

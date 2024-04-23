@@ -23,10 +23,10 @@ from .dice import (
 from .shapes import (
     ArcShape, ArrowShape, BezierShape, CircleShape, CommonShape, ConnectShape,
     CompassShape, DeckShape, DotShape, EllipseShape, EquilateralTriangleShape,
-    FooterShape, GridShape, HexShape, ImageShape, LineShape, OctagonShape,
-    PolygonShape, PolylineShape, Query, RectangleShape, RepeatShape, RhombusShape,
-    RightAngledTriangleShape, SectorShape, ShapeShape, SquareShape, StarShape,
-    StarFieldShape, TextShape)
+    FooterShape, GridShape, HexShape, ImageShape, LineShape, LozengeShape,
+    OctagonShape, PolygonShape, PolylineShape, Query, RectangleShape, RepeatShape,
+    RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape, SquareShape,
+    StarShape, StarFieldShape, TextShape)
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
@@ -551,7 +551,7 @@ def AutoGrid(**kwargs):
         z_x, z_y = kwargs['units'] * margin_left, kwargs['units'] * margin_bottom
         corner_dist = tools.length_of_line(Point(0, 0), Point(z_x, z_y))
         corner_frac = corner_dist * 0.66 / kwargs['units']
-        tools.feedback(f'{z_x=} {z_y=} {corner_dist=}')
+        # tools.feedback(f'*** {z_x=} {z_y=} {corner_dist=}')
         zero_pt = tools.point_on_line(Point(0, 0), Point(z_x, z_y), corner_frac)
         Text(x=zero_pt.x / kwargs['units'] - kwargs['size'] / 4.0,
              y=zero_pt.y / kwargs['units'] - kwargs['size'] / 4.0,
@@ -615,6 +615,24 @@ def line(row=None, col=None, **kwargs):
     kwargs['row'] = row
     kwargs['col'] = col
     return LineShape(canvas=cnv, **kwargs)
+
+
+def Lozenge(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    loz = lozenge(row=row, col=col, **kwargs)
+    loz.draw()
+    return loz
+
+
+def lozenge(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    kwargs['row'] = row
+    kwargs['col'] = col
+    return LozengeShape(canvas=cnv, **kwargs)
 
 
 def Octagon(row=None, col=None, **kwargs):

@@ -36,5 +36,6 @@ magick default_shapes-29.png -crop 200x200+0+220 +repage starfield.png
 magick default_shapes-30.png -crop 200x200+0+220 +repage square.png
 magick default_shapes-31.png -crop 200x200+0+220 +repage sector.png
 magick default_shapes-32.png -crop 200x200+0+220 +repage dot.png
-magick default_shapes-33.png -crop 200x200+0+220 +repage fill_stroke.png
-magick default_shapes-34.png -crop 200x200+0+220 +repage transparency.png
+magick default_shapes-33.png -crop 200x200+0+220 +repage lozenge.png
+magick default_shapes-34.png -crop 200x200+0+220 +repage fill_stroke.png
+magick default_shapes-35.png -crop 200x200+0+220 +repage transparency.png

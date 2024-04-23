@@ -167,13 +167,18 @@ Square()
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
+Text(common=header, text="Sector")
+Sector()
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
 Text(common=header, text="Dot")
 Dot()
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
-Text(common=header, text="Sector")
-Sector()
+Text(common=header, text="Lozenge")
+Lozenge()
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
