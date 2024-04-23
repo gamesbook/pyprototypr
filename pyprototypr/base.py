@@ -1118,11 +1118,11 @@ class BaseShape:
         """Convert a point value to a units-based value."""
         try:
             if self.units == cm:
-                return float(value) / 28.3465
+                return float(value) / cm
             if self.units == mm:
-                return float(value) / 2.83465
+                return float(value) / mm
             elif self.units == inch:
-                return float(value) / 72.0
+                return float(value) / inch
             else:
                 return float(value)
         except Exception as err:
@@ -1133,11 +1133,13 @@ class BaseShape:
         """Convert a list of values to point units."""
         try:
             if self.units == cm:
-                return [float(item) * 28.3465 for item in items]
+                return [float(item) * cm for item in items]
+            elif self.units == mm:
+                return [float(item) * mm for item in items]
             elif self.units == inch:
-                return [float(item) * 72.0 for item in items]
+                return [float(item) * inch for item in items]
             else:
-                tools.feedback(f'Unable to convert {self.units} to points!', True)
+                tools.feedback(f'Unable to convert "{self.units}" to points!', True)
         except Exception as err:
             log.exception(err)
             tools.feedback(f'Unable to convert "{items}" to points!', True)

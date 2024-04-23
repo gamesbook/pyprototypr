@@ -17,7 +17,6 @@ import sys
 import xlrd
 # local
 from pyprototypr.utils.support import numbers, feedback
-from pyprototypr.utils import tools
 
 log = logging.getLogger(__name__)
 DEBUG = False
@@ -453,15 +452,14 @@ def comparer(val, operator, target):
     return False
 
 
-def polygon_vertices(sides, radius, starting_angle, center):
-    """Calculate array of points for a polygon's vertices.
+def polygon_vertices(sides: int, radius: float, starting_angle: float, center: Point) -> list:
+    """Calculate array of Points for a polygon's vertices.
 
     Args:
-    * sides: integer
-        number of sides
-    * starting_angle: float
-        this is effectively the "rotation"
-    * center: tuple of (x,y) values
+        * sides:  number of sides
+        * radius: distance from center
+        * starting_angle:  effectively the "rotation"
+        * center: Point
     """
     try:
         sides = int(sides)
@@ -493,20 +491,17 @@ def color_to_hex(name):
     return _string.upper()
 
 
-def degrees_to_xy(degrees, radius, origin):
-    """Calculates a point that is at an angle from the origin;
+def degrees_to_xy(degrees: float, radius: float, origin: Point) -> Point:
+    """Calculates a Point that is at an angle from the origin;
     0 is to the right.
 
     Args:
-    *  origin: tuple of (x,y) values
-
-    Returns:
-     *  (x,y) tuple
+        * degrees: normal angle (NOT radians)
     """
     radians = float(degrees) * math.pi / 180.0
-    x_o = math.cos(radians) * radius + origin[0]
-    y_o = math.sin(-radians) * radius + origin[1]
-    return (x_o, y_o)
+    x_o = math.cos(radians) * radius + origin.x
+    y_o = math.sin(-radians) * radius + origin.y
+    return Point(x_o, y_o)
 
 
 def sheet_column(num: int, lower: bool = False) -> string:
@@ -562,6 +557,12 @@ def is_inside_polygon(point: tuple, vertices: list, valid_border=False) -> bool:
             (complex(*v1) - complex(*point)) / (complex(*v0) - complex(*point))
         )
     return abs(sum_) > 1
+
+
+def length_of_line(start: Point, end: Point) -> float:
+    """Calculate length of line between two Points."""
+    # √[(x₂ - x₁)² + (y₂ - y₁)²]
+    return math.sqrt((end.x - start.x)**2 + (end.y - start.y)**2)
 
 
 def point_on_line(point_start: Point, point_end: Point, distance: float) -> Point:
@@ -636,7 +637,7 @@ def arc_angle_between_hexsides(side_a, side_b):
     """Arc of angle between two sides of a hexagon.
 
     Notes:
-        Sides are numbered from 1 to 6 (by convention starting at lower left).
+        Sides are numbered from 1 to 6 (by convention starting at furthest left).
 
     Doc Test:
 
@@ -674,6 +675,19 @@ def arc_angle_between_hexsides(side_a, side_b):
     if _side_a == 1 and _side_b == 6:
         dist = 1
     return dist * 60.0
+
+
+def lines_intersect(A: Point, B: Point, C: Point, D: Point) -> bool:
+    """"Return True if line segments AB and CD intersect
+
+    Ref:
+        https://stackoverflow.com/questions/3838329
+    """
+
+    def ccw(A: Point, B: Point, C: Point):
+        return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x)
+
+    return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
 
 
 if __name__ == "__main__":

@@ -848,7 +848,7 @@ class PolygonShape(BaseShape):
             sides = int(self.sides)
             # 180 degrees is math.pi radians
             radius = side / (2.0 * math.sin(math.pi / sides))
-        vertices = tools.polygon_vertices(self.sides, radius, self.rotate, (x, y))
+        vertices = tools.polygon_vertices(self.sides, radius, self.rotate, Point(x, y))
         if not vertices or len(vertices) == 0:
             return
         # canvas
@@ -857,7 +857,7 @@ class PolygonShape(BaseShape):
         pth = cnv.beginPath()
         pth.moveTo(*vertices[0])
         for vertex in vertices:
-            pth.lineTo(*vertex)
+            pth.lineTo(vertex.x, vertex.y)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- text

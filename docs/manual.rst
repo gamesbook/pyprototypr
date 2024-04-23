@@ -574,7 +574,7 @@ where:
 Image Element
 -------------
 
-An image is a picture, made of up of pixels, and stored in "png" or "jpeg"
+An image is a picture, made of up of pixels, and stored in "png", "jpeg" or "tif"
 format in a file.
 
 In **pyprototypr** it is defined by the instruction::

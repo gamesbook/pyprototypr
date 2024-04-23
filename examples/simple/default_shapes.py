@@ -182,7 +182,7 @@ Rectangle(fill=yellow, stroke=red, stroke_width=5)
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
-Text(common=header, text="Transperency")
+Text(common=header, text="Transparency")
 Rectangle(height=2, width=2, fill=yellow, stroke=yellow)
 Rectangle(x=2, y=2, height=2, width=2, fill=red, stroke=red, transparency=50)
 PageBreak()

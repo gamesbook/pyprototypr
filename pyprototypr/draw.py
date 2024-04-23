@@ -30,6 +30,7 @@ from .shapes import (
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
+from pyprototypr.utils.tools import Point
 
 
 log = logging.getLogger(__name__)
@@ -532,19 +533,31 @@ def AutoGrid(**kwargs):
     kwargs['font_size'] = kwargs.get('font_size', 10)
     # ---- numbering
     if numbering:
-        _common = Common(font_size=kwargs['font_size'],
-                         stroke=kwargs['stroke'],
-                         units=kwargs['units'])
-        for x in range(0, kwargs['cols'] + 1):
+        _common = Common(
+            font_size=kwargs['font_size'],
+            stroke=kwargs['stroke'],
+            units=kwargs['units'])
+        for x in range(1, kwargs['cols'] + 1):
             Text(x=x*size,
                  y=kwargs['y'] - kwargs['size'] / 2.0,
                  text=str(x*size),
                  common=_common)
-        for y in range(0, kwargs['rows'] + 1):
+        for y in range(1, kwargs['rows'] + 1):
             Text(x=kwargs['x'] - kwargs['size'] / 2.0,
                  y=y*size - _common.points_to_value(kwargs['font_size']) / 2.0,
                  text=str(y*size),
                  common=_common)
+        # draw "zero" number
+        z_x, z_y = kwargs['units'] * margin_left, kwargs['units'] * margin_bottom
+        corner_dist = tools.length_of_line(Point(0, 0), Point(z_x, z_y))
+        corner_frac = corner_dist * 0.66 / kwargs['units']
+        tools.feedback(f'{z_x=} {z_y=} {corner_dist=}')
+        zero_pt = tools.point_on_line(Point(0, 0), Point(z_x, z_y), corner_frac)
+        Text(x=zero_pt.x / kwargs['units'] - kwargs['size'] / 4.0,
+             y=zero_pt.y / kwargs['units'] - kwargs['size'] / 4.0,
+             text="0",
+             common=_common)
+
     # ---- subgrid
     if kwargs.get('subdivisions'):
         local_kwargs = copy(kwargs)
@@ -559,7 +572,7 @@ def AutoGrid(**kwargs):
                 local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
                 subgrid = GridShape(canvas=cnv, **local_kwargs)
                 subgrid.draw(off_x=off_x, off_y=off_y)
-    # ---- draw Grid
+    # ---- draw AutoGrid
     grid = GridShape(canvas=cnv, **kwargs)
     grid.draw()
     return grid
