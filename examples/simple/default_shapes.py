@@ -177,8 +177,8 @@ Dot()
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
-Text(common=header, text="Lozenge")
-Lozenge()
+Text(common=header, text='Stadium ("pill")')
+Stadium()
 PageBreak()
 
 AutoGrid(stroke_width=0.5)

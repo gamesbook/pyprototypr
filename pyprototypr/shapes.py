@@ -281,13 +281,13 @@ class RhombusShape(BaseShape):
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
 
 
-class LozengeShape(BaseShape):
+class StadiumShape(BaseShape):
     """
-    Lozenge on a given canvas.
+    Stadium ("pill") on a given canvas.
     """
 
     def __init__(self, _object=None, canvas=None, **kwargs):
-        super(LozengeShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        super(StadiumShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # overrides to centre shape
         if self.cx and self.cy:
             self.x = self.cx - self.width / 2.0
@@ -299,7 +299,7 @@ class LozengeShape(BaseShape):
         return f'{self.__class__.__name__}::{self.kwargs}'
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Draw a lozenge on a given canvas."""
+        """Draw a stadium on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # ---- adjust start
@@ -332,11 +332,11 @@ class LozengeShape(BaseShape):
                 _edges = self.edges
         # canvas
         self.set_canvas_props()
-        # ---- draw lozenge
+        # ---- draw stadium
         pth = cnv.beginPath()
         pth.moveTo(*self.vertices[0])
         for vertex in self.vertices:
-            # draw arcs depending on chosen lozenge self.edges
+            # draw arcs depending on chosen stadium self.edges
             if self.edges:
                 pass  # TODO
             pth.lineTo(*vertex)

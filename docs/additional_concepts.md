@@ -11,6 +11,33 @@
 ## Case-sensitivity
 
 
+## Quotes
+
+Using quotes inside a string of text can be tricky.
+
+If you have a Text shape, for example, like this:
+```
+Text(x=1, y=1, text="Something interesting")
+```
+
+You can easily add single quotes:
+```
+Text(x=1, y=1, text="Something isn't interesting")
+```
+
+However, if you want to use double quotes in the string of text itself,
+you'll need to change the outer ones to singles:
+```
+Text(x=1, y=1, text='Something "interesting"!')
+```
+
+What if you want to use single and double quotes in the string of text?
+In this case, you'll need to add a special marker character before the quote
+that matches the outer one:
+```
+Text(x=1, y=1, text='Something isn\'t "interesting"!')
+```
+
 ## Properties and Short-cuts
 
 

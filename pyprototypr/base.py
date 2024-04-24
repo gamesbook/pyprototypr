@@ -457,7 +457,7 @@ class BaseCanvas:
         self.notch_corners = self.defaults.get('notch_corners', 'SW NW NE SE')
         self.notch_x = self.defaults.get('notch_x', 0)
         self.notch_y = self.defaults.get('notch_y', 0)
-        # ---- lozenge
+        # ---- stadium
         self.edges = self.defaults.get('edges', 'L R')
         # ---- grid / card layout
         self.rows = self.defaults.get('rows', 0)
@@ -701,7 +701,7 @@ class BaseShape:
         self.notch_corners = kwargs.get('notch_corners', cnv.notch_corners)
         self.notch_x = kwargs.get('notch_x', cnv.notch_x)
         self.notch_y = kwargs.get('notch_y', cnv.notch_y)
-        # ---- lozenge
+        # ---- stadium
         self.edges = kwargs.get('edges', cnv.edges)
         # ---- grid / card layout
         self.rows = kwargs.get('rows', cnv.rows)

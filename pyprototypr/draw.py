@@ -23,10 +23,10 @@ from .dice import (
 from .shapes import (
     ArcShape, ArrowShape, BezierShape, CircleShape, CommonShape, ConnectShape,
     CompassShape, DeckShape, DotShape, EllipseShape, EquilateralTriangleShape,
-    FooterShape, GridShape, HexShape, ImageShape, LineShape, LozengeShape,
+    FooterShape, GridShape, HexShape, ImageShape, LineShape,
     OctagonShape, PolygonShape, PolylineShape, Query, RectangleShape, RepeatShape,
-    RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape, SquareShape,
-    StarShape, StarFieldShape, TextShape)
+    RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape,
+    SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape)
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
@@ -617,24 +617,6 @@ def line(row=None, col=None, **kwargs):
     return LineShape(canvas=cnv, **kwargs)
 
 
-def Lozenge(row=None, col=None, **kwargs):
-    global cnv
-    global deck
-    kwargs = margins(**kwargs)
-    loz = lozenge(row=row, col=col, **kwargs)
-    loz.draw()
-    return loz
-
-
-def lozenge(row=None, col=None, **kwargs):
-    global cnv
-    global deck
-    kwargs = margins(**kwargs)
-    kwargs['row'] = row
-    kwargs['col'] = col
-    return LozengeShape(canvas=cnv, **kwargs)
-
-
 def Octagon(row=None, col=None, **kwargs):
     global cnv
     global deck
@@ -740,6 +722,24 @@ def rectangle(row=None, col=None, **kwargs):
     return RectangleShape(canvas=cnv, **kwargs)
 
 
+def Shape(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    shapeshape = shape(row=row, col=col, **kwargs)
+    shapeshape.draw()
+    return shapeshape
+
+
+def shape(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    kwargs['row'] = row
+    kwargs['col'] = col
+    return ShapeShape(canvas=cnv, **kwargs)
+
+
 def Sector(row=None, col=None, **kwargs):
     global cnv
     global deck
@@ -776,22 +776,22 @@ def square(row=None, col=None, **kwargs):
     return SquareShape(canvas=cnv, **kwargs)
 
 
-def Shape(row=None, col=None, **kwargs):
+def Stadium(row=None, col=None, **kwargs):
     global cnv
     global deck
     kwargs = margins(**kwargs)
-    shapeshape = shape(row=row, col=col, **kwargs)
-    shapeshape.draw()
-    return shapeshape
+    std = stadium(row=row, col=col, **kwargs)
+    std.draw()
+    return std
 
 
-def shape(row=None, col=None, **kwargs):
+def stadium(row=None, col=None, **kwargs):
     global cnv
     global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return ShapeShape(canvas=cnv, **kwargs)
+    return StadiumShape(canvas=cnv, **kwargs)
 
 
 def Star(row=None, col=None, **kwargs):
@@ -948,8 +948,8 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
     elif kwargs.get('hex_layout') in ['t', 'tri', 'triangle']:
         tools.feedback(f'Cannot draw diamond-pattern hexagons: {kwargs}', True)
 
-    elif kwargs.get('hex_layout') in ['l', 'loz', 'lozenge']:
-        tools.feedback(f'Cannot draw lozenge-pattern hexagons: {kwargs}', True)
+    elif kwargs.get('hex_layout') in ['l', 'loz', 'stadium']:
+        tools.feedback(f'Cannot draw stadium-pattern hexagons: {kwargs}', True)
 
     else:  # default to rectangular layout
         for row in range(rows):
