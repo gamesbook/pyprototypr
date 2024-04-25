@@ -172,13 +172,18 @@ Sector()
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
+Text(common=header, text='Stadium ("pill")')
+Stadium()
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
 Text(common=header, text="Dot")
 Dot()
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
-Text(common=header, text='Stadium ("pill")')
-Stadium()
+Text(common=header, text="DotGrid")
+DotGrid()
 PageBreak()
 
 AutoGrid(stroke_width=0.5)

@@ -344,6 +344,7 @@ class BaseCanvas:
         self.cx = self.defaults.get('cx', None)
         self.cy = self.defaults.get('cy', None)
         self.scaling = self.defaults.get('scaling', None)
+        self.dot_point = self.defaults.get('dot_point', 3.0)  # points
         # ---- to be calculated ...
         self.area = None
         self.vertices = []
@@ -600,6 +601,7 @@ class BaseShape:
         self.cx = kwargs.get('cx', cnv.cx)
         self.cy = kwargs.get('cy', cnv.cy)
         self.scaling = kwargs.get('scaling', None)  # SVG images
+        self.dot_point = kwargs.get('dot_point', cnv.dot_point)  # points
         # ---- to be calculated ...
         self.area = cnv.area
         self.vertices = cnv.vertices

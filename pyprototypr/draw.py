@@ -22,8 +22,8 @@ from .dice import (
     Dice, DiceD4, DiceD6, DiceD8, DiceD10, DiceD12, DiceD20, DiceD100)
 from .shapes import (
     ArcShape, ArrowShape, BezierShape, CircleShape, CommonShape, ConnectShape,
-    CompassShape, DeckShape, DotShape, EllipseShape, EquilateralTriangleShape,
-    FooterShape, GridShape, HexShape, ImageShape, LineShape,
+    CompassShape, DeckShape, DotShape, DotGridShape, EllipseShape,
+    EquilateralTriangleShape, FooterShape, GridShape, HexShape, ImageShape, LineShape,
     OctagonShape, PolygonShape, PolylineShape, Query, RectangleShape, RepeatShape,
     RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape,
     SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape)
@@ -486,6 +486,18 @@ def equilateraltriangle(row=None, col=None, **kwargs):
     global deck
     kwargs = margins(**kwargs)
     return EquilateralTriangleShape(canvas=cnv, **kwargs)
+
+
+def DotGrid(**kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    # override defaults ... otherwise grid not "next" to margins
+    kwargs['x'] = kwargs.get('x', 0)
+    kwargs['y'] = kwargs.get('y', 0)
+    dgrd = DotGridShape(canvas=cnv, **kwargs)
+    dgrd.draw()
+    return dgrd
 
 
 def Grid(**kwargs):

@@ -6,32 +6,41 @@ Created on: 9 March 2024
 """
 from pyprototypr.draw import *
 
+# Create(filename="wip.pdf",
+#        pagesize=A8,
+#        margin_top=0.5,
+#        margin_left=0.15,
+#        margin_bottom=0.15,
+#        margin_right=0.2)
+
 Create(filename="wip.pdf",
-       pagesize=A8,
-       margin_top=0.5,
+       pagesize=A6,
+       margin_top=0.15,
        margin_left=0.15,
        margin_bottom=0.15,
-       margin_right=0.2)
+       margin_right=0.15)
 
-header = Common(x=0, y=6, font_size=8, align="left")
-ww = 4.3  # 0.1 #
-AutoGrid(stroke_width=0.5, subdivisions=10)
-# Hexagon(x=1, y=1, height=2, stroke=red, dot_size=0.02, dot_color=red, fill=None)
-Square(x=0.97, y=0.4, side=1.18, dot_size=0.01, stroke=red, fill=None)
-Arc(x=0.97, y=0.4, x1=2.17, y1=1.58, stroke_width=ww, angle_width=120)
-Line(x=1.96, y=1.67, x1=1.76, y1=1.35, stroke_width=ww)
+DotGrid(stroke=darkgray, width=0.5, height=0.5, dot_point=1)
 
-Hexagon(
-    x=1, y=1,
-    height=2,
-    stroke=blue, dot_size=0.01, dot_color=blue,
-    fill=None,
-    #link_width=4.3,
-    links="6 5 S",
-    # hex_top="pointy",
-    debug=True)
+# header = Common(x=0, y=6, font_size=8, align="left")
+# ww = 4.3  # 0.1 #
+# AutoGrid(stroke_width=0.5, subdivisions=10)
+# # Hexagon(x=1, y=1, height=2, stroke=red, dot_size=0.02, dot_color=red, fill=None)
+# Square(x=0.97, y=0.4, side=1.18, dot_size=0.01, stroke=red, fill=None)
+# Arc(x=0.97, y=0.4, x1=2.17, y1=1.58, stroke_width=ww, angle_width=120)
+# Line(x=1.96, y=1.67, x1=1.76, y1=1.35, stroke_width=ww)
 
-PageBreak()
+# Hexagon(
+#     x=1, y=1,
+#     height=2,
+#     stroke=blue, dot_size=0.01, dot_color=blue,
+#     fill=None,
+#     # link_width=4.3,
+#     links="6 5 S",
+#     # hex_top="pointy",
+#     debug=True)
+
+# PageBreak()
 
 #AutoGrid(stroke_width=0.5)
 #Text(common=header, text="Sector; same centre")

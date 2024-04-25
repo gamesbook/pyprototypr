@@ -137,11 +137,11 @@ class DotShape(BaseShape):
         cnv = cnv.canvas if cnv else self.canvas.canvas
         x = self._u.x + self._o.delta_x
         y = self._u.y + self._o.delta_y
-        size = 3.0 / 2.0  # diameter is 3 points ~ 1mm or 1/32"
+        size = self.dot_point / 2.0  # diameter is 3 points ~ 1mm or 1/32"
         self.fill = self.stroke
         self.set_canvas_props()
         # ---- draw dot
-        cnv.circle(x, y, size, stroke=1, fill=1 if self.fill else 0)
+        cnv.circle(x, y, size, stroke=0, fill=1 if self.fill else 0)
         # ---- text
         self.draw_label(cnv, x, y)
 
@@ -2047,6 +2047,47 @@ class GridShape(BaseShape):
         self.set_canvas_props()
         # ---- draw grid
         cnv.grid(x_cols, y_cols)  # , stroke=1, fill=1)
+
+
+class DotGridShape(BaseShape):
+    """
+    Dot Grid on a given canvas.
+    """
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw a dot grid on a given canvas."""
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        # ---- convert to using units
+        x = 0  # self._o.delta_x
+        y = 0  # self._o.delta_y
+        height = self._u.height  # of each grid item
+        width = self._u.width  # of each grid item
+        if self.size:  # square grid
+            size = self.unit(self.size)
+            height, width = size, size
+        # ---- number of blocks in grid:
+        if self.rows == 0:
+            self.rows = int(
+                (self.page_height - self.margin_bottom - self.margin_top)
+                / self.points_to_value(height))
+        if self.cols == 0:
+            self.cols = int(
+                (self.page_width - self.margin_left - self.margin_right)
+                / self.points_to_value(width))
+        # canvas
+        size = self.dot_point / 2.0  # diameter is 3 points ~ 1mm or 1/32"
+        self.fill = self.stroke
+        self.set_canvas_props()
+        # ---- draw dot grid
+        for y_col in range(0, self.rows + 1):
+            for x_col in range(0, self.cols + 1):
+                cnv.circle(
+                    x + x_col * width,
+                    y + y_col * height,
+                    size,
+                    stroke=0,
+                    fill=1 if self.fill else 0)
 
 
 class CommonShape(BaseShape):

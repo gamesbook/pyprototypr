@@ -224,9 +224,14 @@ Sector(cx=2, cy=3, radius=2, fill=black, angle=165, angle_width=30)
 Sector(cx=2, cy=3, radius=2, fill=black, angle=285, angle_width=30)
 PageBreak()
 
+Text(common=header, text="Moleskine Dot Grid")
+DotGrid(stroke=darkgray, width=0.5, height=0.5, dot_point=1, offset_x=-0.25)
+PageBreak()
+
 AutoGrid(stroke_width=0.5)
 Text(common=header, text="Arc; 'inside' rect")
-Rectangle(x=1, y=1, height=1, width=2, dot_size=0.01, stroke=red, fill=None,
+Rectangle(x=1, y=1, height=1, width=2, dot_size=0.01,
+          label_size=8, stroke=red, fill=None,
           label="Arc(x=1, y=1, x1=3, y1=2)")
 Arc(x=1, y=1, x1=3, y1=2)
 PageBreak()
