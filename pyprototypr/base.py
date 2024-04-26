@@ -463,6 +463,8 @@ class BaseCanvas:
         # ---- grid / card layout
         self.rows = self.defaults.get('rows', 0)
         self.cols = self.defaults.get('cols', self.defaults.get('columns', 0))
+        self.offset_x = self.defaults.get('offset_x', 0)
+        self.offset_y = self.defaults.get('offset_y', 0)
         # ---- circle / star / polygon
         self.diameter = self.defaults.get('diameter', 1)
         self.radius = self.defaults.get('radius', self.diameter / 2.0)
@@ -708,6 +710,8 @@ class BaseShape:
         # ---- grid / card layout
         self.rows = kwargs.get('rows', cnv.rows)
         self.cols = kwargs.get('cols', kwargs.get('columns', cnv.cols))
+        self.offset_x = kwargs.get('offset_x', cnv.offset_x)
+        self.offset_y = kwargs.get('offset_y', cnv.offset_y)
         # ---- circle / star / polygon
         self.diameter = kwargs.get('diameter', cnv.diameter)
         self.radius = kwargs.get('radius', cnv.radius)
