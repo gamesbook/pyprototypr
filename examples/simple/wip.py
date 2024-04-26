@@ -15,12 +15,9 @@ from pyprototypr.draw import *
 
 Create(filename="wip.pdf",
        pagesize=A6,
-       margin_top=0.15,
-       margin_left=0.15,
-       margin_bottom=0.15,
+       margin_top=0.5,
        margin_right=0.15)
-
-DotGrid(stroke=darkgray, width=0.5, height=0.5, dot_point=1)
+DotGrid(stroke=darkgray, width=0.5, height=0.5, dot_point=1, offset_y=-0.25)
 
 # header = Common(x=0, y=6, font_size=8, align="left")
 # ww = 4.3  # 0.1 #

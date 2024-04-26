@@ -2059,8 +2059,8 @@ class DotGridShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # ---- convert to using units
-        x = 0  # self._o.delta_x
-        y = 0  # self._o.delta_y
+        x = 0 + self.unit(self.offset_x)
+        y = 0 + self.unit(self.offset_y)
         height = self._u.height  # of each grid item
         width = self._u.width  # of each grid item
         if self.size:  # square grid
@@ -2068,12 +2068,12 @@ class DotGridShape(BaseShape):
             height, width = size, size
         # ---- number of blocks in grid:
         if self.rows == 0:
-            self.rows = int(
-                (self.page_height - self.margin_bottom - self.margin_top)
+            self.rows = int((
+                self.page_height - self.margin_bottom - self.margin_top - self.offset_y)
                 / self.points_to_value(height))
         if self.cols == 0:
-            self.cols = int(
-                (self.page_width - self.margin_left - self.margin_right)
+            self.cols = int((
+                self.page_width - self.margin_left - self.margin_right - self.offset_x)
                 / self.points_to_value(width))
         # canvas
         size = self.dot_point / 2.0  # diameter is 3 points ~ 1mm or 1/32"
