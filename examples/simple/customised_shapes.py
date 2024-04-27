@@ -189,6 +189,7 @@ PageBreak()
 AutoGrid(stroke_width=0.5)
 Text(common=txt, text="Hexagon: flat; text; hatch")
 Hexagon(
+    y=2,
     height=2,
     hatch=3,
     debug=True,
@@ -200,6 +201,7 @@ PageBreak()
 AutoGrid(stroke_width=0.5)
 Text(common=txt, text="Hexagon: pointy; text; hatch")
 Hexagon(
+    y=2,
     height=2,
     hatch=3,
     hex_top='pointy',
@@ -234,6 +236,14 @@ Rectangle(x=1, y=1, height=1, width=2, dot_size=0.01,
           label_size=8, stroke=red, fill=None,
           label="Arc(x=1, y=1, x1=3, y1=2)")
 Arc(x=1, y=1, x1=3, y1=2)
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
+Text(common=txt, text="Stadium: edges")
+Stadium(x=0, y=0, height=1, width=2, edges='top', fill=tan, label="top")
+Stadium(x=2, y=2, height=1, width=2, edges='bottom', fill=tan, label="bottom")
+Stadium(x=0, y=4, height=1, width=1, edges='right', fill=tan, label="right")
+Stadium(x=3, y=5, height=1, width=1, edges='left', fill=tan, label="left")
 PageBreak()
 
 Text(common=txt, text="END...")

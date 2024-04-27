@@ -325,22 +325,81 @@ class StadiumShape(BaseShape):
         ]
         # tools.feedback(f'{len(self.vertices)=}')
         # ---- edges
+        _edges = []
         if self.edges:
             if not isinstance(self.edges, list):
-                _edges = self.edges.split()
+                __edges = self.edges.split()
             else:
-                _edges = self.edges
+                __edges = self.edges
+            _edges = [edge.lower() for edge in __edges]
+            # reverse order of vertices because curves are drawn anti-clockwise
+            self.vertices = list(reversed(self.vertices))
+            self.vertices.append(self.vertices[0])
         # canvas
         self.set_canvas_props()
-        # ---- draw stadium
+        # ---- draw rect fill only
         pth = cnv.beginPath()
         pth.moveTo(*self.vertices[0])
         for vertex in self.vertices:
-            # draw arcs depending on chosen stadium self.edges
-            if self.edges:
-                pass  # TODO
             pth.lineTo(*vertex)
         pth.close()
+        cnv.drawPath(pth, stroke=0, fill=1 if self.fill else 0)
+
+        # ---- draw stadium
+        pth = cnv.beginPath()
+        pth.moveTo(*self.vertices[0])
+        radius_lr = self._u.height / 2.0
+        radius_tb = self._u.width / 2.0
+        for count, vertex in enumerate(self.vertices):
+            # draw half-circle at chosen stadium self.edges;
+            # using Bezier, cannot get half-circle - need to use two quarter circles
+
+            # vx, vy = self.points_to_value(vertex.x) - 1, self.points_to_value(vertex.y) - 1
+            # tools.feedback(f'{count=} vx={vx:.2f} vy={vy:.2f}')
+            if count == 2 and ('l' in _edges or 'left' in _edges):
+                cx, cy = vertex.x, vertex.y - 0.5 * self._u.height
+                # _cx, _cy = self.points_to_value(cx) - 1, self.points_to_value(cy) - 1
+                # tools.feedback(f'  cx={_cx:.2f} cy={_cy:.2f}')
+                top_curve = tools.bezier_arc_segment(
+                    cx, cy, radius_lr, radius_lr, 90, 180)
+                bottom_curve = tools.bezier_arc_segment(
+                    cx, cy, radius_lr, radius_lr, 180, 270)
+                pth.moveTo(*vertex)
+                pth.curveTo(*top_curve[1])
+                pth.curveTo(*bottom_curve[1])
+            elif count == 1 and ('t' in _edges or 'top' in _edges):
+                cx, cy = vertex.x - 0.5 * self._u.width, vertex.y
+                right_curve = tools.bezier_arc_segment(
+                    cx, cy, radius_tb, radius_tb, 0, 90)
+                left_curve = tools.bezier_arc_segment(
+                    cx, cy, radius_tb, radius_tb, 90, 180)
+                pth.moveTo(*vertex)
+                pth.curveTo(*right_curve[1])
+                pth.curveTo(*left_curve[1])
+            elif count == 3 and ('b' in _edges or 'bottom' in _edges):
+                cx, cy = vertex.x + 0.5 * self._u.width, vertex.y
+                left_curve = tools.bezier_arc_segment(
+                    cx, cy, radius_tb, radius_tb, 180, 270)
+                right_curve = tools.bezier_arc_segment(
+                    cx, cy, radius_tb, radius_tb, 270, 360)
+                pth.moveTo(*vertex)
+                pth.curveTo(*left_curve[1])
+                pth.curveTo(*right_curve[1])
+                pth.moveTo(*self.vertices[3])
+            elif count == 0 and ('r' in _edges or 'right' in _edges):
+                cx, cy = vertex.x, vertex.y + 0.5 * self._u.height
+                bottom_curve = tools.bezier_arc_segment(
+                    cx, cy, radius_lr, radius_lr, 270, 360)
+                top_curve = tools.bezier_arc_segment(
+                    cx, cy, radius_lr, radius_lr, 0, 90)
+                pth.moveTo(*vertex)
+                pth.curveTo(*bottom_curve[1])
+                pth.curveTo(*top_curve[1])
+            # no curve; use a regular line
+            else:
+                if count + 1 < len(self.vertices):
+                    pth.lineTo(*self.vertices[count + 1])
+        # pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- cross
         self.draw_cross(cnv,  x + self._u.width / 2.0, y + self._u.height / 2.0)

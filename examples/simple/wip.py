@@ -6,18 +6,29 @@ Created on: 9 March 2024
 """
 from pyprototypr.draw import *
 
-# Create(filename="wip.pdf",
-#        pagesize=A8,
-#        margin_top=0.5,
-#        margin_left=0.15,
-#        margin_bottom=0.15,
-#        margin_right=0.2)
-
 Create(filename="wip.pdf",
-       pagesize=A6,
-       margin_top=0.5,
-       margin_right=0.15)
-DotGrid(stroke=darkgray, width=0.5, height=0.5, dot_point=1, offset_y=-0.25)
+        pagesize=A8,
+        margin_top=0.5,
+        margin_left=0.15,
+        margin_bottom=0.15,
+        margin_right=0.2)
+
+header = Common(x=0, y=6, font_size=8, align="left")
+
+AutoGrid(stroke_width=0.5, subdivisions=10)
+PageBreak()
+
+AutoGrid(stroke_width=0.5, subdivisions=10)
+Stadium(x=0, y=0, height=1, width=2, edges='t', fill=tan, label="t")
+Stadium(x=2, y=2, height=1, width=2, edges='b', fill=tan, label="b")
+Stadium(x=0, y=4, height=1, width=1, edges='r', fill=tan, label="r")
+Stadium(x=3, y=5, height=1, width=1, edges='l', fill=tan, label="l")
+
+# Create(filename="wip.pdf",
+#        pagesize=A6,
+#        margin_top=0.5,
+#        margin_right=0.15)
+# DotGrid(stroke=darkgray, width=0.5, height=0.5, dot_point=1, offset_y=-0.25)
 
 # header = Common(x=0, y=6, font_size=8, align="left")
 # ww = 4.3  # 0.1 #

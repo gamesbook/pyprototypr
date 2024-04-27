@@ -15,14 +15,15 @@ import pathlib
 import string
 import sys
 import xlrd
+
 # local
 from pyprototypr.utils.support import numbers, feedback
 
 log = logging.getLogger(__name__)
 DEBUG = False
 
-Point = namedtuple('Point', ['x', 'y'])
-Link = namedtuple('Link', ['a', 'b', 'style'])
+Point = namedtuple("Point", ["x", "y"])
+Link = namedtuple("Link", ["a", "b", "style"])
 
 
 def script_path():
@@ -40,20 +41,24 @@ def load_data(datasource=None, **kwargs):
     log.debug("Load data from a 'tabular' source (CSV, XLS) %s", datasource)
     if datasource:
         filename, file_ext = os.path.splitext(datasource)
-        if file_ext.lower() == '.csv':
-            headers = kwargs.get('headers', None)
-            selected = kwargs.get('selected', None)
+        if file_ext.lower() == ".csv":
+            headers = kwargs.get("headers", None)
+            selected = kwargs.get("selected", None)
             dataset = open_csv(datasource, headers=headers, selected=selected)
-        elif file_ext.lower() == '.xls':
-            headers = kwargs.get('headers', None)
-            selected = kwargs.get('selected', None)
-            sheet = kwargs.get('sheet', 0)
-            sheetname = kwargs.get('sheetname', None)
-            dataset = open_xls(datasource, sheet=sheet, sheetname=sheetname,
-                               headers=headers, selected=selected)
+        elif file_ext.lower() == ".xls":
+            headers = kwargs.get("headers", None)
+            selected = kwargs.get("selected", None)
+            sheet = kwargs.get("sheet", 0)
+            sheetname = kwargs.get("sheetname", None)
+            dataset = open_xls(
+                datasource,
+                sheet=sheet,
+                sheetname=sheetname,
+                headers=headers,
+                selected=selected,
+            )
         else:
-            feedback('Unable to process a file %s of type "%s"' %
-                     (filename, file_ext))
+            feedback('Unable to process a file %s of type "%s"' % (filename, file_ext))
     return dataset
 
 
@@ -86,14 +91,14 @@ def boolean_join(items):
     """
     if not items or len(items) == 0:
         return None
-    expr = ''
+    expr = ""
     for item in items:
-        if item == '&' or item == 'and' or item == '+':
-            expr += ' and '
-        elif item == '|' or item == 'or':
-            expr += ' or '
+        if item == "&" or item == "and" or item == "+":
+            expr += " and "
+        elif item == "|" or item == "or":
+            expr += " or "
         elif item is not None:
-            expr += '%s' % item
+            expr += "%s" % item
         else:
             pass  # ignore nones
     try:
@@ -116,9 +121,9 @@ def query_construct(string):
     """
     result = []
     if string:
-        items = string.split('`')
+        items = string.split("`")
         if len(items) == 2:
-            items.insert(1, '=')
+            items.insert(1, "=")
         for item1, item2, item3, item4 in grouper(4, items):
             result.append([item1, item2, item3, item4])
         return result
@@ -142,9 +147,9 @@ def tuple_split(string):
     values = []
     if string:
         try:
-            _string_list = string.strip(' ').replace(';', ',').split(' ')
+            _string_list = string.strip(" ").replace(";", ",").split(" ")
             for _str in _string_list:
-                items = _str.split(',')
+                items = _str.split(",")
                 _items = [float(itm) for itm in items]
                 values.append(tuple(_items))
             return values
@@ -171,8 +176,12 @@ def sequence_split(string):
     values = []
     if string:
         try:
-            _string = string.replace(' ', '').replace('"', '').\
-                replace("'", '').replace(';', ',')
+            _string = (
+                string.replace(" ", "")
+                .replace('"', "")
+                .replace("'", "")
+                .replace(";", ",")
+            )
         except Exception:
             return values
     else:
@@ -181,11 +190,11 @@ def sequence_split(string):
         values.append(int(_string))
         return values
     except Exception:
-        _strings = _string.split(',')
+        _strings = _string.split(",")
         # log.debug('strings:%s', _strings)
         for item in _strings:
-            if '-' in item:
-                _strs = item.split('-')
+            if "-" in item:
+                _strs = item.split("-")
                 seq_range = list(range(int(_strs[0]), int(_strs[1]) + 1))
                 values = values + seq_range
             else:
@@ -193,7 +202,7 @@ def sequence_split(string):
     return list(set(values))  # unique
 
 
-def splitq(seq, sep=None, pairs=("()", "[]", "{}"), quote='"\''):
+def splitq(seq, sep=None, pairs=("()", "[]", "{}"), quote="\"'"):
     """Split seq by sep but considering parts inside pairs or quoted as
        unbreakable pairs have different start and end value, quote have same
        symbol in beginning and end.
@@ -213,8 +222,7 @@ def splitq(seq, sep=None, pairs=("()", "[]", "{}"), quote='"\''):
         start = index = 0
         while 0 <= index < len(seq):
             c = seq[index]
-            if (sep and seq[index:].startswith(sep)) or \
-                    (sep is None and c.isspace()):
+            if (sep and seq[index:].startswith(sep)) or (sep is None and c.isspace()):
                 yield seq[start:index]
                 # pass multiple separators as single one
                 if sep is None:
@@ -227,8 +235,7 @@ def splitq(seq, sep=None, pairs=("()", "[]", "{}"), quote='"\''):
                 index += 1
                 p, index = index, seq.find(c, index) + 1
                 if not index:
-                    raise IndexError(
-                        'Unmatched quote %r\n%i:%s' % (c, p, seq[:p]))
+                    raise IndexError("Unmatched quote %r\n%i:%s" % (c, p, seq[:p]))
             elif c in lpair:
                 nesting = 1
                 while True:
@@ -236,10 +243,12 @@ def splitq(seq, sep=None, pairs=("()", "[]", "{}"), quote='"\''):
                     p, index = index, seq.find(pairs[c], index)
                     if index < 0:
                         raise IndexError(
-                            'Did not find end of pair for %r: %r\n%i:%s' %
-                            (c, pairs[c], p, seq[:p]))
-                    nesting += '{lpair}({inner})'.format(
-                        lpair=c, inner=splitq(seq[p:index].count(c) - 2))
+                            "Did not find end of pair for %r: %r\n%i:%s"
+                            % (c, pairs[c], p, seq[:p])
+                        )
+                    nesting += "{lpair}({inner})".format(
+                        lpair=c, inner=splitq(seq[p:index].count(c) - 2)
+                    )
                     if not nesting:
                         break
             else:
@@ -257,17 +266,16 @@ def open_csv(filename, headers=None, selected=None):
       * selected is a list of desired rows e.g. [2,4,7]
     """
     if not filename:
-        feedback('A valid CSV filename must be supplied!')
+        feedback("A valid CSV filename must be supplied!")
 
     dict_list = []
     _file_with_path = None
     norm_filename = os.path.normpath(filename)
     if not os.path.exists(norm_filename):
-        filepath = tools.script_path()
+        filepath = script_path()
         _file_with_path = os.path.join(filepath, norm_filename)
         if not os.path.exists(_file_with_path):
-            feedback(
-                f'Unable to find CSV "{filename}", including in {filepath}')
+            feedback(f'Unable to find CSV "{filename}", including in {filepath}')
 
     try:
         csv_filename = _file_with_path or norm_filename
@@ -297,18 +305,17 @@ def open_xls(filename, sheet=0, sheetname=None, headers=None, selected=None):
       * selected is a list of desired rows e.g. [2,4,7]
     """
     if not filename:
-        feedback('A valid Excel filename must be supplied!')
+        feedback("A valid Excel filename must be supplied!")
 
     dict_list = []
 
     _file_with_path = None
     norm_filename = os.path.normpath(filename)
     if not os.path.exists(norm_filename):
-        filepath = tools.script_path()
+        filepath = script_path()
         _file_with_path = os.path.join(filepath, norm_filename)
         if not os.path.exists(_file_with_path):
-            feedback(
-                f'Unable to find "{filename}", including in {filepath}')
+            feedback(f'Unable to find "{filename}", including in {filepath}')
 
     try:
         excel_filename = _file_with_path or norm_filename
@@ -322,20 +329,21 @@ def open_xls(filename, sheet=0, sheetname=None, headers=None, selected=None):
             sheet = book.sheet_by_index(0)
         start = 1
         if not headers:
-            keys = [sheet.cell(0, col_index).value
-                    for col_index in range(sheet.ncols)]
+            keys = [sheet.cell(0, col_index).value for col_index in range(sheet.ncols)]
         else:
             start = 0
             keys = headers
         if len(keys) < sheet.ncols:
             feedback(
-                'Too few headers supplied for the existing columns in "%s"' %
-                filename)
+                'Too few headers supplied for the existing columns in "%s"' % filename
+            )
         else:
             dict_list = []
             for row_index in range(start, sheet.nrows):
-                item = {keys[col_index]: sheet.cell(row_index, col_index).value
-                        for col_index in range(sheet.ncols)}
+                item = {
+                    keys[col_index]: sheet.cell(row_index, col_index).value
+                    for col_index in range(sheet.ncols)
+                }
                 if not selected:
                     dict_list.append(item)
                 else:
@@ -354,8 +362,7 @@ def flatten(lst):
     """Flatten nested lists into a single list of lists."""
     try:
         for ele in lst:
-            if isinstance(ele, collections.abc.Iterable) and \
-                    not isinstance(ele, str):
+            if isinstance(ele, collections.abc.Iterable) and not isinstance(ele, str):
                 for sub in flatten(ele):
                     yield sub
             else:
@@ -401,18 +408,18 @@ def comparer(val, operator, target):
             pass
         return val, target
 
-    if target == 'T' or target == 'True':
+    if target == "T" or target == "True":
         target = True
-    if target == 'F' or target == 'False':
+    if target == "F" or target == "False":
         target = False
-    if val == 'T' or val == 'True':
+    if val == "T" or val == "True":
         val = True
-    if val == 'F' or val == 'False':
+    if val == "F" or val == "False":
         val = False
 
     if not operator:
-        operator = '='
-    if operator in ['<', '<=', '>', '>=']:
+        operator = "="
+    if operator in ["<", "<=", ">", ">="]:
         val, target = to_length(val, target)
 
     try:
@@ -423,28 +430,28 @@ def comparer(val, operator, target):
         target = float(target)
     except Exception:
         pass
-    if operator == '=':
+    if operator == "=":
         if val == target:
             return True
-    elif operator == '~' or operator == 'in':
+    elif operator == "~" or operator == "in":
         try:
             if val in target:
                 return True
         except TypeError:
             pass
-    elif operator == '!=':
+    elif operator == "!=":
         if val != target:
             return True
-    elif operator == '<':
+    elif operator == "<":
         if val < target:
             return True
-    elif operator == '>':
+    elif operator == ">":
         if val > target:
             return True
-    elif operator == '>=':
+    elif operator == ">=":
         if val >= target:
             return True
-    elif operator == '<=':
+    elif operator == "<=":
         if val <= target:
             return True
     else:
@@ -452,7 +459,9 @@ def comparer(val, operator, target):
     return False
 
 
-def polygon_vertices(sides: int, radius: float, starting_angle: float, center: Point) -> list:
+def polygon_vertices(
+    sides: int, radius: float, starting_angle: float, center: Point
+) -> list:
     """Calculate array of Points for a polygon's vertices.
 
     Args:
@@ -486,8 +495,8 @@ def polygon_vertices(sides: int, radius: float, starting_angle: float, center: P
 
 def color_to_hex(name):
     """Convert a named ReportLab color (Color class) to a hexadecimal string"""
-    _tuple = (int(name.red*255), int(name.green*255), int(name.blue*255))
-    _string = '#%02x%02x%02x' % _tuple
+    _tuple = (int(name.red * 255), int(name.green * 255), int(name.blue * 255))
+    _string = "#%02x%02x%02x" % _tuple
     return _string.upper()
 
 
@@ -516,15 +525,15 @@ def sheet_column(num: int, lower: bool = False) -> string:
             return (
                 ""
                 if num == 0
-                else converter((num - 1) // 26, lower) +
-                string.ascii_lowercase[(num - 1) % 26]
+                else converter((num - 1) // 26, lower)
+                + string.ascii_lowercase[(num - 1) % 26]
             )
         else:
             return (
                 ""
                 if num == 0
-                else converter((num - 1) // 26, lower) +
-                string.ascii_uppercase[(num - 1) % 26]
+                else converter((num - 1) // 26, lower)
+                + string.ascii_uppercase[(num - 1) % 26]
             )
 
     return converter(num, lower)
@@ -537,6 +546,7 @@ def is_inside_polygon(point: tuple, vertices: list, valid_border=False) -> bool:
         https://www.linkedin.com/pulse/~
         short-formula-check-given-point-lies-inside-outside-polygon-ziemecki/
     """
+
     def _is_point_in_segment(point, point_0, point_1):
         p_0 = point_0[0] - point[0], point_0[1] - point[1]
         p_1 = point_1[0] - point[0], point_1[1] - point[1]
@@ -562,7 +572,7 @@ def is_inside_polygon(point: tuple, vertices: list, valid_border=False) -> bool:
 def length_of_line(start: Point, end: Point) -> float:
     """Calculate length of line between two Points."""
     # √[(x₂ - x₁)² + (y₂ - y₁)²]
-    return math.sqrt((end.x - start.x)**2 + (end.y - start.y)**2)
+    return math.sqrt((end.x - start.x) ** 2 + (end.y - start.y) ** 2)
 
 
 def point_on_line(point_start: Point, point_end: Point, distance: float) -> Point:
@@ -576,7 +586,8 @@ def point_on_line(point_start: Point, point_end: Point, distance: float) -> Poin
     >>> assert round(R.y, 4) == 3.3416
     """
     line = math.sqrt(
-        (point_end.x - point_start.x) ** 2 + (point_end.y - point_start.y) ** 2)
+        (point_end.x - point_start.x) ** 2 + (point_end.y - point_start.y) ** 2
+    )
     ratio = distance / line
     x = (1.0 - ratio) * point_start.x + ratio * point_end.x
     y = (1.0 - ratio) * point_start.y + ratio * point_end.y
@@ -678,7 +689,7 @@ def arc_angle_between_hexsides(side_a, side_b):
 
 
 def lines_intersect(A: Point, B: Point, C: Point, D: Point) -> bool:
-    """"Return True if line segments AB and CD intersect
+    """ "Return True if line segments AB and CD intersect
 
     Ref:
         https://stackoverflow.com/questions/3838329
@@ -688,6 +699,59 @@ def lines_intersect(A: Point, B: Point, C: Point, D: Point) -> bool:
         return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x)
 
     return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
+
+
+def bezier_arc_segment(
+    cx: float, cy: float, rx: float, ry: float, theta0: float, theta1: float
+):
+    """Compute the control points for a Bezier arc with angles theta1-theta0 <= 90.
+
+    Points are computed for an arc with angle theta increasing in the
+    counter-clockwise (CCW) direction. Zero degrees is at the "East" position.
+
+    Returns:
+        tuple: starting point and 3 control points of a cubic Bezier curve
+
+    Source:
+        https://github.com/makinacorpus/reportlab-ecomobile/blob/master/src/reportlab/graphics/renderPM.py
+
+    Doc Test:
+
+    >>> bezier_arc_segment(cx=1, cy=2.5, rx=0.5, ry=0.5, theta0=90, theta1=180)
+    ((1.0, 3.0), (0.7238576250846034, 3.0, 0.5, 2.7761423749153966, 0.5, 2.5))
+    >>> bezier_arc_segment(cx=1, cy=2.5, rx=0.5, ry=0.5, theta0=90, theta1=270)
+    FEEDBACK:: Angles must have a difference less than, or equal to, 90
+    """
+
+    # Requires theta1 - theta0 <= 90 for a good approximation
+    if abs(theta1 - theta0) > 90:
+        feedback('Angles must have a difference less than, or equal to, 90')
+        return None
+    cos0 = math.cos(math.pi * theta0 / 180.0)
+    sin0 = math.sin(math.pi * theta0 / 180.0)
+    x0 = cx + rx * cos0
+    y0 = cy + ry * sin0
+
+    cos1 = math.cos(math.pi * theta1 / 180.0)
+    sin1 = math.sin(math.pi * theta1 / 180.0)
+
+    x3 = cx + rx * cos1
+    y3 = cy + ry * sin1
+
+    dx1 = -rx * sin0
+    dy1 = ry * cos0
+
+    half_angle = math.pi * (theta1 - theta0) / (2.0 * 180.0)
+    k = abs(4.0 / 3.0 * (1.0 - math.cos(half_angle)) / (math.sin(half_angle)))
+    x1 = x0 + dx1 * k
+    y1 = y0 + dy1 * k
+
+    dx2 = -rx * sin1
+    dy2 = ry * cos1
+
+    x2 = x3 - dx2 * k
+    y2 = y3 - dy2 * k
+    return (x0, y0), (x1, y1, x2, y2, x3, y3)
 
 
 if __name__ == "__main__":
