@@ -9,8 +9,9 @@ import random
 
 # third party
 from reportlab.platypus import Paragraph
-from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.colors import black, white, lightsteelblue
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.lib.units import cm, inch, mm
 
 # local
 from pyprototypr.utils.tools import Point, Link  # named tuples
@@ -141,6 +142,7 @@ class DotShape(BaseShape):
         self.fill = self.stroke
         self.set_canvas_props()
         # ---- draw dot
+        tools.feedback(f'*** Dot {size=}')
         cnv.circle(x, y, size, stroke=0, fill=1 if self.fill else 0)
         # ---- text
         self.draw_label(cnv, x, y)
@@ -866,7 +868,8 @@ class ArcShape(BaseShape):
         # canvas
         self.set_canvas_props()
         # ---- draw arc
-        cnv.arc(x_1, y_1, x_2, y_2, startAng=0, extent=self.angle_width) # anti-clock from flat; 90°
+        tools.feedback(f'Arc *** {x_1=}, {y_1=}, {x_2=}, {y_2=}')
+        cnv.arc(x_1, y_1, x_2, y_2, startAng=self.angle, extent=self.angle_width) # anti-clock from flat; 90°
 
 
 class BezierShape(BaseShape):
@@ -1130,47 +1133,74 @@ class HexShape(BaseShape):
                 tools.feedback(
                     f'Cannot use {parts[0]} and/or {parts[1]} as hex side numbers.',
                     True)
-            arc_angle = tools.arc_angle_between_hexsides(the_link.a, the_link.b)
+            separation = tools.separation_between_hexsides(the_link.a, the_link.b)
 
             va_start = the_link.a - 1
             va_end = the_link.a % 6
             vb_start = the_link.b - 1
             vb_end = the_link.b % 6
 
+            tools.feedback(f'a:{va_start}-{va_end} b:{vb_start}-{vb_end}')
+
+            tools.feedback(f'{vertices[va_start]=}, {vertices[va_end]=}')
             a_mid = tools.point_on_line(
                 vertices[va_start], vertices[va_end], side / 2.0)
             b_mid = tools.point_on_line(
                 vertices[vb_start], vertices[vb_end], side / 2.0)
+            tools.feedback(f'{a_mid.x=} {a_mid.y=}')
 
-            a_x, a_y = self.points_to_value(a_mid.x), self.points_to_value(a_mid.y)
-            b_x, b_y = self.points_to_value(b_mid.x), self.points_to_value(b_mid.y)
+            a_x, a_y = self.points_to_value(a_mid.x)-1, self.points_to_value(a_mid.y)-1
+            b_x, b_y = self.points_to_value(b_mid.x)-1, self.points_to_value(b_mid.y)-1
+            tools.feedback(f'CM a_mid.x={a_x:.2f} CM a_mid.y={a_y:.2f}')
+            # tools.feedback(f'b_mid.x={b_x:.2f} b_mid.y={b_y:.2f}')
+
+            tools.feedback(f'side={self.points_to_value(side):.3f}')
+            corner_x = vertices[vb_end].x - side / 2.0
+            corner_y = vertices[vb_end].y - side / 2.0
+            tools.feedback(f'corn_x={(self.points_to_value(corner_x)-1):.2f} '
+                           f'corn_y={(self.points_to_value(corner_y)-1):.2f}')
+
             vas_x, vas_y = self.points_to_value(vertices[va_start].x  - self._u.margin_left), self.points_to_value(vertices[va_start].y  - self._u.margin_bottom)
             vae_x, vae_y = self.points_to_value(vertices[va_end].x), self.points_to_value(vertices[va_end].y)
             vbs_x, vbs_y = self.points_to_value(vertices[vb_start].x), self.points_to_value(vertices[vb_start].y)
             vbe_x, vbe_y = self.points_to_value(vertices[vb_end].x), self.points_to_value(vertices[vb_end].y)
 
-            tools.feedback(f'{va_start=} {va_end=}')
-            tools.feedback(f'vas_x={vas_x:.2f} vas_y={vas_y:.2f} // vae_x={vae_x:.2f} vae_y={vae_y:.2f} ')
-            tools.feedback(f'ax={a_x:.2f} ay={a_y:.2f}')
-            tools.feedback(f'{arc_angle=}')
-            tools.feedback(f'{vb_start=} {vb_end=}')
-            tools.feedback(f'vbs_x={vbs_x:.2f} vbs_y={vbs_y:.2f} // vbe_x={vbe_x:.2f} vbe_y={vbe_y:.2f} ')
-            tools.feedback(f'bx={b_x:.2f} by={b_y:.2f}')
+            # cnv.circle(corner_x, corner_y, 3, stroke=1, fill=1 if self.fill else 0)
+            # cnv.circle(b_mid.x, b_mid.y, 3, stroke=1, fill=1 if self.fill else 0)
+            # cnv.circle(a_mid.x, a_mid.y, 3, stroke=1, fill=1 if self.fill else 0)
 
-            #tools.feedback(f'vb_start=} {vb_end=} ')
-            #tools.feedback(f'{b_x=} {b_y=} ')
+            cnv.circle(89.85826771653544, 73.13385826771653, 2, stroke=1, fill=1 if self.fill else 0)
 
-            the_arc = ArcShape(
-                x=self.points_to_value(a_mid.x),
-                y=self.points_to_value(a_mid.y),
-                x1=self.points_to_value(b_mid.x),
-                y1=self.points_to_value(b_mid.y),
-                stroke=self.link_stroke,
-                stroke_width=self.link_width,
-                stroke_cap=self.link_cap,
-                angle_width=arc_angle)
-            the_arc.draw()
-            # TODO - handle style!
+            # tools.feedback(f'{va_start=} {va_end=}')
+            # tools.feedback(f'vas_x={vas_x:.2f} vas_y={vas_y:.2f} // vae_x={vae_x:.2f} vae_y={vae_y:.2f} ')
+
+            # tools.feedback(f'{separation=}')
+            # tools.feedback(f'{vb_start=} {vb_end=}')
+            # tools.feedback(f'vbs_x={vbs_x:.2f} vbs_y={vbs_y:.2f} // vbe_x={vbe_x:.2f} vbe_y={vbe_y:.2f} ')
+            # tools.feedback(f'bx={b_x:.2f} by={b_y:.2f}')
+
+            match separation:
+                case 0:
+                    pass  # no line
+                case 1:  # adjacent; small arc
+                    # tools.feedback(f'arc *** {a_mid.x=} {a_mid.y=} {b_mid.x=} {b_mid.y=}')
+                    tools.feedback(f'arc *** x_1={corner_x}, y_1={corner_y}, x_2={a_mid.x}, y_2={a_mid.y}')
+                    cnv.arc(
+                        corner_x, corner_y,
+                        89.85826771653544, 73.13385826771653,
+                        #a_mid.x + cm, a_mid.y,
+                        startAng=0,
+                        extent=180)  # anti-clockwise from "east"
+                case 2:  # non-adjacent; large arc
+                    pass
+                case 3:  # opposite sides; straight line
+                    pth = cnv.beginPath()
+                    pth.moveTo(*a_mid)
+                    pth.lineTo(*b_mid)
+                    cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+                case _:
+                    raise NotImplementedError(
+                        f'Unable to handle hex sseparation: "{separation}"')
 
     def draw_hatch(self, cnv, side: float, vertices: list, num: int):
 

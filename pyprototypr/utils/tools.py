@@ -584,13 +584,34 @@ def point_on_line(point_start: Point, point_end: Point, distance: float) -> Poin
     >>> R = point_on_line(P, Q, D)
     >>> assert round(R.x, 4) == 2.6833
     >>> assert round(R.y, 4) == 3.3416
+
+    >>> P = Point(2.58,2)
+    >>> Q = Point(3.73,2)
+    >>> D = 0.575
+    >>> R = point_on_line(P, Q, D)
+    >>> assert round(R.x, 4) == 3.1550
+    >>> assert round(R.y, 4) == 2
     """
-    line = math.sqrt(
-        (point_end.x - point_start.x) ** 2 + (point_end.y - point_start.y) ** 2
-    )
-    ratio = distance / line
-    x = (1.0 - ratio) * point_start.x + ratio * point_end.x
-    y = (1.0 - ratio) * point_start.y + ratio * point_end.y
+    if point_end.x == point_start.x and point_end.y == point_start.y:
+        return point_start
+
+    distance = abs(distance)
+    if point_end.x != point_start.x and point_end.y != point_start.y:
+        line = math.sqrt(
+            (point_end.x - point_start.x) ** 2 + (point_end.y - point_start.y) ** 2
+        )
+        ratio = distance / line
+        x = (1.0 - ratio) * point_start.x + ratio * point_end.x
+        y = (1.0 - ratio) * point_start.y + ratio * point_end.y
+    elif point_end.y == point_start.y:
+        x = point_start.x + distance
+        y = point_end.y
+    elif point_end.x == point_start.x:
+        y = point_start.y + distance
+        x = point_end.x
+    else:
+        raise NotImplementedError(
+            f'Cannot calculate line on point for: {point_start} and {point_end}')
     return Point(x, y)
 
 
@@ -644,29 +665,29 @@ def angles_from_points(x1, y1, x2, y2, radians=False):
     return compass, rotation
 
 
-def arc_angle_between_hexsides(side_a, side_b):
-    """Arc of angle between two sides of a hexagon.
+def separation_between_hexsides(side_a, side_b):
+    """Levels of separation between two sides of a hexagon.
 
     Notes:
         Sides are numbered from 1 to 6 (by convention starting at furthest left).
 
     Doc Test:
 
-    >>> arc_angle_between_hexsides(1, 1)
-    0.0
-    >>> arc_angle_between_hexsides(1, 2)
-    60.0
-    >>> arc_angle_between_hexsides(1, 3)
-    120.0
-    >>> arc_angle_between_hexsides(1, 4)
-    180.0
-    >>> arc_angle_between_hexsides(1, 5)
-    120.0
-    >>> arc_angle_between_hexsides(1, 6)
-    60.0
-    >>> arc_angle_between_hexsides(6, 1)
-    60.0
-    >>> arc_angle_between_hexsides('a', 1)
+    >>> separation_between_hexsides(1, 1)
+    0
+    >>> separation_between_hexsides(1, 2)
+    1
+    >>> separation_between_hexsides(1, 3)
+    2
+    >>> separation_between_hexsides(1, 4)
+    3
+    >>> separation_between_hexsides(1, 5)
+    2
+    >>> separation_between_hexsides(1, 6)
+    1
+    >>> separation_between_hexsides(6, 1)
+    1
+    >>> separation_between_hexsides('a', 1)
     """
     try:
         _side_a = 6 if (side_a % 6 == 0) else side_a % 6
@@ -685,7 +706,7 @@ def arc_angle_between_hexsides(side_a, side_b):
         dist = 2
     if _side_a == 1 and _side_b == 6:
         dist = 1
-    return dist * 60.0
+    return dist
 
 
 def lines_intersect(A: Point, B: Point, C: Point, D: Point) -> bool:
