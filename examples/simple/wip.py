@@ -35,7 +35,7 @@ ww = 0.5 # 4.3  #
 # Hexagon(x=1, y=1, height=2, stroke=red, dot_size=0.02, dot_color=red, fill=None)
 Square(x=1, y=0.42, side=1.155, stroke=green, fill=None)  #, dot_size=0.01
 #Arc(x=0.97, y=0.4, x1=2.17, y1=1.58, stroke_width=ww, angle=0, angle_width=120)
-Arc(x=1, y=0.42, x1=2.17, y1=1.58, stroke_width=ww, angle=0, angle_width=120)
+#Arc(x=1, y=0.42, x1=2.17, y1=1.58, stroke=pink, stroke_width=ww, angle=0, angle_width=120)
 Line(x=1.96, y=1.67, x1=1.76, y1=1.35, stroke_width=ww)
 
 Hexagon(
@@ -43,8 +43,8 @@ Hexagon(
     height=2,
     stroke=blue, dot_size=0.01, dot_color=blue,
     fill=None,
-    # link_width=4.3,
-    links="6 5 S",
+    link_width=4.3,
+    links="6 5 S, 6 1 S",
     # hex_top="pointy",
     debug=True)
 

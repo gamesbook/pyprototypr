@@ -1128,79 +1128,63 @@ class HexShape(BaseShape):
                     a=int(parts[0]),
                     b=int(parts[1]),
                     style=parts[2] if len(parts) > 2 else None)
-                tools.feedback(f'{the_link=}')
+                # tools.feedback(f'{the_link=}')
             except TypeError:
                 tools.feedback(
                     f'Cannot use {parts[0]} and/or {parts[1]} as hex side numbers.',
                     True)
-            separation = tools.separation_between_hexsides(the_link.a, the_link.b)
 
             va_start = the_link.a - 1
             va_end = the_link.a % 6
             vb_start = the_link.b - 1
             vb_end = the_link.b % 6
-
             tools.feedback(f'a:{va_start}-{va_end} b:{vb_start}-{vb_end}')
 
-            tools.feedback(f'{vertices[va_start]=}, {vertices[va_end]=}')
-            a_mid = tools.point_on_line(
-                vertices[va_start], vertices[va_end], side / 2.0)
-            b_mid = tools.point_on_line(
-                vertices[vb_start], vertices[vb_end], side / 2.0)
-            tools.feedback(f'{a_mid.x=} {a_mid.y=}')
-
-            a_x, a_y = self.points_to_value(a_mid.x)-1, self.points_to_value(a_mid.y)-1
-            b_x, b_y = self.points_to_value(b_mid.x)-1, self.points_to_value(b_mid.y)-1
-            tools.feedback(f'CM a_mid.x={a_x:.2f} CM a_mid.y={a_y:.2f}')
-            # tools.feedback(f'b_mid.x={b_x:.2f} b_mid.y={b_y:.2f}')
-
-            tools.feedback(f'side={self.points_to_value(side):.3f}')
-            corner_x = vertices[vb_end].x - side / 2.0
-            corner_y = vertices[vb_end].y - side / 2.0
-            tools.feedback(f'corn_x={(self.points_to_value(corner_x)-1):.2f} '
-                           f'corn_y={(self.points_to_value(corner_y)-1):.2f}')
-
-            vas_x, vas_y = self.points_to_value(vertices[va_start].x  - self._u.margin_left), self.points_to_value(vertices[va_start].y  - self._u.margin_bottom)
-            vae_x, vae_y = self.points_to_value(vertices[va_end].x), self.points_to_value(vertices[va_end].y)
-            vbs_x, vbs_y = self.points_to_value(vertices[vb_start].x), self.points_to_value(vertices[vb_start].y)
-            vbe_x, vbe_y = self.points_to_value(vertices[vb_end].x), self.points_to_value(vertices[vb_end].y)
-
-            # cnv.circle(corner_x, corner_y, 3, stroke=1, fill=1 if self.fill else 0)
-            # cnv.circle(b_mid.x, b_mid.y, 3, stroke=1, fill=1 if self.fill else 0)
-            # cnv.circle(a_mid.x, a_mid.y, 3, stroke=1, fill=1 if self.fill else 0)
-
-            cnv.circle(89.85826771653544, 73.13385826771653, 2, stroke=1, fill=1 if self.fill else 0)
-
-            # tools.feedback(f'{va_start=} {va_end=}')
-            # tools.feedback(f'vas_x={vas_x:.2f} vas_y={vas_y:.2f} // vae_x={vae_x:.2f} vae_y={vae_y:.2f} ')
-
-            # tools.feedback(f'{separation=}')
-            # tools.feedback(f'{vb_start=} {vb_end=}')
-            # tools.feedback(f'vbs_x={vbs_x:.2f} vbs_y={vbs_y:.2f} // vbe_x={vbe_x:.2f} vbe_y={vbe_y:.2f} ')
-            # tools.feedback(f'bx={b_x:.2f} by={b_y:.2f}')
-
+            separation = tools.separation_between_hexsides(the_link.a, the_link.b)
             match separation:
                 case 0:
                     pass  # no line
                 case 1:  # adjacent; small arc
-                    # tools.feedback(f'arc *** {a_mid.x=} {a_mid.y=} {b_mid.x=} {b_mid.y=}')
-                    tools.feedback(f'arc *** x_1={corner_x}, y_1={corner_y}, x_2={a_mid.x}, y_2={a_mid.y}')
-                    cnv.arc(
-                        corner_x, corner_y,
-                        89.85826771653544, 73.13385826771653,
-                        #a_mid.x + cm, a_mid.y,
-                        startAng=0,
-                        extent=180)  # anti-clockwise from "east"
+                    if va_start in [5, 0] and vb_start in [4, 5]:
+                        lower_corner = Point(vertices[vb_end].x - side / 2.0,
+                                             vertices[vb_end].y - side / 2.0)
+                        top_corner = Point(vertices[vb_end].x + side / 2.0,
+                                           vertices[vb_end].y + side / 2.0)
+                        cnv.arc(
+                            lower_corner.x, lower_corner.y,
+                            top_corner.x, top_corner.y,
+                            startAng=0,
+                            extent=120)  # anti-clockwise from "east"
+
+                    if va_start in [0, 5] and vb_start in [0, 1]:
+                        lower_corner = Point(vertices[vb_end].x - side / 2.0,
+                                             vertices[vb_end].y - side / 2.0)
+                        top_corner = Point(vertices[vb_end].x + side / 2.0,
+                                           vertices[vb_end].y + side / 2.0)
+                        cnv.arc(
+                            lower_corner.x, lower_corner.y,
+                            top_corner.x, top_corner.y,
+                            startAng=-60,
+                            extent=120)  # anti-clockwise from "east"
+
+                    # tools.feedback(
+                    #     f'arc *** x_1={lower_corner.x}, y_1={lower_corner.y}'
+                    #     f' x_2={top_corner.x}, y_2={top_corner.y}')
+
                 case 2:  # non-adjacent; large arc
                     pass
                 case 3:  # opposite sides; straight line
+                    a_mid = tools.point_on_line(
+                        vertices[va_start], vertices[va_end], side / 2.0)
+                    b_mid = tools.point_on_line(
+                        vertices[vb_start], vertices[vb_end], side / 2.0)
                     pth = cnv.beginPath()
                     pth.moveTo(*a_mid)
                     pth.lineTo(*b_mid)
                     cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
                 case _:
                     raise NotImplementedError(
-                        f'Unable to handle hex sseparation: "{separation}"')
+                        f'Unable to handle hex "{separation=}"')
 
     def draw_hatch(self, cnv, side: float, vertices: list, num: int):
 
