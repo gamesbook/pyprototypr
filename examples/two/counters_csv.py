@@ -11,7 +11,7 @@ Create(filename='tannenberg.pdf')
 Deck(width=2.6, height=2.6, fill=yellow)
 
 # load data
-Data("counters.csv")  # (re)set no. of cards based on chosen rows in file
+Data(filename="counters.csv")  # (re)set no. of cards based on chosen rows in file
 
 # basic values
 grey = "#B8BAB1"

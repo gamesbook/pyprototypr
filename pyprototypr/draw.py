@@ -8,6 +8,7 @@ import logging
 # lib
 from copy import copy
 import os
+import pathlib
 import sys
 # third party
 from reportlab.lib.pagesizes import *
@@ -157,7 +158,7 @@ def Save():
     global cnv
     global deck
     if deck and len(deck.deck) > 1:
-        deck.draw(cnv)
+        deck.draw(cnv, cards=deck.cards, image_list=deck.image_list)
         cnv.canvas.showPage()
     cnv.canvas.save()
 
@@ -206,6 +207,7 @@ def Card(sequence, *elements):
     global cnv
     global deck
     global dataset
+
     _cards = []
     # int - single card
     try:
@@ -216,14 +218,17 @@ def Card(sequence, *elements):
     # string - either 'all' or a range: '1', '1-2', '1-3,5-6'
     if not _cards:
         try:
-            if sequence.lower() == 'all':
-                _cards = range(1, len(dataset) + 1)
+            card_count = len(dataset) if dataset else len(deck.image_list)
+            if sequence.lower() == 'all' or sequence.lower() == '*':
+                _cards = range(1, card_count + 1)
             else:
                 _cards = tools.sequence_split(sequence)
-        except Exception:
+        except Exception as err:
+            log.error('Handling sequence:%s with dataset:%s & images:%s - %s',
+                      sequence, dataset, deck.image_list, err)
             tools.feedback(
-                f'Unable to convert "{sequence}"" into a card or range or cards.')
-    for _card in _cards:
+                f'Unable to convert "{sequence}" into a card or range or cards {deck}.')
+    for index, _card in enumerate(_cards):
         card = deck.get(_card - 1)  # cards internally number from ZERO
         if card:
             for element in elements:
@@ -236,7 +241,10 @@ def Card(sequence, *elements):
 
 
 def Deck(**kwargs):
-    """Initialise a deck with all its settings, including source of data."""
+    """Initialise a deck with all its settings, including source(s) of data.
+
+    NOTE: A Deck receives its `draw()` command from Save()!
+    """
     global cnv
     global deck
     global margin
@@ -263,18 +271,43 @@ def group(*args):
 # ---- data and functions  =====
 
 
-def Data(source=None, **kwargs):
-    """Load data from file into a dictionary for shared access."""
+def Data(**kwargs):
+    """Load data from file or directory for access by a Deck."""
     global cnv
     global deck
     global dataset
-    dataset = tools.load_data(source, **kwargs)
-    log.debug("dataset loaded: %s", dataset)
-    if len(dataset) == 0:
-        tools.feedback("Dataset is empty or cannot be loaded!")
-    else:
-        deck.create(len(dataset))
-        deck.dataset = dataset
+
+    filename = kwargs.get('filename', None)
+    images = kwargs.get('images', None)
+    filters = kwargs.get('image_filters', None)
+
+    if filename:  # handle excel and CSV
+        dataset = tools.load_data(filename, **kwargs)
+        log.debug("dataset loaded: %s", dataset)
+        if len(dataset) == 0:
+            tools.feedback("Dataset is empty or cannot be loaded!", True)
+        else:
+            deck.create(len(dataset))
+            deck.dataset = dataset
+    elif images:  # handle images
+        src = pathlib.Path(images)
+        if not src.is_dir():
+            # look relative to script's location
+            script_dir = os.path.dirname(os.path.realpath(sys.argv[0]))
+            full_path = os.path.join(script_dir, images)
+            src = pathlib.Path(full_path)
+            if not src.is_dir():
+                tools.feedback(
+                    f'Cannot locate or access directory: {images} or {full_path}', True)
+        if filters:
+            src = src.glob(filters)  # glob('*.[tx][xl][ts]')
+        for child in src.iterdir():
+            deck.image_list.append(child)
+        if len(deck.image_list) == 0:
+            tools.feedback(
+                f'Directory "{src}" has no relevant files or cannot be loaded!', True)
+        deck.cards = len(deck.image_list)  # OVERWRITE total number of cards
+        deck.create(deck.cards)  # resize deck based on images
 
 
 def V(*args):
