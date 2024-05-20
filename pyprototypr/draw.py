@@ -5,6 +5,7 @@ Primary drawing interface for pyprototypr
 # future
 from __future__ import division
 import logging
+from typing import Protocol
 # lib
 from copy import copy
 import os
@@ -31,7 +32,7 @@ from .shapes import (
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
-from pyprototypr.utils.tools import Point
+from pyprototypr.utils.tools import Point, Location
 
 
 log = logging.getLogger(__name__)
@@ -991,7 +992,7 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
         draw_hexagons(rows, cols, 0, the_cols)
 
     elif kwargs.get('hex_layout') in ['t', 'tri', 'triangle']:
-        tools.feedback(f'Cannot draw diamond-pattern hexagons: {kwargs}', True)
+        tools.feedback(f'Cannot draw triangle-pattern hexagons: {kwargs}', True)
 
     elif kwargs.get('hex_layout') in ['l', 'loz', 'stadium']:
         tools.feedback(f'Cannot draw stadium-pattern hexagons: {kwargs}', True)
@@ -1021,6 +1022,73 @@ def Lines(rows=1, cols=1, **kwargs):
     for row in range(rows):
         for col in range(cols):
             Line(row=row, col=col, **kwargs)
+
+# ---- Virtual Grids & Layout ====
+
+
+class VirtualGrid():
+    global cnv
+    global deck
+
+    def __init__(self, rows=1, cols=1, **kwargs):
+        kwargs = kwargs
+        self.rows = rows
+        self.cols = cols
+        self.row_spacing = kwargs.get('y_interval', 1)
+        self.col_spacing = kwargs.get('x_interval', 1)
+        self.pattern = kwargs.get('pattern', 'default')
+
+    def next_location(self) -> Location:
+        """Yield next Location for each call."""
+        pass
+
+    def draw(self) -> str:
+        pass
+
+
+class RectangleGrid(VirtualGrid):
+    global cnv
+    global deck
+
+    def next_location(self) -> Point:
+        """Yield next Point for each call."""
+        row = 1
+        col = 1
+        while True:  # rows <= self.rows and col <= self.cols:
+            # calculate point based on row/col
+            x = row
+            y = col
+            yield Point(x, y)
+            # set next grid location
+            match self.pattern:
+                case 'snake' | 's':
+                    pass
+                case _:  # default code block
+                    yield Point(row, col)
+                    # next grid location
+                    row = row + 1
+                    if row > self.rows:
+                        col = col + 1
+                        row = 1
+                    if col > self.cols:
+                        return  # end
+
+
+def Layout(grid, **kwargs):
+    global cnv
+    global deck
+    kwargs = kwargs
+    shapes = kwargs.get('shapes', [])
+    if not isinstance(grid, VirtualGrid):
+        tools.feedback(f"The value '{grid}' is not a valid virtual grid!", True)
+    # iterate through grid & d
+    shape_id = 0
+    for pt in grid.next_location():
+        shape = shapes[shape_id]
+        shape.draw(off_x=pt.x, off_y=pt.y)
+        shape_id += 1
+        if shape_id > len(shapes) - 1:
+            shape_id = 0
 
 # ---- BGG ====
 

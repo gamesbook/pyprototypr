@@ -24,6 +24,7 @@ DEBUG = False
 
 Point = namedtuple("Point", ["x", "y"])
 Link = namedtuple("Link", ["a", "b", "style"])
+Location = namedtuple("Link", ["row", "col"])
 
 
 def script_path():
