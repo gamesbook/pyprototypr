@@ -14,7 +14,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import cm, inch, mm
 
 # local
-from pyprototypr.utils.tools import Point, Link  # named tuples
+from pyprototypr.utils.tools import Point, Link, Location  # named tuples
 from pyprototypr.utils import tools
 from pyprototypr.base import BaseShape, BaseCanvas, UNITS, COLORS, PAGES
 
@@ -2450,6 +2450,213 @@ class RepeatShape(BaseShape):
                                     flat_new_ele.draw(
                                         off_x=off_x, off_y=off_y, ID=self.shape_id
                                     )
+
+# ---- Virtual Grids & Layout ====
+
+
+class VirtualGrid():
+    global cnv
+    global deck
+
+    def __init__(self, rows=2, cols=2, **kwargs):
+        kwargs = kwargs
+        self.rows = rows
+        self.cols = cols
+        self.row_spacing = kwargs.get('y_interval', 1)
+        self.col_spacing = kwargs.get('x_interval', 1)
+        self.pattern = kwargs.get('pattern', 'default')
+        self.direction = kwargs.get('direction', 'right')
+        self.start = kwargs.get('start', 'bl')
+        self.stop = kwargs.get('stop', 0)
+        self.validate()
+
+    def to_int(self, value, label) -> int:
+        """Set a value to an int; or stop if an invalid value."""
+        try:
+            int_value = int(value)
+            return int_value
+        except:
+            tools.feedback(f"{value} is not a valid {label} number!", True)
+
+    def validate(self):
+        """Check for validate settings and combos."""
+        self.stop = self.to_int(self.stop, 'stop')
+        self.rows = self.to_int(self.rows, 'rows')
+        self.cols = self.to_int(self.cols, 'cols')
+        if self.cols < 2 or self.rows < 2:
+            tools.feedback(
+                f"Minimum grid size is 2x2 (cannot use {self.cols }x{self.rows})!",
+                True)
+        if self.start.lower() not in ['bl', 'br', 'tl', 'tr']:
+            tools.feedback(
+                f"{self.start} is not a valid start - "
+                "use 'bl', 'br', 'tl', or 'tr'", True)
+        if self.pattern.lower() not in [
+                'default', 'd', 'snake', 's', 'spiral', 'p', 'outer', 'o']:
+            tools.feedback(
+                f"{self.pattern} is not a valid pattern - "
+                "use 'default', snake', or 'spiral'", True)
+        if self.direction.lower() not in ['up', 'u', 'down', 'd', 'left', 'l', 'right', 'r']:
+            tools.feedback(
+                f"{self.direction} is not a valid direction - "
+                "use 'up', down', left', or 'right'", True)
+        if 't' in self.start.lower() and 'u' in self.direction.lower() \
+                or 'b' in self.start.lower() and 'd' in self.direction.lower() \
+                or 'l' in self.start.lower() and 'l' in self.direction.lower() \
+                or 'r' in self.start.lower() and 'r' in self.direction.lower():
+            tools.feedback(f"Cannot use {self.start} with {self.direction}!", True)
+
+    def next_location(self) -> Location:
+        """Yield next Location for each call."""
+        pass
+
+    def draw(self) -> str:
+        pass
+
+
+class RectangleGrid(VirtualGrid):
+    global cnv
+    global deck
+
+    def next_location(self) -> Location:
+        """Yield next Location for each call."""
+        match self.start.lower():
+            case 'bl':
+                row_start = 1
+                col_start = 1
+            case 'br':
+                row_start = 1
+                col_start = self.cols
+            case 'tl':
+                row_start = self.rows
+                col_start = 1
+            case 'tr':
+                row_start = self.rows
+                col_start = self.cols
+        col, row = col_start, row_start
+        while True:  # rows <= self.rows and col <= self.cols:
+            # calculate point based on row/col
+            x = col
+            y = row
+            # set next grid location
+            match self.pattern.lower():
+                case 'snake' | 's':
+                    return
+                case 'spiral' | 'p':
+                    return
+                case 'outer' | 'o':
+                    yield Location(col, row, x, y)
+                    # next grid location
+                    match self.direction.lower():
+                        case 'r' | 'right':
+                            col = col + 1
+                            if col > self.cols:
+                                col = self.cols
+                                if row_start == self.rows:
+                                    self.direction = 'd'
+                                    row = self.rows - 1
+                                    if row < 1:
+                                        return
+                                else:
+                                    self.direction = 'u'
+                                    row = 2
+                                    if row > self.rows:
+                                        return
+                        case 'l' | 'left':
+                            col = col - 1
+                            if col < 1:
+                                col = col_start
+                                if row_start == self.rows:
+                                    self.direction = 'u'
+                                    row = 2
+                                    if row > self.rows:
+                                        return
+                                else:
+                                    self.direction = 'd'
+                                    row = self.rows - 1
+                                    if row < 1:
+                                        return
+                        case 'u' | 'up':
+                            row = row + 1
+                            if row > self.rows:
+                                row = self.rows
+                                if col_start == self.cols:
+                                    self.direction = 'r'
+                                    col = 2
+                                    if col > self.cols:
+                                        return
+                                else:
+                                    self.direction = 'l'
+                                    col = self.cols - 1
+                                    if col < 1:
+                                        return
+                        case 'd' | 'down':
+                            row = row - 1
+                            if row < 1:
+                                row = 1
+                                if col_start == self.cols:
+                                    self.direction = 'l'
+                                    col = self.cols - 1
+                                    if col < 1:
+                                        return
+                                else:
+                                    self.direction = 'r'
+                                    col = 2
+                                    if col > self.cols:
+                                        return
+                case _:  # default pattern
+                    yield Location(col, row, x, y)
+                    # next grid location
+                    match self.direction.lower():
+                        case 'r' | 'right':
+                            col = col + 1
+                            if col > self.cols:
+                                col = col_start
+                                if row_start == self.rows:
+                                    row = row - 1
+                                    if row < 1:
+                                        return  # end
+                                else:
+                                    row = row + 1
+                                    if row > self.rows:
+                                        return  # end
+                        case 'l' | 'left':
+                            col = col - 1
+                            if col < 1:
+                                col = col_start
+                                if row_start == self.rows:
+                                    row = row - 1
+                                    if row < 1:
+                                        return  # end
+                                else:
+                                    row = row + 1
+                                    if row > self.rows:
+                                        return  # end
+                        case 'u' | 'up':
+                            row = row + 1
+                            if row > self.rows:
+                                row = row_start
+                                if col_start == self.cols:
+                                    col = col - 1
+                                    if col < 1:
+                                        return  # end
+                                else:
+                                    col = col + 1
+                                    if col > self.cols:
+                                        return  # end
+                        case 'd' | 'down':
+                            row = row - 1
+                            if row < 1:
+                                row = row_start
+                                if col_start == self.cols:
+                                    col = col - 1
+                                    if col < 1:
+                                        return  # end
+                                else:
+                                    col = col + 1
+                                    if col > self.cols:
+                                        return  # end
+
 
 # ---- Other ----
 

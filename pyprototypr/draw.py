@@ -4,10 +4,9 @@ Primary drawing interface for pyprototypr
 """
 # future
 from __future__ import division
-import logging
-from typing import Protocol
 # lib
 from copy import copy
+import logging
 import os
 import pathlib
 import sys
@@ -28,11 +27,12 @@ from .shapes import (
     EquilateralTriangleShape, FooterShape, GridShape, HexShape, ImageShape, LineShape,
     OctagonShape, PolygonShape, PolylineShape, Query, RectangleShape, RepeatShape,
     RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape,
-    SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape)
+    SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape,
+    RectangleGrid, VirtualGrid, )
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
-from pyprototypr.utils.tools import Point, Location
+from pyprototypr.utils.tools import Point
 
 
 log = logging.getLogger(__name__)
@@ -1023,55 +1023,7 @@ def Lines(rows=1, cols=1, **kwargs):
         for col in range(cols):
             Line(row=row, col=col, **kwargs)
 
-# ---- Virtual Grids & Layout ====
-
-
-class VirtualGrid():
-    global cnv
-    global deck
-
-    def __init__(self, rows=1, cols=1, **kwargs):
-        kwargs = kwargs
-        self.rows = rows
-        self.cols = cols
-        self.row_spacing = kwargs.get('y_interval', 1)
-        self.col_spacing = kwargs.get('x_interval', 1)
-        self.pattern = kwargs.get('pattern', 'default')
-
-    def next_location(self) -> Location:
-        """Yield next Location for each call."""
-        pass
-
-    def draw(self) -> str:
-        pass
-
-
-class RectangleGrid(VirtualGrid):
-    global cnv
-    global deck
-
-    def next_location(self) -> Point:
-        """Yield next Point for each call."""
-        row = 1
-        col = 1
-        while True:  # rows <= self.rows and col <= self.cols:
-            # calculate point based on row/col
-            x = row
-            y = col
-            yield Point(x, y)
-            # set next grid location
-            match self.pattern:
-                case 'snake' | 's':
-                    pass
-                case _:  # default code block
-                    yield Point(row, col)
-                    # next grid location
-                    row = row + 1
-                    if row > self.rows:
-                        col = col + 1
-                        row = 1
-                    if col > self.cols:
-                        return  # end
+# ---- Layout  ====
 
 
 def Layout(grid, **kwargs):
@@ -1081,14 +1033,34 @@ def Layout(grid, **kwargs):
     shapes = kwargs.get('shapes', [])
     if not isinstance(grid, VirtualGrid):
         tools.feedback(f"The value '{grid}' is not a valid virtual grid!", True)
-    # iterate through grid & d
+    # ---- iterate through grid & draw shape(s)
     shape_id = 0
-    for pt in grid.next_location():
-        shape = shapes[shape_id]
-        shape.draw(off_x=pt.x, off_y=pt.y)
+    locations = enumerate(grid.next_location())
+    for count, loc in locations:
+        if grid.stop and count + 1 >= grid.stop:
+            break
+        if grid.pattern in ['o', 'outer']:
+            if count + 1 > grid.rows * 2 + (grid.cols - 2) * 2:
+                break
+        shape = copy(shapes[shape_id])  # enable overwrite/change of properties
+        # ---- supply data to shape's text fields
+        data = {
+            'col': loc.col, 'row': loc.row, 'x': loc.x, 'y': loc.y, 'count': count + 1}
+        # tools.feedback(f'{data=}')
+        try:
+            shape.label = shapes[shape_id].label.format(**data)  # replace {xyz} entries
+            shape.title = shapes[shape_id].title.format(**data)
+            shape.heading = shapes[shape_id].heading.format(**data)
+        except KeyError as err:
+            text = str(err).split()
+            tools.feedback(
+                f'You cannot use {text[0]} as a special field (remove the brackets)',
+                True)
+        # ---- execute the draw()
+        shape.draw(off_x=loc.x, off_y=loc.y)
         shape_id += 1
         if shape_id > len(shapes) - 1:
-            shape_id = 0
+            shape_id = 0  # reset and start again
 
 # ---- BGG ====
 
