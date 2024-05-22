@@ -1054,7 +1054,7 @@ def Layout(grid, **kwargs):
         except KeyError as err:
             text = str(err).split()
             tools.feedback(
-                f'You cannot use {text[0]} as a special field (remove the brackets)',
+                f'You cannot use {text[0]} as a special field; remove the {{ }} brackets',
                 True)
         # ---- execute the draw()
         shape.draw(off_x=loc.x, off_y=loc.y)
