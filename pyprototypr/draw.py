@@ -14,11 +14,11 @@ import sys
 from reportlab.lib.pagesizes import *
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.lib.colors import *
+# from reportlab.lib.colors import black, white
 from reportlab.lib.units import cm, inch
 # local
 from .bgg import BGGGame, BGGGameList
-from .base import BaseCanvas, GroupBase, COLORS
+from .base import BaseCanvas, GroupBase, COLORS, DEBUG_COLOR
 from .dice import (
     Dice, DiceD4, DiceD6, DiceD8, DiceD10, DiceD12, DiceD20, DiceD100)
 from .shapes import (
@@ -566,7 +566,7 @@ def AutoGrid(**kwargs):
     kwargs['size'] = kwargs.get('size', size)
     kwargs['x'] = kwargs.get('x', 0)
     kwargs['y'] = kwargs.get('y', 0)
-    kwargs['stroke'] = kwargs.get('stroke', lightsteelblue)
+    kwargs['stroke'] = kwargs.get('stroke', DEBUG_COLOR)
     m_x = kwargs['units'] * (margin_left + margin_right)
     m_y = kwargs['units'] * (margin_top + margin_bottom)
     _cols = (pagesize[0] - m_x) / (kwargs['units'] * float(kwargs['size']))
@@ -956,16 +956,15 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
 
     if kwargs.get('hex_layout') and kwargs.get('hex_top'):
         if kwargs.get('hex_top').lower() in ['p', 'pointy'] and \
-            kwargs.get('hex_layout') not in ['r', 'rec', 'rect', 'rectangle']:
-                tools.feedback(
-                    f'Cannot use this custom hex_layout with pointy hexagons!',
-                    True)
+                kwargs.get('hex_layout') not in ['r', 'rec', 'rect', 'rectangle']:
+            tools.feedback(
+                'Cannot use this custom hex_layout with pointy hexagons!',
+                True)
 
     if kwargs.get('hex_layout') in ['c', 'cir', 'circle']:
-        if not sides and (
-            (rows is not None and rows < 3) and
-            (cols is not None and cols < 3)):
-            tools.feedback(f'The minimum values for rows/cols is 3!', True)
+        if not sides and ((rows is not None and rows < 3) and (
+                cols is not None and cols < 3)):
+            tools.feedback('The minimum values for rows/cols is 3!', True)
         if rows and rows > 1:
             cols = rows
         if cols and cols > 1:
@@ -974,21 +973,21 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
             rows = cols
         if sides:
             if sides < 2:
-                tools.feedback(f'The minimum value for sides is 2!', True)
+                tools.feedback('The minimum value for sides is 2!', True)
             rows = 2 * sides - 1
             cols = rows
         else:
             if rows & 1 == 0:
-                tools.feedback(f'An odd number is needed for rows!', True)
+                tools.feedback('An odd number is needed for rows!', True)
             if cols & 1 == 0:
-                tools.feedback(f'An odd number is needed for cols!', True)
+                tools.feedback('An odd number is needed for cols!', True)
             sides = rows // 2 + 1
-        the_cols = list(range(sides, 0, -1 )) + list(range(sides + 1, rows + 1))
+        the_cols = list(range(sides, 0, -1)) + list(range(sides + 1, rows + 1))
         draw_hexagons(rows, cols, 0, the_cols, odd_mid=False)
 
     elif kwargs.get('hex_layout') in ['d', 'dia', 'diamond']:
         cols = rows * 2 - 1
-        the_cols = list(range(rows, 0, -1 )) + list(range(rows + 1, cols + 1))
+        the_cols = list(range(rows, 0, -1)) + list(range(rows + 1, cols + 1))
         draw_hexagons(rows, cols, 0, the_cols)
 
     elif kwargs.get('hex_layout') in ['t', 'tri', 'triangle']:

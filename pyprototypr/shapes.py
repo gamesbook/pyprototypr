@@ -5,22 +5,17 @@ Create custom shapes for pyprototypr
 # lib
 import logging
 import math
-import os
 
 # third party
 from reportlab.platypus import Paragraph
-from reportlab.lib.colors import black, white, lightsteelblue
 from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.units import cm, inch, mm
 
 # local
 from pyprototypr.utils.tools import Point, Link, Location  # named tuples
 from pyprototypr.utils import tools
-from pyprototypr.base import BaseShape, BaseCanvas, UNITS, COLORS, PAGES
+from pyprototypr.base import BaseShape, BaseCanvas, UNITS, COLORS, PAGES, DEBUG_COLOR
 
 log = logging.getLogger(__name__)
-
-
 DEBUG = False
 
 

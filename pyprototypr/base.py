@@ -55,6 +55,7 @@ from pyprototypr.utils import tools
 log = logging.getLogger(__name__)
 
 DEBUG = False
+DEBUG_COLOR = lightsteelblue
 # ---- tuples
 UnitProperties = namedtuple(
     'UnitProperties', [
@@ -371,10 +372,12 @@ class BaseCanvas:
                                            self.defaults.get('dots',
                                                              False))
         self.dashes = self.defaults.get('dashes', None)
-        # ---- fill color and transparency
+        # ---- color and transparency
         fill = self.defaults.get('fill', self.defaults.get('fill_color'))
         self.fill = self.get_color(fill, white)
         self.transparency = self.defaults.get('transparency', None)
+        self.debug_color = self.get_color(
+            self.defaults.get('debug_color'), DEBUG_COLOR)
         # ---- stroke
         stroke = self.defaults.get('stroke', self.defaults.get('stroke_color'))
         self.stroke = self.get_color(stroke, black)
@@ -1305,12 +1308,13 @@ class BaseShape:
         """Execute any debug statements."""
         if self.run_debug:
             if kwargs.get('vertices', []):  # display vertex index number next to vertex
-                canvas.setFillColor(red)  # lightsteelblue)
+                canvas.setFillColor(self.debug_color)
                 canvas.setFont(self.font_face, 4)
                 for key, vert in enumerate(kwargs.get('vertices')):
                     x = self.points_to_value(vert.x)
                     y = self.points_to_value(vert.y)
-                    self.draw_multi_string(canvas, vert.x, vert.y, f'{key}:{x:.2f},{y:.2f}')
+                    self.draw_multi_string(
+                        canvas, vert.x, vert.y, f'{key}:{x:.2f},{y:.2f}')
 
     def V(self, *args):
         """Placeholder for value evaluator."""
@@ -1327,7 +1331,7 @@ class BaseShape:
 
     def Q(self, *args):
         """Placeholder for query evaluator."""
-        tools.feedback(f'TO DO! {args}')
+        tools.feedback('NOT YET AVAILABLE')
 
 
 class GroupBase(list):
