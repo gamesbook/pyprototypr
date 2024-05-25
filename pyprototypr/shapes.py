@@ -2455,12 +2455,14 @@ class VirtualGrid():
 
     def __init__(self, rows=2, cols=2, **kwargs):
         kwargs = kwargs
-        self.rows = rows
-        self.cols = cols
+        self.rows = self.to_int(rows, 'rows')
+        self.cols = self.to_int(cols, 'cols')
+        self.grid_size = self.rows * self.cols
         self.row_spacing = kwargs.get('y_interval', 1)
         self.col_spacing = kwargs.get('x_interval', 1)
         self.pattern = kwargs.get('pattern', 'default')
         self.direction = kwargs.get('direction', 'right')
+        self.flow = None  # used for snake; see validate() for setting
         self.start = kwargs.get('start', 'bl')
         self.stop = kwargs.get('stop', 0)
         self.validate()
@@ -2478,6 +2480,9 @@ class VirtualGrid():
         self.stop = self.to_int(self.stop, 'stop')
         self.rows = self.to_int(self.rows, 'rows')
         self.cols = self.to_int(self.cols, 'cols')
+        self.start = str(self.start)
+        self.pattern = str(self.pattern)
+        self.direction = str(self.direction)
         if self.cols < 2 or self.rows < 2:
             tools.feedback(
                 f"Minimum grid size is 2x2 (cannot use {self.cols }x{self.rows})!",
@@ -2490,7 +2495,7 @@ class VirtualGrid():
                 'default', 'd', 'snake', 's', 'spiral', 'p', 'outer', 'o']:
             tools.feedback(
                 f"{self.pattern} is not a valid pattern - "
-                "use 'default', snake', or 'spiral'", True)
+                "use 'default', 'outer', 'snake', or 'spiral'", True)
         if self.direction.lower() not in ['up', 'u', 'down', 'd', 'left', 'l', 'right', 'r']:
             tools.feedback(
                 f"{self.direction} is not a valid direction - "
@@ -2500,6 +2505,12 @@ class VirtualGrid():
                 or 'l' in self.start.lower() and 'l' in self.direction.lower() \
                 or 'r' in self.start.lower() and 'r' in self.direction.lower():
             tools.feedback(f"Cannot use {self.start} with {self.direction}!", True)
+        if self.direction.lower() in ['up', 'u', 'down', 'd']:
+            self.flow = 'vert'
+        elif self.direction.lower() in ['left', 'l', 'right', 'r']:
+            self.flow = 'hori'
+        else:
+            tools.feedback(f"{self.direction} is not a valid direction!", True)
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""
@@ -2528,17 +2539,67 @@ class RectangleGrid(VirtualGrid):
             case 'tr':
                 row_start = self.rows
                 col_start = self.cols
-        col, row = col_start, row_start
+        col, row, count = col_start, row_start, 0
         while True:  # rows <= self.rows and col <= self.cols:
             # calculate point based on row/col
             x = col
             y = row
+            count = count + 1
             # set next grid location
             match self.pattern.lower():
-                case 'snake' | 's':
-                    return
+                # ---- snake
+                case 'snake' | 'snaking' | 's':
+                    # tools.feedback(f'{count=} {self.grid_size=} {self.stop=}')
+                    if count > self.grid_size or (self.stop and count > self.stop):
+                        return
+                    yield Location(col, row, x, y)
+                    # next grid location
+                    match self.direction.lower():
+                        case 'r' | 'right':
+                            col = col + 1
+                            if col > self.cols:
+                                col = self.cols
+                                if row_start == self.rows:
+                                    row = row - 1
+                                else:
+                                    row = row + 1
+                                self.direction = 'l'
+
+                        case 'l' | 'left':
+                            col = col - 1
+                            if col < 1:
+                                col = 1
+                                if row_start == self.rows:
+                                    row = row - 1
+                                else:
+                                    row = row + 1
+                                self.direction = 'r'
+
+                        case 'u' | 'up':
+                            row = row + 1
+                            if row > self.rows:
+                                row = self.rows
+                                if col_start == self.cols:
+                                    col = col - 1
+                                else:
+                                    col = col + 1
+                                self.direction = 'd'
+
+                        case 'd' | 'down':
+                            row = row - 1
+                            if row < 1:
+                                row = 1
+                                if col_start == self.cols:
+                                    col = col - 1
+                                else:
+                                    col = col + 1
+                                self.direction = 'u'
+
+                # ---- spiral
                 case 'spiral' | 'p':
-                    return
+                    tools.feedback("Spiral grid layout not implemented yet.", True)
+
+                # ---- outer
                 case 'outer' | 'o':
                     yield Location(col, row, x, y)
                     # next grid location
@@ -2599,6 +2660,8 @@ class RectangleGrid(VirtualGrid):
                                     col = 2
                                     if col > self.cols:
                                         return
+
+                # ---- regular
                 case _:  # default pattern
                     yield Location(col, row, x, y)
                     # next grid location

@@ -1022,7 +1022,7 @@ def Lines(rows=1, cols=1, **kwargs):
         for col in range(cols):
             Line(row=row, col=col, **kwargs)
 
-# ---- Layout  ====
+# ---- Layout and Grids ====
 
 
 def Layout(grid, **kwargs):
