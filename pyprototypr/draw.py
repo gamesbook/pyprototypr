@@ -28,7 +28,8 @@ from .shapes import (
     OctagonShape, PolygonShape, PolylineShape, Query, RectangleShape, RepeatShape,
     RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape,
     SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape,
-    RectangleGrid, VirtualGrid, )
+    VirtualGrid, RectangleGrid,
+    VirtualTrack, RectangleTrack)
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
@@ -1022,16 +1023,16 @@ def Lines(rows=1, cols=1, **kwargs):
         for col in range(cols):
             Line(row=row, col=col, **kwargs)
 
-# ---- Layout and Grids ====
+# ---- Layout and Track ====
 
 
 def Layout(grid, **kwargs):
     global cnv
-    global deck
+
     kwargs = kwargs
     shapes = kwargs.get('shapes', [])
     if not isinstance(grid, VirtualGrid):
-        tools.feedback(f"The value '{grid}' is not a valid virtual grid!", True)
+        tools.feedback(f"The value '{grid}' is not a valid grid!", True)
     # ---- iterate through grid & draw shape(s)
     shape_id = 0
     locations = enumerate(grid.next_location())
@@ -1057,6 +1058,40 @@ def Layout(grid, **kwargs):
                 True)
         # ---- execute the draw()
         shape.draw(off_x=loc.x, off_y=loc.y)
+        shape_id += 1
+        if shape_id > len(shapes) - 1:
+            shape_id = 0  # reset and start again
+
+
+def Track(track, **kwargs):
+    global cnv
+
+    kwargs = kwargs
+    shapes = kwargs.get('shapes', [])
+    if not isinstance(track, VirtualTrack):
+        tools.feedback(f"The value '{track}' is not a valid track!", True)
+    # ---- walk the track & draw shape(s)
+    shape_id = 0
+    locations = enumerate(track.next_location())
+    for count, loc in locations:
+        if track.final and count + 1 >= track.final:
+            break
+        # ---- execute the draw()
+        shape = copy(shapes[shape_id])  # enable overwrite/change of properties
+        # ---- supply data to shape's text fields
+        data = {
+            'x': loc.x, 'y': loc.y, 'count': count + 1}
+        # tools.feedback(f'{data=}')
+        try:
+            shape.label = shapes[shape_id].label.format(**data)  # replace {xyz} entries
+            shape.title = shapes[shape_id].title.format(**data)
+            shape.heading = shapes[shape_id].heading.format(**data)
+        except KeyError as err:
+            text = str(err).split()
+            tools.feedback(
+                f'You cannot use {text[0]} as a special field; remove the {{ }} brackets',
+                True)
+        shape.draw(cnv, cx=loc.x, cy=loc.y)
         shape_id += 1
         if shape_id > len(shapes) - 1:
             shape_id = 0  # reset and start again

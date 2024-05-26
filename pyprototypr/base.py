@@ -798,6 +798,8 @@ class BaseShape:
                     base_attr = getattr(BaseCanvas(), attr)
                     if common_attr != base_attr:
                         setattr(self, attr, common_attr)
+        # ---- SET offset properties to correct units
+        self._o = self.set_offset_props()
         # ---- SET UNIT PROPS (last!)
         self.set_unit_properties()
 
@@ -839,18 +841,21 @@ class BaseShape:
             self.unit(self.side) if self.side is not None else None,
             self.unit(self.length) if self.length is not None else None)
 
-    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Draw an element on a given canvas."""
-        # ---- convert offset properties to correct units
+    def set_offset_props(self, off_x=0, off_y=0):
+        """Set OffsetProperties for a Shape."""
         margin_left = self.unit(self.margin_left) if self.margin_left is not None else None
         margin_bottom = self.unit(self.margin_bottom) if self.margin_bottom is not None else None
         off_x = self.unit(off_x) if off_x is not None else None
         off_y = self.unit(off_y) if off_y is not None else None
-        self._o = OffsetProperties(
+        return OffsetProperties(
             off_x,
             off_y,
             off_x + margin_left,
             off_y + margin_bottom)
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw an element on a given canvas."""
+        self._o = self.set_offset_props(off_x, off_y)
 
     def set_canvas_props(
             self,

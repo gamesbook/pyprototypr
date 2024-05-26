@@ -428,6 +428,33 @@ class RectangleShape(BaseShape):
     def calculate_area(self):
         return self._u.width * self._u.height
 
+    def set_vertices(self, **kwargs):
+        """Set vertices for rectangle without hatches."""
+        x, y = self.calculate_xy(**kwargs)
+        return [  # clockwise from bottom-left; relative to centre
+            Point(x, y),
+            Point(x, y + self._u.height),
+            Point(x + self._u.width, y + self._u.height),
+            Point(x + self._u.width, y),
+        ]
+
+    def calculate_xy(self, **kwargs):
+        # ---- adjust start
+        if self.row is not None and self.col is not None:
+            x = self.col * self._u.width + self._o.delta_x
+            y = self.row * self._u.height + self._o.delta_y
+        elif self.cx and self.cy:
+            x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
+            y = self._u.cy + self._u.height / 2.0 + self._o.delta_y
+        else:
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
+        # ---- overrides to centre the shape
+        if kwargs.get("cx") and kwargs.get("cy"):
+            x = kwargs.get("cx") - self._u.width / 2.0
+            y = kwargs.get("cy") - self._u.height / 2.0
+        return x, y
+
     def draw_hatch(self, cnv, vertices: list, num: int):
         if self.rounding or self.rounded:
             tools.feedback('No hatching permissible with a rounded Rectangle', True)
@@ -514,21 +541,8 @@ class RectangleShape(BaseShape):
             tools.feedback("Cannot use rounding/ed with notch.", True)
         if self.hatch and is_notched:
             tools.feedback("Cannot use hatch with notch.", True)
-        # ---- adjust start
-        if self.row is not None and self.col is not None:
-            x = self.col * self._u.width + self._o.delta_x
-            y = self.row * self._u.height + self._o.delta_y
-        elif self.cx and self.cy:
-            x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
-            y = self._u.cy + self._u.height / 2.0 + self._o.delta_y
-        else:
-            x = self._u.x + self._o.delta_x
-            y = self._u.y + self._o.delta_y
-        # ---- overrides to centre the shape
-        if kwargs.get("cx") and kwargs.get("cy"):
-            x = self._u.cx - self._u.width / 2.0
-            y = self._u.cy - self._u.height / 2.0
         # ---- calculated properties
+        x, y = self.calculate_xy()
         self.area = self.calculate_area()
         if is_notched:
             if self.notch_corners:
@@ -562,12 +576,7 @@ class RectangleShape(BaseShape):
             else:
                 self.vertices.append(Point(x, y))
         else:
-            self.vertices = [  # clockwise from bottom-left; relative to centre
-                Point(x, y),
-                Point(x, y + self._u.height),
-                Point(x + self._u.width, y + self._u.height),
-                Point(x + self._u.width, y),
-            ]
+            self.vertices = self.set_vertices(**kwargs)
         # tools.feedback(f'{len(self.vertices)=}')
         # canvas
         self.set_canvas_props()
@@ -2281,7 +2290,7 @@ class DeckShape(BaseShape):
     """
     Placeholder for the deck design; list of CardShapes and Shapes.
 
-    NOTE: draw() is called be the DeckShape
+    NOTE: draw() is called by the DeckShape
     """
 
     def __init__(self, _object=None, canvas=None, **kwargs):
@@ -2446,10 +2455,42 @@ class RepeatShape(BaseShape):
                                         off_x=off_x, off_y=off_y, ID=self.shape_id
                                     )
 
+# ---- Virtual Class
+
+
+class Virtual():
+    """
+    Common properties and methods for all virtual shapes (grid and track)
+    """
+    global cnv
+
+    def to_int(self, value, label) -> int:
+        """Set a value to an int; or stop if an invalid value."""
+        try:
+            int_value = int(value)
+            return int_value
+        except Exception:
+            tools.feedback(f"{value} is not a valid {label} number!", True)
+
+    def to_float(self, value, label) -> int:
+        """Set a value to a float; or stop if an invalid value."""
+        try:
+            float_value = float(value)
+            return float_value
+        except Exception:
+            tools.feedback(f"{value} is not a valid {label} number!", True)
+
+
 # ---- Virtual Grids & Layout ====
 
 
-class VirtualGrid():
+class VirtualGrid(Virtual):
+    """
+    Common properties and methods to define a virtual grid.
+
+    A virtual grid is not drawn on the canvas; rather it provides locations/points
+    where a user-defined shape will be drawn.
+    """
     global cnv
     global deck
 
@@ -2466,14 +2507,6 @@ class VirtualGrid():
         self.start = kwargs.get('start', 'bl')
         self.stop = kwargs.get('stop', 0)
         self.validate()
-
-    def to_int(self, value, label) -> int:
-        """Set a value to an int; or stop if an invalid value."""
-        try:
-            int_value = int(value)
-            return int_value
-        except:
-            tools.feedback(f"{value} is not a valid {label} number!", True)
 
     def validate(self):
         """Check for validate settings and combos."""
@@ -2516,11 +2549,11 @@ class VirtualGrid():
         """Yield next Location for each call."""
         pass
 
-    def draw(self) -> str:
-        pass
-
 
 class RectangleGrid(VirtualGrid):
+    """
+    Common properties and methods to define a virtual rectangular grid.
+    """
     global cnv
     global deck
 
@@ -2714,6 +2747,105 @@ class RectangleGrid(VirtualGrid):
                                     col = col + 1
                                     if col > self.cols:
                                         return  # end
+
+# ---- Tracks
+
+
+class VirtualTrack(Virtual):
+    """
+    Common properties and methods to define a virtual track.
+
+    A virtual track is not drawn on the canvas; rather it provides a set of points
+    where a user-defined shape will be drawn.
+    """
+    global cnv
+
+    def __init__(self, **kwargs):
+        kwargs = kwargs
+        self.count = kwargs.get('count ', 4)
+        self.start = kwargs.get('start', 'BL')
+        self.initial = kwargs.get('initial', 0)  # most tracks...
+        self.final = kwargs.get('final', 0)
+        self.reset = kwargs.get('reset', 0)
+        self.spacing = kwargs.get('spacing ', 0)
+        self.x_spacing = kwargs.get('y_spacing ', 0)
+        self.y_spacing = kwargs.get('x_spacing ', 0)
+        self.direction = kwargs.get('direction', 'clockwise')
+        self.rotation = kwargs.get('rotation', 'none')
+        self.corners = kwargs.get('corners', [])  # use ["","","",""] to skip!
+        self.validate()
+
+    def validate(self):
+        """Check for validate settings and combos."""
+        self.count = self.to_int(self.count, 'count')
+        self.initial = self.to_int(self.initial, 'initial')
+        self.final = self.to_int(self.final, 'final')
+        self.reset = self.to_int(self.reset, 'reset')
+        self.x_spacing = self.to_float(self.x_spacing, 'x_spacing')
+        self.y_spacing = self.to_float(self.y_spacing, 'y_spacing')
+        self.spacing = self.to_float(self.spacing, 'spacing')
+        self.start = str(self.start)
+        self.direction = str(self.direction)
+        self.rotation = str(self.rotation)
+
+        if self.start.lower() not in ['bl', 'br', 'tl', 'tr']:
+            tools.feedback(
+                f"{self.start} is not a valid start - "
+                "use 'bl', 'br', 'tl', or 'tr'", True)
+        if self.direction.lower() not in [
+                'c', 'clock', 'clockwise', 'a', 'anti', 'anticlockwise']:
+            tools.feedback(
+                f"{self.direction} is not a valid direction - "
+                "use 'c', 'clock', 'clockwise', 'a', 'anti', or 'anticlockwise'", True)
+        if self.rotation.lower() not in ['i', 'in', 'o', 'out', 'n', 'none']:
+            tools.feedback(
+                f"{self.rotation} is not a valid rotation - "
+                "use 'i', 'in', 'o', 'out', 'n', or 'none'", True)
+
+    def next_location(self) -> Location:
+        """Yield next Location for each call."""
+        pass
+
+
+class RectangleTrack(RectangleShape, VirtualTrack):
+    """
+    Properties and methods to define a rectangular virtual track.
+    """
+    global cnv
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        RectangleShape.__init__(self, **kwargs)  # NO super
+        VirtualTrack.__init__(self, **kwargs)
+        if self.rounding or self.rounded:
+            tools.feedback('A rectangular track cannot be rounded', True)
+        if self.notch or self.notch_x or self.notch_y:
+            tools.feedback('A rectangular track cannot be notched', True)
+        self.vertices = RectangleShape.set_vertices(self, **kwargs)
+        self._o = self.set_offset_props()
+
+    def next_location(self) -> Point:
+        """Yield next Point for each call."""
+        count = 0
+        while True:
+            yield self.vertices[count]
+            count += 1
+            if count + 1 > len(self.vertices):
+                return
+
+
+class CircleTrack(CircleShape, VirtualTrack):
+    """
+    Properties and methods to define a circular track.
+    """
+    global cnv
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        CircleShape.__init__(self, kwargs)  # NO super
+        VirtualTrack.__init__(self, kwargs)
+
+    def next_location(self) -> Point:
+        """Yield next Point for each call."""
+        return
 
 
 # ---- Other ----

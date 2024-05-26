@@ -23,6 +23,8 @@ log = logging.getLogger(__name__)
 DEBUG = False
 
 Point = namedtuple("Point", ["x", "y"])
+# point with corresponding angle of a line passing through it
+AngledPoint = namedtuple("AngledPoint", ["x", "y", "angle"])
 Link = namedtuple("Link", ["a", "b", "style"])
 Location = namedtuple("Link", ["col", "row", "x", "y"])
 
