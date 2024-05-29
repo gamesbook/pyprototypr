@@ -428,6 +428,14 @@ class RectangleShape(BaseShape):
     def calculate_area(self):
         return self._u.width * self._u.height
 
+    def calculate_length(self, units=False):
+        """Total length of bounding line."""
+        length = 2.0 * (self._u.width + self._u.height)
+        if units:
+            return self.points_to_value(length)
+        else:
+            return length
+
     def set_vertices(self, **kwargs):
         """Set vertices for rectangle without hatches."""
         x, y = self.calculate_xy(**kwargs)
@@ -445,7 +453,7 @@ class RectangleShape(BaseShape):
             y = self.row * self._u.height + self._o.delta_y
         elif self.cx and self.cy:
             x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
-            y = self._u.cy + self._u.height / 2.0 + self._o.delta_y
+            y = self._u.cy - self._u.height / 2.0 + self._o.delta_y
         else:
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
@@ -712,6 +720,14 @@ class SquareShape(RectangleShape):
 
     def calculate_area(self):
         return self._u.width * self._u.height
+
+    def calculate_length(self, units=False):
+        """Total length of bounding line."""
+        length = 2.0 * (self._u.width + self._u.height)
+        if units:
+            return self.points_to_value(length)
+        else:
+            return length
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a square on a given canvas."""
@@ -1424,6 +1440,9 @@ class StarShape(BaseShape):
         # convert to using units
         x = self._u.x + self._o.delta_x
         y = self._u.y + self._o.delta_y
+        if self.cx and self.cy:
+            x = self._u.cx + self._o.delta_x
+            y = self._u.cy + self._o.delta_y
         # calc - assumes x and y are the centre
         radius = self._u.radius
         # canvas
@@ -1684,6 +1703,14 @@ class CircleShape(BaseShape):
 
     def calculate_area(self):
         return math.pi * self._u.radius * self._u.radius
+
+    def calculate_length(self, units=False):
+        """Total length of bounding line (circumference)."""
+        length = math.pi * 2.0 * self._u.radius
+        if units:
+            return self.points_to_value(length)
+        else:
+            return length
 
     def draw_hatch(self, cnv, num: int, x_c: float, y_c: float):
         """Draw hatch lines from one edge to the other.
@@ -2470,7 +2497,7 @@ class Virtual():
             int_value = int(value)
             return int_value
         except Exception:
-            tools.feedback(f"{value} is not a valid {label} number!", True)
+            tools.feedback(f"{value} is not a valid {label} integer!", True)
 
     def to_float(self, value, label) -> int:
         """Set a value to a float; or stop if an invalid value."""
@@ -2478,7 +2505,7 @@ class Virtual():
             float_value = float(value)
             return float_value
         except Exception:
-            tools.feedback(f"{value} is not a valid {label} number!", True)
+            tools.feedback(f"{value} is not a valid {label} floating number!", True)
 
 
 # ---- Virtual Grids & Layout ====
@@ -2822,6 +2849,10 @@ class RectangleTrack(RectangleShape, VirtualTrack):
             tools.feedback('A rectangular track cannot be notched', True)
         self.vertices = RectangleShape.set_vertices(self, **kwargs)
         self._o = self.set_offset_props()
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw a rectangle track on a given canvas."""
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
 
     def next_location(self) -> Point:
         """Yield next Point for each call."""

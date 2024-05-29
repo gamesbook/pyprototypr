@@ -36,6 +36,24 @@ Square(x=14, y=1, side=4, label="square")
 
 PageBreak()
 
+# centre shapes and autogrid
+AutoGrid()
+# Polygon(cx=4, cy=25, radius=2, rotate=30, label="polygon6")
+# Polygon(cx=10, cy=25, radius=2, sides=8, rotate=22.5, label="polygon8")
+# Polygon(cx=16, cy=24.5, radius=2.5, sides=2.5, rotate=30, label="polygon3")
+Rectangle(cx=10, cy=21, width=8, height=4, label="rectangle:10-21")
+Hexagon(cx=3, cy=15, side=2, label="hexagon:3-15")
+Compass(cx=9, cy=8, radius=2, title="compass:9-8")
+Hexagon(cx=3, cy=8, side=2, label="hexagon:3-8", hex_top="pointy")
+Octagon(cx=16, cy=15, width=3.5, height=3.5, label="octagon:16-15")
+Circle(cx=16, cy=8, radius=2, label="circle:16-8")
+Ellipse(cx=9, cy=15, xe=4, ye=6, label="ellipse:9-15")
+Star(cx=3, cy=3, vertices=5, radius=2, label="star:3-2")
+Rhombus(cx=16, cy=3, width=3, height=5, label="rhombus:16-3")
+Square(cx=9, cy=3, side=3, label="square:9-3")
+
+PageBreak()
+
 # simple shapes
 Line(x=11, y=17, x1=11, y1=20, stroke=yellow, stroke_width=2)
 Line(x=11, y=17, x1=15, y1=17, stroke=red, stroke_width=2)

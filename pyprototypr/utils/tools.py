@@ -71,10 +71,14 @@ def grouper(n, iterable, fillvalue=None):
     See:
         http://stackoverflow.com/questions/2990121/~
         how-do-i-loop-through-a-python-list-by-twos
+
+    Use:
+        for item1, item2, item3 in grouper(3, 'ABCDEFG', 'x'):
+
+    >>> list(grouper(3, 'ABCDEFG', 'x'))
+    [('A', 'B', 'C'), ('D', 'E', 'F'), ('G', 'x', 'x')]
     """
-    # grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx
-    # grouper(3, [1,3,2,4,5,7,6,8,0], None) --> 1 3 2   4 5 7   6 8 0
-    # use: for item1, item2 in grouper(3, l):
+
     args = [iter(iterable)] * n
     return zip_longest(fillvalue=fillvalue, *args)
 
@@ -133,19 +137,37 @@ def query_construct(string):
     return [(None, None, None)]
 
 
+def as_int(value, label) -> int:
+    """Set a value to an int; or stop if an invalid value
+
+    >>> as_int(value='3', label='N')
+    3
+
+    # below cannot be tested because of sys.exit() in feedback()
+    # >>> as_int(value='z', label='N')
+    # FEEDBACK:: z is not a valid N integer!
+    # >>> as_int(value='3.1', label='N')
+    # FEEDBACK:: 3.1 is not a valid N integer!
+    """
+    try:
+        int_value = int(value)
+        return int_value
+    except (ValueError, Exception):
+        feedback(f"{value} is not a valid integer for {label}!", True)
+
+
 def tuple_split(string):
     """
     Split a string into a list of tuple values
 
-    from utils.tools import tuple_split
-    print(tuple_split(''))
-    #[]
-    print(tuple_split('3'))
-    #[3]
-    print(tuple_split('3,4'))
-    #[(3, 4)]
-    print(tuple_split('3,5 6,1 4,2'))
-    #[(3, 5), (6, 1), (4, 2)]
+    >>> print(tuple_split(''))
+    []
+    >>> print(tuple_split('3'))
+    [(3.0,)]
+    >>> print(tuple_split('3,4'))
+    [(3.0, 4.0)]
+    >>> print(tuple_split('3,5 6,1 4,2'))
+    [(3.0, 5.0), (6.0, 1.0), (4.0, 2.0)]
     """
     values = []
     if string:
@@ -166,15 +188,14 @@ def sequence_split(string):
     """
     Split a string into a list of individual values
 
-    import tools
-    print(tools.sequence_split(''))
-    #[]
-    print(tools.sequence_split('3'))
-    #[3]
-    print(tools.sequence_split('3,4,5'))
-    #[3, 4, 5]
-    print(tools.sequence_split('3-5,6,1-4'))
-    #[1, 2, 3, 4, 5, 6]
+    >>> sequence_split('')
+    []
+    >>> sequence_split('3')
+    [3]
+    >>> sequence_split('3,4,5')
+    [3, 4, 5]
+    >>> sequence_split('3-5,6,1-4')
+    [1, 2, 3, 4, 5, 6]
     """
     values = []
     if string:
@@ -362,7 +383,11 @@ def open_xls(filename, sheet=0, sheetname=None, headers=None, selected=None):
 
 
 def flatten(lst):
-    """Flatten nested lists into a single list of lists."""
+    """Flatten nested lists into a single list of lists.
+
+    >>> list(flatten([[1, 2], [3,4, [5,6]]]))
+    [1, 2, 3, 4, 5, 6]
+    """
     try:
         for ele in lst:
             if isinstance(ele, collections.abc.Iterable) and not isinstance(ele, str):
@@ -377,26 +402,37 @@ def flatten(lst):
 def comparer(val, operator, target):
     """target could be list?? - split a string by , or ~
 
-    assert comparer(None, None, None) == True
-
-    assert comparer("1", '*', "1") == False
-
-    assert comparer("1", None, "1") == True
-    assert comparer("a", None, "a") == True
-    assert comparer("True", None, "True") == True
-    assert comparer("False", None, "False") == True
-
-    assert comparer("1", '<', "1.1") == True
-    assert comparer("a", '<', "aa") == True
-    assert comparer("True", '<', "True") == False
-    assert comparer("False", '<', "False") == False
-
-    assert comparer("1", '~', "1.1") == False
-    assert comparer("a", '~', "aa") == True
-    assert comparer("True", '~', "True") == False
-    assert comparer("False", '~', "False") == False
-
-    assert comparer("1", '~', [1,2,3]) == True
+    >>> comparer(None, None, None)
+    True
+    >>> comparer("1", '*', "1")
+    FEEDBACK:: Unknown operator: * (1.0 and 1.0)
+    False
+    >>> comparer("1", None, "1")
+    True
+    >>> comparer("a", None, "a")
+    True
+    >>> comparer("True", None, "True")
+    True
+    >>> comparer("False", None, "False")
+    True
+    >>> comparer("1", '<', "1.1")
+    True
+    >>> comparer("a", '<', "aa")
+    True
+    >>> comparer("True", '<', "True")
+    False
+    >>> comparer("False", '<', "False")
+    False
+    >>> comparer("1", '~', "1.1")
+    False
+    >>> comparer("a", '~', "aa")
+    True
+    >>> comparer("True", '~', "True")
+    False
+    >>> comparer("False", '~', "False")
+    False
+    >>> comparer("1", '~', [1,2,3])
+    True
     """
 
     def to_length(val, target):

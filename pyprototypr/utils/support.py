@@ -14,7 +14,7 @@ def feedback(item, stop=False):
     """Placeholder for more complete feedback."""
     print('FEEDBACK:: %s' % item)
     if stop:
-        sys.exit()
+        sys.exit('FEEDBACK:: Could not continue with program. \n')
 
 
 def base_fonts():

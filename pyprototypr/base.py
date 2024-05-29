@@ -668,7 +668,7 @@ class BaseShape:
         self.leading = kwargs.get('leading', cnv.leading)
         # ---- fill color
         self.fill = kwargs.get('fill', kwargs.get('fill_color', cnv.fill))
-        # tools.feedback(f"***  BShp init {kwargs.get('fill')=} {self.fill=} {kwargs.get('fill_color')=}")
+        # tools.feedback(f"+++  BShp:{self} init {kwargs.get('fill')=} {self.fill=} {kwargs.get('fill_color')=}")
         # ---- image / file
         self.source = kwargs.get('source', cnv.source)  # file or http://
         # ---- line / ellipse / bezier / arc

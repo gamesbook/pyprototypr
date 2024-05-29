@@ -16,12 +16,39 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 # from reportlab.lib.colors import black, white
 from reportlab.lib.units import cm, inch
+from reportlab.lib.colors import (
+    Color,
+    aliceblue, antiquewhite, aqua, aquamarine, azure, beige, bisque, black,
+    blanchedalmond, blue, blueviolet, brown, burlywood, cadetblue, chartreuse,
+    chocolate, coral, cornflowerblue, cornsilk, crimson, cyan, darkblue,
+    darkcyan, darkgoldenrod, darkgray, darkgrey, darkgreen, darkkhaki,
+    darkmagenta, darkolivegreen, darkorange, darkorchid, darkred, darksalmon,
+    darkseagreen, darkslateblue, darkslategray, darkslategrey, darkturquoise,
+    darkviolet, deeppink, deepskyblue, dimgray, dimgrey, dodgerblue,
+    floralwhite, forestgreen, fuchsia, gainsboro, ghostwhite, gold, goldenrod,
+    gray, grey, green, greenyellow, honeydew, hotpink, indianred, indigo,
+    ivory, khaki, lavender, lavenderblush, lawngreen, lemonchiffon, lightblue,
+    lightcoral, lightcyan, lightgoldenrodyellow, lightgreen, lightgrey,
+    lightpink, lightsalmon, lightseagreen, lightskyblue, lightslategray,
+    lightslategrey, lightsteelblue, lightyellow, lime, limegreen, linen,
+    magenta, maroon, mediumaquamarine, mediumblue, mediumorchid, mediumpurple,
+    mediumseagreen, mediumslateblue, mediumspringgreen, mediumturquoise,
+    mediumvioletred, midnightblue, mintcream, mistyrose, moccasin,
+    navajowhite, navy, oldlace, olive, olivedrab, orange, orangered, orchid,
+    palegoldenrod, palegreen, paleturquoise, palevioletred, papayawhip,
+    peachpuff, peru, pink, plum, powderblue, purple, red, rosybrown,
+    royalblue, saddlebrown, salmon, sandybrown, seagreen, seashell, sienna,
+    silver, skyblue, slateblue, slategray, slategrey, snow, springgreen,
+    steelblue, tan, teal, thistle, tomato, turquoise, violet, wheat, white,
+    whitesmoke, yellow, yellowgreen, fidblue, fidred, fidlightblue,
+    cornflower, firebrick)
 # local
 from .bgg import BGGGame, BGGGameList
 from .base import BaseCanvas, GroupBase, COLORS, DEBUG_COLOR
 from .dice import (
     Dice, DiceD4, DiceD6, DiceD8, DiceD10, DiceD12, DiceD20, DiceD100)
 from .shapes import (
+    BaseShape,
     ArcShape, ArrowShape, BezierShape, CircleShape, CommonShape, ConnectShape,
     CompassShape, DeckShape, DotShape, DotGridShape, EllipseShape,
     EquilateralTriangleShape, FooterShape, GridShape, HexShape, ImageShape, LineShape,
@@ -1063,13 +1090,22 @@ def Layout(grid, **kwargs):
             shape_id = 0  # reset and start again
 
 
-def Track(track, **kwargs):
+def Track(track=None, **kwargs):
     global cnv
 
     kwargs = kwargs
-    shapes = kwargs.get('shapes', [])
+    _spaces = kwargs.get('spaces', 8)
+    spaces = tools.as_int(_spaces, 'spaces')  # number of spaces around track
+    shapes = kwargs.get('shapes', [])  # shape(s) to draw at each location
+    if not track:
+        track = RectangleTrack(fill_color=DEBUG_COLOR)
+        track.draw(cnv)
     if not isinstance(track, VirtualTrack):
         tools.feedback(f"The value '{track}' is not a valid track!", True)
+    if not shapes:
+        side_length = track.calculate_length(units=True) / spaces
+        tools.feedback(f'*** {side_length=}l {spaces=}')
+        shapes = [Square(side=side_length, fill="red", label="{count}")]
     # ---- walk the track & draw shape(s)
     shape_id = 0
     locations = enumerate(track.next_location())
@@ -1078,10 +1114,10 @@ def Track(track, **kwargs):
             break
         # ---- execute the draw()
         shape = copy(shapes[shape_id])  # enable overwrite/change of properties
-        # ---- supply data to shape's text fields
+        # ---- supply data to text fields
         data = {
             'x': loc.x, 'y': loc.y, 'count': count + 1}
-        # tools.feedback(f'{data=}')
+        tools.feedback(f'*** {data=}')
         try:
             shape.label = shapes[shape_id].label.format(**data)  # replace {xyz} entries
             shape.title = shapes[shape_id].title.format(**data)
@@ -1091,7 +1127,12 @@ def Track(track, **kwargs):
             tools.feedback(
                 f'You cannot use {text[0]} as a special field; remove the {{ }} brackets',
                 True)
-        shape.draw(cnv, cx=loc.x, cy=loc.y)
+        # ---- supply data to change shape's location
+        shape.cx = shape.points_to_value(loc.x - track._o.delta_x)
+        shape.cy = shape.points_to_value(loc.y - track._o.delta_y)
+        tools.feedback(f'*** {shape.cx}, {shape.cy}')
+        shape.set_unit_properties()
+        shape.draw(cnv)
         shape_id += 1
         if shape_id > len(shapes) - 1:
             shape_id = 0  # reset and start again
