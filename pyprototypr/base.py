@@ -842,7 +842,7 @@ class BaseShape:
             self.unit(self.length) if self.length is not None else None)
 
     def set_offset_props(self, off_x=0, off_y=0):
-        """Set OffsetProperties for a Shape."""
+        """Get OffsetProperties for a Shape."""
         margin_left = self.unit(self.margin_left) if self.margin_left is not None else None
         margin_bottom = self.unit(self.margin_bottom) if self.margin_bottom is not None else None
         off_x = self.unit(off_x) if off_x is not None else None

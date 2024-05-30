@@ -13,10 +13,12 @@ from pyprototypr.draw import *
 Create(filename="basic.pdf", margin=1, margin_top=0.25)
 Footer()
 
-# one big hex
-Hexagon(x=2, y=8, side=8,
-        label="WELCOME!\nto the basic pyprototypr demo...",
-        label_size=16)
+# one BIG hex
+Hexagon(
+    x=2, y=8,
+    side=8,
+    label="WELCOME!\nto the basic pyprototypr demo...",
+    label_size=16)
 PageBreak()
 
 # test default labels and autogrid
@@ -33,25 +35,25 @@ Ellipse(x=1, y=7, xe=8, ye=11, label="ellipse")
 Rhombus(x=8.5, y=1, width=3, height=5, label="rhombus")
 Compass(cx=4, cy=3, radius=2, title="compass")
 Square(x=14, y=1, side=4, label="square")
-
 PageBreak()
 
 # centre shapes and autogrid
 AutoGrid()
+dot = Common(dot_size=0.1, dot_color=yellow)
 # Polygon(cx=4, cy=25, radius=2, rotate=30, label="polygon6")
 # Polygon(cx=10, cy=25, radius=2, sides=8, rotate=22.5, label="polygon8")
 # Polygon(cx=16, cy=24.5, radius=2.5, sides=2.5, rotate=30, label="polygon3")
-Rectangle(cx=10, cy=21, width=8, height=4, label="rectangle:10-21")
-Hexagon(cx=3, cy=15, side=2, label="hexagon:3-15")
-Compass(cx=9, cy=8, radius=2, title="compass:9-8")
-Hexagon(cx=3, cy=8, side=2, label="hexagon:3-8", hex_top="pointy")
-Octagon(cx=16, cy=15, width=3.5, height=3.5, label="octagon:16-15")
-Circle(cx=16, cy=8, radius=2, label="circle:16-8")
-Ellipse(cx=9, cy=15, xe=4, ye=6, label="ellipse:9-15")
-Star(cx=3, cy=3, vertices=5, radius=2, label="star:3-2")
-Rhombus(cx=16, cy=3, width=3, height=5, label="rhombus:16-3")
-Square(cx=9, cy=3, side=3, label="square:9-3")
-
+Rectangle(cx=5, cy=21, width=5, height=4, label="rectangle:5-21", common=dot)
+Stadium(cx=13, cy=21, width=4, height=3, label="stadium:13-21", common=dot)
+Hexagon(cx=3, cy=15, side=2, label="hexagon:3-15", hex_top="flat", common=dot)
+Compass(cx=9, cy=8, radius=2, title="compass:9-8", common=dot)
+Hexagon(cx=3, cy=8, side=2, label="hexagon:3-8", hex_top="pointy", common=dot)
+Octagon(cx=16, cy=15, width=3.5, height=3.5, label="octagon:16-15", common=dot)
+Circle(cx=16, cy=8, radius=2, label="circle:16-8", common=dot)
+Ellipse(cx=9, cy=15, xe=4, ye=6, label="ellipse:9-15", common=dot)
+Star(cx=3, cy=3, vertices=5, radius=2, label="star:3-2", common=dot)
+Rhombus(cx=16, cy=3, width=3, height=5, label="rhombus:16-3", common=dot)
+Square(cx=9, cy=3, side=3, label="square:9-3", common=dot)
 PageBreak()
 
 # simple shapes
@@ -177,8 +179,9 @@ for angle in range(0, 100, 10):
     Line(common=cmm, angle=angle, stroke=darkmagenta)
 PageBreak()
 
-# school book page
-Lines(x=0, x1=20, y=0, y1=0, rows=28, height=1.0, stroke=lightsteelblue)
+# school book page with margin
+Lines(x=0, x1=19, y=0, y1=0, rows=28, height=1.0, stroke=lightsteelblue)
+Line(x=2, x1=2, y=0, y1=28, stroke=orangered)
 PageBreak()
 
 # school book page - landscape

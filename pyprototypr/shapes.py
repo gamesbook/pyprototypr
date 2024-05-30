@@ -154,7 +154,7 @@ class LineShape(BaseShape):
         cnv = cnv.canvas if cnv else self.canvas.canvas
         x = self._u.x + self._o.delta_x
         y = self._u.y + self._o.delta_y
-        if self.x_1 and self.y_1:
+        if self.x_1 or self.y_1:
             x_1 = self.unit(self.x_1) + self._o.delta_x
             y_1 = self.unit(self.y_1) + self._o.delta_y
         else:
@@ -167,11 +167,11 @@ class LineShape(BaseShape):
                 y_1 = y
         if self.row is not None and self.row >= 0:
             y = y + self.row * self._u.height
-            y_1 = y_1 + self.row * self._u.height #- self._u.margin_bottom
+            y_1 = y_1 + self.row * self._u.height  # - self._u.margin_bottom
         if self.col is not None and self.col >= 0:
             x = x + self.col * self._u.width
-            x_1 = x_1 + self.col * self._u.width #- self._u.margin_left
-        log.debug("x:%s x1:%s y:%s y1:%s", x, x_1, y, y_1)
+            x_1 = x_1 + self.col * self._u.width  # - self._u.margin_left
+        # tools.feedback(f"{x=} {x_1=} {y=} {y_1=}")
         # canvas
         self.set_canvas_props()
         # ---- draw line
@@ -181,10 +181,10 @@ class LineShape(BaseShape):
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- calculate line rotation
         compass, rotate = tools.angles_from_points(x, y, x_1, y_1)
-        # ----  text
-        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False)
-        # ----  dot
+        # ---- dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
+        # ---- text
+        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False)
 
 
 class ArrowShape(BaseShape):
@@ -237,10 +237,10 @@ class ArrowShape(BaseShape):
         self.arrow_tail()
         # ---- calculate line rotation
         compass, rotate = tools.angles_from_points(x, y, x_1, y_1)
-        # ---- text
-        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False)
         # ---- dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
+        # ---- text
+        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False)
 
 
 class RhombusShape(BaseShape):
@@ -272,10 +272,10 @@ class RhombusShape(BaseShape):
         pth.lineTo(x_s, y_s)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-        # ---- text
-        self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        # ---- text
+        self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
 
 
 class StadiumShape(BaseShape):
@@ -305,7 +305,7 @@ class StadiumShape(BaseShape):
             y = self.row * self._u.height + self._o.delta_y
         elif self.cx and self.cy:
             x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
-            y = self._u.cy + self._u.height / 2.0 + self._o.delta_y
+            y = self._u.cy - self._u.height / 2.0 + self._o.delta_y
         else:
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
@@ -1015,12 +1015,12 @@ class PolygonShape(BaseShape):
             pth.lineTo(vertex.x, vertex.y)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        # ---- dot
+        self.draw_dot(cnv, x, y)
         # ---- text
         self.draw_label(cnv, x, y)
         self.draw_title(cnv, x, y, 1.4 * radius)
         self.draw_heading(cnv, x, y, 1.3 * radius)
-        # ---- dot
-        self.draw_dot(cnv, x, y)
 
 
 class PolylineShape(BaseShape):
@@ -1259,7 +1259,7 @@ class HexShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         is_cards = kwargs.get("is_cards", False)
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # ---- calculate half_flat & half_side from self.side, self.diameter, self.height
+        # ---- calculate half_flat & half_side
         if self.side:
             side = self._u.side
             half_flat = self._u.side * math.sqrt(3) / 2.0
@@ -1279,6 +1279,7 @@ class HexShape(BaseShape):
         height_flat = 2 * half_flat
         diameter = 2.0 * side
         z_fraction = (diameter - side) / 2.0
+
         # ---- POINTY
         if self.hex_top.lower() in ['p', 'pointy']:
             #         /\
@@ -1287,7 +1288,7 @@ class HexShape(BaseShape):
             # x and y are at the bottom-left corner of the box around the hex
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
-            # ---- + draw pointy by row/col
+            # ---- ^ draw pointy by row/col
             if self.row is not None and self.col is not None and is_cards:
                 x = self.col * height_flat + self._o.delta_x
                 y = self.row * diameter + self._o.delta_x
@@ -1311,8 +1312,7 @@ class HexShape(BaseShape):
                         x = self.col * height_flat + self._u.x + self._o.delta_x
                     else:  # even row
                         x = self.col * height_flat + half_flat + self._u.x + self._o.delta_x
-
-            # ---- + calculate hex centre
+            # ---- ^ calculate hex centre
             x_d = x + half_flat
             y_d = y + side
             # tools.feedback(f"{x=} {y=} {half_flat=} {side=} ")
@@ -1320,9 +1320,10 @@ class HexShape(BaseShape):
                 # cx,cy are centred; create x_d,y_d as the unit-formatted hex centre
                 x_d = self._u.cx
                 y_d = self._u.cy
+                # recalcuate start x,y relative to centre
                 x = x_d - half_flat + self._o.delta_x
                 y = y_d - side + self._o.delta_y
-            # ---- FLAT
+        # ---- FLAT
         else:
             #         __
             # x,y .. /  \
@@ -1331,7 +1332,7 @@ class HexShape(BaseShape):
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
             # tools.feedback(f"{x=} {y=} {half_flat=} {side=} {self.row=} {self.col=}")
-            # ---- + draw flat by row/col
+            # ---- ~ draw flat by row/col
             if self.row is not None and self.col is not None and is_cards:
                 x = self.col * 2.0 * side + self._o.delta_x
                 y = half_flat + self.row * 2.0 * half_flat + self._o.delta_x
@@ -1348,17 +1349,19 @@ class HexShape(BaseShape):
                         pass
                     else:
                         y = y + half_flat
-            # ----  + calculate hex centre
+            # ----  ~ calculate hex centre
             x_d = x + side
             y_d = y + half_flat
-            # ----  + recalculate centre if preset
+            # ----  ~ recalculate centre if preset
             if self.cx and self.cy:
-                # cx,cy are centred; create x_d,y_d as the unit-formatted hex centre
+                # cx,cy are centre; create x_d,y_d as the unit-formatted hex centre
                 x_d = self._u.cx
                 y_d = self._u.cy
+                # recalcuate start x,y relative to centre
                 x = x_d - half_side - side / 2.0 + self._o.delta_x
-                y = y_d + self._o.delta_y
+                y = y_d - half_flat + self._o.delta_y
             # log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_flat, half_side, side)
+
         # ---- calculate area
         self.area = self.calculate_area()
         # ---- canvas
@@ -1460,18 +1463,12 @@ class StarShape(BaseShape):
             pth.lineTo(x_1, y_1)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-        # ---- text
-        self.draw_label(cnv, x, y)
-        if self.title:
-            cnv.setFont(self.font_face, self.title_size)
-            cnv.setFillColor(self.title_stroke)
-            self.draw_multi_string(cnv, x, y - 1.4 * radius, self.title)
-        if self.heading:
-            cnv.setFont(self.font_face, self.heading_size)
-            cnv.setFillColor(self.heading_stroke)
-            self.draw_multi_string(cnv, x, y + 1.3 * radius, self.heading)
         # ---- dot
         self.draw_dot(cnv, x, y)
+        # ---- text
+        self.draw_label(cnv, x, y)
+        self.draw_title(cnv, x, y - 1.4 * radius)
+        self.draw_heading(cnv, x,  y + 1.3 * radius)
 
 
 class RightAngledTriangleShape(BaseShape):
@@ -1524,10 +1521,10 @@ class RightAngledTriangleShape(BaseShape):
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         x_c, y_c = x_sum / 3.0, y_sum / 3.0  # centroid
-        # ---- text
-        self.draw_label(cnv, x_c, y_c)
         # ---- dot
         self.draw_dot(cnv, x_c, y_c)
+        # ---- text
+        self.draw_label(cnv, x_c, y_c)
 
 
 class EquilateralTriangleShape(BaseShape):
@@ -1599,12 +1596,12 @@ class EquilateralTriangleShape(BaseShape):
         # ---- draw hatch
         if self.hatch:
             self.draw_hatch(cnv, side, self.vertices, self.hatch)
+        # ---- dot
+        self.draw_dot(cnv, x_c, y_c)
         # ---- text
         self.draw_label(cnv, x_c, y_c)
         self.draw_title(cnv, x_c, y_c, height / 2.0 + 0.25 * self.heading_size)
         self.draw_heading(cnv, x_c, y_c,  height / 2.0 + 0.75 * self.heading_size)
-        # ---- dot
-        self.draw_dot(cnv, x_c, y_c)
 
 
 class TextShape(BaseShape):
@@ -1987,12 +1984,12 @@ class CompassShape(BaseShape):
                     case _:
                         pass
 
+        # ---- dot
+        self.draw_dot(cnv, self.x_c, self.y_c)
         # ---- text
         self.draw_label(cnv, self.x_c, self.y_c)
         self.draw_title(cnv, self.x_c, self.y_c, 1.4 * radius)
         self.draw_heading(cnv, self.x_c, self.y_c, 1.3 * radius)
-        # ---- dot
-        self.draw_dot(cnv, self.x_c, self.y_c)
 
 
 class EllipseShape(BaseShape):
@@ -2034,10 +2031,10 @@ class EllipseShape(BaseShape):
         cnv.ellipse(x_1, y_1, x_2, y_2, stroke=1, fill=1 if self.fill else 0)
         x_c = (x_2 - x_1) / 2.0 + x_1
         y_c = (y_2 - y_1) / 2.0 + y_1
-        # ---- text
-        self.draw_label(cnv, x_c, y_c)
         # ---- dot
         self.draw_dot(cnv, x_c, y_c)
+        # ---- text
+        self.draw_label(cnv, x_c, y_c)
 
 
 class StarFieldShape(BaseShape):
