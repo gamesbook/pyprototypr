@@ -1320,9 +1320,13 @@ class HexShape(BaseShape):
                 # cx,cy are centred; create x_d,y_d as the unit-formatted hex centre
                 x_d = self._u.cx
                 y_d = self._u.cy
-                # recalcuate start x,y relative to centre
+                # recalcuate start x,y
                 x = x_d - half_flat + self._o.delta_x
                 y = y_d - side + self._o.delta_y
+                # recalcuate centre relative to x,y
+                x_d = x + half_flat
+                y_d = y + side
+                # tools.feedback(f"***P: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
         # ---- FLAT
         else:
             #         __
@@ -1357,9 +1361,13 @@ class HexShape(BaseShape):
                 # cx,cy are centre; create x_d,y_d as the unit-formatted hex centre
                 x_d = self._u.cx
                 y_d = self._u.cy
-                # recalcuate start x,y relative to centre
+                # recalcuate start x,y
                 x = x_d - half_side - side / 2.0 + self._o.delta_x
                 y = y_d - half_flat + self._o.delta_y
+                # recalcuate centre relative to x,y
+                x_d = x + side
+                y_d = y + half_flat
+                # tools.feedback(f"***F: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
             # log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_flat, half_side, side)
 
         # ---- calculate area
@@ -1400,6 +1408,8 @@ class HexShape(BaseShape):
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- debug
+        # self.debug_point(cnv, Point(x, y), 'start')
+        # self.debug_point(cnv, Point(x_d, y_d), 'centre')
         self.debug(cnv, vertices=self.vertices)
         # ---- draw hatch
         if self.hatch:

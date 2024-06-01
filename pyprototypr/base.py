@@ -1321,6 +1321,16 @@ class BaseShape:
                     self.draw_multi_string(
                         canvas, vert.x, vert.y, f'{key}:{x:.2f},{y:.2f}')
 
+    def debug_point(self, canvas, point: tools.Point, label=''):
+        """Display a labelled point."""
+        canvas.setFillColor(DEBUG_COLOR)
+        canvas.setFont(self.font_face, 6)
+        x = self.points_to_value(point.x)
+        y = self.points_to_value(point.y)
+        self.draw_multi_string(
+            canvas, point.x, point.y, f'{label} {point.x:.2f},{point.y:.2f}')
+        canvas.circle(point.x, point.y, 2, stroke=1, fill=1)
+
     def V(self, *args):
         """Placeholder for value evaluator."""
         try:
