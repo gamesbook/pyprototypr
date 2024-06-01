@@ -823,6 +823,14 @@ class BaseShape:
 
     def set_unit_properties(self):
         """Convert base properties into unit-based values."""
+        # set a "width" value for use in calculations e.g. Track
+        if self.radius and not self.width:
+            self.width = 2.0 * self.radius
+        if self.diameter and not self.width:
+            self.width = self.diameter
+        if self.side and not self.width:
+            self.width = self.side  # square
+
         self._u = UnitProperties(
             self.pagesize[0],
             self.pagesize[1],

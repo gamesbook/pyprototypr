@@ -11,7 +11,7 @@ from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle
 
 # local
-from pyprototypr.utils.tools import Point, Link, Location  # named tuples
+from pyprototypr.utils.tools import Point, Link, Location, TrackPoint  # named tuples
 from pyprototypr.utils import tools
 from pyprototypr.base import BaseShape, BaseCanvas, UNITS, COLORS, PAGES, DEBUG_COLOR
 
@@ -428,8 +428,8 @@ class RectangleShape(BaseShape):
     def calculate_area(self):
         return self._u.width * self._u.height
 
-    def calculate_length(self, units=False):
-        """Total length of bounding line."""
+    def calculate_perimeter(self, units=False):
+        """Total length of bounding perimeter."""
         length = 2.0 * (self._u.width + self._u.height)
         if units:
             return self.points_to_value(length)
@@ -721,7 +721,7 @@ class SquareShape(RectangleShape):
     def calculate_area(self):
         return self._u.width * self._u.height
 
-    def calculate_length(self, units=False):
+    def calculate_perimeter(self, units=False):
         """Total length of bounding line."""
         length = 2.0 * (self._u.width + self._u.height)
         if units:
@@ -1711,7 +1711,7 @@ class CircleShape(BaseShape):
     def calculate_area(self):
         return math.pi * self._u.radius * self._u.radius
 
-    def calculate_length(self, units=False):
+    def calculate_perimeter(self, units=False):
         """Total length of bounding line (circumference)."""
         length = math.pi * 2.0 * self._u.radius
         if units:
@@ -2498,10 +2498,18 @@ class Virtual():
     """
     global cnv
 
-    def to_int(self, value, label) -> int:
+    def to_int(self, value, label, maximum=None, minimum=None) -> int:
         """Set a value to an int; or stop if an invalid value."""
         try:
             int_value = int(value)
+            if minimum and int_value < minimum:
+                tools.feedback(
+                    f"{label} integer is less than the minimum of {minimum}!",
+                    True)
+            if maximum and int_value > maximum:
+                tools.feedback(
+                    f"{label} integer is more than the maximum of {maximum}!",
+                    True)
             return int_value
         except Exception:
             tools.feedback(f"{value} is not a valid {label} integer!", True)
@@ -2796,14 +2804,12 @@ class VirtualTrack(Virtual):
 
     def __init__(self, **kwargs):
         kwargs = kwargs
-        self.count = kwargs.get('count ', 4)
+        self.count = kwargs.get('count ', 8)
         self.start = kwargs.get('start', 'BL')
         self.initial = kwargs.get('initial', 0)  # most tracks...
         self.final = kwargs.get('final', 0)
         self.reset = kwargs.get('reset', 0)
         self.spacing = kwargs.get('spacing ', 0)
-        self.x_spacing = kwargs.get('y_spacing ', 0)
-        self.y_spacing = kwargs.get('x_spacing ', 0)
         self.direction = kwargs.get('direction', 'clockwise')
         self.rotation = kwargs.get('rotation', 'none')
         self.corners = kwargs.get('corners', [])  # use ["","","",""] to skip!
@@ -2815,8 +2821,6 @@ class VirtualTrack(Virtual):
         self.initial = self.to_int(self.initial, 'initial')
         self.final = self.to_int(self.final, 'final')
         self.reset = self.to_int(self.reset, 'reset')
-        self.x_spacing = self.to_float(self.x_spacing, 'x_spacing')
-        self.y_spacing = self.to_float(self.y_spacing, 'y_spacing')
         self.spacing = self.to_float(self.spacing, 'spacing')
         self.start = str(self.start)
         self.direction = str(self.direction)
@@ -2836,9 +2840,9 @@ class VirtualTrack(Virtual):
                 f"{self.rotation} is not a valid rotation - "
                 "use 'i', 'in', 'o', 'out', 'n', or 'none'", True)
 
-    def next_location(self) -> Location:
+    def next_location(self, spaces: int, shapes: list) -> Location:
         """Yield next Location for each call."""
-        pass
+        raise NotImplementedError('Overwrite this method in a child class!')
 
 
 class RectangleTrack(RectangleShape, VirtualTrack):
@@ -2856,19 +2860,75 @@ class RectangleTrack(RectangleShape, VirtualTrack):
             tools.feedback('A rectangular track cannot be notched', True)
         self.vertices = RectangleShape.set_vertices(self, **kwargs)
         self._o = self.set_offset_props()
+        # derived settings
+        match self.start.lower():
+            case 'bl':
+                if self.direction.lower() in ['c', 'clock', 'clockwise']:
+                    self.nodes = [0, 1, 2, 3, 0]
+                else:
+                    self.nodes = [0, 3, 2, 1, 0]
+            case 'tl':
+                if self.direction.lower() in ['c', 'clock', 'clockwise']:
+                    self.nodes = [1, 2, 3, 0, 1]
+                else:
+                    self.nodes = [1, 0, 3, 2, 1]
+            case 'tr':
+                if self.direction.lower() in ['c', 'clock', 'clockwise']:
+                    self.nodes = [2, 3, 0, 1, 2]
+                else:
+                    self.nodes = [2, 1, 0, 3, 2]
+            case 'br':
+                if self.direction.lower() in ['c', 'clock', 'clockwise']:
+                    self.nodes = [3, 0, 1, 2, 3]
+                else:
+                    self.nodes = [3, 2, 1, 0, 3]
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a rectangle track on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
 
-    def next_location(self) -> Point:
-        """Yield next Point for each call."""
-        count = 0
+    def calculate_params(self, spaces: int, shapes: list) -> tuple:
+        """Parameters for calculating Points on perimeter."""
+        total_corner_length = 0.0  # TODO calc!!
+        perimeter = self.calculate_perimeter() - total_corner_length
+        space_size = perimeter / float(spaces)
+        spacing = self.unit(self.spacing)  # between each shape
+        max_shape_width = space_size - spacing
+        increment = space_size + spacing
+        tools.feedback(f'*** RectTrack {perimeter=} {spaces=} {space_size=} {max_shape_width=}')
+        return increment, max_shape_width
+
+    def next_location(self, spaces: int, shapes: list) -> TrackPoint:
+        """Yield next TrackPoint for each call."""
+        increment, max_shape_width = self.calculate_params(spaces, shapes)
+        # pre-yield
+        counter, node, total_distance = 0, 0, 0.0
+        # assuming that no corner shapes are in play...
+        the_point = self.vertices[self.nodes[node]]
+        point_start = self.vertices[self.nodes[node]]
+        point_end = self.vertices[self.nodes[node + 1]]
+        tools.feedback(f'*** +++ NODES {self.vertices=} {self.nodes=}')
         while True:
-            yield self.vertices[count]
-            count += 1
-            if count + 1 > len(self.vertices):
+            yield TrackPoint(the_point.x, the_point.y, max_shape_width)
+            counter += 1
+            tools.feedback(f'*** LOOP {node=} {counter=}')
+            if counter + 1 > spaces:
                 return
+            # calculate distance along line (or check if next line needed)
+            total_distance += increment
+            if total_distance > tools.length_of_line(point_start, point_end):
+                node += 1  # next line
+                total_distance = 0
+                tools.feedback(f'*** *** NODE {node=} {counter=}')
+                if node + 1 >= len(self.nodes):
+                    return  # end of last line ...
+                # assuming that no corner shapes are in play...
+                point_start = self.vertices[self.nodes[node]]
+                point_end = self.vertices[self.nodes[node + 1]]
+            the_point = tools.point_on_line(
+                point_start=point_start,
+                point_end=point_end,
+                distance=increment)
 
 
 class CircleTrack(CircleShape, VirtualTrack):
@@ -2881,7 +2941,7 @@ class CircleTrack(CircleShape, VirtualTrack):
         CircleShape.__init__(self, kwargs)  # NO super
         VirtualTrack.__init__(self, kwargs)
 
-    def next_location(self) -> Point:
+    def next_location(self, spaces: int, shapes: list) -> Point:
         """Yield next Point for each call."""
         return
 

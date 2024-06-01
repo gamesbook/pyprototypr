@@ -1095,29 +1095,31 @@ def Track(track=None, **kwargs):
 
     kwargs = kwargs
     _spaces = kwargs.get('spaces', 8)
-    spaces = tools.as_int(_spaces, 'spaces')  # number of spaces around track
-    shapes = kwargs.get('shapes', [])  # shape(s) to draw at each location
+    spaces = tools.as_int(_spaces, 'spaces', minimum=4)  # number of spaces around track
+    shapes = kwargs.get('shapes', [])  # shape(s) to draw at the locations
     if not track:
         track = RectangleTrack(fill_color=DEBUG_COLOR)
-        track.draw(cnv)
     if not isinstance(track, VirtualTrack):
         tools.feedback(f"The value '{track}' is not a valid track!", True)
     if not shapes:
-        side_length = track.calculate_length(units=True) / spaces
-        tools.feedback(f'*** {side_length=}l {spaces=}')
-        shapes = [Square(side=side_length, fill="red", label="{count}")]
+        # create a default shape
+        side = track.calculate_perimeter(units=True) / spaces
+        tools.feedback(f'*** default square: {side=} {spaces=}')
+        shapes = [square(side=side, label="z{count}")]
+    # ---- validate shape type(s)
+    for shp in shapes:
+        if not isinstance(shp, (SquareShape, CircleShape, OctagonShape)):
+            tools.feedback("Only square, circle, or octagon shapes allowed!", True)
     # ---- walk the track & draw shape(s)
     shape_id = 0
-    locations = enumerate(track.next_location())
-    for count, loc in locations:
+    track_points = enumerate(track.next_location(shapes=shapes, spaces=spaces))
+    for count, t_pt in track_points:
         if track.final and count + 1 >= track.final:
-            break
+            break  # stop early
         # ---- execute the draw()
         shape = copy(shapes[shape_id])  # enable overwrite/change of properties
         # ---- supply data to text fields
-        data = {
-            'x': loc.x, 'y': loc.y, 'count': count + 1}
-        tools.feedback(f'*** {data=}')
+        data = {'x': t_pt.x, 'y': t_pt.y, 'count': count + 1}
         try:
             shape.label = shapes[shape_id].label.format(**data)  # replace {xyz} entries
             shape.title = shapes[shape_id].title.format(**data)
@@ -1128,9 +1130,10 @@ def Track(track=None, **kwargs):
                 f'You cannot use {text[0]} as a special field; remove the {{ }} brackets',
                 True)
         # ---- supply data to change shape's location
-        shape.cx = shape.points_to_value(loc.x - track._o.delta_x)
-        shape.cy = shape.points_to_value(loc.y - track._o.delta_y)
-        tools.feedback(f'*** {shape.cx}, {shape.cy}')
+        shape.cx = shape.points_to_value(t_pt.x - track._o.delta_x)
+        shape.cy = shape.points_to_value(t_pt.y - track._o.delta_y)
+        # shape.width = t_pt.width  # recalculated to fit on track
+        # tools.feedback(f'*** {shape.cx}, {shape.cy}')
         shape.set_unit_properties()
         shape.draw(cnv)
         shape_id += 1

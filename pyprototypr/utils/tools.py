@@ -23,6 +23,7 @@ log = logging.getLogger(__name__)
 DEBUG = False
 
 Point = namedtuple("Point", ["x", "y"])
+TrackPoint = namedtuple("TrackPoint", ["x", "y", "width"])
 # point with corresponding angle of a line passing through it
 AngledPoint = namedtuple("AngledPoint", ["x", "y", "angle"])
 Link = namedtuple("Link", ["a", "b", "style"])
@@ -137,13 +138,17 @@ def query_construct(string):
     return [(None, None, None)]
 
 
-def as_int(value, label) -> int:
+def as_int(value, label, maximum=None, minimum=None) -> int:
     """Set a value to an int; or stop if an invalid value
 
     >>> as_int(value='3', label='N')
     3
 
     # below cannot be tested because of sys.exit() in feedback()
+    # >>> as_int(value='3', label='N', minimum=4)
+    # FEEDBACK:: z is
+    # >>> as_int(value='3', label='N', maximum=2)
+    # FEEDBACK:: z is
     # >>> as_int(value='z', label='N')
     # FEEDBACK:: z is not a valid N integer!
     # >>> as_int(value='3.1', label='N')
@@ -151,6 +156,14 @@ def as_int(value, label) -> int:
     """
     try:
         int_value = int(value)
+        if minimum and int_value < minimum:
+            feedback(
+                f"{label} integer is less than the minimum of {minimum}!",
+                True)
+        if maximum and int_value > maximum:
+            feedback(
+                f"{label} integer is more than the maximum of {maximum}!",
+                True)
         return int_value
     except (ValueError, Exception):
         feedback(f"{value} is not a valid integer for {label}!", True)
@@ -615,7 +628,7 @@ def length_of_line(start: Point, end: Point) -> float:
 
 
 def point_on_line(point_start: Point, point_end: Point, distance: float) -> Point:
-    """Calculate new Point at a distance along a line defined by its Points
+    """Calculate new Point at a distance along a line defined by its end Points
 
     >>> P = Point(0,2)
     >>> Q = Point(4,4)
