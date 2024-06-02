@@ -1104,8 +1104,8 @@ def Track(track=None, **kwargs):
     if not shapes:
         # create a default shape
         side = track.calculate_perimeter(units=True) / spaces
-        tools.feedback(f'*** default square: {side=} {spaces=}')
-        shapes = [square(side=side, label="z{count}")]
+        # tools.feedback(f'*** default square: {side=} {spaces=}')
+        shapes = [square(side=side, label="{count}")]
     # ---- validate shape type(s)
     for shp in shapes:
         if not isinstance(shp, (SquareShape, CircleShape, OctagonShape)):

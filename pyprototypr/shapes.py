@@ -2895,7 +2895,7 @@ class RectangleTrack(RectangleShape, VirtualTrack):
         spacing = self.unit(self.spacing)  # between each shape
         max_shape_width = space_size - spacing
         increment = space_size + spacing
-        tools.feedback(f'*** RectTrack {perimeter=} {spaces=} {space_size=} {max_shape_width=}')
+        # tools.feedback(f'*** RectTrack {perimeter=} {spaces=} {space_size=} {max_shape_width=}')
         return increment, max_shape_width
 
     def next_location(self, spaces: int, shapes: list) -> TrackPoint:
@@ -2907,11 +2907,11 @@ class RectangleTrack(RectangleShape, VirtualTrack):
         the_point = self.vertices[self.nodes[node]]
         point_start = self.vertices[self.nodes[node]]
         point_end = self.vertices[self.nodes[node + 1]]
-        tools.feedback(f'*** +++ NODES {self.vertices=} {self.nodes=}')
+        # tools.feedback(f'*** +++ NODES {self.vertices=} {self.nodes=}')
         while True:
+            # tools.feedback(f'*** NODE {node=} {counter=} start={point_start} end={point_end}')
             yield TrackPoint(the_point.x, the_point.y, max_shape_width)
             counter += 1
-            tools.feedback(f'*** LOOP {node=} {counter=}')
             if counter + 1 > spaces:
                 return
             # calculate distance along line (or check if next line needed)
@@ -2919,16 +2919,18 @@ class RectangleTrack(RectangleShape, VirtualTrack):
             if total_distance > tools.length_of_line(point_start, point_end):
                 node += 1  # next line
                 total_distance = 0
-                tools.feedback(f'*** *** NODE {node=} {counter=}')
                 if node + 1 >= len(self.nodes):
                     return  # end of last line ...
                 # assuming that no corner shapes are in play...
                 point_start = self.vertices[self.nodes[node]]
                 point_end = self.vertices[self.nodes[node + 1]]
-            the_point = tools.point_on_line(
-                point_start=point_start,
-                point_end=point_end,
-                distance=increment)
+                # tools.feedback(f'*** *** NODE {node=} ctr={counter} start={point_start} end={point_end}')
+                the_point = self.vertices[self.nodes[node]]
+            else:
+                the_point = tools.point_on_line(
+                    point_start=point_start,
+                    point_end=point_end,
+                    distance=increment)
 
 
 class CircleTrack(CircleShape, VirtualTrack):

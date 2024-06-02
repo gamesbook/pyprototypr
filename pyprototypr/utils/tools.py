@@ -637,12 +637,29 @@ def point_on_line(point_start: Point, point_end: Point, distance: float) -> Poin
     >>> assert round(R.x, 4) == 2.6833
     >>> assert round(R.y, 4) == 3.3416
 
-    >>> P = Point(2.58,2)
-    >>> Q = Point(3.73,2)
-    >>> D = 0.575
+    >>> P = Point(4,4)
+    >>> Q = Point(0,2)
+    >>> D = 3
     >>> R = point_on_line(P, Q, D)
-    >>> assert round(R.x, 4) == 3.1550
-    >>> assert round(R.y, 4) == 2
+    >>> assert round(R.x, 4) == 1.3167
+    >>> assert round(R.y, 4) == 2.6584
+
+    >>> R = point_on_line(Point(0,5), Point(0,2), 1)  # downwards
+    >>> assert round(R.x, 4) == 0
+    >>> assert round(R.y, 4) == 4
+
+    >>> R = point_on_line(Point(0,2), Point(0,5), 1)  # upwards
+    >>> assert round(R.x, 4) == 0
+    >>> assert round(R.y, 4) == 3
+
+    >>> R = point_on_line(Point(2,0), Point(5,0), 1)  # right
+    >>> assert round(R.x, 4) == 3
+    >>> assert round(R.y, 4) == 0
+
+    >>> R = point_on_line(Point(5,0), Point(2,0), 1)  # left
+    >>> assert round(R.x, 4) == 4
+    >>> assert round(R.y, 4) == 0
+
     """
     if point_end.x == point_start.x and point_end.y == point_start.y:
         return point_start
@@ -656,9 +673,11 @@ def point_on_line(point_start: Point, point_end: Point, distance: float) -> Poin
         x = (1.0 - ratio) * point_start.x + ratio * point_end.x
         y = (1.0 - ratio) * point_start.y + ratio * point_end.y
     elif point_end.y == point_start.y:
+        distance = distance * -1.0 if point_start.x > point_end.x else distance
         x = point_start.x + distance
         y = point_end.y
     elif point_end.x == point_start.x:
+        distance = distance * -1.0 if point_start.y > point_end.y else distance
         y = point_start.y + distance
         x = point_end.x
     else:
