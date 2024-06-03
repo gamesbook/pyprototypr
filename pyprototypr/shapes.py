@@ -2046,6 +2046,8 @@ class EllipseShape(BaseShape):
         # ---- text
         self.draw_label(cnv, x_c, y_c)
 
+# ---- Grids and Patterns
+
 
 class StarFieldShape(BaseShape):
     """
@@ -2895,7 +2897,7 @@ class RectangleTrack(RectangleShape, VirtualTrack):
         spacing = self.unit(self.spacing)  # between each shape
         max_shape_width = space_size - spacing
         increment = space_size + spacing
-        # tools.feedback(f'*** RectTrack {perimeter=} {spaces=} {space_size=} {max_shape_width=}')
+        tools.feedback(f'*** RectTrack {perimeter=} {spaces=} {space_size=} {max_shape_width=}')
         return increment, max_shape_width
 
     def next_location(self, spaces: int, shapes: list) -> TrackPoint:

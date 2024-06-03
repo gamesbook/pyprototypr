@@ -930,12 +930,14 @@ class BaseShape:
                 tools.feedback(f'Line cap type "{stroke_cap}" cannot be used.', False)
         # ---- set line dots / dashes
         if line_dots or self.line_dots:
-            _dots = self.values_to_points([0.1, 0.1])
+            _dots = self.values_to_points([0.03, 0.03])
             canvas.setDash(array=_dots)
-        if dashes or self.dashes:
+        elif dashes or self.dashes:
             dash_values = dashes or self.dashes
             _dashes = self.values_to_points(dash_values)
             canvas.setDash(array=_dashes)
+        else:
+            canvas.setDash(array=[])
 
     def check_settings(self):
         """Check that the user-supplied parameters are correct"""

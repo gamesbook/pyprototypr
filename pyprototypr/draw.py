@@ -7,6 +7,7 @@ from __future__ import division
 # lib
 from copy import copy
 import logging
+import math
 import os
 import pathlib
 import sys
@@ -14,6 +15,7 @@ import sys
 from reportlab.lib.pagesizes import *
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib.pagesizes import A4
 # from reportlab.lib.colors import black, white
 from reportlab.lib.units import cm, inch
 from reportlab.lib.colors import (
@@ -604,7 +606,8 @@ def AutoGrid(**kwargs):
     kwargs['rows'] = kwargs.get('rows', rows)
     kwargs['cols'] = kwargs.get('cols', cols)
     kwargs['stroke_width'] = kwargs.get('stroke_width', 0.2)  # fine line
-    kwargs['font_size'] = kwargs.get('font_size', 10)
+    default_font_size = 11 * math.sqrt(pagesize[0]) / math.sqrt(A4[0])
+    kwargs['font_size'] = kwargs.get('font_size', default_font_size)
     # ---- numbering
     if numbering:
         _common = Common(
@@ -647,7 +650,7 @@ def AutoGrid(**kwargs):
                 subgrid = GridShape(canvas=cnv, **local_kwargs)
                 subgrid.draw(off_x=off_x, off_y=off_y)
     # ---- draw AutoGrid
-    grid = GridShape(canvas=cnv, **kwargs)
+    grid = GridShape(canvas=cnv, line_dots=True, **kwargs)
     grid.draw()
     return grid
 
@@ -1096,6 +1099,7 @@ def Track(track=None, **kwargs):
     kwargs = kwargs
     _spaces = kwargs.get('spaces', 8)
     spaces = tools.as_int(_spaces, 'spaces', minimum=4)  # number of spaces around track
+    breakpoint()
     shapes = kwargs.get('shapes', [])  # shape(s) to draw at the locations
     if not track:
         track = RectangleTrack(fill_color=DEBUG_COLOR)
