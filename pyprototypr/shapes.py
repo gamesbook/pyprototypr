@@ -1652,7 +1652,6 @@ class TextShape(BaseShape):
             _style.fontName = self.font_face
             _style.leading = self.leading
             """
-            leading=12,
             leftIndent=0,
             rightIndent=0,
             firstLineIndent=0,
@@ -1671,8 +1670,8 @@ class TextShape(BaseShape):
             splitLongWords=1,
             """
             para = Paragraph(_text, style=_style)
-            para.wrapOn(cnv, width, height)
-            para.drawOn(cnv, x_t, y_t)
+            w, h = para.wrap(width, height)
+            para.drawOn(cnv, x_t, y_t - h)  # start text from top of 'box'
         else:
             cnv.setFillColor(self.stroke)
             self.draw_multi_string(cnv, x_t, y_t, _text, rotate)
