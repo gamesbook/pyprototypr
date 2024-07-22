@@ -630,7 +630,8 @@ class BaseShape:
         self.line_dots = kwargs.get('line_dots',
                                     kwargs.get('dots', cnv.line_dots))
         self.dashes = kwargs.get('dashes', None)
-        # ---- transparency
+        # ---- color and transparency
+        self.debug_color = kwargs.get('debug_color', cnv.debug_color)
         self.transparency = kwargs.get('transparency', cnv.transparency)
         # ---- stroke
         self.stroke = kwargs.get('stroke', kwargs.get('stroke_color', cnv.stroke))

@@ -203,16 +203,19 @@ Text(common=txt, text="Hexagon: pointy; text; hatch")
 Hexagon(
     y=2,
     height=2,
-    hatch=3,
+    hatch=5,
     hex_top='pointy',
     title="Title",
-    label="Label",
     heading="Heading")
 PageBreak()
 
 AutoGrid(stroke_width=0.5)
-Text(common=txt, text="Right Angled Triangle")
+Text(common=txt, text="Equilateral Triangle; text; hatch")
 EquilateralTriangle(x=1, y=3, side=2, hatch=3, title='Title', heading='Heading')
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
+Text(common=txt, text="Right Angled Triangle")
 EquilateralTriangle(x=1, y=1, flip="up", hand="right", label="UR", fill="yellow")
 EquilateralTriangle(x=1, y=1, flip="down", hand="right", label="DR", fill="green")
 EquilateralTriangle(x=1, y=1, flip="up", hand="left", label="UL", fill="red")

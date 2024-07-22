@@ -5,6 +5,7 @@ Create custom shapes for pyprototypr
 # lib
 import logging
 import math
+import random
 
 # third party
 from reportlab.platypus import Paragraph
