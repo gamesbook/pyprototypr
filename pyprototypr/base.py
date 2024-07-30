@@ -518,6 +518,7 @@ class BaseCanvas:
         self.coord_padding = self.defaults.get('coord_padding', 2)
         self.coord_separator = self.defaults.get('coord_separator', '')
         self.coord_prefix = self.defaults.get('coord_prefix', '')
+        self.coord_style = self.defaults.get('coord_style', '')
         self.masked = self.defaults.get('masked', [])
         # ---- starfield
         self.enclosure = None
@@ -765,6 +766,7 @@ class BaseShape:
         self.coord_padding = kwargs.get('coord_padding', cnv.coord_padding)
         self.coord_separator = kwargs.get('coord_separator', cnv.coord_separator)
         self.coord_prefix = kwargs.get('coord_prefix', cnv.coord_prefix)
+        self.coord_style = kwargs.get('coord_style', '') # linear|diagonal
         self.masked = kwargs.get('masked', cnv.masked)
         # ---- starfield
         self.enclosure = kwargs.get('enclosure', cnv.enclosure)
@@ -988,6 +990,12 @@ class BaseShape:
             if str(self.position).lower() not in \
                     ['top', 'bottom', 'center', 'middle',  't', 'b', 'c', 'm', ]:
                 issue.append(f'"{self.position}" is an invalid position!')
+                correct = False
+        # ---- hexagons
+        if self.coord_style:
+            if str(self.coord_style).lower() not in \
+                    ['l', 'linear', 'd', 'diagonal', ]:
+                issue.append(f'"{self.coord_style}" is an invalid coord style!')
                 correct = False
         # ---- arrows
         if self.head_style:

@@ -565,6 +565,20 @@ def degrees_to_xy(degrees: float, radius: float, origin: Point) -> Point:
     return Point(x_o, y_o)
 
 
+def alpha_column(num: int, lower: bool = False) -> string:
+    """Convert a number to a letter-based notation
+
+    Notes:
+        * Encountered on a WarpWar map; numbers below 26 appear sequentially as
+          a, b, c, etc, numbers above 26 appear sequentially as  aa, bb, cc, etc; if
+          above 52 then appear sequentially as aaa, bbb, ccc etc,
+    """
+    if lower:
+        return string.ascii_lowercase[divmod(num - 1, 26)[1] % 26] * (divmod(num - 1, 26)[0] + 1)
+    else:
+        return string.ascii_uppercase[divmod(num - 1, 26)[1] % 26] * (divmod(num - 1, 26)[0] + 1)
+
+
 def sheet_column(num: int, lower: bool = False) -> string:
     """Convert a spreadsheet number to a column letter
 

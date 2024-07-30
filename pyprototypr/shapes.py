@@ -1098,9 +1098,14 @@ class HexShape(BaseShape):
     def draw_coord(self, cnv, x_d, y_d, half_flat):
         """Draw the coord inside the hexagon."""
         if self.coord_position:
-            # ---- set coord value
             _row = self.hex_rows - self.row + self.coord_start_y
             _col = self.col + 1 if not self.coord_start_x else self.col + self.coord_start_x
+            # ---- set coord start
+            if self.coord_style:
+                if str(self.coord_style).lower() in ['d', 'diagonal']:
+                    col_group = (_col - 1) // 2
+                    _row += col_group
+            # ---- set coord value
             _x = tools.sheet_column(_col, True) \
                 if self.coord_type_x in ['l', 'lower'] else tools.sheet_column(_col)
             _y = tools.sheet_column(_row, True) \
