@@ -511,6 +511,54 @@ def comparer(val, operator, target):
     return False
 
 
+def color_to_hex(name):
+    """Convert a named ReportLab color (Color class) to a hexadecimal string"""
+    _tuple = (int(name.red * 255), int(name.green * 255), int(name.blue * 255))
+    _string = "#%02x%02x%02x" % _tuple
+    return _string.upper()
+
+
+def alpha_column(num: int, lower: bool = False) -> string:
+    """Convert a number to a letter-based notation
+
+    Notes:
+        * Encountered on a WarpWar map; numbers below 26 appear sequentially as
+          a, b, c, etc, numbers above 26 appear sequentially as aa, bb, cc, etc; if
+          above 52 then appear sequentially as aaa, bbb, ccc etc. Add more letters for
+          each multiple of 26.
+    """
+    if lower:
+        return string.ascii_lowercase[divmod(num - 1, 26)[1] % 26] * (divmod(num - 1, 26)[0] + 1)
+    else:
+        return string.ascii_uppercase[divmod(num - 1, 26)[1] % 26] * (divmod(num - 1, 26)[0] + 1)
+
+
+def sheet_column(num: int, lower: bool = False) -> string:
+    """Convert a spreadsheet number to a column letter
+
+    Ref:
+        https://stackoverflow.com/questions/23861680/
+    """
+
+    def converter(num, lower):
+        if lower:
+            return (
+                ""
+                if num == 0
+                else converter((num - 1) // 26, lower)
+                + string.ascii_lowercase[(num - 1) % 26]
+            )
+        else:
+            return (
+                ""
+                if num == 0
+                else converter((num - 1) // 26, lower)
+                + string.ascii_uppercase[(num - 1) % 26]
+            )
+
+    return converter(num, lower)
+
+
 def polygon_vertices(
     sides: int, radius: float, starting_angle: float, center: Point
 ) -> list:
@@ -545,13 +593,6 @@ def polygon_vertices(
     return points
 
 
-def color_to_hex(name):
-    """Convert a named ReportLab color (Color class) to a hexadecimal string"""
-    _tuple = (int(name.red * 255), int(name.green * 255), int(name.blue * 255))
-    _string = "#%02x%02x%02x" % _tuple
-    return _string.upper()
-
-
 def degrees_to_xy(degrees: float, radius: float, origin: Point) -> Point:
     """Calculates a Point that is at an angle from the origin;
     0 is to the right.
@@ -563,46 +604,6 @@ def degrees_to_xy(degrees: float, radius: float, origin: Point) -> Point:
     x_o = math.cos(radians) * radius + origin.x
     y_o = math.sin(-radians) * radius + origin.y
     return Point(x_o, y_o)
-
-
-def alpha_column(num: int, lower: bool = False) -> string:
-    """Convert a number to a letter-based notation
-
-    Notes:
-        * Encountered on a WarpWar map; numbers below 26 appear sequentially as
-          a, b, c, etc, numbers above 26 appear sequentially as  aa, bb, cc, etc; if
-          above 52 then appear sequentially as aaa, bbb, ccc etc,
-    """
-    if lower:
-        return string.ascii_lowercase[divmod(num - 1, 26)[1] % 26] * (divmod(num - 1, 26)[0] + 1)
-    else:
-        return string.ascii_uppercase[divmod(num - 1, 26)[1] % 26] * (divmod(num - 1, 26)[0] + 1)
-
-
-def sheet_column(num: int, lower: bool = False) -> string:
-    """Convert a spreadsheet number to a column letter
-
-    Ref:
-        https://stackoverflow.com/questions/23861680/
-    """
-
-    def converter(num, lower):
-        if lower:
-            return (
-                ""
-                if num == 0
-                else converter((num - 1) // 26, lower)
-                + string.ascii_lowercase[(num - 1) % 26]
-            )
-        else:
-            return (
-                ""
-                if num == 0
-                else converter((num - 1) // 26, lower)
-                + string.ascii_uppercase[(num - 1) % 26]
-            )
-
-    return converter(num, lower)
 
 
 def is_inside_polygon(point: tuple, vertices: list, valid_border=False) -> bool:

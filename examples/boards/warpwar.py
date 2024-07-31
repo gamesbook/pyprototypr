@@ -35,14 +35,14 @@ txt = Common(y=57.5, font_size=21, align="left", stroke=white)
 Text(common=txt, x=3,  text="2 Player Warp War Map:      Vedem Sector")
 Text(common=txt, x=22, text="(c) 2024 by Richard W. Smith")
 
-warp = Hexagons(
+ww_grid = Hexagons(
     cols=20,
     rows=24,
     y=1.8,
     height=2.22,
     hex_offset="even",
     coord_position="t",
-    coord_type_y="upper",
+    coord_type_y="upper-multiple",
     coord_offset=-0.15,
     coord_font_size=12,
     coord_stroke=grid_line,
@@ -51,5 +51,7 @@ warp = Hexagons(
     fill=map_fill,
     stroke=grid_line,
 )
+
+print(f'{ww_grid}')
 
 Save()

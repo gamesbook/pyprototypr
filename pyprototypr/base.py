@@ -85,6 +85,15 @@ OffsetProperties = namedtuple(
         'delta_y',
     ]
 )
+GridShape = namedtuple(
+    'GridShape', [
+        'label',
+        'x',
+        'y',
+        'shape',
+    ]
+)
+
 # ---- units
 UNITS = {
     "cm": cm,

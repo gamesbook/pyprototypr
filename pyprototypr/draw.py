@@ -663,8 +663,8 @@ def Hexagon(row=None, col=None, **kwargs):
     kwargs['row'] = row
     kwargs['col'] = col
     hexagon = HexShape(canvas=cnv, **kwargs)
-    hexagon.draw()
-    return hexagon
+    grid_shape = hexagon.draw()
+    return grid_shape
 
 
 def hexagon(row=None, col=None, **kwargs):
@@ -955,13 +955,14 @@ def Repeat(_object, **kwargs):
     repeat = RepeatShape(_object=_object, **kwargs)
     repeat.draw()
 
-# ---- patterns ====
+# ---- patterns and grid ====
 
 
 def Hexagons(rows=1, cols=1, sides=None, **kwargs):
     global cnv
     global deck
     kwargs = kwargs
+    locations = []
 
     def draw_hexagons(rows: int, cols: int, stop: int, the_cols: list, odd_mid: bool = True):
         """Draw rows of hexagons for each column in `the_cols`"""
@@ -980,10 +981,13 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
                 if kwargs.get('masked') and [_row, ccol] in kwargs.get('masked'):
                     pass
                 else:
-                    Hexagon(row=row, col=ccol - 1, hex_rows=rows, hex_cols=cols, **kwargs)
+                    grid_location = Hexagon(
+                        row=row, col=ccol - 1, hex_rows=rows, hex_cols=cols, **kwargs)
+                    locations.append(grid_location)
             if ccol - 1 == stop:  # reached "leftmost" -> reset counters
                 top_row = 1
                 end_row = rows - 1
+        return locations
 
     if kwargs.get('hex_layout') and kwargs.get('hex_top'):
         if kwargs.get('hex_top').lower() in ['p', 'pointy'] and \
@@ -1014,12 +1018,12 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
                 tools.feedback('An odd number is needed for cols!', True)
             sides = rows // 2 + 1
         the_cols = list(range(sides, 0, -1)) + list(range(sides + 1, rows + 1))
-        draw_hexagons(rows, cols, 0, the_cols, odd_mid=False)
+        locations = draw_hexagons(rows, cols, 0, the_cols, odd_mid=False)
 
     elif kwargs.get('hex_layout') in ['d', 'dia', 'diamond']:
         cols = rows * 2 - 1
         the_cols = list(range(rows, 0, -1)) + list(range(rows + 1, cols + 1))
-        draw_hexagons(rows, cols, 0, the_cols)
+        locations = draw_hexagons(rows, cols, 0, the_cols)
 
     elif kwargs.get('hex_layout') in ['t', 'tri', 'triangle']:
         tools.feedback(f'Cannot draw triangle-pattern hexagons: {kwargs}', True)
@@ -1033,7 +1037,11 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
                 if kwargs.get('masked') and [row + 1, col + 1] in kwargs.get('masked'):
                     pass
                 else:
-                    Hexagon(row=row, col=col, hex_rows=rows, hex_cols=cols, **kwargs)
+                    grid_location = Hexagon(
+                        row=row, col=col, hex_rows=rows, hex_cols=cols, **kwargs)
+                    locations.append(grid_location)
+
+    return locations
 
 
 def Rectangles(rows=1, cols=1, **kwargs):
@@ -1053,7 +1061,30 @@ def Lines(rows=1, cols=1, **kwargs):
         for col in range(cols):
             Line(row=row, col=col, **kwargs)
 
-# ---- Layout and Track ====
+
+def Location(grid: list, label: str, shapes: list, **kwargs):
+    global cnv
+    kwargs = kwargs
+
+    # get location centre from grid via the label
+    loc = None
+    for position in grid:
+        if position.label == label:
+            loc = Point(position.x, position.y)
+            break
+    if loc is None:
+        tools.feedback(f"The location '{label}' is not in the grid!", True)
+
+    if shapes:
+        for shape in shapes:
+            try:
+                shape.draw(
+                    off_x=shape.points_to_value(loc.x),
+                    off_y=shape.points_to_value(loc.y))
+            except Exception:
+                tools.feedback(f"Unable to draw '{shape} - check its settings!", True)
+
+# ---- layout and tracks ====
 
 
 def Layout(grid, **kwargs):

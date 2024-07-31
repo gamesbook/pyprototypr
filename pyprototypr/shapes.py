@@ -12,9 +12,11 @@ from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle
 
 # local
-from pyprototypr.utils.tools import Point, Link, Location, TrackPoint  # named tuples
+from pyprototypr.utils.tools import (
+    Point, Link, Location, TrackPoint)  # named tuples
 from pyprototypr.utils import tools
-from pyprototypr.base import BaseShape, BaseCanvas, UNITS, COLORS, PAGES, DEBUG_COLOR
+from pyprototypr.base import (
+    BaseShape, BaseCanvas, GridShape, UNITS, COLORS, PAGES, DEBUG_COLOR)
 
 log = logging.getLogger(__name__)
 DEBUG = False
@@ -1095,40 +1097,54 @@ class HexShape(BaseShape):
         points = self.values_to_points(array)
         return points
 
-    def draw_coord(self, cnv, x_d, y_d, half_flat):
-        """Draw the coord inside the hexagon."""
+    def set_coord(self, cnv, x_d, y_d, half_flat):
+        """Set and draw the coords of the hexagon."""
+        _row = self.hex_rows - self.row + self.coord_start_y
+        _col = self.col + 1 if not self.coord_start_x else self.col + self.coord_start_x
+        # ---- set coord label value
+        if self.coord_style:
+            if str(self.coord_style).lower() in ['d', 'diagonal']:
+                col_group = (_col - 1) // 2
+                _row += col_group
+        # ---- set coord x,y values
+        if self.coord_type_x in ['l', 'lower']:
+            _x = tools.sheet_column(_col, True)
+        elif self.coord_type_x in ['l-m', 'lower-multiple']:
+            _x = tools.alpha_column(_col, True)
+        elif self.coord_type_x in ['u', 'upper']:
+            _x = tools.sheet_column(_col)
+        elif self.coord_type_x in ['u-m', 'upper-multiple']:
+            _x = tools.alpha_column(_col)
+        else:
+            _x = str(_col).zfill(self.coord_padding)  # numeric
+        if self.coord_type_y in ['l', 'lower']:
+            _y = tools.sheet_column(_row, True)
+        elif self.coord_type_y in ['l-m', 'lower-multiple']:
+            _y = tools.alpha_column(_row, True)
+        elif self.coord_type_y in ['u', 'upper']:
+            _y = tools.sheet_column(_row)
+        elif self.coord_type_y in ['u-m', 'upper-multiple']:
+            _y = tools.alpha_column(_row)
+        else:
+            _y = str(_row).zfill(self.coord_padding)  # numeric
+        # ---- set coord label
+        self.coord_text = str(self.coord_prefix) + _x + str(self.coord_separator) + _y
+        # ---- draw coord (optional)
         if self.coord_position:
-            _row = self.hex_rows - self.row + self.coord_start_y
-            _col = self.col + 1 if not self.coord_start_x else self.col + self.coord_start_x
-            # ---- set coord start
-            if self.coord_style:
-                if str(self.coord_style).lower() in ['d', 'diagonal']:
-                    col_group = (_col - 1) // 2
-                    _row += col_group
-            # ---- set coord value
-            _x = tools.sheet_column(_col, True) \
-                if self.coord_type_x in ['l', 'lower'] else tools.sheet_column(_col)
-            _y = tools.sheet_column(_row, True) \
-                if self.coord_type_y in ['l', 'lower'] else tools.sheet_column(_row)
-            if self.coord_type_x in ['n', 'number']:
-                _x = str(_col).zfill(self.coord_padding)
-            if self.coord_type_y in ['n', 'number']:
-                _y = str(_row).zfill(self.coord_padding)
-            _coord_text = str(self.coord_prefix) + _x + str(self.coord_separator) + _y
-            # ---- set coord props
+            # ---- * set coord props
             cnv.setFont(self.coord_font_face, self.coord_font_size)
             cnv.setFillColor(self.coord_stroke)
-            # ---- draw coord
+
             coord_offset = self.unit(self.coord_offset)
             if self.coord_position in ['t', 'top']:
                 self.draw_multi_string(
-                    cnv, x_d, y_d + half_flat * 0.7 + coord_offset, _coord_text)
+                    cnv, x_d, y_d + half_flat * 0.7 + coord_offset, self.coord_text)
             elif self.coord_position in ['m', 'middle', 'mid']:
                 self.draw_multi_string(
-                    cnv, x_d, y_d + coord_offset - self.coord_font_size / 2.0, _coord_text)
+                    cnv, x_d, y_d + coord_offset - self.coord_font_size / 2.0, self.coord_text)
             elif self.coord_position in ['b', 'bottom', 'bot']:
                 self.draw_multi_string(
-                    cnv, x_d, y_d - half_flat * 0.9 + coord_offset, _coord_text)
+                    cnv, x_d, y_d - half_flat * 0.9 + coord_offset, self.coord_text)
             else:
                 tools.feedback(
                     f'Cannot handle a coord_position of "{self.coord_position}"')
@@ -1444,7 +1460,9 @@ class HexShape(BaseShape):
             head_off = 0.01 * self.heading_size + diameter / 2.0
         self.draw_heading(cnv, x_d, y_d, head_off)
         # ----  numbering
-        self.draw_coord(cnv, x_d, y_d, half_flat)
+        self.set_coord(cnv, x_d, y_d, half_flat)
+        # ---- return key settings
+        return GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
 
 
 class StarShape(BaseShape):
