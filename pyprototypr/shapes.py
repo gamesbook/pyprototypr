@@ -1099,8 +1099,11 @@ class HexShape(BaseShape):
 
     def set_coord(self, cnv, x_d, y_d, half_flat):
         """Set and draw the coords of the hexagon."""
-        _row = self.hex_rows - self.row + self.coord_start_y
-        _col = self.col + 1 if not self.coord_start_x else self.col + self.coord_start_x
+        # breakpoint()
+        the_row = self.row or 0
+        the_col = self.col or 0
+        _row = self.hex_rows - the_row + self.coord_start_y
+        _col = the_col + 1 if not self.coord_start_x else the_col + self.coord_start_x
         # ---- set coord label value
         if self.coord_style:
             if str(self.coord_style).lower() in ['d', 'diagonal']:
@@ -1277,6 +1280,8 @@ class HexShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a hexagon on a given canvas."""
+        # if self.height < 2.2: breakpoint()
+        # print(kwargs, ID, self.height)
         # tools.feedback(f'Will draw a hex shape: {kwargs} {off_x} {off_y} {ID}')
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         is_cards = kwargs.get("is_cards", False)
@@ -1383,10 +1388,10 @@ class HexShape(BaseShape):
                 # cx,cy are centre; create x_d,y_d as the unit-formatted hex centre
                 x_d = self._u.cx
                 y_d = self._u.cy
-                # recalcuate start x,y
+                # recalculate start x,y
                 x = x_d - half_side - side / 2.0 + self._o.delta_x
                 y = y_d - half_flat + self._o.delta_y
-                # recalcuate centre relative to x,y
+                # recalculate centre relative to x,y
                 x_d = x + side
                 y_d = y + half_flat
                 # tools.feedback(f"***F: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")

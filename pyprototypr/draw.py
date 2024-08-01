@@ -1064,6 +1064,10 @@ def Lines(rows=1, cols=1, **kwargs):
 
 def Location(grid: list, label: str, shapes: list, **kwargs):
     global cnv
+    global margin_left
+    global margin_top
+    global margin_bottom
+    global margin_right
     kwargs = kwargs
 
     # get location centre from grid via the label
@@ -1079,14 +1083,77 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
         for shape in shapes:
             # shape.debug_point(cnv.canvas, point=loc)
             try:
-                delta_x = shape.margin_left or shape.margin
-                delta_y = shape.margin_bottom or shape.margin
+                off_x = shape.points_to_value(loc.x) - margin_left
+                off_y = shape.points_to_value(loc.y) - margin_bottom
+                # tools.feedback(f"{shape=} :: {loc.x=}, {loc.y=} // {off_x=}, {off_y=}")
+                # tools.feedback(f"{kwargs=}")
                 shape.draw(
-                    off_x=shape.points_to_value(loc.x) - delta_x,
-                    off_y=shape.points_to_value(loc.y) - delta_y,
+                    off_x=off_x,
+                    off_y=off_y,
+                    **kwargs
                 )
-            except Exception:
-                tools.feedback(f"Unable to draw '{shape} - check its settings!", True)
+            except Exception as err:
+                tools.feedback(err, False)
+                tools.feedback(f"Unable to draw the '{shape} - please check its settings!", True)
+
+def Linker(grid: list, locations: list, **kwargs):
+    """Enable a line link between one or more locations in a grid."""
+    global cnv
+    global margin
+    global margin_left
+    global margin_top
+    global margin_bottom
+    global margin_right
+    kwargs = kwargs
+
+    if not isinstance(locations, list):
+        tools.feedback(f"'{locations} is not a list - please check!", True)
+    if len(locations) < 2:
+        tools.feedback(f"There should be at least 2 locations to create links!", True)
+    dummy = shape()
+    for index, location in enumerate(locations):
+        # precheck
+        if not isinstance(location, tuple) or len(location) != 3:
+            tools.feedback(f"The location '{location} is not valid - please check its syntax!", True)
+        # get location centre from grid via the label
+        loc = None
+        for position in grid:
+            if location[0] == position.label:
+                loc = Point(position.x, position.y)
+                break
+        if loc is None:
+            tools.feedback(f"The location '{location[0]}' is not in the grid!", True)
+        # new line?
+        if index + 1 < len(locations):
+            # location #2
+            location_2 = locations[index + 1]
+            if not isinstance(location_2, tuple) or len(location_2) != 3:
+                tools.feedback(f"The location '{location_2} is not valid -"
+                               " please check its syntax!", True)
+            loc_2 = None
+            for position in grid:
+                if location_2[0] == position.label:
+                    loc_2 = Point(position.x, position.y)
+                    break
+            if loc_2 is None:
+                tools.feedback(f"The location '{location_2[0]}' is not in the grid!", True)
+            if location[0] == location_2[0]:
+                tools.feedback(f"Locations must differ!", True)
+            # line start/end
+            x = dummy.points_to_value(loc.x) + location[1]
+            y = dummy.points_to_value(loc.y) + location[2]
+            x1 = dummy.points_to_value(loc_2.x) + location_2[1]
+            y1 = dummy.points_to_value(loc_2.y) + location_2[2]
+
+            _line = line(x=x, y=y, x1=x1, y1=y1, **kwargs)
+            # tools.feedback(f"{x=}, {y=}, {x1=}, {y1=}")
+            delta_x = margin_left
+            delta_y = margin_bottom
+            # tools.feedback(f"{delta_x=}, {delta_y=}")
+            _line.draw(
+                off_x=-delta_x,
+                off_y=-delta_y,
+            )
 
 # ---- layout and tracks ====
 

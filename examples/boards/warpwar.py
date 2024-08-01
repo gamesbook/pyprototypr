@@ -17,7 +17,7 @@ map_fill = black
 map_border = lightgrey
 grid_line = "#AA9A38 "
 system_label = "#1CAEE5"
-warp_line = "#2ACD21"
+warp = "#2ACD21"
 # set star colors
 m_red = "#FE1200"
 k_orange = "#EC600C"
@@ -97,5 +97,21 @@ Location(
      text(common=sname, x=-0.4, y=-0.1, text="Bezsin\n    4"),
     ])
 
+Location(
+    ww_grid,
+    "8L",
+    [
+     # hexagon(fill=cloud_lite, stroke=cloud_lite, height=2.2, x=0, y=0),
+     circle(common=kstar, x=-0.7, y=-0.8),
+     text(common=sname, x=0.4, y=0.1, text="Highlakes\n    3"),
+    ])
+
+# warp lines
+warp_line = Common(stroke=warp, stroke_width=2)
+
+Linker(ww_grid, [("2B", -0.5, -0.7), ("4E", 0.05, 0.9)], common=warp_line)
+Linker(ww_grid, [("2B", 0.15, 0.85), ("4B", -0.75, -0.8)], common=warp_line)
+Linker(ww_grid, [("4E", 0.25, 1.05), ("4B", -0.6, -0.9)], common=warp_line)
+Linker(ww_grid, [("1C", 0.75, -0.2), ("8L", -0.6, 0.3)], common=warp_line)
 
 Save()
