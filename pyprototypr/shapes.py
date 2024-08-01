@@ -134,8 +134,12 @@ class DotShape(BaseShape):
         """Draw a dot on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        x = self._u.x + self._o.delta_x
-        y = self._u.y + self._o.delta_y
+        if self.use_abs:
+            x = self._abs_x
+            y = self._abs_y
+        else:
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
         size = self.dot_point / 2.0  # diameter is 3 points ~ 1mm or 1/32"
         self.fill = self.stroke
         self.set_canvas_props()
@@ -155,9 +159,16 @@ class LineShape(BaseShape):
         """Draw a line on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        x = self._u.x + self._o.delta_x
-        y = self._u.y + self._o.delta_y
-        if self.x_1 or self.y_1:
+        if self.use_abs:
+            x = self._abs_x
+            y = self._abs_y
+        else:
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
+        if self.use_abs_1:
+            x_1 = self._abs_x1
+            y_1 = self._abs_y1
+        elif self.x_1 or self.y_1:
             x_1 = self.unit(self.x_1) + self._o.delta_x
             y_1 = self.unit(self.y_1) + self._o.delta_y
         else:
@@ -205,9 +216,16 @@ class ArrowShape(BaseShape):
         """Draw an arrow on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        x = self._u.x + self._o.delta_x
-        y = self._u.y + self._o.delta_y
-        if self.x_1 and self.y_1:
+        if self.use_abs:
+            x = self._abs_x
+            y = self._abs_y
+        else:
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
+        if self.use_abs_1:
+            x_1 = self._abs_x1
+            y_1 = self._abs_y1
+        elif self.x_1 or self.y_1:
             x_1 = self.unit(self.x_1) + self._o.delta_x
             y_1 = self.unit(self.y_1) + self._o.delta_y
         else:
@@ -255,9 +273,15 @@ class RhombusShape(BaseShape):
         """Draw a rhombus (diamond) on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        if self.cx and self.cy:
+        if self.use_abs_c:
+            x = self._abs_cx
+            y = self._abs_cy
+        elif self.cx and self.cy:
             x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
             y = self._u.cy - self._u.height / 2.0 + self._o.delta_y
+        elif self.use_abs:
+            x = self._abs_x
+            y = self._abs_y
         else:
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
@@ -289,7 +313,10 @@ class StadiumShape(BaseShape):
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(StadiumShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # overrides to centre shape
-        if self.cx and self.cy:
+        if self.use_abs_c:
+            self.x = self._abs_cx
+            self.y = self._abs_cy
+        elif self.cx and self.cy:
             self.x = self.cx - self.width / 2.0
             self.y = self.cy - self.height / 2.0
             # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
@@ -313,7 +340,10 @@ class StadiumShape(BaseShape):
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
         # ---- overrides to centre the shape
-        if kwargs.get("cx") and kwargs.get("cy"):
+        if self.use_abs_c:
+            x = self._abs_cx
+            y = self._abs_cy
+        elif kwargs.get("cx") and kwargs.get("cy"):
             x = self._u.cx - self._u.width / 2.0
             y = self._u.cy - self._u.height / 2.0
         # ---- vertices
@@ -461,7 +491,10 @@ class RectangleShape(BaseShape):
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
         # ---- overrides to centre the shape
-        if kwargs.get("cx") and kwargs.get("cy"):
+        if self.use_abs_c:
+            x = self._abs_cx
+            y = self._abs_cy
+        elif kwargs.get("cx") and kwargs.get("cy"):
             x = kwargs.get("cx") - self._u.width / 2.0
             y = kwargs.get("cy") - self._u.height / 2.0
         return x, y
@@ -1720,7 +1753,7 @@ class CircleShape(BaseShape):
             self.y = self.cy - self.radius
             self.width = 2.0 * self.radius
             self.height = 2.0 * self.radius
-        # ---- calcuate centre
+        # ---- calculate centre
         radius = self._u.radius
         if self.row is not None and self.col is not None:
             self.x_c = self.col * 2.0 * radius + radius
@@ -1819,9 +1852,13 @@ class CircleShape(BaseShape):
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # ---- calculated properties
         self.area = self.calculate_area()
-        if self._o.delta_x or self._o.delta_y:
+        if not self.use_abs_c and (self._o.delta_x or self._o.delta_y):
             self.x_c = self.x_c + self._o.delta_x
             self.y_c = self.y_c + self._o.delta_y
+        # ---- absolute override
+        if self.use_abs_c:
+            self.x_c = self._abs_cx
+            self.y_c = self._abs_cy
         # canvas
         self.set_canvas_props()
         # ---- draw circle
@@ -2248,7 +2285,7 @@ class CommonShape(BaseShape):
         tools.feedback("This shape cannot be drawn.")
 
 
-# ---- deck/card related-----
+# ---- Deck / Card related-----
 
 
 class CardShape(BaseShape):
@@ -2553,7 +2590,7 @@ class Virtual():
             tools.feedback(f"{value} is not a valid {label} floating number!", True)
 
 
-# ---- Virtual Grids & Layout ====
+# ---- Virtual Grids & Layout ----
 
 
 class VirtualGrid(Virtual):

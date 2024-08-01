@@ -64,6 +64,9 @@ from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
 from pyprototypr.utils.tools import Point
 
+SHAPES_WITH_CENTRE = [
+    'CircleShape', 'CompassShape', 'DotShape', 'HexShape', 'OctagonShape',
+    'RectangleShape', 'SquareShape', ]
 
 log = logging.getLogger(__name__)
 
@@ -1082,19 +1085,22 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
     if shapes:
         for shape in shapes:
             # shape.debug_point(cnv.canvas, point=loc)
+            dx = shape.kwargs.get('dx', 0)  # user-units
+            dy = shape.kwargs.get('dy', 0)  # user-units
+            pts = shape.values_to_points([dx, dy])  # absolute units (points)
             try:
-                off_x = shape.points_to_value(loc.x) - margin_left
-                off_y = shape.points_to_value(loc.y) - margin_bottom
-                # tools.feedback(f"{shape=} :: {loc.x=}, {loc.y=} // {off_x=}, {off_y=}")
+                x = loc.x + pts[0]
+                y = loc.y + pts[1]
+                # tools.feedback(f"{shape=} :: {loc.x=}, {loc.y=} // {dx=}, {dy=}")
                 # tools.feedback(f"{kwargs=}")
-                shape.draw(
-                    off_x=off_x,
-                    off_y=off_y,
-                    **kwargs
-                )
+                if shape.__class__.__name__ in SHAPES_WITH_CENTRE:
+                    shape.draw(_abs_xc=x, _abs_yc=y, **kwargs)
+                else:
+                    shape.draw(_abs_x=x, _abs_y=y, **kwargs)
             except Exception as err:
                 tools.feedback(err, False)
                 tools.feedback(f"Unable to draw the '{shape} - please check its settings!", True)
+
 
 def Linker(grid: list, locations: list, **kwargs):
     """Enable a line link between one or more locations in a grid."""
