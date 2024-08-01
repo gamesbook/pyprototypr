@@ -1077,10 +1077,14 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
 
     if shapes:
         for shape in shapes:
+            # shape.debug_point(cnv.canvas, point=loc)
             try:
+                delta_x = shape.margin_left or shape.margin
+                delta_y = shape.margin_bottom or shape.margin
                 shape.draw(
-                    off_x=shape.points_to_value(loc.x),
-                    off_y=shape.points_to_value(loc.y))
+                    off_x=shape.points_to_value(loc.x) - delta_x,
+                    off_y=shape.points_to_value(loc.y) - delta_y,
+                )
             except Exception:
                 tools.feedback(f"Unable to draw '{shape} - check its settings!", True)
 

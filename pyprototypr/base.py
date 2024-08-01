@@ -1352,6 +1352,8 @@ class BaseShape:
     def debug_point(self, canvas, point: tools.Point, label=''):
         """Display a labelled point."""
         canvas.setFillColor(DEBUG_COLOR)
+        canvas.setStrokeColor(DEBUG_COLOR)
+        canvas.setLineWidth(0.1)
         canvas.setFont(self.font_face, 6)
         x = self.points_to_value(point.x)
         y = self.points_to_value(point.y)
