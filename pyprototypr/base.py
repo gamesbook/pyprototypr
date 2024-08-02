@@ -579,7 +579,7 @@ class BaseShape:
         # ---- KEY
         self.canvas = canvas or BaseCanvas()  # BaseCanvas object
         cnv = self.canvas  # shortcut for use in getting defaults
-        # log.debug("BaseShape types %s %s %s", type(self.canvas), type(canvas), type(cnv))
+        # log.debug("BaseShape types %s %s %s",type(self.canvas),type(canvas),type(cnv))
         self._object = _object  # placeholder for an incoming Shape object
         self.shape_id = None
         self.stylesheet = getSampleStyleSheet()
@@ -600,8 +600,7 @@ class BaseShape:
         self.margin_right = kwargs.get('margin_right', cnv.margin_right)
         self.grid_marks = kwargs.get('grid_marks', cnv.grid_marks)
         self.grid_color = kwargs.get('grid_color', cnv.grid_color)
-        self.grid_stroke_width = kwargs.get('grid_stroke_width',
-                                            cnv.grid_stroke_width)
+        self.grid_stroke_width = kwargs.get('grid_stroke_width', cnv.grid_stroke_width)
         self.grid_length = kwargs.get('grid_length', cnv.grid_length)
         self.page_width = self.pagesize[0] / self.units
         self.page_height = self.pagesize[1] / self.units
@@ -613,8 +612,8 @@ class BaseShape:
         self.size = kwargs.get('size', cnv.size)  # for equal height/width
         self.x = kwargs.get('x', kwargs.get('left', cnv.x))
         self.y = kwargs.get('y', kwargs.get('bottom', cnv.y))
-        self.cx = kwargs.get('cx', cnv.cx)
-        self.cy = kwargs.get('cy', cnv.cy)
+        self.cx = kwargs.get('cx', cnv.cx)  # centre (for some shapes)
+        self.cy = kwargs.get('cy', cnv.cy)  # centre (for some shapes)
         self.scaling = kwargs.get('scaling', None)  # SVG images
         self.dot_point = kwargs.get('dot_point', cnv.dot_point)  # points
         # ---- to be calculated ...
@@ -804,12 +803,14 @@ class BaseShape:
                 tools.feedback(f'Cannot process the Common property "{self.common}"'
                                ' - please check!', True)
             for attr in attrs.keys():
-                if attr not in ['canvas', 'common', 'stylesheet'] and \
+                if attr not in ['canvas', 'common', 'stylesheet', 'kwargs'] and \
                         attr[0] != '_':
+                    # tools.feedback(f'{attr=}')
                     common_attr = getattr(self.common, attr)
                     base_attr = getattr(BaseCanvas(), attr)
                     if common_attr != base_attr:
                         setattr(self, attr, common_attr)
+
         # ---- SET offset properties to correct units
         self._o = self.set_offset_props()
         # ---- SET UNIT PROPS (last!)
@@ -1395,5 +1396,6 @@ class BaseShape:
 class GroupBase(list):
     """Class for group base."""
 
-    def __init__(self, *args):
+    def __init__(self, *args, **kwargs):
         list.__init__(self, *args)
+        self.kwargs = kwargs

@@ -64,9 +64,12 @@ from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
 from pyprototypr.utils.tools import Point
 
-SHAPES_WITH_CENTRE = [
+GRID_SHAPES_WITH_CENTRE = [
     'CircleShape', 'CompassShape', 'DotShape', 'HexShape', 'OctagonShape',
-    'RectangleShape', 'SquareShape', ]
+    'RectangleShape', 'RhombusShape', 'SquareShape', 'StadiumShape', ] # EllipseShape ???
+GRID_SHAPES_NO_CENTRE = [
+     'TextShape', 'StarShape', ]
+# NOT GRID:  ArcShape,BezierShape, PolylineShape
 
 log = logging.getLogger(__name__)
 
@@ -294,13 +297,13 @@ def Deck(**kwargs):
     deck = DeckShape(**kwargs)
 
 
-def group(*args):
+def group(*args, **kwargs):
     global cnv
     global deck
-    g = GroupBase()
+    gb = GroupBase(kwargs)
     for arg in args:
-        g.append(arg)
-    return g
+        gb.append(arg)
+    return gb
 
 # ---- data and functions  =====
 
@@ -860,7 +863,9 @@ def Stadium(row=None, col=None, **kwargs):
     global cnv
     global deck
     kwargs = margins(**kwargs)
-    std = stadium(row=row, col=col, **kwargs)
+    kwargs['row'] = row
+    kwargs['col'] = col
+    std = StadiumShape(row=row, col=col, **kwargs)
     std.draw()
     return std
 
@@ -1067,11 +1072,31 @@ def Lines(rows=1, cols=1, **kwargs):
 
 def Location(grid: list, label: str, shapes: list, **kwargs):
     global cnv
-    global margin_left
-    global margin_top
-    global margin_bottom
-    global margin_right
     kwargs = kwargs
+
+    def draw_shape(shape: BaseShape, loc: Point):
+        shape_name = shape.__class__.__name__
+        shape_abbr = shape_name.replace('Shape', '')
+        # shape.debug_point(cnv.canvas, point=loc)
+        dx = shape.kwargs.get('dx', 0)  # user-units
+        dy = shape.kwargs.get('dy', 0)  # user-units
+        pts = shape.values_to_points([dx, dy])  # absolute units (points)
+        try:
+            x = loc.x + pts[0]
+            y = loc.y + pts[1]
+            # tools.feedback(f"{shape=} :: {loc.x=}, {loc.y=} // {dx=}, {dy=}")
+            # tools.feedback(f"{kwargs=}")
+            # tools.feedback(f"{label} :: {shape_name=}")
+            if shape_name in GRID_SHAPES_WITH_CENTRE:
+                shape.draw(_abs_cx=x, _abs_cy=y, **kwargs)
+            elif shape_name in GRID_SHAPES_NO_CENTRE:
+                shape.draw(_abs_x=x, _abs_y=y, **kwargs)
+            else:
+                tools.feedback(f"Unable to draw {shape_abbr}s in Locations!", True)
+        except Exception as err:
+            tools.feedback(err, False)
+            tools.feedback(
+                f"Unable to draw the '{shape_abbr} - please check its settings!", True)
 
     # get location centre from grid via the label
     loc = None
@@ -1084,22 +1109,10 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
 
     if shapes:
         for shape in shapes:
-            # shape.debug_point(cnv.canvas, point=loc)
-            dx = shape.kwargs.get('dx', 0)  # user-units
-            dy = shape.kwargs.get('dy', 0)  # user-units
-            pts = shape.values_to_points([dx, dy])  # absolute units (points)
-            try:
-                x = loc.x + pts[0]
-                y = loc.y + pts[1]
-                # tools.feedback(f"{shape=} :: {loc.x=}, {loc.y=} // {dx=}, {dy=}")
-                # tools.feedback(f"{kwargs=}")
-                if shape.__class__.__name__ in SHAPES_WITH_CENTRE:
-                    shape.draw(_abs_xc=x, _abs_yc=y, **kwargs)
-                else:
-                    shape.draw(_abs_x=x, _abs_y=y, **kwargs)
-            except Exception as err:
-                tools.feedback(err, False)
-                tools.feedback(f"Unable to draw the '{shape} - please check its settings!", True)
+            if shape.__class__.__name__ == 'GroupBase':
+                tools.feedback(f"Group drawing ({shape}) NOT IMPLEMENTED YET", True)
+            else:
+                draw_shape(shape, loc)
 
 
 def Linker(grid: list, locations: list, **kwargs):

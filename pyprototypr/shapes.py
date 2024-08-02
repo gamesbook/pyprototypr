@@ -134,9 +134,9 @@ class DotShape(BaseShape):
         """Draw a dot on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        if self.use_abs:
-            x = self._abs_x
-            y = self._abs_y
+        if self.use_abs_c:
+            x = self._abs_cx
+            y = self._abs_cy
         else:
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
@@ -313,10 +313,7 @@ class StadiumShape(BaseShape):
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(StadiumShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # overrides to centre shape
-        if self.use_abs_c:
-            self.x = self._abs_cx
-            self.y = self._abs_cy
-        elif self.cx and self.cy:
+        if self.cx and self.cy:
             self.x = self.cx - self.width / 2.0
             self.y = self.cy - self.height / 2.0
             # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
@@ -327,8 +324,8 @@ class StadiumShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a stadium on a given canvas."""
-        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         # ---- adjust start
         if self.row is not None and self.col is not None:
             x = self.col * self._u.width + self._o.delta_x
@@ -823,7 +820,10 @@ class OctagonShape(BaseShape):
             c_x, c_y = x + self._u.width / 2.0, y + self._u.height / 2.0
         # tools.feedback(f"DRAW Old {x=} {y=} {cx=} {cy=}")
         # ---- overrides to centre the shape
-        if kwargs.get("cx") and kwargs.get("cy"):
+        if self.use_abs_c:
+            c_x = self._abs_cx
+            c_y = self._abs_cy
+        elif kwargs.get("cx") and kwargs.get("cy"):
             x = self.unit(kwargs.get("cx")) - self._u.width / 2.0 + self._o.delta_x
             y = self.unit(kwargs.get("cy")) + self._u.height / 2.0 + self._o.delta_y
             c_x = self.unit(kwargs.get("cx")) + self._o.delta_x
@@ -987,9 +987,12 @@ class SectorShape(BaseShape):
         else:
             self.x_1 = self.x + 2.0 * self.radius
             self.y_1 = self.y + 2.0 * self.radius
-        # ---- calcuate centre
+        # ---- calculate centre
         radius = self._u.radius
-        if self.row is not None and self.col is not None:
+        if self.use_abs_c:
+            self.x_c = self._abs_cx
+            self.y_c = self._abs_cy
+        elif self.row is not None and self.col is not None:
             self.x_c = self.col * 2.0 * radius + radius
             self.y_c = self.row * 2.0 * radius + radius
             # log.debug(f"{self.col=}, {self.row=}, {self.x_c=}, {self.y_c=}")
@@ -1413,22 +1416,26 @@ class HexShape(BaseShape):
                         pass
                     else:
                         y = y + half_flat
-            # ----  ~ calculate hex centre
-            x_d = x + side
-            y_d = y + half_flat
             # ----  ~ recalculate centre if preset
-            if self.cx and self.cy:
-                # cx,cy are centre; create x_d,y_d as the unit-formatted hex centre
+            if self.use_abs_c:
+                # create x_d, y_d as the unit-formatted hex centre
+                x_d = self._abs_cx
+                y_d = self._abs_cy
+                # recalculate start x,y
+                x = x_d - half_side - side / 2.0
+                y = y_d - half_flat
+            elif self.cx and self.cy:
+                # cx,cy are centre; create x_d, y_d as the unit-formatted hex centre
                 x_d = self._u.cx
                 y_d = self._u.cy
                 # recalculate start x,y
                 x = x_d - half_side - side / 2.0 + self._o.delta_x
                 y = y_d - half_flat + self._o.delta_y
-                # recalculate centre relative to x,y
-                x_d = x + side
-                y_d = y + half_flat
-                # tools.feedback(f"***F: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
-            # log.debug("x:%s y:%s hh:%s hs:%s s:%s ", x, y, half_flat, half_side, side)
+            # ----  ~ set hex centre relative to x,y
+            x_d = x + side
+            y_d = y + half_flat
+            # tools.feedback(f"***F: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
+
 
         # ---- calculate area
         self.area = self.calculate_area()
@@ -1515,10 +1522,14 @@ class StarShape(BaseShape):
         # convert to using units
         x = self._u.x + self._o.delta_x
         y = self._u.y + self._o.delta_y
-        if self.cx and self.cy:
+        # ---- overrides to centre the shape
+        if self.use_abs_c:
+            x = self._abs_cx
+            y = self._abs_cy
+        elif self.cx and self.cy:
             x = self._u.cx + self._o.delta_x
             y = self._u.cy + self._o.delta_y
-        # calc - assumes x and y are the centre
+        # calc - assumes x and y are the centre!
         radius = self._u.radius
         # canvas
         self.set_canvas_props()
@@ -1695,6 +1706,10 @@ class TextShape(BaseShape):
         # convert to using units
         x_t = self._u.x + self._o.delta_x
         y_t = self._u.y + self._o.delta_y
+        # ---- overrides to position the shape
+        if self.use_abs:
+            x_t = self._abs_x
+            y_t = self._abs_y
         if self.height:
             height = self._u.height
         if self.width:
@@ -1959,7 +1974,11 @@ class CompassShape(BaseShape):
         height = self._u.height
         width = self._u.width
         radius = self._u.radius
-        if self.row is not None and self.col is not None:
+        # ---- overrides to centre the shape
+        if self.use_abs_c:
+            self.x_c = self._abs_cx
+            self.y_c = self._abs_cy
+        elif self.row is not None and self.col is not None:
             self.x_c = self.col * 2.0 * radius + radius + self._o.delta_x
             self.y_c = self.row * 2.0 * radius + radius + self._o.delta_y
             log.debug("row:%s col:%s x:%s y:%s", self.col, self.row, self.x_c, self.y_c)
