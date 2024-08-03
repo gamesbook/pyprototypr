@@ -59,7 +59,7 @@ dstar = Common(fill=d_brown, stroke=d_brown, radius=0.15)
 kstar = Common(fill=k_orange, stroke=k_orange, radius=0.2)
 mstar = Common(fill=m_red, stroke=m_red, radius=0.1)
 sname = Common(font_size=12, align="centre", stroke=system_label)
-mask = rectangle(height=0.5, width=1.2, fill=map_fill, stroke=map_fill, dx=-0.6, dy=0.55)
+mask = rectangle(height=0.6, width=1.2, fill=map_fill, stroke=map_fill, dx=0, dy=0.75)
 dwarf_outer = circle(fill=d_brown, stroke=d_brown, radius=0.2),
 dwarf_inner = rectangle(height=0.1, width=0.1, fill=map_fill, stroke=map_fill),
 

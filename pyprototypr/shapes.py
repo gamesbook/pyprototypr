@@ -787,8 +787,8 @@ class RectangleShape(BaseShape):
         # ----  numbering
         self.set_coord(cnv, x_d, y_d)
         # ***TEMP ***
-        cnv.setFont(self.font_face, 24)
-        self.draw_multi_string(cnv, x_d, y_d, self.coord_text)
+        #cnv.setFont(self.font_face, 24)
+        #self.draw_multi_string(cnv, x_d, y_d, self.coord_text)
         # ---- return key settings
         return GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
 
