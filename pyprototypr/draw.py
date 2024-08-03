@@ -58,18 +58,12 @@ from .shapes import (
     RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape,
     SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape,
     VirtualGrid, RectangleGrid,
-    VirtualTrack, RectangleTrack)
+    VirtualTrack, RectangleTrack,
+    GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE)
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
 from pyprototypr.utils import tools
 from pyprototypr.utils.tools import Point
-
-GRID_SHAPES_WITH_CENTRE = [
-    'CircleShape', 'CompassShape', 'DotShape', 'HexShape', 'OctagonShape',
-    'RectangleShape', 'RhombusShape', 'SquareShape', 'StadiumShape', ] # EllipseShape ???
-GRID_SHAPES_NO_CENTRE = [
-     'TextShape', 'StarShape', ]
-# NOT GRID:  ArcShape,BezierShape, PolylineShape
 
 log = logging.getLogger(__name__)
 
@@ -1101,7 +1095,7 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
     # get location centre from grid via the label
     loc = None
     for position in grid:
-        if position.label == label:
+        if position.label.lower() == str(label).lower():
             loc = Point(position.x, position.y)
             break
     if loc is None:

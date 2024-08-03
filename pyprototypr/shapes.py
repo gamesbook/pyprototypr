@@ -19,7 +19,14 @@ from pyprototypr.base import (
     BaseShape, BaseCanvas, GridShape, UNITS, COLORS, PAGES, DEBUG_COLOR)
 
 log = logging.getLogger(__name__)
+
 DEBUG = False
+GRID_SHAPES_WITH_CENTRE = [
+    'CircleShape', 'CompassShape', 'DotShape', 'HexShape', 'OctagonShape',
+    'RectangleShape', 'RhombusShape', 'SquareShape', 'StadiumShape', ] # EllipseShape ???
+GRID_SHAPES_NO_CENTRE = [
+     'TextShape', 'StarShape', ]
+# NOT GRID:  ArcShape,BezierShape, PolylineShape
 
 
 class Value:
@@ -1345,9 +1352,11 @@ class HexShape(BaseShape):
 
         # ---- POINTY
         if self.hex_top.lower() in ['p', 'pointy']:
-            #         /\
-            # x,y .. | |
-            #        \/
+            #          .
+            #         / \`
+            # x,y .. |  |
+            #        \ /
+            #         .
             # x and y are at the bottom-left corner of the box around the hex
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
@@ -1375,26 +1384,32 @@ class HexShape(BaseShape):
                         x = self.col * height_flat + self._u.x + self._o.delta_x
                     else:  # even row
                         x = self.col * height_flat + half_flat + self._u.x + self._o.delta_x
-            # ---- ^ calculate hex centre
+            # ----  ^ set hex centre relative to x,y
             x_d = x + half_flat
             y_d = y + side
-            # tools.feedback(f"{x=} {y=} {half_flat=} {side=} ")
-            if self.cx and self.cy:
-                # cx,cy are centred; create x_d,y_d as the unit-formatted hex centre
+            # ---- ^ recalculate hex centre
+            if self.use_abs_c:
+                # create x_d, y_d as the unit-formatted hex centre
+                x_d = self._abs_cx
+                y_d = self._abs_cy
+                # recalculate start x,y
+                x = x_d - half_flat
+                y = y_d - half_side - side / 2.0
+            elif self.cx and self.cy:
+                # cx,cy are centre; create x_d, y_d as the unit-formatted hex centre
                 x_d = self._u.cx
                 y_d = self._u.cy
-                # recalcuate start x,y
-                x = x_d - half_flat + self._o.delta_x
-                y = y_d - side + self._o.delta_y
-                # recalcuate centre relative to x,y
-                x_d = x + half_flat
-                y_d = y + side
-                # tools.feedback(f"***P: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
+                # recalculate start x,y
+                x = x_d - half_flat + self._o.delta_y
+                y = y_d - half_side - side / 2.0 + self._o.delta_x
+            # tools.feedback(f"***P^: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
+
         # ---- FLAT
         else:
             #         __
             # x,y .. /  \
             #        \__/
+            #
             # x and y are at the bottom-left corner of the box around the hex
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
@@ -1416,6 +1431,9 @@ class HexShape(BaseShape):
                         pass
                     else:
                         y = y + half_flat
+            # ----  ~ set hex centre relative to x,y
+            x_d = x + side
+            y_d = y + half_flat
             # ----  ~ recalculate centre if preset
             if self.use_abs_c:
                 # create x_d, y_d as the unit-formatted hex centre
@@ -1431,11 +1449,7 @@ class HexShape(BaseShape):
                 # recalculate start x,y
                 x = x_d - half_side - side / 2.0 + self._o.delta_x
                 y = y_d - half_flat + self._o.delta_y
-            # ----  ~ set hex centre relative to x,y
-            x_d = x + side
-            y_d = y + half_flat
-            # tools.feedback(f"***F: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
-
+            # tools.feedback(f"***F~: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
 
         # ---- calculate area
         self.area = self.calculate_area()
@@ -1471,6 +1485,7 @@ class HexShape(BaseShape):
         pth = cnv.beginPath()
         pth.moveTo(*self.vertices[0])
         for vertex in self.vertices:
+            # TODO - set side-specific line color/style here
             pth.lineTo(*vertex)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
@@ -1488,10 +1503,20 @@ class HexShape(BaseShape):
             self.draw_links(cnv, side, self.vertices, self.links)
         # ---- centred shape (with offset)
         if self.centre_shape:
-            # tools.feedback(f'DRAW shape:{self.dot_shape} at ({x_d=},{y_d=})')
-            self.centre_shape.draw(
-                cx=x_d + self.unit(self.centre_shape_x),
-                cy=y_d + self.unit(self.centre_shape_y))
+            cshape_name = self.centre_shape.__class__.__name__
+            if cshape_name in GRID_SHAPES_WITH_CENTRE:
+                # tools.feedback(f'IN-HEX {cshape_name} at ({x_d=},{y_d=}, '
+                #               f'{self.centre_shape_x}, {self.centre_shape_y})')
+                if self.use_abs_c:
+                    self.centre_shape.draw(
+                        _abs_cx=x_d + self.unit(self.centre_shape_x),
+                        _abs_cy=y_d + self.unit(self.centre_shape_y))
+                else:
+                    self.centre_shape.draw(
+                        cx=x_d + self.unit(self.centre_shape_x),
+                        cy=y_d + self.unit(self.centre_shape_y))
+            elif cshape_name not in GRID_SHAPES_WITH_CENTRE:
+                tools.feedback(f'Cannot draw a centered {cshape_name}!')
         # ---- cross
         self.draw_cross(cnv, x_d, y_d)
         # ---- dot
