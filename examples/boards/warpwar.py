@@ -55,7 +55,7 @@ ww_grid = Hexagons(
 )
 
 # star properties
-dstar = Common(fill=d_brown, stroke=d_brown, radius=0.2)
+dstar = Common(fill=d_brown, stroke=d_brown, radius=0.15)
 kstar = Common(fill=k_orange, stroke=k_orange, radius=0.2)
 mstar = Common(fill=m_red, stroke=m_red, radius=0.1)
 sname = Common(font_size=12, align="centre", stroke=system_label)
@@ -110,19 +110,20 @@ Location(
 
 Location(
     ww_grid,
-    "7F",
+    "7f",
     [
      mask,
-     text(common=sname, dx=-0.4, dy=0.4, text="  BD7F\nREE+4\n  2"),
-     #group(dwarf_outer, dwarf_inner, dx=0.1, dy=-0.8),
+     text(common=sname, dx=-0.4, dy=0.4, text="  BD7F\nREE+4\n2"),
+     circle(common=dstar, dx=0.1, dy=-0.7),
+     #group(dwarf_outer, dwarf_inner, dx=0.1, dy=-0.8), # NOT YET WORKING
     ])
 
 # warp lines
 warp_line = Common(stroke=warp, stroke_width=3)
 
-Linker(ww_grid, [("2B", -0.5, -0.7), ("4E", 0.05, 0.9)], common=warp_line)
-Linker(ww_grid, [("2B", 0.15, 0.85), ("4B", -0.75, -0.8)], common=warp_line)
-Linker(ww_grid, [("4E", 0.25, 1.05), ("4B", -0.6, -0.9)], common=warp_line)
-Linker(ww_grid, [("1C", 0.75, -0.2), ("8L", -0.6, 0.3)], common=warp_line)
+LinkLine(ww_grid, [("2B", -0.5, -0.7), ("4E", 0.05, 0.9)], common=warp_line)
+LinkLine(ww_grid, [("2B", 0.15, 0.85), ("4B", -0.75, -0.8)], common=warp_line)
+LinkLine(ww_grid, [("4E", 0.25, 1.05), ("4B", -0.6, -0.9)], common=warp_line)
+LinkLine(ww_grid, [("1C", 0.75, -0.2), ("8L", -0.6, 0.3)], common=warp_line)
 
 Save()

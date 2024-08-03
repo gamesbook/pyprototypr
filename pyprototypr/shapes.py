@@ -483,6 +483,57 @@ class RectangleShape(BaseShape):
             Point(x + self._u.width, y),
         ]
 
+    def set_coord(self, cnv, x_d, y_d):
+        """Set (optionally draw) the coords of the rectangle."""
+        the_row = self.row or 0
+        the_col = self.col or 0
+        #_row = self.rows - the_row + self.coord_start_y
+        _row = the_row + 1 if not self.coord_start_y else the_row + self.coord_start_y
+        _col = the_col + 1 if not self.coord_start_x else the_col + self.coord_start_x
+        # tools.feedback(f' ### {_row=},{_col=}')
+        # ---- set coord x,y values
+        if self.coord_type_x in ['l', 'lower']:
+            _x = tools.sheet_column(_col, True)
+        elif self.coord_type_x in ['l-m', 'lower-multiple']:
+            _x = tools.alpha_column(_col, True)
+        elif self.coord_type_x in ['u', 'upper']:
+            _x = tools.sheet_column(_col)
+        elif self.coord_type_x in ['u-m', 'upper-multiple']:
+            _x = tools.alpha_column(_col)
+        else:
+            _x = str(_col).zfill(self.coord_padding)  # numeric
+        if self.coord_type_y in ['l', 'lower']:
+            _y = tools.sheet_column(_row, True)
+        elif self.coord_type_y in ['l-m', 'lower-multiple']:
+            _y = tools.alpha_column(_row, True)
+        elif self.coord_type_y in ['u', 'upper']:
+            _y = tools.sheet_column(_row)
+        elif self.coord_type_y in ['u-m', 'upper-multiple']:
+            _y = tools.alpha_column(_row)
+        else:
+            _y = str(_row).zfill(self.coord_padding)  # numeric
+        # ---- set coord label
+        self.coord_text = str(self.coord_prefix) + _x + str(self.coord_separator) + _y
+        # ---- draw coord (optional)
+        if self.coord_position:
+            # ---- * set coord props
+            cnv.setFont(self.coord_font_face, self.coord_font_size)
+            cnv.setFillColor(self.coord_stroke)
+            coord_offset = self.unit(self.coord_offset)
+            if self.coord_position in ['t', 'top']:
+                self.draw_multi_string(
+                    cnv, x_d, y_d + coord_offset, self.coord_text)
+            elif self.coord_position in ['m', 'middle', 'mid']:
+                self.draw_multi_string(
+                    cnv, x_d, y_d + coord_offset - self.coord_font_size / 2.0, self.coord_text)
+            elif self.coord_position in ['b', 'bottom', 'bot']:
+                self.draw_multi_string(
+                    cnv, x_d, y_d + coord_offset, self.coord_text)
+            else:
+                tools.feedback(
+                    f'Cannot handle a coord_position of "{self.coord_position}"')
+
+
     def calculate_xy(self, **kwargs):
         # ---- adjust start
         if self.row is not None and self.col is not None:
@@ -496,8 +547,8 @@ class RectangleShape(BaseShape):
             y = self._u.y + self._o.delta_y
         # ---- overrides to centre the shape
         if self.use_abs_c:
-            x = self._abs_cx
-            y = self._abs_cy
+            x = self._abs_cx - self._u.width / 2.0
+            y = self._abs_cy - self._u.height / 2.0
         elif kwargs.get("cx") and kwargs.get("cy"):
             x = kwargs.get("cx") - self._u.width / 2.0
             y = kwargs.get("cy") - self._u.height / 2.0
@@ -586,11 +637,13 @@ class RectangleShape(BaseShape):
         # ---- check properties
         is_notched = True if (self.notch or self.notch_x or self.notch_y) else False
         if (self.rounding or self.rounded) and is_notched:
-            tools.feedback("Cannot use rounding/ed with notch.", True)
+            tools.feedback("Cannot use rounding or rounded with notch.", True)
         if self.hatch and is_notched:
             tools.feedback("Cannot use hatch with notch.", True)
         # ---- calculated properties
         x, y = self.calculate_xy()
+        x_d = x + self._u.width / 2.0  # centre
+        y_d = y + self._u.height / 2.0  # centre
         self.area = self.calculate_area()
         if is_notched:
             if self.notch_corners:
@@ -724,13 +777,20 @@ class RectangleShape(BaseShape):
                         mask="auto",
                     )
         # ---- cross
-        self.draw_cross(cnv,  x + self._u.width / 2.0, y + self._u.height / 2.0)
+        self.draw_cross(cnv,  x_d, y_d)
         # ---- dot
-        self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        self.draw_dot(cnv, x_d, y_d)
         # ---- text
-        self.draw_heading(cnv, x + self._u.width / 2.0, self._u.height)
-        self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
-        self.draw_title(cnv, x + self._u.width / 2.0, y)
+        self.draw_heading(cnv, x_d, self._u.height)
+        self.draw_label(cnv, x_d, y_d)
+        self.draw_title(cnv, x_d, y)
+        # ----  numbering
+        self.set_coord(cnv, x_d, y_d)
+        # ***TEMP ***
+        cnv.setFont(self.font_face, 24)
+        self.draw_multi_string(cnv, x_d, y_d, self.coord_text)
+        # ---- return key settings
+        return GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
 
 # class SquareShape(BaseShape):
 #     pass
@@ -738,6 +798,7 @@ class RectangleShape(BaseShape):
 #     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
 #         """Draw a square on a given canvas."""
 #         pass
+
 
 class SquareShape(RectangleShape):
     """
@@ -771,7 +832,7 @@ class SquareShape(RectangleShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a square on a given canvas."""
-        super().draw(cnv, off_x, off_y, ID, **kwargs)
+        return super().draw(cnv, off_x, off_y, ID, **kwargs)
 
 
 class OctagonShape(BaseShape):
@@ -1142,7 +1203,6 @@ class HexShape(BaseShape):
 
     def set_coord(self, cnv, x_d, y_d, half_flat):
         """Set and draw the coords of the hexagon."""
-        # breakpoint()
         the_row = self.row or 0
         the_col = self.col or 0
         _row = self.hex_rows - the_row + self.coord_start_y

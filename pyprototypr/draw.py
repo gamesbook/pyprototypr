@@ -11,6 +11,7 @@ import math
 import os
 import pathlib
 import sys
+from typing import Union
 # third party
 from reportlab.lib.pagesizes import *
 from reportlab.pdfbase import pdfmetrics
@@ -786,8 +787,8 @@ def Rectangle(row=None, col=None, **kwargs):
     global deck
     kwargs = margins(**kwargs)
     rect = rectangle(row=row, col=col, **kwargs)
-    rect.draw()
-    return rect
+    grid_shape = rect.draw()
+    return grid_shape
 
 
 def rectangle(row=None, col=None, **kwargs):
@@ -840,8 +841,8 @@ def Square(row=None, col=None, **kwargs):
     global deck
     kwargs = margins(**kwargs)
     sqr = square(row=row, col=col, **kwargs)
-    sqr.draw()
-    return sqr
+    grid_shape = sqr.draw()
+    return grid_shape
 
 
 def square(row=None, col=None, **kwargs):
@@ -1050,9 +1051,34 @@ def Rectangles(rows=1, cols=1, **kwargs):
     global cnv
     global deck
     kwargs = kwargs
+    locations = []
+
     for row in range(rows):
         for col in range(cols):
-            Rectangle(row=row, col=col, **kwargs)
+            if kwargs.get('masked') and [row + 1, col + 1] in kwargs.get('masked'):
+                pass
+            else:
+                grid_location = Rectangle(row=row, col=col, **kwargs)
+                locations.append(grid_location)
+
+    return locations
+
+
+def Squares(rows=1, cols=1, **kwargs):
+    global cnv
+    global deck
+    kwargs = kwargs
+    locations = []
+
+    for row in range(rows):
+        for col in range(cols):
+            if kwargs.get('masked') and [row + 1, col + 1] in kwargs.get('masked'):
+                pass
+            else:
+                grid_location = Square(row=row, col=col, **kwargs)
+                locations.append(grid_location)
+
+    return locations
 
 
 def Lines(rows=1, cols=1, **kwargs):
@@ -1092,6 +1118,10 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
             tools.feedback(
                 f"Unable to draw the '{shape_abbr} - please check its settings!", True)
 
+    # checks
+    if grid is None or not isinstance(grid, list):
+        tools.feedback("The grid (as a list) must be supplied!", True)
+
     # get location centre from grid via the label
     loc = None
     for position in grid:
@@ -1109,7 +1139,37 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
                 draw_shape(shape, loc)
 
 
-def Linker(grid: list, locations: list, **kwargs):
+def Locations(grid: list, labels: Union[str, list], shapes: list, **kwargs):
+    global cnv
+    kwargs = kwargs
+
+    if grid is None or not isinstance(grid, list):
+        tools.feedback("The grid (as a list) must be supplied!", True)
+    if labels is None:
+        tools.feedback("No grid location labels supplied!", True)
+    if shapes is None:
+        tools.feedback("No list of shapes supplied!", True)
+    if isinstance(labels, str):
+        _labels = labels.split(',')
+        if labels.lower() == 'all':
+           _labels = []
+           for loc in grid:
+               if isinstance(loc, GridLocation):
+                   _labels.append(loc.label)
+    elif isinstance(labels, list):
+        _labels = labels
+    else:
+        tools.feedback("Grid location labels must a list or a comma-delimited string!", True)
+
+    if not isinstance(shapes, list):
+        tools.feedback("Shapes must contain a list of shapes!", True)
+
+    for label in _labels:
+        # tools.feedback(f'{label=} :: {shapes=}')
+        Location(grid, label, shapes)
+
+
+def LinkLine(grid: list, locations: list, **kwargs):
     """Enable a line link between one or more locations in a grid."""
     global cnv
     global margin
