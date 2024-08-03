@@ -1507,14 +1507,9 @@ class HexShape(BaseShape):
             if cshape_name in GRID_SHAPES_WITH_CENTRE:
                 # tools.feedback(f'IN-HEX {cshape_name} at ({x_d=},{y_d=}, '
                 #               f'{self.centre_shape_x}, {self.centre_shape_y})')
-                if self.use_abs_c:
-                    self.centre_shape.draw(
-                        _abs_cx=x_d + self.unit(self.centre_shape_x),
-                        _abs_cy=y_d + self.unit(self.centre_shape_y))
-                else:
-                    self.centre_shape.draw(
-                        cx=x_d + self.unit(self.centre_shape_x),
-                        cy=y_d + self.unit(self.centre_shape_y))
+                self.centre_shape.draw(
+                    _abs_cx=x_d + self.unit(self.centre_shape_x),
+                    _abs_cy=y_d + self.unit(self.centre_shape_y))
             elif cshape_name not in GRID_SHAPES_WITH_CENTRE:
                 tools.feedback(f'Cannot draw a centered {cshape_name}!')
         # ---- cross
