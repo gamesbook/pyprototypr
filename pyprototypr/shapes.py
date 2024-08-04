@@ -3,6 +3,7 @@
 Create custom shapes for pyprototypr
 """
 # lib
+import copy
 import logging
 import math
 import random
@@ -154,7 +155,7 @@ class DotShape(BaseShape):
         # tools.feedback(f'*** Dot {size=}')
         cnv.circle(x, y, size, stroke=0, fill=1 if self.fill else 0)
         # ---- text
-        self.draw_label(cnv, x, y)
+        self.draw_label(cnv, x, y, **kwargs)
 
 
 class LineShape(BaseShape):
@@ -205,7 +206,8 @@ class LineShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
         # ---- text
-        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False)
+        self.draw_label(
+            cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
 
 
 class ArrowShape(BaseShape):
@@ -268,7 +270,8 @@ class ArrowShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
         # ---- text
-        self.draw_label(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False)
+        self.draw_label(
+            cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
 
 
 class RhombusShape(BaseShape):
@@ -309,7 +312,7 @@ class RhombusShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- text
-        self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0, **kwargs)
 
 
 class StadiumShape(BaseShape):
@@ -440,9 +443,9 @@ class StadiumShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- text
-        self.draw_heading(cnv, x + self._u.width / 2.0, self._u.height)
-        self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
-        self.draw_title(cnv, x + self._u.width / 2.0, y)
+        self.draw_heading(cnv, x + self._u.width / 2.0, self._u.height, **kwargs)
+        self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0, **kwargs)
+        self.draw_title(cnv, x + self._u.width / 2.0, y, **kwargs)
 
 
 class RectangleShape(BaseShape):
@@ -546,10 +549,7 @@ class RectangleShape(BaseShape):
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
         # ---- overrides to centre the shape
-        if self.use_abs_c:
-            x = self._abs_cx - self._u.width / 2.0
-            y = self._abs_cy - self._u.height / 2.0
-        elif kwargs.get("cx") and kwargs.get("cy"):
+        if kwargs.get("cx") and kwargs.get("cy"):
             x = kwargs.get("cx") - self._u.width / 2.0
             y = kwargs.get("cy") - self._u.height / 2.0
         return x, y
@@ -642,6 +642,10 @@ class RectangleShape(BaseShape):
             tools.feedback("Cannot use hatch with notch.", True)
         # ---- calculated properties
         x, y = self.calculate_xy()
+        # ---- overrides
+        if self.use_abs_c:
+            x = self._abs_cx - self._u.width / 2.0
+            y = self._abs_cy - self._u.height / 2.0
         x_d = x + self._u.width / 2.0  # centre
         y_d = y + self._u.height / 2.0  # centre
         self.area = self.calculate_area()
@@ -781,9 +785,9 @@ class RectangleShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_d, y_d)
         # ---- text
-        self.draw_heading(cnv, x_d, self._u.height)
-        self.draw_label(cnv, x_d, y_d)
-        self.draw_title(cnv, x_d, y)
+        self.draw_heading(cnv, x_d, self._u.height, **kwargs)
+        self.draw_label(cnv, x_d, y_d, **kwargs)
+        self.draw_title(cnv, x_d, y, **kwargs)
         # ----  numbering
         self.set_coord(cnv, x_d, y_d)
         # ***TEMP ***
@@ -919,17 +923,19 @@ class OctagonShape(BaseShape):
             pth.lineTo(vertex.x, vertex.y)
         pth.close()
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cx = x + self._u.width / 2.0
+        cy = y + self._u.height / 2.0
         # ---- debug
         self.debug(cnv, vertices=self.vertices)
         # ---- draw hatch
         if self.hatch:
             self.draw_hatch(cnv, side, self.vertices, self.hatch)
         # ---- cross
-        self.draw_cross(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        self.draw_cross(cnv, cx, cy)
         # ---- dot
-        self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        self.draw_dot(cnv, cx, cy)
         # ---- text
-        self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        self.draw_label(cnv, cx, cy, **kwargs)
 
 
 class ShapeShape(BaseShape):
@@ -1057,10 +1063,7 @@ class SectorShape(BaseShape):
             self.y_1 = self.y + 2.0 * self.radius
         # ---- calculate centre
         radius = self._u.radius
-        if self.use_abs_c:
-            self.x_c = self._abs_cx
-            self.y_c = self._abs_cy
-        elif self.row is not None and self.col is not None:
+        if self.row is not None and self.col is not None:
             self.x_c = self.col * 2.0 * radius + radius
             self.y_c = self.row * 2.0 * radius + radius
             # log.debug(f"{self.col=}, {self.row=}, {self.x_c=}, {self.y_c=}")
@@ -1075,6 +1078,9 @@ class SectorShape(BaseShape):
         """Draw sector on a given canvas."""
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        if self.use_abs_c:
+            self.x_c = self._abs_cx
+            self.y_c = self._abs_cy
         # convert to using units
         x_1 = self.unit(self.x) + self._o.delta_x
         y_1 = self.unit(self.y) + self._o.delta_y
@@ -1125,9 +1131,9 @@ class PolygonShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x, y)
         # ---- text
-        self.draw_label(cnv, x, y)
-        self.draw_title(cnv, x, y, 1.4 * radius)
-        self.draw_heading(cnv, x, y, 1.3 * radius)
+        self.draw_label(cnv, x, y, **kwargs)
+        self.draw_title(cnv, x, y, 1.4 * radius, **kwargs)
+        self.draw_heading(cnv, x, y, 1.3 * radius, **kwargs)
 
 
 class PolylineShape(BaseShape):
@@ -1577,13 +1583,13 @@ class HexShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_d, y_d)
         # ---- text
-        self.draw_label(cnv, x_d, y_d)
-        self.draw_title(cnv, x_d, y_d, + 0.75 * self.heading_size + diameter / 2.0)
+        self.draw_label(cnv, x_d, y_d, **kwargs)
+        self.draw_title(cnv, x_d, y_d, + 0.75 * self.heading_size + diameter / 2.0, **kwargs)
         if self.hex_top.lower() in ['p', 'pointy']:
             head_off = 0.5 * self.heading_size + diameter / 2.0
         else:
             head_off = 0.01 * self.heading_size + diameter / 2.0
-        self.draw_heading(cnv, x_d, y_d, head_off)
+        self.draw_heading(cnv, x_d, y_d, head_off, **kwargs)
         # ----  numbering
         self.set_coord(cnv, x_d, y_d, half_flat)
         # ---- return key settings
@@ -1629,9 +1635,9 @@ class StarShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x, y)
         # ---- text
-        self.draw_label(cnv, x, y)
-        self.draw_title(cnv, x, y - 1.4 * radius)
-        self.draw_heading(cnv, x,  y + 1.3 * radius)
+        self.draw_label(cnv, x, y, **kwargs)
+        self.draw_title(cnv, x, y - 1.4 * radius, **kwargs)
+        self.draw_heading(cnv, x,  y + 1.3 * radius, **kwargs)
 
 
 class RightAngledTriangleShape(BaseShape):
@@ -1687,7 +1693,7 @@ class RightAngledTriangleShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_c, y_c)
         # ---- text
-        self.draw_label(cnv, x_c, y_c)
+        self.draw_label(cnv, x_c, y_c, **kwargs)
 
 
 class EquilateralTriangleShape(BaseShape):
@@ -1762,9 +1768,9 @@ class EquilateralTriangleShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_c, y_c)
         # ---- text
-        self.draw_label(cnv, x_c, y_c)
-        self.draw_title(cnv, x_c, y_c, height / 2.0 + 0.25 * self.heading_size)
-        self.draw_heading(cnv, x_c, y_c,  height / 2.0 + 0.75 * self.heading_size)
+        self.draw_label(cnv, x_c, y_c, **kwargs)
+        self.draw_title(cnv, x_c, y_c, height / 2.0 + 0.25 * self.heading_size, **kwargs)
+        self.draw_heading(cnv, x_c, y_c,  height / 2.0 + 0.75 * self.heading_size, **kwargs)
 
 
 class TextShape(BaseShape):
@@ -1783,10 +1789,10 @@ class TextShape(BaseShape):
         """Draw text on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # convert to using units
+        # ---- convert to using units
         x_t = self._u.x + self._o.delta_x
         y_t = self._u.y + self._o.delta_y
-        # ---- overrides to position the shape
+        # ---- position the shape
         if self.use_abs:
             x_t = self._abs_x
             y_t = self._abs_y
@@ -1797,8 +1803,14 @@ class TextShape(BaseShape):
         rotate = kwargs.get('rotate', 0)
         # canvas
         self.set_canvas_props()
-        # text
+        # ---- overrides for text value
+        _sequence = kwargs.get('text_sequence', '')
+        # tools.feedback(f'!!! {_sequence=} {self.text=}')
+        if self.text == '' or self.text is None:
+            self.text = f'{_sequence}'
         _text = self.textify(ID)
+        _text = _text.format(SEQUENCE=_sequence)
+        # ---- text style
         if self.wrap:
             _style = ParagraphStyle(name="sc")
             _style.textColor = self.stroke
@@ -1831,6 +1843,9 @@ class TextShape(BaseShape):
             para.drawOn(cnv, x_t, y_t - h)  # start text from top of 'box'
         else:
             cnv.setFillColor(self.stroke)
+            # if _text == '1':
+            #     self.debug_point(cnv, Point(x_t, y_t), '    !!!')
+            # tools.feedback(f"!!! {x_t=} {y_t=} {_text=} {_sequence} {self.stroke=}")
             self.draw_multi_string(cnv, x_t, y_t, _text, rotate)
 
 
@@ -1975,9 +1990,9 @@ class CircleShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, self.x_c, self.y_c)
         # ---- text
-        self.draw_label(cnv, self.x_c, self.y_c)
-        self.draw_title(cnv, self.x_c, self.y_c, 1.4 * self._u.radius)
-        self.draw_heading(cnv, self.x_c, self.y_c, 1.3 * self._u.radius)
+        self.draw_label(cnv, self.x_c, self.y_c, **kwargs)
+        self.draw_title(cnv, self.x_c, self.y_c, 1.4 * self._u.radius, **kwargs)
+        self.draw_heading(cnv, self.x_c, self.y_c, 1.3 * self._u.radius, **kwargs)
 
 
 class CompassShape(BaseShape):
@@ -2161,9 +2176,9 @@ class CompassShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, self.x_c, self.y_c)
         # ---- text
-        self.draw_label(cnv, self.x_c, self.y_c)
-        self.draw_title(cnv, self.x_c, self.y_c, 1.4 * radius)
-        self.draw_heading(cnv, self.x_c, self.y_c, 1.3 * radius)
+        self.draw_label(cnv, self.x_c, self.y_c, **kwargs)
+        self.draw_title(cnv, self.x_c, self.y_c, 1.4 * radius, **kwargs)
+        self.draw_heading(cnv, self.x_c, self.y_c, 1.3 * radius, **kwargs)
 
 
 class EllipseShape(BaseShape):
@@ -2208,7 +2223,7 @@ class EllipseShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_c, y_c)
         # ---- text
-        self.draw_label(cnv, x_c, y_c)
+        self.draw_label(cnv, x_c, y_c, **kwargs)
 
 # ---- Grids and Patterns
 
@@ -2571,6 +2586,87 @@ class DeckShape(BaseShape):
         """Return number of cards in the deck"""
         return len(self.deck)
 
+### sequence
+
+
+class SequenceShape(BaseShape):
+    """
+    Set of shapes drawn at points
+    """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(SequenceShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        self._object = _object or TextShape(_object=None, canvas=canvas, **kwargs)
+        # ---- set props
+        self.setting_list = []
+        self.setting = kwargs.get('setting', (1, 1, 1, 'number'))
+        if not isinstance(self.setting, tuple):
+            tools.feedback(f"Sequence setting '{self.setting}' must be a set!", True)
+        if len(self.setting) < 2:
+            tools.feedback(f"Sequence setting '{self.setting}' must include a start and end value!", True)
+        self.set_start = self.setting[0]
+        self.set_stop = self.setting[1]
+        self.set_inc = self.setting[2] if len(self.setting) > 2 else 1
+        if len(self.setting) > 3:
+            self.set_type = self.setting[3]
+        else:
+            self.set_type = 'number' if isinstance(self.set_start, (int, float, complex)) \
+                else 'letter'
+        # ---- calculate sequence values
+        try:
+            if self.set_type.lower() in ['n', 'number']:
+                self.set_stop = self.setting[1] + 1 if self.set_inc > 0 else self.setting[1] - 1
+                self.setting_iterator = range(self.set_start, self.set_stop, self.set_inc)
+                self.setting_list = list(self.setting_iterator)
+            elif self.set_type.lower() in ['l', 'letter']:
+                self.setting_list = []
+                start, stop = ord(self.set_start), ord(self.set_stop)
+                curr = start
+                #breakpoint()
+                while True:
+                    if self.set_inc > 0 and curr > stop:
+                        break
+                    if self.set_inc < 0 and curr < stop:
+                        break
+                    self.setting_list.append(chr(curr))
+                    curr += self.set_inc
+            else:
+                tools.feedback(f"'{self.set_type}' must be either number or letter!", True)
+        except Exception as err:
+            log.info(err)
+            tools.feedback(f"Unable to evaluate Sequence setting '{self.setting}';"
+                           " - please check and try again!", True)
+
+        self.gap_x = self.gap_x or self.gap
+        self.gap_y = self.gap_y or self.gap
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        log.debug("gx:%s gy:%s", self.gap_x, self.gap_y)
+
+        for key, item in enumerate(self.setting_list):
+            #breakpoint()
+            kwargs['text_sequence'] = f'{item}'
+            off_x = key * self.gap_x
+            off_y = key * self.gap_y
+            flat_elements = tools.flatten(self._object)
+            log.debug("flat_eles:%s", flat_elements)
+            for each_flat_ele in flat_elements:
+                flat_ele = copy.copy(each_flat_ele)  # allow props to be reset
+                log.debug("flat_ele:%s", flat_ele)
+                try:  # normal element
+                    flat_ele.draw(off_x=off_x, off_y=off_y, ID=self.shape_id, **kwargs)
+                except AttributeError:
+                    new_ele = flat_ele(cid=self.shape_id)
+                    log.debug("%s %s", new_ele, type(new_ele))
+                    if new_ele:
+                        flat_new_eles = tools.flatten(new_ele)
+                        log.debug("%s", flat_new_eles)
+                        for flat_new_ele in flat_new_eles:
+                            log.debug("%s", flat_new_ele)
+                            flat_new_ele.draw(
+                                off_x=off_x, off_y=off_y, ID=self.shape_id, **kwargs
+                            )
+
 
 ### repeats ===================================================================
 
@@ -2599,15 +2695,15 @@ class RepeatShape(BaseShape):
         self.repeat = kwargs.get("repeat", None)
         self.offset_across = self.offset_across or self.offset
         self.offset_down = self.offset_down or self.offset
-        self.gap_across = self.gap_across or self.gap
-        self.gap_down = self.gap_down or self.gap
+        self.gap_x = self.gap_x or self.gap
+        self.gap_y = self.gap_y or self.gap
         if self.repeat:
             (
                 self.repeat_across,
                 self.repeat_down,
-                self.gap_down,
-                self.gap_across,
-                self.gap_across,
+                self.gap_y,
+                self.gap_x,
+                self.gap_x,
                 self.offset_down,
             ) = self.repeat.split(",")
         else:
@@ -2626,7 +2722,7 @@ class RepeatShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         log.debug("oc:%s od:%s", self.offset_across, self.offset_down)
-        log.debug("ga:%s gd:%s", self.gap_across, self.gap_down)
+        log.debug("ga:%s gd:%s", self.gap_x, self.gap_y)
 
         for col in range(self.cols):
             for row in range(self.rows):
@@ -2638,9 +2734,9 @@ class RepeatShape(BaseShape):
                         self.offset_down - self.margin_bottom
                     )
                     flat_elements = tools.flatten(self._object)
-                    log.debug("fes:%s", flat_elements)
+                    log.debug("flat_eles:%s", flat_elements)
                     for flat_ele in flat_elements:
-                        log.debug("fe:%s", flat_ele)
+                        log.debug("flat_ele:%s", flat_ele)
                         try:  # normal element
                             flat_ele.draw(off_x=off_x, off_y=off_y, ID=self.shape_id)
                         except AttributeError:
@@ -3061,7 +3157,7 @@ class RectangleTrack(RectangleShape, VirtualTrack):
         spacing = self.unit(self.spacing)  # between each shape
         max_shape_width = space_size - spacing
         increment = space_size + spacing
-        tools.feedback(f'*** RectTrack {perimeter=} {spaces=} {space_size=} {max_shape_width=}')
+        # tools.feedback(f'*** RectTrack {perimeter=} {spaces=} {space_size=} {max_shape_width=}')
         return increment, max_shape_width
 
     def next_location(self, spaces: int, shapes: list) -> TrackPoint:
@@ -3112,6 +3208,7 @@ class CircleTrack(CircleShape, VirtualTrack):
     def next_location(self, spaces: int, shapes: list) -> Point:
         """Yield next Point for each call."""
         return
+
 
 
 # ---- Other ----

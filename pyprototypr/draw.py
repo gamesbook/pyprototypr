@@ -56,7 +56,7 @@ from .shapes import (
     CompassShape, DeckShape, DotShape, DotGridShape, EllipseShape,
     EquilateralTriangleShape, FooterShape, GridShape, HexShape, ImageShape, LineShape,
     OctagonShape, PolygonShape, PolylineShape, Query, RectangleShape, RepeatShape,
-    RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape,
+    RhombusShape, RightAngledTriangleShape, SectorShape, SequenceShape, ShapeShape,
     SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape,
     VirtualGrid, RectangleGrid,
     VirtualTrack, RectangleTrack,
@@ -607,7 +607,7 @@ def AutoGrid(**kwargs):
     kwargs['rows'] = kwargs.get('rows', rows)
     kwargs['cols'] = kwargs.get('cols', cols)
     kwargs['stroke_width'] = kwargs.get('stroke_width', 0.2)  # fine line
-    default_font_size = 11 * math.sqrt(pagesize[0]) / math.sqrt(A4[0])
+    default_font_size = 10 * math.sqrt(pagesize[0]) / math.sqrt(A4[0])
     kwargs['font_size'] = kwargs.get('font_size', default_font_size)
     # ---- numbering
     if numbering:
@@ -860,7 +860,7 @@ def Stadium(row=None, col=None, **kwargs):
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    std = StadiumShape(row=row, col=col, **kwargs)
+    std = StadiumShape(canvas=cnv, **kwargs)
     std.draw()
     return std
 
@@ -958,10 +958,21 @@ def Repeat(_object, **kwargs):
     repeat = RepeatShape(_object=_object, **kwargs)
     repeat.draw()
 
+# ---- sequence ====
+
+
+def Sequence(_object=None, **kwargs):
+    """Draw a set of objects in a line."""
+    global cnv
+    global deck
+    sequence = SequenceShape(_object=_object, **kwargs)
+    sequence.draw()
+
 # ---- patterns and grid ====
 
 
 def Hexagons(rows=1, cols=1, sides=None, **kwargs):
+    """Draw a set of hexagons in a pattern."""
     global cnv
     global deck
     kwargs = kwargs
@@ -1048,6 +1059,7 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
 
 
 def Rectangles(rows=1, cols=1, **kwargs):
+    """Draw a set of rectangles in a pattern."""
     global cnv
     global deck
     kwargs = kwargs
@@ -1065,6 +1077,7 @@ def Rectangles(rows=1, cols=1, **kwargs):
 
 
 def Squares(rows=1, cols=1, **kwargs):
+    """Draw a set of squares in a pattern."""
     global cnv
     global deck
     kwargs = kwargs
@@ -1274,7 +1287,7 @@ def Track(track=None, **kwargs):
     kwargs = kwargs
     _spaces = kwargs.get('spaces', 8)
     spaces = tools.as_int(_spaces, 'spaces', minimum=4)  # number of spaces around track
-    breakpoint()
+    # breakpoint()
     shapes = kwargs.get('shapes', [])  # shape(s) to draw at the locations
     if not track:
         track = RectangleTrack(fill_color=DEBUG_COLOR)

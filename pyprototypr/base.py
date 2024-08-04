@@ -365,8 +365,8 @@ class BaseCanvas:
         self.offset_across = self.defaults.get('offset_across', self.offset)
         self.offset_down = self.defaults.get('offset_down', self.offset)
         self.gap = self.defaults.get('gap', 0)
-        self.gap_across = self.defaults.get('gap_across', self.gap)
-        self.gap_down = self.defaults.get('gap_down', self.gap)
+        self.gap_x = self.defaults.get('gap_x', self.gap)
+        self.gap_y = self.defaults.get('gap_y', self.gap)
         # ---- rotate in degrees
         self.rotate = self.defaults.get('rotate',
                                         self.defaults.get('rotation', 0))
@@ -626,8 +626,8 @@ class BaseShape:
         self.offset_across = kwargs.get('offset_down', cnv.offset_down)
         self.offset_down = kwargs.get('offset_across', cnv.offset_across)
         self.gap = kwargs.get('gap', cnv.gap)
-        self.gap_across = kwargs.get('gap_down', cnv.gap_down)
-        self.gap_down = kwargs.get('gap_across', cnv.gap_across)
+        self.gap_x = kwargs.get('gap_x', cnv.gap_x)
+        self.gap_y = kwargs.get('gap_y', cnv.gap_y)
         # ---- rotate in degrees / radians
         self.rotate = kwargs.get('rotate', kwargs.get('rotation', cnv.rotate))
         self._rotate_theta = math.radians(self.rotate)  # radians
@@ -1214,7 +1214,7 @@ class BaseShape:
             log.exception(err)
             tools.feedback(f'Unable to convert "{items}" to points!', True)
 
-    def draw_multi_string(self, canvas, x, y, string, align=None, rotate=0):
+    def draw_multi_string(self, canvas, x, y, string, align=None, rotate=0, **kwargs):
         """Low-level text drawing, split string (\n) if needed, with align and rotate.
 
         Args:
@@ -1227,6 +1227,10 @@ class BaseShape:
         """
         if not string:
             return
+        # ---- replace {PLACEHOLDER} with a value
+        _sequence = kwargs.get('text_sequence', '')
+        string = string.format(SEQUENCE=_sequence)
+        # align
         align = align or self.align
         mvy = copy.copy(y)
         # tools.feedback("string %s %s rotate:%s" % (type(string), string, rotate))
@@ -1251,13 +1255,13 @@ class BaseShape:
                     canvas.drawString(x, mvy, ln)
             mvy -= canvas._leading
 
-    def draw_string(self, canvas, x, y, string, align=None, rotate=0):
+    def draw_string(self, canvas, x, y, string, align=None, rotate=0, **kwargs):
         """Draw a multi-string on the canvas.
         """
         self.draw_multi_string(
             canvas=canvas, x=x, y=y, string=string, align=align, rotate=rotate)
 
-    def draw_heading(self, canvas, x, y, y_offset=0, rotate=0):
+    def draw_heading(self, canvas, x, y, y_offset=0, rotate=0, **kwargs):
         """Draw the heading for a shape (normally above the shape).
 
         Requires native units (i.e. points)!
@@ -1265,9 +1269,10 @@ class BaseShape:
         if self.heading:
             canvas.setFont(self.font_face, self.heading_size)
             canvas.setFillColor(self.heading_stroke)
-            self.draw_multi_string(canvas, x, y + y_offset, self.heading, rotate=rotate)
+            self.draw_multi_string(
+                canvas, x, y + y_offset, self.heading, rotate=rotate, **kwargs)
 
-    def draw_label(self, canvas, x, y, align=None, rotate=0, centred=True):
+    def draw_label(self, canvas, x, y, align=None, rotate=0, centred=True, **kwargs):
         """Draw the label for a shape (usually at the centre).
 
         Requires native units (i.e. points)!
@@ -1277,9 +1282,9 @@ class BaseShape:
             canvas.setFont(self.font_face, self.label_size)
             canvas.setFillColor(self.label_stroke)
             self.draw_multi_string(
-                canvas, x, y, self.label, align=align, rotate=rotate)
+                canvas, x, y, self.label, align=align, rotate=rotate, **kwargs)
 
-    def draw_title(self, canvas, x, y, y_offset=0, align=None, rotate=0):
+    def draw_title(self, canvas, x, y, y_offset=0, align=None, rotate=0, **kwargs):
         """Draw the title for a shape (normally below the shape).
 
         Requires native units (i.e. points)!
@@ -1288,7 +1293,7 @@ class BaseShape:
             canvas.setFont(self.font_face, self.title_size)
             canvas.setFillColor(self.title_stroke)
             self.draw_multi_string(
-                canvas, x, y - y_offset, self.title, align=align, rotate=rotate)
+                canvas, x, y - y_offset, self.title, align=align, rotate=rotate, **kwargs)
 
     def draw_dot(self, canvas, x, y):
         """Draw a small dot on a shape (normally the centre).

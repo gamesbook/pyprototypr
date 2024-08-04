@@ -7,16 +7,16 @@ Created on: 9 March 2024
 from pyprototypr.draw import *
 
 Create(filename="wip.pdf",
-        pagesize=A4,
+        pagesize=A8,
         margin_top=0.5,
         margin_left=0.15,
         margin_bottom=0.15,
         margin_right=0.2)
 
 header = Common(x=0, y=6, font_size=8, align="left")
+headfont = Common(font_size=8, align="left")
+#AutoGrid(stroke_width=0.5, subdivisions=10)
 
-
-# AutoGrid(stroke_width=0.5, subdivisions=10)
 # Stadium(x=0, y=0, height=1, width=2, edges='t', fill=tan, label="t")
 # Stadium(x=2, y=2, height=1, width=2, edges='b', fill=tan, label="b")
 # Stadium(x=0, y=4, height=1, width=1, edges='r', fill=tan, label="r")
@@ -29,26 +29,26 @@ header = Common(x=0, y=6, font_size=8, align="left")
 #        margin_right=0.15)
 # DotGrid(stroke=darkgray, width=0.5, height=0.5, dot_point=1, offset_y=-0.25)
 
-AutoGrid(stroke_width=0.75, subdivisions=10)
+# AutoGrid(stroke_width=0.75, subdivisions=10)
 
-ww = 0.5 # 4.3  #
+# ww = 0.5 # 4.3  #
 # Hexagon(x=1, y=1, height=2, stroke=red, dot_size=0.02, dot_color=red, fill=None)
-Square(x=1, y=0.42, side=1.155, stroke=green, fill=None)  #, dot_size=0.01
-#Arc(x=0.97, y=0.4, x1=2.17, y1=1.58, stroke_width=ww, angle=0, angle_width=120)
-#Arc(x=1, y=0.42, x1=2.17, y1=1.58, stroke=pink, stroke_width=ww, angle=0, angle_width=120)
-Line(x=1.96, y=1.67, x1=1.76, y1=1.35, stroke_width=ww)
+# Square(x=1, y=0.42, side=1.155, stroke=green, fill=None)  #, dot_size=0.01
+# Arc(x=0.97, y=0.4, x1=2.17, y1=1.58, stroke_width=ww, angle=0, angle_width=120)
+# Arc(x=1, y=0.42, x1=2.17, y1=1.58, stroke=pink, stroke_width=ww, angle=0, angle_width=120)
+# Line(x=1.96, y=1.67, x1=1.76, y1=1.35, stroke_width=ww)
 
-Hexagon(
-    x=1, y=1,
-    height=2,
-    stroke=blue, dot_size=0.01, dot_color=blue,
-    fill=None,
-    link_width=4.3,
-    links="6 5 S, 6 1 S",
-    # hex_top="pointy",
-    debug=True)
+# Hexagon(
+#     x=1, y=1,
+#     height=2,
+#     stroke=blue, dot_size=0.01, dot_color=blue,
+#     fill=None,
+#     link_width=4.3,
+#     links="6 5 S, 6 1 S",
+#     # hex_top="pointy",
+#     debug=True)
 
-PageBreak()
+# PageBreak()
 
 #AutoGrid(stroke_width=0.5)
 #Text(common=header, text="Sector; same centre")
@@ -73,6 +73,51 @@ PageBreak()
 #     hex_offset="even",
 #     dot_size=0.04,
 # )
-# PageBreak()
+
+# AutoGrid(stroke_width=0.5)
+Text(common=header, text="Sequence: direction and value")
+# Sequence(text())
+
+# Sequence(
+#     text(x=1, y=4),
+#     setting=('h','b',-2,'letter'),
+#     gap_y=0.5,
+#     gap_x=0.5,
+#     )
+# Sequence(
+#     text(x=1, y=3.5),
+#     setting=('B','H',2,'letter'),
+#     gap_y=-0.5,
+#     gap_x=0.5,
+#     )
+# Sequence(
+#     text(x=1, y=1.5),
+#     setting=(10,2,-2,'number'),
+#     gap_x=0.5,
+#     )
+# Sequence(
+#     text(x=1, y=.85),
+#     setting=(10,14,1,'number'),
+#     gap_x=0.66,
+#     )
+# Sequence(
+#     text(x=1, y=0.25, text="${SEQUENCE}"),
+#     setting=(1,5,1,'number'),
+#     gap_x=0.66,
+#     )
+#Rectangle(common=headfont, fill=red, x=0.25, y=2.25, height=0.75, width=1, label="A"),
+
+Sequence(
+    rectangle(x=0.25, y=0.25, height=0.75, width=1, label_size=8, label="${SEQUENCE}"),
+    setting=(1, 3, 1, 'number'),
+    gap_x=1.2,
+    )
+Sequence(
+    circle(x=0.25, y=1.5, radius=0.5, title_size=8, title="Fig. {SEQUENCE}"),
+    setting=('C', 'A', -1),
+    gap_y=1.5,
+    )
+PageBreak()
+
 
 Save()

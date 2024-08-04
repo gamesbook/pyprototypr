@@ -15,13 +15,13 @@ Create(filename="warpwar.pdf", margin=0.5, pagesize=A2)
 # set map colors
 map_fill = black
 map_border = lightgrey
-grid_line = "#AA9A38 "
+grid_line = "#AA9A38"
 system_label = "#1CAEE5"
 warp = "#2ACD21"
 # set star colors
 m_red = "#FE1200"
 k_orange = "#EC600C"
-d_brown = "#6A4D05 "
+d_brown = "#6A4D05"
 # set nebula colors
 cloud_edge = "#890B81"
 cloud_lite = "#C23E83"
@@ -32,6 +32,7 @@ Rectangle(x=0.0, y=0.0, width=41, height=58.3, stroke=map_border, fill=map_fill)
 
 # title line
 txt = Common(y=57.5, font_size=21, align="left", stroke=white)
+gridnum = Common(font_size=21, align="left", stroke=grid_line)
 Text(common=txt, x=3,  text="2 Player Warp War Map:      Vedem Sector")
 Text(common=txt, x=22, text="(c) 2024 by Richard W. Smith")
 
@@ -53,6 +54,10 @@ ww_grid = Hexagons(
     stroke=grid_line,
     stroke_width=2,
 )
+
+# labels for map
+Sequence(text(common=gridnum, x=0.5, y=52.5), setting=('A', 'X'), gap_y=-2.2)
+Sequence(text(common=gridnum, x=1.7, y=56.5), setting=(1, 20), gap_x=1.92)
 
 # star properties
 dstar = Common(fill=d_brown, stroke=d_brown, radius=0.15)

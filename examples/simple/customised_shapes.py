@@ -249,6 +249,52 @@ Stadium(x=0, y=4, height=1, width=1, edges='right', fill=tan, label="right")
 Stadium(x=3, y=5, height=1, width=1, edges='left', fill=tan, label="left")
 PageBreak()
 
+AutoGrid(stroke_width=0.5)
+Text(common=txt, text="Sequence: direction and value")
+Sequence(
+    text(x=1, y=4),
+    setting=('h','b',-2,'letter'),
+    gap_y=0.5,
+    gap_x=0.5,
+    )
+Sequence(
+    text(x=1, y=3.5),
+    setting=('B','H',2,'letter'),
+    gap_y=-0.5,
+    gap_x=0.5,
+    )
+Sequence(
+    text(x=1, y=1.5),
+    setting=(10,2,-2,'number'),
+    gap_x=0.5,
+    )
+Sequence(
+    text(x=1, y=.85),
+    setting=(10,14,1,'number'),
+    gap_x=0.66,
+    )
+Sequence(
+    text(x=1, y=0.25, text="${SEQUENCE}"),
+    setting=(1,5,1,'number'),
+    gap_x=0.66,
+    )
+PageBreak()
+
+AutoGrid(stroke_width=0.5)
+Text(common=txt, text="Sequence: shapes, label, title")
+Sequence(
+    rectangle(x=0.25, y=0.25, height=0.75, width=1, label_size=8, label="${SEQUENCE}"),
+    setting=(1, 3, 1, 'number'),
+    gap_x=1.2,
+    )
+Sequence(
+    circle(x=0.25, y=1.5, radius=0.5, title_size=8, title="Fig. {SEQUENCE}"),
+    setting=('C', 'A', -1),
+    gap_y=1.5,
+    )
+PageBreak()
+
+
 Text(common=txt, text="END...")
 PageBreak(footer=True)
 
