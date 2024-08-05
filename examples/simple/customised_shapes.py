@@ -229,6 +229,10 @@ Sector(cx=2, cy=3, radius=2, fill=black, angle=165, angle_width=30)
 Sector(cx=2, cy=3, radius=2, fill=black, angle=285, angle_width=30)
 PageBreak()
 
+Text(common=txt, text='1/3" Gray Grid')
+Grid(size=0.85, stroke=gray)
+PageBreak()
+
 Text(common=txt, text="Moleskine Dot Grid")
 DotGrid(stroke=darkgray, width=0.5, height=0.5, dot_point=1, offset_y=-0.25)
 PageBreak()

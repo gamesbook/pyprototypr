@@ -34,4 +34,9 @@ Rectangle(
     x=-0.02, y=-0.02, height=18, width=18, stroke=saddlebrown, stroke_width=2, fill=None
 )
 
+# labels for board
+grid_label = Common(font_size=18, align="left", stroke=saddlebrown)
+Sequence(text(common=grid_label, x=0.75, y=-0.75), setting=('a', 'h'), gap_x=2.25)
+Sequence(text(common=grid_label, x=-0.75, y=0.75), setting=(1, 8), gap_y=2.25)
+
 Save()

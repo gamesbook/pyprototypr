@@ -1,5 +1,5 @@
 """
-`counters_csv` script for pyprototypr
+`counters_excel` script for pyprototypr
 
 Written by: Derek Hohls
 Created on: 29 February 2016
@@ -7,11 +7,11 @@ Created on: 29 February 2016
 from pyprototypr.draw import *
 
 # create counters
-Create(filename='tannenberg.pdf')
+Create(filename='tannenberg_excel.pdf')
 Deck(width=2.6, height=2.6, fill=yellow)
 
 # load data
-Data(filename="counters.csv")  # (re)set no. of cards based on chosen rows in file
+Data(filename="counters.xls", headers=['NATION','TYPE','SIZE','VALUE','ID'])
 
 # basic values
 grey = "#B8BAB1"

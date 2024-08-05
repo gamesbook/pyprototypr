@@ -7,7 +7,7 @@ Created on: 29 April 2024
 from pyprototypr.draw import *
 
 Create(filename='cards_images.pdf')
-# create the deck; use default sizes
+# create the deck with default size cards
 # * deck card count will be based on number of images loaded below
 Deck(grid_marks=True)
 # load image data
