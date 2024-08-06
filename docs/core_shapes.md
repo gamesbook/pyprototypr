@@ -14,7 +14,7 @@
 ## Index of Shapes <a name="index_shapes"></a>
 
 * [Arc](#arc)
-* [AutoGrid](#autogrid)
+* [Blueprint](#blueprint)
 * [Bezier](#bezier)
 * [Circle](#circle)
 * [Compass](#compass)
@@ -134,7 +134,7 @@ A line effectively has only 1 dimension.
   </tr>
 </table>
 
-### AutoGrid [&#9650;](#index_shapes) <a name="autogrid"></a>
+### Blueprint [&#9650;](#index_shapes) <a name="blueprint"></a>
 
 <table>
   <tr>
@@ -142,13 +142,14 @@ A line effectively has only 1 dimension.
     <th>Description</th>
   </tr>
   <tr>
-    <td><img src="images/examples/simple/defaults/autogrid.png"></td>
+    <td><img src="images/examples/simple/defaults/blueprint.png"></td>
     <td>
     <p>This example shows the shape constructed using the command with all defaults:</p>
-    <pre>AutoGrid()</pre>
-    <p>This grid is designed to quickly construct a grid that can act as a "background"
-    reference on which other shapes can be drawn and positioned.  Its unlikely to be
-    used as part of a final drawing!</p>
+    <pre>Blueprint()</pre>
+    <p>This command is designed to quickly construct a measured grid that can act as a
+    "background" reference on which other shapes can be drawn and positioned; or as a
+    "foreground" overlay to verify shape positions.  It's unlikely to be used as part
+    of a final drawing!</p>
     <p>It has the following properties based on the defaults:
       <ul>
         <li>grid interval of 1cm,</li>
@@ -162,10 +163,10 @@ A line effectively has only 1 dimension.
     <th width="30%">Example #2</th>
     <th>Description</th>
   </tr>
-    <td><img src="images/examples/simple/defaults/autogrid-sub.png"></td>
+    <td><img src="images/examples/simple/defaults/blueprint-sub.png"></td>
     <td>
-      <pre>AutoGrid(subdivisions=5, stroke_width=0.8)</pre>
-       <p>In this example, the AutoGrid shows how additional lines can be added; their
+      <pre>Blueprint(subdivisions=5, stroke_width=0.8)</pre>
+       <p>In this example, the Blueprint shows how additional lines can be added; their
        width is set to a fraction of the normal grid lines ("stroke_width").  For this
        example, the <i>stroke_width</i> has been made thicker than usual.
        </p>

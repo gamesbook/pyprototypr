@@ -4,8 +4,8 @@
 # uses: default_shapes-*.png created by https://cloudconvert.com/pdf-to-png
 #  * 296 pixels high by 420 pixels wide
 #  * 600 dpi
-magick default_shapes-1.png -crop 200x200+0+220 +repage autogrid.png
-magick default_shapes-2.png -crop 200x200+0+220 +repage autogrid-sub.png
+magick default_shapes-1.png -crop 200x200+0+220 +repage blueprint.png
+magick default_shapes-2.png -crop 200x200+0+220 +repage blueprint-sub.png
 magick default_shapes-3.png -crop 200x200+0+220 +repage text.png
 magick default_shapes-4.png -crop 200x200+0+220 +repage line.png
 magick default_shapes-5.png -crop 200x200+0+220 +repage rectangle.png

@@ -584,7 +584,7 @@ def Grid(**kwargs):
     return grid
 
 
-def AutoGrid(**kwargs):
+def Blueprint(**kwargs):
     global cnv
     global deck
     global pagesize
@@ -594,7 +594,7 @@ def AutoGrid(**kwargs):
     global margin_right
     kwargs = margins(**kwargs)
     if kwargs.get('common'):
-        tools.feedback('The "common" property cannot be used with AutoGrid.', True)
+        tools.feedback('The "common" property cannot be used with Blueprint.', True)
     kwargs['units'] = kwargs.get('units', cm)
     size = 1.0
     if kwargs['units'] == inch:
@@ -657,7 +657,7 @@ def AutoGrid(**kwargs):
                 local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
                 subgrid = GridShape(canvas=cnv, **local_kwargs)
                 subgrid.draw(off_x=off_x, off_y=off_y)
-    # ---- draw AutoGrid
+    # ---- draw Blueprint
     grid = GridShape(canvas=cnv, line_dots=True, **kwargs)
     grid.draw()
     return grid

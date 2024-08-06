@@ -15,7 +15,7 @@ Create(filename="track_layout.pdf",
 
 header = Common(x=0, y=6, font_size=6, align="left")
 Text(common=header, text="Track: Rectangle: BL~clockwise")
-AutoGrid(stroke_width=0.5)
+Blueprint(stroke_width=0.5)
 
 boxes = Common(x=0, y=0, height=0.5, width=0.5, fill=None, label="{count}", label_size=6)
 small_box = square(common=boxes)

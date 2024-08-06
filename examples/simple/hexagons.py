@@ -15,7 +15,7 @@ Create(filename="customised_hexagons.pdf",
 
 header = Common(x=0, y=6, font_size=8, align="left")
 
-AutoGrid(stroke_width=0.5)
+Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: flat (F)")
 Hexagons(
     height=1,
@@ -24,7 +24,7 @@ Hexagons(
 )
 PageBreak()
 
-AutoGrid(stroke_width=0.5)
+Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: pointy (P)")
 Hexagons(
     height=1,
@@ -34,7 +34,7 @@ Hexagons(
 )
 PageBreak()
 
-AutoGrid(stroke_width=0.5)
+Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: coordinates (F)")
 Hexagons(
     height=1.1,
@@ -52,7 +52,7 @@ Hexagons(
 )
 PageBreak()
 
-AutoGrid(stroke_width=0.5)
+Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: coordinates (P)")
 Hexagons(
     height=1.1,
@@ -72,7 +72,7 @@ Hexagons(
 )
 PageBreak()
 
-AutoGrid(stroke_width=0.5)
+Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: caltrops&dots (F)")
 Hexagons(
     height=1.5,
@@ -83,7 +83,7 @@ Hexagons(
 )
 PageBreak()
 
-AutoGrid(stroke_width=0.5)
+Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: caltrops&dots (P)")
 Hexagons(
     height=1.5,
@@ -95,7 +95,7 @@ Hexagons(
 )
 PageBreak()
 
-AutoGrid(stroke_width=0.5)
+Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: rows & cols // even")
 Hexagons(
     height=0.7,
@@ -115,7 +115,7 @@ Hexagons(
 PageBreak()
 
 
-AutoGrid(stroke_width=0.5)
+Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: rows & cols // odd")
 Hexagons(
     height=0.7,
@@ -136,7 +136,7 @@ Hexagons(
 )
 PageBreak()
 
-AutoGrid(stroke_width=0.5)
+Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: masked")
 Hexagons(
     height=0.7,
