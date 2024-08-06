@@ -377,9 +377,8 @@ class BaseCanvas:
         self.line_color = self.defaults.get('line_color', WIDTH)
         self.line_width = self.defaults.get('line_width', WIDTH)
         self.line_cap = self.defaults.get('line_cap', None)
-        self.line_dots = self.defaults.get('line_dots',
-                                           self.defaults.get('dots',
-                                                             False))
+        self.line_dots = self.defaults.get(
+            'line_dots', self.defaults.get('dots', False))
         self.dashes = self.defaults.get('dashes', None)
         # ---- color and transparency
         fill = self.defaults.get('fill', self.defaults.get('fill_color'))

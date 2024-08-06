@@ -615,6 +615,7 @@ def Blueprint(**kwargs):
     kwargs['cols'] = kwargs.get('cols', cols)
     kwargs['stroke_width'] = kwargs.get('stroke_width', 0.2)  # fine line
     default_font_size = 10 * math.sqrt(pagesize[0]) / math.sqrt(A4[0])
+    line_dots = kwargs.get('line_dots', False)
     kwargs['font_size'] = kwargs.get('font_size', default_font_size)
     # ---- numbering
     if numbering:
@@ -642,7 +643,6 @@ def Blueprint(**kwargs):
              y=zero_pt.y / kwargs['units'] - kwargs['size'] / 4.0,
              text="0",
              common=_common)
-
     # ---- subgrid
     if kwargs.get('subdivisions'):
         local_kwargs = copy(kwargs)
@@ -658,7 +658,7 @@ def Blueprint(**kwargs):
                 subgrid = GridShape(canvas=cnv, **local_kwargs)
                 subgrid.draw(off_x=off_x, off_y=off_y)
     # ---- draw Blueprint
-    grid = GridShape(canvas=cnv, line_dots=True, **kwargs)
+    grid = GridShape(canvas=cnv, line_dots=line_dots, **kwargs)
     grid.draw()
     return grid
 

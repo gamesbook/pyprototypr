@@ -23,7 +23,12 @@ Changes
 * Improve examples
 * Add documentation
 
-2023-04-09 (0.1.5a3)
+2023-08-03 (0.1.5a3)
 --------------------
 * Add more shapes
 * Improve examples
+
+2023-08-06 (0.1.5a4)
+--------------------
+* Update examples (e.g. text shift not needed)
+* AutoGrid -> Blueprint

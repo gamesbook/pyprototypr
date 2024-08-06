@@ -237,34 +237,36 @@ Image(
 )
 PageBreak()
 
+# simple text alignment (default is centre);
+Rectangle(x=0.75, y=23.5, width=7.5, height=3, stroke_width=1, stroke=grey) #, heading="Aligments")
+Text(text="sholes\ntypewriter!", x=4.5, y=26)  #  add line break via \n
+Text(text="sholes * typewriter!", x=4.5, y=25, align="centre")
+Text(text="sholes typewriter! *", x=4.5, y=24.5, align="right")
+Text(text="* sholes typewriter!", x=4.5, y=24, align="left")
+PageBreak()
 
-# text wrapping & justification
-LATIN = """At cum perfecto praesent, ne causae voluptua reprimique usu,
+# auto-text wrapping & justification
+LATIN = """At cum perfecto praesent, ne causae voluptua <i>reprimique</i> usu,
 his id odio tamquam <strike>senserit</strike>.<br/>
 <br/>
 Eu facete audire assentor usu. Legendos reformidans et vel. Ignota <u>seprehendunt</u>
 nam an, vix ad veri maiorum vivendo. Per at ullum iracundia intellegam, alii
 nonumy deterruisset ne sed, cum cu quet reque <b>signiferumque</b>.<br/>
 <br/>
-<font face="times" color="red">Qui at primis regione consetetur. </font>
-Id vis viris antiopam gloriatur, muscipit ex has, an ius mazim <i>similique</i>.
+<font face="times" color="red" size="15">Qui at primis regione consetetur.</font>
+Id vis viris antiopam gloriatur, muscipit ex has, an ius mazim.
 """
 Rectangle(x=4.5, y=0, width=10, height=5, stroke_width=1, stroke=grey)
 Text(
-    x=4.5, y=0.25, width=10, height=5, wrap=True, align="left", text=LATIN, stroke=blue
+    x=4.5, y=5, width=10, height=5, wrap=True, align="left", text=LATIN, stroke=blue
 )
 Rectangle(x=4.5, y=6, width=10, height=5, stroke_width=1, stroke=grey)
-Text(x=4.5, y=6.25, width=10, height=5, wrap=True, align="right", text=LATIN)
-Rectangle(x=4.5, y=12, width=10, height=5, stroke_width=1, stroke=grey)
-Text(x=4.5, y=12.25, width=10, height=5, wrap=True, align="centre", text=LATIN)
-Rectangle(x=4.5, y=18, width=10, height=5, stroke_width=1, stroke=grey)
-Text(x=4.5, y=18.25, width=10, height=5, wrap=True, align="justify", text=LATIN)
+Text(x=4.5, y=11, width=10, height=5, wrap=True, align="right", text=LATIN)
 
-# text alignment (default is centre);
-Text(text="sholes\ntypewriter!", x=4.5, y=26)  #  add line break via \n
-Text(text="sholes typewriter!", x=4.5, y=25, align="centre")
-Text(text="sholes typewriter!>", x=4.5, y=24.5, align="right")
-Text(text="<sholes typewriter!", x=4.5, y=24, align="left")
-PageBreak()
+Rectangle(x=4.5, y=12, width=10, height=5, stroke_width=1, stroke=grey)
+Text(x=4.5, y=17, width=10, height=5, wrap=True, align="centre", text=LATIN)
+
+Rectangle(x=4.5, y=18, width=10, height=5, stroke_width=1, stroke=grey)
+Text(x=4.5, y=23, width=10, height=5, wrap=True, align="justify", text=LATIN)
 
 Save()
