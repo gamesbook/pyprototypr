@@ -1,5 +1,5 @@
 """
-A chess board example, using a grid approach, for pyprototypr
+A chess board example, using a Rectangles grid approach, for pyprototypr
 
 Written by: Derek Hohls
 Created on: 3 August 2024

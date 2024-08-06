@@ -5,6 +5,7 @@ Primary drawing interface for pyprototypr
 # future
 from __future__ import division
 # lib
+import argparse
 from copy import copy
 import logging
 import math
@@ -111,9 +112,13 @@ def Create(**kwargs):
     base_fonts()
     for _font in fonts:
         pdfmetrics.registerFont(TTFont(_font[0], _font[1]))
+    # ---- ouput directory
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--directory", help="Specify output directory")
+    pargs = parser.parse_args()
     # ---- filename and fallback
-    filename = kwargs.get('filename', None)
-    if not filename:
+    _filename = kwargs.get('filename', None)
+    if not _filename:
         basename = 'test'
         # log.debug('basename: "%s" sys.argv[0]: "%s"', basename, sys.argv[0])
         if sys.argv[0]:
@@ -121,7 +126,9 @@ def Create(**kwargs):
         else:
             if _cards:
                 basename = 'cards'
-        filename = f'{basename}.pdf'
+        _filename = f'{basename}.pdf'
+    filename = os.path.join(pargs.directory, _filename)
+    # tools.feedback(f"output: {filename}", False)
     # ---- canvas and deck
     cnv = BaseCanvas(filename, pagesize=pagesize, defaults=defaults)
     page_width = pagesize[0]  # units = 1/72 of an inch
@@ -224,7 +231,7 @@ def Font(face=None, **kwargs):
 
 def Version():
     global cnv
-    tools.feedback(f'Running pyprototyper version {__version__}.')
+    tools.feedback(f'Running pyprototypr version {__version__}.')
 
 
 def Feedback(msg):
