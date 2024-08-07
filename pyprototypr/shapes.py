@@ -119,6 +119,10 @@ class ImageShape(BaseShape):
                 cnv.drawImage(img, x=x, y=y, width=width, height=height, mask="auto")
         # ---- text
         xc = x + width / 2.0
+        if self.heading:
+            cnv.setFont(self.font_face, self.heading_size)
+            cnv.setFillColor(self.heading_stroke)
+            self.draw_multi_string(cnv, xc, y + height + cnv._leading, self.heading)
         if self.label:
             cnv.setFont(self.font_face, self.label_size)
             cnv.setFillColor(self.label_stroke)
@@ -127,10 +131,6 @@ class ImageShape(BaseShape):
             cnv.setFont(self.font_face, self.title_size)
             cnv.setFillColor(self.title_stroke)
             self.draw_multi_string(cnv, xc, y - cnv._leading, self.title)
-        if self.heading:
-            cnv.setFont(self.font_face, self.heading_size)
-            cnv.setFillColor(self.heading_stroke)
-            self.draw_multi_string(cnv, xc, y + height + cnv._leading, self.heading)
 
 
 class DotShape(BaseShape):
@@ -155,7 +155,9 @@ class DotShape(BaseShape):
         # tools.feedback(f'*** Dot {size=}')
         cnv.circle(x, y, size, stroke=0, fill=1 if self.fill else 0)
         # ---- text
+        self.draw_heading(cnv, x, y, **kwargs)
         self.draw_label(cnv, x, y, **kwargs)
+        self.draw_title(cnv, x, y, **kwargs)
 
 
 class LineShape(BaseShape):
@@ -312,7 +314,9 @@ class RhombusShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- text
+        self.draw_heading(cnv, x + self._u.width / 2.0, y + self._u.height, **kwargs)
         self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0, **kwargs)
+        self.draw_title(cnv, x + self._u.width / 2.0, y - self._u.height, **kwargs)
 
 
 class StadiumShape(BaseShape):
@@ -443,7 +447,7 @@ class StadiumShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- text
-        self.draw_heading(cnv, x + self._u.width / 2.0, self._u.height, **kwargs)
+        self.draw_heading(cnv, x + self._u.width / 2.0, y + self._u.height, **kwargs)
         self.draw_label(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0, **kwargs)
         self.draw_title(cnv, x + self._u.width / 2.0, y, **kwargs)
 
@@ -785,9 +789,9 @@ class RectangleShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_d, y_d)
         # ---- text
-        self.draw_heading(cnv, x_d, self._u.height, **kwargs)
+        self.draw_heading(cnv, x_d, y_d + 0.5 * self._u.height, **kwargs)
         self.draw_label(cnv, x_d, y_d, **kwargs)
-        self.draw_title(cnv, x_d, y, **kwargs)
+        self.draw_title(cnv, x_d, y_d - 0.5 * self._u.height, **kwargs)
         # ----  numbering
         self.set_coord(cnv, x_d, y_d)
         # ***TEMP ***
@@ -935,7 +939,9 @@ class OctagonShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, cx, cy)
         # ---- text
+        self.draw_heading(cnv, cx, cy + 0.5 * self._u.height, **kwargs)
         self.draw_label(cnv, cx, cy, **kwargs)
+        self.draw_title(cnv, cx, cy - 0.5 * self._u.height, **kwargs)
 
 
 class ShapeShape(BaseShape):
@@ -1131,9 +1137,9 @@ class PolygonShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x, y)
         # ---- text
+        self.draw_heading(cnv, x, y, 1.3 * radius, **kwargs)
         self.draw_label(cnv, x, y, **kwargs)
         self.draw_title(cnv, x, y, 1.4 * radius, **kwargs)
-        self.draw_heading(cnv, x, y, 1.3 * radius, **kwargs)
 
 
 class PolylineShape(BaseShape):
@@ -1584,7 +1590,7 @@ class HexShape(BaseShape):
         self.draw_dot(cnv, x_d, y_d)
         # ---- text
         self.draw_label(cnv, x_d, y_d, **kwargs)
-        self.draw_title(cnv, x_d, y_d, + 0.75 * self.heading_size + diameter / 2.0, **kwargs)
+        self.draw_title(cnv, x_d, y_d, y_d + 0.75 * self.heading_size + diameter / 2.0, **kwargs)
         if self.hex_top.lower() in ['p', 'pointy']:
             head_off = 0.5 * self.heading_size + diameter / 2.0
         else:
@@ -1635,9 +1641,9 @@ class StarShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x, y)
         # ---- text
+        self.draw_heading(cnv, x,  y + radius, **kwargs)
         self.draw_label(cnv, x, y, **kwargs)
-        self.draw_title(cnv, x, y - 1.4 * radius, **kwargs)
-        self.draw_heading(cnv, x,  y + 1.3 * radius, **kwargs)
+        self.draw_title(cnv, x, y - radius, **kwargs)
 
 
 class RightAngledTriangleShape(BaseShape):
@@ -1768,9 +1774,9 @@ class EquilateralTriangleShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_c, y_c)
         # ---- text
+        self.draw_heading(cnv, x_c, y + height, **kwargs)
         self.draw_label(cnv, x_c, y_c, **kwargs)
-        self.draw_title(cnv, x_c, y_c, height / 2.0 + 0.25 * self.heading_size, **kwargs)
-        self.draw_heading(cnv, x_c, y_c,  height / 2.0 + 0.75 * self.heading_size, **kwargs)
+        self.draw_title(cnv, x_c, y, **kwargs)
 
 
 class TextShape(BaseShape):
@@ -1990,9 +1996,9 @@ class CircleShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, self.x_c, self.y_c)
         # ---- text
+        self.draw_heading(cnv, self.x_c, self.y_c + self._u.radius, **kwargs)
         self.draw_label(cnv, self.x_c, self.y_c, **kwargs)
-        self.draw_title(cnv, self.x_c, self.y_c, 1.4 * self._u.radius, **kwargs)
-        self.draw_heading(cnv, self.x_c, self.y_c, 1.3 * self._u.radius, **kwargs)
+        self.draw_title(cnv, self.x_c, self.y_c - self._u.radius, **kwargs)
 
 
 class CompassShape(BaseShape):
@@ -2176,9 +2182,9 @@ class CompassShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, self.x_c, self.y_c)
         # ---- text
+        self.draw_heading(cnv, self.x_c, self.y_c + radius, **kwargs)
         self.draw_label(cnv, self.x_c, self.y_c, **kwargs)
-        self.draw_title(cnv, self.x_c, self.y_c, 1.4 * radius, **kwargs)
-        self.draw_heading(cnv, self.x_c, self.y_c, 1.3 * radius, **kwargs)
+        self.draw_title(cnv, self.x_c, self.y_c - radius, **kwargs)
 
 
 class EllipseShape(BaseShape):
@@ -2223,7 +2229,9 @@ class EllipseShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_c, y_c)
         # ---- text
+        self.draw_heading(cnv, x_c, y_2, **kwargs)
         self.draw_label(cnv, x_c, y_c, **kwargs)
+        self.draw_title(cnv, x_c, y_1, **kwargs)
 
 # ---- Grids and Patterns
 

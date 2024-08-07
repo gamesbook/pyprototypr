@@ -1266,10 +1266,11 @@ class BaseShape:
         Requires native units (i.e. points)!
         """
         if self.heading:
+            y_off = y_offset or self.title_size
             canvas.setFont(self.font_face, self.heading_size)
             canvas.setFillColor(self.heading_stroke)
             self.draw_multi_string(
-                canvas, x, y + y_offset, self.heading, rotate=rotate, **kwargs)
+                canvas, x, y + y_off, self.heading, rotate=rotate, **kwargs)
 
     def draw_label(self, canvas, x, y, align=None, rotate=0, centred=True, **kwargs):
         """Draw the label for a shape (usually at the centre).
@@ -1289,10 +1290,11 @@ class BaseShape:
         Requires native units (i.e. points)!
         """
         if self.title:
+            y_off = y_offset or self.title_size
             canvas.setFont(self.font_face, self.title_size)
             canvas.setFillColor(self.title_stroke)
             self.draw_multi_string(
-                canvas, x, y - y_offset, self.title, align=align, rotate=rotate, **kwargs)
+                canvas, x, y - y_off, self.title, align=align, rotate=rotate, **kwargs)
 
     def draw_dot(self, canvas, x, y):
         """Draw a small dot on a shape (normally the centre).

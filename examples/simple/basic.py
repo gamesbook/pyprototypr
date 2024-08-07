@@ -21,10 +21,14 @@ Hexagon(
     label_size=16)
 PageBreak()
 
+# header text
+header = Common(x=0, y=27, font_size=18, align="left")
+
 # test default labels and blueprint
 Blueprint()
-Polygon(x=4, y=25, radius=2, rotate=30, label="polygon6")
-Polygon(x=10, y=25, radius=2, sides=8, rotate=22.5, label="polygon8")
+Text(common=header, text="Blueprint plus shapes with labels")
+Polygon(x=4, y=24.5, radius=2, rotate=30, label="polygon6")
+Polygon(x=10, y=24.5, radius=2, sides=8, rotate=22.5, label="polygon8")
 Polygon(x=16, y=24.5, radius=2.5, sides=2.5, rotate=30, label="polygon3")
 Rectangle(x=2, y=18.5, width=6, height=3, label="rectangle")
 Stadium(x=12.5, y=18.5, width=4, height=3, label="stadium")
@@ -39,26 +43,83 @@ Compass(cx=4, cy=3, radius=2, title="compass")
 Square(x=14, y=1, side=4, label="square")
 PageBreak()
 
-# centre shapes and blueprint
+# centre shapes and blueprint + label
 Blueprint()
-dot = Common(dot_size=0.1, dot_color=yellow)
-# Polygon(cx=4, cy=25, radius=2, rotate=30, label="polygon6")
-# Polygon(cx=10, cy=25, radius=2, sides=8, rotate=22.5, label="polygon8")
-# Polygon(cx=16, cy=24.5, radius=2.5, sides=2.5, rotate=30, label="polygon3")
-Rectangle(cx=5, cy=21, width=5, height=4, label="rectangle:5-21", common=dot)
-Stadium(cx=13, cy=21, width=4, height=3, label="stadium:13-21", common=dot)
-Hexagon(cx=3, cy=15, side=2, label="hexagon:3-15", hex_top="flat", common=dot)
-Compass(cx=9, cy=8, radius=2, title="compass:9-8", common=dot)
-Hexagon(cx=3, cy=8, side=2, label="hexagon:3-8", hex_top="pointy", common=dot)
-Octagon(cx=16, cy=15, width=3.5, height=3.5, label="octagon:16-15", common=dot)
-Circle(cx=16, cy=8, radius=2, label="circle:16-8", common=dot)
-Ellipse(cx=9, cy=15, xe=4, ye=6, label="ellipse:9-15", common=dot)
-Star(cx=3, cy=3, vertices=5, radius=2, label="star:3-2", common=dot)
-Rhombus(cx=16, cy=3, width=3, height=5, label="rhombus:16-3", common=dot)
-Square(cx=9, cy=3, side=3, label="square:9-3", common=dot)
+Text(common=header, text="Centred shapes with centre point and x-y label")
+dot = Common(dot_size=0.2, dot_color=yellow)
+
+Rectangle(cx=3, cy=23, width=5, height=4, label="rectangle:3-23", common=dot)
+EquilateralTriangle(x=7, y=21, side=4, label="triangle:9-23", common=dot)
+Stadium(cx=15, cy=23, width=4, height=3, label="stadium:15-23", common=dot)
+
+Hexagon(cx=3, cy=17, side=2, label="hexagon:3-17", hex_top="flat", common=dot)
+Ellipse(cx=9, cy=17, xe=4, ye=6, label="ellipse:9-17", common=dot)
+Octagon(cx=16, cy=17, width=3.5, height=3.5, label="octagon:16-17", common=dot)
+
+Hexagon(cx=3, cy=11, side=2, label="hexagon:3-11", hex_top="pointy", common=dot)
+Compass(cx=9, cy=11, radius=2, label="compass:9-11", common=dot)
+Circle(cx=16, cy=11, radius=2, label="circle:16-11", common=dot)
+
+Star(cx=3, cy=5, vertices=5, radius=2, label="star:3-5", common=dot)
+Rhombus(cx=16, cy=5, width=3, height=5, label="rhombus:16-5", common=dot)
+Square(cx=9, cy=5, side=3, label="square:9-5", common=dot)
+
+Dot(x=8.5, y=1, dot_point=6, label="dot:1-8.5")
+
+PageBreak()
+
+# centre shapes and blueprint + heading
+Blueprint()
+Text(common=header, text="Centred shapes with centre point and x-y heading")
+dot = Common(dot_size=0.2, dot_color=blue)
+
+Rectangle(cx=3, cy=23, width=5, height=4, heading="rectangle:3-23", common=dot)
+EquilateralTriangle(x=7, y=21, side=4, heading="triangle:9-23", common=dot)
+Stadium(cx=15, cy=23, width=4, height=3, heading="stadium:15-23", common=dot)
+
+Hexagon(cx=3, cy=17, side=2, heading="hexagon:3-17", hex_top="flat", common=dot)
+Ellipse(cx=9, cy=17, xe=4, ye=6, heading="ellipse:9-17", common=dot)
+Octagon(cx=16, cy=17, width=3.5, height=3.5, heading="octagon:16-17", common=dot)
+
+Hexagon(cx=3, cy=11, side=2, heading="hexagon:3-11", hex_top="pointy", common=dot)
+Compass(cx=9, cy=11, radius=2, heading="compass:9-11", common=dot)
+Circle(cx=16, cy=11, radius=2, heading="circle:16-11", common=dot)
+
+Star(cx=3, cy=5, vertices=5, radius=2, heading="star:3-5", common=dot)
+Rhombus(cx=16, cy=5, width=3, height=5, heading="rhombus:16-5", common=dot)
+Square(cx=9, cy=5, side=3, heading="square:9-5", common=dot)
+
+Dot(x=8.5, y=1, dot_point=6, heading="dot:1-8.5")
+
+PageBreak()
+
+# centre shapes and blueprint + title
+Blueprint()
+Text(common=header, text="Centred shapes with centre point and x-y title")
+dot = Common(dot_size=0.2, dot_color=green)
+
+Rectangle(cx=3, cy=23, width=5, height=4, title="rectangle:3-23", common=dot)
+EquilateralTriangle(x=7, y=21, side=4, title="triangle:9-23", common=dot)
+Stadium(cx=15, cy=23, width=4, height=3, title="stadium:15-23", common=dot)
+
+Hexagon(cx=3, cy=17, side=2, title="hexagon:3-17", hex_top="flat", common=dot)
+Ellipse(cx=9, cy=17, xe=4, ye=6, title="ellipse:9-17", common=dot)
+Octagon(cx=16, cy=17, width=3.5, height=3.5, title="octagon:16-17", common=dot)
+
+Hexagon(cx=3, cy=11, side=2, title="hexagon:3-11", hex_top="pointy", common=dot)
+Compass(cx=9, cy=11, radius=2, title="compass:9-11", common=dot)
+Circle(cx=16, cy=11, radius=2, title="circle:16-11", common=dot)
+
+Star(cx=3, cy=5, vertices=5, radius=2, title="star:3-5", common=dot)
+Rhombus(cx=16, cy=5, width=3, height=5, title="rhombus:16-5", common=dot)
+Square(cx=9, cy=5, side=3, title="square:9-5", common=dot)
+
+Dot(x=8.5, y=1, dot_point=6, title="dot:1-8.5")
+
 PageBreak()
 
 # simple shapes
+Text(common=header, text="Filled shapes")
 Line(x=11, y=17, x1=11, y1=20, stroke=yellow, stroke_width=2)
 Line(x=11, y=17, x1=15, y1=17, stroke=red, stroke_width=2)
 Line(x=11, y=20, length=5, angle=-36.86, stroke=blue, stroke_width=2, dot_size=0.1, dot_color=blue)
@@ -68,10 +129,10 @@ Rhombus(x=1, y=7, width=3, height=5, stroke_width=1, ill=lightyellow, dot_size=0
 Circle(cx=15.5, cy=10, radius=2.5, fill=green, stroke=red, stroke_width=1, dot_size=0.1)
 Ellipse(x=3, y=16, x1=9, y1=20, fill=tan, stroke=green, dot_size=0.1)
 # different-sided polygons
-Polygon(x=3, y=25, radius=2, fill=gold, dot_size=0.1, rotate=30)  # sides=6
-Polygon(sides=8, x=8, y=25, radius=2, fill=saddlebrown, dot_size=0.1, rotate=22.5)
-Polygon(sides=3, x=13, y=25, radius=2, fill=olive, dot_size=0.1, rotate=30)
-Rectangle(x=16, y=24, width=3, height=3, pattern="13.png", dot_size=0.1)
+Polygon(x=3, y=24, radius=2, fill=gold, dot_size=0.1, rotate=30)  # sides=6
+Polygon(x=8, y=24, sides=8, radius=2, fill=saddlebrown, dot_size=0.1, rotate=22.5)
+Polygon(x=13, y=24, sides=3, radius=2, fill=olive, dot_size=0.1, rotate=30)
+Rectangle(x=16, y=23, width=3, height=3, pattern="13.png", dot_size=0.1)
 # house
 points = [
     (7, 2),
@@ -106,6 +167,7 @@ Star(
 PageBreak()
 
 # set of stickers
+Text(common=header, text="Rectangles (6x13)")
 Rectangles(
     rows=13,
     cols=6,
@@ -113,7 +175,7 @@ Rectangles(
     height=2,
     rounding=0.4,
     margin=1,
-    fill=lightyellow,
+    fill=yellow,
     stroke=green,
 )
 PageBreak()
@@ -134,9 +196,11 @@ Hexagons(
     stroke=darkslategrey,
     caltrops="medium",
 )
+Text(common=header, text="Hexagons (dot; coords; caltrops)")
 PageBreak()
 
 # lines
+Text(common=header, text="Polylines and lines")
 Polyline(
     points=[(0, 13), (2, 15), (4, 13), (6, 15), (8, 13), (10, 15), (12, 13)],
     stroke=grey,
@@ -159,12 +223,14 @@ PageBreak()
 
 # bezier / arc
 Blueprint()
+Text(common=header, text="Bezier line and arc")
 Bezier(x=2, y=7, x1=12, y1=9, x2=12, y2=16, x3=17, y3=20, stroke=blue, stroke_width=2)
-Arc(x=1, y=7, x1=4, y1=4, stroke=red, stroke_width=2)
+Arc(x=1, y=7, x1=4, y1=4, stroke=red, stroke_width=4)
 PageBreak()
 
 # common
 Blueprint()
+Text(common=header, text="Lines drawn via angle (default origin)")
 cmm = Common(x=0, y=0, length=19, dots=True, stroke=darkmagenta, stroke_width=2)
 Line(common=cmm)
 Line(common=cmm, angle=15)
@@ -177,29 +243,36 @@ PageBreak()
 
 # common, with a loop
 Blueprint()
+Text(common=header, text="Lines drawn via angles using loop")
 for angle in range(0, 100, 10):
     Line(common=cmm, angle=angle, stroke=darkmagenta)
 PageBreak()
 
 # school book page with margin
+Text(common=header, text="Lines -> school book page")
 Lines(x=0, x1=19, y=0, y1=0, rows=28, height=1.0, stroke=lightsteelblue)
-Line(x=2, x1=2, y=0, y1=28, stroke=orangered)
+Line(x=2, x1=2, y=0, y1=27, stroke=orangered)
 PageBreak()
 
 # school book page - landscape
+Text(common=header, text="Lines -> school book page; landscape")
 Lines(x=0, x1=0, y=0, y1=28.5, cols=20, width=1.0, stroke=lightsteelblue)
+Line(x=0, x1=19, y=2, y1=2, stroke=orangered)
 PageBreak()
 
 # business cards
-Grid(rows=3, cols=4, width=4.5, height=8.5, stroke=grey)
+Text(common=header, text="Grid (4x3)")
+Grid(cols=4, rows=3, width=4.5, height=8.5, stroke=grey)
 PageBreak()
 
 # graph paper
-Grid(rows=135, cols=95, size=0.2, stroke=mediumseagreen, stroke_width=0.9)
-Grid(rows=27, cols=19, size=1.0, stroke=mediumseagreen, stroke_width=1.5)
+Text(common=header, text='"Graph Paper" -> Grid (95x135) and Grid (19x27)')
+Grid(cols=95, rows=135, size=0.2, stroke=mediumseagreen, stroke_width=0.9)
+Grid(cols=19, rows=27, size=1.0, stroke=mediumseagreen, stroke_width=1.5)
 PageBreak()
 
 # PNG image and various text positions
+Text(common=header, text="Rectangle and .png image")
 Rectangle(x=5.9, y=10.9, width=7.2, height=6.2, stroke=silver)
 Image(
     "sholes_typewriter.png",
@@ -219,6 +292,7 @@ PageBreak()
 # SVG image
 # Typewriter by ZakaUddin from
 # <a href="https://thenounproject.com/browse/icons/term/typewriter/" target="_blank" title="Typewriter Icons">Noun Project</a> (CC BY 3.0)
+Text(common=header, text="Rectangle and scaled .svg image")
 Rectangle(x=6, y=11, width=7, height=6.25, stroke=silver)
 Image(
     # "Typewriter_Vector.svg",
@@ -238,12 +312,13 @@ Image(
 PageBreak()
 
 # simple text alignment (default is centre);
+Text(common=header, text="Text styling and alignments")
+
 Rectangle(x=0.75, y=23.5, width=7.5, height=3, stroke_width=1, stroke=grey) #, heading="Aligments")
 Text(text="sholes\ntypewriter!", x=4.5, y=26)  #  add line break via \n
 Text(text="sholes * typewriter!", x=4.5, y=25, align="centre")
 Text(text="sholes typewriter! *", x=4.5, y=24.5, align="right")
 Text(text="* sholes typewriter!", x=4.5, y=24, align="left")
-PageBreak()
 
 # auto-text wrapping & justification
 LATIN = """At cum perfecto praesent, ne causae voluptua <i>reprimique</i> usu,
@@ -268,5 +343,6 @@ Text(x=4.5, y=17, width=10, height=5, wrap=True, align="centre", text=LATIN)
 
 Rectangle(x=4.5, y=18, width=10, height=5, stroke_width=1, stroke=grey)
 Text(x=4.5, y=23, width=10, height=5, wrap=True, align="justify", text=LATIN)
+PageBreak()
 
 Save()
