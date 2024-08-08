@@ -50,7 +50,7 @@ from reportlab.lib.colors import (
     whitesmoke, yellow, yellowgreen, fidblue, fidred, fidlightblue,
     cornflower, firebrick)
 # local
-from pyprototypr.utils import tools
+from pyprototypr.utils import geoms, tools
 
 log = logging.getLogger(__name__)
 
@@ -431,9 +431,10 @@ class BaseCanvas:
         self.leading = self.defaults.get('leading', 12)
         # ---- image / file
         self.source = self.defaults.get('source', None)  # file or http://
-        # ---- line / ellipse / bezier / sector
+        # ---- line / ellipse / bezier / sector / chord
         self.length = self.defaults.get('length', self.default_length)
         self.angle = self.defaults.get('angle', 0)
+        self.angle1 = self.defaults.get('angle1', 0)
         self.angle_width = self.defaults.get('angle_width', 90)
         self.xe = self.defaults.get('xe', 0)  # second point for ellipse
         self.ye = self.defaults.get('ye', 0)
@@ -685,6 +686,7 @@ class BaseShape:
         self.angle = kwargs.get('angle', cnv.angle)  # anti-clock from flat
         self.angle_width = kwargs.get('angle_width', cnv.angle_width)  # delta degrees
         self._angle_theta = math.radians(self.angle)
+        self._angle1_theta = math.radians(self.angle1)
         self.xe = kwargs.get('xe', cnv.xe)
         self.ye = kwargs.get('ye', cnv.ye)
         # ---- arrow: head and tail
@@ -1159,7 +1161,7 @@ class BaseShape:
             return edges
         return {}
 
-    def make_path_points(self, cnv, p1: tools.Point, p2: tools.Point):
+    def make_path_points(self, cnv, p1: geoms.Point, p2: geoms.Point):
         """Draw line between two Points"""
         pth = cnv.beginPath()
         pth.moveTo(p1.x, p1.y)
@@ -1318,12 +1320,12 @@ class BaseShape:
             canvas.setStrokeColor(self.cross_stroke)
             canvas.setLineWidth(self.cross_stroke_width)
             # horizontal
-            pt1 = tools.Point(x - cross_size / 2.0, y)
-            pt2 = tools.Point(x + cross_size / 2.0, y)
+            pt1 = geoms.Point(x - cross_size / 2.0, y)
+            pt2 = geoms.Point(x + cross_size / 2.0, y)
             self.make_path_points(canvas, pt1, pt2)
             # vertical
-            pt1 = tools.Point(x, y - cross_size / 2.0)
-            pt2 = tools.Point(x, y + cross_size / 2.0)
+            pt1 = geoms.Point(x, y - cross_size / 2.0)
+            pt2 = geoms.Point(x, y + cross_size / 2.0)
             self.make_path_points(canvas, pt1, pt2)
 
     def lines_between_sides(
@@ -1351,9 +1353,9 @@ class BaseShape:
         delta = side / lines
         # tools.feedback(f'{side=} {lines=} {delta=}')
         for number in range(0, lines + 1):
-            left_pt = tools.point_on_line(
+            left_pt = geoms.point_on_line(
                  vertices[left_nodes[0]], vertices[left_nodes[1]], delta * number)
-            right_pt = tools.point_on_line(
+            right_pt = geoms.point_on_line(
                  vertices[right_nodes[0]], vertices[right_nodes[1]], delta * number)
             self.make_path_points(cnv, left_pt, right_pt)
 
@@ -1369,7 +1371,7 @@ class BaseShape:
                     self.draw_multi_string(
                         canvas, vert.x, vert.y, f'{key}:{x:.2f},{y:.2f}')
 
-    def debug_point(self, canvas, point: tools.Point, label=''):
+    def debug_point(self, canvas, point: geoms.Point, label=''):
         """Display a labelled point."""
         canvas.setFillColor(DEBUG_COLOR)
         canvas.setStrokeColor(DEBUG_COLOR)

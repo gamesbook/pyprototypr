@@ -13,9 +13,9 @@ from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle
 
 # local
-from pyprototypr.utils.tools import (
+from pyprototypr.utils.geoms import (
     Point, Link, Location, TrackPoint)  # named tuples
-from pyprototypr.utils import tools
+from pyprototypr.utils import geoms, tools
 from pyprototypr.base import (
     BaseShape, BaseCanvas, GridShape, UNITS, COLORS, PAGES, DEBUG_COLOR)
 
@@ -27,7 +27,7 @@ GRID_SHAPES_WITH_CENTRE = [
     'RectangleShape', 'RhombusShape', 'SquareShape', 'StadiumShape', ] # EllipseShape ???
 GRID_SHAPES_NO_CENTRE = [
      'TextShape', 'StarShape', ]
-# NOT GRID:  ArcShape,BezierShape, PolylineShape
+# NOT GRID:  ArcShape, BezierShape, PolylineShape, ChordShape
 
 
 class Value:
@@ -204,12 +204,31 @@ class LineShape(BaseShape):
         pth.lineTo(x_1, y_1)
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- calculate line rotation
-        compass, rotate = tools.angles_from_points(x, y, x_1, y_1)
+        compass, rotate = geoms.angles_from_points(x, y, x_1, y_1)
         # ---- dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
         # ---- text
         self.draw_label(
             cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
+
+
+class ChordShape(BaseShape):
+    """
+    Chord on a Circle on a given canvas.
+    """
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw a chord on a given canvas."""
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        if not isinstance(self.shape, CircleShape):
+            tools.feedback('Shape must be a circle!', True)
+        circle = self.shape
+        centre = Point(circle.cx, circle.cy)
+        pt0 = geoms.point_on_circle(centre, circle.radius, self._angle)
+        pt1 = geoms.point_on_circle(centre, circle.radius, self._angle1)
+        _line = LineShape(x=pt0.x, y=pt0.y, x1=pt1.x, y1=pt1.y, **kwargs)
+        _line.draw(cnv=cnv, off_x=off_x, off_y=off_y, ID=ID, **kwargs)
 
 
 class ArrowShape(BaseShape):
@@ -268,7 +287,7 @@ class ArrowShape(BaseShape):
         # ---- tail
         self.arrow_tail()
         # ---- calculate line rotation
-        compass, rotate = tools.angles_from_points(x, y, x_1, y_1)
+        compass, rotate = geoms.angles_from_points(x, y, x_1, y_1)
         # ---- dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
         # ---- text
@@ -401,27 +420,27 @@ class StadiumShape(BaseShape):
                 cx, cy = vertex.x, vertex.y - 0.5 * self._u.height
                 # _cx, _cy = self.points_to_value(cx) - 1, self.points_to_value(cy) - 1
                 # tools.feedback(f'  cx={_cx:.2f} cy={_cy:.2f}')
-                top_curve = tools.bezier_arc_segment(
+                top_curve = geoms.bezier_arc_segment(
                     cx, cy, radius_lr, radius_lr, 90, 180)
-                bottom_curve = tools.bezier_arc_segment(
+                bottom_curve = geoms.bezier_arc_segment(
                     cx, cy, radius_lr, radius_lr, 180, 270)
                 pth.moveTo(*vertex)
                 pth.curveTo(*top_curve[1])
                 pth.curveTo(*bottom_curve[1])
             elif count == 1 and ('t' in _edges or 'top' in _edges):
                 cx, cy = vertex.x - 0.5 * self._u.width, vertex.y
-                right_curve = tools.bezier_arc_segment(
+                right_curve = geoms.bezier_arc_segment(
                     cx, cy, radius_tb, radius_tb, 0, 90)
-                left_curve = tools.bezier_arc_segment(
+                left_curve = geoms.bezier_arc_segment(
                     cx, cy, radius_tb, radius_tb, 90, 180)
                 pth.moveTo(*vertex)
                 pth.curveTo(*right_curve[1])
                 pth.curveTo(*left_curve[1])
             elif count == 3 and ('b' in _edges or 'bottom' in _edges):
                 cx, cy = vertex.x + 0.5 * self._u.width, vertex.y
-                left_curve = tools.bezier_arc_segment(
+                left_curve = geoms.bezier_arc_segment(
                     cx, cy, radius_tb, radius_tb, 180, 270)
-                right_curve = tools.bezier_arc_segment(
+                right_curve = geoms.bezier_arc_segment(
                     cx, cy, radius_tb, radius_tb, 270, 360)
                 pth.moveTo(*vertex)
                 pth.curveTo(*left_curve[1])
@@ -429,9 +448,9 @@ class StadiumShape(BaseShape):
                 pth.moveTo(*self.vertices[3])
             elif count == 0 and ('r' in _edges or 'right' in _edges):
                 cx, cy = vertex.x, vertex.y + 0.5 * self._u.height
-                bottom_curve = tools.bezier_arc_segment(
+                bottom_curve = geoms.bezier_arc_segment(
                     cx, cy, radius_lr, radius_lr, 270, 360)
-                top_curve = tools.bezier_arc_segment(
+                top_curve = geoms.bezier_arc_segment(
                     cx, cy, radius_lr, radius_lr, 0, 90)
                 pth.moveTo(*vertex)
                 pth.curveTo(*bottom_curve[1])
@@ -600,13 +619,13 @@ class RectangleShape(BaseShape):
             top_pt, btm_pt, left_pt, rite_pt = [], [], [], []
             for number in range(0, diag_num + 1):
                 left_pt.append(
-                    tools.point_on_line(vertices[0], vertices[1], y_dist * number))
+                    geoms.point_on_line(vertices[0], vertices[1], y_dist * number))
                 top_pt.append(
-                    tools.point_on_line(vertices[1], vertices[2], x_dist * number))
+                    geoms.point_on_line(vertices[1], vertices[2], x_dist * number))
                 rite_pt.append(
-                    tools.point_on_line(vertices[3], vertices[2], y_dist * number))
+                    geoms.point_on_line(vertices[3], vertices[2], y_dist * number))
                 btm_pt.append(
-                    tools.point_on_line(vertices[0], vertices[3], x_dist * number))
+                    geoms.point_on_line(vertices[0], vertices[3], x_dist * number))
 
         if 'ne' or 'sw' in _dirs:  # slope UP to the right
             for i in range(1, diag_num):  # top-left side
@@ -1122,7 +1141,7 @@ class PolygonShape(BaseShape):
             sides = int(self.sides)
             # 180 degrees is math.pi radians
             radius = side / (2.0 * math.sin(math.pi / sides))
-        vertices = tools.polygon_vertices(self.sides, radius, self.rotate, Point(x, y))
+        vertices = geoms.polygon_vertices(self.sides, radius, self.rotate, Point(x, y))
         if not vertices or len(vertices) == 0:
             return
         # canvas
@@ -1300,7 +1319,7 @@ class HexShape(BaseShape):
             vb_end = the_link.b % 6
             tools.feedback(f'a:{va_start}-{va_end} b:{vb_start}-{vb_end}')
 
-            separation = tools.separation_between_hexsides(the_link.a, the_link.b)
+            separation = geoms.separation_between_hexsides(the_link.a, the_link.b)
             match separation:
                 case 0:
                     pass  # no line
@@ -1334,9 +1353,9 @@ class HexShape(BaseShape):
                 case 2:  # non-adjacent; large arc
                     pass
                 case 3:  # opposite sides; straight line
-                    a_mid = tools.point_on_line(
+                    a_mid = geoms.point_on_line(
                         vertices[va_start], vertices[va_end], side / 2.0)
-                    b_mid = tools.point_on_line(
+                    b_mid = geoms.point_on_line(
                         vertices[vb_start], vertices[vb_end], side / 2.0)
                     pth = cnv.beginPath()
                     pth.moveTo(*a_mid)
@@ -2479,7 +2498,7 @@ class CardShape(BaseShape):
             # ---- replace image source placeholder
             if image and isinstance(flat_ele, ImageShape):
                 # tools.feedback(f'*** {image=} {flat_ele=} {flat_ele.kwargs=}')
-                if flat_ele.kwargs.get('source','').lower() in ['*', 'all']:
+                if flat_ele.kwargs.get('source', '').lower() in ['*', 'all']:
                     flat_ele.source = image
 
             members = flat_ele.members or self.members
@@ -2611,14 +2630,17 @@ class SequenceShape(BaseShape):
         if not isinstance(self.setting, tuple):
             tools.feedback(f"Sequence setting '{self.setting}' must be a set!", True)
         if len(self.setting) < 2:
-            tools.feedback(f"Sequence setting '{self.setting}' must include a start and end value!", True)
+            tools.feedback(
+                f"Sequence setting '{self.setting}' must include start and end values!",
+                True)
         self.set_start = self.setting[0]
         self.set_stop = self.setting[1]
         self.set_inc = self.setting[2] if len(self.setting) > 2 else 1
         if len(self.setting) > 3:
             self.set_type = self.setting[3]
         else:
-            self.set_type = 'number' if isinstance(self.set_start, (int, float, complex)) \
+            self.set_type = 'number' \
+                if isinstance(self.set_start, (int, float, complex)) \
                 else 'letter'
         # ---- calculate sequence values
         try:
@@ -2639,7 +2661,8 @@ class SequenceShape(BaseShape):
                     self.setting_list.append(chr(curr))
                     curr += self.set_inc
             else:
-                tools.feedback(f"'{self.set_type}' must be either number or letter!", True)
+                tools.feedback(
+                    f"'{self.set_type}' must be either number or letter!", True)
         except Exception as err:
             log.info(err)
             tools.feedback(f"Unable to evaluate Sequence setting '{self.setting}';"
@@ -2791,7 +2814,6 @@ class Virtual():
             return float_value
         except Exception:
             tools.feedback(f"{value} is not a valid {label} floating number!", True)
-
 
 # ---- Virtual Grids & Layout ----
 
@@ -3186,7 +3208,7 @@ class RectangleTrack(RectangleShape, VirtualTrack):
                 return
             # calculate distance along line (or check if next line needed)
             total_distance += increment
-            if total_distance > tools.length_of_line(point_start, point_end):
+            if total_distance > geoms.length_of_line(point_start, point_end):
                 node += 1  # next line
                 total_distance = 0
                 if node + 1 >= len(self.nodes):
@@ -3197,7 +3219,7 @@ class RectangleTrack(RectangleShape, VirtualTrack):
                 # tools.feedback(f'*** *** NODE {node=} ctr={counter} start={point_start} end={point_end}')
                 the_point = self.vertices[self.nodes[node]]
             else:
-                the_point = tools.point_on_line(
+                the_point = geoms.point_on_line(
                     point_start=point_start,
                     point_end=point_end,
                     distance=increment)

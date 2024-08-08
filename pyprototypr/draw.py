@@ -11,6 +11,7 @@ import logging
 import math
 import os
 import pathlib
+import random
 import sys
 from typing import Union
 # third party
@@ -53,8 +54,8 @@ from .dice import (
     Dice, DiceD4, DiceD6, DiceD8, DiceD10, DiceD12, DiceD20, DiceD100)
 from .shapes import (
     BaseShape,
-    ArcShape, ArrowShape, BezierShape, CircleShape, CommonShape, ConnectShape,
-    CompassShape, DeckShape, DotShape, DotGridShape, EllipseShape,
+    ArcShape, ArrowShape, BezierShape, ChordShape, CircleShape, CommonShape,
+    ConnectShape, CompassShape, DeckShape, DotShape, DotGridShape, EllipseShape,
     EquilateralTriangleShape, FooterShape, GridShape, HexShape, ImageShape, LineShape,
     OctagonShape, PolygonShape, PolylineShape, Query, RectangleShape, RepeatShape,
     RhombusShape, RightAngledTriangleShape, SectorShape, SequenceShape, ShapeShape,
@@ -64,8 +65,8 @@ from .shapes import (
     GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE)
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts
-from pyprototypr.utils import tools
-from pyprototypr.utils.tools import Point
+from pyprototypr.utils import geoms, tools
+from pyprototypr.utils.geoms import Point
 
 log = logging.getLogger(__name__)
 
@@ -238,7 +239,14 @@ def Feedback(msg):
     global cnv
     tools.feedback(msg)
 
-# ---- cards =====
+
+def Random(end: int = 1, start: int = 0, decimals: int = 2):
+    rrr = random.random() * end + start
+    if decimals == 0:
+        return int(rrr)
+    return round(rrr, decimals)
+
+# ---- Cards
 
 
 def Card(sequence, *elements):
@@ -307,7 +315,7 @@ def group(*args, **kwargs):
         gb.append(arg)
     return gb
 
-# ---- data and functions  =====
+# ---- data and functions
 
 
 def Data(**kwargs):
@@ -478,6 +486,25 @@ def bezier(**kwargs):
     return BezierShape(canvas=cnv, **kwargs)
 
 
+
+def Chord(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    chd = chord(row=row, col=col, **kwargs)
+    chd.draw()
+    return chd
+
+
+def chord(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    kwargs['row'] = row
+    kwargs['col'] = col
+    return ChordShape(canvas=cnv, **kwargs)
+
+
 def Circle(**kwargs):
     global cnv
     global deck
@@ -558,109 +585,6 @@ def equilateraltriangle(row=None, col=None, **kwargs):
     global deck
     kwargs = margins(**kwargs)
     return EquilateralTriangleShape(canvas=cnv, **kwargs)
-
-
-def DotGrid(**kwargs):
-    global cnv
-    global deck
-    kwargs = margins(**kwargs)
-    # override defaults ... otherwise grid not "next" to margins
-    kwargs['x'] = kwargs.get('x', 0)
-    kwargs['y'] = kwargs.get('y', 0)
-    dgrd = DotGridShape(canvas=cnv, **kwargs)
-    dgrd.draw()
-    return dgrd
-
-
-def Grid(**kwargs):
-    global cnv
-    global deck
-    kwargs = margins(**kwargs)
-    # override defaults ... otherwise grid not "next" to margins
-    kwargs['x'] = kwargs.get('x', 0)
-    kwargs['y'] = kwargs.get('y', 0)
-    grid = GridShape(canvas=cnv, **kwargs)
-    grid.draw()
-    return grid
-
-
-def Blueprint(**kwargs):
-    global cnv
-    global deck
-    global pagesize
-    global margin_left
-    global margin_top
-    global margin_bottom
-    global margin_right
-    kwargs = margins(**kwargs)
-    if kwargs.get('common'):
-        tools.feedback('The "common" property cannot be used with Blueprint.', True)
-    kwargs['units'] = kwargs.get('units', cm)
-    size = 1.0
-    if kwargs['units'] == inch:
-        size = 0.5
-    # override defaults ... otherwise grid not "next" to margins
-    numbering = kwargs.get('numbering', True)
-    kwargs['size'] = kwargs.get('size', size)
-    kwargs['x'] = kwargs.get('x', 0)
-    kwargs['y'] = kwargs.get('y', 0)
-    kwargs['stroke'] = kwargs.get('stroke', DEBUG_COLOR)
-    m_x = kwargs['units'] * (margin_left + margin_right)
-    m_y = kwargs['units'] * (margin_top + margin_bottom)
-    _cols = (pagesize[0] - m_x) / (kwargs['units'] * float(kwargs['size']))
-    _rows = (pagesize[1] - m_y) / (kwargs['units'] * float(kwargs['size']))
-    rows = int(_rows)
-    cols = int(_cols)
-    kwargs['rows'] = kwargs.get('rows', rows)
-    kwargs['cols'] = kwargs.get('cols', cols)
-    kwargs['stroke_width'] = kwargs.get('stroke_width', 0.2)  # fine line
-    default_font_size = 10 * math.sqrt(pagesize[0]) / math.sqrt(A4[0])
-    line_dots = kwargs.get('line_dots', False)
-    kwargs['font_size'] = kwargs.get('font_size', default_font_size)
-    # ---- numbering
-    if numbering:
-        _common = Common(
-            font_size=kwargs['font_size'],
-            stroke=kwargs['stroke'],
-            units=kwargs['units'])
-        for x in range(1, kwargs['cols'] + 1):
-            Text(x=x*size,
-                 y=kwargs['y'] - kwargs['size'] / 2.0,
-                 text=str(x*size),
-                 common=_common)
-        for y in range(1, kwargs['rows'] + 1):
-            Text(x=kwargs['x'] - kwargs['size'] / 2.0,
-                 y=y*size - _common.points_to_value(kwargs['font_size']) / 2.0,
-                 text=str(y*size),
-                 common=_common)
-        # draw "zero" number
-        z_x, z_y = kwargs['units'] * margin_left, kwargs['units'] * margin_bottom
-        corner_dist = tools.length_of_line(Point(0, 0), Point(z_x, z_y))
-        corner_frac = corner_dist * 0.66 / kwargs['units']
-        # tools.feedback(f'*** {z_x=} {z_y=} {corner_dist=}')
-        zero_pt = tools.point_on_line(Point(0, 0), Point(z_x, z_y), corner_frac)
-        Text(x=zero_pt.x / kwargs['units'] - kwargs['size'] / 4.0,
-             y=zero_pt.y / kwargs['units'] - kwargs['size'] / 4.0,
-             text="0",
-             common=_common)
-    # ---- subgrid
-    if kwargs.get('subdivisions'):
-        local_kwargs = copy(kwargs)
-        local_kwargs['size'] = size / int(kwargs.get('subdivisions'))
-        for col in range(0, cols):
-            for row in range(0, rows):
-                off_x = float(kwargs['size']) * col
-                off_y = float(kwargs['size']) * row
-                # log.warning("col:%s row:%s off_x:%s off_y:%s", col, row, off_x, off_y)
-                local_kwargs['rows'] = int(kwargs.get('subdivisions'))
-                local_kwargs['cols'] = int(kwargs.get('subdivisions'))
-                local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
-                subgrid = GridShape(canvas=cnv, **local_kwargs)
-                subgrid.draw(off_x=off_x, off_y=off_y)
-    # ---- draw Blueprint
-    grid = GridShape(canvas=cnv, line_dots=line_dots, **kwargs)
-    grid.draw()
-    return grid
 
 
 def Hexagon(row=None, col=None, **kwargs):
@@ -933,7 +857,112 @@ def text(*args, **kwargs):
     _obj = args[0] if args else None
     return TextShape(_object=_obj, canvas=cnv, **kwargs)
 
-# ---- connect ====
+
+# ---- Grids
+
+def DotGrid(**kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    # override defaults ... otherwise grid not "next" to margins
+    kwargs['x'] = kwargs.get('x', 0)
+    kwargs['y'] = kwargs.get('y', 0)
+    dgrd = DotGridShape(canvas=cnv, **kwargs)
+    dgrd.draw()
+    return dgrd
+
+
+def Grid(**kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    # override defaults ... otherwise grid not "next" to margins
+    kwargs['x'] = kwargs.get('x', 0)
+    kwargs['y'] = kwargs.get('y', 0)
+    grid = GridShape(canvas=cnv, **kwargs)
+    grid.draw()
+    return grid
+
+
+def Blueprint(**kwargs):
+    global cnv
+    global deck
+    global pagesize
+    global margin_left
+    global margin_top
+    global margin_bottom
+    global margin_right
+    kwargs = margins(**kwargs)
+    if kwargs.get('common'):
+        tools.feedback('The "common" property cannot be used with Blueprint.', True)
+    kwargs['units'] = kwargs.get('units', cm)
+    size = 1.0
+    if kwargs['units'] == inch:
+        size = 0.5
+    # override defaults ... otherwise grid not "next" to margins
+    numbering = kwargs.get('numbering', True)
+    kwargs['size'] = kwargs.get('size', size)
+    kwargs['x'] = kwargs.get('x', 0)
+    kwargs['y'] = kwargs.get('y', 0)
+    kwargs['stroke'] = kwargs.get('stroke', DEBUG_COLOR)
+    m_x = kwargs['units'] * (margin_left + margin_right)
+    m_y = kwargs['units'] * (margin_top + margin_bottom)
+    _cols = (pagesize[0] - m_x) / (kwargs['units'] * float(kwargs['size']))
+    _rows = (pagesize[1] - m_y) / (kwargs['units'] * float(kwargs['size']))
+    rows = int(_rows)
+    cols = int(_cols)
+    kwargs['rows'] = kwargs.get('rows', rows)
+    kwargs['cols'] = kwargs.get('cols', cols)
+    kwargs['stroke_width'] = kwargs.get('stroke_width', 0.2)  # fine line
+    default_font_size = 10 * math.sqrt(pagesize[0]) / math.sqrt(A4[0])
+    line_dots = kwargs.get('line_dots', False)
+    kwargs['font_size'] = kwargs.get('font_size', default_font_size)
+    # ---- numbering
+    if numbering:
+        _common = Common(
+            font_size=kwargs['font_size'],
+            stroke=kwargs['stroke'],
+            units=kwargs['units'])
+        for x in range(1, kwargs['cols'] + 1):
+            Text(x=x*size,
+                 y=kwargs['y'] - kwargs['size'] / 2.0,
+                 text=str(x*size),
+                 common=_common)
+        for y in range(1, kwargs['rows'] + 1):
+            Text(x=kwargs['x'] - kwargs['size'] / 2.0,
+                 y=y*size - _common.points_to_value(kwargs['font_size']) / 2.0,
+                 text=str(y*size),
+                 common=_common)
+        # draw "zero" number
+        z_x, z_y = kwargs['units'] * margin_left, kwargs['units'] * margin_bottom
+        corner_dist = geoms.length_of_line(Point(0, 0), Point(z_x, z_y))
+        corner_frac = corner_dist * 0.66 / kwargs['units']
+        # tools.feedback(f'*** {z_x=} {z_y=} {corner_dist=}')
+        zero_pt = geoms.point_on_line(Point(0, 0), Point(z_x, z_y), corner_frac)
+        Text(x=zero_pt.x / kwargs['units'] - kwargs['size'] / 4.0,
+             y=zero_pt.y / kwargs['units'] - kwargs['size'] / 4.0,
+             text="0",
+             common=_common)
+    # ---- subgrid
+    if kwargs.get('subdivisions'):
+        local_kwargs = copy(kwargs)
+        local_kwargs['size'] = size / int(kwargs.get('subdivisions'))
+        for col in range(0, cols):
+            for row in range(0, rows):
+                off_x = float(kwargs['size']) * col
+                off_y = float(kwargs['size']) * row
+                # log.warning("col:%s row:%s off_x:%s off_y:%s", col, row, off_x, off_y)
+                local_kwargs['rows'] = int(kwargs.get('subdivisions'))
+                local_kwargs['cols'] = int(kwargs.get('subdivisions'))
+                local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
+                subgrid = GridShape(canvas=cnv, **local_kwargs)
+                subgrid.draw(off_x=off_x, off_y=off_y)
+    # ---- draw Blueprint
+    grid = GridShape(canvas=cnv, line_dots=line_dots, **kwargs)
+    grid.draw()
+    return grid
+
+# ---- connect
 
 
 def Connect(shape_from, shape_to, **kwargs):
@@ -955,7 +984,7 @@ def connect(shape_from, shape_to, **kwargs):
     kwargs['shape_to'] = shape_to
     return ConnectShape(canvas=cnv, **kwargs)
 
-# ---- repeats ====
+# ---- repeats
 
 
 def Repeat(_object, **kwargs):
@@ -965,7 +994,16 @@ def Repeat(_object, **kwargs):
     repeat = RepeatShape(_object=_object, **kwargs)
     repeat.draw()
 
-# ---- sequence ====
+
+def Lines(rows=1, cols=1, **kwargs):
+    global cnv
+    global deck
+    kwargs = kwargs
+    for row in range(rows):
+        for col in range(cols):
+            Line(row=row, col=col, **kwargs)
+
+# ---- sequence
 
 
 def Sequence(_object=None, **kwargs):
@@ -975,7 +1013,7 @@ def Sequence(_object=None, **kwargs):
     sequence = SequenceShape(_object=_object, **kwargs)
     sequence.draw()
 
-# ---- patterns and grid ====
+# ---- patterns (grid)
 
 
 def Hexagons(rows=1, cols=1, sides=None, **kwargs):
@@ -1099,15 +1137,6 @@ def Squares(rows=1, cols=1, **kwargs):
                 locations.append(grid_location)
 
     return locations
-
-
-def Lines(rows=1, cols=1, **kwargs):
-    global cnv
-    global deck
-    kwargs = kwargs
-    for row in range(rows):
-        for col in range(cols):
-            Line(row=row, col=col, **kwargs)
 
 
 def Location(grid: list, label: str, shapes: list, **kwargs):
