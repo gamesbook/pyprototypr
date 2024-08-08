@@ -497,7 +497,7 @@ class RectangleShape(BaseShape):
         #_row = self.rows - the_row + self.coord_start_y
         _row = the_row + 1 if not self.coord_start_y else the_row + self.coord_start_y
         _col = the_col + 1 if not self.coord_start_x else the_col + self.coord_start_x
-        # tools.feedback(f' ### {_row=},{_col=}')
+        # tools.feedback(f' # ---- {_row=},{_col=}')
         # ---- set coord x,y values
         if self.coord_type_x in ['l', 'lower']:
             _x = tools.sheet_column(_col, True)
@@ -2594,7 +2594,7 @@ class DeckShape(BaseShape):
         """Return number of cards in the deck"""
         return len(self.deck)
 
-### sequence
+# ---- sequence
 
 
 class SequenceShape(BaseShape):
@@ -2676,7 +2676,7 @@ class SequenceShape(BaseShape):
                             )
 
 
-### repeats ===================================================================
+# ---- repeats ===================================================================
 
 
 class RepeatShape(BaseShape):
