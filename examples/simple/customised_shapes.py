@@ -298,6 +298,10 @@ Sequence(
     )
 PageBreak()
 
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Chord: 135 to 45 degrees")
+Chord(shape=Circle(cx=2, cy=2, radius=2, fill=None), angle=135, angle1=45, label="chord")
+PageBreak()
 
 Text(common=txt, text="END...")
 PageBreak(footer=True)

@@ -431,11 +431,12 @@ class BaseCanvas:
         self.leading = self.defaults.get('leading', 12)
         # ---- image / file
         self.source = self.defaults.get('source', None)  # file or http://
-        # ---- line / ellipse / bezier / sector / chord
+        # ---- line / ellipse / bezier / sector
         self.length = self.defaults.get('length', self.default_length)
         self.angle = self.defaults.get('angle', 0)
-        self.angle1 = self.defaults.get('angle1', 0)
         self.angle_width = self.defaults.get('angle_width', 90)
+        # ---- chord
+        self.angle_1 = self.defaults.get('angle1', 0)
         self.xe = self.defaults.get('xe', 0)  # second point for ellipse
         self.ye = self.defaults.get('ye', 0)
         # ---- arrow: head and tail
@@ -686,7 +687,9 @@ class BaseShape:
         self.angle = kwargs.get('angle', cnv.angle)  # anti-clock from flat
         self.angle_width = kwargs.get('angle_width', cnv.angle_width)  # delta degrees
         self._angle_theta = math.radians(self.angle)
-        self._angle1_theta = math.radians(self.angle1)
+        # ---- chord
+        self.angle_1 = kwargs.get('angle1', cnv.angle_1)  # anti-clock from flat
+        self._angle_1_theta = math.radians(self.angle_1)
         self.xe = kwargs.get('xe', cnv.xe)
         self.ye = kwargs.get('ye', cnv.ye)
         # ---- arrow: head and tail

@@ -81,6 +81,7 @@ margin_bottom = margin
 margin_right = margin
 footer = None
 page_count = 0
+pargs = None
 
 
 def Create(**kwargs):
@@ -96,6 +97,7 @@ def Create(**kwargs):
     global margin_bottom
     global margin_right
     global pagesize
+    global pargs
     # ---- margin
     margin = kwargs.get('margin', margin)
     margin_left = kwargs.get('margin_left', margin)
@@ -113,12 +115,13 @@ def Create(**kwargs):
     base_fonts()
     for _font in fonts:
         pdfmetrics.registerFont(TTFont(_font[0], _font[1]))
-    # ---- ouput directory
+    # ---- command-line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--directory", help="Specify output directory")
+    parser.add_argument("-d", "--directory", help="Specify output directory", default='')
+    parser.add_argument("-p", "--pages", help="Specify which pages to process", default='')
     pargs = parser.parse_args()
     # ---- filename and fallback
-    _filename = kwargs.get('filename', None)
+    _filename = kwargs.get('filename', '')
     if not _filename:
         basename = 'test'
         # log.debug('basename: "%s" sys.argv[0]: "%s"', basename, sys.argv[0])
@@ -179,6 +182,7 @@ def PageBreak(**kwargs):
     global page_count
     global pagesize
     global footer
+    global pargs
 
     page_count += 1
     kwargs = margins(**kwargs)
@@ -187,6 +191,7 @@ def PageBreak(**kwargs):
         kwargs['pagesize'] = pagesize
         footer = FooterShape(_object=None, canvas=cnv, **kwargs)
         footer.draw(cnv=cnv, ID=page_count, **kwargs)
+    # TODO - if count not in the required pargs.pages then do NOT show!
     cnv.canvas.showPage()
 
 

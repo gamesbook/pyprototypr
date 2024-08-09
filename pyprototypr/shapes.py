@@ -214,7 +214,7 @@ class LineShape(BaseShape):
 
 class ChordShape(BaseShape):
     """
-    Chord on a Circle on a given canvas.
+    Chord line on a Circle on a given canvas.
     """
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -224,11 +224,31 @@ class ChordShape(BaseShape):
         if not isinstance(self.shape, CircleShape):
             tools.feedback('Shape must be a circle!', True)
         circle = self.shape
+        x_c, y_c = circle.calculate_centre()
         centre = Point(circle.cx, circle.cy)
-        pt0 = geoms.point_on_circle(centre, circle.radius, self._angle)
-        pt1 = geoms.point_on_circle(centre, circle.radius, self._angle1)
-        _line = LineShape(x=pt0.x, y=pt0.y, x1=pt1.x, y1=pt1.y, **kwargs)
-        _line.draw(cnv=cnv, off_x=off_x, off_y=off_y, ID=ID, **kwargs)
+        pt0 = geoms.point_on_circle(centre, circle.radius, self.angle)
+        pt1 = geoms.point_on_circle(centre, circle.radius, self.angle_1)
+        # tools.feedback(f"*** {circle.radius=} {pt0=} {pt1=}")
+        x = self.unit(pt0.x) + self._o.delta_x
+        y = self.unit(pt0.y) + self._o.delta_y
+        x_1 = self.unit(pt1.x) + self._o.delta_x
+        y_1 = self.unit(pt1.y) + self._o.delta_y
+        # tools.feedback(f"*** {x=} {x_1=} {y=} {y_1=}")
+        # canvas
+        self.set_canvas_props()
+        # ---- draw line
+        pth = cnv.beginPath()
+        pth.moveTo(x, y)
+        pth.lineTo(x_1, y_1)
+        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        # ---- calculate line rotation
+        compass, rotate = geoms.angles_from_points(x, y, x_1, y_1)
+        # tools.feedback(f"*** {compass=} {rotate=}")
+        # ---- dot
+        self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
+        # ---- text
+        self.draw_label(
+            cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
 
 
 class ArrowShape(BaseShape):
@@ -1904,6 +1924,17 @@ class CircleShape(BaseShape):
     def __str__(self):
         return f'{self.__class__.__name__}::{self.kwargs}'
 
+    def calculate_centre(self):
+        # ---- calculated centre
+        if not self.use_abs_c and (self._o.delta_x or self._o.delta_y):
+            self.x_c = self.x_c + self._o.delta_x
+            self.y_c = self.y_c + self._o.delta_y
+        # ---- absolute override
+        if self.use_abs_c:
+            self.x_c = self._abs_cx
+            self.y_c = self._abs_cy
+        return self.x_c, self.y_c
+
     def calculate_area(self):
         return math.pi * self._u.radius * self._u.radius
 
@@ -1985,15 +2016,8 @@ class CircleShape(BaseShape):
         """Draw circle on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # ---- calculated properties
+        self.calculate_centre()
         self.area = self.calculate_area()
-        if not self.use_abs_c and (self._o.delta_x or self._o.delta_y):
-            self.x_c = self.x_c + self._o.delta_x
-            self.y_c = self.y_c + self._o.delta_y
-        # ---- absolute override
-        if self.use_abs_c:
-            self.x_c = self._abs_cx
-            self.y_c = self._abs_cy
         # canvas
         self.set_canvas_props()
         # ---- draw circle
