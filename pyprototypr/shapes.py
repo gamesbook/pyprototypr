@@ -30,6 +30,8 @@ GRID_SHAPES_NO_CENTRE = [
 # NOT GRID:  ArcShape, BezierShape, PolylineShape, ChordShape
 
 
+# ---- Functions =====
+
 class Value:
     """
     Class wrapper for a list of values possible for a card attribute.
@@ -83,6 +85,8 @@ class Query:
         else:
             tools.feedback(f'Query "{self.query}" is incorrectly constructed.')
 
+# ---- Core Shapes =====
+
 
 class ImageShape(BaseShape):
     """
@@ -94,7 +98,15 @@ class ImageShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         img = None
-        # convert to using units
+        # ---- check for usage via Card ID
+        # tools.feedback(f'{ID=} {self.source=}')
+        if ID is not None and isinstance(self.source, list):
+            _source = self.source[ID]
+        else:
+            _source = self.source
+        if not _source:
+            return
+        # ---- convert to using units
         height = self._u.height
         width = self._u.width
         if self.cx and self.cy and width and height:
@@ -108,8 +120,8 @@ class ImageShape(BaseShape):
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
         # ---- draw image
-        # tools.feedback(f'{self.scaling} scaling')
-        img, is_svg = self.load_image(self.source, self.scaling)
+        # tools.feedback(f'{_source=} {self.scaling=} ')
+        img, is_svg = self.load_image(_source, self.scaling)
         if img:
             # assumes 1 pt == 1 pixel ?
             if is_svg:
@@ -882,6 +894,7 @@ class SquareShape(RectangleShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a square on a given canvas."""
+        # tools.feedback(f'@Square@ {self.label=} // {off_x=}, {off_y=}')
         return super().draw(cnv, off_x, off_y, ID, **kwargs)
 
 
@@ -2284,7 +2297,7 @@ class EllipseShape(BaseShape):
         self.draw_label(cnv, x_c, y_c, **kwargs)
         self.draw_title(cnv, x_c, y_1, **kwargs)
 
-# ---- Grids and Patterns
+# ---- Grids and Patterns =====
 
 
 class StarFieldShape(BaseShape):
@@ -2458,7 +2471,7 @@ class CommonShape(BaseShape):
         tools.feedback("This shape cannot be drawn.")
 
 
-# ---- Deck / Card related-----
+# ---- Deck / Card related  =====
 
 
 class CardShape(BaseShape):
@@ -2527,21 +2540,21 @@ class CardShape(BaseShape):
         # ---- draw card elements
         flat_elements = tools.flatten(self.elements)
         for index, flat_ele in enumerate(flat_elements):
-            # ---- replace image source placeholder
+            # ---- * replace image source placeholder
             if image and isinstance(flat_ele, ImageShape):
                 # tools.feedback(f'*** {image=} {flat_ele=} {flat_ele.kwargs=}')
                 if flat_ele.kwargs.get('source', '').lower() in ['*', 'all']:
                     flat_ele.source = image
 
             members = flat_ele.members or self.members
-            try:  # - normal element
-                # breakpoint()
+            try:
+                # ---- * normal element
                 iid = members.index(cid + 1)
                 flat_ele.draw(
                     cnv=cnv, off_x=col * self.width, off_y=row * self.height, ID=iid
                 )
             except AttributeError:
-                # query ... get a new element ... or not!?
+                # ---- * query ... get a new element ... or not!?
                 log.debug("self.shape_id:%s", self.shape_id)
                 new_ele = flat_ele(cid=self.shape_id)  # uses __call__ on Query
                 if new_ele:
@@ -2555,8 +2568,6 @@ class CardShape(BaseShape):
                             off_y=row * self.height,
                             ID=iid,
                         )
-            except ValueError:
-                tools.feedback(f"Unable to draw card #{cid + 1}.")
             except Exception as err:
                 tools.feedback(f"Unable to draw card #{cid + 1}. (Error:{err})")
 
@@ -2706,13 +2717,16 @@ class SequenceShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         log.debug("gx:%s gy:%s", self.gap_x, self.gap_y)
+        # tools.feedback(f'@Seqnc@ {self.label=} // {off_x=}, {off_y=}')
+        _off_x, _off_y = off_x, off_y
 
         for key, item in enumerate(self.setting_list):
             _ID = ID if ID is not None else self.shape_id
             # breakpoint()
             kwargs['text_sequence'] = f'{item}'
-            off_x = key * self.gap_x
-            off_y = key * self.gap_y
+            # tools.feedback(f'   @Seqnc@ {self.gap_x=}, {self.gap_y=}')
+            off_x = _off_x + key * self.gap_x
+            off_y = _off_y + key * self.gap_y
             flat_elements = tools.flatten(self._object)
             log.debug("flat_eles:%s", flat_elements)
             for each_flat_ele in flat_elements:
@@ -2733,7 +2747,7 @@ class SequenceShape(BaseShape):
                             )
 
 
-# ---- repeats ===================================================================
+# ---- repeats =====
 
 
 class RepeatShape(BaseShape):
@@ -2849,7 +2863,7 @@ class Virtual():
         except Exception:
             tools.feedback(f"{value} is not a valid {label} floating number!", True)
 
-# ---- Virtual Grids & Layout ----
+# ---- Virtual Grids & Layout =====
 
 
 class VirtualGrid(Virtual):
@@ -3116,7 +3130,7 @@ class RectangleGrid(VirtualGrid):
                                     if col > self.cols:
                                         return  # end
 
-# ---- Tracks
+# ---- Tracks =====
 
 
 class VirtualTrack(Virtual):
@@ -3275,7 +3289,7 @@ class CircleTrack(CircleShape, VirtualTrack):
 
 
 
-# ---- Other ----
+# ---- Other  =====
 
 
 class ConnectShape(BaseShape):

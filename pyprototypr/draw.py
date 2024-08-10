@@ -251,11 +251,14 @@ def Random(end: int = 1, start: int = 0, decimals: int = 2):
         return int(rrr)
     return round(rrr, decimals)
 
-# ---- Cards
+# ---- Cards ====
 
 
 def Card(sequence, *elements):
-    """Add one or more elements to a card or cards."""
+    """Add one or more elements to a card or cards.
+
+    NOTE: A Card receives its `draw()` command via Save()!
+    """
     global cnv
     global deck
     global dataset
@@ -863,7 +866,7 @@ def text(*args, **kwargs):
     return TextShape(_object=_obj, canvas=cnv, **kwargs)
 
 
-# ---- Grids
+# ---- Grids ====
 
 def DotGrid(**kwargs):
     global cnv
@@ -967,7 +970,7 @@ def Blueprint(**kwargs):
     grid.draw()
     return grid
 
-# ---- connect
+# ---- connect ====
 
 
 def Connect(shape_from, shape_to, **kwargs):
@@ -989,7 +992,7 @@ def connect(shape_from, shape_to, **kwargs):
     kwargs['shape_to'] = shape_to
     return ConnectShape(canvas=cnv, **kwargs)
 
-# ---- repeats
+# ---- repeats ====
 
 
 def Repeat(_object, **kwargs):
@@ -1008,7 +1011,7 @@ def Lines(rows=1, cols=1, **kwargs):
         for col in range(cols):
             Line(row=row, col=col, **kwargs)
 
-# ---- sequence
+# ---- sequence ====
 
 
 def Sequence(_object=None, **kwargs):
@@ -1289,7 +1292,7 @@ def LinkLine(grid: list, locations: list, **kwargs):
                 off_y=-delta_y,
             )
 
-# ---- layout and tracks ====
+# ---- layout & tracks ====
 
 
 def Layout(grid, **kwargs):

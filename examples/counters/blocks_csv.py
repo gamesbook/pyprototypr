@@ -36,6 +36,7 @@ title = text(font_face="Times New Roman", font_size=8, x=1.4, y=2, align="centre
 move = text(font_face="Times New Roman", font_size=12, x=0.6, y=0.5, text=V('MOVE'))
 strength = text(font_face="Times New Roman", font_size=12, x=2.1, y=0.5, text=V('STRENGTH'))
 outline = rectangle(x=0.45, y=0.45, width=2.0, height=2.0, stroke_width=1, stroke=V('BORDER'), fill=None)
+pic = image(V('IMAGE'), x=0.7, y=0.8, width=1.5, height=1.1)
 
 # "dots" templates
 top4 = sequence(
@@ -72,9 +73,9 @@ shield_red = rectangle(common=shield, fill=white, hatch_stroke=red, hatch_direct
 # card construction
 Card("all", Q("SIDE`=`English", tile_red))
 Card("all", Q("SIDE`=`Scots", tile_blue))
-Card("all", base, outline, move, title, strength)
-Card("all", Q("DOTS`=`4", dots3))
-Card("all", Q("DOTS`=`3", dots4))
+Card("all", base, outline, move, title, strength, pic)
+Card("all", Q("DOTS`=`4", dots4))
+Card("all", Q("DOTS`=`3", dots3))
 Card("all", Q("SHIELD`=`red", shield_red))
 Card("all", Q("SHIELD`=`blue", shield_blue))
 
