@@ -484,6 +484,8 @@ class BaseCanvas:
         self.vertices = self.defaults.get('vertices', 5)
         self.sides = self.defaults.get('sides', 6)
         self.points = self.defaults.get('points', [])
+        self.x_c = self.defaults.get('xc', 0)
+        self.y_c = self.defaults.get('yc', 0)
         # ---- compass
         self.perimeter = self.defaults.get('perimeter', 'circle')
         self.directions = self.defaults.get('directions', None)
@@ -898,6 +900,7 @@ class BaseShape:
     def set_canvas_props(
             self,
             cnv=None,
+            index=None, # extract from list of potential values (usually Card options)
             fill=None,  # reserve None for 'no fill at all'
             stroke=None,
             stroke_width=None,
@@ -906,30 +909,41 @@ class BaseShape:
             dashes=None,
             debug=False):
         """Set reportlab canvas properties for font, line and colors"""
+
+        def ext(prop):
+            if isinstance(prop, str):
+                return prop
+            try:
+                return prop[index]
+            except TypeError:
+                return prop
+
         canvas = cnv if cnv else self.canvas.canvas
         try:
-            canvas.setFont(self.font_face, self.font_size)
+            canvas.setFont(ext(self.font_face), ext(self.font_size))
         except AttributeError:
             pass
         except KeyError:
+            ff = ext(self.font_face)
             tools.feedback(
-                f'Unable to find font: "{self.font_face}".'
+                f'Unable to find font: "{ff}".'
                 ' Please check that this is installed on your system.',
                 stop=True)
         try:
-            if fill is None and self.fill is None:
+            if fill in [None, []] and self.fill in [None, []]:
                 canvas.setFillColor(white, 0)  # full transparency
                 if debug:
                     tools.feedback('~~~ NO fill color set!')
             else:
-                _fill = fill or self.fill
-                if self.transparency:
+                _fill = ext(fill) or ext(self.fill)
+                _transparency = ext(self.transparency)
+                if _transparency:
                     try:
-                        alpha = float(self.transparency) / 100.0
+                        alpha = float(_transparency) / 100.0
                     except Exception:
                         tools.feedback(
-                            f'Unable to use "{self.transparency}" as the transparency'
-                            ' - must be from 1 to 100', True)
+                            f'Unable to use "{_transparency}" as the transparency'
+                            ' - it must be from 1 to 100', True)
                     z = Color(_fill.red, _fill.green, _fill.blue, alpha)
                     # tools.feedback(f'~~~ Transp. color set: {z} vs. {_fill}')
                     _fill = z
@@ -939,33 +953,37 @@ class BaseShape:
         except AttributeError:
             tools.feedback('Unable to set fill color ')
         try:
-            canvas.setStrokeColor(stroke or self.stroke)
+            _strk = ext(stroke) or ext(self.stroke)
+            canvas.setStrokeColor(_strk)
         except TypeError:
-            tools.feedback('Please check your stroke setting; should be a color value')
+            tools.feedback(f'Please check the stroke setting of "{_strk}"; it should be a color value.')
         except AttributeError:
             pass
         try:
-            canvas.setLineWidth(stroke_width or self.stroke_width)
+            _stwd = ext(stroke_width) or ext(self.stroke_width)
+            canvas.setLineWidth(_stwd)
         except TypeError:
-            tools.feedback('Please check your stroke_width setting; should be a number')
+            tools.feedback('Please check the stroke_width setting of "{_stwd}"; it should be a number.')
         except AttributeError:
             pass
         # ---- line cap
-        if stroke_cap:
-            if stroke_cap in ['r', 'rounded']:
+        _stroke_cap = ext(stroke_cap)
+        if _stroke_cap:
+            if _stroke_cap in ['r', 'rounded']:
                 canvas.setLineCap(1)
-            elif stroke_cap in ['s', 'square']:
+            elif _stroke_cap in ['s', 'square']:
                 canvas.setLineCap(2)
             else:
-                tools.feedback(f'Line cap type "{stroke_cap}" cannot be used.', False)
+                tools.feedback(f'Line cap type "{_stroke_cap}" cannot be used.', False)
         # ---- set line dots / dashes
-        if line_dots or self.line_dots:
+        _line_dots = ext(line_dots) or ext(self.line_dots)
+        _dashes = ext(dashes) or ext(self.dashes)
+        if _line_dots:
             _dots = self.values_to_points([0.03, 0.03])
             canvas.setDash(array=_dots)
-        elif dashes or self.dashes:
-            dash_values = dashes or self.dashes
-            _dashes = self.values_to_points(dash_values)
-            canvas.setDash(array=_dashes)
+        elif _dashes:
+            dash_points = self.values_to_points(_dashes)
+            canvas.setDash(array=dash_points)
         else:
             canvas.setDash(array=[])
 

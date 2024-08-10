@@ -267,7 +267,7 @@ def Card(sequence, *elements):
         _cards = range(_card, _card + 1)
     except Exception:
         pass
-    # string - either 'all' or a range: '1', '1-2', '1-3,5-6'
+    # string - either 'all'/'*' .OR. a range: '1', '1-2', '1-3,5-6'
     if not _cards:
         try:
             card_count = len(dataset) if dataset else len(deck.image_list)
@@ -1017,6 +1017,13 @@ def Sequence(_object=None, **kwargs):
     global deck
     sequence = SequenceShape(_object=_object, **kwargs)
     sequence.draw()
+
+
+def sequence(_object=None, **kwargs):
+    """Draw a set of objects in a line."""
+    global cnv
+    global deck
+    return SequenceShape(_object=_object, **kwargs)
 
 # ---- patterns (grid)
 

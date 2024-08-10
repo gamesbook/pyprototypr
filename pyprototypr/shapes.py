@@ -150,7 +150,7 @@ class DotShape(BaseShape):
             y = self._u.y + self._o.delta_y
         size = self.dot_point / 2.0  # diameter is 3 points ~ 1mm or 1/32"
         self.fill = self.stroke
-        self.set_canvas_props()
+        self.set_canvas_props(index=ID)
         # ---- draw dot
         # tools.feedback(f'*** Dot {size=}')
         cnv.circle(x, y, size, stroke=0, fill=1 if self.fill else 0)
@@ -196,8 +196,8 @@ class LineShape(BaseShape):
             x = x + self.col * self._u.width
             x_1 = x_1 + self.col * self._u.width  # - self._u.margin_left
         # tools.feedback(f"{x=} {x_1=} {y=} {y_1=}")
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw line
         pth = cnv.beginPath()
         pth.moveTo(x, y)
@@ -234,8 +234,8 @@ class ChordShape(BaseShape):
         x_1 = self.unit(pt1.x) + self._o.delta_x
         y_1 = self.unit(pt1.y) + self._o.delta_y
         # tools.feedback(f"*** {x=} {x_1=} {y=} {y_1=}")
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw line
         pth = cnv.beginPath()
         pth.moveTo(x, y)
@@ -293,8 +293,8 @@ class ArrowShape(BaseShape):
             x = x + self.col * self._u.width
             x_1 = x_1 + self.col * self._u.width - self._u.margin_left
         log.debug("x:%s x1:%s y:%s y1:%s", x, x_1, y, y_1)
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw arrow
         log.debug("angle:%s length:%s x:%s y:%s x_1:%s y_1:%s",
                   self.angle, self._u.length, x, y, x_1, y_1)
@@ -336,8 +336,8 @@ class RhombusShape(BaseShape):
         else:
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- calculated properties
         self.area = (self._u.width * self._u.height) / 2.0
         # ---- draw rhombus
@@ -415,8 +415,8 @@ class StadiumShape(BaseShape):
             # reverse order of vertices because curves are drawn anti-clockwise
             self.vertices = list(reversed(self.vertices))
             self.vertices.append(self.vertices[0])
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw rect fill only
         pth = cnv.beginPath()
         pth.moveTo(*self.vertices[0])
@@ -597,42 +597,44 @@ class RectangleShape(BaseShape):
             y = kwargs.get("cy") - self._u.height / 2.0
         return x, y
 
-    def draw_hatch(self, cnv, vertices: list, num: int):
+    def draw_hatch(self, cnv, ID, vertices: list, num: int):
         if self.rounding or self.rounded:
             tools.feedback('No hatching permissible with a rounded Rectangle', True)
         if self.notch or self.notch_x or self.notch_y:
             tools.feedback('No hatching permissible with a notched Rectangle', True)
         self.set_canvas_props(
+            index=ID,
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_width,
             stroke_cap=self.hatch_cap)
         _dirs = self.hatch_directions.lower().split()
         if num >= 1:
-            if 'ne' or 'sw' in _dirs:  # slope UP to the right
+            # breakpoint()
+            if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
                 pth = cnv.beginPath()
                 pth.moveTo(vertices[0].x, vertices[0].y)
                 pth.lineTo(vertices[2].x, vertices[2].y)
                 cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-            if 'se' or 'nw' in _dirs:  # slope down to the right
+            if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
                 pth = cnv.beginPath()
                 pth.moveTo(vertices[1].x, vertices[1].y)
                 pth.lineTo(vertices[3].x, vertices[3].y)
                 cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-            if 'n' or 's' in _dirs:  # vertical
+            if 'n' in _dirs or 's' in _dirs:  # vertical
                 x_dist = self._u.width / (num + 1)
                 for i in range(1, num + 1):
                     pth = cnv.beginPath()
                     pth.moveTo(vertices[0].x + i * x_dist, vertices[1].y)
                     pth.lineTo(vertices[0].x + i * x_dist, vertices[0].y)
                     cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-            if 'e' or 'w' in _dirs:  # horizontal
+            if 'e' in _dirs or 'w' in _dirs:  # horizontal
                 y_dist = self._u.height / (num + 1)
                 for i in range(1, num + 1):
                     pth = cnv.beginPath()
                     pth.moveTo(vertices[0].x, vertices[0].y + i * y_dist)
                     pth.lineTo(vertices[0].x + self._u.width, vertices[0].y + i * y_dist)
                     cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-        if num >= 2:
+        if num >= 1:
             diag_num = int((num - 1) / 2 + 1)
             x_dist = self._u.width / diag_num
             y_dist = self._u.height / diag_num
@@ -726,8 +728,8 @@ class RectangleShape(BaseShape):
         else:
             self.vertices = self.set_vertices(**kwargs)
         # tools.feedback(f'{len(self.vertices)=}')
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw rectangle
         if is_notched:
             pth = cnv.beginPath()
@@ -769,9 +771,10 @@ class RectangleShape(BaseShape):
             )
         # ---- draw hatch
         if self.hatch:
-            self.draw_hatch(cnv, self.vertices, self.hatch)
+            self.draw_hatch(cnv, ID, self.vertices, self.hatch)
         # ---- grid marks
         self.set_canvas_props(
+            index=ID,
             stroke=self.grid_color,
             stroke_width=self.grid_stroke_width)
         if self.grid_marks:
@@ -899,8 +902,9 @@ class OctagonShape(BaseShape):
         side = self._u.height / (1 + math.sqrt(2.0))
         return 2 * side * side * (1 + math.sqrt(2))
 
-    def draw_hatch(self, cnv, side: float, vertices: list, num: int):
+    def draw_hatch(self, cnv, ID, side: float, vertices: list, num: int):
         self.set_canvas_props(
+            index=ID,
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_width,
             stroke_cap=self.hatch_cap)
@@ -957,8 +961,8 @@ class OctagonShape(BaseShape):
             Point(c_x + self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz),  # 7
             Point(c_x + side / 2.0, c_y - self._u.height / 2.0),  # 8
         ]
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw octagon
         pth = cnv.beginPath()
         pth.moveTo(*self.vertices[0])
@@ -972,7 +976,7 @@ class OctagonShape(BaseShape):
         self.debug(cnv, vertices=self.vertices)
         # ---- draw hatch
         if self.hatch:
-            self.draw_hatch(cnv, side, self.vertices, self.hatch)
+            self.draw_hatch(cnv, ID, side, self.vertices, self.hatch)
         # ---- cross
         self.draw_cross(cnv, cx, cy)
         # ---- dot
@@ -998,8 +1002,8 @@ class ShapeShape(BaseShape):
         """Draw an irregular polygon on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw Shape
         if isinstance(self.points, str):
             # SPLIT STRING e.g. "1,2  3,4  4.5,8.8"
@@ -1040,8 +1044,8 @@ class ArcShape(BaseShape):
             self.y_1 = self.y + self.default_length
         x_2 = self.unit(self.x_1) + self._o.delta_x
         y_2 = self.unit(self.y_1) + self._o.delta_y
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw arc
         # tools.feedback(f'Arc *** {x_1=}, {y_1=}, {x_2=}, {y_2=}')
         cnv.arc(x_1, y_1, x_2, y_2, startAng=self.angle, extent=self.angle_width) # anti-clock from flat; 90°
@@ -1074,8 +1078,8 @@ class BezierShape(BaseShape):
         y_3 = self.unit(self.y_2) + self._o.delta_y
         x_4 = self.unit(self.x_3) + self._o.delta_x
         y_4 = self.unit(self.y_3) + self._o.delta_y
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw bezier
         cnv.bezier(x_1, y_1, x_2, y_2, x_3, y_3, x_4, y_4)
 
@@ -1134,8 +1138,8 @@ class SectorShape(BaseShape):
         # angles
         start = (450 - self.angle) % 360.0 - self.angle_width
         width = self.angle_width
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw sector
         cnv.wedge(
             x_1, y_1, x_2, y_2, start, width, stroke=1, fill=1 if self.fill else 0)
@@ -1164,8 +1168,8 @@ class PolygonShape(BaseShape):
         vertices = geoms.polygon_vertices(self.sides, radius, self.rotate, Point(x, y))
         if not vertices or len(vertices) == 0:
             return
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw polygon
         pth = cnv.beginPath()
         pth.moveTo(*vertices[0])
@@ -1196,8 +1200,8 @@ class PolylineShape(BaseShape):
         if not points or len(points) == 0:
             tools.feedback("No Polyline points to draw - or points are incorrect!")
             return
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw polyline
         pth = cnv.beginPath()
         for key, vertex in enumerate(points):
@@ -1316,6 +1320,7 @@ class HexShape(BaseShape):
     def draw_links(self, cnv, side: float, vertices: list, links: list):
         """Draw arcs or lines to link two sides of a hexagon."""
         self.set_canvas_props(
+            index=ID,
             stroke=self.link_stroke,
             stroke_width=self.link_width,
             stroke_cap=self.link_cap)
@@ -1385,9 +1390,10 @@ class HexShape(BaseShape):
                     raise NotImplementedError(
                         f'Unable to handle hex "{separation=}"')
 
-    def draw_hatch(self, cnv, side: float, vertices: list, num: int):
+    def draw_hatch(self, cnv, ID, side: float, vertices: list, num: int):
 
         self.set_canvas_props(
+            index=ID,
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_width,
             stroke_cap=self.hatch_cap)
@@ -1565,7 +1571,7 @@ class HexShape(BaseShape):
         # ---- calculate area
         self.area = self.calculate_area()
         # ---- canvas
-        self.set_canvas_props()
+        self.set_canvas_props(index=ID)
         if self.caltrops or self.caltrops_fraction:
             line_dashes = self.calculate_caltrops(
                 self.side, self.caltrops, self.caltrops_fraction, self.caltrops_invert)
@@ -1608,7 +1614,7 @@ class HexShape(BaseShape):
         if self.hatch:
             if not self.hatch & 1:
                 tools.feedback('Hatch must be an odd number for a Hexagon', True)
-            self.draw_hatch(cnv, side, self.vertices, self.hatch)
+            self.draw_hatch(cnv, ID, side, self.vertices, self.hatch)
         # ---- draw links
         if self.links:
             self.draw_links(cnv, side, self.vertices, self.links)
@@ -1662,8 +1668,8 @@ class StarShape(BaseShape):
             y = self._u.cy + self._o.delta_y
         # calc - assumes x and y are the centre!
         radius = self._u.radius
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw star
         pth = cnv.beginPath()
         pth.moveTo(x, y + radius)
@@ -1718,8 +1724,8 @@ class RightAngledTriangleShape(BaseShape):
             y2 = y - self._u.height
         self.vertices.append(Point(x2, y2))
         self.vertices.append(Point(x2, y))
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw RA triangle
         x_sum, y_sum = 0, 0
         pth = cnv.beginPath()
@@ -1743,8 +1749,9 @@ class RightAngledTriangleShape(BaseShape):
 
 class EquilateralTriangleShape(BaseShape):
 
-    def draw_hatch(self, cnv, side: float, vertices: list, num: int):
+    def draw_hatch(self, cnv, ID, side: float, vertices: list, num: int):
         self.set_canvas_props(
+            index=ID,
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_width,
             stroke_cap=self.hatch_cap)
@@ -1791,8 +1798,8 @@ class EquilateralTriangleShape(BaseShape):
             y3 = pt0.y - height
         self.vertices.append(Point(x2, y2))
         self.vertices.append(Point(x3, y3))
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw equilateral triangle
         x_sum, y_sum = 0, 0
         pth = cnv.beginPath()
@@ -1809,7 +1816,7 @@ class EquilateralTriangleShape(BaseShape):
         self.debug(cnv, vertices=self.vertices)
         # ---- draw hatch
         if self.hatch:
-            self.draw_hatch(cnv, side, self.vertices, self.hatch)
+            self.draw_hatch(cnv, ID, side, self.vertices, self.hatch)
         # ---- dot
         self.draw_dot(cnv, x_c, y_c)
         # ---- text
@@ -1846,8 +1853,8 @@ class TextShape(BaseShape):
         if self.width:
             width = self._u.width
         rotate = kwargs.get('rotate', 0)
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- overrides for text value
         _sequence = kwargs.get('text_sequence', '')
         # tools.feedback(f'!!! {_sequence=} {self.text=}')
@@ -1946,7 +1953,7 @@ class CircleShape(BaseShape):
         else:
             return length
 
-    def draw_hatch(self, cnv, num: int, x_c: float, y_c: float):
+    def draw_hatch(self, cnv, ID, num: int, x_c: float, y_c: float):
         """Draw hatch lines from one edge to the other.
 
         Args:
@@ -1955,6 +1962,7 @@ class CircleShape(BaseShape):
             y_c: y-centre of circle
         """
         self.set_canvas_props(
+            index=ID,
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_width,
             stroke_cap=self.hatch_cap)
@@ -2018,8 +2026,8 @@ class CircleShape(BaseShape):
         cnv = cnv.canvas if cnv else self.canvas.canvas
         self.calculate_centre()
         self.area = self.calculate_area()
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw circle
         cnv.circle(
             self.x_c, self.y_c, self._u.radius, stroke=1, fill=1 if self.fill else 0)
@@ -2029,11 +2037,11 @@ class CircleShape(BaseShape):
                 # tools.feedback(f'{self.hatch=}, {self.rotate=}, {type(cnv)}')
                 cnv.saveState()
                 cnv.translate(self.x_c, self.y_c)
-                self.draw_hatch(cnv, self.hatch, 0, 0)
+                self.draw_hatch(cnv, ID, self.hatch, 0, 0)
                 cnv.rotate(self.rotate)
                 cnv.restoreState()
             else:
-                self.draw_hatch(cnv, self.hatch, self.x_c, self.y_c)
+                self.draw_hatch(cnv, ID, self.hatch, self.x_c, self.y_c)
         # ---- cross
         self.draw_cross(cnv, self.x_c, self.y_c)
         # ---- dot
@@ -2136,8 +2144,8 @@ class CompassShape(BaseShape):
             else:
                 self.x_c = self._u.x + self._o.delta_x + radius
                 self.y_c = self._u.y + self._o.delta_y + radius
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         if self.perimeter == 'circle':
             cnv.circle(self.x_c, self.y_c, radius, stroke=1, fill=1 if self.fill else 0)
         # ---- get directions
@@ -2263,8 +2271,8 @@ class EllipseShape(BaseShape):
             y_2 = y_2 + dy
         # ---- calculated properties
         self.area = self.calculate_area()
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw ellipse
         cnv.ellipse(x_1, y_1, x_2, y_2, stroke=1, fill=1 if self.fill else 0)
         x_c = (x_2 - x_1) / 2.0 + x_1
@@ -2346,7 +2354,7 @@ class StarFieldShape(BaseShape):
         # tools.feedback(f'{self.star_pattern =} {self.enclosure}')
         # tools.feedback(f'{area=} {self.density=} {self.star_count=}')
         # ---- set canvas
-        self.set_canvas_props()
+        self.set_canvas_props(index=ID)
         # ---- draw starfield
         if self.star_pattern in ['r', 'random']:
             self.random_stars(cnv)
@@ -2386,8 +2394,8 @@ class GridShape(BaseShape):
             y_cols.append(y + y_col * height)
         for x_col in range(0, self.cols + 1):
             x_cols.append(x + x_col * width)
-        # canvas
-        self.set_canvas_props()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
         # ---- draw grid
         cnv.grid(x_cols, y_cols)  # , stroke=1, fill=1)
 
@@ -2418,10 +2426,10 @@ class DotGridShape(BaseShape):
             self.cols = int((
                 self.page_width - self.margin_left - self.margin_right - self.offset_x)
                 / self.points_to_value(width))
-        # canvas
+        # ---- set canvas
         size = self.dot_point / 2.0  # diameter is 3 points ~ 1mm or 1/32"
         self.fill = self.stroke
-        self.set_canvas_props()
+        self.set_canvas_props(index=ID)
         # ---- draw dot grid
         for y_col in range(0, self.rows + 1):
             for x_col in range(0, self.cols + 1):
@@ -2527,6 +2535,7 @@ class CardShape(BaseShape):
 
             members = flat_ele.members or self.members
             try:  # - normal element
+                # breakpoint()
                 iid = members.index(cid + 1)
                 flat_ele.draw(
                     cnv=cnv, off_x=col * self.width, off_y=row * self.height, ID=iid
@@ -2699,7 +2708,8 @@ class SequenceShape(BaseShape):
         log.debug("gx:%s gy:%s", self.gap_x, self.gap_y)
 
         for key, item in enumerate(self.setting_list):
-            #breakpoint()
+            _ID = ID if ID is not None else self.shape_id
+            # breakpoint()
             kwargs['text_sequence'] = f'{item}'
             off_x = key * self.gap_x
             off_y = key * self.gap_y
@@ -2709,9 +2719,9 @@ class SequenceShape(BaseShape):
                 flat_ele = copy.copy(each_flat_ele)  # allow props to be reset
                 log.debug("flat_ele:%s", flat_ele)
                 try:  # normal element
-                    flat_ele.draw(off_x=off_x, off_y=off_y, ID=self.shape_id, **kwargs)
+                    flat_ele.draw(off_x=off_x, off_y=off_y, ID=_ID, **kwargs)
                 except AttributeError:
-                    new_ele = flat_ele(cid=self.shape_id)
+                    new_ele = flat_ele(cid=_ID)
                     log.debug("%s %s", new_ele, type(new_ele))
                     if new_ele:
                         flat_new_eles = tools.flatten(new_ele)
@@ -2719,7 +2729,7 @@ class SequenceShape(BaseShape):
                         for flat_new_ele in flat_new_eles:
                             log.debug("%s", flat_new_ele)
                             flat_new_ele.draw(
-                                off_x=off_x, off_y=off_y, ID=self.shape_id, **kwargs
+                                off_x=off_x, off_y=off_y, ID=_ID, **kwargs
                             )
 
 

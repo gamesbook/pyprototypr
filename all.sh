@@ -34,6 +34,7 @@ echo "Creating counters..."
 python examples/counters/counters.py -d /tmp
 python examples/counters/counters_excel.py -d /tmp
 python examples/counters/counters_csv.py -d /tmp
+python examples/counters/blocks_csv.py -d /tmp
 # -- Board Game Geek
 echo "Creating BGG game sheet..."
 python examples/bgg/example01.py -d /tmp
