@@ -489,6 +489,13 @@ class BaseCanvas:
         self.points = self.defaults.get('points', [])
         self.x_c = self.defaults.get('xc', 0)
         self.y_c = self.defaults.get('yc', 0)
+        # ---- circle only
+        self.radii = self.defaults.get('radii', [])
+        self.radii_stroke = self.defaults.get('radii_stroke', black)
+        self.radii_stroke_width = self.defaults.get('radii_stroke_width', WIDTH)
+        self.radii_length = self.defaults.get('radii_length', None)  # default: circle radius
+        self.radii_dots = self.defaults.get('radii_dots', self.line_dots)
+        self.radii_dashes = self.defaults.get('radii_dashes', self.dashes)
         # ---- compass
         self.perimeter = self.defaults.get('perimeter', 'circle')
         self.directions = self.defaults.get('directions', None)
@@ -743,6 +750,13 @@ class BaseShape:
         self.vertices = kwargs.get('vertices', cnv.vertices)
         self.sides = kwargs.get('sides', cnv.sides)
         self.points = kwargs.get('points', cnv.points)
+        # ---- circle only
+        self.radii = kwargs.get('radii', cnv.radii)
+        self.radii_stroke = kwargs.get('radii_stroke', cnv.radii_stroke)
+        self.radii_stroke_width = kwargs.get('radii_stroke_width', cnv.radii_stroke_width)
+        self.radii_length = kwargs.get('radii_length', cnv.radii_length)
+        self.radii_dots = kwargs.get('radii_dots', cnv.line_dots)
+        self.radii_dashes = kwargs.get('radii_dashes', cnv.dashes)
         # ---- compass
         self.perimeter = kwargs.get('perimeter', 'circle')  # circle|rectangle|hexagon
         self.directions = kwargs.get('directions', None)
@@ -831,7 +845,7 @@ class BaseShape:
     def __str__(self):
         return f'{self.__class__.__name__}::{self.kwargs}'
 
-    def unit(self, item, units=None, skip_none=False):
+    def unit(self, item, units=None, skip_none=False, label=''):
         """Convert an item into the appropriate unit system."""
         log.debug("units %s %s", units, self.units)
         if item is None and skip_none:
@@ -842,7 +856,7 @@ class BaseShape:
             return item * units
         except (TypeError, ValueError):
             tools.feedback(
-                f'Unable to set units: "{item}".'
+                f'Unable to set unit-value for {label}: "{item}".'
                 ' Please check that this is a valid value.',
                 stop=True)
 

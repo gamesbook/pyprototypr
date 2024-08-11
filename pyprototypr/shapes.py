@@ -2032,6 +2032,35 @@ class CircleShape(BaseShape):
                     Point(x_c - dist[0], y_c + dist[1]),
                     Point(x_c - dist[0], y_c - dist[1]))
 
+    def draw_radii(self, cnv, ID, x_c: float, y_c: float):
+        """Draw radius lines from the centre outwards to the circumference.
+
+        Args:
+            x_c: x-centre of circle
+            y_c: y-centre of circle
+        """
+        if self.radii:
+            try:
+                _radii = [float(angle) for angle in self.radii if angle >= 0 and angle <= 360]
+            except:
+                tools.feedback(
+                    f'The radii {self.radii} are not valid - must be a list of numbers'
+                    ' from 0 to 360', True)
+            _radius = self.radii_length or self.radius
+            rad_length = self.unit(_radius, label='radius length')
+            self.set_canvas_props(
+                index=ID,
+                stroke=self.radii_stroke,
+                stroke_width=self.radii_stroke_width)
+
+            for rad_angle in _radii:
+                # tools.feedback(f'{_rad=}')
+                # points based on length of line and an angle in degrees
+                new_pt = geoms.point_on_circle(Point(x_c, y_c), rad_length, rad_angle)
+                pth = cnv.beginPath()
+                pth.moveTo(x_c, y_c)
+                pth.lineTo(new_pt.x, new_pt.y)
+                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw circle on a given canvas."""
@@ -2055,6 +2084,17 @@ class CircleShape(BaseShape):
                 cnv.restoreState()
             else:
                 self.draw_hatch(cnv, ID, self.hatch, self.x_c, self.y_c)
+        # ---- draw radii
+        if self.radii:
+            if self.rotate:
+                # tools.feedback(f'{self.hatch=}, {self.rotate=}, {type(cnv)}')
+                cnv.saveState()
+                cnv.translate(self.x_c, self.y_c)
+                self.draw_radii(cnv, ID, 0, 0)
+                cnv.rotate(self.rotate)
+                cnv.restoreState()
+            else:
+                self.draw_radii(cnv, ID, self.x_c, self.y_c)
         # ---- cross
         self.draw_cross(cnv, self.x_c, self.y_c)
         # ---- dot

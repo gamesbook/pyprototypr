@@ -212,4 +212,9 @@ Text(common=header, text="Chord: 135 to 45 degrees")
 Chord(shape=Circle(cx=1, cy=1, radius=1, fill=None), angle=135, angle1=45)
 PageBreak()
 
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Circle: radii [30,150]")
+Circle(cx=1, cy=1, radii=[30,150])
+PageBreak()
+
 Save()

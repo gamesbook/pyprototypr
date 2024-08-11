@@ -303,6 +303,30 @@ Text(common=txt, text="Chord: 135 to 45 degrees")
 Chord(shape=Circle(cx=2, cy=2, radius=2, fill=None), angle=135, angle1=45, label="chord")
 PageBreak()
 
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Circle: radii (single & overlapped)")
+Circle(x=0, y=0,
+       radius=2,
+       radii=[45,135,225,315],
+       radii_stroke_width=1,
+       radii_length=1.5)
+Circle(x=0, y=0,
+       radius=2,
+       fill=None,
+       radii=[0,90,180,270],
+       radii_stroke_width=3,
+       radii_stroke=red)
+Circle(cx=3, cy=5,
+       radius=1,
+       fill=green,
+       stroke=orange,
+       stroke_width=1,
+       radii=[0,90,180,270,45,135,225,315],
+       radii_stroke_width=8,
+       radii_stroke=orange,
+       radii_length=0.8)
+PageBreak()
+
 Text(common=txt, text="END...")
 PageBreak(footer=True)
 
