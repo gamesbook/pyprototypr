@@ -10,7 +10,7 @@ Source:
 
 from pyprototypr.draw import *
 
-Create(filename="basic.pdf", margin=1, margin_top=0.25)
+Create(filename="demo.pdf", margin=1, margin_top=0.25)
 Footer()
 
 # one BIG hex
@@ -230,22 +230,22 @@ PageBreak()
 
 # common
 Blueprint()
-Text(common=header, text="Lines drawn via angle (default origin)")
+Text(common=header, text="Lines drawn manually using angles (default origin)")
 cmm = Common(x=0, y=0, length=19, dots=True, stroke=darkmagenta, stroke_width=2)
-Line(common=cmm)
-Line(common=cmm, angle=15)
-Line(common=cmm, angle=30)
-Line(common=cmm, angle=45)
-Line(common=cmm, angle=60)
-Line(common=cmm, angle=75)
-Line(common=cmm, angle=90)
+Line(common=cmm, label="No angle (flat)")
+Line(common=cmm, angle=15, label="15 degrees")
+Line(common=cmm, angle=30, label="30 degrees")
+Line(common=cmm, angle=45, label="45 degrees")
+Line(common=cmm, angle=60, label="60 degrees")
+Line(common=cmm, angle=75, label="75 degrees")
+Line(common=cmm, angle=90, label="90 degrees")
 PageBreak()
 
 # common, with a loop
 Blueprint()
-Text(common=header, text="Lines drawn via angles using loop")
-for angle in range(0, 100, 10):
-    Line(common=cmm, angle=angle, stroke=darkmagenta)
+Text(common=header, text="Lines drawn via angles (via loop; 5 degrees steps)")
+for angle in range(0, 91, 5):
+    Line(common=cmm, angle=angle)
 PageBreak()
 
 # school book page with margin
@@ -280,11 +280,12 @@ Image(
     y=11,
     width=7,
     height=6,
+    font_size=15,
     label="sholes typewriter",
     label_stroke=red,
     heading="Sholes Typewriter",
     heading_stroke=blue,
-    title="Fig 2. Sholes typewriter",
+    title="Fig 2. The Sholes Typewriter",
     title_stroke=green,
 )
 PageBreak()
@@ -301,11 +302,12 @@ Image(
     y=11,
     width=7,
     height=6,
+    font_size=15,
     label="noun typewriter",
     label_stroke=red,
-    heading="Noun Typewriter",
+    heading="Noun Project Typewriter",
     heading_stroke=blue,
-    title="Fig 3. nounproject.com typewriter (AlekZakaUddin, CC BY 3.0)",
+    title="Fig 3. A nounproject.com Typewriter (AlekZakaUddin, CC BY 3.0)",
     title_stroke=green,
     scaling=0.6,
 )

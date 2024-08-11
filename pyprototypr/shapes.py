@@ -1480,7 +1480,7 @@ class HexShape(BaseShape):
         diameter = 2.0 * side
         z_fraction = (diameter - side) / 2.0
 
-        # ---- POINTY
+        # ---- POINTY^
         if self.hex_top.lower() in ['p', 'pointy']:
             #          .
             #         / \`
@@ -1527,14 +1527,14 @@ class HexShape(BaseShape):
                 y = y_d - half_side - side / 2.0
             elif self.cx and self.cy:
                 # cx,cy are centre; create x_d, y_d as the unit-formatted hex centre
-                x_d = self._u.cx
-                y_d = self._u.cy
+                x_d = self._u.cx + self._o.delta_y
+                y_d = self._u.cy + self._o.delta_x
                 # recalculate start x,y
-                x = x_d - half_flat + self._o.delta_y
-                y = y_d - half_side - side / 2.0 + self._o.delta_x
+                x = x_d - half_flat
+                y = y_d - half_side - side / 2.0
             # tools.feedback(f"***P^: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
 
-        # ---- FLAT
+        # ---- FLAT~
         else:
             #         __
             # x,y .. /  \
@@ -1574,11 +1574,11 @@ class HexShape(BaseShape):
                 y = y_d - half_flat
             elif self.cx and self.cy:
                 # cx,cy are centre; create x_d, y_d as the unit-formatted hex centre
-                x_d = self._u.cx
-                y_d = self._u.cy
+                x_d = self._u.cx + self._o.delta_x
+                y_d = self._u.cy + self._o.delta_y
                 # recalculate start x,y
-                x = x_d - half_side - side / 2.0 + self._o.delta_x
-                y = y_d - half_flat + self._o.delta_y
+                x = x_d - half_side - side / 2.0
+                y = y_d - half_flat
             # tools.feedback(f"***F~: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
 
         # ---- calculate area
@@ -1647,13 +1647,13 @@ class HexShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_d, y_d)
         # ---- text
-        self.draw_label(cnv, x_d, y_d, **kwargs)
-        self.draw_title(cnv, x_d, y_d, y_d + 0.75 * self.heading_size + diameter / 2.0, **kwargs)
         if self.hex_top.lower() in ['p', 'pointy']:
-            head_off = 0.5 * self.heading_size + diameter / 2.0
+            offset = side  # == radius
         else:
-            head_off = 0.01 * self.heading_size + diameter / 2.0
-        self.draw_heading(cnv, x_d, y_d, head_off, **kwargs)
+            offset = half_flat
+        self.draw_heading(cnv, x_d, y_d + offset, **kwargs)
+        self.draw_label(cnv, x_d, y_d, **kwargs)
+        self.draw_title(cnv, x_d, y_d - offset, **kwargs)
         # ----  numbering
         self.set_coord(cnv, x_d, y_d, half_flat)
         # ---- return key settings

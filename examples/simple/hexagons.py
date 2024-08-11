@@ -35,7 +35,7 @@ Hexagons(
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: coordinates (F)")
+Text(common=header, text="Hexagons: coordinates (flat)")
 Hexagons(
     height=1.1,
     x=0, y=0,
@@ -53,7 +53,7 @@ Hexagons(
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: coordinates (P)")
+Text(common=header, text="Hexagons: coordinates (pointy)")
 Hexagons(
     height=1.1,
     x=0, y=0,
@@ -63,7 +63,7 @@ Hexagons(
 )
 Hexagons(
     side=0.6,
-    x=2, y=3,
+    x=1, y=3,
     rows=2, cols=2,
     hex_top='pointy',
     fill=darkseagreen,
@@ -73,7 +73,7 @@ Hexagons(
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: caltrops&dots (F)")
+Text(common=header, text="Hexagons: caltrops&dots (flat)")
 Hexagons(
     height=1.5,
     rows=2,cols=2,
@@ -84,14 +84,14 @@ Hexagons(
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: caltrops&dots (P)")
+Text(common=header, text="Hexagons: caltrops&dots (pointy)")
 Hexagons(
     height=1.5,
     rows=2,cols=2,
     hex_top='pointy',
     x=0, y=0,
     dot_size=0.04,
-    caltrops="medium",
+    caltrops="large",
 )
 PageBreak()
 

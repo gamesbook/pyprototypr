@@ -407,6 +407,7 @@ class BaseCanvas:
         # ---- text: label
         self.label = self.defaults.get('label', '')
         self.label_size = self.defaults.get('label_size', self.font_size)
+        self.label_face = self.defaults.get('label_face', self.font_face)
         self.label_stroke = self.get_color(
             self.defaults.get('label_stroke'), self.stroke)
         self.label_stroke_width = self.get_color(
@@ -414,6 +415,7 @@ class BaseCanvas:
         # ---- text: title
         self.title = self.defaults.get('title', '')
         self.title_size = self.defaults.get('title_size', self.font_size)
+        self.title_face = self.defaults.get('title_face', self.font_face)
         self.title_stroke = self.get_color(
             self.defaults.get('title_stroke'), self.stroke)
         self.title_stroke_width = self.get_color(
@@ -421,6 +423,7 @@ class BaseCanvas:
         # ---- text: heading
         self.heading = self.defaults.get('heading', '')
         self.heading_size = self.defaults.get('heading_size', self.font_size)
+        self.heading_face = self.defaults.get('heading_face', self.font_face)
         self.heading_stroke = self.get_color(
             self.defaults.get('heading_stroke'), self.stroke)
         self.heading_stroke_width = self.get_color(
@@ -662,19 +665,22 @@ class BaseShape:
         self.text_stroke_width = kwargs.get('text_stroke_width', cnv.text_stroke_width)
         # ---- text: label
         self.label = kwargs.get('label', cnv.label)
-        self.label_size = kwargs.get('label_size', cnv.label_size)
-        self.label_stroke = kwargs.get('label_stroke', cnv.label_stroke)
-        self.label_stroke_width = kwargs.get('label_stroke_width', cnv.label_stroke_width)
+        self.label_size = kwargs.get('label_size', self.font_size)
+        self.label_face = kwargs.get('label_face', self.font_face)
+        self.label_stroke = kwargs.get('label_stroke', self.stroke)
+        self.label_stroke_width = kwargs.get('label_stroke_width', self.stroke_width)
         # ---- text: title
         self.title = kwargs.get('title', cnv.title)
-        self.title_size = kwargs.get('title_size', cnv.title_size)
-        self.title_stroke = kwargs.get('title_stroke', cnv.title_stroke)
-        self.title_stroke_width = kwargs.get('title_stroke_width', cnv.title_stroke_width)
+        self.title_size = kwargs.get('title_size', self.font_size)
+        self.title_face = kwargs.get('title_face', self.font_face)
+        self.title_stroke = kwargs.get('title_stroke', self.stroke)
+        self.title_stroke_width = kwargs.get('title_stroke_width', self.stroke_width)
         # ---- text: heading
         self.heading = kwargs.get('heading', cnv.heading)
-        self.heading_size = kwargs.get('heading_size', cnv.heading_size)
-        self.heading_stroke = kwargs.get('heading_stroke', cnv.heading_stroke)
-        self.heading_stroke_width = kwargs.get('heading_stroke_width', cnv.heading_stroke_width)
+        self.heading_size = kwargs.get('heading_size', self.font_size)
+        self.heading_face = kwargs.get('heading_face', self.font_face)
+        self.heading_stroke = kwargs.get('heading_stroke', self.stroke)
+        self.heading_stroke_width = kwargs.get('heading_stroke_width', self.stroke_width)
         # ---- text block
         self.outline_color = kwargs.get('outline_color', cnv.outline_color)
         self.outline_width = kwargs.get('outline_width', cnv.outline_width)
@@ -1289,7 +1295,7 @@ class BaseShape:
         Requires native units (i.e. points)!
         """
         if self.heading:
-            y_off = y_offset or self.title_size
+            y_off = y_offset or self.title_size / 2.0
             canvas.setFont(self.font_face, self.heading_size)
             canvas.setFillColor(self.heading_stroke)
             self.draw_multi_string(
