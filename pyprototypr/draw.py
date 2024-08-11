@@ -7,6 +7,7 @@ from __future__ import division
 # lib
 import argparse
 from copy import copy
+import itertools
 import logging
 import math
 import os
@@ -246,10 +247,35 @@ def Feedback(msg):
 
 
 def Random(end: int = 1, start: int = 0, decimals: int = 2):
+    """Return a random number, in a range (`start` to `end`), rounded to `decimals`.
+    """
     rrr = random.random() * end + start
     if decimals == 0:
         return int(rrr)
     return round(rrr, decimals)
+
+
+def Matrix(labels: list = None, data: list = None) -> list:
+    """Return list of dicts; each element is a unique combo of all the items in `data`
+    """
+    if data is None:
+        return []
+    combos = list(itertools.product(*data))
+    # check labels
+    data_length = len(combos[0])
+    if labels == []:
+        labels = [f'VALUE{item+1}' for item in range(0, data_length)]
+    else:
+        if len(labels) != data_length:
+            tools.feedback(
+                "The number of labels must equal the number of combinations!", True)
+    result = []
+    for item in combos:
+        entry = {}
+        for key, value in enumerate(item):
+            entry[labels[key]] = value
+        result.append(entry)
+    return result
 
 # ---- Cards ====
 
@@ -327,12 +353,13 @@ def group(*args, **kwargs):
 
 
 def Data(**kwargs):
-    """Load data from file or directory for access by a Deck."""
+    """Load data from file, dictionar or directory for access by a Deck."""
     global cnv
     global deck
     global dataset
 
     filename = kwargs.get('filename', None)
+    matrix = kwargs.get('matrix', None)
     images = kwargs.get('images', None)
     filters = kwargs.get('image_filters', None)
 
@@ -341,6 +368,14 @@ def Data(**kwargs):
         log.debug("dataset loaded: %s", dataset)
         if len(dataset) == 0:
             tools.feedback("Dataset is empty or cannot be loaded!", True)
+        else:
+            deck.create(len(dataset))
+            deck.dataset = dataset
+    elif matrix:  # handle pre-built dict
+        dataset = matrix
+        log.debug("dataset loaded: %s", dataset)
+        if len(dataset) == 0:
+            tools.feedback("Matrix data is empty or cannot be loaded!", True)
         else:
             deck.create(len(dataset))
             deck.dataset = dataset

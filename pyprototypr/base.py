@@ -494,7 +494,7 @@ class BaseCanvas:
         self.radii_stroke = self.defaults.get('radii_stroke', black)
         self.radii_stroke_width = self.defaults.get('radii_stroke_width', WIDTH)
         self.radii_length = self.defaults.get('radii_length', None)  # default: circle radius
-        self.radii_dots = self.defaults.get('radii_dots', self.line_dots)
+        self.radii_line_dots = self.defaults.get('radii_line_dots', self.line_dots)
         self.radii_dashes = self.defaults.get('radii_dashes', self.dashes)
         # ---- compass
         self.perimeter = self.defaults.get('perimeter', 'circle')
@@ -755,7 +755,7 @@ class BaseShape:
         self.radii_stroke = kwargs.get('radii_stroke', cnv.radii_stroke)
         self.radii_stroke_width = kwargs.get('radii_stroke_width', cnv.radii_stroke_width)
         self.radii_length = kwargs.get('radii_length', cnv.radii_length)
-        self.radii_dots = kwargs.get('radii_dots', cnv.line_dots)
+        self.radii_line_dots = kwargs.get('radii_line_dots', cnv.line_dots)
         self.radii_dashes = kwargs.get('radii_dashes', cnv.dashes)
         # ---- compass
         self.perimeter = kwargs.get('perimeter', 'circle')  # circle|rectangle|hexagon
@@ -1303,41 +1303,44 @@ class BaseShape:
         self.draw_multi_string(
             canvas=canvas, x=x, y=y, string=string, align=align, rotate=rotate)
 
-    def draw_heading(self, canvas, x, y, y_offset=0, rotate=0, **kwargs):
+    def draw_heading(self, canvas, ID, x, y, y_offset=0, rotate=0, **kwargs):
         """Draw the heading for a shape (normally above the shape).
 
         Requires native units (i.e. points)!
         """
-        if self.heading:
+        ttext = self.textify(index=ID, text=self.heading)
+        if ttext:
             y_off = y_offset or self.title_size / 2.0
             canvas.setFont(self.font_face, self.heading_size)
             canvas.setFillColor(self.heading_stroke)
             self.draw_multi_string(
-                canvas, x, y + y_off, self.heading, rotate=rotate, **kwargs)
+                canvas, x, y + y_off, ttext, rotate=rotate, **kwargs)
 
-    def draw_label(self, canvas, x, y, align=None, rotate=0, centred=True, **kwargs):
+    def draw_label(self, canvas, ID, x, y, align=None, rotate=0, centred=True, **kwargs):
         """Draw the label for a shape (usually at the centre).
 
         Requires native units (i.e. points)!
         """
-        if self.label:
+        ttext = self.textify(index=ID, text=self.label)
+        if ttext:
             y = y - (self.label_size / 3.0) if centred else y
             canvas.setFont(self.font_face, self.label_size)
             canvas.setFillColor(self.label_stroke)
             self.draw_multi_string(
-                canvas, x, y, self.label, align=align, rotate=rotate, **kwargs)
+                canvas, x, y, ttext, align=align, rotate=rotate, **kwargs)
 
-    def draw_title(self, canvas, x, y, y_offset=0, align=None, rotate=0, **kwargs):
+    def draw_title(self, canvas, ID, x, y, y_offset=0, align=None, rotate=0, **kwargs):
         """Draw the title for a shape (normally below the shape).
 
         Requires native units (i.e. points)!
         """
-        if self.title:
+        ttext = self.textify(index=ID, text=self.title)
+        if ttext:
             y_off = y_offset or self.title_size
             canvas.setFont(self.font_face, self.title_size)
             canvas.setFillColor(self.title_stroke)
             self.draw_multi_string(
-                canvas, x, y - y_off, self.title, align=align, rotate=rotate, **kwargs)
+                canvas, x, y - y_off, ttext, align=align, rotate=rotate, **kwargs)
 
     def draw_dot(self, canvas, x, y):
         """Draw a small dot on a shape (normally the centre).

@@ -4,14 +4,15 @@
 regular, graphical output in PDF format via a script.
 
 It was originally created to handle prototyping of cards, counters, tiles and
-boards for board games, but can be used for creation of any document that has
+boards for board games, but can be used for creation of any simple design that has
 regular or repeating elements; typically containing a mix of graphics and text.
 
 ## Requirements
 
-**pyprototypr** requires a version of Python 3.11.  If this is **not** your default
-Python version, you may want to use **pyenv** to install and use **pyprototypr**
-in a virtual environment.
+**pyprototypr** requires a version of Python 3.11 or higher.
+
+If this is **not** your default Python version, you may want to use **pyenv**
+to install and use **pyprototypr** in a virtual environment.
 
 ## Documentation
 
@@ -29,19 +30,21 @@ Install **pyprototypr** via:
 ```
 pip install pyprototypr
 ```
-As a quick check that **pyprototypr**  works, you can use one (or more) of the files
+As a quick check that **pyprototypr** is working, you can use one (or more) of the files
 from any of the `examples` sub-directories.
 
-Make a copy of `example1.py` script from the `examples/manual` directory - open
+Make a copy of `example1.py` script from the `examples/manual` directory. To do so, open
 [example1.py](https://github.com/gamesbook/pyprototypr/blob/master/examples/manual/example1.py)
-in your browser, click on the `Raw` button, and then save the file into a
-local directory on your machine.
+in your browser, click on the `Raw` button, and then save the file into a local
+directory on your machine.
 
-Open a command-line window (aka terminal or console), change to the directory
-where you saved the above file and type:
+Open a command-line window (also known as a  *terminal* or a *console*), change to the
+directory where you saved the above file and type:
 ```
 python example1.py
 ```
+and press the `Enter` key.
+
 This script is very simple - it just contains these lines:
 ```
 # `example1` script for pyprototypr
@@ -52,15 +55,15 @@ Create()
 PageBreak()
 Save()
 ```
-and is designed to produce a single, blank, A4-sized page in a PDF.
+and is designed to produce a single, blank, A4-sized page in a PDF file.
 
 It should create an output file called `example1.pdf`, which will appear in the
 same directory as the script. You should be able to open and view this file using
-any PDF viewer program or application.
+any PDF-capable program or application.
 
-If this works, then try out other examples from any of the `examples`
+If this works, then download and try out other scripts from any of the `examples`
 sub-directories (**note** some examples may require additional files such as
-images or spreadsheets).
+images, CSV files, or spreadsheets).
 
 ## Planned/Potential Features
 
@@ -68,10 +71,12 @@ These are not guaranteed to be addressed, but they are potential areas of
 work for future development.
 
 * [x] Page numbering
+* [ ] Page control: restrict output
 * [ ] New shapes:
     * [x] Square shape
-    * [ ] Equilateral Triangle shape
-    * [ ] Sector shape (wedge of a circle)
+    * [x] Equilateral Triangle shape
+    * [x] Sector shape (wedge of a circle)
+    * [ ] Trapezoid shape
     * [ ] Wave shape
     * [ ] Domino shape (with outline?)
     * [ ] Cross shape
@@ -84,25 +89,26 @@ work for future development.
     * [x] end style
     * [ ] join style
 * [ ] Polyline: add arcs
-* [ ] Arcs (pathways): for a hexagon
+* [ ] Arcs (pathways): for a hexagon (**in progress**)
 * [ ] Shortcut notation for styling of: area, line, text, etc.
-* [ ] Track feature: layout shapes along a rectangle or circle
-* [ ] Interior hatching:
+* [ ] Track feature: layout shapes along a rectangle or circle  (**in progress**)
+* [x] Interior hatching:
     * [x] rectangle
-    * [ ] hexagon
-    * [ ] equilateral triangle
-* [ ] layout: a virtual grid for putting shapes into rows/cols in different patterns
+    * [x] hexagon
+    * [x] equilateral triangle
+* [ ] Layout: a virtual grid for putting shapes into rows/cols in different patterns
 * [x] rotation:
     * [x] text along a line
-    * [ ] shape labels (in centre of shape)
+    * [ ] shape labels (in the centre of shape)
 
 ## Planned/Potential Examples
 
-* Abstract boards: Go, Ludo, 9 Mens Morris, Wari, Queens Guard, Backgammon
-* Wargame board: Squad Leader with terrain features (vector/bitmap)
-* Traveller board: showing a fully styled Star system (custom Shape?)
-* 18xx board: show a basic map with tracks, towns and off-map areas
-* Dartboard: using Sector shape
+* [ ] Abstract boards: Go, Ludo, 9 Mens Morris, Wari, Queens Guard, Backgammon
+* [ ] Wargame board: Squad Leader with terrain features (vector/bitmap)
+* [ ] Traveller board: showing a fully styled Star system (custom Shape?)
+* [x] WarpWar board: showing a fully-styled sector
+* [ ] 18xx board: show a basic map with tracks, towns and off-map areas
+* [ ]Dartboard: using Sector shape
 
 ## Acknowledgements
 
