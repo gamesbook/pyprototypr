@@ -713,6 +713,7 @@ class RectangleShape(BaseShape):
         x_d = x + self._u.width / 2.0  # centre
         y_d = y + self._u.height / 2.0  # centre
         self.area = self.calculate_area()
+        delta_m_up, delta_m_down = 0.0, 0.0  # potential text offset from mountain
         # ---- notch vertices
         if is_notched:
             if self.notch_corners:
@@ -747,7 +748,6 @@ class RectangleShape(BaseShape):
                 self.vertices.append(Point(x, y))
         # ---- mountain vertices
         elif is_mountain:
-            breakpoint()
             try:
                 _mountain_height = float(self.mountain_height)
             except:
@@ -757,37 +757,39 @@ class RectangleShape(BaseShape):
                 tools.feedback(
                     "The mountain_height must be greater than zero; "
                     f"not {self.mountain_height}.", True)
-            delta = self.unit(_mountain_height)
+            delta_m = self.unit(_mountain_height)
             if not self.mountain:
                 self.mountain = 'N'
             self.vertices = []
             if self.mountain.upper() == 'N':
+                delta_m_up = delta_m
                 self.vertices.append(Point(x, y))
                 self.vertices.append(Point(x, y + self._u.height))
-                self.vertices.append(Point(x + self._u.width / 2.0, y + self._u.height + delta))
-                self.vertices.append(Point(x + self._u.width / 2.0, y + self._u.height))
-                self.vertices.append(Point(x + self._u.width, y))
-                self.vertices.append(Point(x + self._u.width / 2.0, y + delta))
-            elif self.mountain.upper() == 'S':
-                self.vertices.append(Point(x, y))
-                self.vertices.append(Point(x, y + self._u.height))
-                self.vertices.append(Point(x + self._u.width / 2.0, y + self._u.height - delta))
-                self.vertices.append(Point(x + self._u.width / 2.0, y + self._u.height))
-                self.vertices.append(Point(x + self._u.width, y))
-                self.vertices.append(Point(x + self._u.width / 2.0, y - delta))
-            elif self.mountain.upper() == 'E':
-                self.vertices.append(Point(x, y))
-                self.vertices.append(Point(x - delta, y + self._u.height / 2.0))
-                self.vertices.append(Point(x, y + self._u.height))
+                self.vertices.append(Point(x + self._u.width / 2.0, y + self._u.height + delta_m))
                 self.vertices.append(Point(x + self._u.width, y + self._u.height))
-                self.vertices.append(Point(x - delta, y - self._u.height / 2.0))
                 self.vertices.append(Point(x + self._u.width, y))
+                self.vertices.append(Point(x + self._u.width / 2.0, y + delta_m))
+            elif self.mountain.upper() == 'S':
+                delta_m_down = delta_m
+                self.vertices.append(Point(x, y))
+                self.vertices.append(Point(x, y + self._u.height))
+                self.vertices.append(Point(x + self._u.width / 2.0, y + self._u.height - delta_m))
+                self.vertices.append(Point(x + self._u.width, y + self._u.height))
+                self.vertices.append(Point(x + self._u.width, y))
+                self.vertices.append(Point(x + self._u.width / 2.0, y - delta_m))
             elif self.mountain.upper() == 'W':
                 self.vertices.append(Point(x, y))
-                self.vertices.append(Point(x + delta, y + self._u.height / 2.0))
+                self.vertices.append(Point(x - delta_m, y + self._u.height / 2.0))
                 self.vertices.append(Point(x, y + self._u.height))
                 self.vertices.append(Point(x + self._u.width, y + self._u.height))
-                self.vertices.append(Point(x + delta, y - self._u.height / 2.0))
+                self.vertices.append(Point(x  + self._u.width - delta_m, y + self._u.height / 2.0))
+                self.vertices.append(Point(x + self._u.width, y))
+            elif self.mountain.upper() == 'E':
+                self.vertices.append(Point(x, y))
+                self.vertices.append(Point(x + delta_m, y + self._u.height / 2.0))
+                self.vertices.append(Point(x, y + self._u.height))
+                self.vertices.append(Point(x + self._u.width, y + self._u.height))
+                self.vertices.append(Point(x + self._u.width + delta_m, y + self._u.height / 2.0))
                 self.vertices.append(Point(x + self._u.width, y))
             else:
                 self.vertices = self.set_vertices(**kwargs)
@@ -797,7 +799,7 @@ class RectangleShape(BaseShape):
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- draw rectangle
-        if is_notched:
+        if is_notched or is_mountain:
             pth = cnv.beginPath()
             pth.moveTo(*self.vertices[0])
             for vertex in self.vertices:
@@ -897,9 +899,9 @@ class RectangleShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_d, y_d)
         # ---- text
-        self.draw_heading(cnv, ID, x_d, y_d + 0.5 * self._u.height, **kwargs)
+        self.draw_heading(cnv, ID, x_d, y_d + 0.5 * self._u.height + delta_m_up, **kwargs)
         self.draw_label(cnv, ID, x_d, y_d, **kwargs)
-        self.draw_title(cnv, ID, x_d, y_d - 0.5 * self._u.height, **kwargs)
+        self.draw_title(cnv, ID, x_d, y_d - 0.5 * self._u.height - delta_m_down, **kwargs)
         # ----  numbering
         self.set_coord(cnv, x_d, y_d)
         # ***TEMP ***
@@ -2590,7 +2592,7 @@ class CardShape(BaseShape):
 
     def draw_card(self, cnv, row, col, cid, **kwargs):
         """Draw a card on a given canvas."""
-        log.debug("Card cnv:%s r:%s c:%s id:%s shp:%s", cnv, row, col, cid, self.shape)
+        log.error("Card r:%s c:%s id:%s shp:%s", row, col, cid, self.shape)
         image = kwargs.get('image', None)
         # ---- draw outline
         label = "ID:%s" % cid if self.show_id else ""

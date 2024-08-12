@@ -330,20 +330,44 @@ PageBreak()
 Blueprint(stroke_width=0.5)
 Text(common=txt, text="Rectangle: Mountain")
 Rectangle(
-    x=2, y=1,
+    x=3, y=2,
     height=2, width=1,
+    font_size=4,
     mountain='N',
     mountain_height=0.5,
     label="mountain:N:0.5",
-    label_size=5,
+    title="title-N",
+    heading="head-N",
     )
 Rectangle(
-    x=1, y=4,
+    x=0, y=2,
+    height=2, width=1,
+    font_size=4,
+    mountain='S',
+    mountain_height=0.5,
+    label="mountain:S:0.5",
+    title="title-S",
+    heading="head-S",
+    )
+Rectangle(
+    x=1, y=4.5,
     height=1, width=2,
+    font_size=4,
+    mountain='W',
+    mountain_height=0.5,
+    label="mountain:W:0.5",
+    title="title-W",
+    heading="head-W",
+    )
+Rectangle(
+    x=1, y=0.5,
+    height=1, width=2,
+    font_size=4,
     mountain='E',
     mountain_height=0.5,
     label="mountain:E:0.5",
-    label_size=5,
+    title="title-E",
+    heading="head-E",
     )
 PageBreak()
 

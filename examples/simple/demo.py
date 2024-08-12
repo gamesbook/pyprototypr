@@ -21,10 +21,11 @@ Hexagon(
     label_size=16)
 PageBreak()
 
-# header text
+# ---- header text
+header_font = Common(font_size=18, align="left")
 header = Common(x=0, y=27, font_size=18, align="left")
 
-# test default labels and blueprint
+# ---- default labels and blueprint
 Blueprint()
 Text(common=header, text="Blueprint plus shapes with labels")
 Polygon(x=4, y=24.5, radius=2, rotate=30, label="polygon6")
@@ -43,7 +44,7 @@ Compass(cx=4, cy=3, radius=2, title="compass")
 Square(x=14, y=1, side=4, label="square")
 PageBreak()
 
-# centre shapes and blueprint + label
+# ---- centre shapes and blueprint + label
 Blueprint()
 Text(common=header, text="Centred shapes with centre point and x-y label")
 dot = Common(dot_size=0.2, dot_color=yellow)
@@ -68,7 +69,7 @@ Dot(x=8.5, y=1, dot_point=6, label="dot:1-8.5")
 
 PageBreak()
 
-# centre shapes and blueprint + heading
+# ---- centre shapes and blueprint + heading
 Blueprint()
 Text(common=header, text="Centred shapes with centre point and x-y heading")
 dot = Common(dot_size=0.2, dot_color=blue)
@@ -93,7 +94,7 @@ Dot(x=8.5, y=1, dot_point=6, heading="dot:1-8.5")
 
 PageBreak()
 
-# centre shapes and blueprint + title
+# ---- centre shapes and blueprint + title
 Blueprint()
 Text(common=header, text="Centred shapes with centre point and x-y title")
 dot = Common(dot_size=0.2, dot_color=green)
@@ -118,7 +119,7 @@ Dot(x=8.5, y=1, dot_point=6, title="dot:1-8.5")
 
 PageBreak()
 
-# simple shapes
+# ---- simple shapes
 Text(common=header, text="Filled shapes")
 Line(x=11, y=17, x1=11, y1=20, stroke=yellow, stroke_width=2)
 Line(x=11, y=17, x1=15, y1=17, stroke=red, stroke_width=2)
@@ -151,7 +152,7 @@ pointstr = "0,0 0,1 2,0 2,1 0,0"
 Shape(x=9, y=4, points=pointstr, stroke=blue)
 PageBreak()
 
-# pentangle star
+# ---- pentangle star
 Star(
     x=9.5,
     y=13.8,
@@ -166,7 +167,7 @@ Star(
 )
 PageBreak()
 
-# set of stickers
+# ---- set of stickers
 Text(common=header, text="Rectangles (6x13)")
 Rectangles(
     rows=13,
@@ -199,7 +200,7 @@ Hexagons(
 Text(common=header, text="Hexagons (dot; coords; caltrops)")
 PageBreak()
 
-# lines
+# ---- lines and polylines
 Text(common=header, text="Polylines and lines")
 Polyline(
     points=[(0, 13), (2, 15), (4, 13), (6, 15), (8, 13), (10, 15), (12, 13)],
@@ -221,14 +222,14 @@ Line(
 Line(x=0, y=5, x1=19, y1=5, line_dots=True, stroke=blue, stroke_width=2, label="dots")
 PageBreak()
 
-# bezier / arc
+# ---- bezier / arc
 Blueprint()
 Text(common=header, text="Bezier line and arc")
 Bezier(x=2, y=7, x1=12, y1=9, x2=12, y2=16, x3=17, y3=20, stroke=blue, stroke_width=2)
 Arc(x=1, y=7, x1=4, y1=4, stroke=red, stroke_width=4)
 PageBreak()
 
-# common
+# ---- common, with angled lines
 Blueprint()
 Text(common=header, text="Lines drawn manually using angles (default origin)")
 cmm = Common(x=0, y=0, length=19, dots=True, stroke=darkmagenta, stroke_width=2)
@@ -241,37 +242,37 @@ Line(common=cmm, angle=75, label="75 degrees")
 Line(common=cmm, angle=90, label="90 degrees")
 PageBreak()
 
-# common, with a loop
+# ---- common, with angled lines via loop
 Blueprint()
 Text(common=header, text="Lines drawn via angles (via loop; 5 degrees steps)")
 for angle in range(0, 91, 5):
     Line(common=cmm, angle=angle)
 PageBreak()
 
-# school book page with margin
+# ---- school book page with margin
 Text(common=header, text="Lines -> school book page")
 Lines(x=0, x1=19, y=0, y1=0, rows=28, height=1.0, stroke=lightsteelblue)
 Line(x=2, x1=2, y=0, y1=27, stroke=orangered)
 PageBreak()
 
-# school book page - landscape
+# ---- school book page - landscape
 Text(common=header, text="Lines -> school book page; landscape")
 Lines(x=0, x1=0, y=0, y1=28.5, cols=20, width=1.0, stroke=lightsteelblue)
 Line(x=0, x1=19, y=2, y1=2, stroke=orangered)
 PageBreak()
 
-# business cards
+# ---- Grid: business cards
 Text(common=header, text="Grid (4x3)")
 Grid(cols=4, rows=3, width=4.5, height=8.5, stroke=grey)
 PageBreak()
 
-# graph paper
+# ---- Grid: graph paper
 Text(common=header, text='"Graph Paper" -> Grid (95x135) and Grid (19x27)')
 Grid(cols=95, rows=135, size=0.2, stroke=mediumseagreen, stroke_width=0.9)
 Grid(cols=19, rows=27, size=1.0, stroke=mediumseagreen, stroke_width=1.5)
 PageBreak()
 
-# PNG image and various text positions
+# ---- .png image and various text positions
 Text(common=header, text="Rectangle and .png image")
 Rectangle(x=5.9, y=10.9, width=7.2, height=6.2, stroke=silver)
 Image(
@@ -290,7 +291,7 @@ Image(
 )
 PageBreak()
 
-# SVG image
+# ---- SVG image
 # Typewriter by ZakaUddin from
 # <a href="https://thenounproject.com/browse/icons/term/typewriter/" target="_blank" title="Typewriter Icons">Noun Project</a> (CC BY 3.0)
 Text(common=header, text="Rectangle and scaled .svg image")
@@ -313,7 +314,7 @@ Image(
 )
 PageBreak()
 
-# simple text alignment (default is centre);
+# ---- text alignment (default is centre);
 Text(common=header, text="Text styling and alignments")
 
 Rectangle(x=0.75, y=23.5, width=7.5, height=3, stroke_width=1, stroke=grey) #, heading="Aligments")
@@ -322,7 +323,7 @@ Text(text="sholes * typewriter!", x=4.5, y=25, align="centre")
 Text(text="sholes typewriter! *", x=4.5, y=24.5, align="right")
 Text(text="* sholes typewriter!", x=4.5, y=24, align="left")
 
-# auto-text wrapping & justification
+# ---- auto-text wrapping & justification
 LATIN = """At cum perfecto praesent, ne causae voluptua <i>reprimique</i> usu,
 his id odio tamquam <strike>senserit</strike>.<br/>
 <br/>
@@ -345,6 +346,15 @@ Text(x=4.5, y=17, width=10, height=5, wrap=True, align="centre", text=LATIN)
 
 Rectangle(x=4.5, y=18, width=10, height=5, stroke_width=1, stroke=grey)
 Text(x=4.5, y=23, width=10, height=5, wrap=True, align="justify", text=LATIN)
+PageBreak()
+
+# ---- misc
+Text(common=header, text="Miscellaneous")
+Text(common=header_font, x=6, y=23, text="Coin: circle with radii")
+Circle(cx=3, cy=23, radius=2, fill=skyblue, stroke_width=2,
+       radii=[0,15,30,45,60,75,90,105,120,135,150,165,180,195,210,225,240,255,270,285,
+              300,315,330,345])
+Circle(cx=3, cy=23, radius=1.5, fill=skyblue, label="5", font_size=48)
 PageBreak()
 
 Save()

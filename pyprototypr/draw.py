@@ -362,6 +362,11 @@ def Data(**kwargs):
     matrix = kwargs.get('matrix', None)
     images = kwargs.get('images', None)
     filters = kwargs.get('image_filters', None)
+    _extra = kwargs.get('extra', 0)  # extra cards (not part of normal dataset)
+    try:
+        extra = int(_extra)
+    except:
+        tools.feedback(f'Extra must be a whole number, not "{_extra}"!', True)
 
     if filename:  # handle excel and CSV
         dataset = tools.load_data(filename, **kwargs)
@@ -369,7 +374,7 @@ def Data(**kwargs):
         if len(dataset) == 0:
             tools.feedback("Dataset is empty or cannot be loaded!", True)
         else:
-            deck.create(len(dataset))
+            deck.create(len(dataset) + extra)
             deck.dataset = dataset
     elif matrix:  # handle pre-built dict
         dataset = matrix
@@ -377,7 +382,7 @@ def Data(**kwargs):
         if len(dataset) == 0:
             tools.feedback("Matrix data is empty or cannot be loaded!", True)
         else:
-            deck.create(len(dataset))
+            deck.create(len(dataset) + extra)
             deck.dataset = dataset
     elif images:  # handle images
         src = pathlib.Path(images)
@@ -396,8 +401,11 @@ def Data(**kwargs):
         if len(deck.image_list) == 0:
             tools.feedback(
                 f'Directory "{src}" has no relevant files or cannot be loaded!', True)
-        deck.cards = len(deck.image_list)  # OVERWRITE total number of cards
+        deck.cards = len(deck.image_list)  + extra  # OVERWRITE total number of cards
         deck.create(deck.cards)  # resize deck based on images
+
+    else:
+        tools.feedback("You must provide a source of data for Data!", True)
 
 
 def V(*args):

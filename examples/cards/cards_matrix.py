@@ -45,6 +45,7 @@ picture = text(
     font_size=76,
     text=V('IMAGE'))
 
+# card setup
 Card("*", outline, value, picture)
 
 Save()
