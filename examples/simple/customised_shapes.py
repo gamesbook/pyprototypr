@@ -327,6 +327,26 @@ Circle(cx=3, cy=5,
        radii_length=0.8)
 PageBreak()
 
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Rectangle: Mountain")
+Rectangle(
+    x=2, y=1,
+    height=2, width=1,
+    mountain='N',
+    mountain_height=0.5,
+    label="mountain:N:0.5",
+    label_size=5,
+    )
+Rectangle(
+    x=1, y=4,
+    height=1, width=2,
+    mountain='E',
+    mountain_height=0.5,
+    label="mountain:E:0.5",
+    label_size=5,
+    )
+PageBreak()
+
 Text(common=txt, text="END...")
 PageBreak(footer=True)
 

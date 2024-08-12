@@ -221,7 +221,7 @@ class LineShape(BaseShape):
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
         # ---- text
         self.draw_label(
-            cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
+            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
 
 
 class ChordShape(BaseShape):
@@ -260,7 +260,7 @@ class ChordShape(BaseShape):
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
         # ---- text
         self.draw_label(
-            cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
+            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
 
 
 class ArrowShape(BaseShape):
@@ -324,7 +324,7 @@ class ArrowShape(BaseShape):
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
         # ---- text
         self.draw_label(
-            cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
+            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
 
 
 class RhombusShape(BaseShape):
@@ -693,10 +693,17 @@ class RectangleShape(BaseShape):
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # ---- check properties
         is_notched = True if (self.notch or self.notch_x or self.notch_y) else False
+        is_mountain = True if (self.mountain or self.mountain_height) else False
         if (self.rounding or self.rounded) and is_notched:
             tools.feedback("Cannot use rounding or rounded with notch.", True)
+        if (self.rounding or self.rounded) and is_mountain:
+            tools.feedback("Cannot use rounding or rounded with mountain.", True)
         if self.hatch and is_notched:
             tools.feedback("Cannot use hatch with notch.", True)
+        if self.hatch and is_mountain:
+            tools.feedback("Cannot use hatch with mountain.", True)
+        if is_notched and is_mountain:
+            tools.feedback("Cannot use notch and mountain together.", True)
         # ---- calculated properties
         x, y = self.calculate_xy()
         # ---- overrides
@@ -706,6 +713,7 @@ class RectangleShape(BaseShape):
         x_d = x + self._u.width / 2.0  # centre
         y_d = y + self._u.height / 2.0  # centre
         self.area = self.calculate_area()
+        # ---- notch vertices
         if is_notched:
             if self.notch_corners:
                 _ntches = self.notch_corners.split()
@@ -737,6 +745,52 @@ class RectangleShape(BaseShape):
                 self.vertices.append(Point(x + n_x, y))
             else:
                 self.vertices.append(Point(x, y))
+        # ---- mountain vertices
+        elif is_mountain:
+            breakpoint()
+            try:
+                _mountain_height = float(self.mountain_height)
+            except:
+                tools.feedback(
+                    f"A mountain_height of {self.mountain_height} is not valid!", True)
+            if _mountain_height <= 0:
+                tools.feedback(
+                    "The mountain_height must be greater than zero; "
+                    f"not {self.mountain_height}.", True)
+            delta = self.unit(_mountain_height)
+            if not self.mountain:
+                self.mountain = 'N'
+            self.vertices = []
+            if self.mountain.upper() == 'N':
+                self.vertices.append(Point(x, y))
+                self.vertices.append(Point(x, y + self._u.height))
+                self.vertices.append(Point(x + self._u.width / 2.0, y + self._u.height + delta))
+                self.vertices.append(Point(x + self._u.width / 2.0, y + self._u.height))
+                self.vertices.append(Point(x + self._u.width, y))
+                self.vertices.append(Point(x + self._u.width / 2.0, y + delta))
+            elif self.mountain.upper() == 'S':
+                self.vertices.append(Point(x, y))
+                self.vertices.append(Point(x, y + self._u.height))
+                self.vertices.append(Point(x + self._u.width / 2.0, y + self._u.height - delta))
+                self.vertices.append(Point(x + self._u.width / 2.0, y + self._u.height))
+                self.vertices.append(Point(x + self._u.width, y))
+                self.vertices.append(Point(x + self._u.width / 2.0, y - delta))
+            elif self.mountain.upper() == 'E':
+                self.vertices.append(Point(x, y))
+                self.vertices.append(Point(x - delta, y + self._u.height / 2.0))
+                self.vertices.append(Point(x, y + self._u.height))
+                self.vertices.append(Point(x + self._u.width, y + self._u.height))
+                self.vertices.append(Point(x - delta, y - self._u.height / 2.0))
+                self.vertices.append(Point(x + self._u.width, y))
+            elif self.mountain.upper() == 'W':
+                self.vertices.append(Point(x, y))
+                self.vertices.append(Point(x + delta, y + self._u.height / 2.0))
+                self.vertices.append(Point(x, y + self._u.height))
+                self.vertices.append(Point(x + self._u.width, y + self._u.height))
+                self.vertices.append(Point(x + delta, y - self._u.height / 2.0))
+                self.vertices.append(Point(x + self._u.width, y))
+            else:
+                self.vertices = self.set_vertices(**kwargs)
         else:
             self.vertices = self.set_vertices(**kwargs)
         # tools.feedback(f'{len(self.vertices)=}')

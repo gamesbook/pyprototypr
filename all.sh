@@ -6,12 +6,12 @@ python examples/simple/basic.py -d /tmp
 python examples/simple/cards.py -d /tmp
 python examples/simple/cards_design.py -d /tmp
 python examples/simple/cards_images.py -d /tmp
+python examples/simple/customised_shapes.py -d /tmp
 python examples/simple/diagram.py -d /tmp
 python examples/simple/default_shapes.py -d /tmp
-python examples/simple/customised_shapes.py -d /tmp
 python examples/simple/grid_shapes.py -d /tmp
-python examples/simple/track_shapes.py -d /tmp
 python examples/simple/hexagons.py -d /tmp
+python examples/simple/track_shapes.py -d /tmp
 # -- boards: abstract
 echo "Creating abstract boards..."
 python examples/boards/abstract/chessboard.py -d /tmp

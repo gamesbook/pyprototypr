@@ -474,6 +474,8 @@ class BaseCanvas:
         self.notch_corners = self.defaults.get('notch_corners', 'SW NW NE SE')
         self.notch_x = self.defaults.get('notch_x', 0)
         self.notch_y = self.defaults.get('notch_y', 0)
+        self.mountain = self.defaults.get('mountain', '')
+        self.mountain_height = kwargs.get('mountain_height', 0)
         # ---- stadium
         self.edges = self.defaults.get('edges', 'L R')
         # ---- grid / card layout
@@ -737,6 +739,8 @@ class BaseShape:
         self.notch_corners = kwargs.get('notch_corners', cnv.notch_corners)
         self.notch_x = kwargs.get('notch_x', cnv.notch_x)
         self.notch_y = kwargs.get('notch_y', cnv.notch_y)
+        self.mountain = kwargs.get('mountain', cnv.mountain)
+        self.mountain_height = kwargs.get('mountain_height', cnv.mountain_height)
         # ---- stadium
         self.edges = kwargs.get('edges', cnv.edges)
         # ---- grid / card layout
