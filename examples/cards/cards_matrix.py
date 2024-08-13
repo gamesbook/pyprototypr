@@ -21,11 +21,12 @@ Deck(cards=27,
 combos = Matrix(
     labels=['SUIT', 'VALUE', 'IMAGE'],
     data=[
-        ['#FF0000', '#9ACD32','#00BFFF'],  # red, green, skyblue
+        # red, green, skyblue, gold, hotpink
+        ['#FF0000', '#9ACD32','#00BFFF', '#FFD700', '#FF69B4'],
         ['5', '3', '1'],
         ['\u2707', '\u2766', '\u2745']  # tapedrive, heart, snowflake
     ])
-Data(matrix=combos)  # (re)set no. of cards based on length
+Data(matrix=combos, extra=9)  # (re)set no. of cards based on length
 
 # card layout elements
 outline = rectangle(
@@ -33,9 +34,9 @@ outline = rectangle(
     height=7.8, width=5.1,
     rounded=0.5,
     fill=V('SUIT'), stroke=V('SUIT'))
-value = circle(
-    x=1.1, y=7.4,
-    radius=0.8,
+value = hexagon(
+    x=1.1, y=7.5,
+    side=0.8,
     fill=white, stroke=white,
     font_size=28,
     label=V('VALUE'), label_stroke=black)
@@ -44,8 +45,50 @@ picture = text(
     stroke=white,
     font_size=76,
     text=V('IMAGE'))
-
+deco = hexagon(
+    x=1.2, y=7.6,
+    side=0.7,
+    fill=None,
+    stroke=V('SUIT'))
 # card setup
-Card("*", outline, value, picture)
+Card("1-45", outline, value, picture, deco)
+
+# custom cards
+rectC = rectangle(
+    y=1.5,
+    height=7.8,
+    width=1.02,
+    rounded=1,
+    stroke=white)
+Card("46-48",
+     rectangle(common=rectC, x=0.75, fill='#FF0000'),
+     rectangle(common=rectC, x=1.77, fill='#FFD700'),
+     rectangle(common=rectC, x=2.79, fill='#9ACD32'),
+     rectangle(common=rectC, x=3.81, fill='#00BFFF'),
+     rectangle(common=rectC, x=4.83, fill='#FF69B4')
+)
+hexN = hexagon(
+    side=1.5,
+    fill=None,
+    font_size=28,
+    stroke=black,
+    stroke_width=2)
+Card("49-51",
+     hexagon(common=hexN, cx=2.0, cy=8.0, label="1"),
+     hexagon(common=hexN, cx=3.3, cy=5.4, label="3"),
+     hexagon(common=hexN, cx=4.6, cy=2.8, label="5")
+)
+recS = rectangle(
+    height=2,
+    width=2,
+    fill=black,
+    font_size=48,
+    stroke=white,
+    stroke_width=2)
+Card("52-54",
+     rectangle(common=recS, x=1.0, y=7.0, label='\u2707'),
+     rectangle(common=recS, x=2.3, y=4.4, label='\u2766'),
+     rectangle(common=recS, x=3.6, y=1.8, label='\u2745'),
+)
 
 Save()

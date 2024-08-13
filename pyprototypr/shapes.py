@@ -2592,7 +2592,7 @@ class CardShape(BaseShape):
 
     def draw_card(self, cnv, row, col, cid, **kwargs):
         """Draw a card on a given canvas."""
-        log.error("Card r:%s c:%s id:%s shp:%s", row, col, cid, self.shape)
+        # log.debug("Card r:%s c:%s id:%s shp:%s", row, col, cid, self.shape)
         image = kwargs.get('image', None)
         # ---- draw outline
         label = "ID:%s" % cid if self.show_id else ""
