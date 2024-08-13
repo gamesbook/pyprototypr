@@ -693,17 +693,17 @@ class RectangleShape(BaseShape):
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # ---- check properties
         is_notched = True if (self.notch or self.notch_x or self.notch_y) else False
-        is_mountain = True if (self.mountain or self.mountain_height) else False
+        is_chevron = True if (self.chevron or self.chevron_height) else False
         if (self.rounding or self.rounded) and is_notched:
             tools.feedback("Cannot use rounding or rounded with notch.", True)
-        if (self.rounding or self.rounded) and is_mountain:
-            tools.feedback("Cannot use rounding or rounded with mountain.", True)
+        if (self.rounding or self.rounded) and is_chevron:
+            tools.feedback("Cannot use rounding or rounded with chevron.", True)
         if self.hatch and is_notched:
             tools.feedback("Cannot use hatch with notch.", True)
-        if self.hatch and is_mountain:
-            tools.feedback("Cannot use hatch with mountain.", True)
-        if is_notched and is_mountain:
-            tools.feedback("Cannot use notch and mountain together.", True)
+        if self.hatch and is_chevron:
+            tools.feedback("Cannot use hatch with chevron.", True)
+        if is_notched and is_chevron:
+            tools.feedback("Cannot use notch and chevron together.", True)
         # ---- calculated properties
         x, y = self.calculate_xy()
         # ---- overrides
@@ -713,7 +713,7 @@ class RectangleShape(BaseShape):
         x_d = x + self._u.width / 2.0  # centre
         y_d = y + self._u.height / 2.0  # centre
         self.area = self.calculate_area()
-        delta_m_up, delta_m_down = 0.0, 0.0  # potential text offset from mountain
+        delta_m_up, delta_m_down = 0.0, 0.0  # potential text offset from chevron
         # ---- notch vertices
         if is_notched:
             if self.notch_corners:
@@ -746,22 +746,22 @@ class RectangleShape(BaseShape):
                 self.vertices.append(Point(x + n_x, y))
             else:
                 self.vertices.append(Point(x, y))
-        # ---- mountain vertices
-        elif is_mountain:
+        # ---- chevron vertices
+        elif is_chevron:
             try:
-                _mountain_height = float(self.mountain_height)
+                _chevron_height = float(self.chevron_height)
             except:
                 tools.feedback(
-                    f"A mountain_height of {self.mountain_height} is not valid!", True)
-            if _mountain_height <= 0:
+                    f"A chevron_height of {self.chevron_height} is not valid!", True)
+            if _chevron_height <= 0:
                 tools.feedback(
-                    "The mountain_height must be greater than zero; "
-                    f"not {self.mountain_height}.", True)
-            delta_m = self.unit(_mountain_height)
-            if not self.mountain:
-                self.mountain = 'N'
+                    "The chevron_height must be greater than zero; "
+                    f"not {self.chevron_height}.", True)
+            delta_m = self.unit(_chevron_height)
+            if not self.chevron:
+                self.chevron = 'N'
             self.vertices = []
-            if self.mountain.upper() == 'N':
+            if self.chevron.upper() == 'N':
                 delta_m_up = delta_m
                 self.vertices.append(Point(x, y))
                 self.vertices.append(Point(x, y + self._u.height))
@@ -769,7 +769,7 @@ class RectangleShape(BaseShape):
                 self.vertices.append(Point(x + self._u.width, y + self._u.height))
                 self.vertices.append(Point(x + self._u.width, y))
                 self.vertices.append(Point(x + self._u.width / 2.0, y + delta_m))
-            elif self.mountain.upper() == 'S':
+            elif self.chevron.upper() == 'S':
                 delta_m_down = delta_m
                 self.vertices.append(Point(x, y))
                 self.vertices.append(Point(x, y + self._u.height))
@@ -777,14 +777,14 @@ class RectangleShape(BaseShape):
                 self.vertices.append(Point(x + self._u.width, y + self._u.height))
                 self.vertices.append(Point(x + self._u.width, y))
                 self.vertices.append(Point(x + self._u.width / 2.0, y - delta_m))
-            elif self.mountain.upper() == 'W':
+            elif self.chevron.upper() == 'W':
                 self.vertices.append(Point(x, y))
                 self.vertices.append(Point(x - delta_m, y + self._u.height / 2.0))
                 self.vertices.append(Point(x, y + self._u.height))
                 self.vertices.append(Point(x + self._u.width, y + self._u.height))
                 self.vertices.append(Point(x  + self._u.width - delta_m, y + self._u.height / 2.0))
                 self.vertices.append(Point(x + self._u.width, y))
-            elif self.mountain.upper() == 'E':
+            elif self.chevron.upper() == 'E':
                 self.vertices.append(Point(x, y))
                 self.vertices.append(Point(x + delta_m, y + self._u.height / 2.0))
                 self.vertices.append(Point(x, y + self._u.height))
@@ -799,7 +799,7 @@ class RectangleShape(BaseShape):
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- draw rectangle
-        if is_notched or is_mountain:
+        if is_notched or is_chevron:
             pth = cnv.beginPath()
             pth.moveTo(*self.vertices[0])
             for vertex in self.vertices:

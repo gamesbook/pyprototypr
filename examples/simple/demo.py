@@ -350,11 +350,23 @@ PageBreak()
 
 # ---- misc
 Text(common=header, text="Miscellaneous")
-Text(common=header_font, x=6, y=23, text="Coin: circle with radii")
+Text(common=header_font, x=6, y=23, text="Coin: circle with radii + an inner circle")
 Circle(cx=3, cy=23, radius=2, fill=skyblue, stroke_width=2,
-       radii=[0,15,30,45,60,75,90,105,120,135,150,165,180,195,210,225,240,255,270,285,
-              300,315,330,345])
+       radii=[0,15,30,45,60,75,90,105,120,135,150,165,180,
+              195,210,225,240,255,270,285,300,315,330,345])  # 24 - every 15 degrees
 Circle(cx=3, cy=23, radius=1.5, fill=skyblue, label="5", font_size=48)
+
+Text(common=header_font, x=9, y=19,
+     text='Warning Sign: rounded rectangles \nwith a sequence of "E" chevrons')
+Rectangle(x=1, y=17, width=7.5, height=3, rounded=0.5, stroke=black, fill=black)
+Rectangle(x=1.1, y=17.1, width=7.3, height=2.8, rounded=0.5, stroke_width=2, stroke=yellow, fill=None)
+Sequence(
+    rectangle(x=1.5, y=17.1, width=1, height=2.8,
+              chevron='E', chevron_height=1, stroke=yellow, fill=yellow),
+    setting=(1, 3),
+    gap_x=2,
+)
+
 PageBreak()
 
 Save()
