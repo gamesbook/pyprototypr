@@ -907,7 +907,7 @@ class BaseShape:
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an element on a given canvas."""
         self._o = self.set_offset_props(off_x, off_y)
-        # self.abs... variable are absolute page locations in native units
+        # self._abs... variable are absolute page locations in native units
         #  they are for internal use only and are not expected to be called by the user
         #  if set, they should be used to ignore/bypass any other values for calculating
         #  the starting point or centre point for drawing a shape

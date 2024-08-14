@@ -99,7 +99,7 @@ class ImageShape(BaseShape):
         cnv = cnv.canvas if cnv else self.canvas.canvas
         img = None
         # ---- check for usage via Card ID
-        # tools.feedback(f'{ID=} {self.source=}')
+        # tools.feedback(f'*** {ID=} {self.source=}')
         if ID is not None and isinstance(self.source, list):
             _source = self.source[ID]
         else:
@@ -120,7 +120,7 @@ class ImageShape(BaseShape):
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
         # ---- draw image
-        # tools.feedback(f'{_source=} {self.scaling=} ')
+        # tools.feedback(f'*** {_source=} {self.scaling=} ')
         img, is_svg = self.load_image(_source, self.scaling)
         if img:
             # assumes 1 pt == 1 pixel ?
@@ -153,6 +153,7 @@ class DotShape(BaseShape):
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a dot on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        # tools.feedback(f"Dot {self._o.delta_x=} {self._o.delta_y=}")
         cnv = cnv.canvas if cnv else self.canvas.canvas
         if self.use_abs_c:
             x = self._abs_cx
@@ -164,7 +165,7 @@ class DotShape(BaseShape):
         self.fill = self.stroke
         self.set_canvas_props(index=ID)
         # ---- draw dot
-        # tools.feedback(f'*** Dot {size=}')
+        # tools.feedback(f'*** Dot {size=} {x=} {y=}')
         cnv.circle(x, y, size, stroke=0, fill=1 if self.fill else 0)
         # ---- text
         self.draw_heading(cnv, ID, x, y, **kwargs)
@@ -415,7 +416,7 @@ class StadiumShape(BaseShape):
             Point(x + self._u.width, y + self._u.height),
             Point(x + self._u.width, y),
         ]
-        # tools.feedback(f'{len(self.vertices)=}')
+        # tools.feedback(f'*** {len(self.vertices)=}')
         # ---- edges
         _edges = []
         if self.edges:
@@ -447,11 +448,11 @@ class StadiumShape(BaseShape):
             # using Bezier, cannot get half-circle - need to use two quarter circles
 
             # vx, vy = self.points_to_value(vertex.x) - 1, self.points_to_value(vertex.y) - 1
-            # tools.feedback(f'{count=} vx={vx:.2f} vy={vy:.2f}')
+            # tools.feedback(f'*** {count=} vx={vx:.2f} vy={vy:.2f}')
             if count == 2 and ('l' in _edges or 'left' in _edges):
                 cx, cy = vertex.x, vertex.y - 0.5 * self._u.height
                 # _cx, _cy = self.points_to_value(cx) - 1, self.points_to_value(cy) - 1
-                # tools.feedback(f'  cx={_cx:.2f} cy={_cy:.2f}')
+                # tools.feedback(f'***  cx={_cx:.2f} cy={_cy:.2f}')
                 top_curve = geoms.bezier_arc_segment(
                     cx, cy, radius_lr, radius_lr, 90, 180)
                 bottom_curve = geoms.bezier_arc_segment(
@@ -548,7 +549,7 @@ class RectangleShape(BaseShape):
         #_row = self.rows - the_row + self.coord_start_y
         _row = the_row + 1 if not self.coord_start_y else the_row + self.coord_start_y
         _col = the_col + 1 if not self.coord_start_x else the_col + self.coord_start_x
-        # tools.feedback(f' # ---- {_row=},{_col=}')
+        # tools.feedback(f'*** # ---- {_row=},{_col=}')
         # ---- set coord x,y values
         if self.coord_type_x in ['l', 'lower']:
             _x = tools.sheet_column(_col, True)
@@ -719,7 +720,7 @@ class RectangleShape(BaseShape):
             if self.notch_corners:
                 _ntches = self.notch_corners.split()
                 _notches = [str(ntc).upper() for ntc in _ntches]
-            # tools.feedback(f'{self.notch_x=} {self.notch_y=} {_notches=} ')
+            # tools.feedback(f'*** {self.notch_x=} {self.notch_y=} {_notches=} ')
             n_x = self.unit(self.notch_x) if self.notch_x else self.unit(self.notch)
             n_y = self.unit(self.notch_y) if self.notch_y else self.unit(self.notch)
             self.vertices = []
@@ -795,7 +796,7 @@ class RectangleShape(BaseShape):
                 self.vertices = self.set_vertices(**kwargs)
         else:
             self.vertices = self.set_vertices(**kwargs)
-        # tools.feedback(f'{len(self.vertices)=}')
+        # tools.feedback(f'*** {len(self.vertices)=}')
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- draw rectangle
@@ -909,13 +910,6 @@ class RectangleShape(BaseShape):
         #self.draw_multi_string(cnv, x_d, y_d, self.coord_text)
         # ---- return key settings
         return GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
-
-# class SquareShape(BaseShape):
-#     pass
-
-#     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-#         """Draw a square on a given canvas."""
-#         pass
 
 
 class SquareShape(RectangleShape):
@@ -1116,7 +1110,7 @@ class ArcShape(BaseShape):
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- draw arc
-        # tools.feedback(f'Arc *** {x_1=}, {y_1=}, {x_2=}, {y_2=}')
+        # tools.feedback(f'*** Arc: {x_1=}, {y_1=}, {x_2=}, {y_2=}')
         cnv.arc(x_1, y_1, x_2, y_2, startAng=self.angle, extent=self.angle_width) # anti-clock from flat; 90°
 
 
@@ -1175,7 +1169,7 @@ class SectorShape(BaseShape):
             self.y = self.cy - self.radius
             self.x_1 = self.cx + self.radius
             self.y_1 = self.cy + self.radius
-            # tools.feedback(f'{self.x=} {self.y=} {self.x1=} {self.y1=}')
+            # tools.feedback(f'*** {self.x=} {self.y=} {self.x1=} {self.y1=}')
         else:
             self.x_1 = self.x + 2.0 * self.radius
             self.y_1 = self.y + 2.0 * self.radius
@@ -1401,7 +1395,7 @@ class HexShape(BaseShape):
                     a=int(parts[0]),
                     b=int(parts[1]),
                     style=parts[2] if len(parts) > 2 else None)
-                # tools.feedback(f'{the_link=}')
+                # tools.feedback(f'*** {the_link=}')
             except TypeError:
                 tools.feedback(
                     f'Cannot use {parts[0]} and/or {parts[1]} as hex side numbers.',
@@ -1470,7 +1464,7 @@ class HexShape(BaseShape):
         lines = int((num - 1) / 2 + 1)
 
         if num >= 1:
-            # tools.feedback(f'{vertices=} {num=} {_dirs=}')
+            # tools.feedback(f'*** {vertices=} {num=} {_dirs=}')
             if self.hex_top in ['p', 'pointy']:
                 if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
                     self.make_path_vertices(cnv, vertices, 0, 3)
@@ -1511,7 +1505,7 @@ class HexShape(BaseShape):
         """Draw a hexagon on a given canvas."""
         # if self.height < 2.2: breakpoint()
         # print(kwargs, ID, self.height)
-        # tools.feedback(f'Will draw a hex shape: {kwargs} {off_x} {off_y} {ID}')
+        # tools.feedback(f'*** draw hexshape: {kwargs} {off_x} {off_y} {ID}')
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         is_cards = kwargs.get("is_cards", False)
         cnv = cnv.canvas if cnv else self.canvas.canvas
@@ -1667,7 +1661,7 @@ class HexShape(BaseShape):
             ]
 
         # ---- draw hexagon
-        # tools.feedback(f'{x=} {y=} {self.vertices=}')
+        # tools.feedback(f'*** {x=} {y=} {self.vertices=}')
         pth = cnv.beginPath()
         pth.moveTo(*self.vertices[0])
         for vertex in self.vertices:
@@ -1691,7 +1685,7 @@ class HexShape(BaseShape):
         if self.centre_shape:
             cshape_name = self.centre_shape.__class__.__name__
             if cshape_name in GRID_SHAPES_WITH_CENTRE:
-                # tools.feedback(f'IN-HEX {cshape_name} at ({x_d=},{y_d=}, '
+                # tools.feedback(f'*** IN-HEX {cshape_name} at ({x_d=},{y_d=}, '
                 #               f'{self.centre_shape_x}, {self.centre_shape_y})')
                 self.centre_shape.draw(
                     _abs_cx=x_d + self.unit(self.centre_shape_x),
@@ -1849,7 +1843,7 @@ class EquilateralTriangleShape(BaseShape):
         angle = self.angle
         side = self._u.side if self._u.side else self._u.width
         height = 0.5 * math.sqrt(3) * side  # ½√3(a)
-        # tools.feedback(f'{hand=} {flip=} {side=} {height=} {self.fill=} {self.stroke=}')
+        # tools.feedback(f'*** {hand=} {flip=} {side=} {height=} {self.fill=} {self.stroke=}')
         self.vertices = []
         pt0 = Point(x + self._o.delta_x, y + self._o.delta_y)
         self.vertices.append(pt0)
@@ -1880,7 +1874,7 @@ class EquilateralTriangleShape(BaseShape):
         # ---- calculate centroid
         x_c = (self.vertices[0].x + self.vertices[1].x + self.vertices[2].x) / 3.0
         y_c = (self.vertices[0].y + self.vertices[1].y + self.vertices[2].y) / 3.0
-        # tools.feedback(f'{x_c=} {y_c=}')
+        # tools.feedback(f'*** {x_c=} {y_c=}')
         # ---- debug
         self.debug(cnv, vertices=self.vertices)
         # ---- draw hatch
@@ -1982,33 +1976,38 @@ class CircleShape(BaseShape):
         if self.cx and self.cy:
             self.x = self.cx - self.radius
             self.y = self.cy - self.radius
-            self.width = 2.0 * self.radius
-            self.height = 2.0 * self.radius
-        # ---- calculate centre
-        radius = self._u.radius
-        if self.row is not None and self.col is not None:
-            self.x_c = self.col * 2.0 * radius + radius
-            self.y_c = self.row * 2.0 * radius + radius
-            # log.debug(f"{self.col=}, {self.row=}, {self.x_c=}, {self.y_c=}")
-        elif self.cx and self.cy:
-            self.x_c = self._u.cx
-            self.y_c = self._u.cy
         else:
-            self.x_c = self._u.x + radius
-            self.y_c = self._u.y + radius
+            self.cx = self.x + self.radius
+            self.cy = self.y + self.radius
+        self.width = 2.0 * self.radius
+        self.height = 2.0 * self.radius
+        # ---- RESET UNIT PROPS (last!)
+        self.set_unit_properties()
+
+        # # ---- calculate centre
+        # radius = self._u.radius
+        # if self.row is not None and self.col is not None:
+        #     self.x_c = self.col * 2.0 * radius + radius
+        #     self.y_c = self.row * 2.0 * radius + radius
+        #     # log.debug(f"{self.col=}, {self.row=}, {self.x_c=}, {self.y_c=}")
+        # elif self.cx and self.cy:
+        #     self.x_c = self._u.cx
+        #     self.y_c = self._u.cy
+        # else:
+        #     self.x_c = self._u.x + self._u.radius
+        #     self.y_c = self._u.y + self._u.radius
 
     def __str__(self):
         return f'{self.__class__.__name__}::{self.kwargs}'
 
     def calculate_centre(self):
         # ---- calculated centre
-        if not self.use_abs_c and (self._o.delta_x or self._o.delta_y):
-            self.x_c = self.x_c + self._o.delta_x
-            self.y_c = self.y_c + self._o.delta_y
-        # ---- absolute override
         if self.use_abs_c:
             self.x_c = self._abs_cx
             self.y_c = self._abs_cy
+        else:
+            self.x_c = self._u.cx + self._o.delta_x
+            self.y_c = self._u.cy + self._o.delta_y
         return self.x_c, self.y_c
 
     def calculate_area(self):
@@ -2122,18 +2121,21 @@ class CircleShape(BaseShape):
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw circle on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        # tools.feedback(f"*** Circle: {self._o.delta_x=} {self._o.delta_y=}")
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        self.calculate_centre()
+        # ---- set properties
+        x, y = self.calculate_centre()
         self.area = self.calculate_area()
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- draw circle
+        # tools.feedback(f'*** Circle: {x=} {y=}')
         cnv.circle(
-            self.x_c, self.y_c, self._u.radius, stroke=1, fill=1 if self.fill else 0)
+            x, y, self._u.radius, stroke=1, fill=1 if self.fill else 0)
         # ---- draw hatch
         if self.hatch:
             if self.rotate:
-                # tools.feedback(f'{self.hatch=}, {self.rotate=}, {type(cnv)}')
+                # tools.feedback(f'*** {self.hatch=}, {self.rotate=}, {type(cnv)}')
                 cnv.saveState()
                 cnv.translate(self.x_c, self.y_c)
                 self.draw_hatch(cnv, ID, self.hatch, 0, 0)
@@ -2144,7 +2146,7 @@ class CircleShape(BaseShape):
         # ---- draw radii
         if self.radii:
             if self.rotate:
-                # tools.feedback(f'{self.hatch=}, {self.rotate=}, {type(cnv)}')
+                # tools.feedback(f'*** {self.hatch=}, {self.rotate=}, {type(cnv)}')
                 cnv.saveState()
                 cnv.translate(self.x_c, self.y_c)
                 self.draw_radii(cnv, ID, 0, 0)
@@ -2201,7 +2203,7 @@ class CompassShape(BaseShape):
         fourth = third + 2 * half_second
         ranges.append((third, fourth))
         ranges.append((fourth, 360.0))
-        # tools.feedback(f'{ranges=}')
+        # tools.feedback(f'*** {ranges=}')
         return ranges
 
     def rectangle_radius(self, cnv, ranges, angle, height, width):
@@ -2223,7 +2225,7 @@ class CompassShape(BaseShape):
         x = radius * math.sin(radians)
         y = radius * math.cos(radians)
         pth = cnv.beginPath()
-        # tools.feedback(f'{self.x_c=}, {self.y_c=}')
+        # tools.feedback(f'*** {self.x_c=}, {self.y_c=}')
         pth.moveTo(self.x_c, self.y_c)
         pth.lineTo(x + self.x_c, y + self.y_c)
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
@@ -2422,7 +2424,7 @@ class StarFieldShape(BaseShape):
         """Draw a single star at a Point (x,y)."""
         color = self.colors[random.randint(0, len(self.colors) - 1)]
         size = self.sizes[random.randint(0, len(self.sizes) - 1)]
-        # tools.feedback(f'{color=} {size=} {position=}')
+        # tools.feedback(f'*** {color=} {size=} {position=}')
         cnv.setFillColor(color)
         cnv.setStrokeColor(color)
         cnv.circle(position.x, position.y, size, stroke=1, fill=1)
@@ -2433,7 +2435,7 @@ class StarFieldShape(BaseShape):
             pass
 
     def random_stars(self, cnv):
-        # tools.feedback(f'{self.enclosure=}')
+        # tools.feedback(f'*** {self.enclosure=}')
         for star in range(0, self.star_count):
             if isinstance(self.enclosure, RectangleShape):
                 x_y = Point(
@@ -2461,8 +2463,8 @@ class StarFieldShape(BaseShape):
         random.seed()
         area = math.sqrt(self.enclosure.calculate_area())
         self.star_count = round(self.density * self.points_to_value(area))
-        # tools.feedback(f'{self.star_pattern =} {self.enclosure}')
-        # tools.feedback(f'{area=} {self.density=} {self.star_count=}')
+        # tools.feedback(f'*** {self.star_pattern =} {self.enclosure}')
+        # tools.feedback(f'*** {area=} {self.density=} {self.star_count=}')
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- draw starfield
@@ -2498,7 +2500,7 @@ class GridShape(BaseShape):
             self.cols = int(
                 (self.page_width - self.margin_left - self.margin_right)
                 / self.points_to_value(width))
-        # tools.feedback(f'{self.rows=} {self.cols=}')
+        # tools.feedback(f'*** {self.rows=} {self.cols=}')
         y_cols, x_cols = [], []
         for y_col in range(0, self.rows + 1):
             y_cols.append(y + y_col * height)
@@ -2647,6 +2649,7 @@ class CardShape(BaseShape):
             try:
                 # ---- * normal element
                 iid = members.index(cid + 1)
+                # tools.feedback(f"*** {iid=} {col=} {self.width=} / {row=} {self.height=}")
                 flat_ele.draw(
                     cnv=cnv, off_x=col * self.width, off_y=row * self.height, ID=iid
                 )
@@ -2814,14 +2817,14 @@ class SequenceShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         log.debug("gx:%s gy:%s", self.gap_x, self.gap_y)
-        # tools.feedback(f'@Seqnc@ {self.label=} // {off_x=}, {off_y=}')
+        # tools.feedback(f'* @Seqnc@ {self.label=} // {off_x=}, {off_y=}')
         _off_x, _off_y = off_x, off_y
 
         for key, item in enumerate(self.setting_list):
             _ID = ID if ID is not None else self.shape_id
             # breakpoint()
             kwargs['text_sequence'] = f'{item}'
-            # tools.feedback(f'   @Seqnc@ {self.gap_x=}, {self.gap_y=}')
+            # tools.feedback(f'*   @Seqnc@ {self.gap_x=}, {self.gap_y=}')
             off_x = _off_x + key * self.gap_x
             off_y = _off_y + key * self.gap_y
             flat_elements = tools.flatten(self._object)
@@ -3061,7 +3064,7 @@ class RectangleGrid(VirtualGrid):
             match self.pattern.lower():
                 # ---- snake
                 case 'snake' | 'snaking' | 's':
-                    # tools.feedback(f'{count=} {self.grid_size=} {self.stop=}')
+                    # tools.feedback(f'*** {count=} {self.grid_size=} {self.stop=}')
                     if count > self.grid_size or (self.stop and count > self.stop):
                         return
                     yield Location(col, row, x, y)
@@ -3573,5 +3576,5 @@ class FooterShape(BaseShape):
         y = self.unit(self.margin_bottom) / 2.0   # centre in margin
         if not self.kwargs.get("text"):
             self.kwargs["text"] = "Page %s" % ID
-        # tools.feedback(f'FooterShape {type(cnv)=}')
+        # tools.feedback(f'*** FooterShape {type(cnv)=}')
         self.draw_multi_string(cnv.canvas, x, y, self.kwargs["text"], align='centre')

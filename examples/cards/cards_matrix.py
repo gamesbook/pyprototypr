@@ -61,34 +61,37 @@ rectC = rectangle(
     rounded=1,
     stroke=white)
 Card("46-48",
-     rectangle(common=rectC, x=0.75, fill='#FF0000'),
-     rectangle(common=rectC, x=1.77, fill='#FFD700'),
-     rectangle(common=rectC, x=2.79, fill='#9ACD32'),
-     rectangle(common=rectC, x=3.81, fill='#00BFFF'),
-     rectangle(common=rectC, x=4.83, fill='#FF69B4')
+      rectangle(common=rectC, x=0.75, fill='#FF0000'),
+      rectangle(common=rectC, x=1.77, fill='#FFD700'),
+      rectangle(common=rectC, x=2.79, fill='#9ACD32'),
+      rectangle(common=rectC, x=3.81, fill='#00BFFF'),
+      rectangle(common=rectC, x=4.83, fill='#FF69B4')
 )
+
 hexN = hexagon(
     side=1.5,
     fill=None,
     font_size=28,
     stroke=black,
     stroke_width=2)
+hexI = hexagon(
+    side=1.3,
+    fill=None,
+    stroke=black,
+    stroke_width=.5)
 Card("49-51",
      hexagon(common=hexN, cx=2.0, cy=8.0, label="1"),
      hexagon(common=hexN, cx=3.3, cy=5.4, label="3"),
-     hexagon(common=hexN, cx=4.6, cy=2.8, label="5")
+     hexagon(common=hexN, cx=4.6, cy=2.8, label="5"),
+     hexagon(common=hexI, cx=2.0, cy=8.0),
+     hexagon(common=hexI, cx=3.3, cy=5.4),
+     hexagon(common=hexI, cx=4.6, cy=2.8),
 )
-recS = rectangle(
-    height=2,
-    width=2,
-    fill=black,
-    font_size=48,
-    stroke=white,
-    stroke_width=2)
+
 Card("52-54",
-     rectangle(common=recS, x=1.0, y=7.0, label='\u2707'),
-     rectangle(common=recS, x=2.3, y=4.4, label='\u2766'),
-     rectangle(common=recS, x=3.6, y=1.8, label='\u2745'),
+     circle(fill=black, stroke=white, radius=1.25, cx=2, cy=8, font_size=48, label='\u2707'),
+     circle(fill=black, stroke=white, radius=1.25, cx=3.3, cy=5.4, font_size=48, label='\u2766'),
+     circle(fill=black, stroke=white, radius=1.25, cx=4.6, cy=2.8, font_size=48, label='\u2745'),
 )
 
 Save()
