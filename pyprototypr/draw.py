@@ -121,6 +121,9 @@ def Create(**kwargs):
     parser.add_argument("-d", "--directory", help="Specify output directory", default='')
     parser.add_argument("-p", "--pages", help="Specify which pages to process", default='')
     pargs = parser.parse_args()
+    # NB - pages does not work - see notes in PageBreak()
+    if pargs.pages:
+        tools.feedback('Pages is not an implemented feature - sorry!')
     # ---- filename and fallback
     _filename = kwargs.get('filename', '')
     if not _filename:
@@ -192,7 +195,19 @@ def PageBreak(**kwargs):
         kwargs['pagesize'] = pagesize
         footer = FooterShape(_object=None, canvas=cnv, **kwargs)
         footer.draw(cnv=cnv, ID=page_count, **kwargs)
-    # TODO - if count not in the required pargs.pages then do NOT show!
+    # If count not in the required pargs.pages then do NOT show!
+    # Note: this code does not work; seems there is no way to clear or hide the canvas
+    #       in ReportLab that would support this operation
+    # try:
+    #     pages = tools.sequence_split(pargs.pages) if pargs.pages else None
+    # except:
+    #     tools.feedback(
+    #         f'Cannot process "pages" value {pargs.pages} - please check and try again!',
+    #         True)
+    # if pages and page_count not in pages:
+    #     pass
+    # else:
+    #     cnv.canvas.showPage()
     cnv.canvas.showPage()
 
 
