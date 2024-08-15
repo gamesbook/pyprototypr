@@ -7,14 +7,14 @@ Created on: 12 August 2024
 from pyprototypr.draw import *
 
 # create deck
-Create(filename='cards_matrix.pdf')
+Create(filename='cards_matrix_two.pdf')
 Deck(cards=27,
      margin=0.85,
      margin_bottom=1.9,
      height=8.8,
      width=6.3,
      rounding=0.5,
-     grid_marks=True)  #
+     grid_marks=True)
 
 # generate data for cards
 # Note: symbols are from https://www.w3schools.com/charsets/ref_utf_dingbats.asp
@@ -24,7 +24,8 @@ combos = Matrix(
         # red, green, skyblue, gold, hotpink
         ['#FF0000', '#9ACD32','#00BFFF', '#FFD700', '#FF69B4'],
         ['5', '3', '1'],
-        ['\u2707', '\u2766', '\u2745']  # tapedrive, heart, snowflake
+        # tapedrive, heart, snowflake
+        ['\u2707', '\u2766', '\u2745']
     ])
 Data(matrix=combos, extra=9)  # (re)set no. of cards based on length
 
@@ -50,6 +51,7 @@ deco = hexagon(
     side=0.7,
     fill=None,
     stroke=V('SUIT'))
+
 # card setup
 Card("1-45", outline, value, picture, deco)
 
