@@ -7,7 +7,7 @@ sections are designed to be read in order - apart from the examples, they all co
 useful information and build on each other.
 
 1. *[Overview](overview.md)* -
-    a brief introduction of the purpose and rationale of the program
+    a brief introduction of the purpose and rationale of **pyprototypr**
 2. *[Setting Up](setting_up.md)* -
     how to get **pyprototypr** working on your computer
 3. *[Basic Concepts](basic_concepts.md)* -
@@ -24,12 +24,14 @@ useful information and build on each other.
     how to work with common/reused items, repetitive elements and grid layouts
 9. *[Card Decks](card_decks.md)* -
     how to create a deck, or set, of cards/tiles
-10. *[Hexagonal Grids](hexagonal_grids.md)* -
+11. *[Hexagonal Grids](hexagonal_grids.md)* -
     how to create designs or layouts on a hexagonal grid
 11. *[Available Examples](available_examples.md)* -
-    an overview of the examples provided with **pyprototypr**
-12. *[Additional Resources](additional_resources.md)* -
-    links to information for supplementing prototypes
+    a walkthough of some of the examples provided with **pyprototypr**
+12. *[Using Python Commands](python_commands.md)* -
+    how to work with loops and if statements for more flexibilty
+13. *[Additional Resources](additional_resources.md)* -
+    links to information for supplementing pyprototypr
 
 **pyprototypr** also has a formal [reference manual](manual_technical.rst)
 that documents in more detail all the various elements and commands available in the
