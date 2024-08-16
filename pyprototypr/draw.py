@@ -7,6 +7,7 @@ from __future__ import division
 # lib
 import argparse
 from copy import copy
+from datetime import datetime
 import itertools
 import logging
 import math
@@ -259,6 +260,21 @@ def Version():
 def Feedback(msg):
     global cnv
     tools.feedback(msg)
+
+
+def Today(details: str = 'datetime', style: str = 'iso'):
+    """Return string-formatted current date / datetime in a pre-defined style
+    """
+    current = datetime.now()
+    if details == 'date' and style == 'usa':
+        return current.strftime('%B %d %Y')  # USA
+    if details == 'date' and style == 'eur':
+        return current.strftime('%Y-%m-%d')  # Eur
+    if details == 'datetime' and style == 'eur':
+        return current.strftime('%Y-%m-%d %H:%m')  # Eur
+    if details == 'datetime' and style == 'usa':
+        return current.strftime('%B %d %Y %I:%m%p')  # USA
+    return current.isoformat(timespec='seconds')  # ISO
 
 
 def Random(end: int = 1, start: int = 0, decimals: int = 2):

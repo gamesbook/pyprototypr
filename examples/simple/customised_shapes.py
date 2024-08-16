@@ -19,7 +19,6 @@ Text(common=txt, text="START...")
 PageBreak(footer=True)
 
 Blueprint(subdivisions=5, stroke_width=0.8)
-Rectangle(height=2, width=1, x=0, y=0, fill=None)
 Text(common=txt, text="Blueprint: subdivisions=5")
 Footer()
 PageBreak()
@@ -369,6 +368,16 @@ Rectangle(
     title="title-E",
     heading="head-E",
     )
+PageBreak()
+
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Dates: format and styles")
+dtext = Common(x=0.5, align="left", font_size=8)
+Text(common=dtext, y=5, text=Today())
+Text(common=dtext, y=4, text=Today(details="date", style="usa"))
+Text(common=dtext, y=3, text=Today(details="date", style="eur"))
+Text(common=dtext, y=2, text=Today(details="datetime", style="usa"))
+Text(common=dtext, y=1, text=Today(details="datetime", style="eur"))
 PageBreak()
 
 Text(common=txt, text="END...")

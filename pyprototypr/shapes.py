@@ -1213,14 +1213,7 @@ class PolygonShape(BaseShape):
     Regular polygon on a given canvas.
     """
 
-    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Draw a regular polygon on a given canvas."""
-        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
-        cnv = cnv.canvas if cnv else self.canvas.canvas
-        # convert to using units
-        x = self._u.x + self._o.delta_x
-        y = self._u.y + self._o.delta_y
-        # calc - assumes x and y are the centre
+    def get_radius(self):
         if self.radius:
             radius = self._u.radius
         else:
@@ -1228,7 +1221,30 @@ class PolygonShape(BaseShape):
             sides = int(self.sides)
             # 180 degrees is math.pi radians
             radius = side / (2.0 * math.sin(math.pi / sides))
+        return radius
+
+    def calculate_area(self):
+        sides = int(self.sides)
+        radius = self.get_radius()
+        area = (sides * radius * radius / 2.0) * math.sin(2.0 * math.pi / sides)
+        return area
+
+    def get_vertices(self):
+        """Calculate centre, radius and vertices of polygon.
+        """
+        # convert to using units
+        x = self._u.x + self._o.delta_x
+        y = self._u.y + self._o.delta_y
+        # calc - assumes x and y are the centre
+        radius = self.get_radius()
         vertices = geoms.polygon_vertices(self.sides, radius, self.rotate, Point(x, y))
+        return x, y, radius, vertices
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw a regular polygon on a given canvas."""
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        x, y, radius, vertices = self.get_vertices()
         if not vertices or len(vertices) == 0:
             return
         # ---- set canvas
@@ -2436,7 +2452,12 @@ class StarFieldShape(BaseShape):
 
     def random_stars(self, cnv):
         # tools.feedback(f'*** {self.enclosure=}')
-        for star in range(0, self.star_count):
+        if isinstance(self.enclosure, CircleShape):
+            x_c, y_c = self.enclosure.calculate_centre()
+        if isinstance(self.enclosure, PolygonShape):
+            x_c, y_c, radius, vertices = self.enclosure.get_vertices()
+        stars = 0
+        while stars < self.star_count:
             if isinstance(self.enclosure, RectangleShape):
                 x_y = Point(
                     random.random() * self.enclosure._u.width + self._o.delta_x,
@@ -2445,12 +2466,21 @@ class StarFieldShape(BaseShape):
             elif isinstance(self.enclosure, CircleShape):
                 r_fraction = random.random() * self.enclosure._u.radius
                 angle = math.radians(random.random() * 360.0)
-                x = r_fraction * math.cos(angle) + self.enclosure.x_c + self._o.delta_x
-                y = r_fraction * math.sin(angle) + self.enclosure.y_c + self._o.delta_y
+                x = r_fraction * math.cos(angle) + x_c
+                y = r_fraction * math.sin(angle) + y_c
                 x_y = Point(x, y)
+            elif isinstance(self.enclosure, PolygonShape):
+                r_fraction = random.random() * radius
+                angle = math.radians(random.random() * 360.0)
+                x = r_fraction * math.cos(angle) + x_c
+                y = r_fraction * math.sin(angle) + y_c
+                x_y = Point(x, y)
+                if not geoms.point_in_polygon(x_y, vertices):
+                    continue
             else:
-                tools.feedback(f'{self.enclosure} IS NOT IMPLEMENTED', True)
+                tools.feedback(f'{self.enclosure} IS NOT AN IMPLEMENTED SHAPE!', True)
             self.draw_star(cnv, x_y)
+            stars += 1
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw StarField pattern on a given canvas."""

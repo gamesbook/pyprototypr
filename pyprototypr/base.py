@@ -557,7 +557,11 @@ class BaseCanvas:
         self.hatch_stroke = self.defaults.get('hatch_stroke', self.stroke)
         self.hatch_dots = self.defaults.get('hatch_dots', None)
         self.hatch_cap = self.defaults.get('hatch_cap', self.line_cap)
-        self.hatch_dashes = self.defaults.get('hatch_dashes', None)
+        self.hatch_dashes = self.defaults.get('hatch_dashes', None)# ---- OTHER
+        # defaults for attributes called/set elsewhere e.g. in draw()
+        self.use_abs = False
+        self.use_abs_1 = False
+        self.use_abs_c = False
 
     def get_canvas(self):
         """Return reportlab canvas object"""
@@ -820,6 +824,11 @@ class BaseShape:
         self.hatch_cap = kwargs.get('hatch_cap', cnv.hatch_cap)
         self.hatch_dots = kwargs.get('hatch_dots', cnv.line_dots)
         self.hatch_dashes = kwargs.get('hatch_dashes', cnv.dashes)
+        # ---- OTHER
+        # defaults for attributes called/set elsewhere e.g. in draw()
+        self.use_abs = False
+        self.use_abs_1 = False
+        self.use_abs_c = False
 
         # ---- CHECK ALL
         correct, issue = self.check_settings()
@@ -1217,11 +1226,11 @@ class BaseShape:
         """Draw line between two vertices"""
         self.make_path_points(cnv, vertices[v1], vertices[v2])
 
-    def textify(self, index=None, text=None):
+    def textify(self, index: int = None, text: str = ''):
         """Extract text from a list, or create string, based on index & type."""
         _text = text or self.text
         log.debug("text %s %s %s %s", index, text, _text, type(_text))
-        if not _text:
+        if _text is None:
             return
         if hasattr(_text, 'lower'):
             return _text

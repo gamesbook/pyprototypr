@@ -7,6 +7,7 @@ from collections import namedtuple
 import cmath
 import logging
 import math
+from typing import List
 
 # local
 from pyprototypr.utils.support import numbers, feedback
@@ -67,6 +68,14 @@ def degrees_to_xy(degrees: float, radius: float, origin: Point) -> Point:
     x_o = math.cos(radians) * radius + origin.x
     y_o = math.sin(-radians) * radius + origin.y
     return Point(x_o, y_o)
+
+
+def point_in_polygon(point: Point, vertices: List[Point], valid_border=False) -> bool:
+    """Wrapper for is_inside_polygon() function.
+    """
+    _point = (Point.x, Point.y)
+    _vertices = [(pnt.x, pnt.y) for pnt in vertices]
+    return is_inside_polygon(_point, _vertices, valid_border)
 
 
 def is_inside_polygon(point: tuple, vertices: list, valid_border=False) -> bool:
