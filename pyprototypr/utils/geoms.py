@@ -73,7 +73,7 @@ def degrees_to_xy(degrees: float, radius: float, origin: Point) -> Point:
 def point_in_polygon(point: Point, vertices: List[Point], valid_border=False) -> bool:
     """Wrapper for is_inside_polygon() function.
     """
-    _point = (Point.x, Point.y)
+    _point = (point.x, point.y)
     _vertices = [(pnt.x, pnt.y) for pnt in vertices]
     return is_inside_polygon(_point, _vertices, valid_border)
 

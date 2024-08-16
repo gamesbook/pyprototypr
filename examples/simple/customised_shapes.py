@@ -140,7 +140,7 @@ Lines(x=1, x1=1, y=3, y1=6, cols=2, width=1.5, label_size=8, label="col; wd=1.5"
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=txt, text="StarField: Rectangle; multicolor")
+Text(common=txt, text="StarField: Rectangle; multi-color")
 Rectangle(x=0, y=0, height=3, width=3, fill=black)
 StarField(
     density=20,
@@ -150,11 +150,21 @@ StarField(
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=txt, text="StarField: Circle; multisize")
+Text(common=txt, text="StarField: Circle; multi-size")
 Circle(x=0, y=0, radius=1.5, fill=black)
 StarField(
     density=20,
     enclosure=circle(x=0, y=0, radius=1.5),
+    sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
+PageBreak()
+
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="StarField: Poly. multi-color&size")
+Polygon(x=2, y=2, radius=1.5, sides=10, fill=black)
+StarField(
+    density=50,
+    enclosure=polygon(x=2, y=2, sides=10, radius=1.5),
+    colors=[white, white, white, red, green, blue],
     sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
 PageBreak()
 

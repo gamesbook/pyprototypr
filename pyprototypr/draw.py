@@ -112,6 +112,7 @@ def Create(**kwargs):
     landscape = kwargs.get('landscape', False)
     kwargs = margins(**kwargs)
     pagesize = kwargs.get('pagesize', A4)
+    breakpoint()
     defaults = kwargs.get('defaults', None)
     # ---- fonts
     base_fonts()

@@ -11,6 +11,9 @@ import random
 # third party
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle
+from reportlab.lib.pagesizes import (
+    A6, A5, A4, A3, A2, A1, A0, LETTER, LEGAL, ELEVENSEVENTEEN,
+    letter, legal, elevenSeventeen, B6, B5, B4, B3, B2, B0, landscape)
 
 # local
 from pyprototypr.utils.geoms import (
@@ -122,13 +125,35 @@ class ImageShape(BaseShape):
         # ---- draw image
         # tools.feedback(f'*** {_source=} {self.scaling=} ')
         img, is_svg = self.load_image(_source, self.scaling)
+        rotate = kwargs.get('rotate', self.rotate)
+        mvy = copy.copy(y)
         if img:
             # assumes 1 pt == 1 pixel ?
             if is_svg:
                 from reportlab.graphics import renderPDF
                 renderPDF.draw(img, cnv, x=x, y=y)
             else:
-                cnv.drawImage(img, x=x, y=y, width=width, height=height, mask="auto")
+                if rotate:
+                    """
+                    # The image dimensions in cm
+                    width, height = img.size
+
+                    # now move the canvas origin to the middle of the page
+                    c.translate(A4[0] / 2, A4[1] / 2)
+                    # and rotate it
+                    c.rotate(rotation)
+                    # now draw the image relative to the origin
+                    c.drawImage(ImageReader(img), -width/2, -height/2, width, height, 'auto')
+                    """
+                    breakpoint()
+                    print(A4[0] / 2, A4[1] / 2)
+                    cnv.saveState()
+                    cnv.translate(x + width, y - height)
+                    cnv.rotate(rotate)
+                    cnv.drawImage(img, -width/2, -height/2, width=width, height=height, mask="auto")
+                    cnv.restoreState()
+                else:
+                    cnv.drawImage(img, x=x, y=y, width=width, height=height, mask="auto")
         # ---- text
         xc = x + width / 2.0
         if self.heading:
@@ -906,8 +931,8 @@ class RectangleShape(BaseShape):
         # ----  numbering
         self.set_coord(cnv, x_d, y_d)
         # ***TEMP ***
-        #cnv.setFont(self.font_face, 24)
-        #self.draw_multi_string(cnv, x_d, y_d, self.coord_text)
+        # cnv.setFont(self.font_face, 24)
+        # self.draw_multi_string(cnv, x_d, y_d, self.coord_text)
         # ---- return key settings
         return GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
 
@@ -1931,7 +1956,7 @@ class TextShape(BaseShape):
             height = self._u.height
         if self.width:
             width = self._u.width
-        rotate = kwargs.get('rotate', 0)
+        rotate = kwargs.get('rotate', self.rotate)
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- overrides for text value
@@ -1976,8 +2001,8 @@ class TextShape(BaseShape):
             cnv.setFillColor(self.stroke)
             # if _text == '1':
             #     self.debug_point(cnv, Point(x_t, y_t), '    !!!')
-            # tools.feedback(f"!!! {x_t=} {y_t=} {_text=} {_sequence} {self.stroke=}")
-            self.draw_multi_string(cnv, x_t, y_t, _text, rotate)
+            # tools.feedback(f"!!! {x_t=} {y_t=} {_text=} {_sequence} {rotate=}")
+            self.draw_multi_string(cnv, x_t, y_t, _text, rotate=rotate)
 
 
 class CircleShape(BaseShape):

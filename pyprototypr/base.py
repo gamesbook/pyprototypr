@@ -1316,7 +1316,7 @@ class BaseShape:
         self.draw_multi_string(
             canvas=canvas, x=x, y=y, string=string, align=align, rotate=rotate)
 
-    def draw_heading(self, canvas, ID, x, y, y_offset=0, rotate=0, **kwargs):
+    def draw_heading(self, canvas, ID, x, y, y_offset=0, align=None, rotate=0, **kwargs):
         """Draw the heading for a shape (normally above the shape).
 
         Requires native units (i.e. points)!
@@ -1327,7 +1327,7 @@ class BaseShape:
             canvas.setFont(self.font_face, self.heading_size)
             canvas.setFillColor(self.heading_stroke)
             self.draw_multi_string(
-                canvas, x, y + y_off, ttext, rotate=rotate, **kwargs)
+                canvas, x, y + y_off, ttext, align=align, rotate=rotate, **kwargs)
 
     def draw_label(self, canvas, ID, x, y, align=None, rotate=0, centred=True, **kwargs):
         """Draw the label for a shape (usually at the centre).
