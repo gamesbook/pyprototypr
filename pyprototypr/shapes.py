@@ -129,6 +129,7 @@ class ImageShape(BaseShape):
             tools.feedback("Unable to load that image!", True)
         rotate = kwargs.get('rotate', self.rotate)
         # assumes 1 pt == 1 pixel ?
+        # ---- handle rotation
         if rotate:
             # tools.feedback(f'*** IMAGE {ID=} {rotate=} {self._u.x=}, {self._u.y=}')
             cnv.saveState()
@@ -138,7 +139,6 @@ class ImageShape(BaseShape):
                 cnv.translate(x + dx, y + dy)
             else:
                 cnv.translate(x + self._o.delta_x, y + self._o.delta_y)
-                dx, dy = 0, 0
             cnv.rotate(rotate)
             # draw the image relative to the origin
             if is_svg:
