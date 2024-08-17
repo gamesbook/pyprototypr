@@ -376,6 +376,14 @@ Sequence(
     setting=(1, 3),
     gap_x=2,
 )
-PageBreak()
 
+Rectangle(
+    x=2, y=14,
+    height=2, width=2,
+    hatch=15, hatch_width=0.1, hatch_stroke=black,
+    stroke=saddlebrown, stroke_width=1, fill=lightcyan)
+Text(common=header_font, x=6, y=23, text="Paned Window: rectangle w/hatches")
+
+
+PageBreak()
 Save()

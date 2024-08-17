@@ -562,8 +562,10 @@ class RectangleShape(BaseShape):
         else:
             return length
 
-    def set_vertices(self, **kwargs):
+    def set_vertices(self, rotate=0, **kwargs):
         """Set vertices for rectangle without hatches."""
+        if rotate:
+            kwargs['rotate'] = rotate
         x, y = self.calculate_xy(**kwargs)
         return [  # clockwise from bottom-left; relative to centre
             Point(x, y),
@@ -638,6 +640,11 @@ class RectangleShape(BaseShape):
         if kwargs.get("cx") and kwargs.get("cy"):
             x = kwargs.get("cx") - self._u.width / 2.0
             y = kwargs.get("cy") - self._u.height / 2.0
+        # ---- overrides for centering
+        rotate = kwargs.get('rotate', None)
+        if rotate:
+            x = -self._u.width / 2.0
+            y = -self._u.height / 2.0
         return x, y
 
     def draw_hatch(self, cnv, ID, vertices: list, num: int):
@@ -692,7 +699,7 @@ class RectangleShape(BaseShape):
                 btm_pt.append(
                     geoms.point_on_line(vertices[0], vertices[3], x_dist * number))
 
-        if 'ne' or 'sw' in _dirs:  # slope UP to the right
+        if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
             for i in range(1, diag_num):  # top-left side
                 j = diag_num - i
                 pth = cnv.beginPath()
@@ -705,8 +712,7 @@ class RectangleShape(BaseShape):
                 pth.moveTo(btm_pt[i].x, btm_pt[i].y)
                 pth.lineTo(rite_pt[j].x, rite_pt[j].y)
                 cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-
-        if 'se' or 'nw' in _dirs:  # slope down to the right
+        if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
             for i in range(1, diag_num):  # bottom-left side
                 pth = cnv.beginPath()
                 pth.moveTo(left_pt[i].x, left_pt[i].y)
@@ -737,7 +743,7 @@ class RectangleShape(BaseShape):
             tools.feedback("Cannot use notch and chevron together.", True)
         # ---- calculated properties
         x, y = self.calculate_xy()
-        # ---- overrides
+        # ---- overrides for grid
         if self.use_abs_c:
             x = self._abs_cx - self._u.width / 2.0
             y = self._abs_cy - self._u.height / 2.0
@@ -745,6 +751,23 @@ class RectangleShape(BaseShape):
         y_d = y + self._u.height / 2.0  # centre
         self.area = self.calculate_area()
         delta_m_up, delta_m_down = 0.0, 0.0  # potential text offset from chevron
+
+        # ---- handle rotation: START
+        rotate = kwargs.get('rotate', self.rotate)
+        if rotate:
+            # tools.feedback(f'*** Rect {ID=} {rotate=} {self._u.x=}, {self._u.y=}')
+            cnv.saveState()
+            # move the canvas origin
+            if ID is not None:
+                cnv.translate(x + self._u.margin_left, y + self._u.margin_bottom)
+            else:
+                cnv.translate(x + self._u.width / 2.0, y + self._u.height / 2.0)
+            cnv.rotate(rotate)
+            # reset centre and "bottom left"
+            x_d, y_d = 0, 0
+            x = -self._u.width / 2.0
+            y = -self._u.height / 2.0
+
         # ---- notch vertices
         if is_notched:
             if self.notch_corners:
@@ -870,7 +893,8 @@ class RectangleShape(BaseShape):
             )
         # ---- draw hatch
         if self.hatch:
-            self.draw_hatch(cnv, ID, self.vertices, self.hatch)
+            vertices = self.set_vertices(rotate=rotate, **kwargs)
+            self.draw_hatch(cnv, ID, vertices, self.hatch)
         # ---- grid marks
         self.set_canvas_props(
             index=ID,
@@ -938,6 +962,11 @@ class RectangleShape(BaseShape):
         # ***TEMP ***
         # cnv.setFont(self.font_face, 24)
         # self.draw_multi_string(cnv, x_d, y_d, self.coord_text)
+
+        # ---- handle rotation: END
+        if rotate:
+            cnv.restoreState()
+
         # ---- return key settings
         return GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
 
@@ -1981,7 +2010,6 @@ class TextShape(BaseShape):
             _style.fontSize = self.font_size
             _style.fontName = self.font_face
             _style.leading = self.leading
-            breakpoint()
             """
             leftIndent=0,
             rightIndent=0,

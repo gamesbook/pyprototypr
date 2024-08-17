@@ -515,6 +515,7 @@ class BaseCanvas:
         self.cross_size = self.defaults.get('cross_size', 0)
         self.cross_stroke = self.get_color(self.defaults.get('cross_stroke'), black)
         self.cross_stroke_width = self.defaults.get('cross_stroke_width', self.stroke_width)
+        self.cross_stroke_color = self.defaults.get('cross_stroke_color', black)
         # ---- hexagon
         self.hex_top = self.defaults.get('hex_top', 'flat')  # flat|pointy
         self.caltrops = self.defaults.get('caltrops', None)
@@ -781,6 +782,7 @@ class BaseShape:
         self.dot_size = kwargs.get('dot_size', cnv.dot_size)
         self.cross_stroke = kwargs.get('cross_stroke', cnv.cross_stroke)
         self.cross_stroke_width = kwargs.get('cross_stroke_width', cnv.cross_stroke_width)
+        self.cross_stroke_color =  kwargs.get('cross_stroke_color', cnv.cross_stroke_color)
         self.cross_size = kwargs.get('cross_size', cnv.cross_size)
         # ---- hexagon
         self.hex_top = kwargs.get('hex_top', cnv.hex_top)
@@ -1378,7 +1380,7 @@ class BaseShape:
         if self.cross_size:
             cross_size = self.unit(self.cross_size)
             canvas.setFillColor(self.cross_stroke)
-            canvas.setStrokeColor(self.cross_stroke)
+            canvas.setStrokeColor(self.cross_stroke_color)
             canvas.setLineWidth(self.cross_stroke_width)
             # horizontal
             pt1 = geoms.Point(x - cross_size / 2.0, y)
