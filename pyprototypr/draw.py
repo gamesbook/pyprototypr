@@ -99,7 +99,10 @@ def Create(**kwargs):
     global margin_bottom
     global margin_right
     global pagesize
+    global font_size
     global pargs
+    global footer
+    global footer_draw
     # ---- margin
     margin = kwargs.get('margin', margin)
     margin_left = kwargs.get('margin_left', margin)
@@ -112,12 +115,14 @@ def Create(**kwargs):
     landscape = kwargs.get('landscape', False)
     kwargs = margins(**kwargs)
     pagesize = kwargs.get('pagesize', A4)
-    breakpoint()
     defaults = kwargs.get('defaults', None)
+    footer = None
+    footer_draw = False
     # ---- fonts
     base_fonts()
     for _font in fonts:
         pdfmetrics.registerFont(TTFont(_font[0], _font[1]))
+    font_size = kwargs.get('font_size', 12)
     # ---- command-line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--directory", help="Specify output directory", default='')
@@ -141,12 +146,13 @@ def Create(**kwargs):
     # tools.feedback(f"output: {filename}", False)
     # ---- canvas and deck
     cnv = BaseCanvas(filename, pagesize=pagesize, defaults=defaults)
-    page_width = pagesize[0]  # units = 1/72 of an inch
-    page_height = pagesize[1]  # units = 1/72 of an inch
     if landscape:
-        cnv.canvas.setPageSize(landscape(pagesize))
-        page_width = pagesize[1]  # units = 1/72 of an inch
-        page_height = pagesize[0]  # units = 1/72 of an inch
+        cnv.canvas.setPageSize(landscape(cnv.pagesize))
+        page_width = cnv.pagesize[1]  # point units (1/72 of an inch)
+        page_height = cnv.pagesize[0]  # point units (1/72 of an inch)
+    else:
+        page_width = cnv.pagesize[0]  # point units (1/72 of an inch)
+        page_height = cnv.pagesize[1]  # point units (1/72 of an inch)
     if kwargs.get('fill'):
         cnv.setFillColor(kwargs.get('fill'))
         cnv.rect(
@@ -168,10 +174,17 @@ def Footer(**kwargs):
     global margin_bottom
     global margin_right
     global pagesize
+    global font_size
     global footer
+    global footer_draw  # always draw
+    global page_count
 
     kwargs['pagesize'] = pagesize
+    if not kwargs.get('font_size'):
+        kwargs['font_size'] = font_size
+    footer_draw = kwargs.get('draw', False)
     footer = FooterShape(_object=None, canvas=cnv, **kwargs)
+    # footer.draw() - this is called via PageBreak()
 
 
 def Header(**kwargs):
@@ -187,16 +200,19 @@ def PageBreak(**kwargs):
     global deck
     global page_count
     global pagesize
+    global font_size
     global footer
+    global footer_draw
     global pargs
 
     page_count += 1
     kwargs = margins(**kwargs)
-    # tools.feedback(f'PageBreak {type(cnv)=}')
-    if kwargs.get("footer", False):
-        kwargs['pagesize'] = pagesize
-        footer = FooterShape(_object=None, canvas=cnv, **kwargs)
-        footer.draw(cnv=cnv, ID=page_count, **kwargs)
+    if kwargs.get("footer", footer_draw):
+        if footer is None:
+            kwargs['pagesize'] = pagesize
+            kwargs['font_size'] = font_size
+            footer = FooterShape(_object=None, canvas=cnv, **kwargs)
+        footer.draw(cnv=cnv, ID=page_count, text=None, **kwargs)
     # If count not in the required pargs.pages then do NOT show!
     # Note: this code does not work; seems there is no way to clear or hide the canvas
     #       in ReportLab that would support this operation

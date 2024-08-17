@@ -296,11 +296,9 @@ class BaseCanvas:
     """Wrapper/extended class for a ReportLab canvas."""
 
     def __init__(self, filename=None, pagesize=None, **kwargs):
-        self.canvas = reportlab_canvas.Canvas(
-            filename=filename, pagesize=pagesize or A4)
         self.jsonfile = kwargs.get('defaults', None)
         self.defaults = {}
-        # ---- override
+        # ---- setup defaults
         if self.jsonfile:
             try:
                 with open(self.jsonfile) as data_file:
@@ -314,7 +312,10 @@ class BaseCanvas:
                 except (IOError, ValueError):
                     tools.feedback(
                         f'Unable to find or load the file "{self.jsonfile}"'
-                        f' - also checked in "{filepath}".')
+                        f' - also checked in "{filepath}".', True)
+        # ---- page & canvas
+        _pagesize = pagesize or self.defaults.get('pagesize', A4)
+        self.canvas = reportlab_canvas.Canvas(filename=filename, pagesize=_pagesize)
         # ---- constants
         self.default_length = 1
         self.show_id = False  # True
@@ -329,9 +330,9 @@ class BaseCanvas:
         self.run_debug = False
         self.units = self.get_units(self.defaults.get('units'), cm)
         # ---- page
-        self.pagesize = self.get_page(self.defaults.get('pagesize'), A4)
-        self.page_width = self.pagesize[0] / self.units
-        self.page_height = self.pagesize[1] / self.units
+        self.pagesize = _pagesize
+        self.page_width = self.pagesize[0] / self.units  # user-units e.g. cm
+        self.page_height = self.pagesize[1] / self.units  # user-units e.g. cm
         self.margin = self.defaults.get('margin', 1)
         self.margin_top = self.defaults.get('margin_top', self.margin)
         self.margin_bottom = self.defaults.get('margin_bottom', self.margin)
@@ -431,7 +432,7 @@ class BaseCanvas:
         # ---- text block
         self.outline_color = self.defaults.get('outline_color', self.fill)
         self.outline_width = self.defaults.get('outline_width', 0)
-        self.leading = self.defaults.get('leading', 12)
+        self.leading = self.defaults.get('leading', self.font_size)
         # ---- image / file
         self.source = self.defaults.get('source', None)  # file or http://
         # ---- line / ellipse / bezier / sector
@@ -611,7 +612,7 @@ class BaseShape:
         self.run_debug = kwargs.get("debug", cnv.run_debug)
         self.units = kwargs.get('units', cnv.units)
         # ---- page
-        self.pagesize = kwargs.get('pagesize', cnv.pagesize)
+        self.pagesize = kwargs.get('pagesize') or cnv.pagesize
         self.margin = kwargs.get('margin', cnv.margin)
         self.margin_top = kwargs.get('margin_top', cnv.margin_top)
         self.margin_bottom = kwargs.get('margin_bottom', cnv.margin_bottom)
@@ -697,7 +698,7 @@ class BaseShape:
         # ---- text block
         self.outline_color = kwargs.get('outline_color', cnv.outline_color)
         self.outline_width = kwargs.get('outline_width', cnv.outline_width)
-        self.leading = kwargs.get('leading', cnv.leading)
+        self.leading = kwargs.get('leading', self.font_size)
         # ---- fill color
         self.fill = kwargs.get('fill', kwargs.get('fill_color', cnv.fill))
         # tools.feedback(f"+++  BShp:{self} init {kwargs.get('fill')=} {self.fill=} {kwargs.get('fill_color')=}")
@@ -884,8 +885,8 @@ class BaseShape:
             self.width = self.side  # square
 
         self._u = UnitProperties(
-            self.pagesize[0],
-            self.pagesize[1],
+            self.pagesize[0],  # width, in points
+            self.pagesize[1],  # height, in points
             self.unit(self.margin_left) if self.margin_left is not None else None,
             self.unit(self.margin_right) if self.margin_right is not None else None,
             self.unit(self.margin_bottom) if self.margin_bottom is not None else None,
@@ -1288,7 +1289,10 @@ class BaseShape:
         # align
         align = align or self.align
         mvy = copy.copy(y)
-        # tools.feedback("string %s %s rotate:%s" % (type(string), string, rotate))
+        # tools.feedback(f"*** {string=} {rotate=}")
+        if kwargs.get('font_size'):
+            fsize = float(kwargs.get('font_size'))
+            canvas.setFont(self.font_face, fsize)
         for ln in string.split('\n'):
             if rotate:
                 canvas.saveState()

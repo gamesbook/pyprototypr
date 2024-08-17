@@ -11,7 +11,9 @@ Create(filename="customised_shapes.pdf",
        pagesize=A8,
        margin_top=0.2,
        margin_left=0.15,
-       margin_right=0.2)
+       margin_right=0.2,
+       font_size=8)
+Footer(draw=False)
 
 txt = Common(x=0, y=6, font_size=8, align="left")
 
@@ -20,7 +22,6 @@ PageBreak(footer=True)
 
 Blueprint(subdivisions=5, stroke_width=0.8)
 Text(common=txt, text="Blueprint: subdivisions=5")
-Footer()
 PageBreak()
 
 Blueprint(stroke_width=0.5)
@@ -388,6 +389,15 @@ Text(common=dtext, y=4, text=Today(details="date", style="usa"))
 Text(common=dtext, y=3, text=Today(details="date", style="eur"))
 Text(common=dtext, y=2, text=Today(details="datetime", style="usa"))
 Text(common=dtext, y=1, text=Today(details="datetime", style="eur"))
+PageBreak()
+
+Rectangle(x=0, y=0, height=6, width=4, fill=khaki)
+Text(common=txt, text="Shapes: normal and rotated")
+Blueprint(stroke_width=0.5)
+Image("sholes_typewriter.png", x=0, y=0, width=1.5, height=1.5, heading="PNG")
+Image("sholes_typewriter.png", x=2, y=0, width=1.5, height=1.5, rotate=60)
+Image("noun-typewriter-3933515.svg", x=0, y=4, width=1.5, height=1.6, scaling=0.15, title="SVG")
+Image("noun-typewriter-3933515.svg", x=2, y=4, width=1.5, height=1.6, scaling=0.15, rotate=45)
 PageBreak()
 
 Text(common=txt, text="END...")

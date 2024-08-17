@@ -123,37 +123,42 @@ class ImageShape(BaseShape):
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
         # ---- draw image
-        # tools.feedback(f'*** {_source=} {self.scaling=} ')
+        # tools.feedback(f'*** IMAGE {ID=} {_source=} {x=} {y=} {self.scaling=} ')
         img, is_svg = self.load_image(_source, self.scaling)
+        if not img:
+            tools.feedback("Unable to load that image!", True)
         rotate = kwargs.get('rotate', self.rotate)
-        mvy = copy.copy(y)
-        if img:
-            # assumes 1 pt == 1 pixel ?
+        # assumes 1 pt == 1 pixel ?
+        if rotate:
+            # tools.feedback(f'*** IMAGE {ID=} {rotate=} {self._u.x=}, {self._u.y=}')
+            cnv.saveState()
+            # move the canvas origin
+            if ID is not None:
+                dx, dy = self._u.margin_left, self._u.margin_bottom
+                cnv.translate(x + dx, y + dy)
+            else:
+                cnv.translate(x + self._o.delta_x, y + self._o.delta_y)
+                dx, dy = 0, 0
+            cnv.rotate(rotate)
+            # draw the image relative to the origin
+            if is_svg:
+                from reportlab.graphics import renderPDF
+                renderPDF.draw(img, cnv, x=-width / 2.0, y=-height / 2.0)
+            else:
+                cnv.drawImage(
+                    img,
+                    x=-width / 2.0,
+                    y=-height / 2.0,
+                    width=width,
+                    height=height,
+                    mask="auto")
+            cnv.restoreState()
+        else:
             if is_svg:
                 from reportlab.graphics import renderPDF
                 renderPDF.draw(img, cnv, x=x, y=y)
             else:
-                if rotate:
-                    """
-                    # The image dimensions in cm
-                    width, height = img.size
-
-                    # now move the canvas origin to the middle of the page
-                    c.translate(A4[0] / 2, A4[1] / 2)
-                    # and rotate it
-                    c.rotate(rotation)
-                    # now draw the image relative to the origin
-                    c.drawImage(ImageReader(img), -width/2, -height/2, width, height, 'auto')
-                    """
-                    breakpoint()
-                    print(A4[0] / 2, A4[1] / 2)
-                    cnv.saveState()
-                    cnv.translate(x + width, y - height)
-                    cnv.rotate(rotate)
-                    cnv.drawImage(img, -width/2, -height/2, width=width, height=height, mask="auto")
-                    cnv.restoreState()
-                else:
-                    cnv.drawImage(img, x=x, y=y, width=width, height=height, mask="auto")
+                cnv.drawImage(img, x=x, y=y, width=width, height=height, mask="auto")
         # ---- text
         xc = x + width / 2.0
         if self.heading:
@@ -921,7 +926,7 @@ class RectangleShape(BaseShape):
                         mask="auto",
                     )
         # ---- cross
-        self.draw_cross(cnv,  x_d, y_d)
+        self.draw_cross(cnv, x_d, y_d)
         # ---- dot
         self.draw_dot(cnv, x_d, y_d)
         # ---- text
@@ -1976,6 +1981,7 @@ class TextShape(BaseShape):
             _style.fontSize = self.font_size
             _style.fontName = self.font_face
             _style.leading = self.leading
+            breakpoint()
             """
             leftIndent=0,
             rightIndent=0,
@@ -3622,14 +3628,17 @@ class FooterShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(FooterShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        self.page_width = kwargs.get('pagesize', (canvas.width, canvas.height))[0]
+        # self.page_width = kwargs.get('pagesize', (canvas.width, canvas.height))[0]
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw footer on a given canvas page."""
         cnv = cnv if cnv else self.canvas
-        x = self.kwargs.get("x",  self.page_width / 2.0)  # centre across page
+        #super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        font_size = kwargs.get('font_size', self.font_size)
+        # ---- set location and text
+        x = self.kwargs.get("x",  self._u.page_width / 2.0)  # centre across page
         y = self.unit(self.margin_bottom) / 2.0   # centre in margin
-        if not self.kwargs.get("text"):
-            self.kwargs["text"] = "Page %s" % ID
-        # tools.feedback(f'*** FooterShape {type(cnv)=}')
-        self.draw_multi_string(cnv.canvas, x, y, self.kwargs["text"], align='centre')
+        text = kwargs.get("text") or "Page %s" % ID
+        # tools.feedback(f'*** FooterShape {ID=} {text=} {x=} {y=} {font_size=}')
+        # ---- draw footer
+        self.draw_multi_string(cnv.canvas, x, y, text, align='centre', font_size=font_size)

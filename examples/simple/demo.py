@@ -274,9 +274,9 @@ PageBreak()
 
 # ---- .png image and various text positions
 Text(common=header, text="Rectangle and .png image")
-Rectangle(x=5.9, y=10.9, width=7.2, height=6.2, stroke=silver)
+Rectangle(x=5.9, y=10.9, width=7.2, height=6.2, stroke=silver, fill=khaki)
 Image(
-    "sholes_typewriter.png",
+    "sholes_typewriter.png",  # has transparent background
     x=6,
     y=11,
     width=7,
@@ -295,7 +295,7 @@ PageBreak()
 # Typewriter by ZakaUddin from
 # <a href="https://thenounproject.com/browse/icons/term/typewriter/" target="_blank" title="Typewriter Icons">Noun Project</a> (CC BY 3.0)
 Text(common=header, text="Rectangle and scaled .svg image")
-Rectangle(x=6, y=11, width=7, height=6.25, stroke=silver)
+Rectangle(x=6, y=11, width=7, height=6.25, stroke=silver, fill=khaki)
 Image(
     # "Typewriter_Vector.svg",
     "noun-typewriter-3933515.svg",
@@ -348,6 +348,16 @@ Rectangle(x=4.5, y=18, width=10, height=5, stroke_width=1, stroke=grey)
 Text(x=4.5, y=23, width=10, height=5, wrap=True, align="justify", text=LATIN)
 PageBreak()
 
+# ---- cards
+Deck(cards=9)
+Card("1-3", circle(cx=3, cy=4.2))
+Card("4", image("sholes_typewriter.png", x=3, y=5, width=3, height=3))
+Card("5", image("sholes_typewriter.png", x=3, y=5, width=3, height=3, rotate=30))
+Card("6", image("sholes_typewriter.png", x=3, y=5, width=3, height=3, rotate=60))
+Card("7", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3))
+Card("8", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3, rotate=30))
+Card("9", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3, rotate=60))
+
 # ---- misc
 Text(common=header, text="Miscellaneous")
 Text(common=header_font, x=6, y=23, text="Coin: circle with radii + an inner circle")
@@ -356,8 +366,8 @@ Circle(cx=3, cy=23, radius=2, fill=skyblue, stroke_width=2,
               195,210,225,240,255,270,285,300,315,330,345])  # 24 - every 15 degrees
 Circle(cx=3, cy=23, radius=1.5, fill=skyblue, label="5", font_size=48)
 
-Text(common=header_font, x=9, y=19,
-     text='Warning Sign: rounded rectangles \nwith a sequence of "E" chevrons')
+Text(align="left", x=9, y=20, wrap=True, width=10, height=4, font_size=16,
+     text='<b>Warning Sign:</b> rounded rectangles plus a sequence of "E" chevrons')
 Rectangle(x=1, y=17, width=7.5, height=3, rounded=0.5, stroke=black, fill=black)
 Rectangle(x=1.1, y=17.1, width=7.3, height=2.8, rounded=0.5, stroke_width=2, stroke=yellow, fill=None)
 Sequence(
@@ -366,7 +376,6 @@ Sequence(
     setting=(1, 3),
     gap_x=2,
 )
-
 PageBreak()
 
 Save()
