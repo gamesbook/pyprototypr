@@ -60,7 +60,7 @@ Circle(cx=2, cy=3.5, radius=.7, hatch_stroke=red, hatch=4, label='4')
 Circle(cx=1, cy=2.3, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='e', label='e')
 Circle(cx=3, cy=2.3, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='n', label='n')
 Circle(cx=1, cy=0.7, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='ne', label='ne')
-Circle(cx=3, cy=0.7, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='sw', label='sw')
+Circle(cx=3, cy=0.7, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='nw', label='nw')
 PageBreak()
 
 # ---- dot & cross
