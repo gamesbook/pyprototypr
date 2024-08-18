@@ -1958,9 +1958,9 @@ class EquilateralTriangleShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_c, y_c)
         # ---- text
-        self.draw_heading(cnv, ID, x_c, y + height, **kwargs)
+        self.draw_heading(cnv, ID, x_c, y_c + height * 2.0 / 3.0, **kwargs)
         self.draw_label(cnv, ID, x_c, y_c, **kwargs)
-        self.draw_title(cnv, ID, x_c, y, **kwargs)
+        self.draw_title(cnv, ID, x_c, y_c - height / 3.0, **kwargs)
 
 
 class TextShape(BaseShape):

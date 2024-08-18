@@ -6,6 +6,7 @@ python examples/simple/cards.py -d /tmp
 python examples/simple/cards_design.py -d /tmp
 python examples/simple/cards_images.py -d /tmp
 python examples/simple/customised_shapes.py -d /tmp
+python examples/simple/customised_blueprint.py -d /tmp
 python examples/simple/demo.py -d /tmp
 python examples/simple/diagram.py -d /tmp
 python examples/simple/default_shapes.py -d /tmp

@@ -991,6 +991,23 @@ def Blueprint(**kwargs):
     global margin_top
     global margin_bottom
     global margin_right
+
+    def set_style(style_name):
+        """Set blueprint color and fill."""
+        match style_name:
+            case 'green':
+                color, fill = "#CECE2C", "#35705E"
+            case 'grey' | 'gray':
+                color, fill =  white, "#A1969C"
+            case 'invert' | 'inverted':
+                color, fill = honeydew, '#3085AC'
+            case _:
+                color, fill = '#3085AC', None
+                if style_name is not None:
+                    tools.feedback(
+                        f'The BluePrint style "{style_name}" is unknown', False, True)
+        return color, fill
+
     kwargs = margins(**kwargs)
     if kwargs.get('common'):
         tools.feedback('The "common" property cannot be used with Blueprint.', True)
@@ -1003,7 +1020,6 @@ def Blueprint(**kwargs):
     kwargs['size'] = kwargs.get('size', size)
     kwargs['x'] = kwargs.get('x', 0)
     kwargs['y'] = kwargs.get('y', 0)
-    kwargs['stroke'] = kwargs.get('stroke', DEBUG_COLOR)
     m_x = kwargs['units'] * (margin_left + margin_right)
     m_y = kwargs['units'] * (margin_top + margin_bottom)
     _cols = (pagesize[0] - m_x) / (kwargs['units'] * float(kwargs['size']))
@@ -1012,10 +1028,16 @@ def Blueprint(**kwargs):
     cols = int(_cols)
     kwargs['rows'] = kwargs.get('rows', rows)
     kwargs['cols'] = kwargs.get('cols', cols)
-    kwargs['stroke_width'] = kwargs.get('stroke_width', 0.2)  # fine line
+    kwargs['stroke_width'] = kwargs.get('stroke_width', 0.1)  # fine line
     default_font_size = 10 * math.sqrt(pagesize[0]) / math.sqrt(A4[0])
     line_dots = kwargs.get('line_dots', False)
     kwargs['font_size'] = kwargs.get('font_size', default_font_size)
+    line_color, page_fill = set_style(kwargs.get('style', None))
+    kwargs['stroke'] = kwargs.get('stroke', line_color)
+    # ---- page color (optional)
+    if page_fill is not None:
+        cnv.canvas.setFillColor(page_fill)
+        cnv.canvas.rect(0, 0, pagesize[0], pagesize[1], stroke=0, fill=1)
     # ---- numbering
     if numbering:
         _common = Common(
@@ -1056,7 +1078,7 @@ def Blueprint(**kwargs):
                 local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
                 subgrid = GridShape(canvas=cnv, **local_kwargs)
                 subgrid.draw(off_x=off_x, off_y=off_y)
-    # ---- draw Blueprint
+    # ---- draw Blueprint grid
     grid = GridShape(canvas=cnv, line_dots=line_dots, **kwargs)
     grid.draw()
     return grid

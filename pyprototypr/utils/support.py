@@ -10,9 +10,12 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
 
-def feedback(item, stop=False):
+def feedback(item, stop=False, warn=False):
     """Placeholder for more complete feedback."""
-    print('FEEDBACK:: %s' % item)
+    if warn:
+        print('WARNING:: %s' % item)
+    else:
+        print('FEEDBACK:: %s' % item)
     if stop:
         sys.exit('FEEDBACK:: Could not continue with program. \n')
 
