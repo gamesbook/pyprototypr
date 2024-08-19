@@ -38,7 +38,8 @@ python examples/counters/counters_csv.py -d /tmp
 python examples/counters/blocks_csv.py -d /tmp
 # -- cards
 echo "Creating cards..."
-python examples/cards/cards_matrix.py -d /tmp
+python examples/cards/cards_matrix_one.py -d /tmp
+python examples/cards/cards_matrix_two.py -d /tmp
 python examples/cards/cards_standard.py -d /tmp
 # -- Board Game Geek
 echo "Creating BGG game sheet..."
