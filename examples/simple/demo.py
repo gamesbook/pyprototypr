@@ -360,10 +360,10 @@ Card("9", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scal
 
 # ---- misc
 Text(common=header, text="Miscellaneous")
-Text(common=header_font, x=6, y=23, text="Coin: circle with radii + an inner circle")
-Circle(cx=3, cy=23, radius=2, fill=skyblue, stroke_width=2,
-       radii=[0,15,30,45,60,75,90,105,120,135,150,165,180,
-              195,210,225,240,255,270,285,300,315,330,345])  # 24 - every 15 degrees
+
+Text(common=header_font, x=6, y=23, text="Coin: circle with steps radii + an inner circle")
+# circles 24 radii - i.e. one every 15 degrees
+Circle(cx=3, cy=23, radius=2, fill=skyblue, stroke_width=2, radii=steps(0,360,15))
 Circle(cx=3, cy=23, radius=1.5, fill=skyblue, label="5", font_size=48)
 
 Text(align="left", x=9, y=20, wrap=True, width=10, height=4, font_size=16,
@@ -377,13 +377,25 @@ Sequence(
     gap_x=2,
 )
 
+Text(common=header_font, x=5, y=15, text="Leaded Window: rectangle w/hatches")
 Rectangle(
-    x=2, y=14,
-    height=2, width=2,
-    hatch=15, hatch_width=0.1, hatch_stroke=black,
-    stroke=saddlebrown, stroke_width=1, fill=lightcyan)
-Text(common=header_font, x=6, y=23, text="Paned Window: rectangle w/hatches")
+    x=2, y=13.5,
+    height=3, width=2,
+    hatch=7, hatch_width=0.1, hatch_directions='d', hatch_stroke=black,
+    stroke=saddlebrown, stroke_width=2, fill=lightcyan)
 
+Text(common=header_font, x=5, y=11, text="Paned Window: rectangle w/hatch")
+Rectangle(
+    x=2, y=9.5,
+    height=3, width=2,
+    hatch=1, hatch_width=1, hatch_directions='o', hatch_stroke=sienna,
+    stroke=sienna, stroke_width=3, fill=lightcyan)
+
+Text(common=header_font, x=5, y=7, text="Start Player: circles + radii using steps())")
+Octagon(x=1, y=6, height=3, width=3, fill=black)
+Circle(x=1.25, y=6.25, fill=black, radius=1.25,
+       radii=[0,45,90,135,180,225,270,315], radii_stroke=gold, radii_stroke_width=2)
+Circle(x=2, y=7, stroke=black, fill=gold, radius=0.5, stroke_width=5)
 
 PageBreak()
 Save()

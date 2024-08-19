@@ -47,20 +47,16 @@ Rectangle(
     )
 PageBreak()
 
-# ---- circles
-Blueprint()
-Text(common=txt, text="Circle: cx=2, cy=3")
-Circle(cx=2, cy=3)
-PageBreak()
-
+# ---- circle hatch
 Blueprint()
 Text(common=txt, text="Circle: hatch")
-Circle(cx=2, cy=5.0, radius=.7, hatch_stroke=red, hatch=1, label='1')
-Circle(cx=2, cy=3.5, radius=.7, hatch_stroke=red, hatch=4, label='4')
-Circle(cx=1, cy=2.3, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='e', label='e')
-Circle(cx=3, cy=2.3, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='n', label='n')
+Circle(cx=2, cy=5.2, radius=.7, hatch_stroke=red, hatch=4, label='4')  # all directions
+Circle(cx=1, cy=3.7, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='o', label='o')
+Circle(cx=3, cy=3.7, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='d', label='d')
+Circle(cx=1, cy=2.2, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='e', label='e')
+Circle(cx=3, cy=2.2, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='n', label='n')
 Circle(cx=1, cy=0.7, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='ne', label='ne')
-Circle(cx=3, cy=0.7, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='nw', label='nw')
+Circle(cx=3, cy=0.7, radius=.7, hatch_stroke=red, hatch=7, hatch_directions='nw', label='nw')
 PageBreak()
 
 # ---- dot & cross
@@ -176,15 +172,15 @@ Text(common=txt, text="Rectangle: hatch + directions")
 htch = Common(height=1.5, width=1, hatch=5, hatch_width=0.1, hatch_stroke=red)
 Rectangle(common=htch, x=0, y=0,  hatch_directions='w', label="W")
 Rectangle(common=htch, x=1.5, y=0, hatch_directions='e', label="E")
-Rectangle(common=htch, x=3, y=0, hatch_directions='ne', label="NE")
+Rectangle(common=htch, x=3, y=0, hatch_directions='ne', label="NE\nSW")
 
 Rectangle(common=htch, x=1.5, y=2, hatch_directions='n', label="N")
 Rectangle(common=htch, x=0, y=2,  hatch_directions='s', label="S")
-Rectangle(common=htch, x=3, y=2, hatch_directions='nw', label="NW")
+Rectangle(common=htch, x=3, y=2, hatch_directions='nw', label="NW\nSE")
 
 Rectangle(common=htch, x=0, y=4, label="all")
-Rectangle(common=htch, x=1.5, y=4, hatch_directions='se', label="SE")
-Rectangle(common=htch, x=3, y=4, hatch_directions='sw', label="SW")
+Rectangle(common=htch, x=1.5, y=4, hatch_directions='o', label="O")
+Rectangle(common=htch, x=3, y=4, hatch_directions='d', label="D")
 
 PageBreak()
 

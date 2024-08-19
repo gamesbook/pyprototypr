@@ -660,24 +660,24 @@ class RectangleShape(BaseShape):
         _dirs = self.hatch_directions.lower().split()
         if num >= 1:
             # breakpoint()
-            if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
+            if 'ne' in _dirs or 'sw' in _dirs or 'd' in _dirs:  # UP to the right
                 pth = cnv.beginPath()
                 pth.moveTo(vertices[0].x, vertices[0].y)
                 pth.lineTo(vertices[2].x, vertices[2].y)
                 cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-            if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
+            if 'se' in _dirs or 'nw' in _dirs or 'd' in _dirs:  # DOWN to the right
                 pth = cnv.beginPath()
                 pth.moveTo(vertices[1].x, vertices[1].y)
                 pth.lineTo(vertices[3].x, vertices[3].y)
                 cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-            if 'n' in _dirs or 's' in _dirs:  # vertical
+            if 'n' in _dirs or 's' in _dirs or 'o' in _dirs:  # vertical
                 x_dist = self._u.width / (num + 1)
                 for i in range(1, num + 1):
                     pth = cnv.beginPath()
                     pth.moveTo(vertices[0].x + i * x_dist, vertices[1].y)
                     pth.lineTo(vertices[0].x + i * x_dist, vertices[0].y)
                     cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-            if 'e' in _dirs or 'w' in _dirs:  # horizontal
+            if 'e' in _dirs or 'w' in _dirs or 'o' in _dirs:  # horizontal
                 y_dist = self._u.height / (num + 1)
                 for i in range(1, num + 1):
                     pth = cnv.beginPath()
@@ -699,7 +699,7 @@ class RectangleShape(BaseShape):
                 btm_pt.append(
                     geoms.point_on_line(vertices[0], vertices[3], x_dist * number))
 
-        if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
+        if 'ne' in _dirs or 'sw' in _dirs or 'd' in _dirs:  # slope UP to the right
             for i in range(1, diag_num):  # top-left side
                 j = diag_num - i
                 pth = cnv.beginPath()
@@ -712,7 +712,7 @@ class RectangleShape(BaseShape):
                 pth.moveTo(btm_pt[i].x, btm_pt[i].y)
                 pth.lineTo(rite_pt[j].x, rite_pt[j].y)
                 cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-        if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
+        if 'se' in _dirs or 'nw' in _dirs or 'd' in _dirs:  # slope down to the right
             for i in range(1, diag_num):  # bottom-left side
                 pth = cnv.beginPath()
                 pth.moveTo(left_pt[i].x, left_pt[i].y)
@@ -2127,24 +2127,22 @@ class CircleShape(BaseShape):
             vertical_distances.append((dist_h, dist_v))
             horizontal_distances.append((dist_v, dist_h))
 
-        # TESTING cnv.circle(x_c, y_c, 2, stroke=1, fill=1 if self.fill else 0)
-
         if num >= 1 and lines & 1:  # is odd - draw centre lines
-            if 'e' in _dirs or 'w' in _dirs:  # horizontal
+            if 'e' in _dirs or 'w' in _dirs or 'o' in _dirs:  # horizontal
                 self.make_path_points(
                     cnv,
                     Point(x_c + self._u.radius, y_c),
                     Point(x_c - self._u.radius, y_c))
-            if 'n' in _dirs or 's' in _dirs:  # vertical
+            if 'n' in _dirs or 's' in _dirs or 'o' in _dirs:  # vertical
                 self.make_path_points(
                     cnv,
                     Point(x_c, y_c + self._u.radius),
                     Point(x_c, y_c - self._u.radius))
-            if 'se' in _dirs or 'nw' in _dirs:  # diagonal  "down"
+            if 'se' in _dirs or 'nw' in _dirs or 'd' in _dirs:  # diagonal  "down"
                 poc_top_d = geoms.point_on_circle(Point(x_c, y_c), self._u.radius, 135)
                 poc_btm_d = geoms.point_on_circle(Point(x_c, y_c), self._u.radius, 315)
                 self.make_path_points(cnv, poc_top_d, poc_btm_d)
-            if 'ne' in _dirs or 'sw' in _dirs:  # diagonal  "up"
+            if 'ne' in _dirs or 'sw' in _dirs or 'd' in _dirs:  # diagonal  "up"
                 poc_top_u = geoms.point_on_circle(Point(x_c, y_c), self._u.radius, 45)
                 poc_btm_u = geoms.point_on_circle(Point(x_c, y_c), self._u.radius, 225)
                 self.make_path_points(cnv, poc_top_u, poc_btm_u)
@@ -2152,7 +2150,7 @@ class CircleShape(BaseShape):
         if num <= 1:
             return
 
-        if 'e' in _dirs or 'w' in _dirs:  # horizontal
+        if 'e' in _dirs or 'w' in _dirs or 'o' in _dirs:  # horizontal
             for dist in horizontal_distances:
                 self.make_path_points(  # "above" diameter
                     cnv,
@@ -2163,25 +2161,35 @@ class CircleShape(BaseShape):
                     Point(x_c - dist[0], y_c - dist[1]),
                     Point(x_c + dist[0], y_c - dist[1]))
 
-        if 'se' in _dirs or 'nw' in _dirs:  # diagonal  "down"
+        if 'n' in _dirs or 's' in _dirs or 'o' in _dirs:  # vertical
             for dist in vertical_distances:
-                tools.feedback(f'*** {dist=} {horizontal_distances=}')
-                _angle = math.degrees(math.asin(dist[0] / self._u.radius))
-                tools.feedback(f'*** {_angle=} 45:{_angle+45.} 225:{_angle+225.}')
-                # "above left" of diameter
-                poc_top = geoms.point_on_circle(
-                    Point(x_c, y_c), self._u.radius, _angle + 45.)
-                poc_btm = geoms.point_on_circle(
-                    Point(x_c, y_c), self._u.radius, 45. - _angle)# + 45.)
-                self.make_path_points(cnv, poc_top, poc_btm)
-                # "below right" of diameter
-                poc_top = geoms.point_on_circle(
-                    Point(x_c, y_c), self._u.radius, 45 - _angle)
-                poc_btm = geoms.point_on_circle(
-                    Point(x_c, y_c), self._u.radius, 45. + _angle)# + 45.)
-                self.make_path_points(cnv, poc_top, poc_btm)
+                self.make_path_points(  # "right" of diameter
+                    cnv,
+                    Point(x_c + dist[0], y_c + dist[1]),
+                    Point(x_c + dist[0], y_c - dist[1]))
+                self.make_path_points(  # "left" of diameter
+                    cnv,
+                    Point(x_c - dist[0], y_c + dist[1]),
+                    Point(x_c - dist[0], y_c - dist[1]))
 
-        if 'ne' in _dirs or 'sw' in _dirs:  # diagonal  "up"
+        if 'se' in _dirs or 'nw' in _dirs or 'd' in _dirs:  # diagonal  "down"
+            for dist in horizontal_distances:
+                _angle = math.degrees(math.asin(dist[0] / self._u.radius))
+                # "above right" of diameter
+                dal = geoms.point_on_circle(
+                    Point(x_c, y_c), self._u.radius, 45. + _angle)
+                dar = geoms.point_on_circle(
+                    Point(x_c, y_c), self._u.radius, 45. - _angle)# + 45.)
+                self.make_path_points(cnv, dar, dal)
+                # "below left" of diameter
+                dbl = geoms.point_on_circle(
+                    Point(x_c, y_c), self._u.radius, 225. - _angle)
+                dbr = geoms.point_on_circle(
+                    Point(x_c, y_c), self._u.radius, 225. + _angle)
+                self.make_path_points(cnv, dbr, dbl)
+                # TEST cnv.circle(dal.x, dal.y, 2, stroke=1, fill=1 if self.fill else 0)
+
+        if 'ne' in _dirs or 'sw' in _dirs or 'd' in _dirs:  # diagonal  "up"
             for dist in vertical_distances:
                 _angle = math.degrees(math.asin(dist[0] / self._u.radius))
                 # "above left" of diameter
@@ -2198,16 +2206,6 @@ class CircleShape(BaseShape):
                 self.make_path_points(cnv, poc_top, poc_btm)
 
 
-        if 'n' in _dirs or 's' in _dirs:  # vertical
-            for dist in vertical_distances:
-                self.make_path_points(  # "right" of diameter
-                    cnv,
-                    Point(x_c + dist[0], y_c + dist[1]),
-                    Point(x_c + dist[0], y_c - dist[1]))
-                self.make_path_points(  # "left" of diameter
-                    cnv,
-                    Point(x_c - dist[0], y_c + dist[1]),
-                    Point(x_c - dist[0], y_c - dist[1]))
 
     def draw_radii(self, cnv, ID, x_c: float, y_c: float):
         """Draw radius lines from the centre outwards to the circumference.

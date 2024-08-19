@@ -17,7 +17,9 @@ def feedback(item, stop=False, warn=False):
     else:
         print('FEEDBACK:: %s' % item)
     if stop:
-        sys.exit('FEEDBACK:: Could not continue with program. \n')
+        print('FEEDBACK:: Could not continue with program.\n')
+        #sys.exit()
+        quit()
 
 
 def base_fonts():
@@ -78,6 +80,73 @@ def letters(start='a', stop='z'):
     return list(gen())
 
 
+def steps(start, end, step=1, REAL=True):
+    """Return a list of numbers from start to end, at step intervals.
+
+    Note:
+        REAL is only used for doctest, to bypass sys.exist() problem
+
+    Doc Test:
+
+    >>> steps('a', 'b', REAL=False)
+    FEEDBACK:: A start value of "a" is not a valid number
+    >>> steps(1, 'b', REAL=False)
+    FEEDBACK:: An end value of "b" is not a valid number
+    >>> steps(1, 2, 'c', REAL=False)
+    FEEDBACK:: A step value of "c" is not a valid number
+    >>> steps(2, 1, REAL=False)
+    FEEDBACK:: End value of "1" must be greater than start value of "2"
+    >>> steps(1, 2, -1, REAL=False)
+    FEEDBACK:: End value of "2" must be less than start value of "1"
+    >>> steps(2, 1, 0, REAL=False)
+    FEEDBACK:: An step value of "0" is not valid
+    >>> steps(1, 3, REAL=False)
+    [1, 2, 3]
+    >>> steps(1, 3, 2, REAL=False)
+    [1, 3]
+    >>> steps(3, 1, -2, REAL=False)
+    [3, 1]
+    >>> steps(1, 5, 1.5, REAL=False)
+    [1, 2.5, 4.0]
+    """
+    try:
+        _start = float(start)
+    except Exception:
+        feedback(f'A start value of "{start}" is not a valid number', REAL)
+        return
+    try:
+        _end = float(end)
+    except Exception:
+        feedback(f'An end value of "{end}" is not a valid number', REAL)
+        return
+    try:
+        _step = float(step)
+    except Exception:
+        feedback(f'A step value of "{step}" is not a valid number', REAL)
+        return
+    if step == 0:
+        feedback(f'An step value of "{step}" is not valid', REAL)
+        return
+    if end < start and step > 0:
+        feedback(
+            f'End value of "{end}" must be greater than start value of "{start}"', REAL)
+        return
+    if start < end and step < 0:
+        feedback(
+            f'End value of "{end}" must be less than start value of "{start}"', REAL)
+        return
+
+    result, current = [], start
+    while True:
+        result.append(current)
+        current += step
+        if current > end and step > 0:
+            break
+        if current < end and step < 0:
+            break
+    return result
+
+
 def split(string, delim=' '):
     """Split a string on the delim."""
     return string.split(delim)
@@ -96,12 +165,12 @@ def combinations(_object, size=2, repeat=1, delimiter=','):
     try:
         size = int(size)
     except (TypeError, AttributeError):
-        feedback('Unable to use a size of "%s"' % size)
+        feedback(f'Unable to use a size of "{size}"', False, True)
         return []
     try:
         repeat = int(repeat)
     except (TypeError, AttributeError):
-        feedback('Unable to use a repeat of "%s"' % repeat)
+        feedback(f'Unable to use a repeat of "{repeat}"', False, True)
         return []
     try:
         items = _object.split(delimiter)
@@ -124,5 +193,10 @@ def combinations(_object, size=2, repeat=1, delimiter=','):
         new_list.sort()
         return new_list
     except (TypeError, AttributeError):
-        feedback('Unable to create combinations from "%s"' % _object)
+        feedback(f'Unable to create combinations from "{_object}"', False, True)
         return []
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

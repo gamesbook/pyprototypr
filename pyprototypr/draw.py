@@ -66,7 +66,7 @@ from .shapes import (
     VirtualTrack, RectangleTrack,
     GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE)
 from ._version import __version__
-from pyprototypr.utils.support import base_fonts
+from pyprototypr.utils.support import base_fonts, steps
 from pyprototypr.utils import geoms, tools
 from pyprototypr.utils.geoms import Point
 
