@@ -413,6 +413,8 @@ class BaseCanvas:
             self.defaults.get('label_stroke'), self.stroke)
         self.label_stroke_width = self.get_color(
             self.defaults.get('label_stroke_width'), self.stroke_width)
+        self.label_dx = self.defaults.get('label_dx', 0)
+        self.label_dy = self.defaults.get('label_dy', 0)
         # ---- text: title
         self.title = self.defaults.get('title', '')
         self.title_size = self.defaults.get('title_size', self.font_size)
@@ -421,6 +423,8 @@ class BaseCanvas:
             self.defaults.get('title_stroke'), self.stroke)
         self.title_stroke_width = self.get_color(
             self.defaults.get('title_stroke_width'), self.stroke_width)
+        self.title_dx = self.defaults.get('title_dx', 0)
+        self.title_dy = self.defaults.get('title_dy', 0)
         # ---- text: heading
         self.heading = self.defaults.get('heading', '')
         self.heading_size = self.defaults.get('heading_size', self.font_size)
@@ -429,6 +433,8 @@ class BaseCanvas:
             self.defaults.get('heading_stroke'), self.stroke)
         self.heading_stroke_width = self.get_color(
             self.defaults.get('heading_stroke_width'), self.stroke_width)
+        self.heading_dx = self.defaults.get('heading_dx', 0)
+        self.heading_dy = self.defaults.get('heading_dy', 0)
         # ---- text block
         self.outline_color = self.defaults.get('outline_color', self.fill)
         self.outline_width = self.defaults.get('outline_width', 0)
@@ -478,7 +484,7 @@ class BaseCanvas:
         self.chevron = self.defaults.get('chevron', '')
         self.chevron_height = kwargs.get('chevron_height', 0)
         # ---- stadium
-        self.edges = self.defaults.get('edges', 'L R')
+        self.edges = self.defaults.get('edges', 'north south')
         # ---- grid / card layout
         self.rows = self.defaults.get('rows', 0)
         self.cols = self.defaults.get('cols', self.defaults.get('columns', 0))
@@ -497,6 +503,7 @@ class BaseCanvas:
         self.radii_stroke = self.defaults.get('radii_stroke', black)
         self.radii_stroke_width = self.defaults.get('radii_stroke_width', WIDTH)
         self.radii_length = self.defaults.get('radii_length', None)  # default: circle radius
+        self.radii_offset = self.defaults.get('radii_offset', 0)
         self.radii_line_dots = self.defaults.get('radii_line_dots', self.line_dots)
         self.radii_dashes = self.defaults.get('radii_dashes', self.dashes)
         # ---- compass
@@ -684,18 +691,24 @@ class BaseShape:
         self.label_face = kwargs.get('label_face', self.font_face)
         self.label_stroke = kwargs.get('label_stroke', self.stroke)
         self.label_stroke_width = kwargs.get('label_stroke_width', self.stroke_width)
+        self.label_dx = kwargs.get('label_dx', 0)
+        self.label_dy = kwargs.get('label_dy', 0)
         # ---- text: title
         self.title = kwargs.get('title', cnv.title)
         self.title_size = kwargs.get('title_size', self.font_size)
         self.title_face = kwargs.get('title_face', self.font_face)
         self.title_stroke = kwargs.get('title_stroke', self.stroke)
         self.title_stroke_width = kwargs.get('title_stroke_width', self.stroke_width)
+        self.title_dx = kwargs.get('title_dx', 0)
+        self.title_dy = kwargs.get('title_dy', 0)
         # ---- text: heading
         self.heading = kwargs.get('heading', cnv.heading)
         self.heading_size = kwargs.get('heading_size', self.font_size)
         self.heading_face = kwargs.get('heading_face', self.font_face)
         self.heading_stroke = kwargs.get('heading_stroke', self.stroke)
         self.heading_stroke_width = kwargs.get('heading_stroke_width', self.stroke_width)
+        self.heading_dx = kwargs.get('heading_dx', 0)
+        self.heading_dy = kwargs.get('heading_dy', 0)
         # ---- text block
         self.outline_color = kwargs.get('outline_color', cnv.outline_color)
         self.outline_width = kwargs.get('outline_width', cnv.outline_width)
@@ -765,6 +778,7 @@ class BaseShape:
         self.radii_stroke = kwargs.get('radii_stroke', cnv.radii_stroke)
         self.radii_stroke_width = kwargs.get('radii_stroke_width', cnv.radii_stroke_width)
         self.radii_length = kwargs.get('radii_length', cnv.radii_length)
+        self.radii_offset = kwargs.get('radii_offset', cnv.radii_offset)
         self.radii_line_dots = kwargs.get('radii_line_dots', cnv.line_dots)
         self.radii_dashes = kwargs.get('radii_dashes', cnv.dashes)
         # ---- compass
@@ -1044,8 +1058,8 @@ class BaseShape:
                 _edges = self.edges
             for edge in _edges:
                 if str(edge).lower() not in \
-                        ['left', 'right', 'top', 'bottom', 'l', 'r', 't', 'b', ]:
-                    issue.append(f'"{edge}" is an invalid option in {self.edges}!')
+                        ['north', 'south', 'east', 'west', 'n', 'e', 'w', 's', ]:
+                    issue.append(f'"{edge}" is an invalid choice in {self.edges}!')
                     correct = False
         if self.flip:
             if str(self.flip).lower() not in \
@@ -1330,6 +1344,8 @@ class BaseShape:
         ttext = self.textify(index=ID, text=self.heading)
         if ttext:
             y_off = y_offset or self.title_size / 2.0
+            y = y + self.unit(self.heading_dy)
+            x = x + self.unit(self.heading_dx)
             canvas.setFont(self.font_face, self.heading_size)
             canvas.setFillColor(self.heading_stroke)
             self.draw_multi_string(
@@ -1343,6 +1359,8 @@ class BaseShape:
         ttext = self.textify(index=ID, text=self.label)
         if ttext:
             y = y - (self.label_size / 3.0) if centred else y
+            y = y + self.unit(self.label_dy)
+            x = x + self.unit(self.label_dx)
             canvas.setFont(self.font_face, self.label_size)
             canvas.setFillColor(self.label_stroke)
             self.draw_multi_string(
@@ -1356,6 +1374,8 @@ class BaseShape:
         ttext = self.textify(index=ID, text=self.title)
         if ttext:
             y_off = y_offset or self.title_size
+            y = y + self.unit(self.title_dy)
+            x = x + self.unit(self.title_dx)
             canvas.setFont(self.font_face, self.title_size)
             canvas.setFillColor(self.title_stroke)
             self.draw_multi_string(

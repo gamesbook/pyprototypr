@@ -7,7 +7,7 @@ Created on: 9 August 2024
 """
 from pyprototypr.draw import *
 
-Create(filename="wip.pdf",
+Create(filename="chords.pdf",
         pagesize=A8,
         margin_top=0.5,
         margin_left=0.15,

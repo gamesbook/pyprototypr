@@ -479,7 +479,7 @@ class StadiumShape(BaseShape):
 
             # vx, vy = self.points_to_value(vertex.x) - 1, self.points_to_value(vertex.y) - 1
             # tools.feedback(f'*** {count=} vx={vx:.2f} vy={vy:.2f}')
-            if count == 2 and ('l' in _edges or 'left' in _edges):
+            if count == 2 and ('w' in _edges or 'west' in _edges):
                 cx, cy = vertex.x, vertex.y - 0.5 * self._u.height
                 # _cx, _cy = self.points_to_value(cx) - 1, self.points_to_value(cy) - 1
                 # tools.feedback(f'***  cx={_cx:.2f} cy={_cy:.2f}')
@@ -490,7 +490,7 @@ class StadiumShape(BaseShape):
                 pth.moveTo(*vertex)
                 pth.curveTo(*top_curve[1])
                 pth.curveTo(*bottom_curve[1])
-            elif count == 1 and ('t' in _edges or 'top' in _edges):
+            elif count == 1 and ('n' in _edges or 'north' in _edges):
                 cx, cy = vertex.x - 0.5 * self._u.width, vertex.y
                 right_curve = geoms.bezier_arc_segment(
                     cx, cy, radius_tb, radius_tb, 0, 90)
@@ -499,7 +499,7 @@ class StadiumShape(BaseShape):
                 pth.moveTo(*vertex)
                 pth.curveTo(*right_curve[1])
                 pth.curveTo(*left_curve[1])
-            elif count == 3 and ('b' in _edges or 'bottom' in _edges):
+            elif count == 3 and ('s' in _edges or 'south' in _edges):
                 cx, cy = vertex.x + 0.5 * self._u.width, vertex.y
                 left_curve = geoms.bezier_arc_segment(
                     cx, cy, radius_tb, radius_tb, 180, 270)
@@ -509,7 +509,7 @@ class StadiumShape(BaseShape):
                 pth.curveTo(*left_curve[1])
                 pth.curveTo(*right_curve[1])
                 pth.moveTo(*self.vertices[3])
-            elif count == 0 and ('r' in _edges or 'right' in _edges):
+            elif count == 0 and ('e' in _edges or 'east' in _edges):
                 cx, cy = vertex.x, vertex.y + 0.5 * self._u.height
                 bottom_curve = geoms.bezier_arc_segment(
                     cx, cy, radius_lr, radius_lr, 270, 360)
@@ -2210,6 +2210,10 @@ class CircleShape(BaseShape):
     def draw_radii(self, cnv, ID, x_c: float, y_c: float):
         """Draw radius lines from the centre outwards to the circumference.
 
+        The offset will start the line a certain distance away; and the length will
+        determine how long the radial line is.  By default it stretches from centre
+        to circumference.
+
         Args:
             x_c: x-centre of circle
             y_c: y-centre of circle
@@ -2222,6 +2226,7 @@ class CircleShape(BaseShape):
                     f'The radii {self.radii} are not valid - must be a list of numbers'
                     ' from 0 to 360', True)
             _radius = self.radii_length or self.radius
+            rad_offset = self.unit(self.radii_offset) or 0
             rad_length = self.unit(_radius, label='radius length')
             self.set_canvas_props(
                 index=ID,
@@ -2231,11 +2236,18 @@ class CircleShape(BaseShape):
                 line_dots=self.radii_line_dots)
 
             for rad_angle in _radii:
-                # points based on length of line and an angle in degrees
-                new_pt = geoms.point_on_circle(Point(x_c, y_c), rad_length, rad_angle)
+                # points based on length of line, offset and the angle in degrees
+                diam_pt = geoms.point_on_circle(Point(x_c, y_c), rad_length, rad_angle)
                 pth = cnv.beginPath()
-                pth.moveTo(x_c, y_c)
-                pth.lineTo(new_pt.x, new_pt.y)
+                if rad_offset is not None and rad_offset != 0:
+                    offset_pt = geoms.point_on_circle(Point(x_c, y_c), rad_offset, rad_angle)
+                    end_pt = geoms.point_on_line(offset_pt, diam_pt, rad_length)
+                    # print(rad_angle, offset_pt, f'{x_c=}, {y_c=}')
+                    pth.moveTo(offset_pt.x, offset_pt.y)
+                    pth.lineTo(end_pt.x, end_pt.y)
+                else:
+                    pth.moveTo(x_c, y_c)
+                    pth.lineTo(diam_pt.x, diam_pt.y)
                 cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):

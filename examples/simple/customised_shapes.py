@@ -280,10 +280,10 @@ PageBreak()
 # ---- stadium
 Blueprint()
 Text(common=txt, text="Stadium: edges")
-Stadium(x=0, y=0, height=1, width=2, edges='top', fill=tan, label="top")
-Stadium(x=2, y=2, height=1, width=2, edges='bottom', fill=tan, label="bottom")
-Stadium(x=0, y=4, height=1, width=1, edges='right', fill=tan, label="right")
-Stadium(x=3, y=5, height=1, width=1, edges='left', fill=tan, label="left")
+Stadium(x=0, y=0, height=1, width=2, edges='n', fill=tan, label="north")
+Stadium(x=2, y=2, height=1, width=2, edges='S', fill=tan, label="south")
+Stadium(x=0, y=4, height=1, width=1, edges='e', fill=tan, label="east")
+Stadium(x=3, y=5, height=1, width=1, edges='w', fill=tan, label="west")
 PageBreak()
 
 # ---- sequence
