@@ -17,7 +17,6 @@ import random
 import sys
 from typing import Union
 # third party
-import pymupdf 
 from reportlab.lib.pagesizes import *
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -68,7 +67,7 @@ from .shapes import (
     GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE)
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts, steps
-from pyprototypr.utils import geoms, tools
+from pyprototypr.utils import geoms, tools, support
 from pyprototypr.utils.geoms import Point
 
 log = logging.getLogger(__name__)
@@ -240,31 +239,16 @@ def Save(**kwargs):
     global cnv
     global filename
     global deck
+    
     if deck and len(deck.deck) > 1:
         deck.draw(cnv, cards=deck.cards, image_list=deck.image_list)
         cnv.canvas.showPage()
     cnv.canvas.save()
-    # breakpoint()
+
     output = kwargs.get('output', None)
-    dpi = kwargs.get('dpi', 300)
-    try:
-        _dpi = int(dpi)
-    except:
-        tools.feedback(f'Unable to use dpi of "{dpi}" - needs to be a whole number!', True)
+    dpi = support.to_int(kwargs.get('dpi', 300), 'dpi')
     if output:
-        tools.feedback(f'Saving content of {filename} as .png image(s)...')
-        basename = os.path.splitext(filename)[0]
-        try:
-            doc = pymupdf.open(filename)
-            pages = doc.page_count
-            for page in doc:
-                pix = page.get_pixmap(dpi=_dpi)
-                if pages > 1:
-                    pix.save(f"{basename}_{page.number + 1}.png")
-                else:
-                    pix.save(f"{basename}.png")
-        except Exception as err:
-            tools.feedback(f'Unable to extract images for {filename} - {err}!')
+        support.pdf_to_png(filename, dpi)
 
 
 def save(**kwargs):

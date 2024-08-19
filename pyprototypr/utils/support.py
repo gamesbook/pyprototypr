@@ -4,8 +4,11 @@ Support utilities for draw module
 """
 # lib
 import itertools
+import os
 import sys
+from typing import Any
 # third-party
+import pymupdf 
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
@@ -195,6 +198,45 @@ def combinations(_object, size=2, repeat=1, delimiter=','):
     except (TypeError, AttributeError):
         feedback(f'Unable to create combinations from "{_object}"', False, True)
         return []
+
+
+def to_int(value: Any, name: str = '',  fail: bool = True) -> int:
+    """Convert value to an integer."""
+    try:
+        return int(value)
+    except Exception as err:
+        if name:
+            feedback(f'Unable to use {name} of "{value}" - needs to be a whole number!', fail)
+        else:
+            feedback(f'Unable to convert "{value}" into a whole number!', fail)
+
+
+def to_float(value: Any, name: str = '',  fail: bool = True) -> float:
+    """Convert value to a float."""
+    try:
+        return float(value)
+    except Exception as err:
+        if name:
+            feedback(f'Unable to use {name} of "{value}" - needs to be a floating point number!', fail)
+        else:
+            feedback(f'Unable to convert "{value}" into a floating point number!', fail)
+
+
+def pdf_to_png(filename: str, dpi: int = 300):
+    """Extract pages from PDF as PNG image(s)."""
+    feedback(f'Saving content of {filename} as .png image(s)...')
+    basename = os.path.splitext(filename)[0]
+    try:
+        doc = pymupdf.open(filename)
+        pages = doc.page_count
+        for page in doc:
+            pix = page.get_pixmap(dpi=dpi)
+            if pages > 1:
+                pix.save(f"{basename}_{page.number + 1}.png")
+            else:
+                pix.save(f"{basename}.png")
+    except Exception as err:
+        feedback(f'Unable to extract images for {filename} - {err}!')
 
 
 if __name__ == "__main__":
