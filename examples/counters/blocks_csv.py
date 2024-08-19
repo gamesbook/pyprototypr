@@ -79,4 +79,4 @@ Card("all", Q("DOTS`=`3", dots3))
 Card("all", Q("SHIELD`=`red", shield_red))
 Card("all", Q("SHIELD`=`blue", shield_blue))
 
-Save()
+Save(output='png')

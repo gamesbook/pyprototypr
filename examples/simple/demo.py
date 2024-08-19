@@ -398,4 +398,4 @@ Circle(x=1.25, y=6.25, fill=black, radius=1.25,
 Circle(x=2, y=7, stroke=black, fill=gold, radius=0.5, stroke_width=5)
 
 PageBreak()
-Save()
+Save(output='png', dpi=96)

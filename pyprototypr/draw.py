@@ -17,6 +17,7 @@ import random
 import sys
 from typing import Union
 # third party
+import pymupdf 
 from reportlab.lib.pagesizes import *
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -74,6 +75,7 @@ log = logging.getLogger(__name__)
 
 cnv = None  # will become a reportlab.canvas object
 deck = None  # will become a shapes.DeckShape object
+filename = None
 dataset = None  # will become a dictionary of data loaded from a file
 # default margins
 margin = 1
@@ -92,6 +94,7 @@ def Create(**kwargs):
     Allows shortcut creation of cards.
     """
     global cnv
+    global filename
     global deck
     global margin
     global margin_left
@@ -233,17 +236,39 @@ def page_break():
     PageBreak()
 
 
-def Save():
+def Save(**kwargs):
     global cnv
+    global filename
     global deck
     if deck and len(deck.deck) > 1:
         deck.draw(cnv, cards=deck.cards, image_list=deck.image_list)
         cnv.canvas.showPage()
     cnv.canvas.save()
+    # breakpoint()
+    output = kwargs.get('output', None)
+    dpi = kwargs.get('dpi', 300)
+    try:
+        _dpi = int(dpi)
+    except:
+        tools.feedback(f'Unable to use dpi of "{dpi}" - needs to be a whole number!', True)
+    if output:
+        tools.feedback(f'Saving content of {filename} as .png image(s)...')
+        basename = os.path.splitext(filename)[0]
+        try:
+            doc = pymupdf.open(filename)
+            pages = doc.page_count
+            for page in doc:
+                pix = page.get_pixmap(dpi=_dpi)
+                if pages > 1:
+                    pix.save(f"{basename}_{page.number + 1}.png")
+                else:
+                    pix.save(f"{basename}.png")
+        except Exception as err:
+            tools.feedback(f'Unable to extract images for {filename} - {err}!')
 
 
-def save():
-    Save()
+def save(**kwargs):
+    Save(**kwargs)
 
 
 def margins(**kwargs):
@@ -1028,7 +1053,7 @@ def Blueprint(**kwargs):
     cols = int(_cols)
     kwargs['rows'] = kwargs.get('rows', rows)
     kwargs['cols'] = kwargs.get('cols', cols)
-    kwargs['stroke_width'] = kwargs.get('stroke_width', 0.1)  # fine line
+    kwargs['stroke_width'] = kwargs.get('stroke_width', 0.2)  # fine line
     default_font_size = 10 * math.sqrt(pagesize[0]) / math.sqrt(A4[0])
     line_dots = kwargs.get('line_dots', False)
     kwargs['font_size'] = kwargs.get('font_size', default_font_size)
