@@ -35,30 +35,36 @@ outline = rectangle(
     height=7.8, width=5.1,
     rounded=0.5,
     fill=V('SUIT'), stroke=V('SUIT'))
+# TODO - use Text for value & rotate
 value_top = hexagon(
     x=1.1, y=7.5,
     side=0.8,
     fill=white, stroke=white,
     font_size=28,
-    label=V('VALUE'), label_stroke=black)
+    label=V('VALUE'), label_stroke=darkslategrey)
 value_btm = hexagon(
-    x=1.1, y=1.5,
+    x=3.9, y=1.8,
     side=0.8,
     fill=white, stroke=white,
     font_size=28,
-    label=V('VALUE'), label_stroke=black, label_rotate=180)
+    label=V('VALUE'), label_stroke=darkslategrey, label_rotate=180)
 picture = text(
     x=3.15, y=4.4,
     stroke=white,
     font_size=76,
     text=V('IMAGE'))
-deco = hexagon(
+deco_top = hexagon(
     x=1.2, y=7.6,
+    side=0.7,
+    fill=None,
+    stroke=V('SUIT'))
+deco_btm = hexagon(
+    x=4, y=1.9,
     side=0.7,
     fill=None,
     stroke=V('SUIT'))
 
 # card setup
-Card("*", outline, value_top, value_btm, picture, deco)
+Card("*", outline, value_top, value_btm, picture, deco_top, deco_btm)
 
 Save()

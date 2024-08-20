@@ -91,6 +91,23 @@ class Query:
 # ---- Core Shapes =====
 
 
+class CommonShape(BaseShape):
+    """
+    Attributes common to, or used by, multiple shapes
+    """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        self._kwargs = kwargs
+        super(CommonShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+
+    def __str__(self):
+        return f'{self._kwargs}'
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Not applicable."""
+        tools.feedback("This shape cannot be drawn.")
+
+
 class ImageShape(BaseShape):
     """
     Image (bitmap or SVG) on a given canvas.
@@ -493,6 +510,65 @@ class CircleShape(BaseShape):
                 stroke_width=self.radii_stroke_width,
                 dashes=self.radii_dashes,
                 line_dots=self.radii_line_dots)
+            for rad_angle in _radii:
+                # points based on length of line, offset and the angle in degrees
+                diam_pt = geoms.point_on_circle(Point(x_c, y_c), rad_length, rad_angle)
+                pth = cnv.beginPath()
+                if rad_offset is not None and rad_offset != 0:
+                    offset_pt = geoms.point_on_circle(Point(x_c, y_c), rad_offset, rad_angle)
+                    end_pt = geoms.point_on_line(offset_pt, diam_pt, rad_length)
+                    # print(rad_angle, offset_pt, f'{x_c=}, {y_c=}')
+                    pth.moveTo(offset_pt.x, offset_pt.y)
+                    pth.lineTo(end_pt.x, end_pt.y)
+                else:
+                    pth.moveTo(x_c, y_c)
+                    pth.lineTo(diam_pt.x, diam_pt.y)
+                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw circle on a given canvas."""
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        # tools.feedback(f"*** Circle: {self._o.delta_x=} {self._o.delta_y=}")
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        # ---- set properties
+        x, y = self.calculate_centre()
+        self.area = self.calculate_area()
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
+        # ---- draw circle
+        # tools.feedback(f'*** Circle: {x=} {y=}')
+        cnv.circle(
+            x, y, self._u.radius, stroke=1, fill=1 if self.fill else 0)
+        # ---- draw hatch
+        if self.hatch:
+            if self.rotate:
+                # tools.feedback(f'*** {self.hatch=}, {self.rotate=}, {type(cnv)}')
+                cnv.saveState()
+                cnv.translate(self.x_c, self.y_c)
+                self.draw_hatch(cnv, ID, self.hatch, 0, 0)
+                cnv.rotate(self.rotate)
+                cnv.restoreState()
+            else:
+                self.draw_hatch(cnv, ID, self.hatch, self.x_c, self.y_c)
+        # ---- draw radii
+        if self.radii:
+            if self.rotate:
+                # tools.feedback(f'*** {self.hatch=}, {self.rotate=}, {type(cnv)}')
+                cnv.saveState()
+                cnv.translate(self.x_c, self.y_c)
+                self.draw_radii(cnv, ID, 0, 0)
+                cnv.rotate(self.rotate)
+                cnv.restoreState()
+            else:
+                self.draw_radii(cnv, ID, self.x_c, self.y_c)
+        # ---- cross
+        self.draw_cross(cnv, self.x_c, self.y_c)
+        # ---- dot
+        self.draw_dot(cnv, self.x_c, self.y_c)
+        # ---- text
+        self.draw_heading(cnv, ID, self.x_c, self.y_c + self._u.radius, **kwargs)
+        self.draw_label(cnv, ID, self.x_c, self.y_c, **kwargs)
+        self.draw_title(cnv, ID, self.x_c, self.y_c - self._u.radius, **kwargs)
 
 
 class ChordShape(BaseShape):
@@ -560,65 +636,6 @@ class DotShape(BaseShape):
         self.draw_heading(cnv, ID, x, y, **kwargs)
         self.draw_label(cnv, ID, x, y, **kwargs)
         self.draw_title(cnv, ID, x, y, **kwargs)
-            for rad_angle in _radii:
-                # points based on length of line, offset and the angle in degrees
-                diam_pt = geoms.point_on_circle(Point(x_c, y_c), rad_length, rad_angle)
-                pth = cnv.beginPath()
-                if rad_offset is not None and rad_offset != 0:
-                    offset_pt = geoms.point_on_circle(Point(x_c, y_c), rad_offset, rad_angle)
-                    end_pt = geoms.point_on_line(offset_pt, diam_pt, rad_length)
-                    # print(rad_angle, offset_pt, f'{x_c=}, {y_c=}')
-                    pth.moveTo(offset_pt.x, offset_pt.y)
-                    pth.lineTo(end_pt.x, end_pt.y)
-                else:
-                    pth.moveTo(x_c, y_c)
-                    pth.lineTo(diam_pt.x, diam_pt.y)
-                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
-
-    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Draw circle on a given canvas."""
-        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
-        # tools.feedback(f"*** Circle: {self._o.delta_x=} {self._o.delta_y=}")
-        cnv = cnv.canvas if cnv else self.canvas.canvas
-        # ---- set properties
-        x, y = self.calculate_centre()
-        self.area = self.calculate_area()
-        # ---- set canvas
-        self.set_canvas_props(index=ID)
-        # ---- draw circle
-        # tools.feedback(f'*** Circle: {x=} {y=}')
-        cnv.circle(
-            x, y, self._u.radius, stroke=1, fill=1 if self.fill else 0)
-        # ---- draw hatch
-        if self.hatch:
-            if self.rotate:
-                # tools.feedback(f'*** {self.hatch=}, {self.rotate=}, {type(cnv)}')
-                cnv.saveState()
-                cnv.translate(self.x_c, self.y_c)
-                self.draw_hatch(cnv, ID, self.hatch, 0, 0)
-                cnv.rotate(self.rotate)
-                cnv.restoreState()
-            else:
-                self.draw_hatch(cnv, ID, self.hatch, self.x_c, self.y_c)
-        # ---- draw radii
-        if self.radii:
-            if self.rotate:
-                # tools.feedback(f'*** {self.hatch=}, {self.rotate=}, {type(cnv)}')
-                cnv.saveState()
-                cnv.translate(self.x_c, self.y_c)
-                self.draw_radii(cnv, ID, 0, 0)
-                cnv.rotate(self.rotate)
-                cnv.restoreState()
-            else:
-                self.draw_radii(cnv, ID, self.x_c, self.y_c)
-        # ---- cross
-        self.draw_cross(cnv, self.x_c, self.y_c)
-        # ---- dot
-        self.draw_dot(cnv, self.x_c, self.y_c)
-        # ---- text
-        self.draw_heading(cnv, ID, self.x_c, self.y_c + self._u.radius, **kwargs)
-        self.draw_label(cnv, ID, self.x_c, self.y_c, **kwargs)
-        self.draw_title(cnv, ID, self.x_c, self.y_c - self._u.radius, **kwargs)
 
 
 class CompassShape(BaseShape):

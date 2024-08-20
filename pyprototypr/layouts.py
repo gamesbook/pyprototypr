@@ -14,7 +14,6 @@ from pyprototypr.utils.geoms import (
     Point, Link, Location, TrackPoint)  # named tuples
 from pyprototypr.utils import geoms, tools
 from pyprototypr.base import BaseShape, BaseCanvas
-from pyprototypr.groups import GridShape
 from pyprototypr.shapes import (
     CircleShape, HexShape, ImageShape, LineShape, PolylineShape, RectangleShape, SquareShape, TextShape)
 
@@ -101,24 +100,6 @@ class DotGridShape(BaseShape):
                     size,
                     stroke=0,
                     fill=1 if self.fill else 0)
-
-
-class CommonShape(BaseShape):
-    """
-    Attributes common to, or used by, multiple shapes
-    """
-
-    def __init__(self, _object=None, canvas=None, **kwargs):
-        self._kwargs = kwargs
-        super(CommonShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-
-    def __str__(self):
-        return f'{self._kwargs}'
-
-    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Not applicable."""
-        tools.feedback("This shape cannot be drawn.")
-
 
 # ---- Deck / Card related  =====
 

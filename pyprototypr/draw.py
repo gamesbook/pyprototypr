@@ -57,14 +57,14 @@ from .dice import (
 from .shapes import (
     BaseShape,
     ArcShape, ArrowShape, BezierShape, ChordShape, CircleShape, CommonShape,
-    CompassShape, DotShape, DotGridShape, EllipseShape,
+    CompassShape, DotShape, EllipseShape,
     EquilateralTriangleShape, FooterShape, HexShape, ImageShape, LineShape,
     OctagonShape, PolygonShape, PolylineShape, Query, RectangleShape,
     RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape,
     SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape,
     GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE)
-from .groups import (
-    GridShape, VirtualGrid, RectangleGrid,
+from .layouts import (
+    GridShape, DotGridShape, VirtualGrid, RectangleGrid,
     VirtualTrack, RectangleTrack,
     ConnectShape, RepeatShape, SequenceShape)
 from .groups import DeckShape

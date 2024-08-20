@@ -16,6 +16,7 @@ import os
 # third party
 from svglib.svglib import svg2rlg
 from reportlab.pdfgen import canvas as reportlab_canvas
+from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.units import cm, inch, mm
 from reportlab.lib.pagesizes import (
     A6, A5, A4, A3, A2, A1, A0, LETTER, LEGAL, ELEVENSEVENTEEN,
@@ -1262,6 +1263,11 @@ class BaseShape:
         except TypeError:
             return _text
 
+    def font_height(self) -> float:
+        face = pdfmetrics.getFont(self.font_face).face
+        height = (face.ascent - face.descent) / 1000 * self.font_size
+        return height
+
     def points_to_value(self, value: float) -> float:
         """Convert a point value to a units-based value."""
         try:
@@ -1348,7 +1354,7 @@ class BaseShape:
         Requires native units (i.e. points)!
         """
         ttext = self.textify(index=ID, text=self.heading)
-        _rotate = rotate or self.rotate
+        _rotate = rotate or self.heading_rotate
         if ttext:
             y_off = y_offset or self.title_size / 2.0
             y = y + self.unit(self.heading_dy)
@@ -1364,7 +1370,7 @@ class BaseShape:
         Requires native units (i.e. points)!
         """
         ttext = self.textify(index=ID, text=self.label)
-        _rotate = rotate or self.rotate
+        _rotate = rotate or self.label_rotate
         if ttext:
             y = y - (self.label_size / 3.0) if centred else y
             y = y + self.unit(self.label_dy)
@@ -1380,7 +1386,7 @@ class BaseShape:
         Requires native units (i.e. points)!
         """
         ttext = self.textify(index=ID, text=self.title)
-        _rotate = rotate or self.rotate
+        _rotate = rotate or self.title_rotate
         if ttext:
             y_off = y_offset or self.title_size
             y = y + self.unit(self.title_dy)
