@@ -57,14 +57,17 @@ from .dice import (
 from .shapes import (
     BaseShape,
     ArcShape, ArrowShape, BezierShape, ChordShape, CircleShape, CommonShape,
-    ConnectShape, CompassShape, DeckShape, DotShape, DotGridShape, EllipseShape,
-    EquilateralTriangleShape, FooterShape, GridShape, HexShape, ImageShape, LineShape,
-    OctagonShape, PolygonShape, PolylineShape, Query, RectangleShape, RepeatShape,
-    RhombusShape, RightAngledTriangleShape, SectorShape, SequenceShape, ShapeShape,
+    CompassShape, DotShape, DotGridShape, EllipseShape,
+    EquilateralTriangleShape, FooterShape, HexShape, ImageShape, LineShape,
+    OctagonShape, PolygonShape, PolylineShape, Query, RectangleShape,
+    RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape,
     SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape,
-    VirtualGrid, RectangleGrid,
-    VirtualTrack, RectangleTrack,
     GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE)
+from .groups import (
+    GridShape, VirtualGrid, RectangleGrid,
+    VirtualTrack, RectangleTrack,
+    ConnectShape, RepeatShape, SequenceShape)
+from .groups import DeckShape
 from ._version import __version__
 from pyprototypr.utils.support import base_fonts, steps
 from pyprototypr.utils import geoms, tools, support
@@ -239,7 +242,7 @@ def Save(**kwargs):
     global cnv
     global filename
     global deck
-    
+
     if deck and len(deck.deck) > 1:
         deck.draw(cnv, cards=deck.cards, image_list=deck.image_list)
         cnv.canvas.showPage()

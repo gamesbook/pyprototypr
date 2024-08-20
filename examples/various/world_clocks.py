@@ -24,7 +24,6 @@ def the_clock(x=3, y=3.5, hours=12, minutes=0, day=True, label="PROTO", numbers=
         face = white
     else:
         face = darkgrey
-
     # basic clock frame
     Circle(cx=x, cy=y, radius=2.5, fill=face, stroke_width=6,
            label_size=7, label_dy=1, label=label.upper())

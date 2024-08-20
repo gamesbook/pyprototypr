@@ -3,26 +3,25 @@
 **pyprototypr** is a simple Python utility for designing and creating simple,
 regular, graphical output in PDF format via a script.
 
-It was originally created to handle prototyping of cards, counters, tiles and
-boards for board games, but can be used for creation of any simple design that has
-regular or repeating elements; typically containing a mix of graphics and text.
+**pyprototypr**  was originally created to handle prototyping of cards, counters, tiles
+and boards for board games, but can be used for creation of any simple design that has
+regular or repetitive elements; typically containing a mix of graphics and text.
+
+## Documentation
+
+The online documentation for **pyprototypr** starts with the
+[Table of Contents](https://github.com/gamesbook/pyprototypr/blob/master/docs/index.md)
+
+If you're not familiar with any kind of programming or scripting, you should probably
+read some of the introductory material before proceeding ...
 
 ## Requirements
 
 **pyprototypr** requires a version of Python 3.11 or higher.
 
 If this is **not** your default Python version, you may want to use **pyenv**
-to install and use **pyprototypr** in a virtual environment.
-
-## Documentation
-
-The online documentation starts with the
-[Table of Contents](https://github.com/gamesbook/pyprototypr/blob/master/docs/index.md)
-
-There is also a more
-[technical manual](https://github.com/gamesbook/pyprototypr/blob/master/docs/manual_technical.rst)
-available (also downloadable as a
-[PDF](https://github.com/gamesbook/pyprototypr/blob/master/docs/manual_technical.pdf) ).
+(or [pyenv-win](https://github.com/pyenv-win/pyenv-win) on Windows) to install and
+use **pyprototypr** in a virtual environment.
 
 ## Quick Start (for the impatient)
 
@@ -71,7 +70,6 @@ These are not guaranteed to be addressed, but they are potential areas of
 work for future development.
 
 * [x] Page numbering
-* [ ] Page control: restrict output
 * [ ] New shapes:
     * [x] Square shape
     * [x] Equilateral Triangle shape
@@ -84,7 +82,7 @@ work for future development.
 * [x] Circle, Rectangle, Hexagon: centre cross
 * [x] Rectangle: with notches
 * [x] Hexagons: "pointy" layout
-* [ ] Hexagons: 18xx tick labels on grid
+* [ ] Hexagons: 18xx example
 * [ ] Line:
     * [x] end style
     * [ ] join style
@@ -92,14 +90,22 @@ work for future development.
 * [ ] Arcs (pathways): for a hexagon (**in progress**)
 * [ ] Shortcut notation for styling of: area, line, text, etc.
 * [ ] Track feature: layout shapes along a rectangle or circle  (**in progress**)
-* [x] Interior hatching:
+* [ ] Interior hatching:
     * [x] rectangle
     * [x] hexagon
     * [x] equilateral triangle
+    * [ ] conditional for rounded rectangle
 * [ ] Layout: a virtual grid for putting shapes into rows/cols in different patterns
-* [x] rotation:
+* [x] Rotation:
     * [x] text along a line
     * [ ] shape labels (in the centre of shape)
+    * [ ] Polygon
+    * [ ] Stadium
+    * [ ] Triangle
+    * [ ] Octagon
+* [ ] Cards:
+    * [ ] allow for copies of a cards
+    * [ ] 'wrapper' for tiles (default size)
 
 ## Planned/Potential Examples
 
@@ -108,14 +114,14 @@ work for future development.
 * [ ] Traveller board: showing a fully styled Star system (custom Shape?)
 * [x] WarpWar board: showing a fully-styled sector
 * [ ] 18xx board: show a basic map with tracks, towns and off-map areas
-* [ ]Dartboard: using Sector shape
+* [ ] Dartboard: using Sector shape and numbered Track
 
 ## Acknowledgements
 
 As always, with Python, you are building "on the shoulders of giants". In this case, the
 [ReportLab PDF Toolkit](https://https://docs.reportlab.com/reportlab/userguide/ch1_intro/)
-provides all of the core, underlying infrastructure to do the graphics work;
-**pyprototypr** is really a thin wrapper around its numerous and extensive capabilities.
+provides all of the core, underlying infrastructure used to do the graphics work;
+**pyprototypr** is a custom wrapper around its numerous and extensive capabilities.
 
 Additional libraries used include:
 
@@ -123,3 +129,4 @@ Additional libraries used include:
 * `bgg-api` https://pypi.org/project/bgg-api/ - support for access to the BoardGameGeek API
 * `xlrd` https://pypi.org/project/xlrd/ - support for access to `.xls` files
 * `openpyxl` https://pypi.org/project/openpyxl/ - support for access to `.xlsx` files
+* `pymupdf` https://pymupdf.io/ - support for export to PNG images

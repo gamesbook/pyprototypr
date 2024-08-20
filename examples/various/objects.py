@@ -9,6 +9,9 @@ from pyprototypr.draw import *
 
 Create(filename="objects.pdf", margin=1, margin_top=0.25)
 
+header = Common(x=0, y=9, font_size=14, align="left")
+header_font = Common(font_size=12, align="left")
+
 Text(common=header, text="Miscellaneous")
 
 Text(common=header_font, x=6, y=23, text="Coin: circle with steps radii + an inner circle")

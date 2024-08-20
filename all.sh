@@ -2,7 +2,6 @@ echo "Creating PDFs for all examples (except those in examples/manual)"
 echo ""
 # -- examples: simple
 echo "Creating simple examples..."
-python examples/simple/cards.py -d /tmp
 python examples/simple/cards_design.py -d /tmp
 python examples/simple/cards_images.py -d /tmp
 python examples/simple/customised_shapes.py -d /tmp
@@ -41,6 +40,12 @@ echo "Creating cards..."
 python examples/cards/cards_matrix_one.py -d /tmp
 python examples/cards/cards_matrix_two.py -d /tmp
 python examples/cards/cards_standard.py -d /tmp
+# -- various
+echo "Creating various..."
+python examples/various/chords.py -d /tmp
+python examples/various/clock.py -d /tmp
+python examples/various/objects.py -d /tmp
+python examples/various/world_clocks.py -d /tmp
 # -- Board Game Geek
 echo "Creating BGG game sheet..."
 python examples/bgg/example01.py -d /tmp
