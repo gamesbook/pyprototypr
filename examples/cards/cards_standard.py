@@ -6,11 +6,11 @@ Created on: 12 August 2024
 
 Notes:
 
-symbols are from https://www.w3schools.com/charsets/ref_utf_symbols.asp
-    ♠	2660	BLACK SPADE SUIT
-    ♣	2663	BLACK CLUB SUIT
-    ♥	2665	BLACK HEART SUIT
-    ♦	2666	BLACK DIAMOND SUIT
+Suit symbols are shown at: https://www.w3schools.com/charsets/ref_utf_symbols.asp
+    ♠    2660    BLACK SPADE SUIT
+    ♣    2663    BLACK CLUB SUIT
+    ♥    2665    BLACK HEART SUIT
+    ♦    2666    BLACK DIAMOND SUIT
 """
 from pyprototypr.draw import *
 
@@ -34,23 +34,23 @@ combos = Matrix(
 Data(matrix=combos, extra=2)  # (re)set no. of cards based on length
 
 # card layout elements
-value_top = text(x=1.0, y=8.4, font_size=40)
+value_top = Common(x=1.0, y=8.4, font_size=40)
 value_black = text(common=value_top, stroke=black, text=V('VALUE'))
 value_red = text(common=value_top, stroke=red, text=V('VALUE'))
 
-value_low = text(x=5.5, y=1.3, font_size=40, rotate=90)
+value_low = Common(x=5.5, y=2.4, font_size=40, rotate=180)
 value_low_black = text(common=value_low, stroke=black, text=V('VALUE'))
 value_low_red = text(common=value_low, stroke=red, text=V('VALUE'))
 
-marker_base = text(x=1.0, y=7.3, font_size=42)
+marker_base = Common(x=1.0, y=7.3, font_size=42)
 marker_black = text(common=marker_base, stroke=black, text=V('SUIT'))
 marker_red = text(common=marker_base, stroke=red, text=V('SUIT'))
 
-marker_low = text(x=5.5, y=2.6, font_size=42, rotate=90)
+marker_low = Common(x=5.5, y=3.6, font_size=42, rotate=180)
 marker_low_black = text(common=marker_low, stroke=black, text=V('SUIT'))
 marker_low_red = text(common=marker_low, stroke=red, text=V('SUIT'))
 
-# card setup
+# cards setup
 Card("1-26", value_black, value_low_black, marker_black, marker_low_black)
 Card("27-52", value_red, value_low_red, marker_red, marker_low_red)
 
@@ -70,7 +70,12 @@ Card("40", image("images/king_d.png", common=royals))
 Card("41", image("images/queen_d.png", common=royals))
 Card("42", image("images/jack_d.png", common=royals))
 
-# jokers
+# ace
+Card("13",
+     text(x=3.15, y=3.5, font_size=180, stroke=black, text='\u2660'),
+     text(x=3.15, y=4.8, font_size=60, stroke=white, text='\u2660'))
+
+# jokers (2 extra cards)
 Card("53",
      text(common=value_top, stroke=black, text='J'),
      text(common=value_low, stroke=black, text='J'),
@@ -79,10 +84,5 @@ Card("54",
      text(common=value_top, stroke=red, text='J'),
      text(common=value_low, stroke=red, text='J'),
      image("images/joker_red.png", x=1, y=3, width=5, height=5))
-
-# ace
-Card("13",
-     text(x=3.15, y=3.5, font_size=180, stroke=black, text='\u2660'),
-     text(x=3.15, y=4.8, font_size=60, stroke=white, text='\u2660'))
 
 Save()

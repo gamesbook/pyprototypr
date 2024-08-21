@@ -413,7 +413,7 @@ def group(*args, **kwargs):
 
 
 def Data(**kwargs):
-    """Load data from file, dictionar or directory for access by a Deck."""
+    """Load data from file, dictionary or directory for access by a Deck."""
     global cnv
     global deck
     global dataset

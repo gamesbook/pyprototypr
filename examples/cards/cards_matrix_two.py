@@ -1,5 +1,5 @@
 """
-Matrix cards script for pyprototypr
+Matrix cards script, with "joker" cards, for pyprototypr
 
 Written by: Derek Hohls
 Created on: 12 August 2024
