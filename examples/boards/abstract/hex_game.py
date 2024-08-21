@@ -12,10 +12,10 @@ Create(filename="hex_game_board.pdf", margin=0.5, pagesize=landscape(A4))
 
 # Background Player Areas
 RightAngledTriangle(
-    x=-1.15, y=10.0, height=9, width=15.35, fill=white, flip="up", hand="right"
+    x=-1.1, y=10.0, height=9, width=15.35, fill=white, flip="up", hand="right"
 )
 RightAngledTriangle(
-    x=-1.15, y=10.0, height=9, width=15.35, fill=black, flip="down", hand="right"
+    x=-1.1, y=10.0, height=9, width=15.35, fill=black, flip="down", hand="right"
 )
 RightAngledTriangle(
     x=29.55, y=10.0, height=9, width=15.35, fill=black, flip="up", hand="left"
@@ -30,8 +30,8 @@ Hexagons(
     rows=11,
     hex_layout="diamond",
     height=1.5,
-    margin_bottom=2.25,
-    margin_left=1.0,
+    margin_bottom=1.25,
+    margin_left=-0.1,
 )
 
 Save()
