@@ -35,25 +35,51 @@ outline = rectangle(
     height=7.8, width=5.1,
     rounded=0.5,
     fill=V('SUIT'), stroke=V('SUIT'))
-value = hexagon(
+icon_top = hexagon(
     x=1.1, y=7.5,
     side=0.8,
-    fill=white, stroke=white,
+    stroke=white)
+value_top = text(
+    x=1.9, y=7.8,
     font_size=28,
-    label=V('VALUE'), label_stroke=black)
+    text=V('VALUE'),
+    align="centre",
+    stroke=darkslategrey)
+icon_btm = hexagon(
+    x=3.9, y=1.8,
+    side=0.8,
+    stroke=white)
+value_btm = text(
+    x=4.7, y=2.8,
+    font_size=28,
+    align="centre",
+    text=V('VALUE'),
+    stroke=darkslategrey,
+    rotate=180)
 picture = text(
     x=3.15, y=4.4,
     stroke=white,
     font_size=76,
     text=V('IMAGE'))
-deco = hexagon(
+deco_top = hexagon(
     x=1.2, y=7.6,
+    side=0.7,
+    fill=None,
+    stroke=V('SUIT'))
+deco_btm = hexagon(
+    x=4, y=1.9,
     side=0.7,
     fill=None,
     stroke=V('SUIT'))
 
 # card setup
-Card("1-45", outline, value, picture, deco)
+Card("1-45",
+     outline,
+     picture,
+     icon_top, icon_btm,
+     deco_top, deco_btm,
+     value_top, value_btm,
+)
 
 # custom cards
 rectC = rectangle(
@@ -63,11 +89,11 @@ rectC = rectangle(
     rounded=1,
     stroke=white)
 Card("46-48",
-      rectangle(common=rectC, x=0.75, fill='#FF0000'),
-      rectangle(common=rectC, x=1.77, fill='#FFD700'),
-      rectangle(common=rectC, x=2.79, fill='#9ACD32'),
-      rectangle(common=rectC, x=3.81, fill='#00BFFF'),
-      rectangle(common=rectC, x=4.83, fill='#FF69B4')
+     rectangle(common=rectC, x=0.75, fill='#FF0000'),
+     rectangle(common=rectC, x=1.77, fill='#FFD700'),
+     rectangle(common=rectC, x=2.79, fill='#9ACD32'),
+     rectangle(common=rectC, x=3.81, fill='#00BFFF'),
+     rectangle(common=rectC, x=4.83, fill='#FF69B4')
 )
 
 hexN = hexagon(

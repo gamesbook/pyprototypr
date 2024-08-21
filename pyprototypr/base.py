@@ -397,7 +397,7 @@ class BaseCanvas:
         self.font_size = self.defaults.get('font_size', 12)
         self.style = self.defaults.get('style', None)  # Normal? from reportlab
         self.wrap = self.defaults.get('wrap', False)
-        self.align = self.defaults.get('align', 'centre')  # left,right,justify
+        self.align = self.defaults.get('align', 'centre')  # centre,left,right,justify
         self._alignment = TA_LEFT  # see to_alignment()
         # ---- text: base
         self.text = self.defaults.get('text', '')
@@ -682,7 +682,7 @@ class BaseShape:
         self.font_size = kwargs.get('font_size', cnv.font_size)
         self.style = kwargs.get('style', cnv.style)  # Normal? from reportlab
         self.wrap = kwargs.get('wrap', cnv.wrap)
-        self.align = kwargs.get('align', cnv.align)  # left, right, justify
+        self.align = kwargs.get('align', cnv.align)  # centre,left,right,justify
         self._alignment = TA_LEFT  # see to_alignment()
         # ---- text: base
         self.text = kwargs.get('text', cnv.text)
