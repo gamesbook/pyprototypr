@@ -9,10 +9,10 @@ from pyprototypr.draw import *
 
 Create(filename="objects.pdf", margin=1, margin_top=0.25)
 
-header = Common(x=0, y=9, font_size=14, align="left")
-header_font = Common(font_size=12, align="left")
+header = Common(x=0, y=27, font_size=24, align="left")
+header_font = Common(font_size=16, align="left")
 
-Text(common=header, text="Miscellaneous")
+Text(common=header, text="Miscellaneous Objects")
 
 Text(common=header_font, x=6, y=23, text="Coin: circle with steps radii + an inner circle")
 # circles 24 radii - i.e. one every 15 degrees
@@ -30,25 +30,25 @@ Sequence(
     gap_x=2,
 )
 
-Text(common=header_font, x=5, y=15, text="Leaded Window: rectangle w/hatches")
+Text(common=header_font, x=5, y=15, text="Leaded Window: rectangle with diagonal hatches")
 Rectangle(
     x=2, y=13.5,
     height=3, width=2,
     hatch=7, hatch_width=0.1, hatch_directions='d', hatch_stroke=black,
     stroke=saddlebrown, stroke_width=2, fill=lightcyan)
 
-Text(common=header_font, x=5, y=11, text="Paned Window: rectangle w/hatch")
+Text(common=header_font, x=5, y=11, text="Paned Window: rectangle with single orthohonal hatch")
 Rectangle(
     x=2, y=9.5,
     height=3, width=2,
     hatch=1, hatch_width=1, hatch_directions='o', hatch_stroke=sienna,
     stroke=sienna, stroke_width=3, fill=lightcyan)
 
-Text(common=header_font, x=5, y=7, text="Start Player: circles + radii using steps())")
-Octagon(x=1, y=6, height=3, width=3, fill=black)
-Circle(x=1.25, y=6.25, fill=black, radius=1.25,
+Text(common=header_font, x=5, y=7, text="Start Player: circles + radii using steps() function")
+Octagon(x=1.5, y=6, height=3, width=3, fill=black)
+Circle(x=1.75, y=6.25, fill=black, radius=1.25,
        radii=[0,45,90,135,180,225,270,315], radii_stroke=gold, radii_stroke_width=2)
-Circle(x=2, y=7, stroke=black, fill=gold, radius=0.5, stroke_width=5)
+Circle(x=2.5, y=7, stroke=black, fill=gold, radius=0.5, stroke_width=5)
 
 pos = -0.5
 Text(common=header_font, x=5, y=pos+3, text="Doorway: stadiums, dashline + radii")
@@ -62,3 +62,21 @@ Circle(cx=2.5, cy=pos+4, stroke=sienna, stroke_width=5, fill=sienna, radius=0.3)
 Rectangle(
     x=1.2, y=pos+0.9, height=3, width=2.6,
     stroke=sienna, stroke_width=5, fill=skyblue)
+
+PageBreak()
+
+Text(common=header, text="Miscellaneous  Objects #2")
+
+Text(common=header_font, x=5, y=25, text="Wormhole: rotated, nested hexagons")
+poly6 = Common(x=2, y=25, fill=None, sides=6)
+Polygon(common=poly6, radius=1.50)
+Polygon(common=poly6, radius=1.35, rotate=15)
+Polygon(common=poly6, radius=1.20, rotate=30)
+Polygon(common=poly6, radius=1.05, rotate=45)
+Polygon(common=poly6, radius=1.05, rotate=60)
+Polygon(common=poly6, radius=0.90, rotate=15)
+Polygon(common=poly6, radius=0.75, rotate=30)
+Polygon(common=poly6, radius=0.60, rotate=45)
+Polygon(common=poly6, radius=0.60, rotate=60)
+
+Save()

@@ -69,7 +69,8 @@ from .layouts import (
     ConnectShape, RepeatShape, SequenceShape)
 from .groups import DeckShape
 from ._version import __version__
-from pyprototypr.utils.support import base_fonts, steps
+from pyprototypr.utils.support import steps, excel_column
+from pyprototypr.utils.tools import base_fonts
 from pyprototypr.utils import geoms, tools, support
 from pyprototypr.utils.geoms import Point
 
@@ -246,7 +247,10 @@ def Save(**kwargs):
     if deck and len(deck.deck) > 1:
         deck.draw(cnv, cards=deck.cards, image_list=deck.image_list)
         cnv.canvas.showPage()
-    cnv.canvas.save()
+    try:
+        cnv.canvas.save()
+    except FileNotFoundError as err:
+        tools.feedback(f'Unable to save "{filename}" - {err}', True)
 
     output = kwargs.get('output', None)
     dpi = support.to_int(kwargs.get('dpi', 300), 'dpi')

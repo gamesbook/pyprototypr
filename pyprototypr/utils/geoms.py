@@ -24,15 +24,15 @@ Location = namedtuple("Link", ["col", "row", "x", "y"])
 
 
 def polygon_vertices(
-    sides: int, radius: float, starting_angle: float, center: Point
+    sides: int, radius: float, centre: Point, starting_angle: float = 0.0
 ) -> list:
     """Calculate array of Points for a polygon's vertices.
 
     Args:
         * sides:  number of sides
-        * radius: distance from center
+        * radius: distance from centre
+        * centre: Point
         * starting_angle:  effectively the "rotation"
-        * center: Point
     """
     try:
         sides = int(sides)
@@ -48,7 +48,7 @@ def polygon_vertices(
     try:
         rotate = next(data_generator)
         while True:
-            points.append(degrees_to_xy(rotate, radius, center))
+            points.append(degrees_to_xy(rotate, radius, centre))
             rotate = next(data_generator)
     except RuntimeError:
         pass  # ignore StopIteration

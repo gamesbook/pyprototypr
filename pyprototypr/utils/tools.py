@@ -15,7 +15,9 @@ import pathlib
 import string
 import sys
 import xlrd
-
+# third party
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 # local
 from pyprototypr.utils.support import numbers, feedback
 
@@ -550,6 +552,28 @@ def sheet_column(num: int, lower: bool = False) -> string:
             )
 
     return converter(num, lower)
+
+
+def base_fonts():
+    """On Ubuntu: sudo apt-get install ttf-mscorefonts-installer"""
+    fonts = [
+        {'name': 'Ubuntu', 'file': 'Ubuntu-R.ttf'},
+        {'name': 'Arial', 'file': 'Arial.ttf'},
+        {'name': 'Verdana', 'file': 'Verdana.ttf'},
+        {'name': 'Courier New', 'file': 'Courier_New.ttf'},
+        {'name': 'Times New Roman', 'file': 'Times_New_Roman.ttf'},
+        {'name': 'Trebuchet_MS', 'file': 'Trebuchet_MS.ttf'},
+        {'name': 'Georgia', 'file': 'Georgia.ttf'},
+        {'name': 'Webdings', 'file': 'Webdings.ttf'},
+        #{'name': '', 'file': '.ttf'},
+    ]
+    for _font in fonts:
+        try:
+            pdfmetrics.registerFont(TTFont(_font['name'], _font['file']))
+        except Exception as err:
+            pass
+            #log.error('Unable to register %s from %s (%s)',
+            #    _font['name'], _font['file'], err)
 
 
 if __name__ == "__main__":

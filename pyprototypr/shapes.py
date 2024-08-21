@@ -33,7 +33,7 @@ GRID_SHAPES_NO_CENTRE = [
 # NOT GRID:  ArcShape, BezierShape, PolylineShape, ChordShape
 
 
-# ---- Functions =====
+# ---- Functions
 
 class Value:
     """
@@ -42,7 +42,7 @@ class Value:
 
     def __init__(self, **kwargs):
         self.datalist = kwargs.get("datalist", [])
-        self.members = []  # card IDs, of which affected card is a member
+        self.members = []  # card IDs, of which the affected card is a member
 
     def __call__(self, cid):
         """Return datalist item number 'ID' (card number)."""
@@ -63,7 +63,7 @@ class Query:
         self.query = kwargs.get("query", [])
         self.result = kwargs.get("result", None)
         self.alternate = kwargs.get("alternate", None)
-        self.members = []  # card IDs, of which affected card is a member
+        self.members = []  # card IDs, of which the affected card is a member
 
     def __call__(self, cid):
         """Process the query, for a given card 'ID' in the dataset."""
@@ -88,7 +88,7 @@ class Query:
         else:
             tools.feedback(f'Query "{self.query}" is incorrectly constructed.')
 
-# ---- Core Shapes =====
+# ---- Core
 
 
 class CommonShape(BaseShape):
@@ -1623,26 +1623,46 @@ class PolygonShape(BaseShape):
         area = (sides * radius * radius / 2.0) * math.sin(2.0 * math.pi / sides)
         return area
 
-    def get_vertices(self):
+    def get_vertices(self, rotate: float = None):
         """Calculate centre, radius and vertices of polygon.
         """
         # convert to using units
-        x = self._u.x + self._o.delta_x
-        y = self._u.y + self._o.delta_y
-        # calc - assumes x and y are the centre
+        if not rotate:
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
+        else:
+            x, y = 0., 0.  # centre for rotated canavs
+        # calculate vertices - assumes x,y marks the centre point
         radius = self.get_radius()
-        vertices = geoms.polygon_vertices(self.sides, radius, self.rotate, Point(x, y))
+        vertices = geoms.polygon_vertices(self.sides, radius, Point(x, y), self.angle)
         return x, y, radius, vertices
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a regular polygon on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
-        cnv = cnv.canvas if cnv else self.canvas.canvas
-        x, y, radius, vertices = self.get_vertices()
-        if not vertices or len(vertices) == 0:
-            return
         # ---- set canvas
+        cnv = cnv.canvas if cnv else self.canvas.canvas
         self.set_canvas_props(index=ID)
+        # ---- calc centre in units
+        x = self._u.x + self._o.delta_x
+        y = self._u.y + self._o.delta_y
+        # ---- handle rotation: START
+        rotate = kwargs.get('rotate', self.rotate)
+        if rotate:
+            # tools.feedback(f'*** Rect {ID=} {rotate=} {self._u.x=}, {self._u.y=}')
+            cnv.saveState()
+            # move the canvas origin
+            if ID is not None:
+                cnv.translate(x + self._u.margin_left, y + self._u.margin_bottom)
+            else:
+                cnv.translate(x, y)
+            cnv.rotate(rotate)
+        x, y, radius, vertices = self.get_vertices(rotate=rotate)
+        # ---- invalid polygon?
+        if not vertices or len(vertices) == 0:
+            if rotate:
+                cnv.restoreState()
+            return
         # ---- draw polygon
         pth = cnv.beginPath()
         pth.moveTo(*vertices[0])
@@ -1656,6 +1676,9 @@ class PolygonShape(BaseShape):
         self.draw_heading(cnv, ID, x, y, 1.3 * radius, **kwargs)
         self.draw_label(cnv, ID, x, y, **kwargs)
         self.draw_title(cnv, ID, x, y, 1.4 * radius, **kwargs)
+        # ---- handle rotation: END
+        if rotate:
+            cnv.restoreState()
 
 
 class PolylineShape(BaseShape):
@@ -1881,8 +1904,9 @@ class RectangleShape(BaseShape):
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a rectangle on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        # ---- set canvas
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # ---- check properties
+        # ---- validate properties
         is_notched = True if (self.notch or self.notch_x or self.notch_y) else False
         is_chevron = True if (self.chevron or self.chevron_height) else False
         if (self.rounding or self.rounded) and is_notched:
@@ -1895,7 +1919,7 @@ class RectangleShape(BaseShape):
             tools.feedback("Cannot use hatch with chevron.", True)
         if is_notched and is_chevron:
             tools.feedback("Cannot use notch and chevron together.", True)
-        # ---- calculated properties
+        # ---- calculate properties
         x, y = self.calculate_xy()
         # ---- overrides for grid
         if self.use_abs_c:
@@ -1905,7 +1929,6 @@ class RectangleShape(BaseShape):
         y_d = y + self._u.height / 2.0  # centre
         self.area = self.calculate_area()
         delta_m_up, delta_m_down = 0.0, 0.0  # potential text offset from chevron
-
         # ---- handle rotation: START
         rotate = kwargs.get('rotate', self.rotate)
         if rotate:
@@ -1921,7 +1944,6 @@ class RectangleShape(BaseShape):
             x_d, y_d = 0, 0
             x = -self._u.width / 2.0
             y = -self._u.height / 2.0
-
         # ---- notch vertices
         if is_notched:
             if self.notch_corners:
@@ -2113,14 +2135,10 @@ class RectangleShape(BaseShape):
         self.draw_title(cnv, ID, x_d, y_d - 0.5 * self._u.height - delta_m_down, **kwargs)
         # ----  numbering
         self.set_coord(cnv, x_d, y_d)
-        # ***TEMP ***
-        # cnv.setFont(self.font_face, 24)
-        # self.draw_multi_string(cnv, x_d, y_d, self.coord_text)
-
+        # self.draw_multi_string(cnv, x_d, y_d, self.coord_text)  # ***TEMP ***
         # ---- handle rotation: END
         if rotate:
             cnv.restoreState()
-
         # ---- return key settings
         return GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
 
@@ -2165,7 +2183,7 @@ class RhombusShape(BaseShape):
         # ---- text
         self.draw_heading(cnv, ID, x + self._u.width / 2.0, y + self._u.height, **kwargs)
         self.draw_label(cnv, ID, x + self._u.width / 2.0, y + self._u.height / 2.0, **kwargs)
-        self.draw_title(cnv, ID, x + self._u.width / 2.0, y - self._u.height, **kwargs)
+        self.draw_title(cnv, ID, x + self._u.width / 2.0, y, **kwargs)
 
 
 class RightAngledTriangleShape(BaseShape):
@@ -2425,7 +2443,6 @@ class StadiumShape(BaseShape):
             pth.lineTo(*vertex)
         pth.close()
         cnv.drawPath(pth, stroke=0, fill=1 if self.fill else 0)
-
         # ---- draw stadium
         pth = cnv.beginPath()
         pth.moveTo(*self.vertices[0])
@@ -2487,9 +2504,10 @@ class StadiumShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- text
-        self.draw_heading(cnv, ID, x + self._u.width / 2.0, y + self._u.height, **kwargs)
+        delta = radius_tb if 'n' in _edges or 'north' in _edges else 0.
+        self.draw_heading(cnv, ID, x + self._u.width / 2.0, y + self._u.height + delta, **kwargs)
         self.draw_label(cnv, ID, x + self._u.width / 2.0, y + self._u.height / 2.0, **kwargs)
-        self.draw_title(cnv, ID, x + self._u.width / 2.0, y, **kwargs)
+        self.draw_title(cnv, ID, x + self._u.width / 2.0, y - delta, **kwargs)
 
 
 class StarShape(BaseShape):
@@ -2611,6 +2629,7 @@ class TextShape(BaseShape):
             # tools.feedback(f"!!! {x_t=} {y_t=} {_text=} {_sequence} {rotate=}")
             self.draw_multi_string(cnv, x_t, y_t, _text, rotate=rotate)
 
+# ---- Other
 
 class StarFieldShape(BaseShape):
     """
@@ -2699,8 +2718,6 @@ class StarFieldShape(BaseShape):
             self.random_stars(cnv)
         if self.star_pattern in ['c', 'cluster']:
             self.cluster_stars(cnv)
-
-# ---- Other  =====
 
 
 class FooterShape(BaseShape):

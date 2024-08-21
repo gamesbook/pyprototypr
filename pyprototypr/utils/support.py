@@ -6,11 +6,10 @@ Support utilities for draw module
 import itertools
 import os
 import sys
+import string
 from typing import Any
 # third-party
-import pymupdf 
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
+import pymupdf
 
 
 def feedback(item, stop=False, warn=False):
@@ -23,28 +22,6 @@ def feedback(item, stop=False, warn=False):
         print('FEEDBACK:: Could not continue with program.\n')
         #sys.exit()
         quit()
-
-
-def base_fonts():
-    """On Ubuntu: sudo apt-get install ttf-mscorefonts-installer"""
-    fonts = [
-        {'name': 'Ubuntu', 'file': 'Ubuntu-R.ttf'},
-        {'name': 'Arial', 'file': 'Arial.ttf'},
-        {'name': 'Verdana', 'file': 'Verdana.ttf'},
-        {'name': 'Courier New', 'file': 'Courier_New.ttf'},
-        {'name': 'Times New Roman', 'file': 'Times_New_Roman.ttf'},
-        {'name': 'Trebuchet_MS', 'file': 'Trebuchet_MS.ttf'},
-        {'name': 'Georgia', 'file': 'Georgia.ttf'},
-        {'name': 'Webdings', 'file': 'Webdings.ttf'},
-        #{'name': '', 'file': '.ttf'},
-    ]
-    for _font in fonts:
-        try:
-            pdfmetrics.registerFont(TTFont(_font['name'], _font['file']))
-        except Exception as err:
-            pass
-            #log.error('Unable to register %s from %s (%s)',
-            #    _font['name'], _font['file'], err)
 
 
 def numbers(*args):
@@ -220,6 +197,24 @@ def to_float(value: Any, name: str = '',  fail: bool = True) -> float:
             feedback(f'Unable to use {name} of "{value}" - needs to be a floating point number!', fail)
         else:
             feedback(f'Unable to convert "{value}" into a floating point number!', fail)
+
+
+def excel_column(value: int = 1):
+    """Convert a number into an Excel column letter.
+    Ref:
+        https://stackoverflow.com/questions/23861680/
+    """
+
+    def converter(num):
+        return (
+            ""
+            if num == 0
+            else converter((num - 1) // 26)
+            + string.ascii_uppercase[(num - 1) % 26]
+        )
+
+    num = to_int(value)
+    return converter(num)
 
 
 def pdf_to_png(filename: str, dpi: int = 300):

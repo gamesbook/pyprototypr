@@ -28,11 +28,12 @@ header = Common(x=0, y=27, font_size=24, align="left")
 # ---- default labels and blueprint
 Blueprint()
 Text(common=header, text="Blueprint plus shapes with labels")
-Polygon(x=4, y=24.5, radius=2, rotate=30, label="polygon6")
-Polygon(x=10, y=24.5, radius=2, sides=8, rotate=22.5, label="polygon8")
-Polygon(x=16, y=24.5, radius=2.5, sides=2.5, rotate=30, label="polygon3")
+Polygon(x=4, y=24.5, radius=2, angle=30, label="polygon6")
+Polygon(x=10, y=24.5, radius=2, sides=8, angle=22.5, label="polygon8")
+Polygon(x=16, y=24.5, radius=2.5, sides=2.5, angle=30, label="polygon3")
 Rectangle(x=2, y=18.5, width=6, height=3, label="rectangle")
-Stadium(x=12.5, y=18.5, width=4, height=3, label="stadium")
+# TODO Trapezoid
+Stadium(x=14.5, y=19, width=3, height=2, label="stadium")
 Hexagon(x=2, y=13, side=2, label="hexagon")
 Hexagon(x=8, y=13, side=2, hex_top="pointy", label="hexagon")
 Star(x=11, y=9, vertices=5, radius=2, label="star")
@@ -51,7 +52,7 @@ dot = Common(dot_size=0.2, dot_color=yellow)
 
 Rectangle(cx=3, cy=23, width=5, height=4, label="rectangle:3-23", common=dot)
 EquilateralTriangle(x=7, y=21, side=4, label="triangle:9-23", common=dot)
-Stadium(cx=15, cy=23, width=4, height=3, label="stadium:15-23", common=dot)
+Stadium(cx=15, cy=23, width=3, height=2, label="stadium:15-23", common=dot)
 
 Hexagon(cx=3, cy=17, side=2, label="hexagon:3-17", hex_top="flat", common=dot)
 Ellipse(cx=9, cy=17, xe=4, ye=6, label="ellipse:9-17", common=dot)
@@ -76,7 +77,7 @@ dot = Common(dot_size=0.2, dot_color=blue)
 
 Rectangle(cx=3, cy=23, width=5, height=4, heading="rectangle:3-23", common=dot)
 EquilateralTriangle(x=7, y=21, side=4, heading="triangle:9-23", common=dot)
-Stadium(cx=15, cy=23, width=4, height=3, heading="stadium:15-23", common=dot)
+Stadium(cx=15, cy=23, width=3, height=2, heading="stadium:15-23", common=dot)
 
 Hexagon(cx=3, cy=17, side=2, heading="hexagon:3-17", hex_top="flat", common=dot)
 Ellipse(cx=9, cy=17, xe=4, ye=6, heading="ellipse:9-17", common=dot)
@@ -101,7 +102,7 @@ dot = Common(dot_size=0.2, dot_color=green)
 
 Rectangle(cx=3, cy=23, width=5, height=4, title="rectangle:3-23", common=dot)
 EquilateralTriangle(x=7, y=21, side=4, title="triangle:9-23", common=dot)
-Stadium(cx=15, cy=23, width=4, height=3, title="stadium:15-23", common=dot)
+Stadium(cx=15, cy=23, width=3, height=2, title="stadium:15-23", common=dot)
 
 Hexagon(cx=3, cy=17, side=2, title="hexagon:3-17", hex_top="flat", common=dot)
 Ellipse(cx=9, cy=17, xe=4, ye=6, title="ellipse:9-17", common=dot)
@@ -130,9 +131,9 @@ Rhombus(x=1, y=7, width=3, height=5, stroke_width=1, ill=lightyellow, dot_size=0
 Circle(cx=15.5, cy=10, radius=2.5, fill=green, stroke=red, stroke_width=1, dot_size=0.1)
 Ellipse(x=3, y=16, x1=9, y1=20, fill=tan, stroke=green, dot_size=0.1)
 # different-sided polygons
-Polygon(x=3, y=24, radius=2, fill=gold, dot_size=0.1, rotate=30)  # sides=6
-Polygon(x=8, y=24, sides=8, radius=2, fill=saddlebrown, dot_size=0.1, rotate=22.5)
-Polygon(x=13, y=24, sides=3, radius=2, fill=olive, dot_size=0.1, rotate=30)
+Polygon(x=3, y=24, radius=2, fill=gold, dot_size=0.1, angle=30)  # sides=6
+Polygon(x=8, y=24, sides=8, radius=2, fill=saddlebrown, dot_size=0.1, angle=22.5)
+Polygon(x=13, y=24, sides=3, radius=2, fill=olive, dot_size=0.1, angle=30)
 Rectangle(x=16, y=23, width=3, height=3, pattern="13.png", dot_size=0.1)
 # house
 points = [
@@ -273,7 +274,7 @@ Grid(cols=19, rows=27, size=1.0, stroke=mediumseagreen, stroke_width=1.5)
 PageBreak()
 
 # ---- .png image and various text positions
-Text(common=header, text="Rectangle and .png image")
+Text(common=header, text="Rectangle and .png image (with transparency)")
 Rectangle(x=5.9, y=10.9, width=7.2, height=6.2, stroke=silver, fill=khaki)
 Image(
     "sholes_typewriter.png",  # has transparent background

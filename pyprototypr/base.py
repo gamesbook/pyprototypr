@@ -725,7 +725,7 @@ class BaseShape:
         # tools.feedback(f"+++  BShp:{self} init {kwargs.get('fill')=} {self.fill=} {kwargs.get('fill_color')=}")
         # ---- image / file
         self.source = kwargs.get('source', cnv.source)  # file or http://
-        # ---- line / ellipse / bezier / arc
+        # ---- line / ellipse / bezier / arc / polygon
         self.length = kwargs.get('length', cnv.length)
         self.angle = kwargs.get('angle', cnv.angle)  # anti-clock from flat
         self.angle_width = kwargs.get('angle_width', cnv.angle_width)  # delta degrees
