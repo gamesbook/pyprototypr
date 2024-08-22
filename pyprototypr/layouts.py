@@ -22,7 +22,6 @@ log = logging.getLogger(__name__)
 DEBUG = False
 
 
-
 class GridShape(BaseShape):
     """
     Grid on a given canvas.

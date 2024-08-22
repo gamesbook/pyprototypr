@@ -2538,7 +2538,9 @@ class TextShape(BaseShape):
         if self.text == '' or self.text is None:
             self.text = f'{_sequence}'
         _text = self.textify(ID)
-        _text = str(_text) if _text is not None else ''  # card data could be numeric
+        if _text is None:
+            return
+        _text = str(_text)  # card data could be numeric
         #tools.feedback(f'\n             *** {_sequence=} {self.text=} {_text}')
         if '\\u' in _text:
              _text = codecs.decode(_text, 'unicode_escape')

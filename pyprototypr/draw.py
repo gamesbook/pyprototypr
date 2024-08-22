@@ -67,7 +67,7 @@ from .layouts import (
     GridShape, DotGridShape, VirtualGrid, RectangleGrid,
     VirtualTrack, RectangleTrack,
     ConnectShape, RepeatShape, SequenceShape)
-from .groups import DeckShape, Query
+from .groups import DeckShape, Query, Lookup, LookupType
 from ._version import __version__
 from pyprototypr.utils.support import steps, excel_column
 from pyprototypr.utils.tools import base_fonts
@@ -507,7 +507,7 @@ def Q(query='', result=None, alternate=None):
     return None
 
 
-def L(lookup: str, target: str, result: str, default: Any = ''):
+def L(lookup: str, target: str, result: str, default: Any = '') -> LookupType:
     """Enable lookup of data in a record of a dataset
 
         lookup: Any
@@ -521,18 +521,27 @@ def L(lookup: str, target: str, result: str, default: Any = ''):
 
     In short:
         lookup and target enable finding a matching record in the dataset;
-        the data in the 'result' column of that record will be returned.
+        the data in the 'result' column of that record is stored as an
+        `lookup: result` entry in the returned lookups dictionary of the LookupType
     """
     global dataset
+    print(f"L {lookup=} {target=} {result=}")
 
+    lookups = {}
     if dataset and isinstance(dataset, list):
-        return Query(
-            lookup=lookup,
-            target=target,
-            result=result,
-            default=default,
-            dataset=dataset)
-    return default
+        # validate the lookup column
+        if lookup not in dataset[0].keys():
+            tools.feedback(f'The "{lookup}" column is not available.', True)
+        for key, record in enumerate(dataset):
+            if target in record.keys():
+                if result in record.keys():
+                    lookups[record[target]] = record[result]
+                else:
+                    tools.feedback(f'The "{result}" column is not available.', True)
+            else:
+                tools.feedback(f'The "{target}" column is not available.', True)
+    result = LookupType(column=lookup, lookups=lookups)
+    return result
 
 
 def Set(_object, **kwargs):

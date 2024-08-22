@@ -3,6 +3,8 @@
 Create layouts - grids, repeats, sequences and tracks - for pyprototypr
 """
 # lib
+import copy
+from collections import namedtuple
 import logging
 import math
 
@@ -17,8 +19,10 @@ log = logging.getLogger(__name__)
 
 DEBUG = False
 
+LookupType = namedtuple("LookupType", ["column", "lookups"])
 
 # ---- Functions
+
 
 class Value:
     """
@@ -105,33 +109,17 @@ class Lookup:
     """
 
     def __init__(self, **kwargs):
-        self.dataset = kwargs.get("dataset", [])
-        self.lookup = kwargs.get("lookup", None)
-        self.target = kwargs.get("target", None)
-        self.result = kwargs.get("result", None)
-        self.default = kwargs.get("default", None)
+        self.data = kwargs.get("datalist", [])
+        self.lookup = kwargs.get("lookup", '')
+        self.members = []  # card IDs, of which the affected card is a member
 
     def __call__(self, cid):
-        """Process the lookup, for a given card 'ID' in the dataset."""
-
-        if self.dataset and isinstance(self.dataset, list):
-            # validate the lookup column
-            if self.lookup not in self.dataset[0].keys():
-                tools.feedback(f'The "{self.lookup}" column is not available.', True)
-            current_record = self.dataset[cid]
-            lookup_value = current_record[self.lookup]
-            # do lookup
-            for record in self.dataset:
-                if self.target in record.keys():
-                    if record[self.target] == lookup_value:
-                        if self.result in record.keys():
-                            return record[self.result]
-                        else:
-                            tools.feedback(f'The "{self.result}" column is not available.', True)
-                else:
-                    tools.feedback(f'The "{self.target}" column is not available.', True)
-        return self.default
-
+        """Return datalist item number 'ID' (card number)."""
+        log.debug("datalist:%s cid:%s", self.datalist, cid)
+        try:
+            return None
+        except (ValueError, TypeError, IndexError):
+            return None
 
 # ---- Deck / Card related
 
@@ -150,6 +138,24 @@ class CardShape(BaseShape):
         self.kwargs.pop("width", None)
         self.kwargs.pop("height", None)
         self.image = kwargs.get('image', None)
+        self.deck_data = []
+
+    def handle_custom_values(self, the_element, ID):
+        """Process custom values for a Shape's properties."""
+        if isinstance(the_element, BaseShape):
+            keys = vars(the_element).keys()
+            for key in keys:
+                value = getattr(the_element, key)
+                if isinstance(value, LookupType):
+                    new_element = copy.copy(the_element)
+                    record = self.deck_data[ID]
+                    lookup_value = record[value.column]
+                    custom_value = value.lookups.get(lookup_value, None)
+                    setattr(new_element, key, custom_value)
+                    # print('+++', f'{ID=} {key=} {custom_value=}', '=>', getattr(new_element, key))
+                    return new_element
+
+        return the_element
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an element on a given canvas."""
@@ -212,7 +218,8 @@ class CardShape(BaseShape):
             try:
                 # ---- * normal element
                 iid = members.index(cid + 1)
-                # tools.feedback(f"*** {iid=} {col=} {self.width=} / {row=} {self.height=}")
+                # tools.feedback(f"*** {iid=} {col=} {self.width=} / {row=} {self.height=} {flat_ele.text=}")
+                flat_ele = self.handle_custom_values(flat_ele, cid)  # calculated values
                 flat_ele.draw(
                     cnv=cnv, off_x=col * self.width, off_y=row * self.height, ID=iid
                 )
@@ -225,6 +232,7 @@ class CardShape(BaseShape):
                     for flat_new_ele in flat_new_eles:
                         members = flat_new_ele.members or self.members
                         iid = members.index(cid + 1)
+                        flat_new_ele = self.handle_custom_values(flat_new_ele, iid)  # calculate
                         flat_new_ele.draw(
                             cnv=cnv,
                             off_x=col * self.width,
@@ -264,9 +272,10 @@ class DeckShape(BaseShape):
         self.images = kwargs.get("images", None)
         self.images_filter = kwargs.get("images_filter", None)
         self.image_list = []
+        self.dataset = []
         self.create(self.cards)
 
-    def create(self, cards):
+    def create(self, cards: int = 0):
         """Create a new deck, based on number of `cards`"""
         log.debug("Cards are: %s", self.sequence)
         self.deck = []
@@ -298,6 +307,7 @@ class DeckShape(BaseShape):
         # ---- draw cards
         for key, card in enumerate(self.deck):
             image = images[key] if images and key <= len(images) else None
+            card.deck_data = self.dataset
             card.draw_card(
                 cnv, row=row, col=col, cid=card.shape_id, image=image)
             col += 1
