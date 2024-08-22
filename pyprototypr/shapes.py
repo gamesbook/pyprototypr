@@ -3,6 +3,7 @@
 Create custom shapes for pyprototypr
 """
 # lib
+import codecs
 import copy
 import logging
 import math
@@ -32,61 +33,6 @@ GRID_SHAPES_NO_CENTRE = [
      'TextShape', 'StarShape', ]
 # NOT GRID:  ArcShape, BezierShape, PolylineShape, ChordShape
 
-
-# ---- Functions
-
-class Value:
-    """
-    Class wrapper for a list of values possible for a card attribute.
-    """
-
-    def __init__(self, **kwargs):
-        self.datalist = kwargs.get("datalist", [])
-        self.members = []  # card IDs, of which the affected card is a member
-
-    def __call__(self, cid):
-        """Return datalist item number 'ID' (card number)."""
-        log.debug("datalist:%s cid:%s", self.datalist, cid)
-        try:
-            x = self.datalist[cid]
-            return x
-        except (ValueError, TypeError, IndexError):
-            return None
-
-
-class Query:
-    """
-    Query to select an element or a value for a card attribute.
-    """
-
-    def __init__(self, **kwargs):
-        self.query = kwargs.get("query", [])
-        self.result = kwargs.get("result", None)
-        self.alternate = kwargs.get("alternate", None)
-        self.members = []  # card IDs, of which the affected card is a member
-
-    def __call__(self, cid):
-        """Process the query, for a given card 'ID' in the dataset."""
-        result = None
-        results = []
-        for _query in self.query:
-            log.debug("_query %s %s", len(_query), _query)
-            if _query and len(_query) >= 4:
-                result = tools.comparer(
-                    val=_query[0][cid], operator=_query[1], target=_query[2]
-                )
-            results.append(result)
-            results.append(_query[3])
-        # compare across all
-        result = tools.boolean_join(results)
-        log.debug("cid %s Results %s", cid, results)
-        if result is not None:
-            if result:
-                return self.result
-            else:
-                return self.alternate
-        else:
-            tools.feedback(f'Query "{self.query}" is incorrectly constructed.')
 
 # ---- Core
 
@@ -143,7 +89,9 @@ class ImageShape(BaseShape):
         # tools.feedback(f'*** IMAGE {ID=} {_source=} {x=} {y=} {self.scaling=} ')
         img, is_svg = self.load_image(_source, self.scaling)
         if not img:
-            tools.feedback("Unable to load that image!", True)
+            tools.feedback(
+                f'Unable to load image "{_source}!" - please check name and location',
+                True)
         rotate = kwargs.get('rotate', self.rotate)
         # assumes 1 pt == 1 pixel ?
         # ---- handle rotation
@@ -2586,10 +2534,14 @@ class TextShape(BaseShape):
         self.set_canvas_props(index=ID)
         # ---- overrides for text value
         _sequence = kwargs.get('text_sequence', '')
-        # tools.feedback(f'!!! {_sequence=} {self.text=}')
+        # tools.feedback(f'*** {_sequence=} {self.text=}')
         if self.text == '' or self.text is None:
             self.text = f'{_sequence}'
         _text = self.textify(ID)
+        _text = str(_text) if _text is not None else ''  # card data could be numeric
+        #tools.feedback(f'\n             *** {_sequence=} {self.text=} {_text}')
+        if '\\u' in _text:
+             _text = codecs.decode(_text, 'unicode_escape')
         _text = _text.format(SEQUENCE=_sequence)
         # ---- text style
         if self.wrap:
@@ -2619,14 +2571,18 @@ class TextShape(BaseShape):
             endDots=None,
             splitLongWords=1,
             """
+            # tools.feedback(f'*** LONG-{ID} => text:{_text}')
             para = Paragraph(_text, style=_style)
             w, h = para.wrap(width, height)
             para.drawOn(cnv, x_t, y_t - h)  # start text from top of 'box'
         else:
+            #breakpoint()
+            #print('***', _text, type(_text), '::', ID)
             cnv.setFillColor(self.stroke)
             # if _text == '1':
             #     self.debug_point(cnv, Point(x_t, y_t), '    !!!')
             # tools.feedback(f"!!! {x_t=} {y_t=} {_text=} {_sequence} {rotate=}")
+            #self.draw_multi_string(cnv, x_t, y_t, _text.decode("utf-8"), rotate=rotate)
             self.draw_multi_string(cnv, x_t, y_t, _text, rotate=rotate)
 
 # ---- Other

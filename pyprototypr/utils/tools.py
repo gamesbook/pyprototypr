@@ -336,6 +336,14 @@ def open_xls(filename, sheet=0, sheetname=None, headers=None, selected=None):
       * headers is a list of strings to use instead of the first row
       * selected is a list of desired rows e.g. [2,4,7]
     """
+    def cleaned(value):
+        if isinstance(value, float):
+            if float(value) == float(int(value)):
+                return int(value)
+        # if isinstance(value, str):
+        #     return value.encode('utf8')
+        return value
+
     if not filename:
         feedback("A valid Excel filename must be supplied!")
 
@@ -373,7 +381,7 @@ def open_xls(filename, sheet=0, sheetname=None, headers=None, selected=None):
             dict_list = []
             for row_index in range(start, sheet.nrows):
                 item = {
-                    keys[col_index]: sheet.cell(row_index, col_index).value
+                    keys[col_index]: cleaned(sheet.cell(row_index, col_index).value)
                     for col_index in range(sheet.ncols)
                 }
                 if not selected:

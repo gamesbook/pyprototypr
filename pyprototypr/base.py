@@ -17,6 +17,7 @@ import os
 from svglib.svglib import svg2rlg
 from reportlab.pdfgen import canvas as reportlab_canvas
 from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.units import cm, inch, mm
 from reportlab.lib.pagesizes import (
     A6, A5, A4, A3, A2, A1, A0, LETTER, LEGAL, ELEVENSEVENTEEN,
@@ -954,6 +955,12 @@ class BaseShape:
         self.use_abs_1 = True if self._abs_x1 and self._abs_y1 else False
         self.use_abs_c = True if self._abs_cx and self._abs_cy else False
 
+    def register_font(self, font_name: str = ''):
+        if not font_name:
+            raise ValueError('No font name supplied for registration!')
+        font_file = font_name + '.ttf'
+        pdfmetrics.registerFont(TTFont(font_name, font_file))
+
     def set_canvas_props(
             self,
             cnv=None,
@@ -982,10 +989,13 @@ class BaseShape:
             pass
         except KeyError:
             ff = ext(self.font_face)
-            tools.feedback(
-                f'Unable to find font: "{ff}".'
-                ' Please check that this is installed on your system.',
-                stop=True)
+            try:
+                self.register_font(ff)
+            except (KeyError, ValueError):
+                tools.feedback(
+                    f'Unable to find or register font: "{ff}".'
+                    ' Please check that it is installed on your system.',
+                    stop=True)
         try:
             if fill in [None, []] and self.fill in [None, []]:
                 canvas.setFillColor(white, 0)  # full transparency

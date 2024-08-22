@@ -15,7 +15,7 @@ import os
 import pathlib
 import random
 import sys
-from typing import Union
+from typing import Union, Any
 # third party
 from reportlab.lib.pagesizes import *
 from reportlab.pdfbase import pdfmetrics
@@ -59,7 +59,7 @@ from .shapes import (
     ArcShape, ArrowShape, BezierShape, ChordShape, CircleShape, CommonShape,
     CompassShape, DotShape, EllipseShape,
     EquilateralTriangleShape, FooterShape, HexShape, ImageShape, LineShape,
-    OctagonShape, PolygonShape, PolylineShape, Query, RectangleShape,
+    OctagonShape, PolygonShape, PolylineShape, RectangleShape,
     RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape,
     SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape,
     GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE)
@@ -67,7 +67,7 @@ from .layouts import (
     GridShape, DotGridShape, VirtualGrid, RectangleGrid,
     VirtualTrack, RectangleTrack,
     ConnectShape, RepeatShape, SequenceShape)
-from .groups import DeckShape
+from .groups import DeckShape, Query
 from ._version import __version__
 from pyprototypr.utils.support import steps, excel_column
 from pyprototypr.utils.tools import base_fonts
@@ -470,20 +470,21 @@ def Data(**kwargs):
 
     else:
         tools.feedback("You must provide a source of data for Data!", True)
+    return dataset
 
 
 def V(*args):
     """Expect args[0] to be the name (string) of a column in the dataset."""
     global dataset
     log.debug("V %s %s %s", args, type(dataset), len(dataset))
-    if dataset and len(dataset) > 0:
+    if dataset and isinstance(dataset, list):
         return [item.get(args[0], '') for item in dataset]
     return []
 
 
 def Q(query='', result=None, alternate=None):
     """
-    Enable querying/selction of data from a dataset list
+    Enable querying/selection of data from a dataset list
 
         query: str
             boolean-type expression which can be evaluated to return a True
@@ -494,7 +495,8 @@ def Q(query='', result=None, alternate=None):
             OPTIONAL; returned if query is False; if not supplied, then None
     """
     global dataset
-    if dataset and len(dataset) > 0:
+
+    if dataset and isinstance(dataset, list):
         query_list = tools.query_construct(query)
         # [[key, operator, target, LINKER], ...]
         for query_item in query_list:
@@ -503,6 +505,34 @@ def Q(query='', result=None, alternate=None):
             # [(list_of_possible_targets, operator, target, LINKER), ...]
         return Query(query=query_list, result=result, alternate=alternate)
     return None
+
+
+def L(lookup: str, target: str, result: str, default: Any = ''):
+    """Enable lookup of data in a record of a dataset
+
+        lookup: Any
+            the lookup column whose value must be used for the match
+        target: str
+            the name of the column of the data being searched
+        result: str
+            name of result column containing the data to be returned
+        default: Any
+            the data to be returned if no match is made
+
+    In short:
+        lookup and target enable finding a matching record in the dataset;
+        the data in the 'result' column of that record will be returned.
+    """
+    global dataset
+
+    if dataset and isinstance(dataset, list):
+        return Query(
+            lookup=lookup,
+            target=target,
+            result=result,
+            default=default,
+            dataset=dataset)
+    return default
 
 
 def Set(_object, **kwargs):
@@ -1015,18 +1045,18 @@ def Blueprint(**kwargs):
                 color, fill = "#CECE2C", "#35705E"
             case 'grey' | 'gray':
                 color, fill =  white, "#A1969C"
-            case 'invert' | 'inverted':
+            case 'blue' | 'invert' | 'inverted':
                 color, fill = honeydew, '#3085AC'
             case _:
                 color, fill = '#3085AC', None
                 if style_name is not None:
                     tools.feedback(
-                        f'The BluePrint style "{style_name}" is unknown', False, True)
+                        f'The Blueprint style "{style_name}" is unknown', False, True)
         return color, fill
 
     kwargs = margins(**kwargs)
     if kwargs.get('common'):
-        tools.feedback('The "common" property cannot be used with Blueprint.', True)
+        tools.feedback('The "common" property cannot be used with a Blueprint.', True)
     kwargs['units'] = kwargs.get('units', cm)
     size = 1.0
     if kwargs['units'] == inch:
@@ -1050,9 +1080,10 @@ def Blueprint(**kwargs):
     kwargs['font_size'] = kwargs.get('font_size', default_font_size)
     line_color, page_fill = set_style(kwargs.get('style', None))
     kwargs['stroke'] = kwargs.get('stroke', line_color)
+    kwargs['fill'] = kwargs.get('fill', page_fill)
     # ---- page color (optional)
-    if page_fill is not None:
-        cnv.canvas.setFillColor(page_fill)
+    if kwargs['fill'] is not None:
+        cnv.canvas.setFillColor(kwargs['fill'])
         cnv.canvas.rect(0, 0, pagesize[0], pagesize[1], stroke=0, fill=1)
     # ---- numbering
     if numbering:
@@ -1092,6 +1123,9 @@ def Blueprint(**kwargs):
                 local_kwargs['rows'] = int(kwargs.get('subdivisions'))
                 local_kwargs['cols'] = int(kwargs.get('subdivisions'))
                 local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
+                local_kwargs['stroke'] = kwargs.get('subdivisions_stroke')
+                local_kwargs['dashes'] = kwargs.get('subdivisions_dashes')
+                local_kwargs['dots'] = kwargs.get('subdivisions_dots')
                 subgrid = GridShape(canvas=cnv, **local_kwargs)
                 subgrid.draw(off_x=off_x, off_y=off_y)
     # ---- draw Blueprint grid

@@ -17,7 +17,123 @@ log = logging.getLogger(__name__)
 
 DEBUG = False
 
-# ---- Deck / Card related  =====
+
+# ---- Functions
+
+class Value:
+    """
+    Class wrapper for a list of values possible for a card attribute.
+
+    Note:
+        This class will be instantiated in the `proto` module, via a
+        script's call to the V() function.
+    """
+
+    def __init__(self, **kwargs):
+        self.datalist = kwargs.get("datalist", [])
+        self.members = []  # card IDs, of which the affected card is a member
+
+    def __call__(self, cid):
+        """Return datalist item number 'ID' (card number)."""
+        log.debug("datalist:%s cid:%s", self.datalist, cid)
+        try:
+            x = self.datalist[cid]
+            return x
+        except (ValueError, TypeError, IndexError):
+            return None
+
+
+class Query:
+    """
+    Query to select an element or a value for a card attribute.
+
+    Note:
+        This class will be instantiated in the `proto` module, via a
+        script's call to the Q() function.
+    """
+
+    def __init__(self, **kwargs):
+        self.query = kwargs.get("query", [])
+        self.result = kwargs.get("result", None)
+        self.alternate = kwargs.get("alternate", None)
+        self.members = []  # card IDs, of which the affected card is a member
+
+    def __call__(self, cid):
+        """Process the query, for a given card 'ID' in the dataset."""
+        result = None
+        results = []
+        for _query in self.query:
+            log.debug("_query %s %s", len(_query), _query)
+            if _query and len(_query) >= 4:
+                result = tools.comparer(
+                    val=_query[0][cid], operator=_query[1], target=_query[2]
+                )
+            results.append(result)
+            results.append(_query[3])
+        # compare across all
+        result = tools.boolean_join(results)
+        log.debug("cid %s Results %s", cid, results)
+        if result is not None:
+            if result:
+                return self.result
+            else:
+                return self.alternate
+        else:
+            tools.feedback(f'Query "{self.query}" is incorrectly constructed.')
+
+
+class Lookup:
+    """Enable lookup of data in a record of a dataset
+
+    Kwargs:
+        lookup: Any
+            the lookup column whose value must be used for the match
+        target: str
+            the name of the column of the data being searched
+        result: str
+            name of result column containing the data to be returned
+        default: Any
+            the data to be returned if no match is made
+
+    In short:
+        lookup and target enable finding a matching record in the dataset;
+        the data in the 'result' column of that record will be returned.
+
+    Note:
+        This class will be instantiated in the `proto` module, via a
+        script's call to the L() function.
+    """
+
+    def __init__(self, **kwargs):
+        self.dataset = kwargs.get("dataset", [])
+        self.lookup = kwargs.get("lookup", None)
+        self.target = kwargs.get("target", None)
+        self.result = kwargs.get("result", None)
+        self.default = kwargs.get("default", None)
+
+    def __call__(self, cid):
+        """Process the lookup, for a given card 'ID' in the dataset."""
+
+        if self.dataset and isinstance(self.dataset, list):
+            # validate the lookup column
+            if self.lookup not in self.dataset[0].keys():
+                tools.feedback(f'The "{self.lookup}" column is not available.', True)
+            current_record = self.dataset[cid]
+            lookup_value = current_record[self.lookup]
+            # do lookup
+            for record in self.dataset:
+                if self.target in record.keys():
+                    if record[self.target] == lookup_value:
+                        if self.result in record.keys():
+                            return record[self.result]
+                        else:
+                            tools.feedback(f'The "{self.result}" column is not available.', True)
+                else:
+                    tools.feedback(f'The "{self.target}" column is not available.', True)
+        return self.default
+
+
+# ---- Deck / Card related
 
 
 class CardShape(BaseShape):
