@@ -16,6 +16,7 @@ import pathlib
 import random
 import sys
 from typing import Union, Any
+from math import sqrt as root
 # third party
 from reportlab.lib.pagesizes import *
 from reportlab.pdfbase import pdfmetrics
@@ -69,7 +70,7 @@ from .layouts import (
     ConnectShape, RepeatShape, SequenceShape)
 from .groups import DeckShape, Query, Lookup, LookupType
 from ._version import __version__
-from pyprototypr.utils.support import steps, excel_column
+from pyprototypr.utils.support import steps, excel_column, equi, numbers, letters
 from pyprototypr.utils.tools import base_fonts
 from pyprototypr.utils import geoms, tools, support
 from pyprototypr.utils.geoms import Point

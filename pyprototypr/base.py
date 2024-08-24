@@ -358,9 +358,9 @@ class BaseCanvas:
         # ---- sizes and positions
         self.row = self.defaults.get('row', None)
         self.col = self.defaults.get('col', self.defaults.get('column', None))
-        self.height = self.defaults.get('height', 1)
-        self.width = self.defaults.get('width', 1)
-        self.size = self.defaults.get('size', None)  # proxy for equal H/W
+        self.side = self.defaults.get('side', 1)  # equal length sides
+        self.height = self.defaults.get('height', self.side)
+        self.width = self.defaults.get('width', self.side)
         self.x = self.defaults.get('x', self.defaults.get('left', 1))
         self.y = self.defaults.get('y', self.defaults.get('bottom', 1))
         self.cx = self.defaults.get('cx', None)
@@ -527,12 +527,11 @@ class BaseCanvas:
         self.flip = self.defaults.get('flip', 'up')
         self.hand = self.defaults.get('hand', 'right')
         # ---- hexagon / circle / octagon
-        self.side = self.defaults.get('side', 0)  # length of sides
         self.centre_shape = self.defaults.get('centre_shape', '')
         self.centre_shape_x = self.defaults.get('centre_shape_x', 0)
         self.centre_shape_y = self.defaults.get('centre_shape_y', 0)
         self.dot_size = self.defaults.get('dot_size', 0)
-        self.dot_color = self.get_color(self.defaults.get('dot_color'), black)
+        self.dot_color = self.get_color(self.defaults.get('dot_color'), self.stroke)
         self.cross_size = self.defaults.get('cross_size', 0)
         self.cross_stroke = self.get_color(self.defaults.get('cross_stroke'), black)
         self.cross_stroke_width = self.defaults.get('cross_stroke_width', self.stroke_width)
@@ -649,9 +648,9 @@ class BaseShape:
         # ---- sizes and positions
         self.row = kwargs.get('row', cnv.row)
         self.col = kwargs.get('col', kwargs.get('column', cnv.col))
-        self.height = kwargs.get('height', cnv.height)
-        self.width = kwargs.get('width', cnv.width)
-        self.size = kwargs.get('size', cnv.size)  # for equal height/width
+        self.side = kwargs.get('side', cnv.side)  # equal length sides
+        self.height = kwargs.get('height', self.side)
+        self.width = kwargs.get('width', self.side)
         self.x = kwargs.get('x', kwargs.get('left', cnv.x))
         self.y = kwargs.get('y', kwargs.get('bottom', cnv.y))
         self.cx = kwargs.get('cx', cnv.cx)  # centre (for some shapes)
@@ -805,11 +804,10 @@ class BaseShape:
         self.flip = kwargs.get('flip', 'up')
         self.hand = kwargs.get('hand', 'right')
         # ---- hexagon / circle / octagon
-        self.side = kwargs.get('side', 0)  # length of sides
         self.centre_shape = kwargs.get('centre_shape', '')
         self.centre_shape_x = kwargs.get('centre_shape_x', cnv.centre_shape_x)
         self.centre_shape_y = kwargs.get('centre_shape_y', cnv.centre_shape_y)
-        self.dot_color = kwargs.get('dot_color', cnv.dot_color)
+        self.dot_color = kwargs.get('dot_color', self.stroke)
         self.dot_size = kwargs.get('dot_size', cnv.dot_size)
         self.cross_stroke = kwargs.get('cross_stroke', cnv.cross_stroke)
         self.cross_stroke_width = kwargs.get('cross_stroke_width', cnv.cross_stroke_width)
@@ -916,6 +914,8 @@ class BaseShape:
             self.width = self.diameter
         if self.side and not self.width:
             self.width = self.side  # square
+        if self.side and not self.height:
+            self.height = self.side  # square
 
         self._u = UnitProperties(
             self.pagesize[0],  # width, in points

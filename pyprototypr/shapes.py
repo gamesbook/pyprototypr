@@ -126,6 +126,7 @@ class ImageShape(BaseShape):
                 cnv.drawImage(img, x=x, y=y, width=width, height=height, mask="auto")
         # ---- text
         xc = x + width / 2.0
+        yc = y + height / 2.0
         if self.heading:
             cnv.setFont(self.font_face, self.heading_size)
             cnv.setFillColor(self.heading_stroke)
@@ -133,7 +134,7 @@ class ImageShape(BaseShape):
         if self.label:
             cnv.setFont(self.font_face, self.label_size)
             cnv.setFillColor(self.label_stroke)
-            self.draw_multi_string(cnv, xc, y + height / 2.0, self.label)
+            self.draw_multi_string(cnv, xc, yc, self.label)
         if self.title:
             cnv.setFont(self.font_face, self.title_size)
             cnv.setFillColor(self.title_stroke)
@@ -2112,10 +2113,28 @@ class RhombusShape(BaseShape):
         else:
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
+        cx = x + self._u.width / 2.0
+        cy = y + self._u.height / 2.0
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- calculated properties
         self.area = (self._u.width * self._u.height) / 2.0
+        # ---- handle rotation: START
+        rotate = kwargs.get('rotate', self.rotate)
+        if rotate:
+            # tools.feedback(f'*** IMAGE {ID=} {rotate=} {self._u.x=}, {self._u.y=}')
+            cnv.saveState()
+            # move the canvas origin
+            if ID is not None:
+                #cnv.translate(cx + self._u.margin_left, cy + self._u.margin_bottom)
+                cnv.translate(cx, cy)
+            else:
+                cnv.translate(cx, cy)
+            cnv.rotate(rotate)
+            # reset centre and "bottom left"
+            cx, cy = 0, 0
+            x = -self._u.width / 2.0
+            y = -self._u.height / 2.0
         # ---- draw rhombus
         x_s, y_s = x, y + self._u.height / 2.0
         pth = cnv.beginPath()
@@ -2132,6 +2151,9 @@ class RhombusShape(BaseShape):
         self.draw_heading(cnv, ID, x + self._u.width / 2.0, y + self._u.height, **kwargs)
         self.draw_label(cnv, ID, x + self._u.width / 2.0, y + self._u.height / 2.0, **kwargs)
         self.draw_title(cnv, ID, x + self._u.width / 2.0, y, **kwargs)
+        # ---- handle rotation: END
+        if rotate:
+            cnv.restoreState()
 
 
 class RightAngledTriangleShape(BaseShape):

@@ -39,9 +39,9 @@ class GridShape(BaseShape):
         y = self._u.y + self._o.delta_y
         height = self._u.height  # of each grid item
         width = self._u.width  # of each grid item
-        if self.size:  # square grid
-            size = self.unit(self.size)
-            height, width = size, size
+        if self.side:  # square grid
+            side = self.unit(self.side)
+            height, width = side, side
         # ---- number of blocks in grid:
         if self.rows == 0:
             self.rows = int(
@@ -77,9 +77,9 @@ class DotGridShape(BaseShape):
         y = 0 + self.unit(self.offset_y)
         height = self._u.height  # of each grid item
         width = self._u.width  # of each grid item
-        if self.size:  # square grid
-            size = self.unit(self.size)
-            height, width = size, size
+        if self.side:  # square grid
+            side = self.unit(self.side)
+            height, width = side, side
         # ---- number of blocks in grid:
         if self.rows == 0:
             self.rows = int((

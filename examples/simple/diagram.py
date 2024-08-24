@@ -8,7 +8,7 @@ from pyprototypr import *
 
 Create(filename='diagram.pdf', margin=1)
 
-# positions
+# create positions
 ceo = Rectangle(x=7, y=24, width=5, height=3, label="CEO")
 vp_sales = Rectangle(x=1, y=20, width=5, height=3, label="VP Sales")
 vp_rsrch = Rectangle(x=7, y=20, width=5, height=3, label="VP Research")

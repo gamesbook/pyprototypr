@@ -421,14 +421,31 @@ PageBreak()
 
 # ---- rotation: image
 Rectangle(x=0, y=0, height=6, width=4, fill=khaki)
-Text(common=txt, text="Shapes: normal and rotated")
+Text(common=txt, text="Images: normal & rotated")
 Blueprint()
-Image("sholes_typewriter.png", x=0, y=0, width=1.5, height=1.5, heading="PNG")
-Image("sholes_typewriter.png", x=2, y=0, width=1.5, height=1.5, rotate=60)
+Image("sholes_typewriter.png", x=1, y=1, width=1.5, height=1.5, heading="PNG")
+Image("sholes_typewriter.png", x=2, y=0, width=1.5, height=1.5, heading="60\u00B0", rotate=60)
 Image("noun-typewriter-3933515.svg", x=0, y=4, width=1.5, height=1.6, scaling=0.15, title="SVG")
-Image("noun-typewriter-3933515.svg", x=2, y=4, width=1.5, height=1.6, scaling=0.15, rotate=45)
+Image("noun-typewriter-3933515.svg", x=2, y=4, width=1.5, height=1.6, scaling=0.15, title="45\u00B0", rotate=45)
 PageBreak()
 
+# ---- rotation: rhombus
+Blueprint()
+Text(common=txt, text="Rhombus: red rotated 60\u00B0")
+Rhombus(cx=2, cy=3, width=1.5, height=2*equi(1.5), dot_size=0.06)
+Rhombus(cx=2, cy=3, width=1.5, height=2*equi(1.5), fill=None,
+        stroke=red, stroke_width=.3, rotate=60, dot_size=0.04)
+PageBreak()
+
+# ---- rotation: rect
+Blueprint()
+Text(common=txt, text="Rectangle: red rotated 45\u00B0")
+Rectangle(cx=2, cy=3, width=1.5, height=3, dot_size=0.06)
+Rectangle(cx=2, cy=3, width=1.5, height=3, fill=None,
+          stroke=red, stroke_width=.3, rotate=45, dot_size=0.04)
+PageBreak()
+
+# ---- END
 Text(common=txt, text="END...")
 PageBreak(footer=True)
 

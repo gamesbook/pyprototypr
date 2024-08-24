@@ -5,6 +5,7 @@ Support utilities for draw module
 # lib
 import itertools
 import os
+import math
 import sys
 import string
 from typing import Any
@@ -22,6 +23,12 @@ def feedback(item, stop=False, warn=False):
         print('FEEDBACK:: Could not continue with program.\n')
         #sys.exit()
         quit()
+
+
+def equi(side: Any):
+    """Calculate height of equilateral triangle from a side."""
+    _side = to_float(side)
+    return math.sqrt(_side**2 - (0.5 * _side)**2)
 
 
 def numbers(*args):
