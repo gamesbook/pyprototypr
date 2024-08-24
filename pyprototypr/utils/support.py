@@ -219,7 +219,7 @@ def excel_column(value: int = 1):
 
 def pdf_to_png(filename: str, dpi: int = 300):
     """Extract pages from PDF as PNG image(s)."""
-    feedback(f'Saving content of "{filename}" as .png image(s)...')
+    feedback(f'Saving page(s) from "{filename}" as PNG image file(s)...')
     basename = os.path.splitext(filename)[0]
     try:
         doc = pymupdf.open(filename)

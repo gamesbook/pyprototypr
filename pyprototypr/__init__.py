@@ -1,2 +1,2 @@
 from ._version import __version__, __version_info__
-from .draw import *
+from .proto import *

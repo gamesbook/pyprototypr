@@ -27,6 +27,9 @@ class GridShape(BaseShape):
     Grid on a given canvas.
     """
 
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(GridShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a grid on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
@@ -747,33 +750,36 @@ class ConnectShape(BaseShape):
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(ConnectShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # overrides
-        self.shape_from = kwargs.get("shape_from", None)
-        self.shape_to = kwargs.get("shape_to", None)
+        self.shape_from = kwargs.get("shape_from", None)  # could be a GridShape
+        self.shape_to = kwargs.get("shape_to", None)  # could be a GridShape
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a connection (line) between two shapes on given canvas."""
         cnv = cnv
         ID = ID
-        # style
+        # ---- style
         style = self.style or "direct"
-        # shapes and position  - default style
+        # ---- shapes and positions
         try:
-            shape_from, shape_from_position = self.shape_from  # tuple form
+            shp_from, shape_from_position = self.shape_from  # tuple form
         except Exception:
-            shape_from, shape_from_position = self.shape_from, "BC"
+            shp_from, shape_from_position = self.shape_from, "BC"
         try:
-            shape_to, shape_to_position = self.shape_to  # tuple form
+            shp_to, shape_to_position = self.shape_to  # tuple form
         except Exception:
-            shape_to, shape_to_position = self.shape_to, "TC"
-        # props
-        edge_from = shape_from.get_edges()
-        edge_to = shape_to.get_edges()
+            shp_to, shape_to_position = self.shape_to, "TC"
+        # ---- shape props
+        shape_from = self.shape_in_grid(shp_from)
+        shape_to = self.shape_in_grid(shp_to)
+        edge_from = shape_from.bounds  # BaseShape property
+        edge_to = shape_to.bounds  # BaseShape property
         x_f, y_f = self.key_positions(shape_from, shape_from_position)
         x_t, y_t = self.key_positions(shape_to, shape_to_position)
-        xc_f, yc_f = self.shape_from.get_center()
-        xc_t, yc_t = self.shape_to.get_center()
+        xc_f, yc_f = shape_from.get_center()
+        xc_t, yc_t = shape_to.get_center()
         # x,y: use fixed/supplied; or by "name"; or by default; or by "smart"
         if style == "path":
+            # ---- path points
             points = []
 
             if xc_f == xc_t and yc_f > yc_t:  # above
@@ -798,18 +804,18 @@ class ConnectShape(BaseShape):
                 ]
 
             if xc_f < xc_t and yc_f < yc_t:  # Q1
-                if edge_from["right"] < edge_to["left"]:
-                    if edge_from["top"] < edge_to["bottom"]:
-                        log.debug("A t:%s b:%s", edge_from["top"], edge_to["bottom"])
-                        delta = (edge_to["bottom"] - edge_from["top"]) / 2.0
+                if edge_from.right < edge_to.left:
+                    if edge_from.top < edge_to.bottom:
+                        log.debug("A t:%s b:%s", edge_from.top, edge_to.bottom)
+                        delta = (edge_to.bottom - edge_from.top) / 2.0
                         points = [
                             self.key_positions(shape_from, "TC"),
-                            (xc_f, edge_from["top"] + delta),
-                            (xc_t, edge_from["top"] + delta),
+                            (xc_f, edge_from.top + delta),
+                            (xc_t, edge_from.top + delta),
                             self.key_positions(shape_to, "BC"),
                         ]
-                    elif edge_from["top"] > edge_to["bottom"]:
-                        log.debug("B t:%s b:%s", edge_from["top"], edge_to["bottom"])
+                    elif edge_from.top > edge_to.bottom:
+                        log.debug("B t:%s b:%s", edge_from.top, edge_to.bottom)
                         points = [
                             self.key_positions(shape_from, "TC"),
                             (xc_f, yc_t),
@@ -818,7 +824,7 @@ class ConnectShape(BaseShape):
                     else:
                         pass
                 else:
-                    log.debug("C t:%s b:%s", edge_from["top"], edge_to["bottom"])
+                    log.debug("C t:%s b:%s", edge_from.top, edge_to.bottom)
                     points = [
                         self.key_positions(shape_from, "TC"),
                         (xc_f, yc_t),
@@ -832,18 +838,18 @@ class ConnectShape(BaseShape):
 
             if xc_f > xc_t and yc_f < yc_t:  # Q4
                 log.debug("Q4")
-                if edge_from["left"] < edge_to["right"]:
-                    if edge_from["top"] < edge_to["bottom"]:
-                        log.debug(" A t:%s b:%s", edge_from["top"], edge_to["bottom"])
-                        delta = (edge_to["bottom"] - edge_from["top"]) / 2.0
+                if edge_from.left < edge_to.right:
+                    if edge_from.top < edge_to.bottom:
+                        log.debug(" A t:%s b:%s", edge_from.top, edge_to.bottom)
+                        delta = (edge_to.bottom - edge_from.top) / 2.0
                         points = [
                             self.key_positions(shape_from, "TC"),
-                            (xc_f, edge_from["top"] + delta),
-                            (xc_t, edge_from["top"] + delta),
+                            (xc_f, edge_from.top + delta),
+                            (xc_t, edge_from.top + delta),
                             self.key_positions(shape_to, "BC"),
                         ]
-                    elif edge_from["top"] > edge_to["bottom"]:
-                        log.debug(" B t:%s b:%s", edge_from["top"], edge_to["bottom"])
+                    elif edge_from.top > edge_to.bottom:
+                        log.debug(" B t:%s b:%s", edge_from.top, edge_to.bottom)
                         points = [
                             self.key_positions(shape_from, "TC"),
                             (xc_f, yc_t),
@@ -852,7 +858,7 @@ class ConnectShape(BaseShape):
                     else:
                         pass
                 else:
-                    log.debug(" C t:%s b:%s", edge_from["top"], edge_to["bottom"])
+                    log.debug(" C t:%s b:%s", edge_from.top, edge_to.bottom)
                     points = [
                         self.key_positions(shape_from, "TC"),
                         (xc_f, yc_t),
@@ -865,6 +871,7 @@ class ConnectShape(BaseShape):
             plin = PolylineShape(None, cnv, **self.kwargs)
             plin.draw(ID=ID)
         elif style == "direct":  # straight line
+            # ---- direct points
             self.kwargs["x"] = x_f
             self.kwargs["y"] = y_f
             self.kwargs["x1"] = x_t

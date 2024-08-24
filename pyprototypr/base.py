@@ -9,6 +9,7 @@ Notes:
 # lib
 from collections import namedtuple
 import copy
+import inspect
 import json
 import logging
 import math
@@ -58,7 +59,7 @@ log = logging.getLogger(__name__)
 
 DEBUG = False
 DEBUG_COLOR = lightsteelblue
-# ---- tuples
+# ---- named tuples
 UnitProperties = namedtuple(
     'UnitProperties', [
         'page_width',
@@ -93,6 +94,14 @@ GridShape = namedtuple(
         'x',
         'y',
         'shape',
+    ]
+)
+Bounds = namedtuple(
+    'Bounds', [
+        'left',
+        'right',
+        'bottom',
+        'top',
     ]
 )
 
@@ -1229,25 +1238,35 @@ class BaseShape:
         # if _dict.get('x'):
         #    self.x = _dict.get('x', 1)
 
+
     def get_center(self):
         """Attempt to get centre (x,y) tuple for a shape."""
         if self.cx and self.cy:
             return (self.cx, self.cy)
         if self.x and self.y and self.width and self.height:
             return (self.x + self.width / 2.0, self.y + self.height / 2.0)
+        return ()
+
+    @property
+    def bounds(self) -> Bounds:
+        """Attempt to get bounds of rectangle."""
+        if self.x and self.y and self.width and self.height:
+            bounds = Bounds(
+                self.x,
+                self.x + self.width,
+                self.y,
+                self.y + self.height
+            )
+            return bounds
         return None
 
-    def get_edges(self):
-        """Attempt to get edges of rectangle."""
-        if self.x and self.y and self.width and self.height:
-            edges = {
-                'left': self.x,
-                'right': self.x + self.width,
-                'bottom': self.y,
-                'top': self.y + self.height
-            }
-            return edges
-        return {}
+    def shape_in_grid(self, the_shape):
+        """Returns shape contained in GridShape class."""
+        #if inspect.isclass(the_shape) and the_shape.__class__.__name__ == 'GridShape':
+        if isinstance(the_shape, GridShape):
+            return the_shape.shape
+        else:
+            return the_shape
 
     def make_path_points(self, cnv, p1: geoms.Point, p2: geoms.Point):
         """Draw line between two Points"""

@@ -2088,7 +2088,7 @@ class RectangleShape(BaseShape):
         if rotate:
             cnv.restoreState()
         # ---- return key settings
-        return GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
+        return GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)  # Class NOT Object!
 
 
 class RhombusShape(BaseShape):

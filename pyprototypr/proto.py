@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Primary drawing interface for pyprototypr
+Primary interface for pyprototypr (imported at top-level)
 """
 # future
 from __future__ import division

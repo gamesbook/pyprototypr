@@ -12,15 +12,16 @@ Create(filename='diagram.pdf', margin=1)
 ceo = Rectangle(x=7, y=24, width=5, height=3, label="CEO")
 vp_sales = Rectangle(x=1, y=20, width=5, height=3, label="VP Sales")
 vp_rsrch = Rectangle(x=7, y=20, width=5, height=3, label="VP Research")
-vp_legal = Rectangle(x=13, y=20, width=5, height=3, label="VP Legal")
+vp_prods = Rectangle(x=13, y=20, width=5, height=3, label="VP Products")
+
 # link the positions
 Connect(ceo, vp_sales, style='direct')
 Connect(ceo, vp_rsrch, style='direct')
-Connect(ceo, vp_legal, style='direct')
+Connect(ceo, vp_prods, style='direct')
 
 PageBreak()
 
-# arrangement A
+# ---- arrangement A
 centralA = Rectangle(x=8, y=13, width=4, height=3, label="Central A")
 top_rightA = Rectangle(x=13, y=18, width=4, height=3, label="TopRight")
 top_leftA = Rectangle(x=3, y=18, width=4, height=3, label="TopLeft")
@@ -32,7 +33,7 @@ Connect(centralA, top_leftA, style='path')
 
 PageBreak()
 
-# arrangement B
+# ---- arrangement B
 centralB = Rectangle(x=8, y=13, width=4, height=3, label="Central B")
 top_rightB = Rectangle(x=13, y=15, width=4, height=3, label="TopRight")
 top_leftB = Rectangle(x=3, y=15, width=4, height=3, label="TopLeft")
@@ -44,7 +45,7 @@ Connect(centralB, top_leftB, style='path')
 
 PageBreak()
 
-# arrangement C
+# ---- arrangement C
 centralC = Rectangle(x=8, y=13, width=4, height=3, label="Central C")
 top_rightC = Rectangle(x=11, y=18, width=4, height=3, label="TopRight")
 top_leftC = Rectangle(x=5, y=18, width=4, height=3, label="TopLeft")
@@ -56,7 +57,7 @@ Connect(centralC, top_leftC, style='path')
 
 PageBreak()
 
-# arrangement D
+# ---- arrangement D
 centralD = Rectangle(x=8, y=13, width=4, height=3, label="Central D")
 top_D = Rectangle(x=8, y=18, width=4, height=3, label="Top")
 left_D = Rectangle(x=2, y=13, width=4, height=3, label="Left")
