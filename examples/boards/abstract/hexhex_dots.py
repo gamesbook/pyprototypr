@@ -6,7 +6,7 @@ Created on: 3 August 2024
 Notes:
 """
 
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="hexhex_board_dots.pdf", margin=0.5, pagesize=A4)
 

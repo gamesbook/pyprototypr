@@ -4,7 +4,7 @@
 Written by: Derek Hohls
 Created on: 19 February 2016
 """
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename='cards_design.pdf')
 

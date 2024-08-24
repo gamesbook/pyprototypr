@@ -6,7 +6,7 @@ Created: 29 February 2016
 """
 # lib
 # local
-from pyprototypr.draw import Create, Text, Save, Rectangle, black, red
+from pyprototypr import Create, Text, Save, Rectangle, black, red
 from pyprototypr.utils.tools import color_to_hex
 from pyprototypr.base import COLORS
 

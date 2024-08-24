@@ -12,7 +12,7 @@ Notes:
     greens = "#57762C"
     blues = "#416E83"
 """
-from pyprototypr.draw import *
+from pyprototypr import *
 
 # create counters
 Create(filename='blocks_csv.pdf')

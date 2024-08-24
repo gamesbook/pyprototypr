@@ -23,7 +23,7 @@ The program should be reasonably simple, quick and useful.
 * **Simple** in that name and shortcuts make sense; defaults are sensible; common things are easy
 * **Quick** in that commands should be simple and easy things should take a few lines
 * **Useful** for common prototypes but not at the level of complex graphic design
-* **Readable** in that commands use names rather than quirky abbreviations or special characters.
+* **Readable** in that commands use common names rather than quirky abbreviations or special characters.
 
 The assumption is that a user of this tool wants to rapidly develop a prototype in
 digital form, and is expecting to iterate over numerous versions in the course of a
@@ -39,39 +39,30 @@ Elements
 ========
 
 ========== ========== ========
-Primitives Shapes     Elements
+Properties Shapes     Layouts
 ========== ========== ========
-color      line       card
-position   hex        grid
-place      circle     image
-size       rectangle  deck
- -         oval       tile
- -         polygon    text
+stroke     line       card
+x,y        hexagon    deck
+location   circle     grid
+size       rectangle  tile
+height     ellipse    sequence
+width      polygon    track
+cx,cy      image
+angle      text
 ========== ========== ========
 
-All elements have defaults; sizes are based on 1cm (one centimeter) as a default;
-the default foreground color is black and the default background color is white.
+All elements have default properties; sizes are based on 1cm (centimeter) as a default;
+the default foreground color, used for drawing lines, is black and the default
+background color, used for filling in areas, is white.
 
 
-Sizes
-=====
+Default Sizes
+=============
 
-Some sizes are predefined for convenience:
+Some sizes are predefined with names for convenience:
 
 * Tiles - catan, bluemooncity
 * Cards - poker, tarot
-* Hexes - AH, SPI, Catan
+* Hexagons - AH, SPI, Catan
 * Paper - A4, Letter
 * Labels_Avery
-
-
-Keywords
-========
-
-* type []
-* offset []
-* x []
-* y []
-* width []
-* height []
-* size []

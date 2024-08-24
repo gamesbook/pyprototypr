@@ -4,7 +4,7 @@
 Written by: Derek Hohls
 Created on: 29 February 2016
 """
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="example5.pdf", offset=0.5)
 
@@ -27,5 +27,5 @@ mytext2 = text(text=split("A B C D E F G H J K L M N O P Q R S T U V W X Y Z"),
 Card("1-25", mytext1)
 Card("26-50", mytext2)
 
-# create the output card file, using the card 'deck'
+# create the output file
 Save()

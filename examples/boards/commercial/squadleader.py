@@ -6,7 +6,7 @@ Created on: 21 February 2024
 Notes:
 """
 
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="squadleader.pdf", margin=0.5, margin_bottom=0, pagesize=landscape(A4))
 

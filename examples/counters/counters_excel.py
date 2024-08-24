@@ -4,7 +4,7 @@
 Written by: Derek Hohls
 Created on: 29 February 2016
 """
-from pyprototypr.draw import *
+from pyprototypr import *
 
 # create counters
 Create(filename='tannenberg_excel.pdf')

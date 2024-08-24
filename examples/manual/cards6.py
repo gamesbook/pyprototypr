@@ -4,7 +4,7 @@
 Written by: Derek Hohls
 Created on: 29 February 2016
 """
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="example6.pdf", offset=0.5)
 
@@ -23,5 +23,5 @@ mytext1 = text(text=letters("D", "L"), common=times)
 # specify a range of cards to contain these letters
 Card("1-9", mytext1)
 
-# create the output card file, using the card 'deck'
+# create the output file
 Save()

@@ -5,7 +5,7 @@ Example code for pyprototypr
 Written by: Derek Hohls
 Created on: 20 August 2024
 """
-from pyprototypr.draw import *
+from pyprototypr import *
 from datetime import datetime, timedelta
 
 Create(filename="world_clocks.pdf",

@@ -7,7 +7,7 @@ Created on: 21 May 2016
 Notes:
     BGG() uses the `bgg-api` Python library (https://github.com/SukiCZ/boardgamegeek)
 """
-from pyprototypr.draw import *
+from pyprototypr import *
 
 num = 9  # number of cards to be used
 Create(filename="cards_bgg.pdf", offset=0.5)

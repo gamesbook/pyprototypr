@@ -5,7 +5,7 @@ Written by: Derek Hohls
 Created on: 3 August 2024
 """
 
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="chessboard_brown.pdf")
 

@@ -8,7 +8,7 @@ Code by: Derek Hohls
 Created on: 30 July 2024
 """
 
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="warpwar.pdf", margin=0.5, pagesize=A2)
 

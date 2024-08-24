@@ -1132,7 +1132,7 @@ def Blueprint(**kwargs):
                 local_kwargs['rows'] = int(kwargs.get('subdivisions'))
                 local_kwargs['cols'] = int(kwargs.get('subdivisions'))
                 local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
-                local_kwargs['stroke'] = kwargs.get('subdivisions_stroke')
+                local_kwargs['stroke'] = kwargs.get('subdivisions_stroke', kwargs['stroke'])
                 local_kwargs['dashes'] = kwargs.get('subdivisions_dashes')
                 local_kwargs['dots'] = kwargs.get('subdivisions_dots')
                 subgrid = GridShape(canvas=cnv, **local_kwargs)

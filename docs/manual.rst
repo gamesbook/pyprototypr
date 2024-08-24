@@ -161,7 +161,7 @@ a `#` is a called an **instruction**::
     # `example1` script for pyprototypr
     # Written by: Derek Hohls
     # Created on: 29 February 2016
-    from pyprototypr.draw import *
+    from pyprototypr import *
     Create()
     PageBreak()
     Save()
@@ -311,7 +311,7 @@ In general, one line in the script will contain one instruction.
 
 The first line of every script **must** contain the phrase::
 
-    from pyprototypr.draw import *
+    from pyprototypr import *
 
 which is a special instruction, telling Python that it needs to use ("import")
 the functions available in the **pyprototypr** `draw` module when processing
@@ -1031,7 +1031,7 @@ each line without any blank spaces at the start.
 
 .. code-block:: python
 
-    from pyprototypr.draw import *
+    from pyprototypr import *
     Create()
     Deck(cards=9)
     Save()
@@ -1063,7 +1063,7 @@ on OS X, use TextEdit) and type the following:
 
 .. code-block:: python
 
-    from pyprototypr.draw import *
+    from pyprototypr import *
 
     Create(pagesize=A3,
            filename="example2.pdf")
@@ -1108,7 +1108,7 @@ Create this text in a file called ``cards3.py``:
 
 .. code-block:: python
 
-    from pyprototypr.draw import *
+    from pyprototypr import *
 
     Create(filename='example3.pdf', offset=0.5)
 
@@ -1149,7 +1149,7 @@ Create this text in a file called ``cards4.py``:
 
 .. code-block:: python
 
-    from pyprototypr.draw import *
+    from pyprototypr import *
 
     # create the output card file
     Create(filename='example4.pdf', offset=0.5)

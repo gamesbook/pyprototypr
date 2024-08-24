@@ -7,7 +7,7 @@ Notes:
     Chess font from: http://www.enpassant.dk/chess/fontimg/alpha.htm
 """
 
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="chessboard.pdf", margin=1.25)
 

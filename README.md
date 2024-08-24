@@ -49,7 +49,7 @@ This script is very simple - it just contains these lines:
 # `example1` script for pyprototypr
 # Written by: Derek Hohls
 # Created on: 29 February 2016
-from pyprototypr.draw import *
+from pyprototypr import *
 Create()
 PageBreak()
 Save()
@@ -78,6 +78,7 @@ work for future development.
     * [ ] Wave shape
     * [ ] Domino shape (with outline?)
     * [ ] Cross shape
+    * [ ] Cube shape (rhombus composite)
 * [ ] Arrow: styling
 * [x] Circle, Rectangle, Hexagon: centre cross
 * [x] Rectangle: with notches

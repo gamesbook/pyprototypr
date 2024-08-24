@@ -5,7 +5,7 @@ Virtual grid examples for pyprototypr
 Written by: Derek Hohls
 Created on: 19 May 2024
 """
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="grid_layout.pdf",
        pagesize=A8,

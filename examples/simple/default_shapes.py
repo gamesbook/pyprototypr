@@ -6,7 +6,7 @@ Written by: Derek Hohls
 Created on: 20 March 2024
 """
 
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="default_shapes.pdf",
        pagesize=A8,

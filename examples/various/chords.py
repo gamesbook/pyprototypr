@@ -5,7 +5,7 @@ Example code for pyprototypr
 Written by: Derek Hohls
 Created on: 9 August 2024
 """
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="chords.pdf",
         pagesize=A8,

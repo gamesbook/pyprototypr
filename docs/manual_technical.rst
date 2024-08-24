@@ -144,7 +144,7 @@ a `#` is a called an **instruction**::
     # `example1` script for pyprototypr
     # Written by: Derek Hohls
     # Created on: 29 February 2016
-    from pyprototypr.draw import *
+    from pyprototypr import *
     Create()
     PageBreak()
     Save()
@@ -174,7 +174,7 @@ In general, one line in the script will contain one **instruction**.
 
 The first line of every script **must** contain the phrase::
 
-    from pyprototypr.draw import *
+    from pyprototypr import *
 
 which is a special instruction, telling Python that it needs to use ("import")
 the functions available in the **pyprototypr** `draw` module when processing

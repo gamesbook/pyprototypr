@@ -6,7 +6,7 @@ Created on: 3 March 2024
 Notes:
 """
 
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="ack_map.pdf", margin=0.5, pagesize=landscape(A3))
 

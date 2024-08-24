@@ -5,7 +5,7 @@ Example code for pyprototypr
 Written by: Derek Hohls
 Created on: 19 August 2024
 """
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="objects.pdf", margin=1, margin_top=0.25)
 

@@ -5,7 +5,7 @@ Virtual track examples for pyprototypr
 Written by: Derek Hohls
 Created on: 26 May 2024
 """
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="track_layout.pdf",
        pagesize=A8,

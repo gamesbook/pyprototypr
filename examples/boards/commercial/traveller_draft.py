@@ -7,7 +7,7 @@ Notes:
     * Draft style; 'B' sector
 """
 
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="traveller_draft.pdf", margin=0.5, pagesize=A4)
 

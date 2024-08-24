@@ -8,7 +8,7 @@ Source:
     * SVG from
 """
 
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="demo.pdf", margin=1, margin_top=0.25)
 Footer()

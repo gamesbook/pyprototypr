@@ -89,7 +89,7 @@ To now check that `pyprototypr` works, you should create a small test file.
 
 Open your text editor and type (or copy and paste) the following:
 ```
-from pyprototypr.draw import *
+from pyprototypr import *
 Create()
 Text(text="Hello World")
 Save()

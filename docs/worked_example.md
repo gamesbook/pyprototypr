@@ -15,7 +15,7 @@ please first see the [Setting Up](setting_up.md) document.
 Open up a new text file with your text file editor and type the following, making
 sure that each line starts **without** any blank spaces!
 ```python
-from pyprototypr.draw import *
+from pyprototypr import *
 Create()
 Deck()
 Save()
@@ -57,7 +57,7 @@ Open up a new text file with your text file editor and type in the following (ag
 remember to start each line with **NO** any blank spaces):
 
 ```python
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(pagesize=A3, filename="example2.pdf")
 Deck()
@@ -100,7 +100,7 @@ resulting output should look like.
 Create this text in a file called `cards3.py`:
 
 ```python
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename='example3.pdf', offset=0.5)
 
@@ -153,7 +153,7 @@ the new kinds of details added to it, as well as what the resulting output shoul
 Create this text in a file called `cards4.py`:
 
 ```python
-from pyprototypr.draw import *
+from pyprototypr import *
 
 # create the output card file and page details
 Create(filename='example4.pdf', offset=0.5)

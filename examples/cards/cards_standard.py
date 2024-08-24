@@ -12,7 +12,7 @@ Suit symbols are shown at: https://www.w3schools.com/charsets/ref_utf_symbols.as
     ♥    2665    BLACK HEART SUIT
     ♦    2666    BLACK DIAMOND SUIT
 """
-from pyprototypr.draw import *
+from pyprototypr import *
 
 # create deck
 Create(filename='cards_standard.pdf')

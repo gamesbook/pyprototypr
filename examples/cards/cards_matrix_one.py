@@ -4,7 +4,7 @@ Matrix cards script for pyprototypr
 Written by: Derek Hohls
 Created on: 12 August 2024
 """
-from pyprototypr.draw import *
+from pyprototypr import *
 
 # create deck
 Create(filename='cards_matrix_one.pdf')

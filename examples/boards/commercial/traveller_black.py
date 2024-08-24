@@ -7,7 +7,7 @@ Notes:
     * Black style; 'A' sector
 """
 
-from pyprototypr.draw import *
+from pyprototypr import *
 
 Create(filename="traveller_black.pdf", margin=0.5, pagesize=A4)
 
