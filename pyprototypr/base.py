@@ -21,7 +21,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.units import cm, inch, mm
 from reportlab.lib.pagesizes import (
-    A6, A5, A4, A3, A2, A1, A0, LETTER, LEGAL, ELEVENSEVENTEEN,
+    A8, A7, A6, A5, A4, A3, A2, A1, A0, LETTER, LEGAL, ELEVENSEVENTEEN,
     letter, legal, elevenSeventeen, B6, B5, B4, B3, B2, B0, landscape)
 from reportlab.lib.utils import ImageReader
 from reportlab.lib.styles import getSampleStyleSheet

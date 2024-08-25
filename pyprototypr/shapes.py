@@ -13,7 +13,7 @@ import random
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.pagesizes import (
-    A6, A5, A4, A3, A2, A1, A0, LETTER, LEGAL, ELEVENSEVENTEEN,
+    A8, A7, A6, A5, A4, A3, A2, A1, A0, LETTER, LEGAL, ELEVENSEVENTEEN,
     letter, legal, elevenSeventeen, B6, B5, B4, B3, B2, B0, landscape)
 
 # local
@@ -61,10 +61,12 @@ class ImageShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Show an image on a given canvas."""
+        from reportlab.lib.utils import ImageReader
+
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         img = None
-        # ---- check for usage via Card ID
+        # ---- check for Card usage
         # tools.feedback(f'*** {ID=} {self.source=}')
         if ID is not None and isinstance(self.source, list):
             _source = self.source[ID]
@@ -85,7 +87,7 @@ class ImageShape(BaseShape):
         else:
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
-        # ---- draw image
+        # ---- load image
         # tools.feedback(f'*** IMAGE {ID=} {_source=} {x=} {y=} {self.scaling=} ')
         img, is_svg = self.load_image(_source, self.scaling)
         if not img:
@@ -94,8 +96,8 @@ class ImageShape(BaseShape):
                 True)
         rotate = kwargs.get('rotate', self.rotate)
         # assumes 1 pt == 1 pixel ?
-        # ---- handle rotation
         if rotate:
+            # ---- rotated image
             # tools.feedback(f'*** IMAGE {ID=} {rotate=} {self._u.x=}, {self._u.y=}')
             cnv.saveState()
             # move the canvas origin
@@ -119,10 +121,12 @@ class ImageShape(BaseShape):
                     mask="auto")
             cnv.restoreState()
         else:
+            # ---- normal image
             if is_svg:
                 from reportlab.graphics import renderPDF
                 renderPDF.draw(img, cnv, x=x, y=y)
             else:
+                #img = ImageReader('/home/derek/Projects/Personal/pyprototypr/examples/temp/herring.png')
                 cnv.drawImage(img, x=x, y=y, width=width, height=height, mask="auto")
         # ---- text
         xc = x + width / 2.0

@@ -1139,8 +1139,8 @@ def Blueprint(**kwargs):
                 subgrid = GridShape(canvas=cnv, **local_kwargs)
                 subgrid.draw(off_x=off_x, off_y=off_y)
     # ---- draw Blueprint grid
-    grid = GridShape(canvas=cnv, line_dots=line_dots, **kwargs)
-    grid.draw()
+    grid = GridShape(line_dots=line_dots, **kwargs)  # don't add canvas as arg here!
+    grid.draw(cnv=cnv)
     return grid
 
 # ---- connect ====
