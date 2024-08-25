@@ -419,14 +419,27 @@ Text(common=dtext, y=2, text=Today(details="datetime", style="usa"))
 Text(common=dtext, y=1, text=Today(details="datetime", style="eur"))
 PageBreak()
 
+# ---- label offsets
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Shape label: default and offsets")
+rct = Common(height=1.0, width=1.75, stroke_width=.5, label_size=7)
+Rectangle(common=rct, x=0, y=0.0, label="offset -x, +y", label_dx=-0.2, label_dy=-0.2)
+Rectangle(common=rct, x=0, y=1.5, label="offset -x", label_dx=-0.3)
+Rectangle(common=rct, x=0, y=3.0, label="offset -x, +y", label_dx=-0.2, label_dy=0.2)
+Rectangle(common=rct, x=2, y=0.0, label="offset -x, -y", label_dx=0.2, label_dy=-0.2)
+Rectangle(common=rct, x=2, y=1.5, label="offset +x", label_dx=0.3)
+Rectangle(common=rct, x=2, y=3.0, label="offset +x, +y", label_dx=0.2, label_dy=0.2)
+Rectangle(common=rct, x=1, y=4.5, label="no offset")
+PageBreak()
+
 # ---- rotation: image
 Rectangle(x=0, y=0, height=6, width=4, fill=khaki)
 Text(common=txt, text="Images: normal & rotation")
 Blueprint()
 Image("sholes_typewriter.png", x=0, y=0, width=1.5, height=1.5, heading="PNG")
-Image("sholes_typewriter.png", x=2, y=0, width=1.5, height=1.5, heading="60\u00B0", rotate=60)
+Image("sholes_typewriter.png", x=2, y=0, width=1.5, height=1.5, heading="60\u00B0", rotation=60)
 Image("noun-typewriter-3933515.svg", x=0, y=4, width=1.5, height=1.6, scaling=0.15, title="SVG")
-Image("noun-typewriter-3933515.svg", x=2, y=4, width=1.5, height=1.6, scaling=0.15, title="45\u00B0", rotate=45)
+Image("noun-typewriter-3933515.svg", x=2, y=4, width=1.5, height=1.6, scaling=0.15, title="45\u00B0", rotation=45)
 PageBreak()
 
 # ---- rotation: rhombus
@@ -434,7 +447,7 @@ Blueprint()
 Text(common=txt, text="Rhombus: red is rotation 60\u00B0")
 Rhombus(cx=2, cy=3, width=1.5, height=2*equi(1.5), dot_size=0.06)
 Rhombus(cx=2, cy=3, width=1.5, height=2*equi(1.5), fill=None,
-        stroke=red, stroke_width=.3, rotate=60, dot_size=0.04)
+        stroke=red, stroke_width=.3, rotation=60, dot_size=0.04)
 PageBreak()
 
 # ---- rotation: rect
@@ -442,7 +455,7 @@ Blueprint()
 Text(common=txt, text="Rectangle: red rotation 45\u00B0")
 Rectangle(cx=2, cy=3, width=1.5, height=3, dot_size=0.06)
 Rectangle(cx=2, cy=3, width=1.5, height=3, fill=None,
-          stroke=red, stroke_width=.3, rotate=45, dot_size=0.04)
+          stroke=red, stroke_width=.3, rotation=45, dot_size=0.04)
 PageBreak()
 
 # ---- END

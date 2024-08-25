@@ -34,26 +34,6 @@ GRID_SHAPES_NO_CENTRE = [
 # NOT GRID:  ArcShape, BezierShape, PolylineShape, ChordShape
 
 
-# ---- Core
-
-
-class CommonShape(BaseShape):
-    """
-    Attributes common to, or used by, multiple shapes
-    """
-
-    def __init__(self, _object=None, canvas=None, **kwargs):
-        self._kwargs = kwargs
-        super(CommonShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-
-    def __str__(self):
-        return f'{self._kwargs}'
-
-    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Not applicable."""
-        tools.feedback("This shape cannot be drawn.")
-
-
 class ImageShape(BaseShape):
     """
     Image (bitmap or SVG) on a given canvas.
@@ -61,8 +41,6 @@ class ImageShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Show an image on a given canvas."""
-        from reportlab.lib.utils import ImageReader
-
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         img = None
@@ -94,11 +72,11 @@ class ImageShape(BaseShape):
             tools.feedback(
                 f'Unable to load image "{_source}!" - please check name and location',
                 True)
-        rotate = kwargs.get('rotate', self.rotate)
+        rotation = kwargs.get('rotation', self.rotation)
         # assumes 1 pt == 1 pixel ?
-        if rotate:
+        if rotation:
             # ---- rotated image
-            # tools.feedback(f'*** IMAGE {ID=} {rotate=} {self._u.x=}, {self._u.y=}')
+            # tools.feedback(f'*** IMAGE {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
             cnv.saveState()
             # move the canvas origin
             if ID is not None:
@@ -106,7 +84,7 @@ class ImageShape(BaseShape):
                 cnv.translate(x + dx, y + dy)
             else:
                 cnv.translate(x + self._o.delta_x, y + self._o.delta_y)
-            cnv.rotate(rotate)
+            cnv.rotate(rotation)
             # draw the image relative to the origin
             if is_svg:
                 from reportlab.graphics import renderPDF
@@ -126,7 +104,7 @@ class ImageShape(BaseShape):
                 from reportlab.graphics import renderPDF
                 renderPDF.draw(img, cnv, x=x, y=y)
             else:
-                #img = ImageReader('/home/derek/Projects/Personal/pyprototypr/examples/temp/herring.png')
+                # TODO -> use height=10 OR width=12 AND preserveAspectRatio=True,
                 cnv.drawImage(img, x=x, y=y, width=width, height=height, mask="auto")
         # ---- text
         xc = x + width / 2.0
@@ -227,12 +205,12 @@ class ArrowShape(BaseShape):
         # ---- tail
         self.arrow_tail()
         # ---- calculate line rotation
-        compass, rotate = geoms.angles_from_points(x, y, x_1, y_1)
+        compass, rotation = geoms.angles_from_points(x, y, x_1, y_1)
         # ---- dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
         # ---- text
         self.draw_label(
-            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
+            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotation=rotation, centred=False, **kwargs)
 
 
 class BezierShape(BaseShape):
@@ -494,23 +472,23 @@ class CircleShape(BaseShape):
             x, y, self._u.radius, stroke=1, fill=1 if self.fill else 0)
         # ---- draw hatch
         if self.hatch:
-            if self.rotate:
-                # tools.feedback(f'*** {self.hatch=}, {self.rotate=}, {type(cnv)}')
+            if self.rotation:
+                # tools.feedback(f'*** {self.hatch=}, {self.rotation=}, {type(cnv)}')
                 cnv.saveState()
                 cnv.translate(self.x_c, self.y_c)
                 self.draw_hatch(cnv, ID, self.hatch, 0, 0)
-                cnv.rotate(self.rotate)
+                cnv.rotate(self.rotation)
                 cnv.restoreState()
             else:
                 self.draw_hatch(cnv, ID, self.hatch, self.x_c, self.y_c)
         # ---- draw radii
         if self.radii:
-            if self.rotate:
-                # tools.feedback(f'*** {self.hatch=}, {self.rotate=}, {type(cnv)}')
+            if self.rotation:
+                # tools.feedback(f'*** {self.hatch=}, {self.rotation=}, {type(cnv)}')
                 cnv.saveState()
                 cnv.translate(self.x_c, self.y_c)
                 self.draw_radii(cnv, ID, 0, 0)
-                cnv.rotate(self.rotate)
+                cnv.rotate(self.rotation)
                 cnv.restoreState()
             else:
                 self.draw_radii(cnv, ID, self.x_c, self.y_c)
@@ -554,13 +532,13 @@ class ChordShape(BaseShape):
         pth.lineTo(x_1, y_1)
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- calculate line rotation
-        compass, rotate = geoms.angles_from_points(x, y, x_1, y_1)
-        # tools.feedback(f"*** {compass=} {rotate=}")
+        compass, rotation = geoms.angles_from_points(x, y, x_1, y_1)
+        # tools.feedback(f"*** {compass=} {rotation=}")
         # ---- dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
         # ---- text
         self.draw_label(
-            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
+            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotation=rotation, centred=False, **kwargs)
 
 
 class DotShape(BaseShape):
@@ -807,13 +785,13 @@ class ChordShape(BaseShape):
         pth.lineTo(x_1, y_1)
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- calculate line rotation
-        compass, rotate = geoms.angles_from_points(x, y, x_1, y_1)
-        # tools.feedback(f"*** {compass=} {rotate=}")
+        compass, rotation = geoms.angles_from_points(x, y, x_1, y_1)
+        # tools.feedback(f"*** {compass=} {rotation=}")
         # ---- dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
         # ---- text
         self.draw_label(
-            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
+            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotation=rotation, centred=False, **kwargs)
 
 
 class DotShape(BaseShape):
@@ -976,6 +954,14 @@ class HexShape(BaseShape):
     See: http://powerfield-software.com/?p=851
     """
 
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(HexShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        self.use_side = False
+        if 'side' in kwargs:
+            self.use_side = True
+            if 'radius' in kwargs or 'height' in kwargs or 'diameter' in kwargs:
+                self.use_side = False
+
     def calculate_caltrops(self, side, size=None, fraction=None, invert=False):
         """Calculate settings for caltrops (the hex "corner").
 
@@ -1071,7 +1057,7 @@ class HexShape(BaseShape):
             side = self._u.height / math.sqrt(3)
         return (3.0 * math.sqrt(3.0) * side * side) / 2.0
 
-    def draw_links(self, cnv, side: float, vertices: list, links: list):
+    def draw_links(self, cnv, ID, side: float, vertices: list, links: list):
         """Draw arcs or lines to link two sides of a hexagon."""
         self.set_canvas_props(
             index=ID,
@@ -1194,31 +1180,36 @@ class HexShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a hexagon on a given canvas."""
-        # if self.height < 2.2: breakpoint()
-        # print(kwargs, ID, self.height)
         # tools.feedback(f'*** draw hexshape: {kwargs} {off_x} {off_y} {ID}')
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         is_cards = kwargs.get("is_cards", False)
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # ---- calculate half_flat & half_side
-        if self.side:
-            side = self._u.side
-            half_flat = self._u.side * math.sqrt(3) / 2.0
-        elif self.height:
-            self.side = self.height / math.sqrt(3)
+        if self.height:
             side = self._u.height / math.sqrt(3)
             half_flat = self._u.height / 2.0
         elif self.diameter:
-            self.side = self.diameter / 2.0
             side = self._u.diameter / 2.0
+            self._u.side = side
+            half_flat = self._u.side * math.sqrt(3) / 2.0
+        elif self.radius:
+            side = self.u_radius
+            self._u.side = self.u_radius
             half_flat = self._u.side * math.sqrt(3) / 2.0
         else:
+            pass
+        if self.side and self.use_side:
+            side = self._u.side
+            half_flat = self._u.side * math.sqrt(3) / 2.0
+        if not self.radius and not self.height and not self.diameter and not self.side:
             tools.feedback(
-                'No value for side or height or diameter supplied for hexagon.',
+                'No value for side or height or diameter or radius supplied for hexagon.',
                 True)
+
         half_side = side / 2.0
         height_flat = 2 * half_flat
         diameter = 2.0 * side
+        radius = side
         z_fraction = (diameter - side) / 2.0
 
         # ---- POINTY^
@@ -1273,7 +1264,7 @@ class HexShape(BaseShape):
                 # recalculate start x,y
                 x = x_d - half_flat
                 y = y_d - half_side - side / 2.0
-            # tools.feedback(f"***P^: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
+            # tools.feedback(f"*** P^: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
 
         # ---- FLAT~
         else:
@@ -1320,7 +1311,7 @@ class HexShape(BaseShape):
                 # recalculate start x,y
                 x = x_d - half_side - side / 2.0
                 y = y_d - half_flat
-            # tools.feedback(f"***F~: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
+            # tools.feedback(f"*** F~: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
 
         # ---- calculate area
         self.area = self.calculate_area()
@@ -1371,7 +1362,7 @@ class HexShape(BaseShape):
             self.draw_hatch(cnv, ID, side, self.vertices, self.hatch)
         # ---- draw links
         if self.links:
-            self.draw_links(cnv, side, self.vertices, self.links)
+            self.draw_links(cnv, ID, side, self.vertices, self.links)
         # ---- centred shape (with offset)
         if self.centre_shape:
             cshape_name = self.centre_shape.__class__.__name__
@@ -1445,12 +1436,12 @@ class LineShape(BaseShape):
         pth.lineTo(x_1, y_1)
         cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
         # ---- calculate line rotation
-        compass, rotate = geoms.angles_from_points(x, y, x_1, y_1)
+        compass, rotation = geoms.angles_from_points(x, y, x_1, y_1)
         # ---- dot
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
         # ---- text
         self.draw_label(
-            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotate=rotate, centred=False, **kwargs)
+            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotation=rotation, centred=False, **kwargs)
 
 
 class OctagonShape(BaseShape):
@@ -1576,15 +1567,15 @@ class PolygonShape(BaseShape):
         area = (sides * radius * radius / 2.0) * math.sin(2.0 * math.pi / sides)
         return area
 
-    def get_vertices(self, rotate: float = None):
+    def get_vertices(self, rotation: float = None):
         """Calculate centre, radius and vertices of polygon.
         """
         # convert to using units
-        if not rotate:
+        if not rotation:
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
         else:
-            x, y = 0., 0.  # centre for rotated canavs
+            x, y = 0., 0.  # centre for rotationd canavs
         # calculate vertices - assumes x,y marks the centre point
         radius = self.get_radius()
         vertices = geoms.polygon_vertices(self.sides, radius, Point(x, y), self.angle)
@@ -1600,20 +1591,20 @@ class PolygonShape(BaseShape):
         x = self._u.x + self._o.delta_x
         y = self._u.y + self._o.delta_y
         # ---- handle rotation: START
-        rotate = kwargs.get('rotate', self.rotate)
-        if rotate:
-            # tools.feedback(f'*** Rect {ID=} {rotate=} {self._u.x=}, {self._u.y=}')
+        rotation = kwargs.get('rotation', self.rotation)
+        if rotation:
+            # tools.feedback(f'*** Rect {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
             cnv.saveState()
             # move the canvas origin
             if ID is not None:
                 cnv.translate(x + self._u.margin_left, y + self._u.margin_bottom)
             else:
                 cnv.translate(x, y)
-            cnv.rotate(rotate)
-        x, y, radius, vertices = self.get_vertices(rotate=rotate)
+            cnv.rotate(rotation)
+        x, y, radius, vertices = self.get_vertices(rotation=rotation)
         # ---- invalid polygon?
         if not vertices or len(vertices) == 0:
-            if rotate:
+            if rotation:
                 cnv.restoreState()
             return
         # ---- draw polygon
@@ -1630,7 +1621,7 @@ class PolygonShape(BaseShape):
         self.draw_label(cnv, ID, x, y, **kwargs)
         self.draw_title(cnv, ID, x, y, 1.4 * radius, **kwargs)
         # ---- handle rotation: END
-        if rotate:
+        if rotation:
             cnv.restoreState()
 
 
@@ -1692,10 +1683,10 @@ class RectangleShape(BaseShape):
         else:
             return length
 
-    def set_vertices(self, rotate=0, **kwargs):
+    def set_vertices(self, rotation=0, **kwargs):
         """Set vertices for rectangle without hatches."""
-        if rotate:
-            kwargs['rotate'] = rotate
+        if rotation:
+            kwargs['rotation'] = rotation
         x, y = self.calculate_xy(**kwargs)
         return [  # clockwise from bottom-left; relative to centre
             Point(x, y),
@@ -1771,8 +1762,8 @@ class RectangleShape(BaseShape):
             x = kwargs.get("cx") - self._u.width / 2.0
             y = kwargs.get("cy") - self._u.height / 2.0
         # ---- overrides for centering
-        rotate = kwargs.get('rotate', None)
-        if rotate:
+        rotation = kwargs.get('rotation', None)
+        if rotation:
             x = -self._u.width / 2.0
             y = -self._u.height / 2.0
         return x, y
@@ -1883,16 +1874,16 @@ class RectangleShape(BaseShape):
         self.area = self.calculate_area()
         delta_m_up, delta_m_down = 0.0, 0.0  # potential text offset from chevron
         # ---- handle rotation: START
-        rotate = kwargs.get('rotate', self.rotate)
-        if rotate:
-            # tools.feedback(f'*** Rect {ID=} {rotate=} {self._u.x=}, {self._u.y=}')
+        rotation = kwargs.get('rotation', self.rotation)
+        if rotation:
+            # tools.feedback(f'*** Rect {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
             cnv.saveState()
             # move the canvas origin
             if ID is not None:
                 cnv.translate(x + self._u.margin_left, y + self._u.margin_bottom)
             else:
                 cnv.translate(x + self._u.width / 2.0, y + self._u.height / 2.0)
-            cnv.rotate(rotate)
+            cnv.rotate(rotation)
             # reset centre and "bottom left"
             x_d, y_d = 0, 0
             x = -self._u.width / 2.0
@@ -2022,7 +2013,7 @@ class RectangleShape(BaseShape):
             )
         # ---- draw hatch
         if self.hatch:
-            vertices = self.set_vertices(rotate=rotate, **kwargs)
+            vertices = self.set_vertices(rotation=rotation, **kwargs)
             self.draw_hatch(cnv, ID, vertices, self.hatch)
         # ---- grid marks
         self.set_canvas_props(
@@ -2088,12 +2079,11 @@ class RectangleShape(BaseShape):
         self.draw_title(cnv, ID, x_d, y_d - 0.5 * self._u.height - delta_m_down, **kwargs)
         # ----  numbering
         self.set_coord(cnv, x_d, y_d)
-        # self.draw_multi_string(cnv, x_d, y_d, self.coord_text)  # ***TEMP ***
         # ---- handle rotation: END
-        if rotate:
+        if rotation:
             cnv.restoreState()
         # ---- return key settings
-        return GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)  # Class NOT Object!
+        return GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
 
 
 class RhombusShape(BaseShape):
@@ -2124,9 +2114,9 @@ class RhombusShape(BaseShape):
         # ---- calculated properties
         self.area = (self._u.width * self._u.height) / 2.0
         # ---- handle rotation: START
-        rotate = kwargs.get('rotate', self.rotate)
-        if rotate:
-            # tools.feedback(f'*** IMAGE {ID=} {rotate=} {self._u.x=}, {self._u.y=}')
+        rotation = kwargs.get('rotation', self.rotation)
+        if rotation:
+            # tools.feedback(f'*** IMAGE {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
             cnv.saveState()
             # move the canvas origin
             if ID is not None:
@@ -2134,7 +2124,7 @@ class RhombusShape(BaseShape):
                 cnv.translate(cx, cy)
             else:
                 cnv.translate(cx, cy)
-            cnv.rotate(rotate)
+            cnv.rotate(rotation)
             # reset centre and "bottom left"
             cx, cy = 0, 0
             x = -self._u.width / 2.0
@@ -2156,7 +2146,7 @@ class RhombusShape(BaseShape):
         self.draw_label(cnv, ID, x + self._u.width / 2.0, y + self._u.height / 2.0, **kwargs)
         self.draw_title(cnv, ID, x + self._u.width / 2.0, y, **kwargs)
         # ---- handle rotation: END
-        if rotate:
+        if rotation:
             cnv.restoreState()
 
 
@@ -2528,93 +2518,6 @@ class StarShape(BaseShape):
         self.draw_title(cnv, ID, x, y - radius, **kwargs)
 
 
-class TextShape(BaseShape):
-    """
-    Text on a given canvas.
-    """
-
-    def __init__(self, _object=None, canvas=None, **kwargs):
-        super(TextShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-
-    def __call__(self, *args, **kwargs):
-        """do something when I'm called"""
-        log.debug("calling TextShape...")
-
-    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Draw text on a given canvas."""
-        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
-        cnv = cnv.canvas if cnv else self.canvas.canvas
-        # ---- convert to using units
-        x_t = self._u.x + self._o.delta_x
-        y_t = self._u.y + self._o.delta_y
-        # ---- position the shape
-        if self.use_abs:
-            x_t = self._abs_x
-            y_t = self._abs_y
-        if self.height:
-            height = self._u.height
-        if self.width:
-            width = self._u.width
-        rotate = kwargs.get('rotate', self.rotate)
-        # ---- set canvas
-        self.set_canvas_props(index=ID)
-        # ---- overrides for text value
-        _sequence = kwargs.get('text_sequence', '')
-        # tools.feedback(f'*** {_sequence=} {self.text=}')
-        if self.text == '' or self.text is None:
-            self.text = f'{_sequence}'
-        _text = self.textify(ID)
-        if _text is None:
-            return
-        _text = str(_text)  # card data could be numeric
-        #tools.feedback(f'\n             *** {_sequence=} {self.text=} {_text}')
-        if '\\u' in _text:
-             _text = codecs.decode(_text, 'unicode_escape')
-        _text = _text.format(SEQUENCE=_sequence)
-        # ---- text style
-        if self.wrap:
-            _style = ParagraphStyle(name="sc")
-            _style.textColor = self.stroke
-            _style.borderColor = self.outline_color
-            _style.borderWidth = self.outline_width
-            _style.alignment = self.to_alignment()
-            _style.fontSize = self.font_size
-            _style.fontName = self.font_face
-            _style.leading = self.leading
-            """
-            leftIndent=0,
-            rightIndent=0,
-            firstLineIndent=0,
-            spaceBefore=0,
-            spaceAfter=0,
-            bulletFontName='Times-Roman',
-            bulletFontSize=10,
-            bulletIndent=0,
-            backColor=None,
-            borderPadding= 0,
-            borderRadius= None,
-            allowWidows= 1,
-            allowOrphans= 0,
-            textTransform=None,  # 'uppercase' | 'lowercase' | None
-            endDots=None,
-            splitLongWords=1,
-            """
-            # tools.feedback(f'*** LONG-{ID} => text:{_text}')
-            para = Paragraph(_text, style=_style)
-            w, h = para.wrap(width, height)
-            para.drawOn(cnv, x_t, y_t - h)  # start text from top of 'box'
-        else:
-            #breakpoint()
-            #print('***', _text, type(_text), '::', ID)
-            cnv.setFillColor(self.stroke)
-            # if _text == '1':
-            #     self.debug_point(cnv, Point(x_t, y_t), '    !!!')
-            # tools.feedback(f"!!! {x_t=} {y_t=} {_text=} {_sequence} {rotate=}")
-            #self.draw_multi_string(cnv, x_t, y_t, _text.decode("utf-8"), rotate=rotate)
-            self.draw_multi_string(cnv, x_t, y_t, _text, rotate=rotate)
-
-# ---- Other
-
 class StarFieldShape(BaseShape):
     """
     StarField pattern on a given canvas.
@@ -2702,6 +2605,106 @@ class StarFieldShape(BaseShape):
             self.random_stars(cnv)
         if self.star_pattern in ['c', 'cluster']:
             self.cluster_stars(cnv)
+
+
+class TextShape(BaseShape):
+    """
+    Text on a given canvas.
+    """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(TextShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+
+    def __call__(self, *args, **kwargs):
+        """do something when I'm called"""
+        log.debug("calling TextShape...")
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw text on a given canvas."""
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        # ---- convert to using units
+        x_t = self._u.x + self._o.delta_x
+        y_t = self._u.y + self._o.delta_y
+        # ---- position the shape
+        if self.use_abs:
+            x_t = self._abs_x
+            y_t = self._abs_y
+        if self.height:
+            height = self._u.height
+        if self.width:
+            width = self._u.width
+        rotation = kwargs.get('rotation', self.rotation)
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
+        # ---- overrides for text value
+        _sequence = kwargs.get('text_sequence', '')
+        # tools.feedback(f'*** {_sequence=} {self.text=}')
+        if self.text == '' or self.text is None:
+            self.text = f'{_sequence}'
+        _text = self.textify(ID)
+        if _text is None:
+            return
+        _text = str(_text)  # card data could be numeric
+        #tools.feedback(f'*** {_sequence=} {self.text=} {_text}')
+        if '\\u' in _text:
+             _text = codecs.decode(_text, 'unicode_escape')
+        _text = _text.format(SEQUENCE=_sequence)
+        # ---- text style
+        if self.wrap:
+            _style = ParagraphStyle(name="sc")
+            _style.textColor = self.stroke
+            _style.borderColor = self.outline_color
+            _style.borderWidth = self.outline_width
+            _style.alignment = self.to_alignment()
+            _style.fontSize = self.font_size
+            _style.fontName = self.font_face
+            _style.leading = self.leading
+            """
+            leftIndent=0,
+            rightIndent=0,
+            firstLineIndent=0,
+            spaceBefore=0,
+            spaceAfter=0,
+            bulletFontName='Times-Roman',
+            bulletFontSize=10,
+            bulletIndent=0,
+            backColor=None,
+            borderPadding= 0,
+            borderRadius= None,
+            allowWidows= 1,
+            allowOrphans= 0,
+            textTransform=None,  # 'uppercase' | 'lowercase' | None
+            endDots=None,
+            splitLongWords=1,
+            """
+            # tools.feedback(f'*** LONG-{ID} => text:{_text}')
+            para = Paragraph(_text, style=_style)
+            w, h = para.wrap(width, height)
+            para.drawOn(cnv, x_t, y_t - h)  # start text from top of 'box'
+        else:
+            # tools.feedback(f"*** {x_t=} {y_t=} {_text=} {_sequence} {rotation=}")
+            cnv.setFillColor(self.stroke)
+            self.draw_multi_string(cnv, x_t, y_t, _text, rotation=rotation)
+
+# ---- Other
+
+
+class CommonShape(BaseShape):
+    """
+    Attributes common to, or used by, multiple shapes
+    """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        self._kwargs = kwargs
+        super(CommonShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+
+    def __str__(self):
+        return f'{self._kwargs}'
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Not applicable."""
+        tools.feedback("This shape cannot be drawn.")
 
 
 class FooterShape(BaseShape):

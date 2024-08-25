@@ -397,8 +397,8 @@ There are simple `properties`_ that are common to most elements, including:
  *  **size** - an optional enclosure of (`y`, `x`, `height`, `width`)
  *  **stroke** - an optional enclosure of (`color`, `thickness`, `style`)
  *  **fill** - an optional enclosure of (`color`, `transparency`, `style`)
- *  **rotate** - the number of degrees to rotate the shape
-    (in a clockwise direction)
+ *  **rotation** - the number of degrees by which the shape is rotated
+    (in a clockwise direction from "east")
  *  **units** - an optional value for `units` for lines and measurements;
     if omitted; the `defaults`_ will be used
 
@@ -469,7 +469,7 @@ A rectangle is defined by the `instruction`_::
               line = *line*,
               fill = *fill*,
               rounded = *rounding*,
-              rotate = *angle*,
+              rotation = *angle*,
               units = *units*,
               rounded = True|False,
               pattern = *pattern*)
@@ -511,7 +511,7 @@ An ellipse is defined by the `instruction`_::
     ellipse(size = *size*,
             line = *line*,
             fill = *fill*,
-            rotate = *angle*,
+            rotation = *angle*,
             units = *units*,
             spec = *spec*)
 
@@ -523,7 +523,7 @@ A star is defined by the `instruction`_::
     star(size = *size*,
          line = *line*,
          fill = *fill*,
-         rotate = *angle*,
+         rotation = *angle*,
          units = *units*,
          spec = *spec*)
 
@@ -541,7 +541,7 @@ A regular polygon is defined by the `instruction`_::
     polygon(size = *size*,
             line = *line*,
             fill = *fill*,
-            rotate = *angle*,
+            rotation = *angle*,
             units = *units*,
             sides = *sides*)
 
@@ -550,7 +550,7 @@ If the **sides** is not provided, the default polygon will be an equilateral
 triangle.
 
 If the polygon shows with the point to the top of the card, then it can be
-rotated, using the **rotate**, so that the flat side is parallel to the top.
+rotated, using the **rotation**, so that the flat side is parallel to the top.
 The angle of rotation can be calculated by: 360° divided by (sides x 2).
 For example, an octagon will need to be rotated by an angle of 22.5°.
 
@@ -562,13 +562,13 @@ An irregular shape is defined by the `instruction`_::
     shape("shape",
           line = *line*,
           fill = *fill*,
-          rotate = *angle*,
           units = *units*,
           points = *points*)
 
 The required **points** is defined as an enclosure of **(x, y)** point enclosures,
 each point enclosure separated by commas.  There must be a minimum of three
 such points in order to construct a shape; this would appear as a triangle.
+
 (As an aside, if all the points are in straight line, then the shape will
 **appear** to be a regular line.)
 

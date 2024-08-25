@@ -55,7 +55,7 @@ value_btm = text(
     align="centre",
     text=V('VALUE'),
     stroke=darkslategrey,
-    rotate=180)
+    rotation=180)
 picture = text(
     x=3.15, y=4.4,
     stroke=white,
@@ -96,13 +96,13 @@ Card("46-48",
      rectangle(common=rectC, x=4.83, fill='#FF69B4')
 )
 
-hexN = hexagon(
+hexN = Common(
     side=1.5,
     fill=None,
     font_size=28,
     stroke=black,
     stroke_width=2)
-hexI = hexagon(
+hexI = Common(
     side=1.3,
     fill=None,
     stroke=black,

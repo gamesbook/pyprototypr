@@ -18,7 +18,7 @@ header = Common(x=0, y=6, font_size=8, align="left")
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: flat (F)")
 Hexagons(
-    height=1,
+    side=0.5,
     x=0, y=0,
     rows=3, cols=3,
 )
@@ -27,7 +27,7 @@ PageBreak()
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: pointy (P)")
 Hexagons(
-    height=1,
+    side=0.5,
     x=0, y=0,
     rows=3, cols=3,
     hex_top='pointy',
@@ -37,7 +37,7 @@ PageBreak()
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: coordinates (flat)")
 Hexagons(
-    height=1.1,
+    side=0.6,
     x=0, y=0,
     rows=2, cols=2,
     coord_position="middle", coord_prefix='z',
@@ -55,7 +55,7 @@ PageBreak()
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: coordinates (pointy)")
 Hexagons(
-    height=1.1,
+    side=0.6,
     x=0, y=0,
     rows=2, cols=2,
     hex_top='pointy',
@@ -75,8 +75,8 @@ PageBreak()
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: caltrops&dots (flat)")
 Hexagons(
-    height=1.5,
-    rows=2,cols=2,
+    side=0.6,
+    rows=3, cols=3,
     x=0, y=0,
     dot_size=0.04,
     caltrops="medium",
@@ -86,8 +86,8 @@ PageBreak()
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: caltrops&dots (pointy)")
 Hexagons(
-    height=1.5,
-    rows=2,cols=2,
+    side=0.6,
+    rows=3,cols=3,
     hex_top='pointy',
     x=0, y=0,
     dot_size=0.04,
@@ -98,14 +98,14 @@ PageBreak()
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: rows & cols // even")
 Hexagons(
-    height=0.7,
+    side=0.5,
     x=0, y=0,
     rows=3, cols=3,
     coord_position="middle", coord_font_size=5,
     coord_separator=' r', coord_prefix='c',
 )
 Hexagons(
-    height=0.7,
+    side=0.5,
     x=1, y=3,
     rows=3, cols=3,
     hex_top='pointy',
@@ -118,7 +118,7 @@ PageBreak()
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: rows & cols // odd")
 Hexagons(
-    height=0.7,
+    side=0.5,
     x=0, y=0,
     rows=3, cols=3,
     hex_offset="odd",
@@ -126,7 +126,7 @@ Hexagons(
     coord_separator=' r', coord_prefix='c',
 )
 Hexagons(
-    height=0.7,
+    side=0.5,
     x=1, y=3,
     rows=3, cols=3,
     hex_offset="odd",
@@ -139,14 +139,14 @@ PageBreak()
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: masked")
 Hexagons(
-    height=0.7,
+    side=0.5,
     x=1, y=3,
     rows=3, cols=3,
     hex_top='pointy',
     masked=[[1, 2,], [3, 3]]
 )
 Hexagons(
-    height=0.7,
+    side=0.5,
     x=0, y=0,
     rows=3, cols=3,
     masked=[[2, 1,], [2, 3]]

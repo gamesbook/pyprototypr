@@ -78,7 +78,7 @@ A line effectively has only 1 dimension.
       <ul>
         <li>length of 1cm,</li>
         <li>starts at x-position 1cm and at y-position 1cm,</li>
-        <li>heading/default direction is 90&deg; (clockwise from 0&deg; "north").</li>
+        <li>heading/default direction is 0&deg; (anti-clockwise from 0&deg; "east").</li>
       </ul>
     </p>
     </td>

@@ -55,7 +55,7 @@ value_btm = text(
     align="centre",
     text=V('VALUE'),
     stroke=darkslategrey,
-    rotate=180)
+    rotation=180)
 picture = text(
     x=3.15, y=4.4,
     stroke=white,

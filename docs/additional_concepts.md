@@ -2,7 +2,7 @@
 
 **To Be Done**
 
-## Words, Numbers and Booleans
+## Strings, Numbers and Booleans
 
 
 ## Calculations
@@ -11,7 +11,7 @@
 ## Case-sensitivity
 
 
-## Quotes
+## Quotes in text
 
 Using quotes inside a string of text can be tricky.
 
@@ -25,7 +25,7 @@ You can easily add single quotes:
 Text(x=1, y=1, text="Something isn't interesting")
 ```
 
-However, if you want to use double quotes in the string of text itself,
+However, if you want to use double quotes inside the string of text, then
 you'll need to change the outer ones to singles:
 ```
 Text(x=1, y=1, text='Something "interesting"!')
@@ -37,45 +37,50 @@ that matches the outer one:
 ```
 Text(x=1, y=1, text='Something isn\'t "interesting"!')
 ```
+Here the "\" in front of the "'t" shows that the single quote is not the end of the
+string, but simply a symbol that must be displayed.
+
 
 ## Properties and Short-cuts
 
 
 ## Lists
 
-Lists are a particularly useful way to collate or group related items so that they
-can be processed
+Lists are a particularly useful way to collate, or group, related items so that they
+can be processed together.
 
 You may be familiar with examples such as grocery lists or to-do lists. A list is
-normally written as a series of items, each separated with a comma. For example,
+normally written as a series of items, each separated with a comma. For example;
 apples, oranges, bananas and plums. A list can also be written vertically in the form
-of a  series of bullets:
+of a number of bullets:
 
 * first,
 * second, and
 * third.
 
-A column in a spreadsheet can be thought of as such a vertical list.
+A column in a spreadsheet can be thought of as such a vertical list (but you would
+not usually put an "and".)
 
 Lists in **pyprototypr** are written in a similar way but they need to be identified by
 wrapping them at their start and end by the use of brackets.
 
-The brackets that are used are so-called square brackets - [ and ].  Items in the list
-are separated by commas.
+The brackets that are used are so-called **square brackets** - [ and ].  Items in the
+list are separated by commas.
 
-* If they are numbers then that's all you need: for example, [1, 3, 5, 7] - this
+* If they are numbers then that's all you need: for example, *[1, 3, 5, 7]* - this
   list is a series of odd numbers.
-* If they are words then each item must be wrapped in quotes: for for example,
-  ['apples', 'oranges', 'bananas', 'plums'].
+* If they are words, or strings of text then each item must be wrapped in quotes:
+  for example, *['apples', 'oranges', 'bananas', 'plums']*.
 
-Note that there is **no** usage of the word "and" in these lists.
+Note that there is **no** usage of the word "and" in these lists!
 
 A list is normally given an assignment; for example:
 ```
-groceries =  ['apples', 'oranges', 'bananas', 'plums']
+groceries = ['apples', 'oranges', 'bananas', 'plums']
 ```
-This is so that the list can be referred to using this shorthand reference.  There
-are examples of the use of lists of elsewhere in the documents and the coded examples.
+This is so that the list can be referred to by using the shorthand reference name (in
+this case "groceries").  There are various examples of the use of lists of elsewhere
+in these documents and also in the script examples.
 
 
 ## Errors
@@ -101,3 +106,12 @@ NameError: name 'bred' is not defined
 In this case, the script uses the name of something - `bred` - which is unknown. It
 could be a simple spelling mistake e.g. it should be `red` or possibly you'd meant to
 define `bred` as special color before using it for the rectangle.
+
+Another example:
+```
+    pagesize=A8
+             ^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+```
+Another `SyntaxError` where Python tries to assess what the cause might be. Here, you'd
+need to add "," (comma) at the end of property as each one must be comma-separated.

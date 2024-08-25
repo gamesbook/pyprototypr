@@ -9,7 +9,7 @@ Notes:
 
 from pyprototypr import *
 
-Create(filename="traveller_black.pdf", margin=0.5, pagesize=A4)
+Create(filename="traveller_black.pdf", margin=0.25, pagesize=A4)
 
 # set colors
 map_fill = black
@@ -19,9 +19,11 @@ map_border = lightgrey
 Rectangle(x=0.0, y=-0.05, width=20, height=29.2, stroke=map_fill, fill=map_fill)
 
 Hexagons(
-    rows=11,
+    rows=10,
     cols=8,
     side=1.6,
+    y=0.0,
+    x=0.0,
     hex_offset="odd",
     coord_position="t",
     coord_offset=0,

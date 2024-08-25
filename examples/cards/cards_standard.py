@@ -38,7 +38,7 @@ value_top = Common(x=1.0, y=8.4, font_size=40)
 value_black = text(common=value_top, stroke=black, text=V('VALUE'))
 value_red = text(common=value_top, stroke=red, text=V('VALUE'))
 
-value_low = Common(x=5.5, y=2.4, font_size=40, rotate=180)
+value_low = Common(x=5.5, y=2.4, font_size=40, rotation=180)
 value_low_black = text(common=value_low, stroke=black, text=V('VALUE'))
 value_low_red = text(common=value_low, stroke=red, text=V('VALUE'))
 
@@ -46,7 +46,7 @@ marker_base = Common(x=1.0, y=7.3, font_size=42)
 marker_black = text(common=marker_base, stroke=black, text=V('SUIT'))
 marker_red = text(common=marker_base, stroke=red, text=V('SUIT'))
 
-marker_low = Common(x=5.5, y=3.6, font_size=42, rotate=180)
+marker_low = Common(x=5.5, y=3.6, font_size=42, rotation=180)
 marker_low_black = text(common=marker_low, stroke=black, text=V('SUIT'))
 marker_low_red = text(common=marker_low, stroke=red, text=V('SUIT'))
 

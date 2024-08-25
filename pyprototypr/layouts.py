@@ -29,6 +29,11 @@ class GridShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(GridShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        self.use_side = False
+        if 'side' in kwargs:
+            self.use_side = True
+            if 'width' in kwargs or 'height' in kwargs:
+                self.use_side = False
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a grid on a given canvas."""
@@ -39,7 +44,7 @@ class GridShape(BaseShape):
         y = self._u.y + self._o.delta_y
         height = self._u.height  # of each grid item
         width = self._u.width  # of each grid item
-        if self.side:  # square grid
+        if self.side and self.use_side:  # square grid
             side = self.unit(self.side)
             height, width = side, side
         # ---- number of blocks in grid:

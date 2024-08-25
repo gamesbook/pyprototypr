@@ -263,8 +263,8 @@ Line(x=0, x1=19, y=2, y1=2, stroke=orangered)
 PageBreak()
 
 # ---- Grid: business cards
-Text(common=header, text="Grid (4x3)")
-Grid(cols=4, rows=3, width=4.5, height=8.5, stroke=grey)
+Text(common=header, text="Grid (2x6)")
+Grid(cols=2, rows=6, width=8.5, height=4.5, stroke=grey, fill=azure)
 PageBreak()
 
 # ---- Grid: graph paper
@@ -316,7 +316,7 @@ Image(
 PageBreak()
 
 # ---- text alignment (default is centre);
-Text(common=header, text="Text styling and alignments")
+Text(common=header, text="Text: face, styling and alignments")
 
 Rectangle(x=0.75, y=23.5, width=7.5, height=3, stroke_width=1, stroke=grey) #, heading="Aligments")
 Text(text="sholes\ntypewriter!", x=4.5, y=26)  #  add line break via \n
@@ -347,17 +347,17 @@ Text(x=4.5, y=17, width=10, height=5, wrap=True, align="centre", text=LATIN)
 
 Rectangle(x=4.5, y=18, width=10, height=5, stroke_width=1, stroke=grey)
 Text(x=4.5, y=23, width=10, height=5, wrap=True, align="justify", text=LATIN)
-PageBreak()
+# PageBreak()
 
 # ---- cards
 Deck(cards=9)
 Card("1-3", circle(cx=3, cy=4.2))
 Card("4", image("sholes_typewriter.png", x=3, y=5, width=3, height=3))
-Card("5", image("sholes_typewriter.png", x=3, y=5, width=3, height=3, rotate=30))
-Card("6", image("sholes_typewriter.png", x=3, y=5, width=3, height=3, rotate=60))
+Card("5", image("sholes_typewriter.png", x=3, y=5, width=3, height=3, rotation=30))
+Card("6", image("sholes_typewriter.png", x=3, y=5, width=3, height=3, rotation=60))
 Card("7", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3))
-Card("8", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3, rotate=30))
-Card("9", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3, rotate=60))
+Card("8", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3, rotation=30))
+Card("9", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3, rotation=60))
 
 PageBreak()
 # Save(output='png', dpi=300)

@@ -379,8 +379,8 @@ class BaseCanvas:
         self.gap = self.defaults.get('gap', 0)
         self.gap_x = self.defaults.get('gap_x', self.gap)
         self.gap_y = self.defaults.get('gap_y', self.gap)
-        # ---- rotate in degrees
-        self.rotate = self.defaults.get('rotate',
+        # ---- rotation in degrees
+        self.rotation = self.defaults.get('rotation',
                                         self.defaults.get('rotation', 0))
         self.orientation = self.defaults.get('orientation', 'vertical')
         self.position = self.defaults.get('position', None)
@@ -426,7 +426,7 @@ class BaseCanvas:
             self.defaults.get('label_stroke_width'), self.stroke_width)
         self.label_dx = self.defaults.get('label_dx', 0)
         self.label_dy = self.defaults.get('label_dy', 0)
-        self.label_rotate = self.defaults.get('label_rotate', 0)
+        self.label_rotation = self.defaults.get('label_rotation', 0)
         # ---- text: title
         self.title = self.defaults.get('title', '')
         self.title_size = self.defaults.get('title_size', self.font_size)
@@ -437,7 +437,7 @@ class BaseCanvas:
             self.defaults.get('title_stroke_width'), self.stroke_width)
         self.title_dx = self.defaults.get('title_dx', 0)
         self.title_dy = self.defaults.get('title_dy', 0)
-        self.title_rotate = self.defaults.get('title_rotate', 0)
+        self.title_rotation = self.defaults.get('title_rotation', 0)
         # ---- text: heading
         self.heading = self.defaults.get('heading', '')
         self.heading_size = self.defaults.get('heading_size', self.font_size)
@@ -448,7 +448,7 @@ class BaseCanvas:
             self.defaults.get('heading_stroke_width'), self.stroke_width)
         self.heading_dx = self.defaults.get('heading_dx', 0)
         self.heading_dy = self.defaults.get('heading_dy', 0)
-        self.heading_rotate = self.defaults.get('heading_rotate', 0)
+        self.heading_rotation = self.defaults.get('heading_rotation', 0)
         # ---- text block
         self.outline_color = self.defaults.get('outline_color', self.fill)
         self.outline_width = self.defaults.get('outline_width', 0)
@@ -669,9 +669,9 @@ class BaseShape:
         self.gap = kwargs.get('gap', cnv.gap)
         self.gap_x = kwargs.get('gap_x', cnv.gap_x)
         self.gap_y = kwargs.get('gap_y', cnv.gap_y)
-        # ---- rotate in degrees / radians
-        self.rotate = kwargs.get('rotate', kwargs.get('rotation', cnv.rotate))
-        self._rotate_theta = math.radians(self.rotate)  # radians
+        # ---- rotation in degrees / radians
+        self.rotation = kwargs.get('rotation', kwargs.get('rotation', cnv.rotation))
+        self._rotation_theta = math.radians(self.rotation)  # radians
         self.orientation = kwargs.get('orientation', cnv.orientation)
         self.position = kwargs.get('position', cnv.position)
         # ---- line
@@ -706,7 +706,7 @@ class BaseShape:
         self.label_stroke_width = kwargs.get('label_stroke_width', self.stroke_width)
         self.label_dx = kwargs.get('label_dx', 0)
         self.label_dy = kwargs.get('label_dy', 0)
-        self.label_rotate = kwargs.get('label_rotate', 0)
+        self.label_rotation = kwargs.get('label_rotation', 0)
         # ---- text: title
         self.title = kwargs.get('title', cnv.title)
         self.title_size = kwargs.get('title_size', self.font_size)
@@ -715,7 +715,7 @@ class BaseShape:
         self.title_stroke_width = kwargs.get('title_stroke_width', self.stroke_width)
         self.title_dx = kwargs.get('title_dx', 0)
         self.title_dy = kwargs.get('title_dy', 0)
-        self.title_rotate = kwargs.get('title_rotate', 0)
+        self.title_rotation = kwargs.get('title_rotation', 0)
         # ---- text: heading
         self.heading = kwargs.get('heading', cnv.heading)
         self.heading_size = kwargs.get('heading_size', self.font_size)
@@ -724,7 +724,7 @@ class BaseShape:
         self.heading_stroke_width = kwargs.get('heading_stroke_width', self.stroke_width)
         self.heading_dx = kwargs.get('heading_dx', 0)
         self.heading_dy = kwargs.get('heading_dy', 0)
-        self.heading_rotate = kwargs.get('heading_rotate', 0)
+        self.heading_rotation = kwargs.get('heading_rotation', 0)
         # ---- text block
         self.outline_color = kwargs.get('outline_color', cnv.outline_color)
         self.outline_width = kwargs.get('outline_width', cnv.outline_width)
@@ -910,12 +910,15 @@ class BaseShape:
         # set a "width" value for use in calculations e.g. Track
         if self.radius and not self.width:
             self.width = 2.0 * self.radius
+            self.diameter = 2.0 * self.radius
         if self.diameter and not self.width:
             self.width = self.diameter
         if self.side and not self.width:
             self.width = self.side  # square
         if self.side and not self.height:
             self.height = self.side  # square
+        if self.diameter and not self.radius:
+            self.radius = self.diameter / 2.0
 
         self._u = UnitProperties(
             self.pagesize[0],  # width, in points
@@ -1327,8 +1330,8 @@ class BaseShape:
             log.exception(err)
             tools.feedback(f'Unable to convert "{items}" to points!', True)
 
-    def draw_multi_string(self, canvas, x, y, string, align=None, rotate=0, **kwargs):
-        """Low-level text drawing, split string (\n) if needed, with align and rotate.
+    def draw_multi_string(self, canvas, x, y, string, align=None, rotation=0, **kwargs):
+        """Low-level text drawing, split string (\n) if needed, with align and rotation.
 
         Args:
             * canvas (reportlab.pdfgen.canvas.Canvas): usually the calling
@@ -1336,7 +1339,7 @@ class BaseShape:
             * x (float) and y (float): must be in native units (i.e. points)!
             * string (str): the text to draw/write
             * align (str): one of [centre|right|left|None] alignment of text
-            * rotate (float): an angle in degrees; anti-clockwise from East
+            * rotation (float): an angle in degrees; anti-clockwise from East
         """
         if not string:
             return
@@ -1346,15 +1349,15 @@ class BaseShape:
         # align
         align = align or self.align
         mvy = copy.copy(y)
-        # tools.feedback(f"*** {string=} {rotate=}")
+        # tools.feedback(f"*** {string=} {rotation=}")
         if kwargs.get('font_size'):
             fsize = float(kwargs.get('font_size'))
             canvas.setFont(self.font_face, fsize)
         for ln in string.split('\n'):
-            if rotate:
+            if rotation:
                 canvas.saveState()
                 canvas.translate(x, mvy)
-                canvas.rotate(rotate)
+                canvas.rotate(rotation)
                 if align == 'centre':
                     canvas.drawCentredString(0, 0, ln)
                 elif align == 'right':
@@ -1371,19 +1374,19 @@ class BaseShape:
                     canvas.drawString(x, mvy, ln)
             mvy -= canvas._leading
 
-    def draw_string(self, canvas, x, y, string, align=None, rotate=0, **kwargs):
+    def draw_string(self, canvas, x, y, string, align=None, rotation=0, **kwargs):
         """Draw a multi-string on the canvas.
         """
         self.draw_multi_string(
-            canvas=canvas, x=x, y=y, string=string, align=align, rotate=rotate)
+            canvas=canvas, x=x, y=y, string=string, align=align, rotation=rotation)
 
-    def draw_heading(self, canvas, ID, x, y, y_offset=0, align=None, rotate=0, **kwargs):
+    def draw_heading(self, canvas, ID, x, y, y_offset=0, align=None, rotation=0, **kwargs):
         """Draw the heading for a shape (normally above the shape).
 
         Requires native units (i.e. points)!
         """
         ttext = self.textify(index=ID, text=self.heading)
-        _rotate = rotate or self.heading_rotate
+        _rotation = rotation or self.heading_rotation
         if ttext:
             y_off = y_offset or self.title_size / 2.0
             y = y + self.unit(self.heading_dy)
@@ -1391,15 +1394,15 @@ class BaseShape:
             canvas.setFont(self.font_face, self.heading_size)
             canvas.setFillColor(self.heading_stroke)
             self.draw_multi_string(
-                canvas, x, y + y_off, ttext, align=align, rotate=_rotate, **kwargs)
+                canvas, x, y + y_off, ttext, align=align, rotation=_rotation, **kwargs)
 
-    def draw_label(self, canvas, ID, x, y, align=None, rotate=0, centred=True, **kwargs):
+    def draw_label(self, canvas, ID, x, y, align=None, rotation=0, centred=True, **kwargs):
         """Draw the label for a shape (usually at the centre).
 
         Requires native units (i.e. points)!
         """
         ttext = self.textify(index=ID, text=self.label)
-        _rotate = rotate or self.label_rotate
+        _rotation = rotation or self.label_rotation
         if ttext:
             y = y - (self.label_size / 3.0) if centred else y
             y = y + self.unit(self.label_dy)
@@ -1407,15 +1410,15 @@ class BaseShape:
             canvas.setFont(self.font_face, self.label_size)
             canvas.setFillColor(self.label_stroke)
             self.draw_multi_string(
-                canvas, x, y, ttext, align=align, rotate=_rotate, **kwargs)
+                canvas, x, y, ttext, align=align, rotation=_rotation, **kwargs)
 
-    def draw_title(self, canvas, ID, x, y, y_offset=0, align=None, rotate=0, **kwargs):
+    def draw_title(self, canvas, ID, x, y, y_offset=0, align=None, rotation=0, **kwargs):
         """Draw the title for a shape (normally below the shape).
 
         Requires native units (i.e. points)!
         """
         ttext = self.textify(index=ID, text=self.title)
-        _rotate = rotate or self.title_rotate
+        _rotation = rotation or self.title_rotation
         if ttext:
             y_off = y_offset or self.title_size
             y = y + self.unit(self.title_dy)
@@ -1423,7 +1426,7 @@ class BaseShape:
             canvas.setFont(self.font_face, self.title_size)
             canvas.setFillColor(self.title_stroke)
             self.draw_multi_string(
-                canvas, x, y - y_off, ttext, align=align, rotate=_rotate, **kwargs)
+                canvas, x, y - y_off, ttext, align=align, rotation=_rotation, **kwargs)
 
     def draw_dot(self, canvas, x, y):
         """Draw a small dot on a shape (normally the centre).
