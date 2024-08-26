@@ -458,6 +458,14 @@ Rectangle(cx=2, cy=3, width=1.5, height=3, fill=None,
           stroke=red, stroke_width=.3, rotation=45, dot_size=0.04)
 PageBreak()
 
+# ---- rotation: stadium
+Blueprint()
+Text(common=txt, text="Stadium: red rotation 30\u00B0")
+Stadium(cx=2, cy=3, width=1.25, height=2, dot_size=0.06)
+Stadium(cx=2, cy=3, width=1.25, height=2, fill=None,
+        stroke=red, stroke_width=.3, rotation=30, dot_size=0.04)
+PageBreak()
+
 # ---- END
 Text(common=txt, text="END...")
 PageBreak(footer=True)

@@ -2379,6 +2379,24 @@ class StadiumShape(BaseShape):
         elif kwargs.get("cx") and kwargs.get("cy"):
             x = self._u.cx - self._u.width / 2.0
             y = self._u.cy - self._u.height / 2.0
+        cx = x + self._u.width / 2.0
+        cy = y + self._u.height / 2.0
+        # ---- handle rotation: START
+        rotation = kwargs.get('rotation', self.rotation)
+        if rotation:
+            # tools.feedback(f'*** IMAGE {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
+            cnv.saveState()
+            # move the canvas origin
+            if ID is not None:
+                #cnv.translate(cx + self._u.margin_left, cy + self._u.margin_bottom)
+                cnv.translate(cx, cy)
+            else:
+                cnv.translate(cx, cy)
+            cnv.rotate(rotation)
+            # reset centre and "bottom left"
+            cx, cy = 0, 0
+            x = -self._u.width / 2.0
+            y = -self._u.height / 2.0
         # ---- vertices
         self.vertices = [  # clockwise from bottom-left; relative to centre
             Point(x, y),
@@ -2472,6 +2490,9 @@ class StadiumShape(BaseShape):
         self.draw_heading(cnv, ID, x + self._u.width / 2.0, y + self._u.height + delta, **kwargs)
         self.draw_label(cnv, ID, x + self._u.width / 2.0, y + self._u.height / 2.0, **kwargs)
         self.draw_title(cnv, ID, x + self._u.width / 2.0, y - delta, **kwargs)
+        # ---- handle rotation: END
+        if rotation:
+            cnv.restoreState()
 
 
 class StarShape(BaseShape):
