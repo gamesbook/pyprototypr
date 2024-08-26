@@ -224,19 +224,36 @@ def excel_column(value: int = 1):
     return converter(num)
 
 
-def pdf_to_png(filename: str, dpi: int = 300):
+def pdf_to_png(filename: str, dpi: int = 300, names: list = None):
     """Extract pages from PDF as PNG image(s)."""
     feedback(f'Saving page(s) from "{filename}" as PNG image file(s)...')
     basename = os.path.splitext(filename)[0]
+    dirname = os.path.dirname(filename)
+    # validate names list
+    if names is not None:
+        if isinstance(names, list):
+            for name in names:
+                if not isinstance(name, str):
+                    feedback(f'Each item in names settings "{names}" must be text.',
+                             True)
+        else:
+            feedback(f'The names settings "{names}" must be a list of names.', False, True)
+            names = None
+    # save pages as png files
     try:
         doc = pymupdf.open(filename)
         pages = doc.page_count
-        for page in doc:
+        for pg_number, page in enumerate(doc):
             pix = page.get_pixmap(dpi=dpi)
-            if pages > 1:
-                pix.save(f"{basename}_{page.number + 1}.png")
+            if names and pg_number < len(names):
+                breakpoint()
+                iname = os.path.join(dirname, f"{names[pg_number]}.png")
+                pix.save(iname)
             else:
-                pix.save(f"{basename}.png")
+                if pages > 1:
+                    pix.save(f"{basename}_{page.number + 1}.png")
+                else:
+                    pix.save(f"{basename}.png")
     except Exception as err:
         feedback(f'Unable to extract images for {filename} - {err}!')
 

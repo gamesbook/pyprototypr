@@ -91,6 +91,8 @@ footer = None
 page_count = 0
 pargs = None
 
+# ---- Page ====
+
 
 def Create(**kwargs):
     """Initialisation of page and canvas.
@@ -255,8 +257,9 @@ def Save(**kwargs):
 
     output = kwargs.get('output', None)
     dpi = support.to_int(kwargs.get('dpi', 300), 'dpi')
+    names = kwargs.get('names', None)
     if output:
-        support.pdf_to_png(filename, dpi)
+        support.pdf_to_png(filename, dpi, names)
 
 
 def save(**kwargs):
@@ -284,6 +287,8 @@ def Font(face=None, **kwargs):
     cnv.font_face = face or 'Helvetica'
     cnv.font_size = kwargs.get('size', 12)
     cnv.stroke = COLORS.get(kwargs.get('color', 'black'))
+
+# ---- Various ====
 
 
 def Version():
@@ -319,6 +324,8 @@ def Random(end: int = 1, start: int = 0, decimals: int = 2):
         return int(rrr)
     return round(rrr, decimals)
 
+# ---- Cards ====
+
 
 def Matrix(labels: list = None, data: list = None) -> list:
     """Return list of dicts; each element is a unique combo of all the items in `data`
@@ -341,8 +348,6 @@ def Matrix(labels: list = None, data: list = None) -> list:
             entry[labels[key]] = value
         result.append(entry)
     return result
-
-# ---- Cards ====
 
 
 def Card(sequence, *elements):
