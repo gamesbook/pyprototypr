@@ -233,6 +233,15 @@ Hexagon(
     heading="Heading")
 PageBreak()
 
+# ---- rectangle + round + hatch
+Blueprint()
+Text(common=txt, text="Rectangle: rounding; hatch")
+rct = Common(x=0.5, height=1.5, width=3.0, stroke_width=.5, hatch_stroke=red)
+Rectangle(common=rct, y=0.0, rounding=0.1, hatch=10, hatch_directions='o')
+Rectangle(common=rct, y=2.0, rounding=0.5, hatch=3, hatch_directions='o')
+# Rectangle(common=rct, y=2.0, rounding=0.5, hatch=10, hatch_directions='o')  # FAIL!
+PageBreak()
+
 # ---- equilateral triangle: hatch
 Blueprint()
 Text(common=txt, text="Equilateral Triangle; text; hatch")

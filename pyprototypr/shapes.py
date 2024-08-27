@@ -1769,16 +1769,34 @@ class RectangleShape(BaseShape):
         return x, y
 
     def draw_hatch(self, cnv, ID, vertices: list, num: int):
+        _dirs = self.hatch_directions.lower().split()
+        # ---- check dirs
         if self.rounding or self.rounded:
-            tools.feedback('No hatching permissible with a rounded Rectangle', True)
+            if 'ne' in _dirs or 'sw' in _dirs or 'se' in _dirs or 'nw' in _dirs \
+                    or 'd' in _dirs:
+                tools.feedback(
+                    'No diagonal hatching permissible with rounding in the rectangle',
+                    True)
+        # ---- check spacing
+        if self.rounding or self.rounded:
+            spacing = max(self._u.width / (num + 1), self._u.height / (num + 1))
+            if self.rounding:
+                _rounding = self.unit(self.rounding)
+            elif self.rounded:
+                _rounding = self._u.width * 0.08
+            if spacing < _rounding:
+                tools.feedback(
+                    'No hatching permissible with this size rounding in the rectangle',
+                    True)
         if self.notch or self.notch_x or self.notch_y:
             tools.feedback('No hatching permissible with a notched Rectangle', True)
+        # ---- set canvas
         self.set_canvas_props(
             index=ID,
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_width,
             stroke_cap=self.hatch_cap)
-        _dirs = self.hatch_directions.lower().split()
+        # ---- draw items
         if num >= 1:
             # breakpoint()
             if 'ne' in _dirs or 'sw' in _dirs or 'd' in _dirs:  # UP to the right
