@@ -1245,7 +1245,7 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
         if kwargs.get('hex_top').lower() in ['p', 'pointy'] and \
                 kwargs.get('hex_layout') not in ['r', 'rec', 'rect', 'rectangle']:
             tools.feedback(
-                'Cannot use this custom hex_layout with pointy hexagons!',
+                'Cannot use this Hexagons `hex_layout` with pointy hexagons!',
                 True)
 
     if kwargs.get('hex_layout') in ['c', 'cir', 'circle']:
@@ -1269,8 +1269,9 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
             if cols & 1 == 0:
                 tools.feedback('An odd number is needed for cols!', True)
             sides = rows // 2 + 1
+        odd_mid = False if sides & 1 == 0 else True
         the_cols = list(range(sides, 0, -1)) + list(range(sides + 1, rows + 1))
-        locations = draw_hexagons(rows, cols, 0, the_cols, odd_mid=False)
+        locations = draw_hexagons(rows, cols, 0, the_cols, odd_mid=odd_mid)
 
     elif kwargs.get('hex_layout') in ['d', 'dia', 'diamond']:
         cols = rows * 2 - 1

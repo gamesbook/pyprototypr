@@ -17,8 +17,9 @@ Hexagons(
     stroke=white,
     fill=None,
     height=2.2,
-    dot_size=0.06,
+    dot_size=0.09,
     dot_color=gray,
+    margin_bottom=4,
 )
 
-Save()
+Save(output='png')

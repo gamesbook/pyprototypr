@@ -1,5 +1,5 @@
 """
-"HexHex" game board, with circles, example for pyprototypr
+"HexHex" game board, with inset circles, example for pyprototypr
 
 Written by: Derek Hohls
 Created on: 3 August 2024
@@ -10,8 +10,6 @@ from pyprototypr import *
 
 Create(filename="hexhex_board_circles.pdf", margin=0.5, pagesize=A4)
 
-display = circle(stroke=black, fill=white, radius=1.1)
-
 # Game Board
 Hexagons(
     sides=5,
@@ -19,7 +17,8 @@ Hexagons(
     stroke=white,
     fill=None,
     height=2.2,
-    centre_shape=display,
+    centre_shape=circle(stroke=black, fill=white, radius=1.1, stroke_width=2),
+    margin_bottom=4,
 )
 
-Save()
+Save(output='png')

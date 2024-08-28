@@ -12,7 +12,7 @@ Create(filename="hexhex_board.pdf", margin=0.5, pagesize=A4)
 
 # Game Board
 Hexagons(
-    sides=5,
+    sides=4,
     hex_layout="circle",
     fill=white,
     stroke=black,
