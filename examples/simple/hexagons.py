@@ -153,4 +153,25 @@ Hexagons(
 )
 PageBreak()
 
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Hexagons: radii")
+Hexagons(
+    side=0.5,
+    x=0.5, y=0,
+    rows=3, cols=3,
+    hex_offset="odd",
+    radii="w ne se",
+)
+Hexagons(
+    side=0.5,
+    x=1.25, y=3,
+    rows=3, cols=3,
+    stroke=red,
+    radii_stroke=red,
+    hex_offset="even",
+    radii="e nw sw",
+)
+PageBreak()
+
+
 Save()

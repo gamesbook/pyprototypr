@@ -412,8 +412,6 @@ class CircleShape(BaseShape):
                     Point(x_c, y_c), self._u.radius, 180. + _angle + 45.)
                 self.make_path_points(cnv, poc_top, poc_btm)
 
-
-
     def draw_radii(self, cnv, ID, x_c: float, y_c: float):
         """Draw radius lines from the centre outwards to the circumference.
 
@@ -1130,8 +1128,38 @@ class HexShape(BaseShape):
                     raise NotImplementedError(
                         f'Unable to handle hex "{separation=}"')
 
-    def draw_hatch(self, cnv, ID, side: float, vertices: list, num: int):
+    def draw_radii(self, cnv, ID, centre: Point, vertices: list):
+        """Draw line(s) connecting the hexagon centre to a vertex.
+        """
+        self.set_canvas_props(
+            index=ID,
+            stroke=self.radii_stroke or self.stroke,
+            stroke_width=self.radii_stroke_width or self.stroke_width,
+            stroke_cap=self.radii_cap or self.line_cap)
+        _dirs = self.radii.lower().split()
+        if 'ne' in _dirs:  # slope UP to the right
+            self.make_path_points(cnv, centre, vertices[2])
+        if 'sw' in _dirs:  # slope DOWN to the left
+            if self.hex_top in ['p', 'pointy']:
+                self.make_path_points(cnv, centre, vertices[0])
+            else:
+                self.make_path_points(cnv, centre, vertices[5])
+        if 'se' in _dirs:  # slope DOWN to the right
+            self.make_path_points(cnv, centre, vertices[4])
+        if 'nw' in _dirs:  # slope UP to the left
+            self.make_path_points(cnv, centre, vertices[1])
+        if 'n' in _dirs and self.hex_top in ['p', 'pointy']:  # vertical UP
+            self.make_path_points(cnv, centre, vertices[2])
+        if 's' in _dirs and self.hex_top in ['p', 'pointy']:  # vertical DOWN
+            self.make_path_points(cnv, centre, vertices[5])
+        if 'e' in _dirs and self.hex_top in ['f', 'flat']:  # horizontal RIGHT
+            self.make_path_points(cnv, centre, vertices[3])
+        if 'w' in _dirs and self.hex_top in ['f', 'flat']:  # horizontal LEFT
+            self.make_path_points(cnv, centre, vertices[0])
 
+    def draw_hatch(self, cnv, ID, side: float, vertices: list, num: int):
+        """Draw lines connecting two opposite sides and parallel to adjacent side.
+        """
         self.set_canvas_props(
             index=ID,
             stroke=self.hatch_stroke,
@@ -1363,6 +1391,9 @@ class HexShape(BaseShape):
         # ---- draw links
         if self.links:
             self.draw_links(cnv, ID, side, self.vertices, self.links)
+        # ---- draw radii
+        if self.radii:
+            self.draw_radii(cnv, ID, Point(x_d, y_d), self.vertices)
         # ---- centred shape (with offset)
         if self.centre_shape:
             cshape_name = self.centre_shape.__class__.__name__

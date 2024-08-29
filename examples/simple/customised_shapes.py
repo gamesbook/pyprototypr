@@ -475,6 +475,30 @@ Stadium(cx=2, cy=3, width=1.25, height=2, fill=None,
         stroke=red, stroke_width=.3, rotation=30, dot_size=0.04)
 PageBreak()
 
+# ---- hex radii
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Hex Pointy: radii")
+hxg = Common(height=1.5, dot_size=0.05, dot_color=red, hex_top="pointy", font_size=8)
+Hexagon(common=hxg, x=0.25, y=0.25, radii='sw', label="SW")
+Hexagon(common=hxg, x=0.25, y=2.15, radii='nw', label="NW")
+Hexagon(common=hxg, x=0.25, y=4, radii='n', label="N")
+Hexagon(common=hxg, x=2.25, y=4, radii='ne', label="NE")
+Hexagon(common=hxg, x=2.25, y=0.25, radii='s', label="S")
+Hexagon(common=hxg, x=2.25, y=2.15, radii='se', label="SE")
+PageBreak()
+
+# ---- hex radii
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Hex Flat: radii")
+hxg = Common(height=1.5, dot_size=0.05, dot_color=red, hex_top="flat", font_size=8)
+Hexagon(common=hxg, x=0.25, y=0.25, radii='sw', label="SW")
+Hexagon(common=hxg, x=0.25, y=2.15, radii='w', label="W")
+Hexagon(common=hxg, x=0.25, y=4, radii='nw', label="NW")
+Hexagon(common=hxg, x=2.25, y=4, radii='ne', label="NE")
+Hexagon(common=hxg, x=2.25, y=2.15, radii='e', label="E")
+Hexagon(common=hxg, x=2.25, y=0.25, radii='se', label="SE")
+PageBreak()
+
 # ---- END
 Text(common=txt, text="END...")
 PageBreak(footer=True)

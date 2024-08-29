@@ -512,12 +512,13 @@ class BaseCanvas:
         self.points = self.defaults.get('points', [])
         self.x_c = self.defaults.get('xc', 0)
         self.y_c = self.defaults.get('yc', 0)
-        # ---- circle only
+        # ---- circle and hex only
         self.radii = self.defaults.get('radii', [])
         self.radii_stroke = self.defaults.get('radii_stroke', black)
         self.radii_stroke_width = self.defaults.get('radii_stroke_width', WIDTH)
         self.radii_length = self.defaults.get('radii_length', None)  # default: circle radius
         self.radii_offset = self.defaults.get('radii_offset', 0)
+        self.radii_cap = self.defaults.get('radii_cap', None)
         self.radii_line_dots = self.defaults.get('radii_line_dots', self.line_dots)
         self.radii_dashes = self.defaults.get('radii_dashes', self.dashes)
         # ---- compass
@@ -789,12 +790,13 @@ class BaseShape:
         self.vertices = kwargs.get('vertices', cnv.vertices)
         self.sides = kwargs.get('sides', cnv.sides)
         self.points = kwargs.get('points', cnv.points)
-        # ---- circle only
+        # ---- circle / hex only
         self.radii = kwargs.get('radii', cnv.radii)
         self.radii_stroke = kwargs.get('radii_stroke', cnv.radii_stroke)
         self.radii_stroke_width = kwargs.get('radii_stroke_width', cnv.radii_stroke_width)
         self.radii_length = kwargs.get('radii_length', cnv.radii_length)
         self.radii_offset = kwargs.get('radii_offset', cnv.radii_offset)
+        self.radii_cap = kwargs.get('radii_cap', cnv.radii_cap)
         self.radii_line_dots = kwargs.get('radii_line_dots', cnv.line_dots)
         self.radii_dashes = kwargs.get('radii_dashes', cnv.dashes)
         # ---- compass
