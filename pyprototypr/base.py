@@ -1032,8 +1032,13 @@ class BaseShape:
         except AttributeError:
             tools.feedback('Unable to set fill color ')
         try:
-            _strk = ext(stroke) or ext(self.stroke)
-            canvas.setStrokeColor(_strk)
+            if stroke in [None, []] and self.stroke in [None, []]:
+                canvas.setStrokeColor(black, 0)  # full transparency
+                if debug:
+                    tools.feedback('~~~ NO stroke color set!')
+            else:
+                _strk = ext(stroke) or ext(self.stroke)
+                canvas.setStrokeColor(_strk)
         except TypeError:
             tools.feedback(f'Please check the stroke setting of "{_strk}"; it should be a color value.')
         except AttributeError:
@@ -1276,7 +1281,7 @@ class BaseShape:
         pth = cnv.beginPath()
         pth.moveTo(p1.x, p1.y)
         pth.lineTo(p2.x, p2.y)
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
 
     def make_path_vertices(self, cnv, vertices: list, v1: int, v2: int):
         """Draw line between two vertices"""

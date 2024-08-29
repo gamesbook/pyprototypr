@@ -21,6 +21,8 @@ python examples/boards/abstract/hex_game.py -d /tmp/demo
 python examples/boards/abstract/hexhex.py -d /tmp/demo
 python examples/boards/abstract/hexhex_circles.py -d /tmp/demo
 python examples/boards/abstract/hexhex_dots.py -d /tmp/demo
+python examples/boards/abstract/hexhex_hexagons.py -d /tmp/demo
+python examples/boards/abstract/hexhex_rectangles.py -d /tmp/demo
 # python examples/boards/abstract/
 # -- boards: commercial
 echo "Creating commercial boards..."

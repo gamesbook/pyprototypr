@@ -199,7 +199,7 @@ class ArrowShape(BaseShape):
         pth = cnv.beginPath()
         pth.moveTo(x, y)
         pth.lineTo(x_1, y_1)
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         # ---- head
         self.arrow_head()
         # ---- tail
@@ -454,7 +454,7 @@ class CircleShape(BaseShape):
                 else:
                     pth.moveTo(x_c, y_c)
                     pth.lineTo(diam_pt.x, diam_pt.y)
-                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+                cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw circle on a given canvas."""
@@ -530,7 +530,7 @@ class ChordShape(BaseShape):
         pth = cnv.beginPath()
         pth.moveTo(x, y)
         pth.lineTo(x_1, y_1)
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         # ---- calculate line rotation
         compass, rotation = geoms.angles_from_points(x, y, x_1, y_1)
         # tools.feedback(f"*** {compass=} {rotation=}")
@@ -593,7 +593,7 @@ class CompassShape(BaseShape):
         pth = cnv.beginPath()
         pth.moveTo(self.x_c, self.y_c)
         pth.lineTo(x + self.x_c, y + self.y_c)
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
 
     def rectangle_ranges(self, height, width):
         """Calculate angle ranges inside rectangle."""
@@ -633,7 +633,7 @@ class CompassShape(BaseShape):
         # tools.feedback(f'*** {self.x_c=}, {self.y_c=}')
         pth.moveTo(self.x_c, self.y_c)
         pth.lineTo(x + self.x_c, y + self.y_c)
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw compass on a given canvas."""
@@ -783,7 +783,7 @@ class ChordShape(BaseShape):
         pth = cnv.beginPath()
         pth.moveTo(x, y)
         pth.lineTo(x_1, y_1)
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         # ---- calculate line rotation
         compass, rotation = geoms.angles_from_points(x, y, x_1, y_1)
         # tools.feedback(f"*** {compass=} {rotation=}")
@@ -929,7 +929,7 @@ class EquilateralTriangleShape(BaseShape):
         for key, vertex in enumerate(self.vertices):
             pth.lineTo(vertex.x, vertex.y)
         pth.close()
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         # ---- calculate centroid
         x_c = (self.vertices[0].x + self.vertices[1].x + self.vertices[2].x) / 3.0
         y_c = (self.vertices[0].y + self.vertices[1].y + self.vertices[2].y) / 3.0
@@ -1350,7 +1350,7 @@ class HexShape(BaseShape):
             # TODO - set side-specific line color/style here
             pth.lineTo(*vertex)
         pth.close()
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         # ---- debug
         # self.debug_point(cnv, Point(x, y), 'start')
         # self.debug_point(cnv, Point(x_d, y_d), 'centre')
@@ -1434,7 +1434,7 @@ class LineShape(BaseShape):
         pth = cnv.beginPath()
         pth.moveTo(x, y)
         pth.lineTo(x_1, y_1)
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         # ---- calculate line rotation
         compass, rotation = geoms.angles_from_points(x, y, x_1, y_1)
         # ---- dot
@@ -1528,7 +1528,7 @@ class OctagonShape(BaseShape):
         for vertex in self.vertices:
             pth.lineTo(vertex.x, vertex.y)
         pth.close()
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         cx = x + self._u.width / 2.0
         cy = y + self._u.height / 2.0
         # ---- debug
@@ -1613,7 +1613,7 @@ class PolygonShape(BaseShape):
         for vertex in vertices:
             pth.lineTo(vertex.x, vertex.y)
         pth.close()
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         # ---- dot
         self.draw_dot(cnv, x, y)
         # ---- text
@@ -1803,26 +1803,26 @@ class RectangleShape(BaseShape):
                 pth = cnv.beginPath()
                 pth.moveTo(vertices[0].x, vertices[0].y)
                 pth.lineTo(vertices[2].x, vertices[2].y)
-                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+                cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
             if 'se' in _dirs or 'nw' in _dirs or 'd' in _dirs:  # DOWN to the right
                 pth = cnv.beginPath()
                 pth.moveTo(vertices[1].x, vertices[1].y)
                 pth.lineTo(vertices[3].x, vertices[3].y)
-                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+                cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
             if 'n' in _dirs or 's' in _dirs or 'o' in _dirs:  # vertical
                 x_dist = self._u.width / (num + 1)
                 for i in range(1, num + 1):
                     pth = cnv.beginPath()
                     pth.moveTo(vertices[0].x + i * x_dist, vertices[1].y)
                     pth.lineTo(vertices[0].x + i * x_dist, vertices[0].y)
-                    cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+                    cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
             if 'e' in _dirs or 'w' in _dirs or 'o' in _dirs:  # horizontal
                 y_dist = self._u.height / (num + 1)
                 for i in range(1, num + 1):
                     pth = cnv.beginPath()
                     pth.moveTo(vertices[0].x, vertices[0].y + i * y_dist)
                     pth.lineTo(vertices[0].x + self._u.width, vertices[0].y + i * y_dist)
-                    cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+                    cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         if num >= 1:
             diag_num = int((num - 1) / 2 + 1)
             x_dist = self._u.width / diag_num
@@ -1844,24 +1844,24 @@ class RectangleShape(BaseShape):
                 pth = cnv.beginPath()
                 pth.moveTo(left_pt[i].x, left_pt[i].y)
                 pth.lineTo(top_pt[j].x, top_pt[j].y)
-                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+                cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
             for i in range(1, diag_num):  # bottom-right side
                 j = diag_num - i
                 pth = cnv.beginPath()
                 pth.moveTo(btm_pt[i].x, btm_pt[i].y)
                 pth.lineTo(rite_pt[j].x, rite_pt[j].y)
-                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+                cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         if 'se' in _dirs or 'nw' in _dirs or 'd' in _dirs:  # slope down to the right
             for i in range(1, diag_num):  # bottom-left side
                 pth = cnv.beginPath()
                 pth.moveTo(left_pt[i].x, left_pt[i].y)
                 pth.lineTo(btm_pt[i].x, btm_pt[i].y)
-                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+                cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
             for i in range(1, diag_num):  # top-right side
                 pth = cnv.beginPath()
                 pth.moveTo(top_pt[i].x, top_pt[i].y)
                 pth.lineTo(rite_pt[i].x, rite_pt[i].y)
-                cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+                cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a rectangle on a given canvas."""
@@ -1997,7 +1997,7 @@ class RectangleShape(BaseShape):
             for vertex in self.vertices:
                 pth.lineTo(*vertex)
             pth.close()
-            cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+            cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         elif self.rounding:
             rounding = self.unit(self.rounding)
             cnv.roundRect(
@@ -2156,7 +2156,7 @@ class RhombusShape(BaseShape):
         pth.lineTo(x_s + self._u.width / 2.0, y_s - self._u.height / 2.0)
         pth.lineTo(x_s, y_s)
         pth.close()
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- text
@@ -2216,7 +2216,7 @@ class RightAngledTriangleShape(BaseShape):
                 pth.moveTo(x, y)
             pth.lineTo(x, y)
         pth.close()
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         x_c, y_c = x_sum / 3.0, y_sum / 3.0  # centroid
         # ---- dot
         self.draw_dot(cnv, x_c, y_c)
@@ -2320,7 +2320,7 @@ class ShapeShape(BaseShape):
                     pth.moveTo(x, y)
                 pth.lineTo(x, y)
             pth.close()
-            cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+            cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
 
 
 class SquareShape(RectangleShape):
@@ -2498,7 +2498,7 @@ class StadiumShape(BaseShape):
                 if count + 1 < len(self.vertices):
                     pth.lineTo(*self.vertices[count + 1])
         # pth.close()
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         # ---- cross
         self.draw_cross(cnv,  x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- dot
@@ -2548,7 +2548,7 @@ class StarShape(BaseShape):
             y_1 = y + radius * math.sin(next_angle)
             pth.lineTo(x_1, y_1)
         pth.close()
-        cnv.drawPath(pth, stroke=1, fill=1 if self.fill else 0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         # ---- dot
         self.draw_dot(cnv, x, y)
         # ---- text
