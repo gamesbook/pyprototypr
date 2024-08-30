@@ -75,6 +75,7 @@ work for future development.
     * [x] Equilateral Triangle shape
     * [x] Sector shape (wedge of a circle)
     * [ ] Trapezoid shape
+    * [ ] Parallelogram shape
     * [ ] Wave shape
     * [ ] Domino shape (with outline?)
     * [ ] Cross shape
@@ -99,23 +100,21 @@ work for future development.
 * [ ] Layout: a virtual grid for putting shapes into rows/cols in different patterns
 * [x] Rotation:
     * [x] text along a line
-    * [ ] shape labels (in the centre of shape)
+    * [x] shape labels (in the centre of shape)
     * [ ] Polygon
-    * [ ] Stadium
+    * [x] Stadium
     * [ ] Triangle
-    * [ ] Octagon
 * [ ] Cards:
     * [ ] allow for copies of a cards
     * [ ] 'wrapper' for tiles (default size)
 
-## Planned/Potential Examples
+## Planned/Potential Board Examples
 
 * [ ] Abstract boards: Go, Ludo, 9 Mens Morris, Wari, Queens Guard, Backgammon
-* [ ] Wargame board: Squad Leader with terrain features (vector/bitmap)
+* [ ] Wargame board: Squad Leader with terrain features (vector and bitmap)
 * [ ] Traveller board: showing a fully styled Star system (custom Shape?)
 * [x] WarpWar board: showing a fully-styled sector
 * [ ] 18xx board: show a basic map with tracks, towns and off-map areas
-* [ ] Dartboard: using Sector shape and numbered Track
 
 ## Acknowledgements
 

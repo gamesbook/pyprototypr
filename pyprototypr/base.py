@@ -527,7 +527,7 @@ class BaseCanvas:
         # ---- triangle
         self.flip = self.defaults.get('flip', 'up')
         self.hand = self.defaults.get('hand', 'right')
-        # ---- hexagon / circle / octagon
+        # ---- hexagon / circle
         self.centre_shape = self.defaults.get('centre_shape', '')
         self.centre_shape_x = self.defaults.get('centre_shape_x', 0)
         self.centre_shape_y = self.defaults.get('centre_shape_y', 0)
@@ -573,6 +573,8 @@ class BaseCanvas:
         self.sizes = [self.defaults.get('stroke_width', WIDTH)]
         self.density = 10
         self.star_pattern = 'random'
+        # ---- mesh
+        self.mesh = self.defaults.get('mesh', None)
         # ---- hatches
         self.hatch = self.defaults.get('hatch', 0)
         self.hatch_directions = self.defaults.get('hatch_directions', 'n ne e se')
@@ -805,7 +807,7 @@ class BaseShape:
         # ---- triangle
         self.flip = kwargs.get('flip', 'up')
         self.hand = kwargs.get('hand', 'right')
-        # ---- hexagon / circle / octagon
+        # ---- hexagon / circle
         self.centre_shape = kwargs.get('centre_shape', '')
         self.centre_shape_x = kwargs.get('centre_shape_x', cnv.centre_shape_x)
         self.centre_shape_y = kwargs.get('centre_shape_y', cnv.centre_shape_y)
@@ -850,6 +852,8 @@ class BaseShape:
         self.sizes = kwargs.get('sizes', cnv.sizes)
         self.density = kwargs.get('density', cnv.density)
         self.star_pattern = kwargs.get('star_pattern', cnv.star_pattern)
+        # ---- mesh
+        self.mesh = kwargs.get('mesh', cnv.mesh)
         # ---- hatches
         self.hatch = kwargs.get('hatch', cnv.hatch)
         self.hatch_directions = kwargs.get('hatch_directions', cnv.hatch_directions)
@@ -1114,7 +1118,7 @@ class BaseShape:
                 correct = False
         if self.perimeter:
             if str(self.perimeter).lower() not in \
-                    ['circle', 'rectangle', 'hexagon', 'octagon', 'c', 'r', 'h', 'o', ]:
+                    ['circle', 'rectangle', 'hexagon', 'c', 'r', 'h', ]:
                 issue.append(f'"{self.perimeter}" is an invalid perimeter!')
                 correct = False
         if self.position:

@@ -60,7 +60,7 @@ from .shapes import (
     ArcShape, ArrowShape, BezierShape, ChordShape, CircleShape, CommonShape,
     CompassShape, DotShape, EllipseShape,
     EquilateralTriangleShape, FooterShape, HexShape, ImageShape, LineShape,
-    OctagonShape, PolygonShape, PolylineShape, RectangleShape,
+    PolygonShape, PolylineShape, RectangleShape,
     RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape,
     SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape,
     GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE)
@@ -784,24 +784,6 @@ def line(row=None, col=None, **kwargs):
     kwargs['row'] = row
     kwargs['col'] = col
     return LineShape(canvas=cnv, **kwargs)
-
-
-def Octagon(row=None, col=None, **kwargs):
-    global cnv
-    global deck
-    kwargs = margins(**kwargs)
-    octg = octagon(row=row, col=col, **kwargs)
-    octg.draw()
-    return octg
-
-
-def octagon(row=None, col=None, **kwargs):
-    global cnv
-    global deck
-    kwargs = margins(**kwargs)
-    kwargs['row'] = row
-    kwargs['col'] = col
-    return OctagonShape(canvas=cnv, **kwargs)
 
 
 def Polygon(row=None, col=None, **kwargs):
@@ -1530,8 +1512,8 @@ def Track(track=None, **kwargs):
         shapes = [square(side=side, label="{count}")]
     # ---- validate shape type(s)
     for shp in shapes:
-        if not isinstance(shp, (SquareShape, CircleShape, OctagonShape)):
-            tools.feedback("Only square, circle, or octagon shapes allowed!", True)
+        if not isinstance(shp, (SquareShape, CircleShape)):
+            tools.feedback("Only square or circle shapes allowed!", True)
     # ---- walk the track & draw shape(s)
     shape_id = 0
     track_points = enumerate(track.next_location(shapes=shapes, spaces=spaces))

@@ -76,18 +76,15 @@ Almost everything in **pyprototypr** that appears in the output is considered
 to be an *element* of some sort.  Elements are often geometrical **shapes**, such
 lines, circles or rectangles, but can also be text or images.
 
-Examples of available elements are:
+Examples of available geometrical **shapes** are:
 
-* Lines
-* Rectangles
-* Circles
-* Ellipses
-* Octagons
-* Polygons
-* Rhombuses
-* Stadiums
-* Arcs
-* Text
+* Circle
+* Ellipse
+* Hexagon
+* Polygon
+* Rectangle
+* Rhombuse
+* Stadium
 
 Descriptions of all of these elements, and how to create and use them, are provided
 in the section on [Core Shapes](core_shapes.md).

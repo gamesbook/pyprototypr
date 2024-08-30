@@ -50,16 +50,6 @@ Circle(cx=1, cy=1)
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Octagon")
-Octagon()
-PageBreak()
-
-Blueprint(stroke_width=0.5)
-Text(common=header, text="Octagon: cx=1, cy=1")
-Octagon(cx=1, cy=1)
-PageBreak()
-
-Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagon")
 Hexagon()
 PageBreak()

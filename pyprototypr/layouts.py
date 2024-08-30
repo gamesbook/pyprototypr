@@ -5,17 +5,15 @@ Create layouts - grids, repeats, sequences and tracks - for pyprototypr
 # lib
 import copy
 import logging
-import math
-import random
 
 # third party
 # local
 from pyprototypr.utils.geoms import (
-    Point, Link, Location, TrackPoint)  # named tuples
+    Point, Location, TrackPoint)  # named tuples
 from pyprototypr.utils import geoms, tools
 from pyprototypr.base import BaseShape, BaseCanvas
 from pyprototypr.shapes import (
-    CircleShape, HexShape, ImageShape, LineShape, PolylineShape, RectangleShape, SquareShape, TextShape)
+    CircleShape, LineShape, PolylineShape, RectangleShape, TextShape)
 
 log = logging.getLogger(__name__)
 

@@ -45,7 +45,7 @@ Rectangle(
     stroke=sienna, stroke_width=3, fill=lightcyan)
 
 Text(common=header_font, x=5, y=7, text="Start Player: circles + radii using steps() function")
-Octagon(x=1.5, y=6, height=3, width=3, fill=black)
+Polygon(x=1.5, y=6, height=3, sides=8, fill=black)
 Circle(x=1.75, y=6.25, fill=black, radius=1.25,
        radii=[0,45,90,135,180,225,270,315], radii_stroke=gold, radii_stroke_width=2)
 Circle(x=2.5, y=7, stroke=black, fill=gold, radius=0.5, stroke_width=5)

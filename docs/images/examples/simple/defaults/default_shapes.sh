@@ -11,8 +11,6 @@ magick default_shapes-4.png -crop 200x200+0+220 +repage line.png
 magick default_shapes-5.png -crop 200x200+0+220 +repage rectangle.png
 magick default_shapes-6.png -crop 200x200+0+220 +repage circle.png
 magick default_shapes-7.png -crop 200x200+0+220 +repage circle-centre.png
-magick default_shapes-8.png -crop 200x200+0+220 +repage octagon.png
-magick default_shapes-9.png -crop 200x200+0+220 +repage octagon-centre.png
 magick default_shapes-10.png -crop 200x200+0+220 +repage hexagon.png
 magick default_shapes-11.png -crop 200x200+0+220 +repage hexagon-pointy.png
 magick default_shapes-12.png -crop 200x200+0+220 +repage hexagon-centre.png

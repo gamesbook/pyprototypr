@@ -27,7 +27,7 @@ log = logging.getLogger(__name__)
 
 DEBUG = False
 GRID_SHAPES_WITH_CENTRE = [
-    'CircleShape', 'CompassShape', 'DotShape', 'HexShape', 'OctagonShape',
+    'CircleShape', 'CompassShape', 'DotShape', 'HexShape', 'PolygonShape',
     'RectangleShape', 'RhombusShape', 'SquareShape', 'StadiumShape', ] # EllipseShape ???
 GRID_SHAPES_NO_CENTRE = [
      'TextShape', 'StarShape', ]
@@ -677,7 +677,7 @@ class CompassShape(BaseShape):
         else:
             _directions = [str(num) for num in range(0, 9)]  # ALL directions
         # ---- draw compass in circle
-        if self.perimeter == 'circle' or self.perimeter == 'octagon':
+        if self.perimeter == 'circle':
             for direction in _directions:
                 match direction:
                     case 'n' | '0':
@@ -1475,108 +1475,6 @@ class LineShape(BaseShape):
             cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotation=rotation, centred=False, **kwargs)
 
 
-class OctagonShape(BaseShape):
-    """
-    Octagon on a given canvas.
-    """
-
-    def __init__(self, _object=None, canvas=None, **kwargs):
-        super(OctagonShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        # overrides to centre shape
-        if self.cx and self.cy:
-            self.x = self.cx - self.width / 2.0
-            self.y = self.cy - self.height / 2.0
-            # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
-
-    def calculate_area(self):
-        side = self._u.height / (1 + math.sqrt(2.0))
-        return 2 * side * side * (1 + math.sqrt(2))
-
-    def draw_hatch(self, cnv, ID, side: float, vertices: list, num: int):
-        self.set_canvas_props(
-            index=ID,
-            stroke=self.hatch_stroke,
-            stroke_width=self.hatch_width,
-            stroke_cap=self.hatch_cap)
-        _dirs = self.hatch_directions.lower().split()
-        lines = int(num)
-        if num >= 1:
-            if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
-                self.lines_between_sides(cnv, side, lines, vertices, (0, 1), (5, 4))
-            if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
-                self.lines_between_sides(cnv, side, lines, vertices, (2, 3), (7, 6))
-            if 'n' in _dirs or 's' in _dirs:  # vertical
-                self.lines_between_sides(cnv, side, lines, vertices, (3, 4), (0, 7))
-            if 'e' in _dirs or 'w' in _dirs:  # horizontal
-                self.lines_between_sides(cnv, side, lines, vertices, (1, 2), (6, 5))
-
-    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Draw an octagon on a given canvas."""
-        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
-        cnv = cnv.canvas if cnv else self.canvas.canvas
-        if self.row is not None and self.col is not None:
-            x = self.col * self._u.width + self._o.delta_x
-            y = self.row * self._u.height + self._o.delta_y
-            c_x, c_y = x + self._u.width / 2.0, y + self._u.height / 2.0
-        elif self.cx and self.cy:
-            x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
-            y = self._u.cy - self._u.height / 2.0 + self._o.delta_y
-            c_x = self._u.cx + self._o.delta_x
-            c_y = self._u.cy + self._o.delta_y
-        else:
-            x = self._u.x + self._o.delta_x
-            y = self._u.y + self._o.delta_y
-            c_x, c_y = x + self._u.width / 2.0, y + self._u.height / 2.0
-        # tools.feedback(f"DRAW Old {x=} {y=} {cx=} {cy=}")
-        # ---- overrides to centre the shape
-        if self.use_abs_c:
-            c_x = self._abs_cx
-            c_y = self._abs_cy
-        elif kwargs.get("cx") and kwargs.get("cy"):
-            x = self.unit(kwargs.get("cx")) - self._u.width / 2.0 + self._o.delta_x
-            y = self.unit(kwargs.get("cy")) + self._u.height / 2.0 + self._o.delta_y
-            c_x = self.unit(kwargs.get("cx")) + self._o.delta_x
-            c_y = self.unit(kwargs.get("cy")) + self._o.delta_y
-        # ---- calculated properties
-        side = self._u.height / (1 + math.sqrt(2.0))
-        self.area = self.calculate_area()
-        zzz = math.sqrt((side * side) / 2.0)
-        self.vertices = [  # Points clockwise from bottom-left; relative to centre
-            Point(c_x - side / 2.0, c_y - self._u.height / 2.0),  # 1
-            Point(c_x - self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz),  # 2
-            Point(c_x - self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz + side),  # 3
-            Point(c_x - side / 2.0, c_y + self._u.height / 2.0),  # 4
-            Point(c_x + side / 2.0, c_y + self._u.height / 2.0),  # 5
-            Point(c_x + self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz + side),  # 6
-            Point(c_x + self._u.width / 2.0, c_y - self._u.height / 2.0 + zzz),  # 7
-            Point(c_x + side / 2.0, c_y - self._u.height / 2.0),  # 8
-        ]
-        # ---- set canvas
-        self.set_canvas_props(index=ID)
-        # ---- draw octagon
-        pth = cnv.beginPath()
-        pth.moveTo(*self.vertices[0])
-        for vertex in self.vertices:
-            pth.lineTo(vertex.x, vertex.y)
-        pth.close()
-        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
-        cx = x + self._u.width / 2.0
-        cy = y + self._u.height / 2.0
-        # ---- debug
-        self.debug(cnv, vertices=self.vertices)
-        # ---- draw hatch
-        if self.hatch:
-            self.draw_hatch(cnv, ID, side, self.vertices, self.hatch)
-        # ---- cross
-        self.draw_cross(cnv, cx, cy)
-        # ---- dot
-        self.draw_dot(cnv, cx, cy)
-        # ---- text
-        self.draw_heading(cnv, ID, cx, cy + 0.5 * self._u.height, **kwargs)
-        self.draw_label(cnv, ID,cx, cy, **kwargs)
-        self.draw_title(cnv, ID, cx, cy - 0.5 * self._u.height, **kwargs)
-
-
 class PolygonShape(BaseShape):
     """
     Regular polygon on a given canvas.
@@ -1598,6 +1496,41 @@ class PolygonShape(BaseShape):
         area = (sides * radius * radius / 2.0) * math.sin(2.0 * math.pi / sides)
         return area
 
+    def draw_mesh(self, cnv, ID, vertices: list):
+        """Draw lines connecting each of the vertices to mid-points of other sides.
+        """
+        tools.feedback('Sorry, mesh for Polygon is not yet implemented.', True)
+        ''' TODO - autodraw (without dirs)
+        self.set_canvas_props(
+            index=ID,
+            stroke=self.mesh_stroke or self.stroke,
+            stroke_width=self.mesh_stroke_width or self.stroke_width,
+            stroke_cap=self.mesh_cap or self.line_cap)
+        _dirs = self.hatch_directions.lower().split()
+        lines = int(num)
+        if num >= 1:
+            if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
+                self.lines_between_sides(cnv, side, lines, vertices, (0, 1), (5, 4))
+            if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
+                self.lines_between_sides(cnv, side, lines, vertices, (2, 3), (7, 6))
+            if 'n' in _dirs or 's' in _dirs:  # vertical
+                self.lines_between_sides(cnv, side, lines, vertices, (3, 4), (0, 7))
+            if 'e' in _dirs or 'w' in _dirs:  # horizontal
+                self.lines_between_sides(cnv, side, lines, vertices, (1, 2), (6, 5))
+        '''
+
+    def draw_radii(self, cnv, ID, centre: Point, vertices: list):
+        """Draw lines connecting the polygon centre to each of the vertices.
+        """
+        tools.feedback('Sorry, radii for Polygon is not yet implemented.', True)
+        ''' TODO - autodraw (without dirs)
+        self.set_canvas_props(
+            index=ID,
+            stroke=self.radii_stroke or self.stroke,
+            stroke_width=self.radii_stroke_width or self.stroke_width,
+            stroke_cap=self.radii_cap or self.line_cap)
+        '''
+
     def get_vertices(self, rotation: float = None):
         """Calculate centre, radius and vertices of polygon.
         """
@@ -1606,7 +1539,7 @@ class PolygonShape(BaseShape):
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
         else:
-            x, y = 0., 0.  # centre for rotationd canavs
+            x, y = 0., 0.  # centre for rotated canavs
         # calculate vertices - assumes x,y marks the centre point
         radius = self.get_radius()
         vertices = geoms.polygon_vertices(self.sides, radius, Point(x, y), self.angle)
@@ -1645,6 +1578,12 @@ class PolygonShape(BaseShape):
             pth.lineTo(vertex.x, vertex.y)
         pth.close()
         cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
+        # ---- draw radii
+        if self.radii:
+            self.draw_radii(cnv, ID, Point(x, y), self.vertices)
+        # ---- draw mesh
+        if self.mesh:
+            self.draw_mesh(cnv, ID, self.vertices)
         # ---- dot
         self.draw_dot(cnv, x, y)
         # ---- text

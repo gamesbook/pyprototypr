@@ -22,7 +22,7 @@
 * [Hexagon](#hexagon)
 * [Hexagons](#hexagons)
 * [Line](#line)
-* [Octagon](#octagon)
+* [Polygon](#polygon)
 * [PolyLine](#polyline)
 * [Rectangle](#rectangle)
 * [Square](#square)
@@ -281,7 +281,7 @@ is white.
   </tr>
 </table>
 
-### Octagon [&#9650;](#index_shapes) <a name="octagon"></a>
+### Polygon [&#9650;](#index_shapes) <a name="polygon"></a>
 
 <table>
   <tr>
@@ -289,10 +289,10 @@ is white.
     <th>Description</th>
   </tr>
   <tr>
-    <td><img src="images/examples/simple/defaults/octagon.png"></td>
+    <td><img src="images/examples/simple/defaults/polygon.png"></td>
     <td>
     <p>This example shows the shape constructed using the command with all defaults:</p>
-    <pre>Octagon()</pre>
+    <pre>Polygon()</pre>
     <p>It has the following properties based on the defaults:
       <ul>
         <li>height and width of 1cm,</li>
