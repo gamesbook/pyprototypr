@@ -25,7 +25,7 @@ Hexagons(
     y=-0.8,
     x=-0.0,
     dot_size=0.04,
-    dot_color=white,
+    dot_stroke=white,
     coord_position="t",
     coord_type_x="upper",
     coord_font_size=7,

@@ -1140,7 +1140,7 @@ class HexShape(BaseShape):
         if 'ne' in _dirs:  # slope UP to the right
             self.make_path_points(cnv, centre, vertices[2])
         if 'sw' in _dirs:  # slope DOWN to the left
-            if self.hex_top in ['p', 'pointy']:
+            if self.orientation in ['p', 'pointy']:
                 self.make_path_points(cnv, centre, vertices[0])
             else:
                 self.make_path_points(cnv, centre, vertices[5])
@@ -1148,13 +1148,13 @@ class HexShape(BaseShape):
             self.make_path_points(cnv, centre, vertices[4])
         if 'nw' in _dirs:  # slope UP to the left
             self.make_path_points(cnv, centre, vertices[1])
-        if 'n' in _dirs and self.hex_top in ['p', 'pointy']:  # vertical UP
+        if 'n' in _dirs and self.orientation in ['p', 'pointy']:  # vertical UP
             self.make_path_points(cnv, centre, vertices[2])
-        if 's' in _dirs and self.hex_top in ['p', 'pointy']:  # vertical DOWN
+        if 's' in _dirs and self.orientation in ['p', 'pointy']:  # vertical DOWN
             self.make_path_points(cnv, centre, vertices[5])
-        if 'e' in _dirs and self.hex_top in ['f', 'flat']:  # horizontal RIGHT
+        if 'e' in _dirs and self.orientation in ['f', 'flat']:  # horizontal RIGHT
             self.make_path_points(cnv, centre, vertices[3])
-        if 'w' in _dirs and self.hex_top in ['f', 'flat']:  # horizontal LEFT
+        if 'w' in _dirs and self.orientation in ['f', 'flat']:  # horizontal LEFT
             self.make_path_points(cnv, centre, vertices[0])
 
     def draw_hatch(self, cnv, ID, side: float, vertices: list, num: int):
@@ -1170,14 +1170,14 @@ class HexShape(BaseShape):
 
         if num >= 1:
             # tools.feedback(f'*** {vertices=} {num=} {_dirs=}')
-            if self.hex_top in ['p', 'pointy']:
+            if self.orientation in ['p', 'pointy']:
                 if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
                     self.make_path_vertices(cnv, vertices, 0, 3)
                 if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
                     self.make_path_vertices(cnv, vertices, 1, 4)
                 if 'n' in _dirs or 's' in _dirs:  # vertical
                     self.make_path_vertices(cnv, vertices, 2, 5)
-            if self.hex_top in ['f', 'flat']:
+            if self.orientation in ['f', 'flat']:
                 if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
                     self.make_path_vertices(cnv, vertices, 2, 5)
                 if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
@@ -1185,7 +1185,7 @@ class HexShape(BaseShape):
                 if 'e' in _dirs or 'w' in _dirs:  # horizontal
                     self.make_path_vertices(cnv, vertices, 0, 3)
         if num >= 3:
-            if self.hex_top in ['p', 'pointy']:
+            if self.orientation in ['p', 'pointy']:
                 if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
                     self.lines_between_sides(cnv, side, lines, vertices, (2, 3), (1, 0))
                     self.lines_between_sides(cnv, side, lines, vertices, (3, 4), (0, 5))
@@ -1195,7 +1195,7 @@ class HexShape(BaseShape):
                 if 'n' in _dirs or 's' in _dirs:  # vertical
                     self.lines_between_sides(cnv, side, lines, vertices, (1, 2), (0, 5))
                     self.lines_between_sides(cnv, side, lines, vertices, (2, 3), (5, 4))
-            if self.hex_top in ['f', 'flat']:
+            if self.orientation in ['f', 'flat']:
                 if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
                     self.lines_between_sides(cnv, side, lines, vertices, (2, 1), (5, 0))
                     self.lines_between_sides(cnv, side, lines, vertices, (2, 3), (5, 4))
@@ -1241,7 +1241,7 @@ class HexShape(BaseShape):
         z_fraction = (diameter - side) / 2.0
 
         # ---- POINTY^
-        if self.hex_top.lower() in ['p', 'pointy']:
+        if self.orientation.lower() in ['p', 'pointy']:
             #          .
             #         / \`
             # x,y .. |  |
@@ -1350,7 +1350,7 @@ class HexShape(BaseShape):
                 self.side, self.caltrops, self.caltrops_fraction, self.caltrops_invert)
             cnv.setDash(array=line_dashes)
         # ---- calculate vertical hexagon (clockwise)
-        if self.hex_top.lower() in ['p', 'pointy']:
+        if self.orientation.lower() in ['p', 'pointy']:
             self.vertices = [  # clockwise from bottom-left; relative to centre
                 Point(x, y + z_fraction),
                 Point(x, y + z_fraction + side),
@@ -1360,7 +1360,7 @@ class HexShape(BaseShape):
                 Point(x + half_flat, y),
             ]
         # ---- calculate horizontal hexagon (clockwise)
-        else:   # self.hex_top.lower() in ['f',  'flat']:
+        else:   # self.orientation.lower() in ['f',  'flat']:
             self.vertices = [  # clockwise from left; relative to centre
                 Point(x, y + half_flat),
                 Point(x + z_fraction, y + height_flat),
@@ -1410,7 +1410,7 @@ class HexShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_d, y_d)
         # ---- text
-        if self.hex_top.lower() in ['p', 'pointy']:
+        if self.orientation.lower() in ['p', 'pointy']:
             offset = side  # == radius
         else:
             offset = half_flat
@@ -1480,9 +1480,19 @@ class PolygonShape(BaseShape):
     Regular polygon on a given canvas.
     """
 
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(PolygonShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        # ---- perform overrides
+        if self.cx and self.cy:
+            self.x, self.y = self.cx, self.cy
+
     def get_radius(self):
         if self.radius:
             radius = self._u.radius
+        elif self.diameter:
+            radius = self._u.diameter / 2.0
+        elif self.height:
+            radius = self._u.height / 2.0
         else:
             side = self._u.side
             sides = int(self.sides)
@@ -1551,9 +1561,22 @@ class PolygonShape(BaseShape):
         # ---- set canvas
         cnv = cnv.canvas if cnv else self.canvas.canvas
         self.set_canvas_props(index=ID)
+        if self.height:
+            side = self._u.height / math.sqrt(3)
+            half_flat = self._u.height / 2.0
+        elif self.diameter:
+            side = self._u.diameter / 2.0
+            self._u.side = side
+            half_flat = self._u.side * math.sqrt(3) / 2.0
+        elif self.radius:
+            side = self.u_radius
         # ---- calc centre in units
-        x = self._u.x + self._o.delta_x
-        y = self._u.y + self._o.delta_y
+        if self.cx and self.cy:
+            x = self._u.cx + self._o.delta_x
+            y = self._u.cy + self._o.delta_y
+        else:
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
         # ---- handle rotation: START
         rotation = kwargs.get('rotation', self.rotation)
         if rotation:
@@ -1572,6 +1595,7 @@ class PolygonShape(BaseShape):
                 cnv.restoreState()
             return
         # ---- draw polygon
+        # TODO - handle 'orientation' (flat/pointy)
         pth = cnv.beginPath()
         pth.moveTo(*vertices[0])
         for vertex in vertices:
@@ -1586,6 +1610,8 @@ class PolygonShape(BaseShape):
             self.draw_mesh(cnv, ID, self.vertices)
         # ---- dot
         self.draw_dot(cnv, x, y)
+        # ---- cross
+        self.draw_cross(cnv, x, y)
         # ---- text
         self.draw_heading(cnv, ID, x, y, 1.3 * radius, **kwargs)
         self.draw_label(cnv, ID, x, y, **kwargs)

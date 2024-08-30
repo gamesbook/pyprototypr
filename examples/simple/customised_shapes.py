@@ -67,11 +67,11 @@ PageBreak()
 
 Blueprint()
 Text(common=txt, text="Dots & Crosses")
-Circle(cx=1, cy=1, radius=1, dot_size=0.1, dot_color=green)
+Circle(cx=1, cy=1, radius=1, dot_size=0.1, dot_stroke=green)
 Circle(cx=3, cy=1, radius=1, cross_size=0.25, cross_stroke=green)
-Polygon(cx=1, cy=3, sides=8, height=2, dot_size=0.1, dot_color=orange)
+Polygon(cx=1, cy=3, sides=8, height=2, dot_size=0.1, dot_stroke=orange)
 Polygon(cx=3, cy=3, sides=8, width=2, cross_size=0.25, cross_stroke=orange)
-Hexagon(x=0, y=4, height=2, dot_size=0.1, dot_color=red)
+Hexagon(x=0, y=4, height=2, dot_size=0.1, dot_stroke=red)
 Hexagon(x=2, y=4, height=2, cross_size=0.25, cross_stroke=red, cross_stroke_width=1)
 PageBreak()
 
@@ -188,12 +188,12 @@ PageBreak()
 Blueprint()
 Text(common=txt, text="Hexagon: hatch + directions")
 hxgn = Common(height=1.5, hatch=5, hatch_stroke=red)
-Hexagon(common=hxgn, x=0, y=0, hex_top='flat', hatch_directions='e', label="e/w")
-Hexagon(common=hxgn, x=2, y=0, hex_top='pointy', hatch_directions='n', label="n/s")
-Hexagon(common=hxgn, x=0, y=2, hex_top='flat', hatch_directions='ne', label="ne/sw")
-Hexagon(common=hxgn, x=2, y=2, hex_top='pointy', hatch_directions='ne', label="ne/sw")
-Hexagon(common=hxgn, x=0, y=4, hex_top='flat', hatch_directions='nw', label="nw/se")
-Hexagon(common=hxgn, x=2, y=4, hex_top='pointy', hatch_directions='nw', label="nw/se")
+Hexagon(common=hxgn, x=0, y=0, orientation='flat', hatch_directions='e', label="e/w")
+Hexagon(common=hxgn, x=2, y=0, orientation='pointy', hatch_directions='n', label="n/s")
+Hexagon(common=hxgn, x=0, y=2, orientation='flat', hatch_directions='ne', label="ne/sw")
+Hexagon(common=hxgn, x=2, y=2, orientation='pointy', hatch_directions='ne', label="ne/sw")
+Hexagon(common=hxgn, x=0, y=4, orientation='flat', hatch_directions='nw', label="nw/se")
+Hexagon(common=hxgn, x=2, y=4, orientation='pointy', hatch_directions='nw', label="nw/se")
 PageBreak()
 
 # ---- hexagon hatch + text
@@ -217,7 +217,7 @@ Hexagon(
     height=2,
     hatch=5,
     hatch_stroke=red,
-    hex_top='pointy',
+    orientation='pointy',
     title="Title",
     heading="Heading")
 PageBreak()
@@ -467,7 +467,7 @@ PageBreak()
 # ---- hex radii
 Blueprint(stroke_width=0.5)
 Text(common=txt, text="Hex Pointy: radii")
-hxg = Common(height=1.5, dot_size=0.05, dot_color=red, hex_top="pointy", font_size=8)
+hxg = Common(height=1.5, dot_size=0.05, dot_stroke=red, orientation="pointy", font_size=8)
 Hexagon(common=hxg, x=0.25, y=0.25, radii='sw', label="SW")
 Hexagon(common=hxg, x=0.25, y=2.15, radii='nw', label="NW")
 Hexagon(common=hxg, x=0.25, y=4, radii='n', label="N")
@@ -479,7 +479,7 @@ PageBreak()
 # ---- hex radii
 Blueprint(stroke_width=0.5)
 Text(common=txt, text="Hex Flat: radii")
-hxg = Common(height=1.5, dot_size=0.05, dot_color=red, hex_top="flat", font_size=8)
+hxg = Common(height=1.5, dot_size=0.05, dot_stroke=red, orientation="flat", font_size=8)
 Hexagon(common=hxg, x=0.25, y=0.25, radii='sw', label="SW")
 Hexagon(common=hxg, x=0.25, y=2.15, radii='w', label="W")
 Hexagon(common=hxg, x=0.25, y=4, radii='nw', label="NW")

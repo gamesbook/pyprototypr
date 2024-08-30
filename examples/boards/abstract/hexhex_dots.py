@@ -18,7 +18,7 @@ Hexagons(
     fill=None,
     height=2.2,
     dot_size=0.09,
-    dot_color=gray,
+    dot_stroke=gray,
     margin_bottom=4,
 )
 

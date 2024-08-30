@@ -35,7 +35,7 @@ Rectangle(x=2, y=18.5, width=6, height=3, label="rectangle")
 # TODO Trapezoid(cx=16, cy=15, width=3.5, height=3.5, label="Trapezoid")
 Stadium(x=14.5, y=19, width=3, height=2, label="stadium")
 Hexagon(x=2, y=13, side=2, label="hexagon")
-Hexagon(x=8, y=13, side=2, hex_top="pointy", label="hexagon")
+Hexagon(x=8, y=13, side=2, orientation="pointy", label="hexagon")
 Star(x=11, y=9, vertices=5, radius=2, label="star")
 Circle(cx=16, cy=9, radius=2, label="circle")
 Ellipse(x=1, y=7, xe=8, ye=11, label="ellipse")
@@ -47,17 +47,17 @@ PageBreak()
 # ---- centre shapes and blueprint + label
 Blueprint()
 Text(common=header, text="Centred shapes with centre point and x-y label")
-dot = Common(dot_size=0.2, dot_color=yellow)
+dot = Common(dot_size=0.2, dot_stroke=yellow)
 
 Rectangle(cx=3, cy=23, width=5, height=4, label="rectangle:3-23", common=dot)
 EquilateralTriangle(x=7, y=21, side=4, label="triangle:9-23", common=dot)
 Stadium(cx=15, cy=23, width=3, height=2, label="stadium:15-23", common=dot)
 
-Hexagon(cx=3, cy=17, side=2, label="hexagon:3-17", hex_top="flat", common=dot)
+Hexagon(cx=3, cy=17, side=2, label="hexagon:3-17", orientation="flat", common=dot)
 Ellipse(cx=9, cy=17, xe=4, ye=6, label="ellipse:9-17", common=dot)
 #Trapezoid(cx=16, cy=17, width=3.5, height=3.5, label="trapezoid:16-17", common=dot)
 
-Hexagon(cx=3, cy=11, side=2, label="hexagon:3-11", hex_top="pointy", common=dot)
+Hexagon(cx=3, cy=11, side=2, label="hexagon:3-11", orientation="pointy", common=dot)
 Compass(cx=9, cy=11, radius=2, label="compass:9-11", common=dot)
 Circle(cx=16, cy=11, radius=2, label="circle:16-11", common=dot)
 
@@ -72,17 +72,17 @@ PageBreak()
 # ---- centre shapes and blueprint + heading
 Blueprint()
 Text(common=header, text="Centred shapes with centre point and x-y heading")
-dot = Common(dot_size=0.2, dot_color=blue)
+dot = Common(dot_size=0.2, dot_stroke=blue)
 
 Rectangle(cx=3, cy=23, width=5, height=4, heading="rectangle:3-23", common=dot)
 EquilateralTriangle(x=7, y=21, side=4, heading="triangle:9-23", common=dot)
 Stadium(cx=15, cy=23, width=3, height=2, heading="stadium:15-23", common=dot)
 
-Hexagon(cx=3, cy=17, side=2, heading="hexagon:3-17", hex_top="flat", common=dot)
+Hexagon(cx=3, cy=17, side=2, heading="hexagon:3-17", orientation="flat", common=dot)
 Ellipse(cx=9, cy=17, xe=4, ye=6, heading="ellipse:9-17", common=dot)
 #Trapezoid(cx=16, cy=17, width=3.5, height=3.5, heading="trapezoid:16-17", common=dot)
 
-Hexagon(cx=3, cy=11, side=2, heading="hexagon:3-11", hex_top="pointy", common=dot)
+Hexagon(cx=3, cy=11, side=2, heading="hexagon:3-11", orientation="pointy", common=dot)
 Compass(cx=9, cy=11, radius=2, heading="compass:9-11", common=dot)
 Circle(cx=16, cy=11, radius=2, heading="circle:16-11", common=dot)
 
@@ -97,17 +97,17 @@ PageBreak()
 # ---- centre shapes and blueprint + title
 Blueprint()
 Text(common=header, text="Centred shapes with centre point and x-y title")
-dot = Common(dot_size=0.2, dot_color=green)
+dot = Common(dot_size=0.2, dot_stroke=green)
 
 Rectangle(cx=3, cy=23, width=5, height=4, title="rectangle:3-23", common=dot)
 EquilateralTriangle(x=7, y=21, side=4, title="triangle:9-23", common=dot)
 Stadium(cx=15, cy=23, width=3, height=2, title="stadium:15-23", common=dot)
 
-Hexagon(cx=3, cy=17, side=2, title="hexagon:3-17", hex_top="flat", common=dot)
+Hexagon(cx=3, cy=17, side=2, title="hexagon:3-17", orientation="flat", common=dot)
 Ellipse(cx=9, cy=17, xe=4, ye=6, title="ellipse:9-17", common=dot)
 #Trapezoid(cx=16, cy=17, width=3.5, height=3.5, title="trapezoid:16-17", common=dot)
 
-Hexagon(cx=3, cy=11, side=2, title="hexagon:3-11", hex_top="pointy", common=dot)
+Hexagon(cx=3, cy=11, side=2, title="hexagon:3-11", orientation="pointy", common=dot)
 Compass(cx=9, cy=11, radius=2, title="compass:9-11", common=dot)
 Circle(cx=16, cy=11, radius=2, title="circle:16-11", common=dot)
 
@@ -123,7 +123,7 @@ PageBreak()
 Text(common=header, text="Filled shapes")
 Line(x=11, y=17, x1=11, y1=20, stroke=yellow, stroke_width=2)
 Line(x=11, y=17, x1=15, y1=17, stroke=red, stroke_width=2)
-Line(x=11, y=20, length=5, angle=-36.86, stroke=blue, stroke_width=2, dot_size=0.1, dot_color=blue)
+Line(x=11, y=20, length=5, angle=-36.86, stroke=blue, stroke_width=2, dot_size=0.1, dot_stroke=blue)
 
 Rectangle(x=6, y=8, width=5, height=3, stroke_width=2, dot_size=0.1)
 Rhombus(x=1, y=7, width=3, height=5, stroke_width=1, ill=lightyellow, dot_size=0.1)
@@ -189,7 +189,7 @@ Hexagons(
     margin_left=-1.69,
     margin_bottom=-2.529,
     dot_size=0.04,
-    dot_color=black,
+    dot_stroke=black,
     coord_position="top",
     coord_font_size=9,
     coord_stroke=darkslategrey,

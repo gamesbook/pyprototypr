@@ -382,7 +382,7 @@ class BaseCanvas:
         # ---- rotation in degrees
         self.rotation = self.defaults.get('rotation',
                                         self.defaults.get('rotation', 0))
-        self.orientation = self.defaults.get('orientation', 'vertical')
+        self.direction = self.defaults.get('direction', 'vertical')
         self.position = self.defaults.get('position', None)
         self.flip = self.defaults.get('flip', 'up')
         # ---- line
@@ -532,13 +532,15 @@ class BaseCanvas:
         self.centre_shape_x = self.defaults.get('centre_shape_x', 0)
         self.centre_shape_y = self.defaults.get('centre_shape_y', 0)
         self.dot_size = self.defaults.get('dot_size', 0)
-        self.dot_color = self.get_color(self.defaults.get('dot_color'), self.stroke)
+        self.dot_stroke = self.get_color(self.defaults.get('dot_stroke'), self.stroke)
+        self.dot_stroke_width = self.defaults.get('dot_stroke_width', self.stroke_width)
+        self.dot_fill = self.defaults.get('dot_fill', self.dot_stroke)  # colors match
         self.cross_size = self.defaults.get('cross_size', 0)
         self.cross_stroke = self.get_color(self.defaults.get('cross_stroke'), black)
         self.cross_stroke_width = self.defaults.get('cross_stroke_width', self.stroke_width)
-        self.cross_stroke_color = self.defaults.get('cross_stroke_color', black)
+        # ---- hexagon / polygon
+        self.orientation = self.defaults.get('orientation', 'flat')  # flat|pointy
         # ---- hexagon
-        self.hex_top = self.defaults.get('hex_top', 'flat')  # flat|pointy
         self.caltrops = self.defaults.get('caltrops', None)
         self.caltrops_fraction = self.defaults.get('caltrops_fraction', None)
         self.caltrops_invert = kwargs.get('caltrops_invert', False)
@@ -675,7 +677,7 @@ class BaseShape:
         # ---- rotation in degrees / radians
         self.rotation = kwargs.get('rotation', kwargs.get('rotation', cnv.rotation))
         self._rotation_theta = math.radians(self.rotation)  # radians
-        self.orientation = kwargs.get('orientation', cnv.orientation)
+        self.direction = kwargs.get('direction', cnv.direction)
         self.position = kwargs.get('position', cnv.position)
         # ---- line
         self.line_width = kwargs.get('line_width', cnv.line_width)
@@ -792,7 +794,7 @@ class BaseShape:
         self.vertices = kwargs.get('vertices', cnv.vertices)
         self.sides = kwargs.get('sides', cnv.sides)
         self.points = kwargs.get('points', cnv.points)
-        # ---- circle / hex only
+        # ---- circle / hexagon / polygon
         self.radii = kwargs.get('radii', cnv.radii)
         self.radii_stroke = kwargs.get('radii_stroke', cnv.radii_stroke)
         self.radii_stroke_width = kwargs.get('radii_stroke_width', cnv.radii_stroke_width)
@@ -807,18 +809,20 @@ class BaseShape:
         # ---- triangle
         self.flip = kwargs.get('flip', 'up')
         self.hand = kwargs.get('hand', 'right')
-        # ---- hexagon / circle
+        # ---- hexagon / circle / polygon
         self.centre_shape = kwargs.get('centre_shape', '')
         self.centre_shape_x = kwargs.get('centre_shape_x', cnv.centre_shape_x)
         self.centre_shape_y = kwargs.get('centre_shape_y', cnv.centre_shape_y)
-        self.dot_color = kwargs.get('dot_color', self.stroke)
+        self.dot_stroke = kwargs.get('dot_stroke', cnv.dot_stroke)
+        self.dot_stroke_width = kwargs.get('dot_stroke_width', cnv.dot_stroke_width)
+        self.dot_fill = kwargs.get('dot_fill', cnv.dot_fill)
         self.dot_size = kwargs.get('dot_size', cnv.dot_size)
         self.cross_stroke = kwargs.get('cross_stroke', cnv.cross_stroke)
         self.cross_stroke_width = kwargs.get('cross_stroke_width', cnv.cross_stroke_width)
-        self.cross_stroke_color =  kwargs.get('cross_stroke_color', cnv.cross_stroke_color)
         self.cross_size = kwargs.get('cross_size', cnv.cross_size)
+        # ---- hexagon / polygon
+        self.orientation = kwargs.get('orientation', cnv.orientation)
         # ---- hexagon
-        self.hex_top = kwargs.get('hex_top', cnv.hex_top)
         self.caltrops = kwargs.get('caltrops', cnv.caltrops)
         self.caltrops_fraction = kwargs.get('caltrops_fraction', cnv.caltrops_fraction)
         self.caltrops_invert = kwargs.get('caltrops_invert', cnv.caltrops_invert)
@@ -1111,9 +1115,14 @@ class BaseShape:
                     ['left', 'right', 'l', 'r', ]:
                 issue.append(f'"{self.hand}" is an invalid hand!')
                 correct = False
+        if self.direction:
+            if str(self.direction).lower() not in \
+                    ['vertical', 'horizontal', 'v', 'h', ]:
+                issue.append(f'"{self.direction}" is an invalid direction!')
+                correct = False
         if self.orientation:
             if str(self.orientation).lower() not in \
-                    ['vertical', 'horizontal', 'v', 'h', ]:
+                    ['flat', 'pointy',  'f', 'p', ]:
                 issue.append(f'"{self.orientation}" is an invalid orientation!')
                 correct = False
         if self.perimeter:
@@ -1446,8 +1455,8 @@ class BaseShape:
         """
         if self.dot_size:
             dot_size = self.unit(self.dot_size)
-            canvas.setFillColor(self.dot_color)
-            canvas.setStrokeColor(self.dot_color)
+            canvas.setFillColor(self.dot_stroke)
+            canvas.setStrokeColor(self.dot_stroke)
             canvas.circle(x, y, dot_size, stroke=1, fill=1)
 
     def draw_cross(self, canvas, x, y):
@@ -1458,7 +1467,7 @@ class BaseShape:
         if self.cross_size:
             cross_size = self.unit(self.cross_size)
             canvas.setFillColor(self.cross_stroke)
-            canvas.setStrokeColor(self.cross_stroke_color)
+            canvas.setStrokeColor(self.cross_stroke)
             canvas.setLineWidth(self.cross_stroke_width)
             # horizontal
             pt1 = geoms.Point(x - cross_size / 2.0, y)
@@ -1489,7 +1498,7 @@ class BaseShape:
 
         Note:
             * Vertices normally go clockwise from bottom/lower left
-            * Direction of vertex indices in left- and right-nodes must be the same
+            * Directions of vertex indices in left- and right-nodes must be the same
         """
         delta = side / lines
         # tools.feedback(f'{side=} {lines=} {delta=}')

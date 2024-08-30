@@ -56,7 +56,7 @@ PageBreak()
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagon: vertical")
-Hexagon(hex_top="pointy")
+Hexagon(orientation="pointy")
 PageBreak()
 
 Blueprint(stroke_width=0.5)
