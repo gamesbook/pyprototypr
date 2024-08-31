@@ -170,6 +170,6 @@ Some examples of defaults are:
 * the default *x* and *y* positions are each 1 (one) - with default units that is 1cm
 * the default line *length* is 1 (one) - with default units that is 1cm
 * the default line *thickness* is 0.1 - with default units that is 1mm
-* the default *line *color* is black  - which is a hexadecimal value of **#000000**
+* the default *line color* is black  - which is a hexadecimal value of **#000000**
 * the default *fill color* is white - which is a hexadecimal value of **#FFFFFF**
 * the default *font* is Arial, with a size (height) of 12 points and the color black
