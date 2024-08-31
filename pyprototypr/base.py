@@ -1509,10 +1509,11 @@ class BaseShape:
                  vertices[right_nodes[0]], vertices[right_nodes[1]], delta * number)
             self.make_path_points(cnv, left_pt, right_pt)
 
-    def debug(self, canvas, **kwargs):
+    def _debug(self, canvas, **kwargs):
         """Execute any debug statements."""
         if self.run_debug:
-            if kwargs.get('vertices', []):  # display vertex index number next to vertex
+            # display vertex index number next to vertex
+            if kwargs.get('vertices', []):
                 canvas.setFillColor(self.debug_color)
                 canvas.setFont(self.font_face, 4)
                 for key, vert in enumerate(kwargs.get('vertices')):
@@ -1520,18 +1521,19 @@ class BaseShape:
                     y = self.points_to_value(vert.y)
                     self.draw_multi_string(
                         canvas, vert.x, vert.y, f'{key}:{x:.2f},{y:.2f}')
-
-    def debug_point(self, canvas, point: geoms.Point, label=''):
-        """Display a labelled point."""
-        canvas.setFillColor(DEBUG_COLOR)
-        canvas.setStrokeColor(DEBUG_COLOR)
-        canvas.setLineWidth(0.1)
-        canvas.setFont(self.font_face, 6)
-        x = self.points_to_value(point.x)
-        y = self.points_to_value(point.y)
-        self.draw_multi_string(
-            canvas, point.x, point.y, f'{label} {point.x:.2f},{point.y:.2f}')
-        canvas.circle(point.x, point.y, 2, stroke=1, fill=1)
+            # display labelled point (geoms.Point)
+            if kwargs.get('point', []):
+                point = kwargs.get('point')
+                label = kwargs.get('label', '')
+                canvas.setFillColor(DEBUG_COLOR)
+                canvas.setStrokeColor(DEBUG_COLOR)
+                canvas.setLineWidth(0.1)
+                canvas.setFont(self.font_face, 6)
+                x = self.points_to_value(point.x)
+                y = self.points_to_value(point.y)
+                self.draw_multi_string(
+                    canvas, point.x, point.y, f'{label} {point.x:.2f},{point.y:.2f}')
+                canvas.circle(point.x, point.y, 2, stroke=1, fill=1)
 
     def V(self, *args):
         """Placeholder for value evaluator."""

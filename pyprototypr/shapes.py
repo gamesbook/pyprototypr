@@ -266,19 +266,6 @@ class CircleShape(BaseShape):
         # ---- RESET UNIT PROPS (last!)
         self.set_unit_properties()
 
-        # # ---- calculate centre
-        # radius = self._u.radius
-        # if self.row is not None and self.col is not None:
-        #     self.x_c = self.col * 2.0 * radius + radius
-        #     self.y_c = self.row * 2.0 * radius + radius
-        #     # log.debug(f"{self.col=}, {self.row=}, {self.x_c=}, {self.y_c=}")
-        # elif self.cx and self.cy:
-        #     self.x_c = self._u.cx
-        #     self.y_c = self._u.cy
-        # else:
-        #     self.x_c = self._u.x + self._u.radius
-        #     self.y_c = self._u.y + self._u.radius
-
     def __str__(self):
         return f'{self.__class__.__name__}::{self.kwargs}'
 
@@ -933,7 +920,7 @@ class EquilateralTriangleShape(BaseShape):
         y_c = (self.vertices[0].y + self.vertices[1].y + self.vertices[2].y) / 3.0
         # tools.feedback(f'*** {x_c=} {y_c=}')
         # ---- debug
-        self.debug(cnv, vertices=self.vertices)
+        self._debug(cnv, vertices=self.vertices)
         # ---- draw hatch
         if self.hatch:
             self.draw_hatch(cnv, ID, side, self.vertices, self.hatch)
@@ -954,11 +941,17 @@ class HexShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(HexShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        self.use_diameter = True if kwargs.get('diameter') else False
+        self.use_height = True if kwargs.get('height') else False
+        self.use_radius = True if kwargs.get('radius') else False
         self.use_side = False
         if 'side' in kwargs:
             self.use_side = True
             if 'radius' in kwargs or 'height' in kwargs or 'diameter' in kwargs:
                 self.use_side = False
+        # fallback / default
+        if not self.use_diameter and not self.use_radius and not self.use_side:
+            self.use_height = True
 
     def calculate_caltrops(self, side, size=None, fraction=None, invert=False):
         """Calculate settings for caltrops (the hex "corner").
@@ -1213,22 +1206,20 @@ class HexShape(BaseShape):
         is_cards = kwargs.get("is_cards", False)
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # ---- calculate half_flat & half_side
-        if self.height:
+        if self.height and self.use_height:
             side = self._u.height / math.sqrt(3)
             half_flat = self._u.height / 2.0
-        elif self.diameter:
+        elif self.diameter and self.use_diameter:
             side = self._u.diameter / 2.0
-            self._u.side = side
-            half_flat = self._u.side * math.sqrt(3) / 2.0
-        elif self.radius:
-            side = self.u_radius
-            self._u.side = self.u_radius
-            half_flat = self._u.side * math.sqrt(3) / 2.0
+            half_flat = side * math.sqrt(3) / 2.0
+        elif self.radius and self.use_radius:
+            side = self._u.radius
+            half_flat = side * math.sqrt(3) / 2.0
         else:
             pass
         if self.side and self.use_side:
             side = self._u.side
-            half_flat = self._u.side * math.sqrt(3) / 2.0
+            half_flat = side * math.sqrt(3) / 2.0
         if not self.radius and not self.height and not self.diameter and not self.side:
             tools.feedback(
                 'No value for side or height or diameter or radius supplied for hexagon.',
@@ -1380,9 +1371,9 @@ class HexShape(BaseShape):
         pth.close()
         cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         # ---- debug
-        # self.debug_point(cnv, Point(x, y), 'start')
-        # self.debug_point(cnv, Point(x_d, y_d), 'centre')
-        self.debug(cnv, vertices=self.vertices)
+        # self._debug(cnv, Point(x, y), 'start')
+        # self._debug(cnv, Point(x_d, y_d), 'centre')
+        self._debug(cnv, vertices=self.vertices)
         # ---- draw hatch
         if self.hatch:
             if not self.hatch & 1:
@@ -1482,16 +1473,21 @@ class PolygonShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(PolygonShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        self.use_diameter = True if kwargs.get('diameter') else False
+        self.use_height = True if kwargs.get('height') else False
+        self.use_radius = True if kwargs.get('radius') else False
         # ---- perform overrides
         if self.cx and self.cy:
             self.x, self.y = self.cx, self.cy
+        # ---- RESET UNIT PROPS (last!)
+        self.set_unit_properties()
 
     def get_radius(self):
-        if self.radius:
+        if self.radius and self.use_radius:
             radius = self._u.radius
-        elif self.diameter:
+        elif self.diameter and self.use_diameter:
             radius = self._u.diameter / 2.0
-        elif self.height:
+        elif self.height and self.use_height:
             radius = self._u.height / 2.0
         else:
             side = self._u.side
@@ -1532,27 +1528,46 @@ class PolygonShape(BaseShape):
     def draw_radii(self, cnv, ID, centre: Point, vertices: list):
         """Draw lines connecting the polygon centre to each of the vertices.
         """
-        tools.feedback('Sorry, radii for Polygon is not yet implemented.', True)
-        ''' TODO - autodraw (without dirs)
+        _radii = []
+        for vertex in vertices:
+            _, angle = geoms.angles_from_points(centre.x, centre.y, vertex.x, vertex.y)
+            _radii.append(angle)
+        rad_offset = self.unit(self.radii_offset, label='radii offset') or 0
+        rad_length = self.unit(self.radii_length, label='radii length') if self.radii_length \
+            else self.get_radius()
         self.set_canvas_props(
             index=ID,
-            stroke=self.radii_stroke or self.stroke,
-            stroke_width=self.radii_stroke_width or self.stroke_width,
-            stroke_cap=self.radii_cap or self.line_cap)
-        '''
+            stroke=self.radii_stroke,
+            stroke_width=self.radii_stroke_width,
+            dashes=self.radii_dashes,
+            line_dots=self.radii_line_dots)
+        for rad_angle in _radii:
+            # points based on length of line, offset and the angle in degrees
+            diam_pt = geoms.point_on_circle(centre, rad_length, rad_angle)
+            pth = cnv.beginPath()
+            if rad_offset is not None and rad_offset != 0:
+                offset_pt = geoms.point_on_circle(centre, rad_offset, rad_angle)
+                end_pt = geoms.point_on_line(offset_pt, diam_pt, rad_length)
+                # print(rad_angle, offset_pt, f'{x_c=}, {y_c=}')
+                pth.moveTo(offset_pt.x, offset_pt.y)
+                pth.lineTo(end_pt.x, end_pt.y)
+            else:
+                pth.moveTo(centre.x, centre.y)
+                pth.lineTo(diam_pt.x, diam_pt.y)
+            cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
 
-    def get_vertices(self, rotation: float = None):
+    def get_vertices(self, rotation: float = 0, is_rotated: bool = False):
         """Calculate centre, radius and vertices of polygon.
         """
         # convert to using units
-        if not rotation:
+        if rotation and is_rotated:
+            x, y = 0., 0.  # centre for now-rotated canvas
+        else:
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
-        else:
-            x, y = 0., 0.  # centre for rotated canavs
         # calculate vertices - assumes x,y marks the centre point
         radius = self.get_radius()
-        vertices = geoms.polygon_vertices(self.sides, radius, Point(x, y), self.angle)
+        vertices = geoms.polygon_vertices(self.sides, radius, Point(x, y), rotation)
         return x, y, radius, vertices
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -1578,8 +1593,10 @@ class PolygonShape(BaseShape):
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
         # ---- handle rotation: START
+        is_rotated = False
         rotation = kwargs.get('rotation', self.rotation)
         if rotation:
+            is_rotated = True
             # tools.feedback(f'*** Rect {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
             cnv.saveState()
             # move the canvas origin
@@ -1588,14 +1605,20 @@ class PolygonShape(BaseShape):
             else:
                 cnv.translate(x, y)
             cnv.rotate(rotation)
-        x, y, radius, vertices = self.get_vertices(rotation=rotation)
+        # TODO - handle 'orientation' (flat/pointy)
+        flatten = 0
+        if (self.orientation.lower() == 'flat' and not (self.sides - 2) % 4 == 0) or \
+                (self.orientation.lower() == 'pointy' and (self.sides - 2) % 4 == 0):
+            interior = ((self.sides - 2) * 180.0) / self.sides
+            flatten = (180 - interior) / 2.0
+        x, y, radius, vertices = self.get_vertices(
+            rotation=rotation + flatten, is_rotated=is_rotated)
         # ---- invalid polygon?
         if not vertices or len(vertices) == 0:
             if rotation:
                 cnv.restoreState()
             return
         # ---- draw polygon
-        # TODO - handle 'orientation' (flat/pointy)
         pth = cnv.beginPath()
         pth.moveTo(*vertices[0])
         for vertex in vertices:
@@ -1604,10 +1627,12 @@ class PolygonShape(BaseShape):
         cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         # ---- draw radii
         if self.radii:
-            self.draw_radii(cnv, ID, Point(x, y), self.vertices)
+            self.draw_radii(cnv, ID, Point(x, y), vertices)
         # ---- draw mesh
         if self.mesh:
-            self.draw_mesh(cnv, ID, self.vertices)
+            self.draw_mesh(cnv, ID, vertices)
+        # ---- debug
+        self._debug(cnv, vertices=vertices)  # needs: self.run_debug = True
         # ---- dot
         self.draw_dot(cnv, x, y)
         # ---- cross
@@ -1740,7 +1765,6 @@ class RectangleShape(BaseShape):
             else:
                 tools.feedback(
                     f'Cannot handle a coord_position of "{self.coord_position}"')
-
 
     def calculate_xy(self, **kwargs):
         # ---- adjust start

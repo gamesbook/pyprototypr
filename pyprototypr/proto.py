@@ -1322,7 +1322,7 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
     def draw_shape(shape: BaseShape, loc: Point):
         shape_name = shape.__class__.__name__
         shape_abbr = shape_name.replace('Shape', '')
-        # shape.debug_point(cnv.canvas, point=loc)
+        # shape._debug(cnv.canvas, point=loc)
         dx = shape.kwargs.get('dx', 0)  # user-units
         dy = shape.kwargs.get('dy', 0)  # user-units
         pts = shape.values_to_points([dx, dy])  # absolute units (points)

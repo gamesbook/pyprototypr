@@ -43,13 +43,13 @@ def polygon_vertices(
         return []
     points = []
     _step = 360.0 / sides
-    rotate = starting_angle  # this is effectively the "rotation"
-    data_generator = numbers(starting_angle, 360, _step)  # go in a full circle
+    #rotate = starting_angle  # this is effectively the "rotation"
+    data_generator = numbers(starting_angle, 360.0 + starting_angle, _step)  # go in a full circle
     try:
-        rotate = next(data_generator)
+        _rotate = next(data_generator)
         while True:
-            points.append(degrees_to_xy(rotate, radius, centre))
-            rotate = next(data_generator)
+            points.append(degrees_to_xy(_rotate, radius, centre))
+            _rotate = next(data_generator)
     except RuntimeError:
         pass  # ignore StopIteration
     finally:
@@ -188,7 +188,7 @@ def point_on_circle(point_centre: Point, radius: float, angle: float) -> Point:
 
 
 def angles_from_points(x1, y1, x2, y2, radians=False):
-    """Given two points, calculate the angles between them
+    """Given two points, calculate the compass and rotation angles between them
 
     Returns:
         compass (float): degrees clockwise from North

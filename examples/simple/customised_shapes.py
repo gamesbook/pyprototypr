@@ -68,9 +68,9 @@ PageBreak()
 Blueprint()
 Text(common=txt, text="Dots & Crosses")
 Circle(cx=1, cy=1, radius=1, dot_size=0.1, dot_stroke=green)
-Circle(cx=3, cy=1, radius=1, cross_size=0.25, cross_stroke=green)
-Polygon(cx=1, cy=3, sides=8, height=2, dot_size=0.1, dot_stroke=orange)
-Polygon(cx=3, cy=3, sides=8, width=2, cross_size=0.25, cross_stroke=orange)
+Circle(cx=3, cy=1, radius=1, cross_size=0.25, cross_stroke=green, cross_stroke_width=1)
+Polygon(cx=1, cy=3, sides=8, radius=1, dot_size=0.1, dot_stroke=orange)
+Polygon(cx=3, cy=3, sides=8, diameter=2, cross_size=0.25, cross_stroke=orange, cross_stroke_width=1)
 Hexagon(x=0, y=4, height=2, dot_size=0.1, dot_stroke=red)
 Hexagon(x=2, y=4, height=2, cross_size=0.25, cross_stroke=red, cross_stroke_width=1)
 PageBreak()
@@ -184,6 +184,15 @@ Rectangle(common=htch, x=3, y=4, hatch_directions='d', label="D")
 
 PageBreak()
 
+# ---- rectangle + round + hatch
+Blueprint()
+Text(common=txt, text="Rectangle: rounding; hatch")
+rct = Common(x=0.5, height=1.5, width=3.0, stroke_width=.5, hatch_stroke=red)
+Rectangle(common=rct, y=0.0, rounding=0.1, hatch=10, hatch_directions='o')
+Rectangle(common=rct, y=2.0, rounding=0.5, hatch=3, hatch_directions='o')
+# Rectangle(common=rct, y=2.0, rounding=0.5, hatch=10, hatch_directions='o')  # FAILS!
+PageBreak()
+
 # ---- hexagon hatch
 Blueprint()
 Text(common=txt, text="Hexagon: hatch + directions")
@@ -220,15 +229,6 @@ Hexagon(
     orientation='pointy',
     title="Title",
     heading="Heading")
-PageBreak()
-
-# ---- rectangle + round + hatch
-Blueprint()
-Text(common=txt, text="Rectangle: rounding; hatch")
-rct = Common(x=0.5, height=1.5, width=3.0, stroke_width=.5, hatch_stroke=red)
-Rectangle(common=rct, y=0.0, rounding=0.1, hatch=10, hatch_directions='o')
-Rectangle(common=rct, y=2.0, rounding=0.5, hatch=3, hatch_directions='o')
-# Rectangle(common=rct, y=2.0, rounding=0.5, hatch=10, hatch_directions='o')  # FAIL!
 PageBreak()
 
 # ---- equilateral triangle: hatch
@@ -361,6 +361,16 @@ Circle(cx=3, cy=5,
        radii_length=0.8)
 PageBreak()
 
+# ---- polygon radii
+Blueprint()
+Text(common=txt, text="Polygon: radii (default & custom)")
+Polygon(cx=2, cy=4, sides=8, radius=1, radii=1)
+Polygon(
+    cx=2, cy=1, sides=10, radius=1, radii=1,
+    radii_offset=0.5, radii_length=0.25, radii_stroke_width=1,
+    dot_size=0.1, dot_stroke=red)
+PageBreak()
+
 # ---- rectangle chevron
 Blueprint()
 Text(common=txt, text="Rectangle: chevron")
@@ -442,7 +452,7 @@ PageBreak()
 
 # ---- rotation: rhombus
 Blueprint()
-Text(common=txt, text="Rhombus: red is rotation 60\u00B0")
+Text(common=txt, text="Rhombus: red => rotation 60\u00B0")
 Rhombus(cx=2, cy=3, width=1.5, height=2*equi(1.5), dot_size=0.06)
 Rhombus(cx=2, cy=3, width=1.5, height=2*equi(1.5), fill=None,
         stroke=red, stroke_width=.3, rotation=60, dot_size=0.04)
@@ -450,7 +460,7 @@ PageBreak()
 
 # ---- rotation: rect
 Blueprint()
-Text(common=txt, text="Rectangle: red rotation 45\u00B0")
+Text(common=txt, text="Rectangle: red => rotation 45\u00B0")
 Rectangle(cx=2, cy=3, width=1.5, height=3, dot_size=0.06)
 Rectangle(cx=2, cy=3, width=1.5, height=3, fill=None,
           stroke=red, stroke_width=.3, rotation=45, dot_size=0.04)
@@ -458,7 +468,7 @@ PageBreak()
 
 # ---- rotation: stadium
 Blueprint()
-Text(common=txt, text="Stadium: red rotation 30\u00B0")
+Text(common=txt, text="Stadium: red => rotation 30\u00B0")
 Stadium(cx=2, cy=3, width=1.25, height=2, dot_size=0.06)
 Stadium(cx=2, cy=3, width=1.25, height=2, fill=None,
         stroke=red, stroke_width=.3, rotation=30, dot_size=0.04)
