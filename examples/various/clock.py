@@ -37,6 +37,5 @@ Circle(cx=3, cy=4.5, radius=1.8, radii=[60], stroke=white, fill=None,
 Circle(cx=3, cy=4.5, radius=1.8, radii=[150], stroke=white, fill=None,
        radii_length=2.3, radii_offset=-.5, radii_stroke_width=3)
 
-
 # Save(output='png', dpi=300)
 Save()
