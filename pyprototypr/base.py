@@ -9,6 +9,7 @@ Notes:
 # lib
 from collections import namedtuple
 import copy
+from enum import Enum
 import inspect
 import json
 import logging
@@ -1163,8 +1164,8 @@ class BaseShape:
 
         return correct, issue
 
-    def to_alignment(self):
-        """Convert local, English-friendly alignments to Reportlab enums."""
+    def to_alignment(self) -> Enum:
+        """Convert local, English-friendly alignments to a Reportlab Enum."""
         if self.align == 'centre' or self.align == 'center':
             self._alignment = TA_CENTER
         elif self.align == 'right':
@@ -1174,6 +1175,15 @@ class BaseShape:
         else:
             self._alignment = TA_LEFT
         return self._alignment
+
+    def is_kwarg(self, value) -> bool:
+        """Validate if value is in direct kwargs OR in Common _kwargs."""
+        if value in self.kwargs:
+            return True
+        if 'common' in self.kwargs:
+            if value in self.kwargs['common']._kwargs:
+                return True
+        return False
 
     def load_image(self, source=None, scaling=None) -> tuple:
         """Load an image from file or website.

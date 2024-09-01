@@ -941,9 +941,9 @@ class HexShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(HexShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        self.use_diameter = True if kwargs.get('diameter') else False
-        self.use_height = True if kwargs.get('height') else False
-        self.use_radius = True if kwargs.get('radius') else False
+        self.use_diameter = True if self.is_kwarg('diameter') else False
+        self.use_height = True if self.is_kwarg('height') else False
+        self.use_radius = True if self.is_kwarg('radius') else False
         self.use_side = False
         if 'side' in kwargs:
             self.use_side = True
@@ -1473,9 +1473,9 @@ class PolygonShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(PolygonShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        self.use_diameter = True if kwargs.get('diameter') else False
-        self.use_height = True if kwargs.get('height') else False
-        self.use_radius = True if kwargs.get('radius') else False
+        self.use_diameter = True if self.is_kwarg('diameter') else False
+        self.use_height = True if self.is_kwarg('height') else False
+        self.use_radius = True if self.is_kwarg('radius') else False
         # ---- perform overrides
         if self.cx and self.cy:
             self.x, self.y = self.cx, self.cy
@@ -1560,7 +1560,7 @@ class PolygonShape(BaseShape):
         """Calculate centre, radius and vertices of polygon.
         """
         # convert to using units
-        if rotation and is_rotated:
+        if is_rotated:
             x, y = 0., 0.  # centre for now-rotated canvas
         else:
             x = self._u.x + self._o.delta_x
@@ -1605,14 +1605,14 @@ class PolygonShape(BaseShape):
             else:
                 cnv.translate(x, y)
             cnv.rotate(rotation)
-        # TODO - handle 'orientation' (flat/pointy)
+        # --- handle 'orientation' (flat vs pointy)
         flatten = 0
         if (self.orientation.lower() == 'flat' and not (self.sides - 2) % 4 == 0) or \
                 (self.orientation.lower() == 'pointy' and (self.sides - 2) % 4 == 0):
             interior = ((self.sides - 2) * 180.0) / self.sides
             flatten = (180 - interior) / 2.0
         x, y, radius, vertices = self.get_vertices(
-            rotation=rotation + flatten, is_rotated=is_rotated)
+            rotation=flatten, is_rotated=is_rotated)
         # ---- invalid polygon?
         if not vertices or len(vertices) == 0:
             if rotation:

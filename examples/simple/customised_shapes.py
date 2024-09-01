@@ -474,6 +474,27 @@ Stadium(cx=2, cy=3, width=1.25, height=2, fill=None,
         stroke=red, stroke_width=.3, rotation=30, dot_size=0.04)
 PageBreak()
 
+# ---- rotation: polygon
+Blueprint()
+Text(common=txt, text="Polygon: rotation (flat)")
+poly6 = Common(fill=None, sides=6, diameter=1, stroke_width=1, orientation='flat')
+Polygon(common=poly6, y=1, x=1.0, label="0")
+Polygon(common=poly6, y=2, x=1.5, rotation=15, label="15")
+Polygon(common=poly6, y=3, x=2.0, rotation=30, label="30")
+Polygon(common=poly6, y=4, x=2.5, rotation=45, label="45")
+Polygon(common=poly6, y=5, x=3.0, rotation=60, label="60")
+PageBreak()
+
+Blueprint()
+Text(common=txt, text="Polygon: rotation (pointy)")
+poly6 = Common(fill=None, sides=6, diameter=1, stroke_width=1, orientation='pointy')
+Polygon(common=poly6, y=1, x=1.0, label="0")
+Polygon(common=poly6, y=2, x=1.5, rotation=15, label="15")
+Polygon(common=poly6, y=3, x=2.0, rotation=30, label="30")
+Polygon(common=poly6, y=4, x=2.5, rotation=45, label="45")
+Polygon(common=poly6, y=5, x=3.0, rotation=60, label="60")
+PageBreak()
+
 # ---- hex radii
 Blueprint(stroke_width=0.5)
 Text(common=txt, text="Hex Pointy: radii")
