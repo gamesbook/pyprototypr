@@ -323,45 +323,45 @@ class CircleShape(BaseShape):
 
         if num >= 1 and lines & 1:  # is odd - draw centre lines
             if 'e' in _dirs or 'w' in _dirs or 'o' in _dirs:  # horizontal
-                self.make_path_points(
+                self.draw_line_between_points(
                     cnv,
                     Point(x_c + self._u.radius, y_c),
                     Point(x_c - self._u.radius, y_c))
             if 'n' in _dirs or 's' in _dirs or 'o' in _dirs:  # vertical
-                self.make_path_points(
+                self.draw_line_between_points(
                     cnv,
                     Point(x_c, y_c + self._u.radius),
                     Point(x_c, y_c - self._u.radius))
             if 'se' in _dirs or 'nw' in _dirs or 'd' in _dirs:  # diagonal  "down"
                 poc_top_d = geoms.point_on_circle(Point(x_c, y_c), self._u.radius, 135)
                 poc_btm_d = geoms.point_on_circle(Point(x_c, y_c), self._u.radius, 315)
-                self.make_path_points(cnv, poc_top_d, poc_btm_d)
+                self.draw_line_between_points(cnv, poc_top_d, poc_btm_d)
             if 'ne' in _dirs or 'sw' in _dirs or 'd' in _dirs:  # diagonal  "up"
                 poc_top_u = geoms.point_on_circle(Point(x_c, y_c), self._u.radius, 45)
                 poc_btm_u = geoms.point_on_circle(Point(x_c, y_c), self._u.radius, 225)
-                self.make_path_points(cnv, poc_top_u, poc_btm_u)
+                self.draw_line_between_points(cnv, poc_top_u, poc_btm_u)
 
         if num <= 1:
             return
 
         if 'e' in _dirs or 'w' in _dirs or 'o' in _dirs:  # horizontal
             for dist in horizontal_distances:
-                self.make_path_points(  # "above" diameter
+                self.draw_line_between_points(  # "above" diameter
                     cnv,
                     Point(x_c - dist[0], y_c + dist[1]),
                     Point(x_c + dist[0], y_c + dist[1]))
-                self.make_path_points(  # "below" diameter
+                self.draw_line_between_points(  # "below" diameter
                     cnv,
                     Point(x_c - dist[0], y_c - dist[1]),
                     Point(x_c + dist[0], y_c - dist[1]))
 
         if 'n' in _dirs or 's' in _dirs or 'o' in _dirs:  # vertical
             for dist in vertical_distances:
-                self.make_path_points(  # "right" of diameter
+                self.draw_line_between_points(  # "right" of diameter
                     cnv,
                     Point(x_c + dist[0], y_c + dist[1]),
                     Point(x_c + dist[0], y_c - dist[1]))
-                self.make_path_points(  # "left" of diameter
+                self.draw_line_between_points(  # "left" of diameter
                     cnv,
                     Point(x_c - dist[0], y_c + dist[1]),
                     Point(x_c - dist[0], y_c - dist[1]))
@@ -374,13 +374,13 @@ class CircleShape(BaseShape):
                     Point(x_c, y_c), self._u.radius, 45. + _angle)
                 dar = geoms.point_on_circle(
                     Point(x_c, y_c), self._u.radius, 45. - _angle)# + 45.)
-                self.make_path_points(cnv, dar, dal)
+                self.draw_line_between_points(cnv, dar, dal)
                 # "below left" of diameter
                 dbl = geoms.point_on_circle(
                     Point(x_c, y_c), self._u.radius, 225. - _angle)
                 dbr = geoms.point_on_circle(
                     Point(x_c, y_c), self._u.radius, 225. + _angle)
-                self.make_path_points(cnv, dbr, dbl)
+                self.draw_line_between_points(cnv, dbr, dbl)
                 # TEST cnv.circle(dal.x, dal.y, 2, stroke=1, fill=1 if self.fill else 0)
 
         if 'ne' in _dirs or 'sw' in _dirs or 'd' in _dirs:  # diagonal  "up"
@@ -391,13 +391,13 @@ class CircleShape(BaseShape):
                     Point(x_c, y_c), self._u.radius, _angle + 45.)
                 poc_btm = geoms.point_on_circle(
                     Point(x_c, y_c), self._u.radius, 180. - _angle + 45.)
-                self.make_path_points(cnv, poc_top, poc_btm)
+                self.draw_line_between_points(cnv, poc_top, poc_btm)
                 # "below right" of diameter
                 poc_top = geoms.point_on_circle(
                     Point(x_c, y_c), self._u.radius, 45 - _angle)
                 poc_btm = geoms.point_on_circle(
                     Point(x_c, y_c), self._u.radius, 180. + _angle + 45.)
-                self.make_path_points(cnv, poc_top, poc_btm)
+                self.draw_line_between_points(cnv, poc_top, poc_btm)
 
     def draw_radii(self, cnv, ID, x_c: float, y_c: float):
         """Draw radius lines from the centre outwards to the circumference.
@@ -867,13 +867,13 @@ class EquilateralTriangleShape(BaseShape):
         if num >= 1:
             # v_tl, v_tr, v_bl, v_br
             if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
-                self.lines_between_sides(
+                self.draw_lines_between_sides(
                     cnv, side, lines, vertices, (0, 1), (2, 1))
             if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
-                self.lines_between_sides(
+                self.draw_lines_between_sides(
                     cnv, side, lines, vertices, (0, 2), (0, 1))
             if 'e' in _dirs or 'w' in _dirs:  # horizontal
-                self.lines_between_sides(
+                self.draw_lines_between_sides(
                     cnv, side, lines, vertices, (0, 2), (1, 2))
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -1131,24 +1131,24 @@ class HexShape(BaseShape):
             stroke_cap=self.radii_cap or self.line_cap)
         _dirs = self.radii.lower().split()
         if 'ne' in _dirs:  # slope UP to the right
-            self.make_path_points(cnv, centre, vertices[2])
+            self.draw_line_between_points(cnv, centre, vertices[2])
         if 'sw' in _dirs:  # slope DOWN to the left
             if self.orientation in ['p', 'pointy']:
-                self.make_path_points(cnv, centre, vertices[0])
+                self.draw_line_between_points(cnv, centre, vertices[0])
             else:
-                self.make_path_points(cnv, centre, vertices[5])
+                self.draw_line_between_points(cnv, centre, vertices[5])
         if 'se' in _dirs:  # slope DOWN to the right
-            self.make_path_points(cnv, centre, vertices[4])
+            self.draw_line_between_points(cnv, centre, vertices[4])
         if 'nw' in _dirs:  # slope UP to the left
-            self.make_path_points(cnv, centre, vertices[1])
+            self.draw_line_between_points(cnv, centre, vertices[1])
         if 'n' in _dirs and self.orientation in ['p', 'pointy']:  # vertical UP
-            self.make_path_points(cnv, centre, vertices[2])
+            self.draw_line_between_points(cnv, centre, vertices[2])
         if 's' in _dirs and self.orientation in ['p', 'pointy']:  # vertical DOWN
-            self.make_path_points(cnv, centre, vertices[5])
+            self.draw_line_between_points(cnv, centre, vertices[5])
         if 'e' in _dirs and self.orientation in ['f', 'flat']:  # horizontal RIGHT
-            self.make_path_points(cnv, centre, vertices[3])
+            self.draw_line_between_points(cnv, centre, vertices[3])
         if 'w' in _dirs and self.orientation in ['f', 'flat']:  # horizontal LEFT
-            self.make_path_points(cnv, centre, vertices[0])
+            self.draw_line_between_points(cnv, centre, vertices[0])
 
     def draw_hatch(self, cnv, ID, side: float, vertices: list, num: int):
         """Draw lines connecting two opposite sides and parallel to adjacent side.
@@ -1180,24 +1180,24 @@ class HexShape(BaseShape):
         if num >= 3:
             if self.orientation in ['p', 'pointy']:
                 if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
-                    self.lines_between_sides(cnv, side, lines, vertices, (2, 3), (1, 0))
-                    self.lines_between_sides(cnv, side, lines, vertices, (3, 4), (0, 5))
+                    self.draw_lines_between_sides(cnv, side, lines, vertices, (2, 3), (1, 0))
+                    self.draw_lines_between_sides(cnv, side, lines, vertices, (3, 4), (0, 5))
                 if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
-                    self.lines_between_sides(cnv, side, lines, vertices, (0, 1), (5, 4))
-                    self.lines_between_sides(cnv, side, lines, vertices, (1, 2), (4, 3))
+                    self.draw_lines_between_sides(cnv, side, lines, vertices, (0, 1), (5, 4))
+                    self.draw_lines_between_sides(cnv, side, lines, vertices, (1, 2), (4, 3))
                 if 'n' in _dirs or 's' in _dirs:  # vertical
-                    self.lines_between_sides(cnv, side, lines, vertices, (1, 2), (0, 5))
-                    self.lines_between_sides(cnv, side, lines, vertices, (2, 3), (5, 4))
+                    self.draw_lines_between_sides(cnv, side, lines, vertices, (1, 2), (0, 5))
+                    self.draw_lines_between_sides(cnv, side, lines, vertices, (2, 3), (5, 4))
             if self.orientation in ['f', 'flat']:
                 if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
-                    self.lines_between_sides(cnv, side, lines, vertices, (2, 1), (5, 0))
-                    self.lines_between_sides(cnv, side, lines, vertices, (2, 3), (5, 4))
+                    self.draw_lines_between_sides(cnv, side, lines, vertices, (2, 1), (5, 0))
+                    self.draw_lines_between_sides(cnv, side, lines, vertices, (2, 3), (5, 4))
                 if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
-                    self.lines_between_sides(cnv, side, lines, vertices, (4, 5), (1, 0))
-                    self.lines_between_sides(cnv, side, lines, vertices, (1, 2), (4, 3))
+                    self.draw_lines_between_sides(cnv, side, lines, vertices, (4, 5), (1, 0))
+                    self.draw_lines_between_sides(cnv, side, lines, vertices, (1, 2), (4, 3))
                 if 'e' in _dirs or 'w' in _dirs:  # horizontal
-                    self.lines_between_sides(cnv, side, lines, vertices, (0, 1), (3, 2))
-                    self.lines_between_sides(cnv, side, lines, vertices, (0, 5), (3, 4))
+                    self.draw_lines_between_sides(cnv, side, lines, vertices, (0, 1), (3, 2))
+                    self.draw_lines_between_sides(cnv, side, lines, vertices, (0, 5), (3, 4))
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a hexagon on a given canvas."""
@@ -1516,13 +1516,13 @@ class PolygonShape(BaseShape):
         lines = int(num)
         if num >= 1:
             if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
-                self.lines_between_sides(cnv, side, lines, vertices, (0, 1), (5, 4))
+                self.draw_lines_between_sides(cnv, side, lines, vertices, (0, 1), (5, 4))
             if 'se' in _dirs or 'nw' in _dirs:  # slope down to the right
-                self.lines_between_sides(cnv, side, lines, vertices, (2, 3), (7, 6))
+                self.draw_lines_between_sides(cnv, side, lines, vertices, (2, 3), (7, 6))
             if 'n' in _dirs or 's' in _dirs:  # vertical
-                self.lines_between_sides(cnv, side, lines, vertices, (3, 4), (0, 7))
+                self.draw_lines_between_sides(cnv, side, lines, vertices, (3, 4), (0, 7))
             if 'e' in _dirs or 'w' in _dirs:  # horizontal
-                self.lines_between_sides(cnv, side, lines, vertices, (1, 2), (6, 5))
+                self.draw_lines_between_sides(cnv, side, lines, vertices, (1, 2), (6, 5))
         '''
 
     def draw_radii(self, cnv, ID, centre: Point, vertices: list):

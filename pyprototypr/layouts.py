@@ -772,10 +772,10 @@ class ConnectShape(BaseShape):
         except Exception:
             shp_to, shape_to_position = self.shape_to, "TC"
         # ---- shape props
-        shape_from = self.shape_in_grid(shp_from)
-        shape_to = self.shape_in_grid(shp_to)
-        edge_from = shape_from.bounds  # BaseShape property
-        edge_to = shape_to.bounds  # BaseShape property
+        shape_from = self.get_shape_in_grid(shp_from)
+        shape_to = self.get_shape_in_grid(shp_to)
+        edge_from = shape_from.get_bounds()
+        edge_to = shape_to.get_bounds()
         x_f, y_f = self.key_positions(shape_from, shape_from_position)
         x_t, y_t = self.key_positions(shape_to, shape_to_position)
         xc_f, yc_f = shape_from.get_center()

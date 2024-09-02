@@ -961,29 +961,6 @@ class BaseShape:
             off_x + margin_left,
             off_y + margin_bottom)
 
-    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Draw an element on a given canvas."""
-        self._o = self.set_offset_props(off_x, off_y)
-        # self._abs... variable are absolute page locations in native units
-        #  they are for internal use only and are not expected to be called by the user
-        #  if set, they should be used to ignore/bypass any other values for calculating
-        #  the starting point or centre point for drawing a shape
-        self._abs_x = kwargs.get('_abs_x', None)
-        self._abs_y = kwargs.get('_abs_y', None)
-        self._abs_x1 = kwargs.get('_abs_x1', None)
-        self._abs_y1= kwargs.get('_abs_y1', None)
-        self._abs_cx = kwargs.get('_abs_cx', None)
-        self._abs_cy = kwargs.get('_abs_cy', None)
-        self.use_abs = True if self._abs_x and self._abs_y else False
-        self.use_abs_1 = True if self._abs_x1 and self._abs_y1 else False
-        self.use_abs_c = True if self._abs_cx and self._abs_cy else False
-
-    def register_font(self, font_name: str = ''):
-        if not font_name:
-            raise ValueError('No font name supplied for registration!')
-        font_file = font_name + '.ttf'
-        pdfmetrics.registerFont(TTFont(font_name, font_file))
-
     def set_canvas_props(
             self,
             cnv=None,
@@ -1082,7 +1059,31 @@ class BaseShape:
         else:
             canvas.setDash(array=[])
 
-    def check_settings(self):
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw an element on a given canvas."""
+        self._o = self.set_offset_props(off_x, off_y)
+        # self._abs... variable are absolute page locations in native units
+        #  they are for internal use only and are not expected to be called by the user
+        #  if set, they should be used to ignore/bypass any other values for calculating
+        #  the starting point or centre point for drawing a shape
+        self._abs_x = kwargs.get('_abs_x', None)
+        self._abs_y = kwargs.get('_abs_y', None)
+        self._abs_x1 = kwargs.get('_abs_x1', None)
+        self._abs_y1= kwargs.get('_abs_y1', None)
+        self._abs_cx = kwargs.get('_abs_cx', None)
+        self._abs_cy = kwargs.get('_abs_cy', None)
+        self.use_abs = True if self._abs_x and self._abs_y else False
+        self.use_abs_1 = True if self._abs_x1 and self._abs_y1 else False
+        self.use_abs_c = True if self._abs_cx and self._abs_cy else False
+
+    def register_font(self, font_name: str = ''):
+        if not font_name:
+            raise ValueError('No font name supplied for registration!')
+        font_file = font_name + '.ttf'
+        pdfmetrics.registerFont(TTFont(font_name, font_file))
+
+
+    def check_settings(self) -> tuple:
         """Check that the user-supplied parameters are correct"""
         correct = True
         issue = []
@@ -1094,7 +1095,7 @@ class BaseShape:
         if self.caltrops:
             if str(self.caltrops).lower() not in \
                     ['large', 'medium', 'small', 's', 'm', 'l', ]:
-                issue.append(f'"{self.caltrops}" is an invalid caltrops sie!')
+                issue.append(f'"{self.caltrops}" is an invalid caltrops size!')
                 correct = False
         if self.edges:
             if not isinstance(self.edges, list):
@@ -1271,8 +1272,7 @@ class BaseShape:
         # if _dict.get('x'):
         #    self.x = _dict.get('x', 1)
 
-
-    def get_center(self):
+    def get_center(self) -> tuple:
         """Attempt to get centre (x,y) tuple for a shape."""
         if self.cx and self.cy:
             return (self.cx, self.cy)
@@ -1280,9 +1280,8 @@ class BaseShape:
             return (self.x + self.width / 2.0, self.y + self.height / 2.0)
         return ()
 
-    @property
-    def bounds(self) -> Bounds:
-        """Attempt to get bounds of rectangle."""
+    def get_bounds(self) -> Bounds:
+        """Attempt to get bounds of Rectangle (or any Shape with height and width)."""
         if self.x and self.y and self.width and self.height:
             bounds = Bounds(
                 self.x,
@@ -1293,7 +1292,7 @@ class BaseShape:
             return bounds
         return None
 
-    def shape_in_grid(self, the_shape):
+    def get_shape_in_grid(self, the_shape):
         """Returns shape contained in GridShape class."""
         #if inspect.isclass(the_shape) and the_shape.__class__.__name__ == 'GridShape':
         if isinstance(the_shape, GridShape):
@@ -1301,18 +1300,12 @@ class BaseShape:
         else:
             return the_shape
 
-    def make_path_points(self, cnv, p1: geoms.Point, p2: geoms.Point):
-        """Draw line between two Points"""
-        pth = cnv.beginPath()
-        pth.moveTo(p1.x, p1.y)
-        pth.lineTo(p2.x, p2.y)
-        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
+    def get_font_height(self) -> float:
+        face = pdfmetrics.getFont(self.font_face).face
+        height = (face.ascent - face.descent) / 1000 * self.font_size
+        return height
 
-    def make_path_vertices(self, cnv, vertices: list, v1: int, v2: int):
-        """Draw line between two vertices"""
-        self.make_path_points(cnv, vertices[v1], vertices[v2])
-
-    def textify(self, index: int = None, text: str = ''):
+    def textify(self, index: int = None, text: str = '') -> str:
         """Extract text from a list, or create string, based on index & type."""
         _text = text or self.text
         log.debug("text %s %s %s %s", index, text, _text, type(_text))
@@ -1324,11 +1317,6 @@ class BaseShape:
             return _text[index]
         except TypeError:
             return _text
-
-    def font_height(self) -> float:
-        face = pdfmetrics.getFont(self.font_face).face
-        height = (face.ascent - face.descent) / 1000 * self.font_size
-        return height
 
     def points_to_value(self, value: float) -> float:
         """Convert a point value to a units-based value."""
@@ -1482,13 +1470,24 @@ class BaseShape:
             # horizontal
             pt1 = geoms.Point(x - cross_size / 2.0, y)
             pt2 = geoms.Point(x + cross_size / 2.0, y)
-            self.make_path_points(canvas, pt1, pt2)
+            self.draw_line_between_points(canvas, pt1, pt2)
             # vertical
             pt1 = geoms.Point(x, y - cross_size / 2.0)
             pt2 = geoms.Point(x, y + cross_size / 2.0)
-            self.make_path_points(canvas, pt1, pt2)
+            self.draw_line_between_points(canvas, pt1, pt2)
 
-    def lines_between_sides(
+    def draw_line_between_points(self, cnv, p1: geoms.Point, p2: geoms.Point):
+        """Draw line between two Points"""
+        pth = cnv.beginPath()
+        pth.moveTo(p1.x, p1.y)
+        pth.lineTo(p2.x, p2.y)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
+
+    def make_path_vertices(self, cnv, vertices: list, v1: int, v2: int):
+        """Draw line between two vertices"""
+        self.draw_line_between_points(cnv, vertices[v1], vertices[v2])
+
+    def draw_lines_between_sides(
             self,
             cnv,
             side: float,
@@ -1517,7 +1516,7 @@ class BaseShape:
                  vertices[left_nodes[0]], vertices[left_nodes[1]], delta * number)
             right_pt = geoms.point_on_line(
                  vertices[right_nodes[0]], vertices[right_nodes[1]], delta * number)
-            self.make_path_points(cnv, left_pt, right_pt)
+            self.draw_line_between_points(cnv, left_pt, right_pt)
 
     def _debug(self, canvas, **kwargs):
         """Execute any debug statements."""
