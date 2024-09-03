@@ -352,7 +352,7 @@ class BaseCanvas:
         self.margin_right = self.defaults.get('margin_right', self.margin)
         # ---- grid cut marks
         self.grid_marks = self.defaults.get('grid_marks', 0)
-        self.grid_color = self.get_color(self.defaults.get('grid_color'), grey)
+        self.grid_stroke = self.get_color(self.defaults.get('grid_stroke'), grey)
         self.grid_stroke_width = self.defaults.get('grid_stroke_width', WIDTH)
         self.grid_length = self.defaults.get('grid_length', 0.85)  # 1/3 inch
         self.grid_offset = self.defaults.get('grid_offset', 0)
@@ -380,14 +380,16 @@ class BaseCanvas:
         self.gap = self.defaults.get('gap', 0)
         self.gap_x = self.defaults.get('gap_x', self.gap)
         self.gap_y = self.defaults.get('gap_y', self.gap)
-        # ---- rotation in degrees
+        # ---- rotation / position /elevation
         self.rotation = self.defaults.get('rotation',
-                                        self.defaults.get('rotation', 0))
+                                        self.defaults.get('rotation', 0))  # degrees
         self.direction = self.defaults.get('direction', 'vertical')
         self.position = self.defaults.get('position', None)
         self.flip = self.defaults.get('flip', 'up')
+        self.elevation = self.defaults.get('elevation', 'horizontal')
+        self.facing = self.defaults.get('facing', 'out')  # out/in
         # ---- line
-        self.line_color = self.defaults.get('line_color', WIDTH)
+        self.line_stroke = self.defaults.get('line_stroke', WIDTH)
         self.line_width = self.defaults.get('line_width', WIDTH)
         self.line_cap = self.defaults.get('line_cap', None)
         self.line_dots = self.defaults.get(
@@ -451,7 +453,7 @@ class BaseCanvas:
         self.heading_dy = self.defaults.get('heading_dy', 0)
         self.heading_rotation = self.defaults.get('heading_rotation', 0)
         # ---- text block
-        self.outline_color = self.defaults.get('outline_color', self.fill)
+        self.outline_stroke = self.defaults.get('outline_stroke', self.fill)
         self.outline_width = self.defaults.get('outline_width', 0)
         self.leading = self.defaults.get('leading', self.font_size)
         # ---- image / file
@@ -590,6 +592,7 @@ class BaseCanvas:
         self.use_abs = False
         self.use_abs_1 = False
         self.use_abs_c = False
+        self.clockwise =  True
 
     def get_canvas(self):
         """Return reportlab canvas object"""
@@ -646,7 +649,7 @@ class BaseShape:
         self.margin_left = kwargs.get('margin_left', cnv.margin_left)
         self.margin_right = kwargs.get('margin_right', cnv.margin_right)
         self.grid_marks = kwargs.get('grid_marks', cnv.grid_marks)
-        self.grid_color = kwargs.get('grid_color', cnv.grid_color)
+        self.grid_stroke = kwargs.get('grid_stroke', cnv.grid_stroke)
         self.grid_stroke_width = kwargs.get('grid_stroke_width', cnv.grid_stroke_width)
         self.grid_length = kwargs.get('grid_length', cnv.grid_length)
         self.page_width = self.pagesize[0] / self.units
@@ -675,11 +678,13 @@ class BaseShape:
         self.gap = kwargs.get('gap', cnv.gap)
         self.gap_x = kwargs.get('gap_x', cnv.gap_x)
         self.gap_y = kwargs.get('gap_y', cnv.gap_y)
-        # ---- rotation in degrees / radians
-        self.rotation = kwargs.get('rotation', kwargs.get('rotation', cnv.rotation))
+        # ---- rotation / position /elevation
+        self.rotation = kwargs.get('rotation', kwargs.get('rotation', cnv.rotation))  # desgree
         self._rotation_theta = math.radians(self.rotation)  # radians
         self.direction = kwargs.get('direction', cnv.direction)
         self.position = kwargs.get('position', cnv.position)
+        self.elevation = kwargs.get('elevation', cnv.elevation)
+        self.facing = kwargs.get('facing', cnv.facing)
         # ---- line
         self.line_width = kwargs.get('line_width', cnv.line_width)
         self.line_cap = kwargs.get('line_cap', cnv.line_cap)
@@ -732,7 +737,7 @@ class BaseShape:
         self.heading_dy = kwargs.get('heading_dy', 0)
         self.heading_rotation = kwargs.get('heading_rotation', 0)
         # ---- text block
-        self.outline_color = kwargs.get('outline_color', cnv.outline_color)
+        self.outline_stroke = kwargs.get('outline_stroke', cnv.outline_stroke)
         self.outline_width = kwargs.get('outline_width', cnv.outline_width)
         self.leading = kwargs.get('leading', self.font_size)
         # ---- fill color
@@ -1117,10 +1122,10 @@ class BaseShape:
                     ['left', 'right', 'l', 'r', ]:
                 issue.append(f'"{self.hand}" is an invalid hand!')
                 correct = False
-        if self.direction:
-            if str(self.direction).lower() not in \
+        if self.elevation:
+            if str(self.elevation).lower() not in \
                     ['vertical', 'horizontal', 'v', 'h', ]:
-                issue.append(f'"{self.direction}" is an invalid direction!')
+                issue.append(f'"{self.elevation}" is an invalid elevation!')
                 correct = False
         if self.orientation:
             if str(self.orientation).lower() not in \
@@ -1534,8 +1539,8 @@ class BaseShape:
             if kwargs.get('point', []):
                 point = kwargs.get('point')
                 label = kwargs.get('label', '')
-                canvas.setFillColor(DEBUG_COLOR)
-                canvas.setStrokeColor(DEBUG_COLOR)
+                canvas.setFillColor(self.debug_color)
+                canvas.setStrokeColor(self.debug_color)
                 canvas.setLineWidth(0.1)
                 canvas.setFont(self.font_face, 6)
                 x = self.points_to_value(point.x)

@@ -193,7 +193,7 @@ Rectangle(x=2, y=2, height=2, width=2, fill=red, stroke=red, transparency=50)
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Track: Rectangle: BL~clockwise")
+Text(common=header, text="Track: Rectangle: SW~clockwise")
 Track()
 PageBreak()
 

@@ -145,7 +145,7 @@ class SequenceShape(BaseShape):
                 self.setting_list = []
                 start, stop = ord(self.set_start), ord(self.set_stop)
                 curr = start
-                #breakpoint()
+                # breakpoint()
                 while True:
                     if self.set_inc > 0 and curr > stop:
                         break
@@ -332,9 +332,9 @@ class VirtualGrid(Virtual):
         self.row_spacing = kwargs.get('y_interval', 1)
         self.col_spacing = kwargs.get('x_interval', 1)
         self.pattern = kwargs.get('pattern', 'default')
-        self.direction = kwargs.get('direction', 'right')
+        self.direction = kwargs.get('direction', 'east')
         self.flow = None  # used for snake; see validate() for setting
-        self.start = kwargs.get('start', 'bl')
+        self.start = kwargs.get('start', 'sw')
         self.stop = kwargs.get('stop', 0)
         self.validate()
 
@@ -350,27 +350,27 @@ class VirtualGrid(Virtual):
             tools.feedback(
                 f"Minimum grid size is 2x2 (cannot use {self.cols }x{self.rows})!",
                 True)
-        if self.start.lower() not in ['bl', 'br', 'tl', 'tr']:
+        if self.start.lower() not in ['sw', 'se', 'nw', 'ne']:
             tools.feedback(
                 f"{self.start} is not a valid start - "
-                "use 'bl', 'br', 'tl', or 'tr'", True)
+                "use: 'sw', 'se', 'nw', or 'ne'", True)
         if self.pattern.lower() not in [
                 'default', 'd', 'snake', 's', 'spiral', 'p', 'outer', 'o']:
             tools.feedback(
                 f"{self.pattern} is not a valid pattern - "
                 "use 'default', 'outer', 'snake', or 'spiral'", True)
-        if self.direction.lower() not in ['up', 'u', 'down', 'd', 'left', 'l', 'right', 'r']:
+        if self.direction.lower() not in ['north', 'n', 'south', 's', 'west', 'w', 'east', 'e']:
             tools.feedback(
                 f"{self.direction} is not a valid direction - "
-                "use 'up', down', left', or 'right'", True)
-        if 't' in self.start.lower() and 'u' in self.direction.lower() \
-                or 'b' in self.start.lower() and 'd' in self.direction.lower() \
-                or 'l' in self.start.lower() and 'l' in self.direction.lower() \
-                or 'r' in self.start.lower() and 'r' in self.direction.lower():
-            tools.feedback(f"Cannot use {self.start} with {self.direction}!", True)
-        if self.direction.lower() in ['up', 'u', 'down', 'd']:
+                "use 'north', south', 'west', or 'east'", True)
+        if 'n' in self.start.lower()[0] and 'n' in self.direction.lower()[0] \
+                or 's' in self.start.lower()[0] and 's' in self.direction.lower()[0] \
+                or 'w' in self.start.lower()[0] and 'w' in self.direction.lower()[0] \
+                or 'e' in self.start.lower()[0] and 'e' in self.direction.lower()[0]:
+            tools.feedback(f"** Cannot use {self.start} with {self.direction}!", True)
+        if self.direction.lower() in ['north', 'n', 'south', 's']:
             self.flow = 'vert'
-        elif self.direction.lower() in ['left', 'l', 'right', 'r']:
+        elif self.direction.lower() in ['west', 'w', 'east', 'e']:
             self.flow = 'hori'
         else:
             tools.feedback(f"{self.direction} is not a valid direction!", True)
@@ -390,16 +390,16 @@ class RectangleGrid(VirtualGrid):
     def next_location(self) -> Location:
         """Yield next Location for each call."""
         match self.start.lower():
-            case 'bl':
+            case 'sw':
                 row_start = 1
                 col_start = 1
-            case 'br':
+            case 'se':
                 row_start = 1
                 col_start = self.cols
-            case 'tl':
+            case 'nw':
                 row_start = self.rows
                 col_start = 1
-            case 'tr':
+            case 'ne':
                 row_start = self.rows
                 col_start = self.cols
         col, row, count = col_start, row_start, 0
@@ -418,7 +418,7 @@ class RectangleGrid(VirtualGrid):
                     yield Location(col, row, x, y)
                     # next grid location
                     match self.direction.lower():
-                        case 'r' | 'right':
+                        case 'e' | 'east':
                             col = col + 1
                             if col > self.cols:
                                 col = self.cols
@@ -428,7 +428,7 @@ class RectangleGrid(VirtualGrid):
                                     row = row + 1
                                 self.direction = 'l'
 
-                        case 'l' | 'left':
+                        case 'w' | 'west':
                             col = col - 1
                             if col < 1:
                                 col = 1
@@ -438,7 +438,7 @@ class RectangleGrid(VirtualGrid):
                                     row = row + 1
                                 self.direction = 'r'
 
-                        case 'u' | 'up':
+                        case 'n' | 'north':
                             row = row + 1
                             if row > self.rows:
                                 row = self.rows
@@ -448,7 +448,7 @@ class RectangleGrid(VirtualGrid):
                                     col = col + 1
                                 self.direction = 'd'
 
-                        case 'd' | 'down':
+                        case 's' | 'south':
                             row = row - 1
                             if row < 1:
                                 row = 1
@@ -467,7 +467,7 @@ class RectangleGrid(VirtualGrid):
                     yield Location(col, row, x, y)
                     # next grid location
                     match self.direction.lower():
-                        case 'r' | 'right':
+                        case 'e' | 'east':
                             col = col + 1
                             if col > self.cols:
                                 col = self.cols
@@ -477,25 +477,25 @@ class RectangleGrid(VirtualGrid):
                                     if row < 1:
                                         return
                                 else:
-                                    self.direction = 'u'
+                                    self.direction = 'n'
                                     row = 2
                                     if row > self.rows:
                                         return
-                        case 'l' | 'left':
+                        case 'w' | 'west':
                             col = col - 1
                             if col < 1:
                                 col = col_start
                                 if row_start == self.rows:
-                                    self.direction = 'u'
+                                    self.direction = 'n'
                                     row = 2
                                     if row > self.rows:
                                         return
                                 else:
-                                    self.direction = 'd'
+                                    self.direction = 's'
                                     row = self.rows - 1
                                     if row < 1:
                                         return
-                        case 'u' | 'up':
+                        case 'n' | 'north':
                             row = row + 1
                             if row > self.rows:
                                 row = self.rows
@@ -509,7 +509,7 @@ class RectangleGrid(VirtualGrid):
                                     col = self.cols - 1
                                     if col < 1:
                                         return
-                        case 'd' | 'down':
+                        case 's' | 'south':
                             row = row - 1
                             if row < 1:
                                 row = 1
@@ -529,7 +529,7 @@ class RectangleGrid(VirtualGrid):
                     yield Location(col, row, x, y)
                     # next grid location
                     match self.direction.lower():
-                        case 'r' | 'right':
+                        case 'e' | 'east':
                             col = col + 1
                             if col > self.cols:
                                 col = col_start
@@ -541,7 +541,7 @@ class RectangleGrid(VirtualGrid):
                                     row = row + 1
                                     if row > self.rows:
                                         return  # end
-                        case 'l' | 'left':
+                        case 'w' | 'west':
                             col = col - 1
                             if col < 1:
                                 col = col_start
@@ -553,7 +553,7 @@ class RectangleGrid(VirtualGrid):
                                     row = row + 1
                                     if row > self.rows:
                                         return  # end
-                        case 'u' | 'up':
+                        case 'n' | 'north':
                             row = row + 1
                             if row > self.rows:
                                 row = row_start
@@ -565,7 +565,7 @@ class RectangleGrid(VirtualGrid):
                                     col = col + 1
                                     if col > self.cols:
                                         return  # end
-                        case 'd' | 'down':
+                        case 's' | 'south':
                             row = row - 1
                             if row < 1:
                                 row = row_start
@@ -593,12 +593,12 @@ class VirtualTrack(Virtual):
     def __init__(self, **kwargs):
         kwargs = kwargs
         self.count = kwargs.get('count ', 8)
-        self.start = kwargs.get('start', 'BL')
+        self.start = kwargs.get('start', 'sw')
         self.initial = kwargs.get('initial', 0)  # most tracks...
         self.final = kwargs.get('final', 0)
         self.reset = kwargs.get('reset', 0)
         self.spacing = kwargs.get('spacing ', 0)
-        self.direction = kwargs.get('direction', 'clockwise')
+        self.clockwise = kwargs.get('clockwise', True)
         self.rotation = kwargs.get('rotation', 'none')
         self.corners = kwargs.get('corners', [])  # use ["","","",""] to skip!
         self.validate()
@@ -611,21 +611,15 @@ class VirtualTrack(Virtual):
         self.reset = self.to_int(self.reset, 'reset')
         self.spacing = self.to_float(self.spacing, 'spacing')
         self.start = str(self.start)
-        self.direction = str(self.direction)
-        self.rotation = str(self.rotation)
+        self.facing = str(self.facing)
 
-        if self.start.lower() not in ['bl', 'br', 'tl', 'tr']:
+        if self.start.lower() not in ['sw', 'se', 'nw', 'ne']:
             tools.feedback(
                 f"{self.start} is not a valid start - "
-                "use 'bl', 'br', 'tl', or 'tr'", True)
-        if self.direction.lower() not in [
-                'c', 'clock', 'clockwise', 'a', 'anti', 'anticlockwise']:
+                "use 'sw', 'se', 'nw', or 'ne'", True)
+        if self.facing.lower() not in ['i', 'in', 'o', 'out', 'n', 'none']:
             tools.feedback(
-                f"{self.direction} is not a valid direction - "
-                "use 'c', 'clock', 'clockwise', 'a', 'anti', or 'anticlockwise'", True)
-        if self.rotation.lower() not in ['i', 'in', 'o', 'out', 'n', 'none']:
-            tools.feedback(
-                f"{self.rotation} is not a valid rotation - "
+                f"{self.facing} is not a valid facing - "
                 "use 'i', 'in', 'o', 'out', 'n', or 'none'", True)
 
     def next_location(self, spaces: int, shapes: list) -> Location:
@@ -650,23 +644,23 @@ class RectangleTrack(RectangleShape, VirtualTrack):
         self._o = self.set_offset_props()
         # derived settings
         match self.start.lower():
-            case 'bl':
-                if self.direction.lower() in ['c', 'clock', 'clockwise']:
+            case 'sw':
+                if self.clockwise:
                     self.nodes = [0, 1, 2, 3, 0]
                 else:
                     self.nodes = [0, 3, 2, 1, 0]
-            case 'tl':
-                if self.direction.lower() in ['c', 'clock', 'clockwise']:
+            case 'nw':
+                if self.clockwise:
                     self.nodes = [1, 2, 3, 0, 1]
                 else:
                     self.nodes = [1, 0, 3, 2, 1]
-            case 'tr':
-                if self.direction.lower() in ['c', 'clock', 'clockwise']:
+            case 'ne':
+                if self.self.clockwise:
                     self.nodes = [2, 3, 0, 1, 2]
                 else:
                     self.nodes = [2, 1, 0, 3, 2]
-            case 'br':
-                if self.direction.lower() in ['c', 'clock', 'clockwise']:
+            case 'se':
+                if self.self.clockwise:
                     self.nodes = [3, 0, 1, 2, 3]
                 else:
                     self.nodes = [3, 2, 1, 0, 3]
@@ -766,11 +760,11 @@ class ConnectShape(BaseShape):
         try:
             shp_from, shape_from_position = self.shape_from  # tuple form
         except Exception:
-            shp_from, shape_from_position = self.shape_from, "BC"
+            shp_from, shape_from_position = self.shape_from, "S"
         try:
             shp_to, shape_to_position = self.shape_to  # tuple form
         except Exception:
-            shp_to, shape_to_position = self.shape_to, "TC"
+            shp_to, shape_to_position = self.shape_to, "N"
         # ---- shape props
         shape_from = self.get_shape_in_grid(shp_from)
         shape_to = self.get_shape_in_grid(shp_to)
@@ -787,23 +781,23 @@ class ConnectShape(BaseShape):
 
             if xc_f == xc_t and yc_f > yc_t:  # above
                 points = [
-                    self.key_positions(shape_from, "BC"),
-                    self.key_positions(shape_to, "TC"),
+                    self.key_positions(shape_from, "S"),
+                    self.key_positions(shape_to, "N"),
                 ]
             if xc_f == xc_t and yc_f < yc_t:  # below
                 points = [
-                    self.key_positions(shape_from, "TC"),
-                    self.key_positions(shape_to, "BC"),
+                    self.key_positions(shape_from, "N"),
+                    self.key_positions(shape_to, "S"),
                 ]
             if xc_f > xc_t and yc_f == yc_t:  # left
                 points = [
-                    self.key_positions(shape_from, "LC"),
-                    self.key_positions(shape_to, "RC"),
+                    self.key_positions(shape_from, "W"),
+                    self.key_positions(shape_to, "E"),
                 ]
             if xc_f < xc_t and yc_f == yc_t:  # right
                 points = [
-                    self.key_positions(shape_from, "RC"),
-                    self.key_positions(shape_to, "LC"),
+                    self.key_positions(shape_from, "E"),
+                    self.key_positions(shape_to, "W"),
                 ]
 
             if xc_f < xc_t and yc_f < yc_t:  # Q1
@@ -812,26 +806,26 @@ class ConnectShape(BaseShape):
                         log.debug("A t:%s b:%s", edge_from.top, edge_to.bottom)
                         delta = (edge_to.bottom - edge_from.top) / 2.0
                         points = [
-                            self.key_positions(shape_from, "TC"),
+                            self.key_positions(shape_from, "N"),
                             (xc_f, edge_from.top + delta),
                             (xc_t, edge_from.top + delta),
-                            self.key_positions(shape_to, "BC"),
+                            self.key_positions(shape_to, "S"),
                         ]
                     elif edge_from.top > edge_to.bottom:
                         log.debug("B t:%s b:%s", edge_from.top, edge_to.bottom)
                         points = [
-                            self.key_positions(shape_from, "TC"),
+                            self.key_positions(shape_from, "N"),
                             (xc_f, yc_t),
-                            self.key_positions(shape_to, "LC"),
+                            self.key_positions(shape_to, "W"),
                         ]
                     else:
                         pass
                 else:
                     log.debug("C t:%s b:%s", edge_from.top, edge_to.bottom)
                     points = [
-                        self.key_positions(shape_from, "TC"),
+                        self.key_positions(shape_from, "N"),
                         (xc_f, yc_t),
-                        self.key_positions(shape_to, "LC"),
+                        self.key_positions(shape_to, "W"),
                     ]
             if xc_f < xc_t and yc_f > yc_t:  # Q2
                 log.debug("Q2")
@@ -846,26 +840,26 @@ class ConnectShape(BaseShape):
                         log.debug(" A t:%s b:%s", edge_from.top, edge_to.bottom)
                         delta = (edge_to.bottom - edge_from.top) / 2.0
                         points = [
-                            self.key_positions(shape_from, "TC"),
+                            self.key_positions(shape_from, "N"),
                             (xc_f, edge_from.top + delta),
                             (xc_t, edge_from.top + delta),
-                            self.key_positions(shape_to, "BC"),
+                            self.key_positions(shape_to, "S"),
                         ]
                     elif edge_from.top > edge_to.bottom:
                         log.debug(" B t:%s b:%s", edge_from.top, edge_to.bottom)
                         points = [
-                            self.key_positions(shape_from, "TC"),
+                            self.key_positions(shape_from, "N"),
                             (xc_f, yc_t),
-                            self.key_positions(shape_to, "RC"),
+                            self.key_positions(shape_to, "E"),
                         ]
                     else:
                         pass
                 else:
                     log.debug(" C t:%s b:%s", edge_from.top, edge_to.bottom)
                     points = [
-                        self.key_positions(shape_from, "TC"),
+                        self.key_positions(shape_from, "N"),
                         (xc_f, yc_t),
-                        self.key_positions(shape_to, "RC"),
+                        self.key_positions(shape_to, "E"),
                     ]
 
             if xc_f == xc_t and yc_f == yc_t:  # same!
@@ -887,7 +881,7 @@ class ConnectShape(BaseShape):
     def key_positions(self, _shape, location=None):
         """Calculate a dictionary of key positions around a Rectangle.
 
-        T,B,L,R,C = Top, Bottom, Left, Right, Center
+        N,S,E,W = North, South, East, West
         """
         top = _shape.y + _shape.height
         btm = _shape.y
@@ -896,14 +890,14 @@ class ConnectShape(BaseShape):
         left = _shape.x
         right = _shape.x + _shape.width
         _positions = {
-            "TL": (left, top),
-            "TC": (mid_horizontal, top),
-            "TR": (right, top),
-            "BL": (left, btm),
-            "BC": (mid_horizontal, btm),
-            "BR": (right, btm),
-            "LC": (left, mid_vertical),
-            "RC": (right, mid_vertical),
+            "NW": (left, top),
+            "N": (mid_horizontal, top),
+            "NE": (right, top),
+            "SW": (left, btm),
+            "S": (mid_horizontal, btm),
+            "SE": (right, btm),
+            "W": (left, mid_vertical),
+            "E": (right, mid_vertical),
             # '': (),
         }
         if location:

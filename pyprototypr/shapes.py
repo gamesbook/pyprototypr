@@ -2056,7 +2056,7 @@ class RectangleShape(BaseShape):
         # ---- grid marks
         self.set_canvas_props(
             index=ID,
-            stroke=self.grid_color,
+            stroke=self.grid_stroke,
             stroke_width=self.grid_stroke_width)
         if self.grid_marks:
             deltag = self.unit(self.grid_length)
@@ -2713,13 +2713,15 @@ class TextShape(BaseShape):
         if self.wrap:
             _style = ParagraphStyle(name="sc")
             _style.textColor = self.stroke
-            _style.borderColor = self.outline_color
+            _style.backColor = self.fill
+            _style.borderColor = self.outline_stroke
             _style.borderWidth = self.outline_width
             _style.alignment = self.to_alignment()
             _style.fontSize = self.font_size
             _style.fontName = self.font_face
             _style.leading = self.leading
             """
+            # potential other properties
             leftIndent=0,
             rightIndent=0,
             firstLineIndent=0,
@@ -2728,7 +2730,6 @@ class TextShape(BaseShape):
             bulletFontName='Times-Roman',
             bulletFontSize=10,
             bulletIndent=0,
-            backColor=None,
             borderPadding= 0,
             borderRadius= None,
             allowWidows= 1,

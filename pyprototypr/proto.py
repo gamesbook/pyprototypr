@@ -1075,8 +1075,8 @@ def Blueprint(**kwargs):
     default_font_size = 10 * math.sqrt(pagesize[0]) / math.sqrt(A4[0])
     line_dots = kwargs.get('line_dots', False)
     kwargs['font_size'] = kwargs.get('font_size', default_font_size)
-    line_color, page_fill = set_style(kwargs.get('style', None))
-    kwargs['stroke'] = kwargs.get('stroke', line_color)
+    line_stroke, page_fill = set_style(kwargs.get('style', None))
+    kwargs['stroke'] = kwargs.get('stroke', line_stroke)
     kwargs['fill'] = kwargs.get('fill', page_fill)
     # ---- page color (optional)
     if kwargs['fill'] is not None:
