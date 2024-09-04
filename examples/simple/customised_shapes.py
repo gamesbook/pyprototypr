@@ -523,4 +523,4 @@ PageBreak()
 Text(common=txt, text="END...")
 PageBreak(footer=True)
 
-Save()
+Save(output='png', dpi=600)

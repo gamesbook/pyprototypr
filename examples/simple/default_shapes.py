@@ -116,7 +116,7 @@ PageBreak()
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: rows=2, cols=2")
-Hexagons(rows=2, cols=2)
+Hexagons(rows=2, cols=2, margin_bottom=0, margin_left=0)
 PageBreak()
 
 Blueprint(stroke_width=0.5)
@@ -188,8 +188,8 @@ PageBreak()
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Transparency")
-Rectangle(height=2, width=2, fill=yellow, stroke=yellow)
-Rectangle(x=2, y=2, height=2, width=2, fill=red, stroke=red, transparency=50)
+Rectangle(x=0, y=0, height=2, width=2, fill=yellow, stroke=yellow)
+Rectangle(x=1, y=1, height=2, width=2, fill=red, stroke=red, transparency=50)
 PageBreak()
 
 Blueprint(stroke_width=0.5)
@@ -199,7 +199,7 @@ PageBreak()
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Chord: 135 to 45 degrees")
-Chord(shape=Circle(cx=1, cy=1, radius=1, fill=None), angle=135, angle1=45)
+Chord(shape=Circle(), angle=135, angle1=45)
 PageBreak()
 
 Blueprint(stroke_width=0.5)
@@ -207,4 +207,4 @@ Text(common=header, text="Circle: radii [30,150]")
 Circle(cx=1, cy=1, radii=[30,150])
 PageBreak()
 
-Save()
+Save(output='png', dpi=600)

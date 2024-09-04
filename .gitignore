@@ -155,3 +155,4 @@ cython_debug/
 .pdf
 *.pdf
 /examples/temp
+default_shapes-*.png

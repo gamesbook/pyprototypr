@@ -18,14 +18,17 @@
 * [Bezier](#bezier)
 * [Circle](#circle)
 * [Compass](#compass)
+* [Chord](#chord)
+* [Dot](#dot)
 * [Ellipse](#ellipse)
 * [Hexagon](#hexagon)
 * [Hexagons](#hexagons)
 * [Line](#line)
 * [Polygon](#polygon)
-* [PolyLine](#polyline)
+* [Polyline](#polyline)
 * [Rectangle](#rectangle)
 * [Square](#square)
+* [Stadium](#stadium)
 * [Star](#star)
 * [](#)
 
@@ -39,11 +42,11 @@ terms and ideas presented in [Basic Concepts](basic_concepts.md) - especially
 Where possible, basic examples show how a shape would appear on a page when **only**
 the default properties are used.  This means for most cases, *lines* are drawn in black,
 with a width of 1mm (0.1cm) and shapes are *filled* with a white color. The default
-length in most cases is 1cm.
+length or height in most cases is 1cm.
 
 To make it easier to see where and how a shape has been drawn, these examples have
 been created with a background grid for reference: the values of **x** appear across
-the lower edge of the grid (left tp right); those for **y** along the left side (bottom
+the lower edge of the grid (left to right); those for **y** along the left side (bottom
 to top).
 
 > The graphics for these examples were generated from the scripts in the `examples`
@@ -154,7 +157,6 @@ A line effectively has only 1 dimension.
       <ul>
         <li>grid interval of 1cm,</li>
         <li>starts at x-position 1cm and at y-position 1cm,</li>
-        <li>heading/default direction is 90&deg; (clockwise from 0&deg; "north").</li>
       </ul>
     </p>
     </td>
@@ -166,10 +168,37 @@ A line effectively has only 1 dimension.
     <td><img src="images/examples/simple/defaults/blueprint-sub.png"></td>
     <td>
       <pre>Blueprint(subdivisions=5, stroke_width=0.8)</pre>
-       <p>In this example, the Blueprint shows how additional lines can be added; their
-       width is set to a fraction of the normal grid lines ("stroke_width").  For this
-       example, the <i>stroke_width</i> has been made thicker than usual.
+       <p>In this example, the Blueprint shows how additional lines can be added  between
+       the primary ones; their width is set to a fraction of the normal grid lines
+       ("stroke_width").  For this example, the normal grid lines <i>stroke_width</i>
+       has been made thicker than usual.
        </p>
+    </td>
+  </tr>
+</table>
+
+### Chord [&#9650;](#index_shapes) <a name="chord"></a>
+
+<table>
+  <tr>
+    <th width="30%">Example #1</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/examples/simple/defaults/chord.png"></td>
+    <td>
+    <p>This example shows how the shape can be constructed:</p>
+    <pre>Chord(shape=Circle(), angle=135, angle1=45)</pre>
+    <p>This command will draw a line connecting two points on the circumference of a
+    circle.  These points will be defined by the places intersected by two radii
+    extending from the centre of the circle.  The radii themselves are not drawn but
+    are defined by the angles needed to draw them.  These angles are measured by the
+    degrees of clockwise rotation from the horizontal line extending "east" from the
+    centre of the circle.</p>
+
+    <p>A Chord does not have defaults that will be allow it to be drawn without any
+    properties; in this example the two angle values for the "radii" have been set to
+    135&deg; and 45&deg; and a default Circle has been used for the "shape".</p>
     </td>
   </tr>
 </table>
@@ -178,9 +207,9 @@ A line effectively has only 1 dimension.
 ## Enclosed Shapes <a name="enclosed_shapes"></a>
 
 These shapes are created by enclosing an area; the most basic being a simple rectangle.
-They effectively have 2 dimensions. The difference between these and linear shapes is
-that the area enclosed by the shape can be filled with a color; the default fill color
-is white.
+They effectively have 2 dimensions (height and width). The difference between these and
+the linear shapes is that the area enclosed by the shape can be filled with a color;
+the default fill color is white.
 
 > **pyprototypr** comes with a predefined set of named colors, shown in the
 > [colors](../examples/colorset.pdf) document.
@@ -248,7 +277,8 @@ is white.
     <p>It has the following properties based on the defaults:
       <ul>
         <li>diameter of 1cm,</li>
-        <li>the "bounding" square has a bottom-left corner x-position 1cm and y-position 1cm,</li>
+        <li>the "bounding" square has a bottom-left corner at x-position 1cm and
+        y-position 1cm,</li>
         <li>fill color is white.</li>
       </ul>
     </p>
@@ -274,14 +304,14 @@ is white.
         <li>diameter of 1cm,</li>
         <li>the "bounding" square has a bottom-left corner x-position 1cm and y-position 1cm,</li>
         <li>fill color is white,</li>
-        <li>all directions are displayed.</li>
+        <li>all eight compass directions are displayed.</li>
       </ul>
     </p>
     </td>
   </tr>
 </table>
 
-### Polygon [&#9650;](#index_shapes) <a name="polygon"></a>
+### Dot [&#9650;](#index_shapes) <a name="dot"></a>
 
 <table>
   <tr>
@@ -289,15 +319,16 @@ is white.
     <th>Description</th>
   </tr>
   <tr>
-    <td><img src="images/examples/simple/defaults/polygon.png"></td>
+    <td><img src="images/examples/simple/defaults/dot.png"></td>
     <td>
     <p>This example shows the shape constructed using the command with all defaults:</p>
-    <pre>Polygon()</pre>
+    <pre>Dot()</pre>
     <p>It has the following properties based on the defaults:
       <ul>
-        <li>height and width of 1cm,</li>
-        <li>bottom-left "corner" at x-position 1cm and at y-position 1cm,</li>
-        <li>fill color is white.</li>
+        <li>centered at x-position 1cm and at y-position 1cm,</li>
+        <li>is a "circle" with a diamter of 3 points; approximately 1/24th of an inch,
+        or 1 millimetre</li>
+        <li>stroke and fill color are both black.</li>
       </ul>
     </p>
     </td>
@@ -327,6 +358,56 @@ is white.
   </tr>
 </table>
 
+### Polygon [&#9650;](#index_shapes) <a name="polygon"></a>
+
+<table>
+  <tr>
+    <th width="30%">Example #1</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/examples/simple/defaults/polygon.png"></td>
+    <td>
+    <p>This example shows the shape constructed using the command with all defaults:</p>
+    <pre>Polygon()</pre>
+    <p>It has the following properties based on the defaults:
+      <ul>
+        <li>height of 1cm,</li>
+        <li>default number of sides is 6 (a hexagon),</li>
+        <li>bottom-left "corner" at x-position 1cm and at y-position 1cm,</li>
+        <li>fill color is white.</li>
+      </ul>
+    </p>
+    </td>
+  </tr>
+</table>
+
+### Stadium [&#9650;](#index_shapes) <a name="stadium"></a>
+
+<table>
+  <tr>
+    <th width="30%">Example #1</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/examples/simple/defaults/stadium.png"></td>
+    <td>
+    <p>This example shows the shape constructed using the command with all defaults:</p>
+    <pre>Stadium()</pre>
+    <p>It has the following properties based on the defaults:
+      <ul>
+        <li>starts at x-position 1cm and at y-position 1cm,</li>
+        <li>ends at x-position 2cm and at y-position 2cm,</li>
+        <li>stadium "end" are north/south direction with a radius of 0.5cm
+           (half of the rectangle's default width of 1cm)</lsi>
+        <li>fill color is white.</li>
+      </ul>
+    </p>
+    </td>
+  </tr>
+</table>
+
+
 ### Hexagon [&#9650;](#index_shapes) <a name="hexagon"></a>
 
 Hexagons are a shape widely used in gaming, second only to squares, because of their
@@ -351,7 +432,7 @@ being able to set special properties for them (that are not applicable to other 
             is at y-position 1cm ,</li>
         <li>fill color is white.</li>
         <li><i>orientation</i> is flat; the top of the hexagon is parallel to the bottom
-            of the page,</li>
+            of the page.</li>
       </ul>
     </p>
     </td>
@@ -418,4 +499,4 @@ movement regulated.
 </table>
 
 
-## Shapes' Common Properties <a name="common_properties"></a>
+## Shapes Common Properties <a name="common_properties"></a>

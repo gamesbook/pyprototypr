@@ -251,7 +251,7 @@ def pdf_to_png(filename: str, dpi: int = 300, names: list = None):
                 pix.save(iname)
             else:
                 if pages > 1:
-                    pix.save(f"{basename}_{page.number + 1}.png")
+                    pix.save(f"{basename}-{page.number + 1}.png")
                 else:
                     pix.save(f"{basename}.png")
     except Exception as err:
