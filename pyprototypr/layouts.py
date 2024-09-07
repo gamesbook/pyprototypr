@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Create layouts - grids, repeats, sequences and tracks - for pyprototypr
+Create layouts - grids, repeats, sequences, tracks and connections - for pyprototypr
 """
 # lib
 import copy
@@ -19,6 +19,8 @@ log = logging.getLogger(__name__)
 
 DEBUG = False
 
+
+# ---- grids
 
 class GridShape(BaseShape):
     """
@@ -195,7 +197,7 @@ class SequenceShape(BaseShape):
                                 off_x=off_x, off_y=off_y, ID=_ID, **kwargs
                             )
 
-# ---- repeats =====
+# ---- repeats
 
 
 class RepeatShape(BaseShape):
@@ -311,7 +313,7 @@ class Virtual():
         except Exception:
             tools.feedback(f"{value} is not a valid {label} floating number!", True)
 
-# ---- Virtual Grids & Layout =====
+# ---- virtual grid
 
 
 class VirtualGrid(Virtual):
@@ -578,7 +580,7 @@ class RectangleGrid(VirtualGrid):
                                     if col > self.cols:
                                         return  # end
 
-# ---- Tracks =====
+# ---- tracks
 
 
 class VirtualTrack(Virtual):
@@ -729,9 +731,7 @@ class CircleTrack(CircleShape, VirtualTrack):
         """Yield next Point for each call."""
         return
 
-
-
-# ---- Other  =====
+# ---- other layouts
 
 
 class ConnectShape(BaseShape):

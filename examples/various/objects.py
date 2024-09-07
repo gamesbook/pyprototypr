@@ -79,4 +79,10 @@ Polygon(common=poly6, radius=0.75, rotation=30)
 Polygon(common=poly6, radius=0.60, rotation=45)
 Polygon(common=poly6, radius=0.60, rotation=60)
 
+Text(common=header_font, x=5, y=22, text="XOK Fish")
+Circle(cx=2, cy=22, radius=1, fill="#63B1BB", stroke="#63B1BB", radii=[135,225],
+       radii_offset=1.05, radii_length=0.4, radii_stroke=white, radii_stroke_width=15)
+Circle(cx=2, cy=22, radius=0.75, fill="#63B1BB", stroke="#63B1BB")
+Dot(x=2.5, y=22.5, stroke=white, dot_point=3)
+
 Save()
