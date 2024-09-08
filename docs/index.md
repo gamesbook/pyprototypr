@@ -1,19 +1,19 @@
 # pyprototypr: Table of Contents
 
-The _pyprototypr_ documentation consists of the sections described below.
+The __pyprototypr__ documentation consists of the sections described below.
 
 Although its great to be able to just "jump in" and start using a program, these
 sections are designed to be read in order - apart from the examples, they all contain
 useful information and build on each other.
 
 1. *[Overview](overview.md)* -
-    a brief introduction of the purpose and rationale of _pyprototypr_
+    a brief introduction of the purpose and rationale of __pyprototypr__
 2. *[Setting Up](setting_up.md)* -
-    how to get _pyprototypr_ working on your computer
+    how to get __pyprototypr__ working on your computer
 3. *[Basic Concepts](basic_concepts.md)* -
-    core aspects of _pyprototypr_ that you **must** know
+    core aspects of __pyprototypr__ that you **must** know
 4. *[Additional Concepts](additional_concepts.md)* -
-    additional aspects of _pyprototypr_ that can help you create scripts
+    additional aspects of __pyprototypr__ that can help you create scripts
 5. *[A Worked Example](worked_example.md)* -
     a step-by-step example of creating a script
 6. *[Script Anatomy](script_anatomy.md)* -
@@ -31,6 +31,6 @@ useful information and build on each other.
 12. *[Using Python Commands](python_commands.md)* -
     how to work with loops and if statements for more flexibility
 13. *[Descriptions of Available Examples](examples/index.md)* -
-    brief walkthoughs of many of the examples provided with _pyprototypr_
+    brief walkthoughs of many of the examples provided with __pyprototypr__
 14. *[Additional Resources](additional_resources.md)* -
     links to information for supplementing pyprototypr
