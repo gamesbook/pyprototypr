@@ -3,8 +3,6 @@ echo ""
 mkdir -p /tmp/demo
 # -- examples: simple
 echo "Creating simple examples..."
-python examples/simple/cards_design.py -d /tmp/demo
-python examples/simple/cards_images.py -d /tmp/demo
 python examples/simple/customised_shapes.py -d /tmp/demo
 python examples/simple/customised_blueprint.py -d /tmp/demo
 python examples/simple/demo.py -d /tmp/demo
@@ -40,6 +38,8 @@ python examples/counters/counters_csv.py -d /tmp/demo
 python examples/counters/blocks_csv.py -d /tmp/demo
 # -- cards
 echo "Creating cards..."
+python examples/cards/cards_design.py -d /tmp/demo
+python examples/cards/cards_images.py -d /tmp/demo
 python examples/cards/cards_matrix_one.py -d /tmp/demo
 python examples/cards/cards_matrix_two.py -d /tmp/demo
 python examples/cards/cards_standard.py -d /tmp/demo

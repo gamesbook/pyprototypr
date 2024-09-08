@@ -65,8 +65,9 @@ from .shapes import (
     SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape,
     GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE)
 from .layouts import (
-    GridShape, DotGridShape, VirtualGrid, RectangleGrid,
-    VirtualTrack, RectangleTrack,
+    GridShape, DotGridShape,
+    VirtualLayout, RectangularLayout, TriangularLayout,
+    VirtualTrack,  RectangularTrack, PolygonalTrack,
     ConnectShape, RepeatShape, SequenceShape)
 from .groups import DeckShape, Query, Lookup, LookupType
 from ._version import __version__
@@ -91,7 +92,7 @@ footer = None
 page_count = 0
 pargs = None
 
-# ---- Page ====
+# ---- page-related ====
 
 
 def Create(**kwargs):
@@ -324,7 +325,7 @@ def Random(end: int = 1, start: int = 0, decimals: int = 2):
         return int(rrr)
     return round(rrr, decimals)
 
-# ---- Cards ====
+# ---- cards ====
 
 
 def Matrix(labels: list = None, data: list = None) -> list:
@@ -419,7 +420,7 @@ def group(*args, **kwargs):
         gb.append(arg)
     return gb
 
-# ---- data and functions
+# ---- data and functions ====
 
 
 def Data(**kwargs):
@@ -1000,7 +1001,7 @@ def text(*args, **kwargs):
     return TextShape(_object=_obj, canvas=cnv, **kwargs)
 
 
-# ---- Grids ====
+# ---- grids ====
 
 def DotGrid(**kwargs):
     global cnv
@@ -1188,7 +1189,7 @@ def sequence(_object=None, **kwargs):
     global deck
     return SequenceShape(_object=_object, **kwargs)
 
-# ---- patterns (grid)
+# ---- patterns (grid) ====
 
 
 def Hexagons(rows=1, cols=1, sides=None, **kwargs):
@@ -1461,7 +1462,7 @@ def Layout(grid, **kwargs):
 
     kwargs = kwargs
     shapes = kwargs.get('shapes', [])
-    if not isinstance(grid, VirtualGrid):
+    if not isinstance(grid, VirtualLayout):
         tools.feedback(f"The value '{grid}' is not a valid grid!", True)
     # ---- iterate through grid & draw shape(s)
     shape_id = 0
@@ -1499,10 +1500,10 @@ def Track(track=None, **kwargs):
     kwargs = kwargs
     _spaces = kwargs.get('spaces', 8)
     spaces = tools.as_int(_spaces, 'spaces', minimum=4)  # number of spaces around track
-    # breakpoint()
     shapes = kwargs.get('shapes', [])  # shape(s) to draw at the locations
+    # ---- check kwargs inputs
     if not track:
-        track = RectangleTrack(fill_color=DEBUG_COLOR)
+        track = RectangularTrack(fill_color=DEBUG_COLOR)
     if not isinstance(track, VirtualTrack):
         tools.feedback(f"The value '{track}' is not a valid track!", True)
     if not shapes:
@@ -1544,7 +1545,7 @@ def Track(track=None, **kwargs):
         if shape_id > len(shapes) - 1:
             shape_id = 0  # reset and start again
 
-# ---- BGG ====
+# ---- bgg API ====
 
 
 def BGG(ids=None, user=None, progress=False, short=500):
@@ -1580,8 +1581,7 @@ def dice(dice='1d6', rolls=None):
         _list = dice.split('d')
         _type, pips = int(_list[0]), int(_list[1])
     except Exception:
-        tools.feedback(f'Unable to determine dice type/roll for "{dice}"')
-        return None
+        tools.feedback(f'Unable to determine dice type/roll for "{dice}"', True)
     return Dice().multi_roll(count=rolls, pips=pips, dice=_type)
 
 

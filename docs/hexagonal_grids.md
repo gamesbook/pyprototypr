@@ -4,10 +4,10 @@
 ## Introduction
 
 Hexagonal grids are now widely used in the gaming industry.  They are particularly
-suitable in providing an overlay for maps. As such they have been used for war
-games and role playing games, but also as grids or tiles in board games - one of the
-more well-known examples of this is in the popular game *"Catan"*, first released as
-*"Settlers of Catan"*" in the early 1990s.
+suitable in providing an overlay for maps. As such they have been used for decades in
+war games and role playing games, but also as grids or tiles in board games - one of
+the more well-known examples of this is in the popular game *"Catan"*, first released
+as *"Settlers of Catan"*" in the early 1990s.
 
 There are in fact a number of software tools available for creating hexagonal
 grids of various kinds. A few of them, some of which are game-specific,

@@ -13,7 +13,7 @@ from pyprototypr.utils.geoms import (
 from pyprototypr.utils import geoms, tools
 from pyprototypr.base import BaseShape, BaseCanvas
 from pyprototypr.shapes import (
-    CircleShape, LineShape, PolylineShape, RectangleShape, TextShape)
+    CircleShape, LineShape, PolygonShape, PolylineShape, RectangleShape, TextShape)
 
 log = logging.getLogger(__name__)
 
@@ -232,7 +232,7 @@ class RepeatShape(BaseShape):
                 self.repeat_down,
                 self.gap_y,
                 self.gap_x,
-                self.gap_x,
+                self.offset_across,
                 self.offset_down,
             ) = self.repeat.split(",")
         else:
@@ -283,9 +283,9 @@ class RepeatShape(BaseShape):
 # ---- Virtual Class
 
 
-class Virtual():
+class VirtualShape():
     """
-    Common properties and methods for all virtual shapes (grid and track)
+    Common properties and methods for all virtual shapes (layout and track)
     """
     global cnv
 
@@ -313,15 +313,15 @@ class Virtual():
         except Exception:
             tools.feedback(f"{value} is not a valid {label} floating number!", True)
 
-# ---- virtual grid
+# ---- virtual layouts
 
 
-class VirtualGrid(Virtual):
+class VirtualLayout(VirtualShape):
     """
-    Common properties and methods to define a virtual grid.
+    Common properties and methods to define a virtual layout.
 
-    A virtual grid is not drawn on the canvas; rather it provides locations/points
-    where a user-defined shape will be drawn.
+    A virtuallayout is not drawn on the canvas; rather it provides locations/points
+    where user-defined shapes will be drawn.
     """
     global cnv
     global deck
@@ -330,7 +330,7 @@ class VirtualGrid(Virtual):
         kwargs = kwargs
         self.rows = self.to_int(rows, 'rows')
         self.cols = self.to_int(cols, 'cols')
-        self.grid_size = self.rows * self.cols
+        self.layout_size = self.rows * self.cols
         self.row_spacing = kwargs.get('y_interval', 1)
         self.col_spacing = kwargs.get('x_interval', 1)
         self.pattern = kwargs.get('pattern', 'default')
@@ -382,9 +382,9 @@ class VirtualGrid(Virtual):
         pass
 
 
-class RectangleGrid(VirtualGrid):
+class RectangularLayout(VirtualLayout):
     """
-    Common properties and methods to define a virtual rectangular grid.
+    Common properties and methods to define a virtual rectangular layout.
     """
     global cnv
     global deck
@@ -414,8 +414,8 @@ class RectangleGrid(VirtualGrid):
             match self.pattern.lower():
                 # ---- snake
                 case 'snake' | 'snaking' | 's':
-                    # tools.feedback(f'*** {count=} {self.grid_size=} {self.stop=}')
-                    if count > self.grid_size or (self.stop and count > self.stop):
+                    # tools.feedback(f'*** {count=} {self.layout_size=} {self.stop=}')
+                    if count > self.layout_size or (self.stop and count > self.stop):
                         return
                     yield Location(col, row, x, y)
                     # next grid location
@@ -580,10 +580,32 @@ class RectangleGrid(VirtualGrid):
                                     if col > self.cols:
                                         return  # end
 
+
+class TriangularLayout(VirtualLayout):
+    """
+    Common properties and methods to define a virtual triangular layout.
+    """
+    global cnv
+    global deck
+
+    def next_location(self) -> Location:
+        """Yield next Location for each call."""
+
+
+class IrregularLayout(VirtualLayout):
+    """
+    Common properties and methods to define a virtual irregular layout.
+    """
+    global cnv
+    global deck
+
+    def next_location(self) -> Location:
+        """Yield next Location for each call."""
+
 # ---- tracks
 
 
-class VirtualTrack(Virtual):
+class VirtualTrack(VirtualShape):
     """
     Common properties and methods to define a virtual track.
 
@@ -629,7 +651,7 @@ class VirtualTrack(Virtual):
         raise NotImplementedError('Overwrite this method in a child class!')
 
 
-class RectangleTrack(RectangleShape, VirtualTrack):
+class RectangularTrack(RectangleShape, VirtualTrack):
     """
     Properties and methods to define a rectangular virtual track.
     """
@@ -639,9 +661,9 @@ class RectangleTrack(RectangleShape, VirtualTrack):
         RectangleShape.__init__(self, **kwargs)  # NO super
         VirtualTrack.__init__(self, **kwargs)
         if self.rounding or self.rounded:
-            tools.feedback('A rectangular track cannot be rounded', True)
+            tools.feedback('A rectangle track cannot be rounded', True)
         if self.notch or self.notch_x or self.notch_y:
-            tools.feedback('A rectangular track cannot be notched', True)
+            tools.feedback('A rectangle track cannot be notched', True)
         self.vertices = RectangleShape.set_vertices(self, **kwargs)
         self._o = self.set_offset_props()
         # derived settings
@@ -657,12 +679,12 @@ class RectangleTrack(RectangleShape, VirtualTrack):
                 else:
                     self.nodes = [1, 0, 3, 2, 1]
             case 'ne':
-                if self.self.clockwise:
+                if self.clockwise:
                     self.nodes = [2, 3, 0, 1, 2]
                 else:
                     self.nodes = [2, 1, 0, 3, 2]
             case 'se':
-                if self.self.clockwise:
+                if self.clockwise:
                     self.nodes = [3, 0, 1, 2, 3]
                 else:
                     self.nodes = [3, 2, 1, 0, 3]
@@ -717,7 +739,7 @@ class RectangleTrack(RectangleShape, VirtualTrack):
                     distance=increment)
 
 
-class CircleTrack(CircleShape, VirtualTrack):
+class CircularTrack(CircleShape, VirtualTrack):
     """
     Properties and methods to define a circular track.
     """
@@ -725,6 +747,21 @@ class CircleTrack(CircleShape, VirtualTrack):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         CircleShape.__init__(self, kwargs)  # NO super
+        VirtualTrack.__init__(self, kwargs)
+
+    def next_location(self, spaces: int, shapes: list) -> Point:
+        """Yield next Point for each call."""
+        return
+
+
+class PolygonalTrack(PolygonShape, VirtualTrack):
+    """
+    Properties and methods to define a polygonal track.
+    """
+    global cnv
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        PolygonShape.__init__(self, kwargs)  # NO super
         VirtualTrack.__init__(self, kwargs)
 
     def next_location(self, spaces: int, shapes: list) -> Point:

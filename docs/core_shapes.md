@@ -11,7 +11,7 @@
 * [Shapes' Common Properties](#common_properties)
 
 
-## Index of Shapes <a name="index_shapes"></a>
+## Alphabetic Index of Shapes <a name="index_shapes"></a>
 
 * [Arc](#arc)
 * [Blueprint](#blueprint)

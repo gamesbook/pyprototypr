@@ -8,9 +8,10 @@ elements or components of a project such as the creation of a board game; includ
 the board, the tiles, the cards and so on.
 
 > **pyprototypr** is *NOT* a full-blown graphics editor - like the Adobe
-> Photoshop, GIMP, or Inkscape packages - or a desktop publishing tool, which allow
-> sophisticated creation of complex graphics and text layouts - and it does not
-> attempt in **any** way to replicate their functionality!
+> Photoshop, GIMP, or Inkscape packages - or a desktop publishing tool - like
+> Scribus, InDesign, or Xpress - which allow sophisticated creation of complex
+> graphics and text layouts - and it does not  attempt in **any** way to replicate
+> their functionality!
 
 
 ## How do I use it?
