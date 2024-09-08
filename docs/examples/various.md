@@ -5,7 +5,7 @@ The examples are part of the set of [supplied examples](index.md) with **pyproto
 
 ## Miscellaneous Objects
 
-> The script for this example can be found in [../../examples/various/objects.py](objects.py)
+> The script for this example can be found in [objects.py](../../examples/various/objects.py)
 
 **Overview To Be Done**
 
@@ -16,7 +16,7 @@ The examples are part of the set of [supplied examples](index.md) with **pyproto
 
 ## Chords
 
-> The script for this example can be found in [../../examples/various/chords.py](chords.py)
+> The script for this example can be found in [chords.py](../../examples/various/chords.py)
 
 **Overview To Be Done**
 
@@ -27,7 +27,7 @@ The examples are part of the set of [supplied examples](index.md) with **pyproto
 
 ## Clock
 
-> The script for this example can be found in [../../examples/various/clock.py](clock.py)
+> The script for this example can be found in [clock.py](../../examples/various/clock.py)
 
 **Overview To Be Done**
 
@@ -38,7 +38,7 @@ The examples are part of the set of [supplied examples](index.md) with **pyproto
 
 ## World Clock
 
-> The script for this example can be found in [../../examples/various/chords.py](chords.py)
+> The script for this example can be found in [chords.py](../../examples/various/chords.py)
 
 **Overview To Be Done**
 

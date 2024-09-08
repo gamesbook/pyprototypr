@@ -5,7 +5,7 @@ These examples are part of the set of [supplied examples](index.md) with **pypro
 
 ## ???
 
-> The script for this example can be found in [../../examples/boards/abstract/???.py](???.py)
+> The script for this example can be found in [???.py](../../examples/boards/abstract/???.py)
 
 **Overview To Be Done**
 
