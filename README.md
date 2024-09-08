@@ -1,35 +1,37 @@
 # pyprototypr
 
-**pyprototypr** is a simple Python utility for designing and creating simple,
+__pyprototypr__ is a utility written in Python for designing and creating simple,
 regular, graphical output in PDF format via a script.
 
-**pyprototypr**  was originally created to handle prototyping of cards, counters, tiles
-and boards for board games, but can be used for creation of any simple design that has
-regular or repetitive elements; typically containing a mix of graphics and text.
+__pyprototypr__  has been created to handle prototyping of cards, counters, tiles
+and boards for board games, but can be also used for creation of any simple design that
+has regular or repetitive elements; typically containing a mix of graphics and text.
+
+> You do not need to know the Python to use __pyprototypr__!
 
 ## Documentation
 
-The online documentation for **pyprototypr** starts with the
+The online documentation for __pyprototypr__ starts with the
 [Table of Contents](https://github.com/gamesbook/pyprototypr/blob/master/docs/index.md)
 
 If you're not familiar with any kind of programming or scripting, you should probably
-read some of the introductory material before proceeding ...
+read some of the introductory sections before proceeding ...
 
 ## Requirements
 
-**pyprototypr** requires a version of Python 3.11 or higher.
+__pyprototypr__ requires a version of Python 3.11 or higher.
 
 If this is **not** your default Python version, you may want to use **pyenv**
 (or [pyenv-win](https://github.com/pyenv-win/pyenv-win) on Windows) to install and
-use **pyprototypr** in a virtual environment.
+use __pyprototypr__ in a virtual environment.
 
 ## Quick Start (for the impatient)
 
-Install **pyprototypr** via:
+Install __pyprototypr__ via:
 ```
 pip install pyprototypr
 ```
-As a quick check that **pyprototypr** is working, you can use one (or more) of the files
+As a quick check that __pyprototypr__ is working, you can use one (or more) of the files
 from any of the `examples` sub-directories.
 
 Make a copy of `example1.py` script from the `examples/manual` directory. To do so, open
@@ -64,10 +66,10 @@ If this works, then download and try out other scripts from any of the `examples
 sub-directories (**note** some examples may require additional files such as
 images, CSV files, or spreadsheets).
 
-## Planned/Potential Features
+## Work-in-Progress
 
-These are not guaranteed to be addressed, but they are potential areas of
-work for future development.
+These features are not guaranteed to be addressed, but they are current / potential
+areas of work or development.
 
 * [x] Page numbering
 * [ ] New shapes:
@@ -77,10 +79,14 @@ work for future development.
     * [ ] Trapezoid shape
     * [ ] Parallelogram shape
     * [ ] Wave shape
-    * [ ] Domino shape (with outline?)
     * [ ] Cross shape
-    * [ ] Cube shape (rhombus composite)
-* [ ] Arrow: styling
+    * [ ] Pod shape
+    * [ ] Diamond shape
+* [ ] Simple objects:
+    * [ ] Cube (rhombus composite)
+    * [ ] Domino (with outline?)
+    * [ ] Picture frame (trapezoid composite)
+* [ ] Arrow: styling; angled
 * [x] Circle, Rectangle, Hexagon: centre cross
 * [x] Rectangle: with notches
 * [x] Hexagons: "pointy" layout
@@ -89,23 +95,23 @@ work for future development.
     * [x] end style
     * [ ] join style
 * [ ] Polyline: add arcs
-* [ ] Arcs (pathways): for a hexagon (**in progress**)
+* [ ] Arcs (pathways) inside a hexagon (**in progress**)
 * [ ] Shortcut notation for styling of: area, line, text, etc.
-* [ ] Track feature: layout shapes along a rectangle or circle  (**in progress**)
-* [ ] Interior hatching:
+* [ ] Track: layout shapes along a rectangle or circle  (**in progress**)
+* [x] Interior hatching:
     * [x] rectangle
     * [x] hexagon
     * [x] equilateral triangle
-    * [ ] conditional for rounded rectangle
-* [ ] Layout: a virtual grid for putting shapes into rows/cols in different patterns
+    * [x] conditional for rounded rectangle
+* [ ] Layout: virtual grids for putting shapes into locations in different patterns
 * [x] Rotation:
     * [x] text along a line
-    * [x] shape labels (in the centre of shape)
-    * [ ] Polygon
+    * [x] shape labels (at centre of shape)
+    * [x] Polygon
     * [x] Stadium
     * [ ] Triangle
 * [ ] Cards:
-    * [ ] allow for copies of a cards
+    * [ ] allow for copies of a card
     * [ ] 'wrapper' for tiles (default size)
 
 ## Planned/Potential Board Examples
@@ -121,12 +127,12 @@ work for future development.
 As always, with Python, you are building "on the shoulders of giants". In this case, the
 [ReportLab PDF Toolkit](https://https://docs.reportlab.com/reportlab/userguide/ch1_intro/)
 provides all of the core, underlying infrastructure used to do the graphics work;
-**pyprototypr** is a custom wrapper around its numerous and extensive capabilities.
+__pyprototypr__ is a custom wrapper around its numerous and extensive capabilities.
 
-Additional libraries used include:
+Additional libraries in use include:
 
 * `svglib` https://pypi.org/project/svglib/ - support for drawing SVG images
 * `bgg-api` https://pypi.org/project/bgg-api/ - support for access to the BoardGameGeek API
-* `xlrd` https://pypi.org/project/xlrd/ - support for access to `.xls` files
-* `openpyxl` https://pypi.org/project/openpyxl/ - support for access to `.xlsx` files
+* `xlrd` https://pypi.org/project/xlrd/ - support for access to Excel `.xls` files
+* `openpyxl` https://pypi.org/project/openpyxl/ - support for access to Excel `.xlsx` files
 * `pymupdf` https://pymupdf.io/ - support for export to PNG images

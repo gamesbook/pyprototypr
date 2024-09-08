@@ -8,16 +8,19 @@ elements or components of a project such as the creation of a board game; includ
 the board, the tiles, the cards and so on.
 
 > **pyprototypr** is *NOT* a full-blown graphics editor - like the Adobe
-> Photoshop, GIMP, or Inkscape packages - which allow sophisticated creation
-> and editing of complex designs - and it does not attempt in **any** way to
-> replicate their functionality.
+> Photoshop, GIMP, or Inkscape packages - or a desktop publishing tool, which allow
+> sophisticated creation of complex graphics and text layouts - and it does not
+> attempt in **any** way to replicate their functionality!
 
 
 ## How do I use it?
 
 In general, what you do is type a set of instructions into a file on your computer,
-save that file, and then use Python to create your output - a PDF file - containing
-the results of the instructions; hopefully the design you intended!
+save that file, and then use Python to create your output - a PDF or PNG file -
+containing the results of those instructions; hopefully the design you intended!
+
+As your design changes and evolves, you add or change instructions and recreate
+the output.
 
 
 ## How does it work?
@@ -31,7 +34,7 @@ numerous libraries that help avoid having to develop code from scratch.
 
 **pyprototypr** is designed such that you *don't* need to know how to program in
 Python in order to use it; but if you *are* a Python programmer then you can
-certainly treat this as you would in the other library and add in your additional
+certainly treat this as you would any other library and add in your own additional
 Python code or logic to your scripts for your own purpose.
 
 
@@ -45,11 +48,11 @@ changes need to be made across many elements.
 Simple designs that make use of regular-shaped symbols or fonts are
 straightforward to implement in **pyprototypr**; but more complex pictures or
 background images should be made, as usual, in a regular graphics design package
-and then accessed.
+and then added into from your script by a link to the image file.
 
 **pyprototypr** also supports access of data in text files ("CSV") and Excel
 documents; this can help separate out the design and layout from the content -
-text and numbers - that appears in the design.
+the text and numbers - that appears in the design.
 
 
 ## How do I get started?
