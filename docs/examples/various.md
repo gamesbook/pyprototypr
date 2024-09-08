@@ -36,9 +36,9 @@ The examples are part of the set of [supplied examples](index.md) with **pyproto
 **To Be Done**
 
 
-## World Clock
+## World Clocks
 
-> The script for this example can be found in [chords.py](../../examples/various/chords.py)
+> The script for this example can be found in [world_clocks.py](../../examples/various/world_clocks.py)
 
 **Overview To Be Done**
 
