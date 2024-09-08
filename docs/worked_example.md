@@ -1,4 +1,4 @@
-# pyprototypr: A Worked Example
+# pyprototypr: A Worked Example of a Deck of Cards
 
 This example assumes that you have set-up your computer with Python and have
 tested to check that you can create a test file which generates a PDF. If not,

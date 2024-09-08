@@ -11,7 +11,7 @@ useful information and build on each other.
 2. *[Setting Up](setting_up.md)* -
     how to get **pyprototypr** working on your computer
 3. *[Basic Concepts](basic_concepts.md)* -
-    core aspects of **pyprototypr** that you must know
+    core aspects of **pyprototypr** that you **must** know
 4. *[Additional Concepts](additional_concepts.md)* -
     additional aspects of **pyprototypr** that can help you create scripts
 5. *[A Worked Example](worked_example.md)* -
@@ -20,20 +20,17 @@ useful information and build on each other.
     how a script is constructed
 7. *[Core Shapes](core_shapes.md)* -
     a tour of the core elements available to you
-8. *[Advanced Commands](advanced_commands.md)* -
-    how to work with common/reused items, repetitive elements and grid layouts
-9. *[Card Decks](card_decks.md)* -
+8. *[Card Decks](card_decks.md)* -
     how to create a deck, or set, of cards/tiles
+9. *[Advanced Commands](advanced_commands.md)* -
+    how to work with common/reused items and repetitive elements
+10. *[Layouts](layouts.md)* -
+    how to work with different kinds of layouts
 11. *[Hexagonal Grids](hexagonal_grids.md)* -
     how to create designs or layouts on a hexagonal grid
-11. *[Available Examples](available_examples.md)* -
-    a walkthough of some of the examples provided with **pyprototypr**
 12. *[Using Python Commands](python_commands.md)* -
-    how to work with loops and if statements for more flexibilty
-13. *[Additional Resources](additional_resources.md)* -
+    how to work with loops and if statements for more flexibility
+13. *[Descriptions of Available Examples](examples/index.md)* -
+    brief walkthoughs of many of the examples provided with **pyprototypr**
+14. *[Additional Resources](additional_resources.md)* -
     links to information for supplementing pyprototypr
-
-**pyprototypr** also has a formal [reference manual](manual_technical.rst)
-that documents in more detail all the various elements and commands available in the
-program.  This is useful to lookup what the names of options are and how they operate;
-but its **NOT** a good way to learn **pyprototypr**.

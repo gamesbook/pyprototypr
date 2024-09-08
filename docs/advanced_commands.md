@@ -20,6 +20,10 @@ used via the various examples, and are comfortable with creating and using scrip
 **To Be Done**
 
 
-## Grid-based Locations
+## Grid-based Layouts
 
-**To Be Done**
+**pyprototypr** allows you to place elements that make up your design anywhere within
+a page, or over a series of pages within a deck, but it also includes commands that
+you to place, or "layout", elements in a more repetitive or regular way within a page.
+
+The different kinds of layouts are described in the section on [layouts](layouts.md).
