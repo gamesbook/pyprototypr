@@ -1458,20 +1458,31 @@ def LinkLine(grid: list, locations: list, **kwargs):
 
 
 def Layout(grid, **kwargs):
-    """Determine locations for cols&rows in virtual layout and draw shape(s)
+    """Determine locations for cols&rows in a virtual layout and draw shape(s)
     """
     global cnv
 
     kwargs = kwargs
     shapes = kwargs.get('shapes', [])
+    locations = kwargs.get('locations', [])
+    masks = kwargs.get('masks', [])
+
+    # ---- validate input
     if not shapes:
         tools.feedback(f"There is no list of shapes to draw!", False, True)
     if not isinstance(grid, VirtualLayout):
         tools.feedback(f"The grid value '{grid}' is not valid!", True)
-    # ---- iterate through grid & draw shape(s)
+    # ---- setup locations; automatically or via user-specification
     shape_id = 0
-    locations = enumerate(grid.next_location())
-    for count, loc in locations:
+    default_locations = enumerate(grid.next_location())
+    if not locations:
+        _locations = default_locations
+    else:
+        raise NotImplementedError('Cannot handle user-input locations')
+    if masks:
+        raise NotImplementedError('Cannot handle user-input masks')
+    # ---- iterate through locations & draw shape(s)
+    for count, loc in _locations:
         if grid.stop and count + 1 >= grid.stop:
             break
         if grid.pattern in ['o', 'outer']:

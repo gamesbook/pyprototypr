@@ -320,7 +320,7 @@ class VirtualLayout(VirtualShape):
     """
     Common properties and methods to define a virtual layout.
 
-    A virtuallayout is not drawn on the canvas; rather it provides locations/points
+    A virtual layout is not drawn on the canvas; rather it provides locations/points
     where user-defined shapes will be drawn.
     """
     global cnv
@@ -328,6 +328,8 @@ class VirtualLayout(VirtualShape):
 
     def __init__(self, rows=2, cols=2, **kwargs):
         kwargs = kwargs
+        self.x = self.to_float(kwargs.get('x', 1.0))  # lower-left corner of layout
+        self.y = self.to_float(kwargs.get('y', 1.0))  # lower-left corner of layout
         self.rows = self.to_int(rows, 'rows')
         self.cols = self.to_int(cols, 'cols')
         self.layout_size = self.rows * self.cols
@@ -335,6 +337,7 @@ class VirtualLayout(VirtualShape):
         self.col_spacing = kwargs.get('x_interval', 1)
         self.pattern = kwargs.get('pattern', 'default')
         self.direction = kwargs.get('direction', 'east')
+        self.facing = kwargs.get('facing', 'east')  # for diamond, triangle
         self.flow = None  # used for snake; see validate() for setting
         self.start = kwargs.get('start', 'sw')
         self.stop = kwargs.get('stop', 0)
@@ -342,7 +345,7 @@ class VirtualLayout(VirtualShape):
         self.validate()
 
     def validate(self):
-        """Check for validate settings and combos."""
+        """Check for valid settings and combos."""
         self.stop = self.to_int(self.stop, 'stop')
         self.rows = self.to_int(self.rows, 'rows')
         self.cols = self.to_int(self.cols, 'cols')
@@ -365,6 +368,10 @@ class VirtualLayout(VirtualShape):
         if self.direction.lower() not in ['north', 'n', 'south', 's', 'west', 'w', 'east', 'e']:
             tools.feedback(
                 f"{self.direction} is not a valid direction - "
+                "use 'north', south', 'west', or 'east'", True)
+        if self.facing.lower() not in ['north', 'n', 'south', 's', 'west', 'w', 'east', 'e']:
+            tools.feedback(
+                f"{self.facing} is not a valid facing - "
                 "use 'north', south', 'west', or 'east'", True)
         if 'n' in self.start.lower()[0] and 'n' in self.direction.lower()[0] \
                 or 's' in self.start.lower()[0] and 's' in self.direction.lower()[0] \
@@ -417,6 +424,7 @@ class RectangularLayout(VirtualLayout):
         col, row, count = col_start, row_start, 0
         while True:  # rows <= self.rows and col <= self.cols:
             # calculate point based on row/col
+            # TODO!  set actual x and y
             x = col
             y = row
             count = count + 1
