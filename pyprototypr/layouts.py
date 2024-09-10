@@ -338,6 +338,7 @@ class VirtualLayout(VirtualShape):
         self.flow = None  # used for snake; see validate() for setting
         self.start = kwargs.get('start', 'sw')
         self.stop = kwargs.get('stop', 0)
+        self.label_style = kwargs.get('label_style', None)
         self.validate()
 
     def validate(self):
@@ -357,10 +358,10 @@ class VirtualLayout(VirtualShape):
                 f"{self.start} is not a valid start - "
                 "use: 'sw', 'se', 'nw', or 'ne'", True)
         if self.pattern.lower() not in [
-                'default', 'd', 'snake', 's', 'spiral', 'p', 'outer', 'o']:
+                'default', 'd', 'snake', 's', 'outer', 'o']:
             tools.feedback(
                 f"{self.pattern} is not a valid pattern - "
-                "use 'default', 'outer', 'snake', or 'spiral'", True)
+                "use 'default', 'outer', 'snake'", True)
         if self.direction.lower() not in ['north', 'n', 'south', 's', 'west', 'w', 'east', 'e']:
             tools.feedback(
                 f"{self.direction} is not a valid direction - "
@@ -376,6 +377,15 @@ class VirtualLayout(VirtualShape):
             self.flow = 'hori'
         else:
             tools.feedback(f"{self.direction} is not a valid direction!", True)
+        if self.label_style and self.label_style.lower() != 'excel':
+            tools.feedback(f"{self.label_style } is not a valid label_style !", True)
+
+    def set_id(self, col, row) -> str:
+        """Create an ID from row and col values."""
+        if self.label_style and self.label_style.lower() == 'excel':
+            return '%s%s' % (tools.sheet_column(col), row)
+        else:
+            return '%s,%s' % (col, row)
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""
@@ -417,7 +427,7 @@ class RectangularLayout(VirtualLayout):
                     # tools.feedback(f'*** {count=} {self.layout_size=} {self.stop=}')
                     if count > self.layout_size or (self.stop and count > self.stop):
                         return
-                    yield Location(col, row, x, y)
+                    yield Location(col, row, x, y, self.set_id(col, row), count)
                     # next grid location
                     match self.direction.lower():
                         case 'e' | 'east':
@@ -428,7 +438,7 @@ class RectangularLayout(VirtualLayout):
                                     row = row - 1
                                 else:
                                     row = row + 1
-                                self.direction = 'l'
+                                self.direction = 'w'
 
                         case 'w' | 'west':
                             col = col - 1
@@ -438,7 +448,7 @@ class RectangularLayout(VirtualLayout):
                                     row = row - 1
                                 else:
                                     row = row + 1
-                                self.direction = 'r'
+                                self.direction = 'e'
 
                         case 'n' | 'north':
                             row = row + 1
@@ -448,7 +458,7 @@ class RectangularLayout(VirtualLayout):
                                     col = col - 1
                                 else:
                                     col = col + 1
-                                self.direction = 'd'
+                                self.direction = 's'
 
                         case 's' | 'south':
                             row = row - 1
@@ -458,15 +468,11 @@ class RectangularLayout(VirtualLayout):
                                     col = col - 1
                                 else:
                                     col = col + 1
-                                self.direction = 'u'
-
-                # ---- spiral
-                case 'spiral' | 'p':
-                    tools.feedback("Spiral grid layout not implemented yet.", True)
+                                self.direction = 'n'
 
                 # ---- outer
                 case 'outer' | 'o':
-                    yield Location(col, row, x, y)
+                    yield Location(col, row, x, y, self.set_id(col, row), count)
                     # next grid location
                     match self.direction.lower():
                         case 'e' | 'east':
@@ -502,12 +508,12 @@ class RectangularLayout(VirtualLayout):
                             if row > self.rows:
                                 row = self.rows
                                 if col_start == self.cols:
-                                    self.direction = 'r'
+                                    self.direction = 'e'
                                     col = 2
                                     if col > self.cols:
                                         return
                                 else:
-                                    self.direction = 'l'
+                                    self.direction = 'w'
                                     col = self.cols - 1
                                     if col < 1:
                                         return
@@ -516,19 +522,19 @@ class RectangularLayout(VirtualLayout):
                             if row < 1:
                                 row = 1
                                 if col_start == self.cols:
-                                    self.direction = 'l'
+                                    self.direction = 'w'
                                     col = self.cols - 1
                                     if col < 1:
                                         return
                                 else:
-                                    self.direction = 'r'
+                                    self.direction = 'e'
                                     col = 2
                                     if col > self.cols:
                                         return
 
                 # ---- regular
                 case _:  # default pattern
-                    yield Location(col, row, x, y)
+                    yield Location(col, row, x, y, self.set_id(col, row), count)
                     # next grid location
                     match self.direction.lower():
                         case 'e' | 'east':
@@ -588,6 +594,37 @@ class TriangularLayout(VirtualLayout):
     global cnv
     global deck
 
+    def __init__(self, rows=2, cols=2, **kwargs):
+        super(TriangularLayout, self).__init__(rows=2, cols=2, **kwargs)
+
+    def next_location(self) -> Location:
+        """Yield next Location for each call."""
+
+
+class DiamondLayout(VirtualLayout):
+    """
+    Common properties and methods to define a virtual diamo layout.
+    """
+    global cnv
+    global deck
+
+    def __init__(self, rows=2, cols=2, **kwargs):
+        super(DiamondLayout, self).__init__(rows=2, cols=2, **kwargs)
+
+    def next_location(self) -> Location:
+        """Yield next Location for each call."""
+
+
+class RowColLayout(VirtualLayout):
+    """
+    Common properties and methods to define a virtual row & col layout.
+    """
+    global cnv
+    global deck
+
+    def __init__(self, rows=2, cols=2, **kwargs):
+        super(RowColLayout, self).__init__(rows=2, cols=2, **kwargs)
+
     def next_location(self) -> Location:
         """Yield next Location for each call."""
 
@@ -598,6 +635,9 @@ class IrregularLayout(VirtualLayout):
     """
     global cnv
     global deck
+
+    def __init__(self, rows=2, cols=2, **kwargs):
+        super(IrregularLayout, self).__init__(rows=2, cols=2, **kwargs)
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""

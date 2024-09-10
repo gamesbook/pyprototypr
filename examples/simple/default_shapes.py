@@ -207,4 +207,15 @@ Text(common=header, text="Circle: radii [30,150]")
 Circle(cx=1, cy=1, radii=[30,150])
 PageBreak()
 
+Blueprint(stroke_width=0.5)
+Text(common=header, text='RectangularLayout: "invisible"')
+Layout(RectangularLayout())
+PageBreak()
+
+Blueprint(stroke_width=0.5)
+Text(common=header, text='RectangularLayout: "debug"')
+Layout(RectangularLayout(), debug='normal')
+PageBreak()
+
+
 Save(output='png', dpi=600)

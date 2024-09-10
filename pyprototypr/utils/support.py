@@ -60,7 +60,7 @@ def numbers(*args):
 
 
 def letters(start='a', stop='z'):
-    """Return list of characters between two."""
+    """Return list of characters between two letters."""
     def gen():
         for c in range(ord(start), ord(stop) + 1):
             yield chr(c)

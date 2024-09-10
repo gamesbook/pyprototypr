@@ -1458,12 +1458,16 @@ def LinkLine(grid: list, locations: list, **kwargs):
 
 
 def Layout(grid, **kwargs):
+    """Determine locations for cols&rows in virtual layout and draw shape(s)
+    """
     global cnv
 
     kwargs = kwargs
     shapes = kwargs.get('shapes', [])
+    if not shapes:
+        tools.feedback(f"There is no list of shapes to draw!", False, True)
     if not isinstance(grid, VirtualLayout):
-        tools.feedback(f"The value '{grid}' is not a valid grid!", True)
+        tools.feedback(f"The grid value '{grid}' is not valid!", True)
     # ---- iterate through grid & draw shape(s)
     shape_id = 0
     locations = enumerate(grid.next_location())
@@ -1473,25 +1477,52 @@ def Layout(grid, **kwargs):
         if grid.pattern in ['o', 'outer']:
             if count + 1 > grid.rows * 2 + (grid.cols - 2) * 2:
                 break
-        shape = copy(shapes[shape_id])  # enable overwrite/change of properties
-        # ---- supply data to shape's text fields
-        data = {
-            'col': loc.col, 'row': loc.row, 'x': loc.x, 'y': loc.y, 'count': count + 1}
-        # tools.feedback(f'{data=}')
-        try:
-            shape.label = shapes[shape_id].label.format(**data)  # replace {xyz} entries
-            shape.title = shapes[shape_id].title.format(**data)
-            shape.heading = shapes[shape_id].heading.format(**data)
-        except KeyError as err:
-            text = str(err).split()
-            tools.feedback(
-                f'You cannot use {text[0]} as a special field; remove the {{ }} brackets',
-                True)
-        # ---- execute the draw()
-        shape.draw(off_x=loc.x, off_y=loc.y)
-        shape_id += 1
+        if shapes:
+            shape = copy(shapes[shape_id])  # enable overwrite/change of properties
+            # ---- supply data to shape's text fields
+            data = {
+                'col': loc.col, 'row': loc.row, 'x': loc.x, 'y': loc.y, 'count': count + 1}
+            # tools.feedback(f'{data=}')
+            try:
+                shape.label = shapes[shape_id].label.format(**data)  # replace {xyz} entries
+                shape.title = shapes[shape_id].title.format(**data)
+                shape.heading = shapes[shape_id].heading.format(**data)
+            except KeyError as err:
+                text = str(err).split()
+                tools.feedback(
+                    f'You cannot use {text[0]} as a special field; remove the {{ }} brackets',
+                    True)
+            # ---- execute the draw()
+            shape.draw(off_x=loc.x, off_y=loc.y)
+            shape_id += 1
         if shape_id > len(shapes) - 1:
             shape_id = 0  # reset and start again
+        # ---- show debug
+        do_debug = kwargs.get('debug', None)
+        if do_debug:
+            match str(do_debug).lower():
+                case 'normal' | 'none' | 'null' | 'n':
+                    Dot(x=loc.x, y=loc.y, stroke=DEBUG_COLOR, fill=DEBUG_COLOR)
+                case 'id' | 'i':
+                    Dot(x=loc.x, y=loc.y, label=loc.id,
+                        stroke=DEBUG_COLOR, fill=DEBUG_COLOR)
+                case 'sequence' | 's':
+                    Dot(x=loc.x, y=loc.y, label=f'{loc.sequence}',
+                        stroke=DEBUG_COLOR, fill=DEBUG_COLOR)
+                case 'xy' | 'xy':
+                    Dot(x=loc.x, y=loc.y, label=f'{loc.x},{loc.y}',
+                        stroke=DEBUG_COLOR, fill=DEBUG_COLOR)
+                case 'yx' | 'yx':
+                    Dot(x=loc.x, y=loc.y, label=f'{loc.y},{loc.x}',
+                        stroke=DEBUG_COLOR, fill=DEBUG_COLOR)
+                case 'colrow' | 'cr':
+                    Dot(x=loc.x, y=loc.y, label=f'{loc.col},{loc.row}',
+                        stroke=DEBUG_COLOR, fill=DEBUG_COLOR)
+                case 'rowcol' | 'rc':
+                    Dot(x=loc.x, y=loc.y, label=f'{loc.row},{loc.col}',
+                        stroke=DEBUG_COLOR, fill=DEBUG_COLOR)
+                case _:
+                    tools.feedback(f'Unknown debug style "{do_debug}"', True)
 
 
 def Track(track=None, **kwargs):
