@@ -289,7 +289,7 @@ class VirtualShape():
     """
     global cnv
 
-    def to_int(self, value, label, maximum=None, minimum=None) -> int:
+    def to_int(self, value, label='', maximum=None, minimum=None) -> int:
         """Set a value to an int; or stop if an invalid value."""
         try:
             int_value = int(value)
@@ -305,7 +305,7 @@ class VirtualShape():
         except Exception:
             tools.feedback(f"{value} is not a valid {label} integer!", True)
 
-    def to_float(self, value, label) -> int:
+    def to_float(self, value, label='') -> int:
         """Set a value to a float; or stop if an invalid value."""
         try:
             float_value = float(value)
@@ -328,8 +328,8 @@ class VirtualLayout(VirtualShape):
 
     def __init__(self, rows=2, cols=2, **kwargs):
         kwargs = kwargs
-        self.x = self.to_float(kwargs.get('x', 1.0))  # lower-left corner of layout
-        self.y = self.to_float(kwargs.get('y', 1.0))  # lower-left corner of layout
+        self.x = self.to_float(kwargs.get('x', 1.0), 'x')  # lower-left corner of layout
+        self.y = self.to_float(kwargs.get('y', 1.0), 'y')  # lower-left corner of layout
         self.rows = self.to_int(rows, 'rows')
         self.cols = self.to_int(cols, 'cols')
         self.layout_size = self.rows * self.cols
@@ -422,6 +422,8 @@ class RectangularLayout(VirtualLayout):
                 row_start = self.rows
                 col_start = self.cols
         col, row, count = col_start, row_start, 0
+        max_outer = 2 * self.rows + (self.cols - 2) * 2
+        print(f'\n*** {self.start=} {self.layout_size=} {max_outer=} {self.stop=}')
         while True:  # rows <= self.rows and col <= self.cols:
             # calculate point based on row/col
             # TODO!  set actual x and y
@@ -480,23 +482,26 @@ class RectangularLayout(VirtualLayout):
 
                 # ---- outer
                 case 'outer' | 'o':
+                    if count > max_outer:
+                        return
                     yield Location(col, row, x, y, self.set_id(col, row), count)
                     # next grid location
+                    #breakpoint()
+                    print(f'{self.rows=},{self.cols=} {self.direction=} {row=},{col=}')
                     match self.direction.lower():
                         case 'e' | 'east':
                             col = col + 1
                             if col > self.cols:
                                 col = self.cols
                                 if row_start == self.rows:
-                                    self.direction = 'd'
+                                    self.direction = 's'
                                     row = self.rows - 1
-                                    if row < 1:
-                                        return
+                                elif row == self.rows:
+                                    self.direction = 's'
+                                    row = self.rows - 1
                                 else:
                                     self.direction = 'n'
                                     row = 2
-                                    if row > self.rows:
-                                        return
                         case 'w' | 'west':
                             col = col - 1
                             if col < 1:
@@ -504,27 +509,19 @@ class RectangularLayout(VirtualLayout):
                                 if row_start == self.rows:
                                     self.direction = 'n'
                                     row = 2
-                                    if row > self.rows:
-                                        return
                                 else:
                                     self.direction = 's'
                                     row = self.rows - 1
-                                    if row < 1:
-                                        return
                         case 'n' | 'north':
                             row = row + 1
                             if row > self.rows:
                                 row = self.rows
-                                if col_start == self.cols:
-                                    self.direction = 'e'
-                                    col = 2
-                                    if col > self.cols:
-                                        return
-                                else:
+                                if col == self.cols:
                                     self.direction = 'w'
-                                    col = self.cols - 1
-                                    if col < 1:
-                                        return
+                                    col = col - 1
+                                elif col == col_start:
+                                    self.direction = 'e'
+                                    col = col + 1
                         case 's' | 'south':
                             row = row - 1
                             if row < 1:
@@ -532,13 +529,9 @@ class RectangularLayout(VirtualLayout):
                                 if col_start == self.cols:
                                     self.direction = 'w'
                                     col = self.cols - 1
-                                    if col < 1:
-                                        return
                                 else:
                                     self.direction = 'e'
                                     col = 2
-                                    if col > self.cols:
-                                        return
 
                 # ---- regular
                 case _:  # default pattern
