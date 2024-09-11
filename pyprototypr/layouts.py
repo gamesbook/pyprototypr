@@ -408,22 +408,29 @@ class RectangularLayout(VirtualLayout):
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""
+        _start = self.start.lower()
+        _dir = self.direction.lower()
+        current_dir = _dir
         match self.start.lower():
             case 'sw':
                 row_start = 1
                 col_start = 1
+                clockwise = True if _dir in ['north', 'n'] else False
             case 'se':
                 row_start = 1
                 col_start = self.cols
+                clockwise = True if _dir in ['west', 'w'] else False
             case 'nw':
                 row_start = self.rows
                 col_start = 1
+                clockwise = True if _dir in ['east', 'e'] else False
             case 'ne':
                 row_start = self.rows
                 col_start = self.cols
+                clockwise = True if _dir in ['south', 's'] else False
         col, row, count = col_start, row_start, 0
         max_outer = 2 * self.rows + (self.cols - 2) * 2
-        print(f'\n*** {self.start=} {self.layout_size=} {max_outer=} {self.stop=}')
+        # print(f'\n*** {self.start=} {self.layout_size=} {max_outer=} {self.stop=} {clockwise=}')
         while True:  # rows <= self.rows and col <= self.cols:
             # calculate point based on row/col
             # TODO!  set actual x and y
@@ -486,52 +493,55 @@ class RectangularLayout(VirtualLayout):
                         return
                     yield Location(col, row, x, y, self.set_id(col, row), count)
                     # next grid location
-                    #breakpoint()
-                    print(f'{self.rows=},{self.cols=} {self.direction=} {row=},{col=}')
-                    match self.direction.lower():
-                        case 'e' | 'east':
-                            col = col + 1
-                            if col > self.cols:
-                                col = self.cols
-                                if row_start == self.rows:
-                                    self.direction = 's'
-                                    row = self.rows - 1
-                                elif row == self.rows:
-                                    self.direction = 's'
-                                    row = self.rows - 1
-                                else:
-                                    self.direction = 'n'
-                                    row = 2
-                        case 'w' | 'west':
-                            col = col - 1
-                            if col < 1:
-                                col = col_start
-                                if row_start == self.rows:
-                                    self.direction = 'n'
-                                    row = 2
-                                else:
-                                    self.direction = 's'
-                                    row = self.rows - 1
-                        case 'n' | 'north':
+                    # print(f'{count=} {current_dir=} {row=},{col=} // {row_start=},{col_start=}')
+                    corner = None
+                    if row == 1 and col == 1:
+                        corner = 'sw'
+                        if clockwise:
+                            current_dir = 'n'
                             row = row + 1
-                            if row > self.rows:
-                                row = self.rows
-                                if col == self.cols:
-                                    self.direction = 'w'
-                                    col = col - 1
-                                elif col == col_start:
-                                    self.direction = 'e'
-                                    col = col + 1
-                        case 's' | 'south':
+                        else:
+                            current_dir = 'e'
+                            col = col + 1
+
+                    if row == self.rows and col == 1:
+                        corner = 'nw'
+                        if clockwise:
+                            current_dir = 'e'
+                            col = col + 1
+                        else:
+                            current_dir = 's'
                             row = row - 1
-                            if row < 1:
-                                row = 1
-                                if col_start == self.cols:
-                                    self.direction = 'w'
-                                    col = self.cols - 1
-                                else:
-                                    self.direction = 'e'
-                                    col = 2
+
+                    if row == self.rows and col == self.cols:
+                        corner = 'ne'
+                        if clockwise:
+                            current_dir = 's'
+                            row = row - 1
+                        else:
+                            current_dir = 'w'
+                            col = col - 1
+
+                    if row == 1 and col == self.cols:
+                        corner = 'se'
+                        if clockwise:
+                            current_dir = 'w'
+                            col = col - 1
+                        else:
+                            current_dir = 'n'
+                            row = row + 1
+
+                    # print(f'    {corner=}')
+                    if not corner:
+                        match current_dir:
+                            case 'e' | 'east':
+                                col = col + 1
+                            case 'w' | 'west':
+                                col = col - 1
+                            case 'n' | 'north':
+                                row = row + 1
+                            case 's' | 'south':
+                                row = row - 1
 
                 # ---- regular
                 case _:  # default pattern
