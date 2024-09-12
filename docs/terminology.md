@@ -4,10 +4,15 @@ __pyprototypr__ uses many terms; most of which should - hopefully - be
 reasonably obvious by the context in which they are used.
 
 However, in order to help with clarity, below is a reasonably comprehensive
-list of terms used in various places, grouped by what they affect.
+list of terms used in different places, grouped by what they affect.
+
+Note that some shapes, such as hexagons, have extensive customisation
+properties available; rather refer to their descriptions to understand
+what can be done in those cases.
 
 ## Table of Contents for Terms
 
+* [Colour-orientated](#colour)
 * [Location-orientated](#location)
 * [Size- and length-orientated](#size)
 * [Amount- and count-orientated](#count)
@@ -15,21 +20,55 @@ list of terms used in various places, grouped by what they affect.
 * [](#)
 
 
+## Colour-orientated terms <a name="colour"></a>
+
+Color is defined in the same way as it is in pages that appear on the web i.e.
+in RGB (red-green-blue) *hexadecimal* format - for example, *#A0522D*
+represents a shade of the color that we would likely term "brown".
+
+Colors can also be chosen from a pre-defined list of names - for example
+*#A0522D* is defined as the color *sienna*.  A PDF file is supplied at
+[colorset.pdf](../examples/colorset.pdf) - that shows all the names and colors
+available.
+
+> **NOTE:** It is possible to use the term  _None_ in place of a specific
+> color; this effectively means that nothing will be drawn there - an
+> "invisible" line or area!
+
+* **fill** - the color in which an area is filled
+* **dot_fill** - the color in which a circle is to be drawn at the centre of a
+  shape
+* **stroke** - the color in which a line or text is drawn; many specific
+  strokes are set by prefixing this term with the name of the item in question;
+  examples: **cross_stroke**; **grid_stroke**; **radii_stroke**;
+  **label_stroke**
+
+
 ## Location-orientated terms <a name="location"></a>
+
+* **position** - the relative location of
 
 
 ## Size- and length-orientated terms <a name="size"></a>
 
 The majority of size and length properties will be numeric values, corresponding
-to the **unit** in use.  Default is usually 1.
+to the **unit** in use (unless otherwise noted).  Default is usually 1.
+
+Some sizes or lengths are given in **points** - there are 72 points in an inch -
+so as to align with existing conventions, or simply because these items are
+typically very tiny.
 
 * **|** - the
 * **|** - the
 * **|** - the
-* **|** - the
 
-* **dot_point** - the diameter of a small `Dot` in **points** (there are
-  72 points in an inch)
+* **caltrops** - a descriptive term for the relative size of the "caltrop" -
+  the little three-pointed shape drawn at the vertex of a hexagon; this
+  can be set to: _small_, _medium_ or _large_
+* **diameter** - the diameter of a `Circle`
+* **dot_point** - the diameter of a small `Dot` in **points**
+* **cross_size** - the length and width of the two interescting lines to be
+  drawn at the centre of a shape
 * **height** - the vertical size of a shape e.g. a `Rectangle` or a bitmap
   `Image`
 * **margin** - used in `Create` command to set all margins for a page; the
@@ -41,11 +80,15 @@ to the **unit** in use.  Default is usually 1.
 * **pagesize** - used in `Create` command to set the size of the pages in the
   documents; either ISO series (A0 down to A8; or B6 down to B0) or a USA type
   (_NOTE:_ the pagesize is not wrapped in quotes!)
+* **radius** - the radius of a `Circle`
 * **scaling** - the amount by which an SVG image should be shrunk or
   expanded e.g. 0.5 makes it half-size and 2.0 doubles its size; because
   SVG is a vector-format, there will be no loss of resolution by scaling
 * **side** - the length of a side of some shapes (e.g. `Square`, `Polygon`) as
   well as the distance between each adjacent point in a `TriangularLayout`
+* **stroke_width** - the thickness of a line in **points**; many specific
+  widths are set by prefixing this term with the name of the item in question;
+  examples: **cross_stroke_width**; **grid_stroke_width**; **radii_stroke_width**
 * **width** - the horizontal size of a shape e.g. a `Rectangle` or a bitmap
   `Image`
 * **x** - the location of a point in the horizontal direction; its often the
@@ -61,7 +104,8 @@ to the **unit** in use.  Default is usually 1.
 ## Direction-orientated terms <a name="direction"></a>
 
 In general, there are two primary ways of determining direction of something;
-either by compass direction or angle.
+either by compass direction or angle.  Other descriptive directions are also
+used.
 
 The _angle_ is the amount of rotation, in degrees, starting from a value of
 0 (zero) which is assumed to be the line parallel to the bottom of the page
@@ -70,29 +114,36 @@ line to the side of the page, and so on.  The maximum rotation is 360 degrees.
 
 A _compass direction_ is one of the following:
 
-Primary compass directions:
+Primary compass directions (with abbreviation shown in brackets):
 
-* North (n) - normally corresponds to an angle of 90 degrees
-* South (s) - normally corresponds to an angle of 270 degrees
-* East (e) - normally corresponds to an angle of 0 degrees
-* West (e) - normally corresponds to an angle of 180 degrees
+* north (n) - normally corresponds to an angle of 90 degrees
+* south (s) - normally corresponds to an angle of 270 degrees
+* east (e) - normally corresponds to an angle of 0 degrees
+* west (e) - normally corresponds to an angle of 180 degrees
 
-Secondary compass directions:
+Secondary compass directions (with abbreviation shown in brackets):
 
-* NorthEast (ne) - normally corresponds to an angle of 45 degrees
-* SouthEast (se) - normally corresponds to an angle of 315 degrees
-* NorthWest (nw) - normally corresponds to an angle of 135 degrees
-* SouthWest (sw) - normally corresponds to an angle of 225 degrees
+* north-east (ne) - normally corresponds to an angle of 45 degrees
+* south-east (se) - normally corresponds to an angle of 315 degrees
+* north-west (nw) - normally corresponds to an angle of 135 degrees
+* south-west (sw) - normally corresponds to an angle of 225 degrees
 
 > NOTE - if a compass direction is used in the context of a **hexagon**, the
-> angle is "reinterprated" to match its context e.g. the angle for NorthEast
+> angle is "reinterpreted" to match its context e.g. the angle for NorthEast
 > for a 'pointy' hexagon is 60, not 45, degrees.
 
 Properties that use direction include:
 
 * **direction** - can be any primary compass direction; used to show the travel
-  route when moving through various kinds of  of layouts
+  route when moving through various types of layouts
+* **edges** - can be any primary compass direction; used to indicate the sides
+  of a `Square` or `Rectangle`
 * **facing** - can be any primary compass direction; used to show orientation
   of some types of layouts e.g. `DiamondLayout`
+* **flip** - the relative vertical direction in which a triangle must be drawn;
+  can be either: _north_ or _south_
+* **hand** - the relative horixontal direction in which a triangle must be drawn;
+  can be either: _east_ or _west_
+* **orientation** - use for drawing hexagons; can be either: _flat_ or _pointy_
 * **start** - can be any secondary compass direction; used to show in which
-  corner of a `RectangularLayout` that shapes are first placed.
+  corner of a `RectangularLayout` that shapes are first placed

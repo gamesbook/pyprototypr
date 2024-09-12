@@ -383,9 +383,9 @@ class BaseCanvas:
         # ---- rotation / position /elevation
         self.rotation = self.defaults.get('rotation',
                                         self.defaults.get('rotation', 0))  # degrees
-        self.direction = self.defaults.get('direction', 'vertical')
+        self.direction = self.defaults.get('direction', 'north')
         self.position = self.defaults.get('position', None)
-        self.flip = self.defaults.get('flip', 'up')
+        self.flip = self.defaults.get('flip', 'north')
         self.elevation = self.defaults.get('elevation', 'horizontal')
         self.facing = self.defaults.get('facing', 'out')  # out/in
         # ---- line
@@ -529,8 +529,8 @@ class BaseCanvas:
         self.perimeter = self.defaults.get('perimeter', 'circle')
         self.directions = self.defaults.get('directions', None)
         # ---- triangle
-        self.flip = self.defaults.get('flip', 'up')
-        self.hand = self.defaults.get('hand', 'right')
+        self.flip = self.defaults.get('flip', 'north')
+        self.hand = self.defaults.get('hand', 'east')
         # ---- hexagon / circle
         self.centre_shape = self.defaults.get('centre_shape', '')
         self.centre_shape_x = self.defaults.get('centre_shape_x', 0)
@@ -1114,12 +1114,12 @@ class BaseShape:
                     correct = False
         if self.flip:
             if str(self.flip).lower() not in \
-                    ['up', 'down', 'u', 'd', ]:
+                    ['north', 'south', 'n', 's', ]:
                 issue.append(f'"{self.flip}" is an invalid flip!')
                 correct = False
         if self.hand:
             if str(self.hand).lower() not in \
-                    ['left', 'right', 'l', 'r', ]:
+                    ['west', 'east', 'w', 'e', ]:
                 issue.append(f'"{self.hand}" is an invalid hand!')
                 correct = False
         if self.elevation:

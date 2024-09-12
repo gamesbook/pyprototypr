@@ -882,8 +882,8 @@ class EquilateralTriangleShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         # calculate points
         x, y = self._u.x, self._u.y
-        hand = self.hand.lower() if self.hand else 'right'
-        flip = self.flip.lower() if self.flip else 'up'
+        hand = self.hand.lower() if self.hand else 'east'
+        flip = self.flip.lower() if self.flip else 'north'
         angle = self.angle
         side = self._u.side if self._u.side else self._u.width
         height = 0.5 * math.sqrt(3) * side  # ½√3(a)
@@ -891,17 +891,17 @@ class EquilateralTriangleShape(BaseShape):
         self.vertices = []
         pt0 = Point(x + self._o.delta_x, y + self._o.delta_y)
         self.vertices.append(pt0)
-        if hand == 'left':
+        if hand == 'west' or hand == 'w':
             x2 = pt0.x - side
             y2 = pt0.y
             x3 = pt0.x - 0.5 * side
-        elif hand == 'right':
+        elif hand == 'east' or hand == 'e':
             x2 = pt0.x + side
             y2 = pt0.y
             x3 = x2 - 0.5 * side
-        if flip == 'up':
+        if flip == 'north' or flip == 'n':
             y3 = pt0.y + height
-        elif flip == 'down':
+        elif flip == 'south' or flip == 's':
             y3 = pt0.y - height
         self.vertices.append(Point(x2, y2))
         self.vertices.append(Point(x3, y3))
@@ -2211,13 +2211,13 @@ class RightAngledTriangleShape(BaseShape):
                 stop=True)
         hand = self.hand.lower()
         flip = self.flip.lower()
-        if hand == 'left':
+        if hand == 'west':
             x2 = x - self._u.width
-        elif hand == 'right':
+        elif hand == 'east':
             x2 = x + self._u.width
-        if flip == 'up':
+        if flip == 'north':
             y2 = y + self._u.height
-        elif flip == 'down':
+        elif flip == 'south':
             y2 = y - self._u.height
         self.vertices.append(Point(x2, y2))
         self.vertices.append(Point(x2, y))
