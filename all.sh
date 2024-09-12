@@ -8,7 +8,8 @@ python examples/simple/customised_blueprint.py -d /tmp/demo
 python examples/simple/demo.py -d /tmp/demo
 python examples/simple/diagram.py -d /tmp/demo
 python examples/simple/default_shapes.py -d /tmp/demo
-python examples/simple/grid_shapes.py -d /tmp/demo
+python examples/simple/layouts_basic.py -d /tmp/demo
+python examples/simple/layouts_rectangle.py -d /tmp/demo
 python examples/simple/hexagons.py -d /tmp/demo
 python examples/simple/track_shapes.py -d /tmp/demo
 # -- boards: abstract

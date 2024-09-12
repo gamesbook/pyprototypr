@@ -28,9 +28,11 @@ useful information and build on each other.
     how to work with different kinds of layouts
 11. *[Hexagonal Grids](hexagonal_grids.md)* -
     how to create designs or layouts on a hexagonal grid
-12. *[Using Python Commands](python_commands.md)* -
+12. *[Terminology](terminology.md)* -
+    description of meaning and purpose of properties
+13. *[Using Python Commands](python_commands.md)* -
     how to work with loops and if statements for more flexibility
-13. *[Descriptions of Available Examples](examples/index.md)* -
+14. *[Descriptions of Available Examples](examples/index.md)* -
     brief walkthoughs of many of the examples provided with __pyprototypr__
-14. *[Additional Resources](additional_resources.md)* -
+15. *[Additional Resources](additional_resources.md)* -
     links to information for supplementing pyprototypr

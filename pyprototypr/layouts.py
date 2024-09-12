@@ -336,10 +336,17 @@ class VirtualLayout(VirtualShape):
         self.spacing = kwargs.get('interval', 1)
         self.row_spacing = kwargs.get('y_interval', self.spacing)
         self.col_spacing = kwargs.get('x_interval', self.spacing)
+        # offset
+        self.col_even = kwargs.get('col_even', 0)
+        self.col_odd = kwargs.get('col_odd', 0)
+        self.row_even = kwargs.get('row_even', 0)
+        self.row_odd = kwargs.get('row_odd', 0)
+        # layout
         self.pattern = kwargs.get('pattern', 'default')
         self.direction = kwargs.get('direction', 'east')
         self.facing = kwargs.get('facing', 'east')  # for diamond, triangle
         self.flow = None  # used for snake; see validate() for setting
+        # start / end
         self.start = kwargs.get('start', 'sw')
         self.stop = kwargs.get('stop', 0)
         self.label_style = kwargs.get('label_style', None)
@@ -378,7 +385,7 @@ class VirtualLayout(VirtualShape):
                 or 's' in self.start.lower()[0] and 's' in self.direction.lower()[0] \
                 or 'w' in self.start.lower()[0] and 'w' in self.direction.lower()[0] \
                 or 'e' in self.start.lower()[0] and 'e' in self.direction.lower()[0]:
-            tools.feedback(f"** Cannot use {self.start} with {self.direction}!", True)
+            tools.feedback(f"Cannot use {self.start} with {self.direction}!", True)
         if self.direction.lower() in ['north', 'n', 'south', 's']:
             self.flow = 'vert'
         elif self.direction.lower() in ['west', 'w', 'east', 'e']:
@@ -387,13 +394,33 @@ class VirtualLayout(VirtualShape):
             tools.feedback(f"{self.direction} is not a valid direction!", True)
         if self.label_style and self.label_style.lower() != 'excel':
             tools.feedback(f"{self.label_style } is not a valid label_style !", True)
+        if self.col_odd and self.col_even:
+            tools.feedback("Cannot use 'col_odd' and 'col_even' together!", True)
+        if self.row_odd and self.row_even:
+            tools.feedback("Cannot use 'row_odd' and 'row_even' together!", True)
 
-    def set_id(self, col, row) -> str:
+    def set_id(self, col: int, row: int) -> str:
         """Create an ID from row and col values."""
         if self.label_style and self.label_style.lower() == 'excel':
             return '%s%s' % (tools.sheet_column(col), row)
         else:
             return '%s,%s' % (col, row)
+
+    def set_compass(self, compass: str) -> str:
+        """Return full lower-case value of primary compass direction."""
+        if not compass:
+            return None
+        if str(compass).lower() in ['n', 'north']:
+            return 'north'
+        elif str(compass).lower() in ['s', 'south']:
+            return 'south'
+        elif str(compass).lower() in ['e', 'east']:
+            return 'east'
+        elif str(compass).lower() in ['w', 'wwst']:
+            return 'west'
+        else:
+            raise ValueError(f'"{compass}" is an invalid compass direction!')
+
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""
@@ -433,11 +460,21 @@ class RectangularLayout(VirtualLayout):
         max_outer = 2 * self.rows + (self.cols - 2) * 2
         # print(f'\n*** {self.start=} {self.layout_size=} {max_outer=} {self.stop=} {clockwise=}')
         while True:  # rows <= self.rows and col <= self.cols:
+            count = count + 1
             # calculate point based on row/col
             # TODO!  set actual x and y
             x = self.x + (col - 1) * self.col_spacing
             y = self.y + (row - 1) * self.row_spacing
-            count = count + 1
+            # offset(s)
+            if self.col_odd and col & 1:
+                y = y + self.col_odd
+            if self.col_even and not col & 1:
+                y = y + self.col_even
+            if self.row_odd and row & 1:
+                x = x + self.row_odd
+            if self.row_even and not row & 1:
+                x = x + self.row_even
+            # print(f'*** {count=} {row=},{col=} // {x=},{y=}')
             # set next grid location
             match self.pattern.lower():
                 # ---- snake
@@ -494,7 +531,7 @@ class RectangularLayout(VirtualLayout):
                         return
                     yield Location(col, row, x, y, self.set_id(col, row), count)
                     # next grid location
-                    # print(f'{count=} {current_dir=} {row=},{col=} // {row_start=},{col_start=}')
+                    # print(f'*** {count=} {current_dir=} {row=},{col=} // {row_start=},{col_start=}')
                     corner = None
                     if row == 1 and col == 1:
                         corner = 'sw'
@@ -532,7 +569,6 @@ class RectangularLayout(VirtualLayout):
                             current_dir = 'n'
                             row = row + 1
 
-                    # print(f'    {corner=}')
                     if not corner:
                         match current_dir:
                             case 'e' | 'east':
@@ -611,6 +647,33 @@ class TriangularLayout(VirtualLayout):
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""
+        _start = self.set_compass(self.start.lower())
+        _dir = self.set_compass(self.direction.lower())
+        _facing = self.set_compass(self.facing.lower())
+        current_dir = _dir
+        match (_facing, _start):
+            case ('north', 'north'):
+                row_start = 1
+                col_start = 1
+                clockwise = True if _dir == 'north' else False
+            case ('north', 'west'):
+                row_start = 1
+                col_start = self.cols
+                clockwise = True if _dir == 'west' else False
+            case ('north', 'east'):
+                row_start = self.rows
+                col_start = 1
+                clockwise = True if _dir == 'east' else False
+
+        col, row, count = col_start, row_start, 0
+        max_outer = 2 * self.rows + (self.cols - 2) * 2
+        # print(f'\n*** {self.start=} {self.layout_size=} {max_outer=} {self.stop=} {clockwise=}')
+        while True:  # rows <= self.rows and col <= self.cols:
+            count = count + 1
+            # calculate point based on row/col
+            # TODO!  set actual x and y
+            x = self.x + (col - 1) * self.col_spacing
+            y = self.y + (row - 1) * self.row_spacing
 
 
 class DiamondLayout(VirtualLayout):

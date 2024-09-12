@@ -1467,13 +1467,21 @@ def Layout(grid, **kwargs):
     kwargs = kwargs
     shapes = kwargs.get('shapes', [])
     locations = kwargs.get('locations', [])
-    masks = kwargs.get('masks', [])
+    mask = kwargs.get('mask', [])
 
     # ---- validate input
     if not shapes:
         tools.feedback(f"There is no list of shapes to draw!", False, True)
     if not isinstance(grid, VirtualLayout):
         tools.feedback(f"The grid value '{grid}' is not valid!", True)
+    if mask:
+        if not isinstance(mask, list):
+            tools.feedback(f"The mask value '{mask}' is not valid list!", True)
+        for item in mask:
+            if not isinstance(item, int):
+                tools.feedback(
+                    f'The mask must only contain a list of integers (not "{item}")!',
+                    True)
     # ---- setup locations; automatically or via user-specification
     shape_id = 0
     default_locations = enumerate(grid.next_location())
@@ -1481,10 +1489,10 @@ def Layout(grid, **kwargs):
         _locations = default_locations
     else:
         raise NotImplementedError('Cannot handle user-input locations')
-    if masks:
-        raise NotImplementedError('Cannot handle user-input masks')
     # ---- iterate through locations & draw shape(s)
     for count, loc in _locations:
+        if mask and count + 1 in mask:
+            continue
         if grid.stop and count + 1 >= grid.stop:
             break
         if grid.pattern in ['o', 'outer']:
@@ -1522,7 +1530,7 @@ def Layout(grid, **kwargs):
                 case 'id' | 'i':
                     Dot(x=loc.x, y=loc.y, label=loc.id,
                         stroke=DEBUG_COLOR, fill=DEBUG_COLOR)
-                case 'sequence' | 's':
+                case 'count' | 'c':
                     Dot(x=loc.x, y=loc.y, label=f'{loc.sequence}',
                         stroke=DEBUG_COLOR, fill=DEBUG_COLOR)
                 case 'xy' | 'xy':
