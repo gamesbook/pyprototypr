@@ -113,6 +113,7 @@ def Create(**kwargs):
     global pargs
     global footer
     global footer_draw
+    global units
     # ---- margin
     margin = kwargs.get('margin', margin)
     margin_left = kwargs.get('margin_left', margin)
@@ -126,6 +127,7 @@ def Create(**kwargs):
     kwargs = margins(**kwargs)
     pagesize = kwargs.get('pagesize', A4)
     defaults = kwargs.get('defaults', None)
+    units = kwargs.get('units', cm)
     footer = None
     footer_draw = False
     # ---- fonts
@@ -1504,7 +1506,10 @@ def Layout(grid, **kwargs):
                     f'You cannot use {text[0]} as a special field; remove the {{ }} brackets',
                     True)
             # ---- execute the draw()
-            shape.draw(off_x=loc.x, off_y=loc.y)
+            # breakpoint()
+            cx = loc.x * shape.units + shape._o.delta_x
+            cy = loc.y * shape.units + shape._o.delta_y
+            shape.draw(_abs_cx=cx, _abs_cy=cy)
             shape_id += 1
         if shape_id > len(shapes) - 1:
             shape_id = 0  # reset and start again

@@ -333,8 +333,9 @@ class VirtualLayout(VirtualShape):
         self.rows = self.to_int(rows, 'rows')
         self.cols = self.to_int(cols, 'cols')
         self.layout_size = self.rows * self.cols
-        self.row_spacing = kwargs.get('y_interval', 1)
-        self.col_spacing = kwargs.get('x_interval', 1)
+        self.spacing = kwargs.get('interval', 1)
+        self.row_spacing = kwargs.get('y_interval', self.spacing)
+        self.col_spacing = kwargs.get('x_interval', self.spacing)
         self.pattern = kwargs.get('pattern', 'default')
         self.direction = kwargs.get('direction', 'east')
         self.facing = kwargs.get('facing', 'east')  # for diamond, triangle
@@ -434,8 +435,8 @@ class RectangularLayout(VirtualLayout):
         while True:  # rows <= self.rows and col <= self.cols:
             # calculate point based on row/col
             # TODO!  set actual x and y
-            x = col
-            y = row
+            x = self.x + (col - 1) * self.col_spacing
+            y = self.y + (row - 1) * self.row_spacing
             count = count + 1
             # set next grid location
             match self.pattern.lower():

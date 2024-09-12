@@ -503,6 +503,7 @@ class BaseCanvas:
         # ---- stadium
         self.edges = self.defaults.get('edges', 'north south')
         # ---- grid / card layout
+        self.grid = None  # some Shapes can auto-generate a GridShape
         self.rows = self.defaults.get('rows', 0)
         self.cols = self.defaults.get('cols', self.defaults.get('columns', 0))
         self.offset_x = self.defaults.get('offset_x', 0)
@@ -1074,19 +1075,18 @@ class BaseShape:
         self._abs_x = kwargs.get('_abs_x', None)
         self._abs_y = kwargs.get('_abs_y', None)
         self._abs_x1 = kwargs.get('_abs_x1', None)
-        self._abs_y1= kwargs.get('_abs_y1', None)
+        self._abs_y1 = kwargs.get('_abs_y1', None)
         self._abs_cx = kwargs.get('_abs_cx', None)
         self._abs_cy = kwargs.get('_abs_cy', None)
-        self.use_abs = True if self._abs_x and self._abs_y else False
-        self.use_abs_1 = True if self._abs_x1 and self._abs_y1 else False
-        self.use_abs_c = True if self._abs_cx and self._abs_cy else False
+        self.use_abs = True if self._abs_x is not None and self._abs_y is not None else False
+        self.use_abs_1 = True if self._abs_x1 is not None and self._abs_y1 is not None else False
+        self.use_abs_c = True if self._abs_cx is not None and self._abs_cy is not None else False
 
     def register_font(self, font_name: str = ''):
         if not font_name:
             raise ValueError('No font name supplied for registration!')
         font_file = font_name + '.ttf'
         pdfmetrics.registerFont(TTFont(font_name, font_file))
-
 
     def check_settings(self) -> tuple:
         """Check that the user-supplied parameters are correct"""

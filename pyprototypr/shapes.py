@@ -1410,8 +1410,8 @@ class HexShape(BaseShape):
         self.draw_title(cnv, ID, x_d, y_d - offset, **kwargs)
         # ----  numbering
         self.set_coord(cnv, x_d, y_d, half_flat)
-        # ---- return key settings
-        return GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
+        # ---- set grid property
+        self.grid = GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
 
 
 class LineShape(BaseShape):
@@ -1903,7 +1903,7 @@ class RectangleShape(BaseShape):
             tools.feedback("Cannot use notch and chevron together.", True)
         # ---- calculate properties
         x, y = self.calculate_xy()
-        # ---- overrides for grid
+        # ---- overrides for grid layout
         if self.use_abs_c:
             x = self._abs_cx - self._u.width / 2.0
             y = self._abs_cy - self._u.height / 2.0
@@ -2120,8 +2120,8 @@ class RectangleShape(BaseShape):
         # ---- handle rotation: END
         if rotation:
             cnv.restoreState()
-        # ---- return key settings
-        return GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
+        # ---- set grid property
+        self.grid = GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
 
 
 class RhombusShape(BaseShape):
@@ -2375,7 +2375,7 @@ class SquareShape(RectangleShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a square on a given canvas."""
-        # tools.feedback(f'@Square@ {self.label=} // {off_x=}, {off_y=}')
+        # tools.feedback(f'@Square@ {self.label=} // {off_x=}, {off_y=} {kwargs=}')
         return super().draw(cnv, off_x, off_y, ID, **kwargs)
 
 
