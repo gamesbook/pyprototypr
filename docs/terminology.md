@@ -1,7 +1,7 @@
 # pyprototypr: Terminology
 
 __pyprototypr__ uses many terms; most of which should - hopefully - be
-reasonably obvious by the context in which they are used.
+reasonably obvious by their name, or by the context in which they are used.
 
 However, in order to help with clarity, below is a reasonably comprehensive
 list of terms used in different places, grouped by what they affect.
@@ -10,10 +10,11 @@ Note that some shapes, such as hexagons, have extensive customisation
 properties available; rather refer to their descriptions to understand
 what can be done in those cases.
 
+
 ## Table of Contents for Terms
 
 * [Colour-orientated](#colour)
-* [Location-orientated](#location)
+* [Location- and position-orientated](#location)
 * [Size- and length-orientated](#size)
 * [Amount- and count-orientated](#count)
 * [Direction-orientated](#direction)
@@ -23,11 +24,11 @@ what can be done in those cases.
 ## Colour-orientated terms <a name="colour"></a>
 
 Color is defined in the same way as it is in pages that appear on the web i.e.
-in RGB (red-green-blue) *hexadecimal* format - for example, *#A0522D*
+in RGB (red-green-blue) *hexadecimal* format - for example, `#A0522D`
 represents a shade of the color that we would likely term "brown".
 
 Colors can also be chosen from a pre-defined list of names - for example
-*#A0522D* is defined as the color *sienna*.  A PDF file is supplied at
+`#A0522D` is defined as the color _sienna_.  A PDF file is supplied at
 [colorset.pdf](../examples/colorset.pdf) - that shows all the names and colors
 available.
 
@@ -44,19 +45,34 @@ available.
   **label_stroke**
 
 
-## Location-orientated terms <a name="location"></a>
+## Location- and position-orientated terms <a name="location"></a>
+
+Everything in __pyprototypr__ that needs to be displayed or drawn or positioned
+must be placed somewhere on the page; each thing must have both a horizontal
+position - its **x** value - and a vertical position - its **x** value. These
+respectively represent the distances from the left- and bottom-edge of a page.
 
 * **position** - the relative location of
+* **align** - used to position text relative to a
+
+* **x** - the location of a point in the horizontal direction; its often the
+  case that the distance is not absolute, but relative to some other value
+  e.g. distance from a margin; or the edge of a `Card`
+* **y** - the location of a point in the vertical direction; its often the
+  case that the distance is not absolute, but relative to some other value
+  e.g. distance from a margin; or the edge of a `Card`
 
 
 ## Size- and length-orientated terms <a name="size"></a>
 
 The majority of size and length properties will be numeric values, corresponding
-to the **unit** in use (unless otherwise noted).  Default is usually 1.
+to the **unit** in use (unless otherwise noted).  The default is usually 1.
 
 Some sizes or lengths are given in **points** - there are 72 points in an inch -
 so as to align with existing conventions, or simply because these items are
 typically very tiny.
+
+A few sizes are given descriptive names; this makes them a little easier to set.
 
 * **|** - the
 * **|** - the
@@ -82,7 +98,7 @@ typically very tiny.
   (_NOTE:_ the pagesize is not wrapped in quotes!)
 * **radius** - the radius of a `Circle`
 * **scaling** - the amount by which an SVG image should be shrunk or
-  expanded e.g. 0.5 makes it half-size and 2.0 doubles its size; because
+  expanded e.g. 0.5 makes it half-size and 2.0 doubles its size; but because
   SVG is a vector-format, there will be no loss of resolution by scaling
 * **side** - the length of a side of some shapes (e.g. `Square`, `Polygon`) as
   well as the distance between each adjacent point in a `TriangularLayout`
@@ -91,12 +107,7 @@ typically very tiny.
   examples: **cross_stroke_width**; **grid_stroke_width**; **radii_stroke_width**
 * **width** - the horizontal size of a shape e.g. a `Rectangle` or a bitmap
   `Image`
-* **x** - the location of a point in the horizontal direction; its often the
-  case that the distance is not absolute, but relative to some other value
-  e.g. distance from a margin; or the edge of a `Card`
-* **y** - the location of a point in the vertical direction; its often the
-  case that the distance is not absolute, but relative to some other value
-  e.g. distance from a margin; or the edge of a `Card`
+
 
 ## Amount- and count-orientated terms <a name="count"></a>
 
@@ -128,7 +139,7 @@ Secondary compass directions (with abbreviation shown in brackets):
 * north-west (nw) - normally corresponds to an angle of 135 degrees
 * south-west (sw) - normally corresponds to an angle of 225 degrees
 
-> NOTE - if a compass direction is used in the context of a **hexagon**, the
+> _NOTE_ - if a compass direction is used in the context of a **hexagon**, the
 > angle is "reinterpreted" to match its context e.g. the angle for NorthEast
 > for a 'pointy' hexagon is 60, not 45, degrees.
 

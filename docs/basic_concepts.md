@@ -85,6 +85,7 @@ Examples of some of the available geometric **shapes** include:
 * Polygon
 * Rectangle
 * Rhombus
+* Square
 * Stadium
 
 Descriptions of all of these elements, and how to create and use them, are provided
@@ -104,10 +105,8 @@ A circle will have its size defined by a *radius* or a *diameter*, and so on.
 > *NOTE:* Because the word "size" is such a general one, its not really used in
 > **pyprototypr**;  more specific terms are used instead.
 
-Many elements which enclose an area also have a *fill* -  that is the term for
-the color with which their area will be "filled".
-
-All of these kinds of settings are called **properties**.
+All of these kinds of settings are called **properties**. Most of the common
+properties are described in the [Terminology](terminology.md).
 
 
 ## Working with color
@@ -116,17 +115,17 @@ Everything we see has color.
 
 Color in **pyprototypr**, is defined in the same way as it is in pages that appear
 on the web i.e. in RGB (red-green-blue) *hexadecimal* format - for example,
-*#A0522D* represents a shade of the color that we would likely term "brown".
+`#A0522D` represents a shade of the color that we would likely term "brown".
 
 > For more details on hexadecimal colors, refer to http://www.w3.org/TR/css3-color.
 
 Colors in **pyprototypr** can also make use of names from a pre-defined list - for
-example *#A0522D* is defined as the color *sienna*.  A PDF file is supplied at
+example `#A0522D` is defined as the color *sienna*.  A PDF file is supplied at
 [colorset.pdf](../examples/colorset.pdf) - that shows all the names and colors
 available.
 
-Color properties in **pyprototypr** are typically set using a "fill" to set the color
-of an area, and "stroke" to set the color of a line.
+Color properties in **pyprototypr** are typically used via _"fill"_ to set the
+color of an area, and _"stroke"_ to set the color of a line.
 
 
 ## Working with units
@@ -136,8 +135,8 @@ lengths or sizes all need to be measured in a particular set of **units**.
 
 In the USA, people tend to use the so-called Imperial System. In
 **pyprototypr** this means that distances might be measured in units of inches
-(inches are often shown with an *"* symbol in documents, but in **pyprototypr** inches
-are referred to using the term *inch*).
+(inches are often shown with an *"* symbol in documents, but in **pyprototypr**
+inches are referred to using the term *inch*).
 
 In almost all of the rest of the world, the Metric System is in use. In **pyprototypr**
 this means that distances will be measured in units of centimetres (referred to in

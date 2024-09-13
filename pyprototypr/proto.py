@@ -758,8 +758,8 @@ def Hexagon(row=None, col=None, **kwargs):
     kwargs['row'] = row
     kwargs['col'] = col
     hexagon = HexShape(canvas=cnv, **kwargs)
-    grid_shape = hexagon.draw()
-    return grid_shape
+    hexagon.draw()
+    return hexagon
 
 
 def hexagon(row=None, col=None, **kwargs):
@@ -863,8 +863,8 @@ def Rectangle(row=None, col=None, **kwargs):
     global deck
     kwargs = margins(**kwargs)
     rect = rectangle(row=row, col=col, **kwargs)
-    grid_shape = rect.draw()
-    return grid_shape
+    rect.draw()
+    return rect
 
 
 def rectangle(row=None, col=None, **kwargs):
@@ -917,8 +917,8 @@ def Square(row=None, col=None, **kwargs):
     global deck
     kwargs = margins(**kwargs)
     sqr = square(row=row, col=col, **kwargs)
-    grid_shape = sqr.draw()
-    return grid_shape
+    sqr.draw()
+    return sqr
 
 
 def square(row=None, col=None, **kwargs):
@@ -1218,9 +1218,9 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
                 if kwargs.get('masked') and [_row, ccol] in kwargs.get('masked'):
                     pass
                 else:
-                    grid_location = Hexagon(
+                    hxgn = Hexagon(
                         row=row, col=ccol - 1, hex_rows=rows, hex_cols=cols, **kwargs)
-                    locations.append(grid_location)
+                    locations.append(hxgn.grid)
             if ccol - 1 == stop:  # reached "leftmost" -> reset counters
                 top_row = 1
                 end_row = rows - 1
@@ -1275,9 +1275,9 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
                 if kwargs.get('masked') and [row + 1, col + 1] in kwargs.get('masked'):
                     pass
                 else:
-                    grid_location = Hexagon(
+                    hxgn = Hexagon(
                         row=row, col=col, hex_rows=rows, hex_cols=cols, **kwargs)
-                    locations.append(grid_location)
+                    locations.append(hxgn.grid)
 
     return locations
 
@@ -1294,8 +1294,8 @@ def Rectangles(rows=1, cols=1, **kwargs):
             if kwargs.get('masked') and [row + 1, col + 1] in kwargs.get('masked'):
                 pass
             else:
-                grid_location = Rectangle(row=row, col=col, **kwargs)
-                locations.append(grid_location)
+                rect = Rectangle(row=row, col=col, **kwargs)
+                locations.append(rect.grid)
 
     return locations
 
@@ -1312,8 +1312,8 @@ def Squares(rows=1, cols=1, **kwargs):
             if kwargs.get('masked') and [row + 1, col + 1] in kwargs.get('masked'):
                 pass
             else:
-                grid_location = Square(row=row, col=col, **kwargs)
-                locations.append(grid_location)
+                square = Square(row=row, col=col, **kwargs)
+                locations.append(square.grid)
 
     return locations
 

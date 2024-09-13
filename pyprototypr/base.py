@@ -814,8 +814,8 @@ class BaseShape:
         self.perimeter = kwargs.get('perimeter', 'circle')  # circle|rectangle|hexagon
         self.directions = kwargs.get('directions', None)
         # ---- triangle
-        self.flip = kwargs.get('flip', 'up')
-        self.hand = kwargs.get('hand', 'right')
+        self.flip = kwargs.get('flip', 'north')
+        self.hand = kwargs.get('hand', 'east')
         # ---- hexagon / circle / polygon
         self.centre_shape = kwargs.get('centre_shape', '')
         self.centre_shape_x = kwargs.get('centre_shape_x', cnv.centre_shape_x)

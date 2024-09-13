@@ -419,7 +419,7 @@ PageBreak()
 # ---- dates
 Blueprint()
 Text(common=txt, text="Dates: format and styles")
-dtext = Common(x=0.5, align="west", font_size=8)
+dtext = Common(x=0.5, align="left", font_size=8)
 Text(common=dtext, y=5, text=Today())
 Text(common=dtext, y=4, text=Today(details="date", style="usa"))
 Text(common=dtext, y=3, text=Today(details="date", style="eur"))
