@@ -687,6 +687,11 @@ class TriangularLayout(VirtualLayout):
         _dir = self.set_compass(self.direction.lower())
         _facing = self.set_compass(self.facing.lower())
         current_dir = _dir
+
+        # TODO - create logic
+        if self.pattern.lower() in ['snake', 'snaking', 's']:
+            tools.feedback('Snake pattern NOT YET IMPLEMENTED', True)
+
         # ---- store row/col as list of lists
         array = []
         match _facing:

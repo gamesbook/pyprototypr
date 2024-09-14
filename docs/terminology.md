@@ -18,6 +18,7 @@ what can be done in their cases.
 * [Size- and length-orientated](#size)
 * [Amount- and count-orientated](#count)
 * [Direction-orientated](#direction)
+* [Styling-orientated](#styling)
 * [Display-orientated](#display)
 * [Miscellaneous terms](#misc)
 * [](#)
@@ -54,16 +55,22 @@ must be placed somewhere on the page; each thing must have both a horizontal
 position - its **x** value - and a vertical position - its **x** value. These
 respectively represent the distances from the left- and bottom-edge of a page.
 
-* **position** - the relative location of
-* **align** - used to position text relative to a
-
+* **position** - the relative location with a shape; can be one of:
+  _top_, _middle_, _center_, or _bottom_
+* **align** - used to position text relative to its starting location; can be
+  one of: _justify_, _left_, _right_, or _centre_ / _center_
 * **x** - the location of a point in the horizontal direction; its often the
   case that the distance is not absolute, but relative to some other value
   e.g. distance from a margin; or the edge of a `Card`
 * **y** - the location of a point in the vertical direction; its often the
   case that the distance is not absolute, but relative to some other value
   e.g. distance from a margin; or the edge of a `Card`
-
+* **cx** - the centre location of a shape, going in the horizontal direction;
+  its often the case that the distance is not absolute, but relative to some
+  other value e.g. distance from a margin; or the edge of a `Card`
+* **cy** - the centre location of a shape, going in the vertical direction;
+  its often the case that the distance is not absolute, but relative to some
+  other value e.g. distance from a margin; or the edge of a `Card`
 
 ## Size- and length-orientated terms <a name="size"></a>
 
@@ -113,6 +120,8 @@ A few sizes are given descriptive names; this makes them a little easier to set.
 
 ## Amount- and count-orientated terms <a name="count"></a>
 
+* **sides** - the number of sides of a `Polygon` shape
+
 
 ## Direction-orientated terms <a name="direction"></a>
 
@@ -147,6 +156,8 @@ Secondary compass directions (with abbreviation shown in brackets):
 
 Properties that use direction include:
 
+* **clockwise** - a `True` or `False` setting used to determine direction of
+  travel around a circle
 * **direction** - can be any primary compass direction; used to show the travel
   route when moving through various types of layouts e.g. `RectangularLayout`
 * **edges** - can be any primary compass direction; used to indicate the sides
@@ -160,6 +171,15 @@ Properties that use direction include:
 * **orientation** - used for drawing hexagons; can be either: _flat_ or _pointy_
 * **start** - can be any secondary compass direction; used to show in which
   corner of a `RectangularLayout` that shapes are first placed
+
+
+## Styling-orientated terms <a name="styling"></a>
+
+* **line_dots** - allows a line to be broken into a series of dots of fixed
+  size (3 points)
+* **dashes** - allows a line to be broken into a series of dashes of
+  specific lengths, separated by spaces of specific lengths; there can
+  any number of these in a list.
 
 
 ## Display-orientated terms <a name="display""></a>
@@ -176,4 +196,6 @@ Properties that use direction include:
 
 * **debug** - a value can be set for this that will cause underlying values
   or locations to be displayed e.g. using `debug="n"` for a layout will show
-  small dots where each point in that layout exists.
+  small dots where each point in that layout exists
+* **perimeter** - used to demacate the boundary of a `StarField`; one of
+  _circle_, _rectangle_ or _polygon_
