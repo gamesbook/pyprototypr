@@ -5,7 +5,7 @@ Create layouts - grids, repeats, sequences, tracks and connections - for pyproto
 # lib
 import copy
 import logging
-
+import math
 # third party
 # local
 from pyprototypr.utils.geoms import (
@@ -311,7 +311,8 @@ class VirtualShape():
             float_value = float(value)
             return float_value
         except Exception:
-            tools.feedback(f"{value} is not a valid {label} floating number!", True)
+            _label = f" for {label}" if label else ''
+            tools.feedback(f'"{value}"{_label} is not a valid floating number!', True)
 
 # ---- virtual layouts
 
@@ -326,12 +327,13 @@ class VirtualLayout(VirtualShape):
     global cnv
     global deck
 
-    def __init__(self, rows=2, cols=2, **kwargs):
+    def __init__(self, rows, cols, **kwargs):
         kwargs = kwargs
-        self.x = self.to_float(kwargs.get('x', 1.0), 'x')  # lower-left corner of layout
-        self.y = self.to_float(kwargs.get('y', 1.0), 'y')  # lower-left corner of layout
+        self.x = self.to_float(kwargs.get('x', 1.0), 'x')  # left(lower) corner of layout
+        self.y = self.to_float(kwargs.get('y', 1.0), 'y')  # left(lower) corner of layout
         self.rows = self.to_int(rows, 'rows')
         self.cols = self.to_int(cols, 'cols')
+        self.side = self.to_float(kwargs.get('side', 1.0), 'side')
         self.layout_size = self.rows * self.cols
         self.spacing = kwargs.get('interval', 1)
         self.row_spacing = kwargs.get('y_interval', self.spacing)
@@ -347,7 +349,7 @@ class VirtualLayout(VirtualShape):
         self.facing = kwargs.get('facing', 'east')  # for diamond, triangle
         self.flow = None  # used for snake; see validate() for setting
         # start / end
-        self.start = kwargs.get('start', 'sw')
+        self.start = kwargs.get('start', None)
         self.stop = kwargs.get('stop', 0)
         self.label_style = kwargs.get('label_style', None)
         self.validate()
@@ -360,14 +362,6 @@ class VirtualLayout(VirtualShape):
         self.start = str(self.start)
         self.pattern = str(self.pattern)
         self.direction = str(self.direction)
-        if self.cols < 2 or self.rows < 2:
-            tools.feedback(
-                f"Minimum grid size is 2x2 (cannot use {self.cols }x{self.rows})!",
-                True)
-        if self.start.lower() not in ['sw', 'se', 'nw', 'ne']:
-            tools.feedback(
-                f"{self.start} is not a valid start - "
-                "use: 'sw', 'se', 'nw', or 'ne'", True)
         if self.pattern.lower() not in [
                 'default', 'd', 'snake', 's', 'outer', 'o']:
             tools.feedback(
@@ -416,11 +410,10 @@ class VirtualLayout(VirtualShape):
             return 'south'
         elif str(compass).lower() in ['e', 'east']:
             return 'east'
-        elif str(compass).lower() in ['w', 'wwst']:
+        elif str(compass).lower() in ['w', 'west']:
             return 'west'
         else:
             raise ValueError(f'"{compass}" is an invalid compass direction!')
-
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""
@@ -434,12 +427,24 @@ class RectangularLayout(VirtualLayout):
     global cnv
     global deck
 
+    def __init__(self, rows=2, cols=2, **kwargs):
+        super(RectangularLayout, self).__init__(rows, cols, **kwargs)
+        self.start = kwargs.get('start', 'sw')
+        if self.cols < 2 or self.rows < 2:
+            tools.feedback(
+                f"Minimum layout size is 2x2 (cannot use {self.cols }x{self.rows})!",
+                True)
+        if self.start.lower() not in ['sw', 'se', 'nw', 'ne']:
+            tools.feedback(
+                f"{self.start} is not a valid start - "
+                "use: 'sw', 'se', 'nw', or 'ne'", True)
+
     def next_location(self) -> Location:
         """Yield next Location for each call."""
         _start = self.start.lower()
         _dir = self.direction.lower()
         current_dir = _dir
-        match self.start.lower():
+        match _start:
             case 'sw':
                 row_start = 1
                 col_start = 1
@@ -643,7 +648,18 @@ class TriangularLayout(VirtualLayout):
     global deck
 
     def __init__(self, rows=2, cols=2, **kwargs):
-        super(TriangularLayout, self).__init__(rows=2, cols=2, **kwargs)
+        super(TriangularLayout, self).__init__(rows, cols, **kwargs)
+        self.start = kwargs.get('start', 'north')
+        self.facing = kwargs.get('facing', 'north')
+        if (self.cols < 2 and self.rows < 1) or (self.cols < 1 and self.rows < 2):
+            tools.feedback(
+                f"Minimum layout size is 2x1 or 1x2 (cannot use {self.cols }x{self.rows})!",
+                True)
+        if self.start.lower() not in [
+                'north', 'south', 'east', 'west', 'n', 'e', 'w', 's', ]:
+            tools.feedback(
+                f"{self.start} is not a valid start - "
+                "use: 'n', 's', 'e', or 'w'", True)
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""
@@ -651,6 +667,25 @@ class TriangularLayout(VirtualLayout):
         _dir = self.set_compass(self.direction.lower())
         _facing = self.set_compass(self.facing.lower())
         current_dir = _dir
+        # ---- store row/col as list of lists
+        array = []
+        match _facing:
+            case 'north' | 'south':
+                for length in range(1, self.cols + 1):
+                    _cols = [col for col in range(1, length + 1)]
+                    if _cols:
+                        array.append(_cols)
+            case 'east' | 'west':
+                for length in range(1, self.rows + 1):
+                    _rows = [row for row in range(1, length + 1)]
+                    if _rows:
+                        array.append(_rows)
+            case _:
+                tools.feedback(f'The facing value {self.facing} is not valid!', True)
+        # print(f'{_facing}', f'{self.cols=}',  f'{self.rows=}',array)
+
+        # ---- calculate initial conditions
+        col_start, row_start = 1, 1
         match (_facing, _start):
             case ('north', 'north'):
                 row_start = 1
@@ -668,12 +703,56 @@ class TriangularLayout(VirtualLayout):
         col, row, count = col_start, row_start, 0
         max_outer = 2 * self.rows + (self.cols - 2) * 2
         # print(f'\n*** {self.start=} {self.layout_size=} {max_outer=} {self.stop=} {clockwise=}')
-        while True:  # rows <= self.rows and col <= self.cols:
-            count = count + 1
-            # calculate point based on row/col
-            # TODO!  set actual x and y
-            x = self.x + (col - 1) * self.col_spacing
-            y = self.y + (row - 1) * self.row_spacing
+        # ---- set row and col spacing
+        match _facing:
+            case 'north' | 'south':  # layout is row-oriented
+                self.col_spacing = self.side
+                self.row_spacing = math.sqrt(3) / 2. * self.side
+            case 'east' | 'west':  # layout is col-oriented
+                self.col_spacing = math.sqrt(3) / 2. * self.side
+                self.row_spacing = self.side
+        # ---- iterate the rows and cols
+        hlf_side = self.side / 2.0
+        for key, entry in enumerate(array):
+            match _facing:
+                case 'north':  # layout is row-oriented
+                    y = self.y + self.rows * self.row_spacing - (key + 1) * self.row_spacing
+                    dx = 0.5 * (self.cols - len(entry)) * self.col_spacing - \
+                        (self.cols - 1) * 0.5 * self.col_spacing
+                    for val, loc in enumerate(entry):
+                        count = count + 1
+                        x = self.x + dx + val * self.col_spacing
+                        yield Location(
+                            loc, key + 1, x, y, self.set_id(loc, key + 1), count)
+                case 'south':  # layout is row-oriented
+                    y = self.y + key * self.row_spacing
+                    dx = 0.5 * (self.cols - len(entry)) * self.col_spacing - \
+                        (self.cols - 1) * 0.5 * self.col_spacing
+                    for val, loc in enumerate(entry):
+                        count = count + 1
+                        x = self.x + dx + val * self.col_spacing
+                        yield Location(
+                            loc, key + 1, x, y, self.set_id(loc, key + 1), count)
+                case 'east':  # layout is col-oriented
+                    x = self.x + self.cols * self.col_spacing - (key + 2) * self.col_spacing
+                    dy = 0.5 * (self.rows - len(entry)) * self.row_spacing - \
+                        (self.rows - 1) * 0.5 * self.col_spacing
+                    for val, loc in enumerate(entry):
+                        count = count + 1
+                        y = self.y + dy + val * self.row_spacing
+                        yield Location(
+                            key + 1, loc, x, y, self.set_id(key + 1, loc), count)
+
+                case 'west':  # layout is col-oriented
+                    x = self.x + key * self.col_spacing
+                    dy = 0.5 * (self.rows - len(entry)) * self.row_spacing - \
+                        (self.rows - 1) * 0.5 * self.col_spacing
+                    for val, loc in enumerate(entry):
+                        count = count + 1
+                        y = self.y + dy + val * self.row_spacing
+                        yield Location(
+                            key + 1, loc, x, y, self.set_id(key + 1, loc), count)
+        return
 
 
 class DiamondLayout(VirtualLayout):
@@ -683,8 +762,12 @@ class DiamondLayout(VirtualLayout):
     global cnv
     global deck
 
-    def __init__(self, rows=2, cols=2, **kwargs):
-        super(DiamondLayout, self).__init__(rows=2, cols=2, **kwargs)
+    def __init__(self, rows=1, cols=2, **kwargs):
+        super(DiamondLayout, self).__init__(rows, cols, **kwargs)
+        if (self.cols < 2 and self.rows < 1) or (self.cols < 1 and self.rows < 2):
+            tools.feedback(
+                f"Minimum layout size is 2x1 or 1x2 (cannot use {self.cols }x{self.rows})!",
+                True)
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""
@@ -697,7 +780,7 @@ class RowColLayout(VirtualLayout):
     global cnv
     global deck
 
-    def __init__(self, rows=2, cols=2, **kwargs):
+    def __init__(self, rows, cols, **kwargs):
         super(RowColLayout, self).__init__(rows=2, cols=2, **kwargs)
 
     def next_location(self) -> Location:
@@ -711,8 +794,8 @@ class IrregularLayout(VirtualLayout):
     global cnv
     global deck
 
-    def __init__(self, rows=2, cols=2, **kwargs):
-        super(IrregularLayout, self).__init__(rows=2, cols=2, **kwargs)
+    def __init__(self, rows, cols, **kwargs):
+        super(IrregularLayout, self).__init__(rows=0, cols=0, **kwargs)
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""

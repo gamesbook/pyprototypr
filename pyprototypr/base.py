@@ -495,7 +495,7 @@ class BaseCanvas:
         self.rounding = self.defaults.get('rounding', 0)
         self.rounded = self.defaults.get('rounded', False)
         self.notch = self.defaults.get('notch', 0)
-        self.notch_corners = self.defaults.get('notch_corners', 'SW NW NE SE')
+        self.notch_corners = self.defaults.get('notch_corners', 'sw nw ne se')
         self.notch_x = self.defaults.get('notch_x', 0)
         self.notch_y = self.defaults.get('notch_y', 0)
         self.chevron = self.defaults.get('chevron', '')
@@ -1108,8 +1108,8 @@ class BaseShape:
             else:
                 _edges = self.edges
             for edge in _edges:
-                if str(edge).lower() not in \
-                        ['north', 'south', 'east', 'west', 'n', 'e', 'w', 's', ]:
+                if str(edge).lower() not in [
+                        'north', 'south', 'east', 'west', 'n', 'e', 'w', 's', ]:
                     issue.append(f'"{edge}" is an invalid choice in {self.edges}!')
                     correct = False
         if self.flip:

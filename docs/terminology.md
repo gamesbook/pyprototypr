@@ -19,6 +19,7 @@ what can be done in their cases.
 * [Amount- and count-orientated](#count)
 * [Direction-orientated](#direction)
 * [Display-orientated](#display)
+* [Miscellaneous terms](#misc)
 * [](#)
 
 
@@ -154,9 +155,9 @@ Properties that use direction include:
   of some types of layouts e.g. `DiamondLayout`
 * **flip** - the relative vertical direction in which a triangle must be drawn;
   can be either: _north_ or _south_
-* **hand** - the relative horixontal direction in which a triangle must be drawn;
+* **hand** - the relative horizontal direction in which a triangle must be drawn;
   can be either: _east_ or _west_
-* **orientation** - use for drawing hexagons; can be either: _flat_ or _pointy_
+* **orientation** - used for drawing hexagons; can be either: _flat_ or _pointy_
 * **start** - can be any secondary compass direction; used to show in which
   corner of a `RectangularLayout` that shapes are first placed
 
@@ -169,3 +170,10 @@ Properties that use direction include:
 * **shown** - a list of locations, indicated either by their sequence number
   (i.e. their position in the drawing order) or their row and column identifier
   which are the only ones that **must** be displayed - the rest are ignored
+
+
+## Miscellaneous terms <a name="misc""></a>
+
+* **debug** - a value can be set for this that will cause underlying values
+  or locations to be displayed e.g. using `debug="n"` for a layout will show
+  small dots where each point in that layout exists.
