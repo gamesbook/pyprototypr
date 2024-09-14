@@ -60,9 +60,15 @@ Layout(rect, shapes=[a_circle,])
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Layout: NW->east: Outer+Mask")
+Text(common=header, text="Rect.Layout: NW->east: Outer+Hidden")
 rect = RectangularLayout(cols=3, rows=4, start="NW", direction="east", pattern="outer")
-Layout(rect, shapes=[a_circle], mask=[2,7])
+Layout(rect, shapes=[a_circle], hidden=[2,7])
+PageBreak()
+
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Rect.Layout: NW->east: Outer+Shown")
+rect = RectangularLayout(cols=3, rows=4, start="NW", direction="east", pattern="outer")
+Layout(rect, shapes=[a_circle], shown=[1,3,6,8])
 PageBreak()
 
 Save()

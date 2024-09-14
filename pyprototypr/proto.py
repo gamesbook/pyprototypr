@@ -225,7 +225,7 @@ def PageBreak(**kwargs):
             kwargs['font_size'] = font_size
             footer = FooterShape(_object=None, canvas=cnv, **kwargs)
         footer.draw(cnv=cnv, ID=page_count, text=None, **kwargs)
-    # If count not in the required pargs.pages then do NOT show!
+    # If count not in the required pargs.pages then do NOT display!
     # Note: this code does not work; seems there is no way to clear or hide the canvas
     #       in ReportLab that would support this operation
     # try:
@@ -1215,7 +1215,7 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
             for row in range(top_row - 1, end_row + 1):
                 _row = row + 1
                 # tools.feedback(f'{ccol=}, {_row=}')
-                if kwargs.get('masked') and [_row, ccol] in kwargs.get('masked'):
+                if kwargs.get('hidden') and [_row, ccol] in kwargs.get('hidden'):
                     pass
                 else:
                     hxgn = Hexagon(
@@ -1272,7 +1272,7 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
     else:  # default to rectangular layout
         for row in range(rows):
             for col in range(cols):
-                if kwargs.get('masked') and [row + 1, col + 1] in kwargs.get('masked'):
+                if kwargs.get('hidden') and [row + 1, col + 1] in kwargs.get('hidden'):
                     pass
                 else:
                     hxgn = Hexagon(
@@ -1291,7 +1291,7 @@ def Rectangles(rows=1, cols=1, **kwargs):
 
     for row in range(rows):
         for col in range(cols):
-            if kwargs.get('masked') and [row + 1, col + 1] in kwargs.get('masked'):
+            if kwargs.get('hidden') and [row + 1, col + 1] in kwargs.get('hidden'):
                 pass
             else:
                 rect = Rectangle(row=row, col=col, **kwargs)
@@ -1309,7 +1309,7 @@ def Squares(rows=1, cols=1, **kwargs):
 
     for row in range(rows):
         for col in range(cols):
-            if kwargs.get('masked') and [row + 1, col + 1] in kwargs.get('masked'):
+            if kwargs.get('hidden') and [row + 1, col + 1] in kwargs.get('hidden'):
                 pass
             else:
                 square = Square(row=row, col=col, **kwargs)
@@ -1467,20 +1467,29 @@ def Layout(grid, **kwargs):
     kwargs = kwargs
     shapes = kwargs.get('shapes', [])
     locations = kwargs.get('locations', [])
-    mask = kwargs.get('mask', [])
+    hidden = kwargs.get('hidden', [])
+    shown = kwargs.get('shown', [])
 
     # ---- validate input
     if not shapes:
         tools.feedback(f"There is no list of shapes to draw!", False, True)
     if not isinstance(grid, VirtualLayout):
         tools.feedback(f"The grid value '{grid}' is not valid!", True)
-    if mask:
-        if not isinstance(mask, list):
-            tools.feedback(f"The mask value '{mask}' is not valid list!", True)
-        for item in mask:
+    if hidden:
+        if not isinstance(hidden, list):
+            tools.feedback(f"The hidden value '{hidden}' is not valid list!", True)
+        for item in hidden:
             if not isinstance(item, int):
                 tools.feedback(
-                    f'The mask must only contain a list of integers (not "{item}")!',
+                    f'hidden must only contain a list of integers (not "{item}")!',
+                    True)
+    if shown:
+        if not isinstance(shown, list):
+            tools.feedback(f"The shown value '{shown}' is not valid list!", True)
+        for item in shown:
+            if not isinstance(item, int):
+                tools.feedback(
+                    f'shown must only contain a list of integers (not "{item}")!',
                     True)
     # ---- setup locations; automatically or via user-specification
     shape_id = 0
@@ -1491,7 +1500,9 @@ def Layout(grid, **kwargs):
         raise NotImplementedError('Cannot handle user-input locations')
     # ---- iterate through locations & draw shape(s)
     for count, loc in _locations:
-        if mask and count + 1 in mask:
+        if hidden and count + 1 in hidden:  # ignore if IN hidden
+            continue
+        if shown and count + 1 not in shown:  # ignore if NOT in shown
             continue
         if grid.stop and count + 1 >= grid.stop:
             break
@@ -1521,7 +1532,7 @@ def Layout(grid, **kwargs):
             shape_id += 1
         if shape_id > len(shapes) - 1:
             shape_id = 0  # reset and start again
-        # ---- show debug
+        # ---- display debug
         do_debug = kwargs.get('debug', None)
         if do_debug:
             match str(do_debug).lower():

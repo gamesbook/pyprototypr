@@ -19,7 +19,7 @@ Hexagons(
     height=2.2,
     centre_shape=hexagon(stroke=black, fill=white, height=2, stroke_width=2),
     margin_bottom=4,
-    masked=[[5, 5]],
+    hidden=[[5, 5]],
 )
 
 Save(output='png')

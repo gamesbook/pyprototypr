@@ -6,9 +6,9 @@ reasonably obvious by their name, or by the context in which they are used.
 However, in order to help with clarity, below is a reasonably comprehensive
 list of terms used in different places, grouped by what they affect.
 
-Note that some shapes, such as hexagons, have extensive customisation
-properties available; rather refer to their descriptions to understand
-what can be done in those cases.
+Note that some shapes, such as the `Hexagon`, have extensive customisation
+properties available; rather refer to their specific descriptions to understand
+what can be done in their cases.
 
 
 ## Table of Contents for Terms
@@ -18,6 +18,7 @@ what can be done in those cases.
 * [Size- and length-orientated](#size)
 * [Amount- and count-orientated](#count)
 * [Direction-orientated](#direction)
+* [Display-orientated](#display)
 * [](#)
 
 
@@ -33,7 +34,7 @@ Colors can also be chosen from a pre-defined list of names - for example
 available.
 
 > **NOTE:** It is possible to use the term  _None_ in place of a specific
-> color; this effectively means that nothing will be drawn there - an
+> color; this effectively means that nothing will be drawn there - so, an
 > "invisible" line or area!
 
 * **fill** - the color in which an area is filled
@@ -146,7 +147,7 @@ Secondary compass directions (with abbreviation shown in brackets):
 Properties that use direction include:
 
 * **direction** - can be any primary compass direction; used to show the travel
-  route when moving through various types of layouts
+  route when moving through various types of layouts e.g. `RectangularLayout`
 * **edges** - can be any primary compass direction; used to indicate the sides
   of a `Square` or `Rectangle`
 * **facing** - can be any primary compass direction; used to show orientation
@@ -158,3 +159,13 @@ Properties that use direction include:
 * **orientation** - use for drawing hexagons; can be either: _flat_ or _pointy_
 * **start** - can be any secondary compass direction; used to show in which
   corner of a `RectangularLayout` that shapes are first placed
+
+
+## Display-orientated terms <a name="display""></a>
+
+* **hidden** - a list of locations, indicated either by their sequence number
+  (i.e. their position in the drawing order) or their row and column identifier
+  which should **not** be used for display - the rest are displayed as normal
+* **shown** - a list of locations, indicated either by their sequence number
+  (i.e. their position in the drawing order) or their row and column identifier
+  which are the only ones that **must** be displayed - the rest are ignored

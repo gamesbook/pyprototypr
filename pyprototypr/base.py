@@ -572,7 +572,7 @@ class BaseCanvas:
         self.coord_separator = self.defaults.get('coord_separator', '')
         self.coord_prefix = self.defaults.get('coord_prefix', '')
         self.coord_style = self.defaults.get('coord_style', '')
-        self.masked = self.defaults.get('masked', [])
+        self.hidden = self.defaults.get('hidden', [])
         # ---- starfield
         self.enclosure = None
         self.colors = [white]
@@ -856,7 +856,7 @@ class BaseShape:
         self.coord_separator = kwargs.get('coord_separator', cnv.coord_separator)
         self.coord_prefix = kwargs.get('coord_prefix', cnv.coord_prefix)
         self.coord_style = kwargs.get('coord_style', '') # linear|diagonal
-        self.masked = kwargs.get('masked', cnv.masked)
+        self.hidden = kwargs.get('hidden', cnv.hidden)
         # ---- starfield
         self.enclosure = kwargs.get('enclosure', cnv.enclosure)
         self.colors = kwargs.get('colors', cnv.colors)

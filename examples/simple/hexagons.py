@@ -137,19 +137,19 @@ Hexagons(
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: masked")
+Text(common=header, text="Hexagons: hidden")
 Hexagons(
     side=0.5,
     x=1, y=3,
     rows=3, cols=3,
     orientation='pointy',
-    masked=[[1, 2,], [3, 3]]
+    hidden=[[1, 2,], [3, 3]]
 )
 Hexagons(
     side=0.5,
     x=0, y=0,
     rows=3, cols=3,
-    masked=[[2, 1,], [2, 3]]
+    hidden=[[2, 1,], [2, 3]]
 )
 PageBreak()
 
