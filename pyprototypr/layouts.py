@@ -333,7 +333,7 @@ class VirtualLayout(VirtualShape):
         self.y = self.to_float(kwargs.get('y', 1.0), 'y')  # left(lower) corner of layout
         self.rows = self.to_int(rows, 'rows')
         self.cols = self.to_int(cols, 'cols')
-        self.side = self.to_float(kwargs.get('side', 1.0), 'side')
+        self.side = self.to_float(kwargs.get('side', 0), 'side')
         self.layout_size = self.rows * self.cols
         self.spacing = kwargs.get('interval', 1)
         self.row_spacing = kwargs.get('y_interval', self.spacing)
@@ -439,9 +439,9 @@ class RectangularLayout(VirtualLayout):
                 f"{self.start} is not a valid start - "
                 "use: 'sw', 'se', 'nw', or 'ne'", True)
         if self.side and self.col_spacing:
-            tools.feedback('Use either spacing or side to set intervals - not both!', True)
+            tools.feedback('Using side will override spacing and offset values!', False)
         if self.side and self.row_spacing:
-            tools.feedback('Use either spacing or side to set intervals - not both!', True)
+            tools.feedback('Using side will override spacing and offset values!', False)
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""
@@ -472,6 +472,12 @@ class RectangularLayout(VirtualLayout):
         if self.side:
             self.col_spacing = self.side
             self.row_spacing = math.sqrt(3) / 2. * self.side
+            _dir = -1 if self.row_odd < 0 else 1
+            self.row_odd = _dir * (self.col_spacing / 2.)
+            if self.row_even:
+                _dir = -1 if self.row_even < 0 else 1
+                self.row_odd = 0
+                self.row_even = _dir * (self.col_spacing / 2.)
         while True:  # rows <= self.rows and col <= self.cols:
             count = count + 1
             # calculate point based on row/col
@@ -479,14 +485,20 @@ class RectangularLayout(VirtualLayout):
             x = self.x + (col - 1) * self.col_spacing
             y = self.y + (row - 1) * self.row_spacing
             # offset(s)
-            if self.col_odd and col & 1:
-                y = y + self.col_odd
-            if self.col_even and not col & 1:
-                y = y + self.col_even
-            if self.row_odd and row & 1:
-                x = x + self.row_odd
-            if self.row_even and not row & 1:
-                x = x + self.row_even
+            if self.side:
+                if row & 1:
+                    x = x + self.row_odd
+                if not row & 1:
+                    x = x + self.row_even
+            else:
+                if self.col_odd and col & 1:
+                    y = y + self.col_odd
+                if self.col_even and not col & 1:
+                    y = y + self.col_even
+                if self.row_odd and row & 1:
+                    x = x + self.row_odd
+                if self.row_even and not row & 1:
+                    x = x + self.row_even
             # print(f'*** {count=} {row=},{col=} // {x=},{y=}')
             # set next grid location
             match self.pattern.lower():

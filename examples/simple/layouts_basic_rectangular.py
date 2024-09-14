@@ -7,7 +7,7 @@ Created on: 19 May 2024
 """
 from pyprototypr import *
 
-Create(filename="layouts_rectangle.pdf",
+Create(filename="layouts_basic_rectangular.pdf",
        pagesize=A8,
        margin_top=0.2,
        margin_left=0.15,
@@ -166,5 +166,12 @@ rect = RectangularLayout(cols=3, rows=4, start="SW", direction="north", pattern=
 Layout(rect, shapes=[a_circle,])
 PageBreak()
 
+# ---- triangular spacing
+
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Rect.Layout: NW->south; triangular")
+rect = RectangularLayout(cols=3, rows=3, side=1.0, start="NW", direction="south", row_even=-0.5)
+Layout(rect, shapes=[a_circle,])
+PageBreak()
 
 Save()
