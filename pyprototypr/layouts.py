@@ -438,6 +438,10 @@ class RectangularLayout(VirtualLayout):
             tools.feedback(
                 f"{self.start} is not a valid start - "
                 "use: 'sw', 'se', 'nw', or 'ne'", True)
+        if self.side and self.col_spacing:
+            tools.feedback('Use either spacing or side to set intervals - not both!', True)
+        if self.side and self.row_spacing:
+            tools.feedback('Use either spacing or side to set intervals - not both!', True)
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""
@@ -464,6 +468,10 @@ class RectangularLayout(VirtualLayout):
         col, row, count = col_start, row_start, 0
         max_outer = 2 * self.rows + (self.cols - 2) * 2
         # print(f'\n*** {self.start=} {self.layout_size=} {max_outer=} {self.stop=} {clockwise=}')
+        # triangular layout
+        if self.side:
+            self.col_spacing = self.side
+            self.row_spacing = math.sqrt(3) / 2. * self.side
         while True:  # rows <= self.rows and col <= self.cols:
             count = count + 1
             # calculate point based on row/col
@@ -716,7 +724,7 @@ class TriangularLayout(VirtualLayout):
         for key, entry in enumerate(array):
             match _facing:
                 case 'north':  # layout is row-oriented
-                    y = self.y + self.rows * self.row_spacing - (key + 1) * self.row_spacing
+                    y = self.y + (self.rows - 1) * self.row_spacing - (key + 1) * self.row_spacing
                     dx = 0.5 * (self.cols - len(entry)) * self.col_spacing - \
                         (self.cols - 1) * 0.5 * self.col_spacing
                     for val, loc in enumerate(entry):
@@ -736,17 +744,16 @@ class TriangularLayout(VirtualLayout):
                 case 'east':  # layout is col-oriented
                     x = self.x + self.cols * self.col_spacing - (key + 2) * self.col_spacing
                     dy = 0.5 * (self.rows - len(entry)) * self.row_spacing - \
-                        (self.rows - 1) * 0.5 * self.col_spacing
+                        (self.rows - 1) * 0.5 * self.row_spacing
                     for val, loc in enumerate(entry):
                         count = count + 1
                         y = self.y + dy + val * self.row_spacing
                         yield Location(
                             key + 1, loc, x, y, self.set_id(key + 1, loc), count)
-
                 case 'west':  # layout is col-oriented
                     x = self.x + key * self.col_spacing
                     dy = 0.5 * (self.rows - len(entry)) * self.row_spacing - \
-                        (self.rows - 1) * 0.5 * self.col_spacing
+                        (self.rows - 1) * 0.5 * self.row_spacing
                     for val, loc in enumerate(entry):
                         count = count + 1
                         y = self.y + dy + val * self.row_spacing
@@ -768,20 +775,6 @@ class DiamondLayout(VirtualLayout):
             tools.feedback(
                 f"Minimum layout size is 2x1 or 1x2 (cannot use {self.cols }x{self.rows})!",
                 True)
-
-    def next_location(self) -> Location:
-        """Yield next Location for each call."""
-
-
-class RowColLayout(VirtualLayout):
-    """
-    Common properties and methods to define a virtual row & col layout.
-    """
-    global cnv
-    global deck
-
-    def __init__(self, rows, cols, **kwargs):
-        super(RowColLayout, self).__init__(rows=2, cols=2, **kwargs)
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""
