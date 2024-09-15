@@ -8,10 +8,13 @@ python examples/simple/customised_blueprint.py -d /tmp/demo
 python examples/simple/demo.py -d /tmp/demo
 python examples/simple/diagram.py -d /tmp/demo
 python examples/simple/default_shapes.py -d /tmp/demo
-python examples/simple/layouts_basic.py -d /tmp/demo
-python examples/simple/layouts_rectangle.py -d /tmp/demo
 python examples/simple/hexagons.py -d /tmp/demo
 python examples/simple/track_shapes.py -d /tmp/demo
+# -- examples: simple: layouts
+python examples/simple/layouts/layouts_basic.py -d /tmp/demo
+python examples/simple/layouts/layouts_basic_rectangular.py -d /tmp/demo
+python examples/simple/layouts/layouts_basic_triangular.py-d /tmp/demo
+python examples/simple/layouts/layouts_shapes_outer.py -d /tmp/demo
 # -- boards: abstract
 echo "Creating abstract boards..."
 python examples/boards/abstract/chessboard.py -d /tmp/demo

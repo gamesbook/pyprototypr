@@ -20,7 +20,8 @@ TrackPoint = namedtuple("TrackPoint", ["x", "y", "width"])
 # point with corresponding angle of a line passing through it
 AngledPoint = namedtuple("AngledPoint", ["x", "y", "angle"])
 Link = namedtuple("Link", ["a", "b", "style"])
-Location = namedtuple("Link", ["col", "row", "x", "y", "id", "sequence"])
+Location = namedtuple("Link", ["col", "row", "x", "y", "id", "sequence", "corner"])
+Place = namedtuple("Place", ["shape", "rotation"])
 
 
 def polygon_vertices(

@@ -9,7 +9,7 @@ import math
 # third party
 # local
 from pyprototypr.utils.geoms import (
-    Point, Location, TrackPoint)  # named tuples
+    Point, Location, Place, TrackPoint)  # named tuples
 from pyprototypr.utils import geoms, tools
 from pyprototypr.base import BaseShape, BaseCanvas
 from pyprototypr.shapes import (
@@ -467,6 +467,7 @@ class RectangularLayout(VirtualLayout):
                 clockwise = True if _dir in ['south', 's'] else False
         col, row, count = col_start, row_start, 0
         max_outer = 2 * self.rows + (self.cols - 2) * 2
+        corner = None
         # print(f'\n*** {self.start=} {self.layout_size=} {max_outer=} {self.stop=} {clockwise=}')
         # triangular layout
         if self.side:
@@ -507,7 +508,7 @@ class RectangularLayout(VirtualLayout):
                     # tools.feedback(f'*** {count=} {self.layout_size=} {self.stop=}')
                     if count > self.layout_size or (self.stop and count > self.stop):
                         return
-                    yield Location(col, row, x, y, self.set_id(col, row), count)
+                    yield Location(col, row, x, y, self.set_id(col, row), count, corner)
                     # next grid location
                     match self.direction.lower():
                         case 'e' | 'east':
@@ -554,7 +555,7 @@ class RectangularLayout(VirtualLayout):
                 case 'outer' | 'o':
                     if count > max_outer:
                         return
-                    yield Location(col, row, x, y, self.set_id(col, row), count)
+                    yield Location(col, row, x, y, self.set_id(col, row), count, corner)
                     # next grid location
                     # print(f'*** {count=} {current_dir=} {row=},{col=} // {row_start=},{col_start=}')
                     corner = None
@@ -607,7 +608,7 @@ class RectangularLayout(VirtualLayout):
 
                 # ---- regular
                 case _:  # default pattern
-                    yield Location(col, row, x, y, self.set_id(col, row), count)
+                    yield Location(col, row, x, y, self.set_id(col, row), count, corner)
                     # next grid location
                     match self.direction.lower():
                         case 'e' | 'east':
@@ -727,6 +728,7 @@ class TriangularLayout(VirtualLayout):
 
         col, row, count = col_start, row_start, 0
         max_outer = 2 * self.rows + (self.cols - 2) * 2
+        corner = None
         # print(f'\n*** {self.start=} {self.layout_size=} {max_outer=} {self.stop=} {clockwise=}')
         # ---- set row and col spacing
         match _facing:
@@ -748,7 +750,7 @@ class TriangularLayout(VirtualLayout):
                         count = count + 1
                         x = self.x + dx + val * self.col_spacing
                         yield Location(
-                            loc, key + 1, x, y, self.set_id(loc, key + 1), count)
+                            loc, key + 1, x, y, self.set_id(loc, key + 1), count, corner)
                 case 'south':  # layout is row-oriented
                     y = self.y + key * self.row_spacing
                     dx = 0.5 * (self.cols - len(entry)) * self.col_spacing - \
@@ -757,7 +759,7 @@ class TriangularLayout(VirtualLayout):
                         count = count + 1
                         x = self.x + dx + val * self.col_spacing
                         yield Location(
-                            loc, key + 1, x, y, self.set_id(loc, key + 1), count)
+                            loc, key + 1, x, y, self.set_id(loc, key + 1), count, corner)
                 case 'east':  # layout is col-oriented
                     x = self.x + self.cols * self.col_spacing - (key + 2) * self.col_spacing
                     dy = 0.5 * (self.rows - len(entry)) * self.row_spacing - \
@@ -766,7 +768,7 @@ class TriangularLayout(VirtualLayout):
                         count = count + 1
                         y = self.y + dy + val * self.row_spacing
                         yield Location(
-                            key + 1, loc, x, y, self.set_id(key + 1, loc), count)
+                            key + 1, loc, x, y, self.set_id(key + 1, loc), count, corner)
                 case 'west':  # layout is col-oriented
                     x = self.x + key * self.col_spacing
                     dy = 0.5 * (self.rows - len(entry)) * self.row_spacing - \
@@ -775,7 +777,7 @@ class TriangularLayout(VirtualLayout):
                         count = count + 1
                         y = self.y + dy + val * self.row_spacing
                         yield Location(
-                            key + 1, loc, x, y, self.set_id(key + 1, loc), count)
+                            key + 1, loc, x, y, self.set_id(key + 1, loc), count, corner)
         return
 
 

@@ -149,19 +149,52 @@ def as_int(value, label, maximum=None, minimum=None) -> int:
     # >>> as_int(value='3.1', label='N')
     # FEEDBACK:: 3.1 is not a valid N integer!
     """
+    _label = f" for {label}" if label else ' of'
     try:
-        int_value = int(value)
-        if minimum and int_value < minimum:
+        the_value = int(value)
+        if minimum and the_value < minimum:
             feedback(
-                f"{label} integer is less than the minimum of {minimum}!",
+                f"The value{_label} integer is less than the minimum of {minimum}!",
                 True)
-        if maximum and int_value > maximum:
+        if maximum and the_value > maximum:
             feedback(
-                f"{label} integer is more than the maximum of {maximum}!",
+                f"The value{_label} integer is more than the maximum of {maximum}!",
                 True)
-        return int_value
+        return the_value
     except (ValueError, Exception):
-        feedback(f"{value} is not a valid integer for {label}!", True)
+        feedback(f"The {value}{label} is not a valid integer!", True)
+
+
+def as_float(value, label, maximum=None, minimum=None) -> int:
+    """Set a value to an float; or stop if an invalid value
+
+    >>> as_float(value='3', label='N')
+    3
+
+    # below cannot be tested because of sys.exit() in feedback()
+    # >>> as_float(value='3', label='N', minimum=4)
+    # FEEDBACK:: z is
+    # >>> as_float(value='3', label='N', maximum=2)
+    # FEEDBACK:: z is
+    # >>> as_float(value='z', label='N')
+    # FEEDBACK:: z is not a valid N integer!
+    # >>> as_float(value='3.1', label='N')
+    # FEEDBACK:: The value of 3.1 for N is not a valid integer!
+    """
+    _label = f" for {label}" if label else ' of'
+    try:
+        the_value = float(value)
+        if minimum and the_value < minimum:
+            feedback(
+                f"The {value}{_label} float is less than the minimum of {minimum}!",
+                True)
+        if maximum and the_value > maximum:
+            feedback(
+                f"The {value}{_label} float is more than the maximum of {maximum}!",
+                True)
+        return the_value
+    except (ValueError, Exception):
+        feedback(f"The {value}{label} is not a valid float!", True)
 
 
 def tuple_split(string):

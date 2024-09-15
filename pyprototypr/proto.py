@@ -74,7 +74,7 @@ from ._version import __version__
 from pyprototypr.utils.support import steps, excel_column, equi, numbers, letters
 from pyprototypr.utils.tools import base_fonts
 from pyprototypr.utils import geoms, tools, support
-from pyprototypr.utils.geoms import Point
+from pyprototypr.utils.geoms import Point, Place  # namedtuples
 
 log = logging.getLogger(__name__)
 
@@ -1465,14 +1465,18 @@ def Layout(grid, **kwargs):
     global cnv
 
     kwargs = kwargs
-    shapes = kwargs.get('shapes', [])
+    shapes = kwargs.get('shapes', [])  # shapes or Places
     locations = kwargs.get('locations', [])
     hidden = kwargs.get('hidden', [])
     shown = kwargs.get('shown', [])
+    corners = kwargs.get('corners', [])  # shapes or Places for corners only!
+    rotations = kwargs.get('rotations', [])  # rotations for an edge
 
     # ---- validate input
     if not shapes:
-        tools.feedback(f"There is no list of shapes to draw!", False, True)
+        tools.feedback("There is no list of shapes to draw!", False, True)
+    if shapes and not isinstance(shapes, list):
+        tools.feedback("The values for 'shapes' must be in a list!", True)
     if not isinstance(grid, VirtualLayout):
         tools.feedback(f"The grid value '{grid}' is not valid!", True)
     if hidden:
@@ -1498,6 +1502,26 @@ def Layout(grid, **kwargs):
         _locations = default_locations
     else:
         raise NotImplementedError('Cannot handle user-input locations')
+    # ---- generate rotations - keyed per sequence number
+    rotation_sequence = {}
+    if rotations:
+        for rotation in rotations:
+            if not isinstance(rotation, tuple):
+                tools.feedback("The 'rotations' must each contain a set!", True)
+            if len(rotation) != 2:
+                tools.feedback("The 'rotations' must each contain a set of two items!", True)
+            _key = rotation[0]
+            if not isinstance(_key, str):
+                tools.feedback("The first value for rreach 'rotations' entry must be a string!", True)
+            rotate = tools.as_float(rotation[1], " second value for the 'rotations' entry")
+            try:
+                _keys = list(tools.sequence_split(_key))
+            except Exception as err:
+                tools.feedback(
+                    f'Unable to convert "{_key}" into a range of values.')
+            for the_key in _keys:
+                rotation_sequence[the_key] = rotate
+    # print(f"{rotation_sequence=}")
     # ---- iterate through locations & draw shape(s)
     for count, loc in _locations:
         if hidden and count + 1 in hidden:  # ignore if IN hidden
@@ -1510,10 +1534,33 @@ def Layout(grid, **kwargs):
             if count + 1 > grid.rows * 2 + (grid.cols - 2) * 2:
                 break
         if shapes:
-            shape = copy(shapes[shape_id])  # enable overwrite/change of properties
-            # ---- supply data to shape's text fields
+            # ---- * extract shape data
+            rotation = rotation_sequence.get(count + 1, 0)  # default rotation
+            # print(f"{rotation=} {count=}")
+            if isinstance(shapes[shape_id], BaseShape):
+                _shape = shapes[shape_id]
+            elif isinstance(shapes[shape_id], tuple):
+                _shape = shapes[shape_id][0]
+                if not isinstance(_shape, BaseShape):
+                    tools.feedback(
+                        f'The first item in "{shapes[shape_id]}" must be a shape!', True)
+                if len(shapes[shape_id]) > 1:
+                    rotation = tools.as_float(shapes[shape_id][1], 'rotation')
+            elif isinstance(shapes[shape_id], Place):
+                _shape = shapes[shape_id].shape
+                if not isinstance(_shape, BaseShape):
+                    tools.feedback(
+                        f'The value for "{shapes[shape_id].name}" must be a shape!', True)
+                if shapes[shape_id].rotation:
+                    rotation = tools.as_float(shapes[shape_id].rotation, 'rotation')
+            else:
+                tools.feedback(
+                    f'Use a shape, or set, or Place - not "{shapes[shape_id]}"!', True)
+            shape = copy(_shape)  # enable overwrite/change of properties
+            # ---- * update shape's text fields
             data = {
-                'col': loc.col, 'row': loc.row, 'x': loc.x, 'y': loc.y, 'count': count + 1}
+                'col': loc.col, 'row': loc.row, 'x': loc.x, 'y': loc.y,
+                'count': count + 1, 'count_zero': count}
             # tools.feedback(f'{data=}')
             try:
                 shape.label = shapes[shape_id].label.format(**data)  # replace {xyz} entries
@@ -1524,11 +1571,11 @@ def Layout(grid, **kwargs):
                 tools.feedback(
                     f'You cannot use {text[0]} as a special field; remove the {{ }} brackets',
                     True)
-            # ---- execute the draw()
+            # ---- * execute shape.draw()
             # breakpoint()
             cx = loc.x * shape.units + shape._o.delta_x
             cy = loc.y * shape.units + shape._o.delta_y
-            shape.draw(_abs_cx=cx, _abs_cy=cy)
+            shape.draw(_abs_cx=cx, _abs_cy=cy, rotation=rotation)
             shape_id += 1
         if shape_id > len(shapes) - 1:
             shape_id = 0  # reset and start again
