@@ -80,7 +80,7 @@ Stadium(cx=15, cy=23, width=3, height=2, heading="stadium:15-23", common=dot)
 
 Hexagon(cx=3, cy=17, side=2, heading="hexagon:3-17", orientation="flat", common=dot)
 Ellipse(cx=9, cy=17, xe=4, ye=6, heading="ellipse:9-17", common=dot)
-#Trapezoid(cx=16, cy=17, width=3.5, height=3.5, heading="trapezoid:16-17", common=dot)
+#TODO Trapezoid(cx=16, cy=17, width=3.5, height=3.5, heading="trapezoid:16-17", common=dot)
 
 Hexagon(cx=3, cy=11, side=2, heading="hexagon:3-11", orientation="pointy", common=dot)
 Compass(cx=9, cy=11, radius=2, heading="compass:9-11", common=dot)
@@ -105,7 +105,7 @@ Stadium(cx=15, cy=23, width=3, height=2, title="stadium:15-23", common=dot)
 
 Hexagon(cx=3, cy=17, side=2, title="hexagon:3-17", orientation="flat", common=dot)
 Ellipse(cx=9, cy=17, xe=4, ye=6, title="ellipse:9-17", common=dot)
-#Trapezoid(cx=16, cy=17, width=3.5, height=3.5, title="trapezoid:16-17", common=dot)
+# TODO Trapezoid(cx=16, cy=17, width=3.5, height=3.5, title="trapezoid:16-17", common=dot)
 
 Hexagon(cx=3, cy=11, side=2, title="hexagon:3-11", orientation="pointy", common=dot)
 Compass(cx=9, cy=11, radius=2, title="compass:9-11", common=dot)
@@ -117,6 +117,26 @@ Square(cx=9, cy=5, side=3, title="square:9-5", common=dot)
 
 Dot(x=8.5, y=1, dot_point=6, title="dot:1-8.5")
 
+PageBreak()
+
+# ---- rotation all shapes + label  A4!
+
+Blueprint()
+Text(common=header, text="Blueprint: rotated shapes with labels")
+Polygon(x=4, y=24.5, radius=2, rotation=45, stroke_width=2, label="polygon6")
+Polygon(x=10, y=24.5, radius=2, sides=8, angle=22.5, rotation=45, stroke_width=2, label="polygon8")
+Polygon(x=16, y=24.5, radius=2.5, sides=3, rotation=45, stroke_width=2, label="polygon3")
+Rectangle(x=2, y=18.5, width=6, height=3, rotation=45, stroke_width=2, label="rectangle")
+# TODO Trapezoid(cx=16, cy=15, width=3.5, height=3.5, rotation=45, stroke_width=2, label="Trapezoid")
+Stadium(x=14.5, y=19, width=3, height=2, rotation=45, stroke_width=2, label="stadium")
+Hexagon(x=2, y=13, side=2, rotation=45, stroke_width=2, label="hexagon")
+Hexagon(x=8, y=13, side=2, orientation="pointy", rotation=45, stroke_width=2, label="hexagon")
+Star(x=11, y=9, vertices=5, radius=2, rotation=45, stroke_width=2, label="star")
+Circle(cx=16, cy=9, radius=2, rotation=45, stroke_width=2, label="circle")
+Ellipse(x=1, y=7, xe=8, ye=11, rotation=45, stroke_width=2, label="ellipse")
+Rhombus(x=8.5, y=1, width=3, height=5, rotation=45, stroke_width=2, label="rhombus")
+Compass(cx=4, cy=3, radius=2, rotation=45, stroke_width=2, title="compass")
+Square(x=14, y=1, side=4, rotation=45, stroke_width=2, label="square")
 PageBreak()
 
 # ---- simple shapes

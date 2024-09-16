@@ -1913,6 +1913,7 @@ class RectangleShape(BaseShape):
         delta_m_up, delta_m_down = 0.0, 0.0  # potential text offset from chevron
         # ---- handle rotation: START
         rotation = kwargs.get('rotation', self.rotation)
+        # print(self.label, rotation)
         if rotation:
             # tools.feedback(f'*** Rect {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
             cnv.saveState()
@@ -2112,6 +2113,8 @@ class RectangleShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, x_d, y_d)
         # ---- text
+        if kwargs and kwargs.get('rotation'):
+            kwargs.pop('rotation')  # otherwise labels rotate again!
         self.draw_heading(cnv, ID, x_d, y_d + 0.5 * self._u.height + delta_m_up, **kwargs)
         self.draw_label(cnv, ID, x_d, y_d, **kwargs)
         self.draw_title(cnv, ID, x_d, y_d - 0.5 * self._u.height - delta_m_down, **kwargs)

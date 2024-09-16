@@ -1503,14 +1503,20 @@ def Layout(grid, **kwargs):
             try:
                 value = corner[0]
                 shape = corner[1]
-                if value.lower() not in ['nw', 'ne', 'sw', 'se']:
+                if value.lower() not in ['nw', 'ne', 'sw', 'se', '*']:
                     tools.feedback(
                         f'The corner must be one of nw, ne, sw, se (not "{value}")!',
                         True)
                 if not isinstance(shape, BaseShape):
                     tools.feedback(
                         f'The corner item must be a shape (not "{shape}") !', True)
-                corners_dict[value] = shape
+                if value == '*':
+                    corners_dict['nw'] = shape
+                    corners_dict['ne'] = shape
+                    corners_dict['sw'] = shape
+                    corners_dict['se'] = shape
+                else:
+                    corners_dict[value] = shape
             except Exception:
                 tools.feedback(
                     f'The corners setting "{corner}" is not a valid list', True)
