@@ -1472,7 +1472,7 @@ def Layout(grid, **kwargs):
     corners = kwargs.get('corners', [])  # shapes or Places for corners only!
     rotations = kwargs.get('rotations', [])  # rotations for an edge
 
-    # ---- validate input
+    # ---- validate inputs
     if not shapes:
         tools.feedback("There is no list of shapes to draw!", False, True)
     if shapes and not isinstance(shapes, list):
@@ -1495,6 +1495,26 @@ def Layout(grid, **kwargs):
                 tools.feedback(
                     f'shown must only contain a list of integers (not "{item}")!',
                     True)
+    corners_dict = {}
+    if corners:
+        if not isinstance(shown, list):
+            tools.feedback(f"The corners value '{corners}' is not a valid list!", True)
+        for corner in corners:
+            try:
+                value = corner[0]
+                shape = corner[1]
+                if value.lower() not in ['nw', 'ne', 'sw', 'se']:
+                    tools.feedback(
+                        f'The corner must be one of nw, ne, sw, se (not "{value}")!',
+                        True)
+                if not isinstance(shape, BaseShape):
+                    tools.feedback(
+                        f'The corner item must be a shape (not "{shape}") !', True)
+                corners_dict[value] = shape
+            except Exception:
+                tools.feedback(
+                    f'The corners setting "{corner}" is not a valid list', True)
+
     # ---- setup locations; automatically or via user-specification
     shape_id = 0
     default_locations = enumerate(grid.next_location())
@@ -1556,12 +1576,17 @@ def Layout(grid, **kwargs):
             else:
                 tools.feedback(
                     f'Use a shape, or set, or Place - not "{shapes[shape_id]}"!', True)
-            shape = copy(_shape)  # enable overwrite/change of properties
+            # ---- * overwrite shape to use for corner
+            if corners_dict:
+                if loc.corner in corners_dict.keys():
+                    _shape = corners_dict[loc.corner]
             # ---- * update shape's text fields
+            shape = copy(_shape)  # enable overwrite/change of properties
             data = {
                 'col': loc.col, 'row': loc.row, 'x': loc.x, 'y': loc.y,
                 'count': count + 1, 'count_zero': count}
             # tools.feedback(f'{data=}')
+            # tools.feedback(f'{loc=}')
             try:
                 shape.label = shapes[shape_id].label.format(**data)  # replace {xyz} entries
                 shape.title = shapes[shape_id].title.format(**data)

@@ -555,10 +555,19 @@ class RectangularLayout(VirtualLayout):
                 case 'outer' | 'o':
                     if count > max_outer:
                         return
+                    corner = None
+                    if row == 1 and col == 1:
+                        corner = 'sw'
+                    if row == self.rows and col == 1:
+                        corner = 'nw'
+                    if row == self.rows and col == self.cols:
+                        corner = 'ne'
+                    if row == 1 and col == self.cols:
+                        corner = 'se'
                     yield Location(col, row, x, y, self.set_id(col, row), count, corner)
                     # next grid location
                     # print(f'*** {count=} {current_dir=} {row=},{col=} // {row_start=},{col_start=}')
-                    corner = None
+
                     if row == 1 and col == 1:
                         corner = 'sw'
                         if clockwise:

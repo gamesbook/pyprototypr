@@ -14,9 +14,9 @@ Create(filename="layouts_shapes_outer.pdf",
        margin_right=0.2)
 
 header = Common(x=0, y=6, font_size=6, align="left")
-sqr_common = Common(label="{count_zero}")
-sqr = square(common=sqr_common, side=0.9, label_size=6)
-sqr5 = square(common=sqr_common, side=1.0, label_size=8, fill=yellow)
+is_common = Common(label="{count_zero}")
+sqr = square(common=is_common, side=0.9, label_size=6)
+sqr5 = square(common=is_common, side=1.0, label_size=8, fill=yellow)
 rct_common = Common(label="{count}", label_size=5, rounding=0.05, )
 
 # ---- multi-shapes
@@ -43,12 +43,14 @@ rct_common = Common(label="{count}", label_size=5, rounding=0.05, )
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Rect.Layout: SW->north/Outer + rotate")
+circ = circle(common=rct_common, radius=0.26, fill=yellow)
 rct2 = rectangle(common=rct_common, height=0.64, width=0.48, fill=tan)
 rct3 = rectangle(common=rct_common, height=0.64, width=0.48, fill=maroon, stroke=white)
 rrect = RectangularLayout(
     x=0.5, y=0.5, cols=4, rows=5,  interval=0.5,
     start="SW", direction="north", pattern="outer")
-Layout(rrect, shapes=[rct3] + [rct2]*4, rotations=[("1-5", 45)])
+Layout(rrect, shapes=[rct3] + [rct2]*4, rotations=[("1-5", 45)],
+       corners=[('nw',circ), ('se',circ)])
 PageBreak()
 
 Save()
