@@ -474,8 +474,6 @@ class BaseCanvas:
         self.angle_width = self.defaults.get('angle_width', 90)
         # ---- chord
         self.angle_1 = self.defaults.get('angle1', 0)
-        self.xe = self.defaults.get('xe', 0)  # second point for ellipse
-        self.ye = self.defaults.get('ye', 0)
         # ---- arrow: head and tail
         self.head_style = self.defaults.get('head_style', 'triangle')
         self.tail_style = self.defaults.get('tail_style', None)
@@ -775,8 +773,6 @@ class BaseShape:
         # ---- chord
         self.angle_1 = kwargs.get('angle1', cnv.angle_1)  # anti-clock from flat
         self._angle_1_theta = math.radians(self.angle_1)
-        self.xe = kwargs.get('xe', cnv.xe)
-        self.ye = kwargs.get('ye', cnv.ye)
         # ---- arrow: head and tail
         self.head_style = kwargs.get('head_style', cnv.head_style)
         self.tail_style = kwargs.get('tail_style', cnv.tail_style)

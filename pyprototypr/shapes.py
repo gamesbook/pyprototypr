@@ -815,43 +815,81 @@ class EllipseShape(BaseShape):
     def calculate_area(self):
         return math.pi * self._u.height * self._u.width
 
+    def calculate_xy(self, **kwargs):
+        # ---- adjust start
+        if self.row is not None and self.col is not None:
+            x = self.col * self._u.width + self._o.delta_x
+            y = self.row * self._u.height + self._o.delta_y
+        elif self.cx and self.cy:
+            x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
+            y = self._u.cy - self._u.height / 2.0 + self._o.delta_y
+        else:
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
+        # ---- overrides to centre the shape
+        if kwargs.get("cx") and kwargs.get("cy"):
+            x = kwargs.get("cx") - self._u.width / 2.0
+            y = kwargs.get("cy") - self._u.height / 2.0
+        # ---- overrides for centering
+        rotation = kwargs.get('rotation', None)
+        if rotation:
+            x = -self._u.width / 2.0
+            y = -self._u.height / 2.0
+        return x, y
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw ellipse on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        # ---- set canvas
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # ---- create key points
-        x_1 = self._u.x + self._o.delta_x
-        y_1 = self._u.y + self._o.delta_y
-        if not self.xe:
-            self.xe = self.x + self.default_length
-        if not self.ye:
-            self.ye = self.y + self.default_length
-        x_2 = self.unit(self.xe) + self._o.delta_x
-        y_2 = self.unit(self.ye) + self._o.delta_y
-        x_c = (x_2 - x_1) / 2.0 + x_1
-        y_c = (y_2 - y_1) / 2.0 + y_1
-        # ---- overrides to centre the shape
-        if self.cx and self.cy:
-            dx = self._u.cx + self._o.delta_x - x_c
-            dy = self._u.cy + self._o.delta_y - y_c
-            x_1 = x_1 + dx
-            y_1 = y_1 + dy
-            x_2 = x_2 + dx
-            y_2 = y_2 + dy
-        # ---- calculated properties
+        # ---- calculate properties
+        x, y = self.calculate_xy()
+        # ---- overrides for grid layout
+        if self.use_abs_c:
+            x = self._abs_cx - self._u.width / 2.0
+            y = self._abs_cy - self._u.height / 2.0
+        x_d = x + self._u.width / 2.0  # centre
+        y_d = y + self._u.height / 2.0  # centre
         self.area = self.calculate_area()
+        delta_m_up, delta_m_down = 0.0, 0.0  # potential text offset from chevron
+        # ---- handle rotation: START
+        rotation = kwargs.get('rotation', self.rotation)
+        # print(self.label, rotation)
+        if rotation:
+            # tools.feedback(f'*** Rect {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
+            cnv.saveState()
+            # move the canvas origin
+            if ID is not None:
+                cnv.translate(x + self._u.margin_left, y + self._u.margin_bottom)
+            else:
+                cnv.translate(x + self._u.width / 2.0, y + self._u.height / 2.0)
+            cnv.rotate(rotation)
+            # reset centre and "bottom left"
+            x_d, y_d = 0, 0
+            x = -self._u.width / 2.0
+            y = -self._u.height / 2.0
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- draw ellipse
-        cnv.ellipse(x_1, y_1, x_2, y_2, stroke=1, fill=1 if self.fill else 0)
-        x_c = (x_2 - x_1) / 2.0 + x_1
-        y_c = (y_2 - y_1) / 2.0 + y_1
+        pth = cnv.beginPath()
+        pth.ellipse(x, y, self._u.width, self._u.height)
+        cnv.drawPath(
+            pth,
+            stroke=1 if self.stroke else 0,
+            fill=1 if self.fill else 0)
+        # ---- cross
+        self.draw_cross(cnv, x_d, y_d)
         # ---- dot
-        self.draw_dot(cnv, x_c, y_c)
+        self.draw_dot(cnv, x_d, y_d)
         # ---- text
-        self.draw_heading(cnv, ID, x_c, y_2, **kwargs)
-        self.draw_label(cnv, ID, x_c, y_c, **kwargs)
-        self.draw_title(cnv, ID, x_c, y_1, **kwargs)
+        if kwargs and kwargs.get('rotation'):
+            kwargs.pop('rotation')  # otherwise labels rotate again!
+        self.draw_heading(cnv, ID, x_d, y_d + 0.5 * self._u.height + delta_m_up, **kwargs)
+        self.draw_label(cnv, ID, x_d, y_d, **kwargs)
+        self.draw_title(cnv, ID, x_d, y_d - 0.5 * self._u.height - delta_m_down, **kwargs)
+        # ---- handle rotation: END
+        if rotation:
+            cnv.restoreState()
 
 
 class EquilateralTriangleShape(BaseShape):
@@ -1585,7 +1623,7 @@ class PolygonShape(BaseShape):
             half_flat = self._u.side * math.sqrt(3) / 2.0
         elif self.radius:
             side = self.u_radius
-        # ---- calc centre in units
+        # ---- calc centre (in units)
         if self.cx and self.cy:
             x = self._u.cx + self._o.delta_x
             y = self._u.cy + self._o.delta_y
@@ -2559,6 +2597,20 @@ class StarShape(BaseShape):
         radius = self._u.radius
         # ---- set canvas
         self.set_canvas_props(index=ID)
+        # ---- handle rotation: START
+        is_rotated = False
+        rotation = kwargs.get('rotation', self.rotation)
+        if rotation:
+            is_rotated = True
+            # tools.feedback(f'*** Star {ID=} {rotation=} {x=}, {y=}')
+            cnv.saveState()
+            # move the canvas origin
+            if ID is not None:
+                cnv.translate(x + self._u.margin_left, y + self._u.margin_bottom)
+            else:
+                cnv.translate(x, y)
+            cnv.rotate(rotation)
+            x, y = 0, 0
         # ---- draw star
         pth = cnv.beginPath()
         pth.moveTo(x, y + radius)
@@ -2578,6 +2630,9 @@ class StarShape(BaseShape):
         self.draw_heading(cnv, ID, x,  y + radius, **kwargs)
         self.draw_label(cnv, ID, x, y, **kwargs)
         self.draw_title(cnv, ID, x, y - radius, **kwargs)
+        # ---- handle rotation: END
+        if rotation:
+            cnv.restoreState()
 
 
 class StarFieldShape(BaseShape):

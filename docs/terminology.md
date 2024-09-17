@@ -46,6 +46,9 @@ available.
   strokes are set by prefixing this term with the name of the item in question;
   examples: **cross_stroke**; **grid_stroke**; **radii_stroke**;
   **label_stroke**
+* **stroke_fill** - set both the area and line color at the same time
+* **outline** - set the line color, and also the fill as `None`, at the same
+  time
 
 
 ## Location- and position-orientated terms <a name="location"></a>

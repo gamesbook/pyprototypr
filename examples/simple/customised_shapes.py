@@ -97,8 +97,8 @@ Star()
 PageBreak()
 
 Blueprint()
-Text(common=txt, text="Ellipse: xe=3, ye=2")
-Ellipse(cx=2, cy=1, xe=4, ye=3)
+Text(common=txt, text="Ellipse: centre + width=3, height=2")
+Ellipse(cx=2, cy=1, width=3, height=2)
 PageBreak()
 
 Blueprint()
