@@ -2027,7 +2027,7 @@ class RectangleShape(BaseShape):
                 self._u.width,
                 self._u.height,
                 rounding,
-                stroke=1,
+                stroke=1 if self.stroke else 0,
                 fill=1 if self.fill else 0,
             )
         elif self.rounded:
@@ -2038,7 +2038,7 @@ class RectangleShape(BaseShape):
                 self._u.width,
                 self._u.height,
                 _rounding,
-                stroke=1,
+                stroke=1 if self.stroke else 0,
                 fill=1 if self.fill else 0,
             )
         else:
@@ -2047,7 +2047,7 @@ class RectangleShape(BaseShape):
                 y,
                 self._u.width,
                 self._u.height,
-                stroke=1,
+                stroke=1 if self.stroke else 0,
                 fill=1 if self.fill else 0,
             )
         # ---- draw hatch

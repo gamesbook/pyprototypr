@@ -388,7 +388,7 @@ class BaseCanvas:
         self.flip = self.defaults.get('flip', 'north')
         self.elevation = self.defaults.get('elevation', 'horizontal')
         self.facing = self.defaults.get('facing', 'out')  # out/in
-        # ---- line
+        # ---- line style
         self.line_stroke = self.defaults.get('line_stroke', WIDTH)
         self.line_width = self.defaults.get('line_width', WIDTH)
         self.line_cap = self.defaults.get('line_cap', None)
@@ -401,10 +401,20 @@ class BaseCanvas:
         self.transparency = self.defaults.get('transparency', None)
         self.debug_color = self.get_color(
             self.defaults.get('debug_color'), DEBUG_COLOR)
+        self.fill_stroke = self.defaults.get('fill_stroke', None)
         # ---- stroke
         stroke = self.defaults.get('stroke', self.defaults.get('stroke_color'))
         self.stroke = self.get_color(stroke, black)
+        self.outline = self.defaults.get('outline', None)
         self.stroke_width = self.defaults.get('stroke_width', WIDTH)
+        # ---- overwrite fill & stroke
+        if self.fill_stroke:
+            self.stroke = self.fill_stroke
+            self.fill = self.fill_stroke
+            print(f'*** {self.stroke=} {self.fill=}')
+        # if self.outline:
+        #     self.stroke = self.outline
+        #     self.fill = None
         # ---- font
         self.font_face = self.defaults.get('font_face', 'Helvetica')
         self.font_size = self.defaults.get('font_size', 12)
@@ -630,7 +640,7 @@ class BaseShape:
         # ---- KEY
         self.canvas = canvas or BaseCanvas()  # BaseCanvas object
         cnv = self.canvas  # shortcut for use in getting defaults
-        # log.debug("BaseShape types %s %s %s",type(self.canvas),type(canvas),type(cnv))
+        # log.debug("Base types %s %s %s",type(self.canvas), type(canvas), type(cnv))
         self._object = _object  # placeholder for an incoming Shape object
         self.shape_id = None
         self.stylesheet = getSampleStyleSheet()
@@ -686,18 +696,31 @@ class BaseShape:
         self.position = kwargs.get('position', cnv.position)
         self.elevation = kwargs.get('elevation', cnv.elevation)
         self.facing = kwargs.get('facing', cnv.facing)
-        # ---- line
+        # ---- line style
         self.line_width = kwargs.get('line_width', cnv.line_width)
         self.line_cap = kwargs.get('line_cap', cnv.line_cap)
         self.line_dots = kwargs.get('line_dots',
                                     kwargs.get('dots', cnv.line_dots))
         self.dashes = kwargs.get('dashes', None)
-        # ---- color and transparency
-        self.debug_color = kwargs.get('debug_color', cnv.debug_color)
-        self.transparency = kwargs.get('transparency', cnv.transparency)
+        # ---- fill color
+        self.fill = kwargs.get('fill', kwargs.get('fill_color', cnv.fill))
         # ---- stroke
         self.stroke = kwargs.get('stroke', kwargs.get('stroke_color', cnv.stroke))
+        self.fill_stroke = kwargs.get('fill_stroke', cnv.fill_stroke)
+        self.outline = kwargs.get('outline', cnv.outline)
         self.stroke_width = kwargs.get('stroke_width', cnv.stroke_width)
+        # ---- overwrite fill&stroke colors
+        if self.fill_stroke and self.outline:
+            tools.feedback("Cannot set 'fill_stroke' and 'outline' together!", True)
+        if self.fill_stroke:
+            self.stroke = self.fill_stroke
+            self.fill = self.fill_stroke
+        if self.outline:
+            self.stroke = self.outline
+            self.fill = None
+        # ---- debug color & transparency
+        self.debug_color = kwargs.get('debug_color', cnv.debug_color)
+        self.transparency = kwargs.get('transparency', cnv.transparency)
         # ---- font
         self.font_face = kwargs.get('font_face', cnv.font_face)
         self.font_size = kwargs.get('font_size', cnv.font_size)
@@ -741,9 +764,7 @@ class BaseShape:
         self.outline_stroke = kwargs.get('outline_stroke', cnv.outline_stroke)
         self.outline_width = kwargs.get('outline_width', cnv.outline_width)
         self.leading = kwargs.get('leading', self.font_size)
-        # ---- fill color
-        self.fill = kwargs.get('fill', kwargs.get('fill_color', cnv.fill))
-        # tools.feedback(f"+++  BShp:{self} init {kwargs.get('fill')=} {self.fill=} {kwargs.get('fill_color')=}")
+        # tools.feedback(f"+++ BShp:{self} init {kwargs.get('fill')=} {self.fill=} {kwargs.get('fill_color')=}")
         # ---- image / file
         self.source = kwargs.get('source', cnv.source)  # file or http://
         # ---- line / ellipse / bezier / arc / polygon
@@ -878,7 +899,6 @@ class BaseShape:
         self.use_abs = False
         self.use_abs_1 = False
         self.use_abs_c = False
-
         # ---- CHECK ALL
         correct, issue = self.check_settings()
         if not correct:
@@ -1033,7 +1053,7 @@ class BaseShape:
             else:
                 _strk = ext(stroke) or ext(self.stroke)
                 canvas.setStrokeColor(_strk)
-        except TypeError:
+        except (TypeError, ValueError):
             tools.feedback(f'Please check the stroke setting of "{_strk}"; it should be a color value.')
         except AttributeError:
             pass
