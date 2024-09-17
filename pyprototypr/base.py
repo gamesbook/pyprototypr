@@ -362,6 +362,8 @@ class BaseCanvas:
         self.side = self.defaults.get('side', 1)  # equal length sides
         self.height = self.defaults.get('height', self.side)
         self.width = self.defaults.get('width', self.side)
+        self.depth = self.defaults.get('depth', self.side)  # diamond
+        self.width = self.defaults.get('width', self.side)
         self.x = self.defaults.get('x', self.defaults.get('left', 1))
         self.y = self.defaults.get('y', self.defaults.get('bottom', 1))
         self.cx = self.defaults.get('cx', None)
@@ -508,6 +510,8 @@ class BaseCanvas:
         self.notch_y = self.defaults.get('notch_y', 0)
         self.chevron = self.defaults.get('chevron', '')
         self.chevron_height = kwargs.get('chevron_height', 0)
+        self.points = kwargs.get('points', [])
+        self.points_dict = {}
         # ---- stadium
         self.edges = self.defaults.get('edges', 'north south')
         # ---- grid / card layout
@@ -669,6 +673,7 @@ class BaseShape:
         self.side = kwargs.get('side', cnv.side)  # equal length sides
         self.height = kwargs.get('height', self.side)
         self.width = kwargs.get('width', self.side)
+        self.depth = kwargs.get('depth', self.side)  # diamond
         self.x = kwargs.get('x', kwargs.get('left', cnv.x))
         self.y = kwargs.get('y', kwargs.get('bottom', cnv.y))
         self.cx = kwargs.get('cx', cnv.cx)  # centre (for some shapes)
@@ -805,6 +810,8 @@ class BaseShape:
         self.notch_y = kwargs.get('notch_y', cnv.notch_y)
         self.chevron = kwargs.get('chevron', cnv.chevron)
         self.chevron_height = kwargs.get('chevron_height', cnv.chevron_height)
+        self.points = kwargs.get('points', cnv.points)
+        self.points_dict = {}
         # ---- stadium
         self.edges = kwargs.get('edges', cnv.edges)
         # ---- grid / card layout
@@ -1183,6 +1190,28 @@ class BaseShape:
                     ['random', 'r', 'cluster', 'c', ]:
                 issue.append(f'"{self.pattern}" is an invalid starfield pattern!')
                 correct = False
+        # ---- rectangle - points
+        if self.points:
+            if not isinstance(self.points, list):
+                tools.feedback(f"The points '{self.points}' is not a valid list!", True)
+            for point in self.points:
+                try:
+                    _dir = point[0]
+                    value = tools.as_float(point[1], 'point value')
+                    if _dir.lower() not in ['n', 'e', 'w', 's', '*']:
+                        tools.feedback(
+                            f'The corner must be one of n, e, s, w (not "{_dir}")!',
+                            True)
+                    if _dir == '*':
+                        self.points_dict['nw'] = value
+                        self.points_dict['ne'] = value
+                        self.points_dict['sw'] = value
+                        self.points_dict['se'] = value
+                    else:
+                        self.points_dict[_dir] = value
+                except Exception:
+                    tools.feedback(
+                        f'The points setting "{point}" is not valid!', True)
 
         return correct, issue
 

@@ -1497,7 +1497,7 @@ def Layout(grid, **kwargs):
                     True)
     corners_dict = {}
     if corners:
-        if not isinstance(shown, list):
+        if not isinstance(corners, list):
             tools.feedback(f"The corners value '{corners}' is not a valid list!", True)
         for corner in corners:
             try:

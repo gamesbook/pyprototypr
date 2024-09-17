@@ -446,15 +446,32 @@ class CircleShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         # tools.feedback(f"*** Circle: {self._o.delta_x=} {self._o.delta_y=}")
         cnv = cnv.canvas if cnv else self.canvas.canvas
-        # ---- set properties
+        # ---- set centre & area
         x, y = self.calculate_centre()
         self.area = self.calculate_area()
         # ---- set canvas
         self.set_canvas_props(index=ID)
+        # ---- handle rotation: START
+        is_rotated = False
+        rotation = kwargs.get('rotation', self.rotation)
+        if rotation:
+            is_rotated = True
+            # tools.feedback(f'*** Rect {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
+            cnv.saveState()
+            # move the canvas origin
+            if ID is not None:
+                cnv.translate(x + self._u.margin_left, y + self._u.margin_bottom)
+            else:
+                cnv.translate(x, y)
+            cnv.rotate(rotation)
+            x, y = 0, 0
+            self.x_c, self.y_c = 0, 0
         # ---- draw circle
         # tools.feedback(f'*** Circle: {x=} {y=}')
         cnv.circle(
-            x, y, self._u.radius, stroke=1, fill=1 if self.fill else 0)
+            x, y, self._u.radius,
+            stroke=1 if self.stroke else 0,
+            fill=1 if self.fill else 0)
         # ---- draw hatch
         if self.hatch:
             if self.rotation:
@@ -485,6 +502,9 @@ class CircleShape(BaseShape):
         self.draw_heading(cnv, ID, self.x_c, self.y_c + self._u.radius, **kwargs)
         self.draw_label(cnv, ID, self.x_c, self.y_c, **kwargs)
         self.draw_title(cnv, ID, self.x_c, self.y_c - self._u.radius, **kwargs)
+        # ---- handle rotation: END
+        if rotation:
+            cnv.restoreState()
 
 
 class ChordShape(BaseShape):
@@ -1929,6 +1949,7 @@ class RectangleShape(BaseShape):
         # ---- validate properties
         is_notched = True if (self.notch or self.notch_x or self.notch_y) else False
         is_chevron = True if (self.chevron or self.chevron_height) else False
+        is_points = True if self.points else False
         if (self.rounding or self.rounded) and is_notched:
             tools.feedback("Cannot use rounding or rounded with notch.", True)
         if (self.rounding or self.rounded) and is_chevron:
@@ -1939,6 +1960,14 @@ class RectangleShape(BaseShape):
             tools.feedback("Cannot use hatch with chevron.", True)
         if is_notched and is_chevron:
             tools.feedback("Cannot use notch and chevron together.", True)
+        if is_notched and is_points:
+            tools.feedback("Cannot use notch and points together.", True)
+        if is_chevron and is_points:
+            tools.feedback("Cannot use chevron and points together.", True)
+        if self.hatch and is_points:
+            tools.feedback("Cannot use hatch and points together.", True)
+        if (self.rounding or self.rounded) and is_points:
+            tools.feedback("Cannot use rounding or rounded with points.", True)
         # ---- calculate properties
         x, y = self.calculate_xy()
         # ---- overrides for grid layout
@@ -1965,7 +1994,7 @@ class RectangleShape(BaseShape):
             x_d, y_d = 0, 0
             x = -self._u.width / 2.0
             y = -self._u.height / 2.0
-        # ---- notch vertices
+        # ---- * notch vertices
         if is_notched:
             if self.notch_corners:
                 _ntches = self.notch_corners.split()
@@ -1997,7 +2026,20 @@ class RectangleShape(BaseShape):
                 self.vertices.append(Point(x + n_x, y))
             else:
                 self.vertices.append(Point(x, y))
-        # ---- chevron vertices
+        # ---- * points vertices
+        elif is_points:
+            tools.feedback('points NOT YET IMPLEMENTED!', True)
+            half_height = self._u.height / 2.0
+            half_width = self._u.width / 2.0
+            self.vertices.append(Point(x, y))  # start here!
+            if 'w' in self.points_dict.keys():
+                _ht = self.unit(self.points_dict['w'])
+                self.vertices.append(Point(x - _ht, y + half_height))
+                self.vertices.append(Point(x, y + half_height))
+            else:
+                self.vertices.append(Point(x, y + self._u.height))
+            # etc.
+        # ---- * chevron vertices
         elif is_chevron:
             try:
                 _chevron_height = float(self.chevron_height)
@@ -2050,7 +2092,7 @@ class RectangleShape(BaseShape):
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- draw rectangle
-        if is_notched or is_chevron:
+        if is_notched or is_chevron or is_points:
             pth = cnv.beginPath()
             pth.moveTo(*self.vertices[0])
             for vertex in self.vertices:
