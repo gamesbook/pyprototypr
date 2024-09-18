@@ -15,7 +15,7 @@ Create(filename="layouts_shapes_outer.pdf",
 
 header = Common(x=0, y=6, font_size=6, align="left")
 is_common = Common(label="{count}")
-rct_common = Common(label_size=5, rounding=0.05)
+rct_common = Common(label_size=5, points=[('s', 0.1)], height=0.5, width=0.5)
 
 # ---- multi-shapes
 
@@ -32,9 +32,10 @@ PageBreak()
 
 # ---- single shape + multi-color + stop
 
-rct1 = square(common=rct_common, side=0.48, fill_stroke=palegreen)
-rct5 = square(common=rct_common, side=0.48, fill_stroke=lightgreen)
-rct10 = square(common=rct_common, side=0.48, fill_stroke=mediumseagreen)
+rct_small = Common(label_size=5, side=0.48)
+rct1 = square(common=rct_small, fill_stroke=palegreen)
+rct5 = square(common=rct_small, fill_stroke=lightgreen)
+rct10 = square(common=rct_small, fill_stroke=mediumseagreen)
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Rect.Layout: NW->east/outer + stop")
@@ -46,17 +47,14 @@ PageBreak()
 
 # ---- rotations + corners
 
-circ = circle(
-    common=rct_common, label="{count_zero}", radius=0.26, fill=rosybrown)
+circ = circle(label="{count_zero}", label_size=5, radius=0.26, fill=rosybrown)
 rct2 = rectangle(
-    common=rct_common, label="{count_zero}", height=0.6, width=0.48,
-    fill=tan)
+    common=rct_common, label="{count_zero}", fill=tan)
 rct3 = rectangle(
-    common=rct_common, label="{count_zero}", height=0.6, width=0.48,
-    fill=maroon, stroke=white)
+    common=rct_common, label="{count_zero}", fill=maroon, stroke=white)
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Layout: outer + rotate + corner")
+Text(common=header, text="Rect.Layout: SW/outer + rotate + corner")
 rrect = RectangularLayout(
     x=0.5, y=0.75, cols=7, rows=10, interval=0.5,
     start="SW", direction="north", pattern="outer")

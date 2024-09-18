@@ -499,6 +499,8 @@ class CircleShape(BaseShape):
         # ---- dot
         self.draw_dot(cnv, self.x_c, self.y_c)
         # ---- text
+        if kwargs and kwargs.get('rotation'):
+            kwargs.pop('rotation')  # otherwise labels rotate again!
         self.draw_heading(cnv, ID, self.x_c, self.y_c + self._u.radius, **kwargs)
         self.draw_label(cnv, ID, self.x_c, self.y_c, **kwargs)
         self.draw_title(cnv, ID, self.x_c, self.y_c - self._u.radius, **kwargs)
@@ -1954,6 +1956,8 @@ class RectangleShape(BaseShape):
             tools.feedback("Cannot use rounding or rounded with notch.", True)
         if (self.rounding or self.rounded) and is_chevron:
             tools.feedback("Cannot use rounding or rounded with chevron.", True)
+        if (self.rounding or self.rounded) and is_points:
+            tools.feedback("Cannot use rounding or rounded with points.", True)
         if self.hatch and is_notched:
             tools.feedback("Cannot use hatch with notch.", True)
         if self.hatch and is_chevron:
@@ -1966,8 +1970,6 @@ class RectangleShape(BaseShape):
             tools.feedback("Cannot use chevron and points together.", True)
         if self.hatch and is_points:
             tools.feedback("Cannot use hatch and points together.", True)
-        if (self.rounding or self.rounded) and is_points:
-            tools.feedback("Cannot use rounding or rounded with points.", True)
         # ---- calculate properties
         x, y = self.calculate_xy()
         # ---- overrides for grid layout

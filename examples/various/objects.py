@@ -79,10 +79,18 @@ Polygon(common=poly6, radius=0.75, rotation=30)
 Polygon(common=poly6, radius=0.60, rotation=45)
 Polygon(common=poly6, radius=0.60, rotation=60)
 
-Text(common=header_font, x=5, y=22, text="XOK Fish")
-Circle(cx=2, cy=22, radius=1, fill="#63B1BB", stroke="#63B1BB", radii=[135,225],
+Text(common=header_font, x=5, y=22, text="XOK Fish: nested circles with 2 offset radii")
+Circle(cx=2, cy=22, radius=1,
+       fill="#63B1BB", stroke="#63B1BB",
+       radii=[135,225],
        radii_offset=1.05, radii_length=0.4, radii_stroke=white, radii_stroke_width=15)
 Circle(cx=2, cy=22, radius=0.75, fill="#63B1BB", stroke="#63B1BB")
 Dot(x=2.5, y=22.5, stroke=white, dot_point=3)
 
+Text(common=header_font, x=5, y=19, text="Gear: nested circles with 8 offset radii")
+Circle(cx=2, cy=19, radius=0.5,
+       fill=None, stroke=grey, stroke_width=8,
+       radii=[0,45,90,135,180,225,270,315],
+       radii_offset=0.8, radii_length=0.2, radii_stroke=grey, radii_stroke_width=8)
+Circle(cx=2, cy=19, radius=0.15, fill_stroke=grey)
 Save()
