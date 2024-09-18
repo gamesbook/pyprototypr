@@ -371,7 +371,7 @@ Polygon(
     dot_size=0.1, dot_stroke=red)
 PageBreak()
 
-# ---- rectangle chevron
+# ---- rectangle - chevron
 Blueprint()
 Text(common=txt, text="Rectangle: chevron")
 Rectangle(
@@ -414,6 +414,13 @@ Rectangle(
     title="title-E",
     heading="head-E",
     )
+PageBreak()
+
+# ---- rectangle - points
+Blueprint()
+Text(common=txt, text="Rectangle: points")
+Rectangle(x=1, y=1, width=2, height=1, points=[("*",0.2) ], font_size=6, label="points = *")
+Rectangle(x=1, y=4, width=2, height=1.5, points=[("s",1) ], font_size=6, label="points = s")
 PageBreak()
 
 # ---- dates
@@ -523,4 +530,5 @@ PageBreak()
 Text(common=txt, text="END...")
 PageBreak(footer=True)
 
-Save(output='png', dpi=600)
+Save()
+# Save(output='png', dpi=600)

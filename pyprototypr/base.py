@@ -1197,16 +1197,16 @@ class BaseShape:
             for point in self.points:
                 try:
                     _dir = point[0]
-                    value = tools.as_float(point[1], 'point value')
+                    value = tools.as_float(point[1], ' points value')
                     if _dir.lower() not in ['n', 'e', 'w', 's', '*']:
                         tools.feedback(
-                            f'The corner must be one of n, e, s, w (not "{_dir}")!',
+                            f'The points direction must be one of n, e, s, w (not "{_dir}")!',
                             True)
                     if _dir == '*':
-                        self.points_dict['nw'] = value
-                        self.points_dict['ne'] = value
-                        self.points_dict['sw'] = value
-                        self.points_dict['se'] = value
+                        self.points_dict['n'] = value
+                        self.points_dict['e'] = value
+                        self.points_dict['w'] = value
+                        self.points_dict['s'] = value
                     else:
                         self.points_dict[_dir] = value
                 except Exception:

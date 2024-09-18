@@ -186,15 +186,15 @@ def as_float(value, label, maximum=None, minimum=None) -> int:
         the_value = float(value)
         if minimum and the_value < minimum:
             feedback(
-                f"The {value}{_label} float is less than the minimum of {minimum}!",
+                f'The "{value}"{_label} float value is less than the minimum of {minimum}!',
                 True)
         if maximum and the_value > maximum:
             feedback(
-                f"The {value}{_label} float is more than the maximum of {maximum}!",
+                f'The "{value}"{_label} float value is more than the maximum of {maximum}!',
                 True)
         return the_value
     except (ValueError, Exception):
-        feedback(f"The {value}{label} is not a valid float!", True)
+        feedback(f'The "{value}"{label} is not a valid float number!', True)
 
 
 def tuple_split(string):

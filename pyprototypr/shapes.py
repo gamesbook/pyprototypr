@@ -2028,17 +2028,33 @@ class RectangleShape(BaseShape):
                 self.vertices.append(Point(x, y))
         # ---- * points vertices
         elif is_points:
-            tools.feedback('points NOT YET IMPLEMENTED!', True)
             half_height = self._u.height / 2.0
             half_width = self._u.width / 2.0
+            self.vertices = []
             self.vertices.append(Point(x, y))  # start here!
             if 'w' in self.points_dict.keys():
-                _ht = self.unit(self.points_dict['w'])
-                self.vertices.append(Point(x - _ht, y + half_height))
-                self.vertices.append(Point(x, y + half_height))
+                _pt = self.unit(self.points_dict['w'])
+                self.vertices.append(Point(x - _pt, y + half_height))
+                self.vertices.append(Point(x, y + self._u.height))
             else:
                 self.vertices.append(Point(x, y + self._u.height))
-            # etc.
+            if 'n' in self.points_dict.keys():
+                _pt = self.unit(self.points_dict['n'])
+                self.vertices.append(Point(x + half_width, y + self._u.height + _pt))
+                self.vertices.append(Point(x + self._u.width, y + self._u.height))
+            else:
+                self.vertices.append(Point(x + self._u.width, y + self._u.height))
+            if 'e' in self.points_dict.keys():
+                _pt = self.unit(self.points_dict['e'])
+                self.vertices.append(Point(x + + self._u.width + _pt, y + half_height))
+                self.vertices.append(Point(x + self._u.width, y))
+            else:
+                self.vertices.append(Point(x + self._u.width, y))
+            if 's' in self.points_dict.keys():
+                _pt = self.unit(self.points_dict['s'])
+                self.vertices.append(Point(x + half_width, y - _pt))
+            else:
+                self.vertices.append(Point(x, y))  # close() draws line back to start
         # ---- * chevron vertices
         elif is_chevron:
             try:
