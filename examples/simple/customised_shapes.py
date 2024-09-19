@@ -17,34 +17,12 @@ Footer(draw=False)
 
 txt = Common(x=0, y=6, font_size=8, align="left")
 
-Text(common=txt, text="START...")
+Text(common=txt, text="Shapes START...")
 PageBreak(footer=True)
 
 # ---- blueprint custom
 Blueprint(subdivisions=5, stroke_width=0.5, style='invert')
 Text(common=txt, text="Blueprint: subdiv;invert;stroke")
-PageBreak()
-
-# ---- rectangle: notches
-Blueprint()
-Text(common=txt, text="Rectangle & Notches")
-Rectangle(height=2, width=1, x=0, y=0, label="x:0 y:0", label_size=5)
-Rectangle(
-    x=2, y=1,
-    height=2, width=1,
-    notch=0.25,
-    label="notch:0.5",
-    label_size=5,
-    )
-Rectangle(
-    x=1, y=4,
-    height=1, width=2,
-    notch_y=0.25,
-    notch_x=0.5,
-    notch_corners="NW SE",
-    label="notch:.25/.5 loc: NW, SE",
-    label_size=5,
-    )
 PageBreak()
 
 # ---- circle hatch
@@ -61,18 +39,11 @@ PageBreak()
 
 # ---- dot & cross
 Blueprint()
-Text(common=txt, text="Rectangle: dot & cross")
-Rectangle(height=3, width=2, x=1, y=1, cross_size=0.75, dot_size=0.15)
-PageBreak()
-
-Blueprint()
 Text(common=txt, text="Dots & Crosses")
 Circle(cx=1, cy=1, radius=1, dot_size=0.1, dot_stroke=green)
 Circle(cx=3, cy=1, radius=1, cross_size=0.25, cross_stroke=green, cross_stroke_width=1)
 Polygon(cx=1, cy=3, sides=8, radius=1, dot_size=0.1, dot_stroke=orange)
 Polygon(cx=3, cy=3, sides=8, diameter=2, cross_size=0.25, cross_stroke=orange, cross_stroke_width=1)
-Hexagon(x=0, y=4, height=2, dot_size=0.1, dot_stroke=red)
-Hexagon(x=2, y=4, height=2, cross_size=0.25, cross_stroke=red, cross_stroke_width=1)
 PageBreak()
 
 # ---- centre placement
@@ -80,11 +51,6 @@ PageBreak()
 # Text(common=txt, text="Trapezoid: cx=2, cy=3")
 # Trapezoid(cx=2, cy=3)
 # PageBreak()
-
-Blueprint()
-Text(common=txt, text="Hexagon: cx=2, cy=3")
-Hexagon(cx=2, cy=3)
-PageBreak()
 
 Blueprint()
 Text(common=txt, text="Rhombus: cx=2, cy=3")
@@ -164,71 +130,6 @@ StarField(
     enclosure=polygon(common=plys),
     colors=[white, white, white, red, green, blue],
     sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
-PageBreak()
-
-# ---- rectangle hatch
-Blueprint()
-Text(common=txt, text="Rectangle: hatch + directions")
-htch = Common(height=1.5, width=1, hatch=5, hatch_width=0.1, hatch_stroke=red)
-Rectangle(common=htch, x=0, y=0,  hatch_directions='w', label="W")
-Rectangle(common=htch, x=1.5, y=0, hatch_directions='e', label="E")
-Rectangle(common=htch, x=3, y=0, hatch_directions='ne', label="NE\nSW")
-
-Rectangle(common=htch, x=1.5, y=2, hatch_directions='n', label="N")
-Rectangle(common=htch, x=0, y=2,  hatch_directions='s', label="S")
-Rectangle(common=htch, x=3, y=2, hatch_directions='nw', label="NW\nSE")
-
-Rectangle(common=htch, x=0, y=4, label="all")
-Rectangle(common=htch, x=1.5, y=4, hatch_directions='o', label="O")
-Rectangle(common=htch, x=3, y=4, hatch_directions='d', label="D")
-
-PageBreak()
-
-# ---- rectangle + round + hatch
-Blueprint()
-Text(common=txt, text="Rectangle: rounding; hatch")
-rct = Common(x=0.5, height=1.5, width=3.0, stroke_width=.5, hatch_stroke=red)
-Rectangle(common=rct, y=0.0, rounding=0.1, hatch=10, hatch_directions='o')
-Rectangle(common=rct, y=2.0, rounding=0.5, hatch=3, hatch_directions='o')
-# Rectangle(common=rct, y=2.0, rounding=0.5, hatch=10, hatch_directions='o')  # FAILS!
-PageBreak()
-
-# ---- hexagon hatch
-Blueprint()
-Text(common=txt, text="Hexagon: hatch + directions")
-hxgn = Common(height=1.5, hatch=5, hatch_stroke=red)
-Hexagon(common=hxgn, x=0, y=0, orientation='flat', hatch_directions='e', label="e/w")
-Hexagon(common=hxgn, x=2, y=0, orientation='pointy', hatch_directions='n', label="n/s")
-Hexagon(common=hxgn, x=0, y=2, orientation='flat', hatch_directions='ne', label="ne/sw")
-Hexagon(common=hxgn, x=2, y=2, orientation='pointy', hatch_directions='ne', label="ne/sw")
-Hexagon(common=hxgn, x=0, y=4, orientation='flat', hatch_directions='nw', label="nw/se")
-Hexagon(common=hxgn, x=2, y=4, orientation='pointy', hatch_directions='nw', label="nw/se")
-PageBreak()
-
-# ---- hexagon hatch + text
-Blueprint()
-Text(common=txt, text="Hexagon: flat; text; hatch")
-Hexagon(
-    y=2,
-    height=2,
-    hatch=3,
-    hatch_stroke=red,
-    debug=True,
-    title="Title",
-    label="Label",
-    heading="Heading")
-PageBreak()
-
-Blueprint()
-Text(common=txt, text="Hexagon: pointy; text; hatch")
-Hexagon(
-    y=2,
-    height=2,
-    hatch=5,
-    hatch_stroke=red,
-    orientation='pointy',
-    title="Title",
-    heading="Heading")
 PageBreak()
 
 # ---- equilateral triangle: hatch
@@ -371,58 +272,6 @@ Polygon(
     dot_size=0.1, dot_stroke=red)
 PageBreak()
 
-# ---- rectangle - chevron
-Blueprint()
-Text(common=txt, text="Rectangle: chevron")
-Rectangle(
-    x=3, y=2,
-    height=2, width=1,
-    font_size=4,
-    chevron='N',
-    chevron_height=0.5,
-    label="chevron:N:0.5",
-    title="title-N",
-    heading="head-N",
-    )
-Rectangle(
-    x=0, y=2,
-    height=2, width=1,
-    font_size=4,
-    chevron='S',
-    chevron_height=0.5,
-    label="chevron:S:0.5",
-    title="title-S",
-    heading="head-S",
-    )
-Rectangle(
-    x=1, y=4.5,
-    height=1, width=2,
-    font_size=4,
-    chevron='W',
-    chevron_height=0.5,
-    label="chevron:W:0.5",
-    title="title-W",
-    heading="head-W",
-    )
-Rectangle(
-    x=1, y=0.5,
-    height=1, width=2,
-    font_size=4,
-    chevron='E',
-    chevron_height=0.5,
-    label="chevron:E:0.5",
-    title="title-E",
-    heading="head-E",
-    )
-PageBreak()
-
-# ---- rectangle - points
-Blueprint()
-Text(common=txt, text="Rectangle: points")
-Rectangle(x=1, y=1, width=2, height=1, points=[("*",0.2) ], font_size=6, label="points = *")
-Rectangle(x=1, y=4, width=2, height=1.5, points=[("s",1) ], font_size=6, label="points = s")
-PageBreak()
-
 # ---- dates
 Blueprint()
 Text(common=txt, text="Dates: format and styles")
@@ -432,19 +281,6 @@ Text(common=dtext, y=4, text=Today(details="date", style="usa"))
 Text(common=dtext, y=3, text=Today(details="date", style="eur"))
 Text(common=dtext, y=2, text=Today(details="datetime", style="usa"))
 Text(common=dtext, y=1, text=Today(details="datetime", style="eur"))
-PageBreak()
-
-# ---- label offsets
-Blueprint(stroke_width=0.5)
-Text(common=txt, text="Shape label: default and offsets")
-rct = Common(height=1.0, width=1.75, stroke_width=.5, label_size=7)
-Rectangle(common=rct, x=0, y=0.0, label="offset -x, -y", label_dx=-0.2, label_dy=-0.2)
-Rectangle(common=rct, x=0, y=1.5, label="offset -x", label_dx=-0.3)
-Rectangle(common=rct, x=0, y=3.0, label="offset -x, +y", label_dx=-0.2, label_dy=0.2)
-Rectangle(common=rct, x=2, y=0.0, label="offset +x, -y", label_dx=0.2, label_dy=-0.2)
-Rectangle(common=rct, x=2, y=1.5, label="offset +x", label_dx=0.3)
-Rectangle(common=rct, x=2, y=3.0, label="offset +x, +y", label_dx=0.2, label_dy=0.2)
-Rectangle(common=rct, x=1, y=4.5, label="no offset")
 PageBreak()
 
 # ---- rotation: image
@@ -463,14 +299,6 @@ Text(common=txt, text="Rhombus: red => rotation 60\u00B0")
 Rhombus(cx=2, cy=3, width=1.5, height=2*equi(1.5), dot_size=0.06)
 Rhombus(cx=2, cy=3, width=1.5, height=2*equi(1.5), fill=None,
         stroke=red, stroke_width=.3, rotation=60, dot_size=0.04)
-PageBreak()
-
-# ---- rotation: rect
-Blueprint()
-Text(common=txt, text="Rectangle: red => rotation 45\u00B0")
-Rectangle(cx=2, cy=3, width=1.5, height=3, dot_size=0.06)
-Rectangle(cx=2, cy=3, width=1.5, height=3, fill=None,
-          stroke=red, stroke_width=.3, rotation=45, dot_size=0.04)
 PageBreak()
 
 # ---- rotation: stadium
@@ -502,32 +330,8 @@ Polygon(common=poly6, y=4, x=2.5, rotation=45, label="45")
 Polygon(common=poly6, y=5, x=3.0, rotation=60, label="60")
 PageBreak()
 
-# ---- hex radii
-Blueprint(stroke_width=0.5)
-Text(common=txt, text="Hex Pointy: radii")
-hxg = Common(height=1.5, dot_size=0.05, dot_stroke=red, orientation="pointy", font_size=8)
-Hexagon(common=hxg, x=0.25, y=0.25, radii='sw', label="SW")
-Hexagon(common=hxg, x=0.25, y=2.15, radii='nw', label="NW")
-Hexagon(common=hxg, x=0.25, y=4, radii='n', label="N")
-Hexagon(common=hxg, x=2.25, y=4, radii='ne', label="NE")
-Hexagon(common=hxg, x=2.25, y=0.25, radii='s', label="S")
-Hexagon(common=hxg, x=2.25, y=2.15, radii='se', label="SE")
-PageBreak()
-
-# ---- hex radii
-Blueprint(stroke_width=0.5)
-Text(common=txt, text="Hex Flat: radii")
-hxg = Common(height=1.5, dot_size=0.05, dot_stroke=red, orientation="flat", font_size=8)
-Hexagon(common=hxg, x=0.25, y=0.25, radii='sw', label="SW")
-Hexagon(common=hxg, x=0.25, y=2.15, radii='w', label="W")
-Hexagon(common=hxg, x=0.25, y=4, radii='nw', label="NW")
-Hexagon(common=hxg, x=2.25, y=4, radii='ne', label="NE")
-Hexagon(common=hxg, x=2.25, y=2.15, radii='e', label="E")
-Hexagon(common=hxg, x=2.25, y=0.25, radii='se', label="SE")
-PageBreak()
-
 # ---- END
-Text(common=txt, text="END...")
+Text(common=txt, text="Shapes END...")
 PageBreak(footer=True)
 
 Save()

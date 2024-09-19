@@ -95,6 +95,8 @@ Text(common=header_font, x=5, y=16, text="Atom: rotated ellipses")
 Ellipse(cx=2, cy=16, width=3, height=1, rotation=30, stroke_width=1, outline=red)
 Ellipse(cx=2, cy=16, width=3, height=1, rotation=150, stroke_width=1, outline=red)
 Ellipse(cx=2, cy=16, width=3, height=1, rotation=270, stroke_width=1, outline=red)
+#for r in range(0, 3): Ellipse(
+#        cx=2, cy=16, width=3, height=1, rotation=120*r + 30, stroke_width=1, outline=black)
 Circle(cx=2, cy=16, radius=0.2, fill_stroke=red)
 
 Save()
