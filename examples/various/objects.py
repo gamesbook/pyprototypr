@@ -37,7 +37,7 @@ Rectangle(
     hatch=7, hatch_width=0.1, hatch_directions='d', hatch_stroke=black,
     stroke=saddlebrown, stroke_width=2, fill=lightcyan)
 
-Text(common=header_font, x=5, y=11, text="Paned Window: rectangle with single orthohonal hatch")
+Text(common=header_font, x=5, y=11, text="Paned Window: rectangle with single orthogonal hatch")
 Rectangle(
     x=2, y=9.5,
     height=3, width=2,
@@ -50,19 +50,16 @@ Circle(x=1.75, y=6.25, fill=black, radius=1.25,
        radii=[0,45,90,135,180,225,270,315], radii_stroke=gold, radii_stroke_width=2)
 Circle(x=2.5, y=7, stroke=black, fill=gold, radius=0.5, stroke_width=5)
 
-pos = -0.5
-Text(common=header_font, x=5, y=pos+3, text="Doorway: stadiums, dashline + radii")
-Stadium(x=1, y=pos+1, height=3, width=3, fill=skyblue, stroke=darkgrey, stroke_width=8, edges="n")
-Stadium(x=1.003, y=pos+1.003, height=3.003, width=3.003, fill=None, edges="n",
+Text(common=header_font, x=5, y=3, text="Doorway: stadiums, dashline + radii")
+Stadium(x=1.5, y=1, height=3, width=3, fill=skyblue, stroke=darkgrey, stroke_width=8, edges="n")
+Stadium(x=1.503, y=1.003, height=3.003, width=3.003, fill=None, edges="n",
         stroke=fidred, stroke_width=5,
         dashes=[0.3, 0.05, 0.05, 0.0],)
-Circle(cx=2.5, cy=pos+4, stroke=sienna, stroke_width=5, fill=skyblue, radius=1.3,
+Circle(cx=3, cy=4, stroke=sienna, stroke_width=5, fill=skyblue, radius=1.3,
        radii=[30,90,150], radii_stroke=sienna, radii_stroke_width=3)
-Circle(cx=2.5, cy=pos+4, stroke=sienna, stroke_width=5, fill=sienna, radius=0.3)
-Rectangle(
-    x=1.2, y=pos+0.9, height=3, width=2.6,
-    stroke=sienna, stroke_width=5, fill=skyblue)
-
+Circle(cx=3, cy=4, stroke=sienna, stroke_width=5, fill=sienna, radius=0.3)
+Rectangle(x=1.7, y=0.9, height=3, width=2.6,
+          stroke=sienna, stroke_width=5, fill=skyblue)
 PageBreak()
 
 Text(common=header, text="Miscellaneous  Objects #2")
@@ -77,7 +74,7 @@ Polygon(common=poly6, radius=1.05, rotation=60)
 Polygon(common=poly6, radius=0.90, rotation=15)
 Polygon(common=poly6, radius=0.75, rotation=30)
 Polygon(common=poly6, radius=0.60, rotation=45)
-Polygon(common=poly6, radius=0.60, rotation=60)
+Polygon(x=2, y=25, fill=black, radius=0.60, rotation=60)
 
 Text(common=header_font, x=5, y=22, text="XOK Fish: nested circles with 2 offset radii")
 Circle(cx=2, cy=22, radius=1,
@@ -93,4 +90,11 @@ Circle(cx=2, cy=19, radius=0.5,
        radii=[0,45,90,135,180,225,270,315],
        radii_offset=0.8, radii_length=0.2, radii_stroke=grey, radii_stroke_width=8)
 Circle(cx=2, cy=19, radius=0.15, fill_stroke=grey)
+
+Text(common=header_font, x=5, y=16, text="Atom: rotated ellipses")
+Ellipse(cx=2, cy=16, width=3, height=1, rotation=30, stroke_width=1, outline=red)
+Ellipse(cx=2, cy=16, width=3, height=1, rotation=150, stroke_width=1, outline=red)
+Ellipse(cx=2, cy=16, width=3, height=1, rotation=270, stroke_width=1, outline=red)
+Circle(cx=2, cy=16, radius=0.2, fill_stroke=red)
+
 Save()
