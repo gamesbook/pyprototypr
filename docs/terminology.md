@@ -202,3 +202,7 @@ Properties that use direction include:
   small dots where each point in that layout exists
 * **perimeter** - used to demacate the boundary of a `StarField`; one of
   _circle_, _rectangle_ or _polygon_
+* **peaks** - a series of sets, each containing a primary compass direction
+  and a value, that designate that the edge of a rectangle should be drawn
+  as a triangular "peak"; e.g. a set of `('n', 2)` would draw a 2cm high
+  triangle on the upper (north) edge.

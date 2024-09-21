@@ -17,7 +17,7 @@ python examples/simple/customised_blueprint.py -d /tmp/demo
 # -- examples: simple: layouts
 python examples/simple/layouts/layouts_basic.py -d /tmp/demo
 python examples/simple/layouts/layouts_basic_rectangular.py -d /tmp/demo
-python examples/simple/layouts/layouts_basic_triangular.py-d /tmp/demo
+python examples/simple/layouts/layouts_basic_triangular.py -d /tmp/demo
 python examples/simple/layouts/layouts_shapes_outer.py -d /tmp/demo
 # -- boards: abstract
 echo "Creating abstract boards..."
@@ -56,9 +56,10 @@ echo "Creating various..."
 python examples/various/chords.py -d /tmp/demo
 python examples/various/clock.py -d /tmp/demo
 python examples/various/objects.py -d /tmp/demo
+python examples/various/unicode.py -d /tmp/demo
 python examples/various/world_clocks.py -d /tmp/demo
 # -- Board Game Geek
 echo "Creating BGG game sheet..."
-python examples/bgg/example01.py -d /tmp/demo
+# python examples/bgg/example01.py -d /tmp/demo
 
 echo "Done!"

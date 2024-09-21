@@ -4,3 +4,4 @@ xlrd>=0.9.4
 bgg-api>=1.1.6
 svglib>=1.5.1
 pymupdf>=1.24.9
+Jinja2>=3.1.4

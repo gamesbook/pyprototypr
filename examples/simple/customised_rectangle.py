@@ -126,11 +126,11 @@ Rectangle(
     )
 PageBreak()
 
-# ---- points
+# ---- peaks
 Blueprint()
-Text(common=txt, text="Rectangle: points")
-Rectangle(x=1, y=1, width=2, height=1, points=[("*",0.2) ], font_size=6, label="points = *")
-Rectangle(x=1, y=4, width=2, height=1.5, points=[("s",1) ], font_size=6, label="points = s")
+Text(common=txt, text="Rectangle: peaks")
+Rectangle(x=1, y=1, width=2, height=1, peaks=[("*",0.2) ], font_size=6, label="peaks = *")
+Rectangle(x=1, y=4, width=2, height=1.5, peaks=[("s",1) ], font_size=6, label="points = s")
 PageBreak()
 
 # ---- label offsets

@@ -18,6 +18,7 @@ import sys
 from typing import Union, Any
 from math import sqrt as root
 # third party
+import jinja2
 from reportlab.lib.pagesizes import *
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -373,7 +374,9 @@ def Card(sequence, *elements):
     if not _cards:
         try:
             card_count = len(dataset) if dataset else len(deck.image_list)
-            if sequence.lower() == 'all' or sequence.lower() == '*':
+            if isinstance(sequence, list) and not isinstance(sequence, str):
+                _cards = sequence
+            elif sequence.lower() == 'all' or sequence.lower() == '*':
                 _cards = range(1, card_count + 1)
             else:
                 _cards = tools.sequence_split(sequence)
@@ -426,7 +429,7 @@ def group(*args, **kwargs):
 
 
 def Data(**kwargs):
-    """Load data from file, dictionary or directory for access by a Deck."""
+    """Load data from file, dictionary, or directory for access by a Deck."""
     global cnv
     global deck
     global dataset
@@ -550,6 +553,20 @@ def L(lookup: str, target: str, result: str, default: Any = '') -> LookupType:
             else:
                 tools.feedback(f'The "{target}" column is not available.', True)
     result = LookupType(column=lookup, lookups=lookups)
+    return result
+
+
+def T(source: str, data: dict = None):
+    """Use source as template to convert dictionary into a string result."""
+    global dataset
+    environment = jinja2.Environment(str)
+    template = environment.from_string(source)
+    template_data = data if data else dataset
+    try:
+        result = template.render(template_data)
+    except jinja2.exceptions.UndefinedError as err:
+        tools.feedback(f'Unable to process data with this template ({err})', True)
+    # print(result)
     return result
 
 
@@ -754,7 +771,7 @@ def Hexagon(row=None, col=None, **kwargs):
     global cnv
     global deck
     kwargs = margins(**kwargs)
-    # tools.feedback(f'Will draw HexShape: {kwargs}')
+    # print(f'Will draw HexShape: {kwargs}')
     kwargs['row'] = row
     kwargs['col'] = col
     hexagon = HexShape(canvas=cnv, **kwargs)

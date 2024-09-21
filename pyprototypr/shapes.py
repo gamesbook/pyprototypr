@@ -301,7 +301,7 @@ class CircleShape(BaseShape):
         self.set_canvas_props(
             index=ID,
             stroke=self.hatch_stroke,
-            stroke_width=self.hatch_width,
+            stroke_width=self.hatch_stroke_width,
             stroke_cap=self.hatch_cap)
         _dirs = self.hatch_directions.lower().split()
         lines = int(num)
@@ -920,7 +920,7 @@ class EquilateralTriangleShape(BaseShape):
         self.set_canvas_props(
             index=ID,
             stroke=self.hatch_stroke,
-            stroke_width=self.hatch_width,
+            stroke_width=self.hatch_stroke_width,
             stroke_cap=self.hatch_cap)
         _dirs = self.hatch_directions.lower().split()
         lines = int(num) + 1
@@ -1216,7 +1216,7 @@ class HexShape(BaseShape):
         self.set_canvas_props(
             index=ID,
             stroke=self.hatch_stroke,
-            stroke_width=self.hatch_width,
+            stroke_width=self.hatch_stroke_width,
             stroke_cap=self.hatch_cap)
         _dirs = self.hatch_directions.lower().split()
         lines = int((num - 1) / 2 + 1)
@@ -1874,7 +1874,7 @@ class RectangleShape(BaseShape):
         self.set_canvas_props(
             index=ID,
             stroke=self.hatch_stroke,
-            stroke_width=self.hatch_width,
+            stroke_width=self.hatch_stroke_width,
             stroke_cap=self.hatch_cap)
         # ---- draw items
         if num >= 1:
@@ -2034,26 +2034,26 @@ class RectangleShape(BaseShape):
             half_width = self._u.width / 2.0
             self.vertices = []
             self.vertices.append(Point(x, y))  # start here!
-            if 'w' in self.points_dict.keys():
-                _pt = self.unit(self.points_dict['w'])
+            if 'w' in self.peaks_dict.keys():
+                _pt = self.unit(self.peaks_dict['w'])
                 self.vertices.append(Point(x - _pt, y + half_height))
                 self.vertices.append(Point(x, y + self._u.height))
             else:
                 self.vertices.append(Point(x, y + self._u.height))
-            if 'n' in self.points_dict.keys():
-                _pt = self.unit(self.points_dict['n'])
+            if 'n' in self.peaks_dict.keys():
+                _pt = self.unit(self.peaks_dict['n'])
                 self.vertices.append(Point(x + half_width, y + self._u.height + _pt))
                 self.vertices.append(Point(x + self._u.width, y + self._u.height))
             else:
                 self.vertices.append(Point(x + self._u.width, y + self._u.height))
-            if 'e' in self.points_dict.keys():
-                _pt = self.unit(self.points_dict['e'])
+            if 'e' in self.peaks_dict.keys():
+                _pt = self.unit(self.peaks_dict['e'])
                 self.vertices.append(Point(x + + self._u.width + _pt, y + half_height))
                 self.vertices.append(Point(x + self._u.width, y))
             else:
                 self.vertices.append(Point(x + self._u.width, y))
-            if 's' in self.points_dict.keys():
-                _pt = self.unit(self.points_dict['s'])
+            if 's' in self.peaks_dict.keys():
+                _pt = self.unit(self.peaks_dict['s'])
                 self.vertices.append(Point(x + half_width, y - _pt))
             else:
                 self.vertices.append(Point(x, y))  # close() draws line back to start

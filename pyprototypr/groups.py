@@ -208,13 +208,14 @@ class CardShape(BaseShape):
         # ---- draw card elements
         flat_elements = tools.flatten(self.elements)
         for index, flat_ele in enumerate(flat_elements):
+            #breakpoint()
             # ---- * replace image source placeholder
             if image and isinstance(flat_ele, ImageShape):
                 # tools.feedback(f'*** {image=} {flat_ele=} {flat_ele.kwargs=}')
                 if flat_ele.kwargs.get('source', '').lower() in ['*', 'all']:
                     flat_ele.source = image
 
-            members = flat_ele.members or self.members
+            members = self.members or flat_ele.members
             try:
                 # ---- * normal element
                 iid = members.index(cid + 1)
