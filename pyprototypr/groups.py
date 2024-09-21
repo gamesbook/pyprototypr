@@ -9,6 +9,8 @@ import logging
 import math
 
 # third party
+import jinja2
+from jinja2.environment import Template
 # local
 from pyprototypr.utils import tools  # geoms,
 from pyprototypr.base import BaseShape
@@ -24,27 +26,27 @@ LookupType = namedtuple("LookupType", ["column", "lookups"])
 # ---- Functions
 
 
-class Value:
-    """
-    Class wrapper for a list of values possible for a card attribute.
+# class Value:
+#     """
+#     Class wrapper for a list of values possible for a card attribute.
 
-    Note:
-        This class will be instantiated in the `proto` module, via a
-        script's call to the V() function.
-    """
+#     Note:
+#         This class will be instantiated in the `proto` module, via a
+#         script's call to the V() function.
+#     """
 
-    def __init__(self, **kwargs):
-        self.datalist = kwargs.get("datalist", [])
-        self.members = []  # card IDs, of which the affected card is a member
+#     def __init__(self, **kwargs):
+#         self.datalist = kwargs.get("datalist", [])
+#         self.members = []  # card IDs, of which the affected card is a member
 
-    def __call__(self, cid):
-        """Return datalist item number 'ID' (card number)."""
-        log.debug("datalist:%s cid:%s", self.datalist, cid)
-        try:
-            x = self.datalist[cid]
-            return x
-        except (ValueError, TypeError, IndexError):
-            return None
+#     def __call__(self, cid):
+#         """Return datalist item number 'ID' (card number)."""
+#         log.debug("datalist:%s cid:%s", self.datalist, cid)
+#         try:
+#             x = self.datalist[cid]
+#             return x
+#         except (ValueError, TypeError, IndexError):
+#             return None
 
 
 class Query:
@@ -142,20 +144,35 @@ class CardShape(BaseShape):
 
     def handle_custom_values(self, the_element, ID):
         """Process custom values for a Shape's properties."""
+        new_element = None
         if isinstance(the_element, BaseShape):
+            new_element = copy.copy(the_element)
             keys = vars(the_element).keys()
             for key in keys:
                 value = getattr(the_element, key)
-                if isinstance(value, LookupType):
-                    new_element = copy.copy(the_element)
+                # if key=='stroke' or key == 'fill':  # breakpoint()
+                #     print('*',  f'{ID=} {value=}', type(value))
+                if isinstance(value, Template):
+                    record = self.deck_data[ID]
+                    try:
+                        custom_value = value.render(record)
+                        setattr(new_element, key, custom_value)
+                        # print('  +++', f'{ID=} {key=} {custom_value=}', '=>', getattr(new_element, key))
+                    except jinja2.exceptions.UndefinedError as err:
+                        tools.feedback(
+                            f'Unable to process data with this template ({err})', True)
+                    except Exception as err:
+                        tools.feedback(
+                            f'Unable to process data with this template ({err})', True)
+                elif isinstance(value, LookupType):
                     record = self.deck_data[ID]
                     lookup_value = record[value.column]
                     custom_value = value.lookups.get(lookup_value, None)
                     setattr(new_element, key, custom_value)
                     # print('+++', f'{ID=} {key=} {custom_value=}', '=>', getattr(new_element, key))
-                    return new_element
+        if new_element:
+            return new_element
 
-        return the_element
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an element on a given canvas."""

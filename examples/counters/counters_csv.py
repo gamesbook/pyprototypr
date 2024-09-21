@@ -16,8 +16,8 @@ Data(filename="counters.csv")  # (re)set no. of cards based on chosen rows in fi
 # basic values
 grey = "#B8BAB1"
 brown = "#B6A378"
-value = text(font_face="Arial", font_size=18, x=1.3, y=0.5, text=V('VALUE'))
-size = text(font_face="Arial", font_size=12, x=1.3, y=1.9, text=V('SIZE'))
+value = text(font_face="Arial", font_size=18, x=1.3, y=0.5, text=T('{{VALUE}}'))
+size = text(font_face="Arial", font_size=12, x=1.3, y=1.9, text=T('{{SIZE}}'))
 german = rectangle(x=0, y=0, width=2.6, height=2.6, stroke_width=1, fill=grey)
 russian = rectangle(x=0, y=0, width=2.6, height=2.6, stroke_width=1, fill=brown)
 

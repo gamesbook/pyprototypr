@@ -1597,18 +1597,18 @@ class BaseShape:
                     canvas, point.x, point.y, f'{label} {point.x:.2f},{point.y:.2f}')
                 canvas.circle(point.x, point.y, 2, stroke=1, fill=1)
 
-    def V(self, *args):
-        """Placeholder for value evaluator."""
-        try:
-            return self.dataset[self.shape_id].get(args[0], '')
-        except Exception:
-            if not self.shape_id:
-                tools.feedback('No ID - unable to locate item!')
-            elif self.dataset[self.shape_id]:
-                tools.feedback(f'Unable to locate item #{self.shape_id} in dataset!')
-            else:
-                tools.feedback(f'Unable to locate column {args[0]}!')
-        return ''
+    # def V(self, *args):
+    #     """Placeholder for value evaluator."""
+    #     try:
+    #         return self.dataset[self.shape_id].get(args[0], '')
+    #     except Exception:
+    #         if not self.shape_id:
+    #             tools.feedback('No ID - unable to locate item!')
+    #         elif self.dataset[self.shape_id]:
+    #             tools.feedback(f'Unable to locate item #{self.shape_id} in dataset!')
+    #         else:
+    #             tools.feedback(f'Unable to locate column {args[0]}!')
+    #     return ''
 
     def Q(self, *args):
         """Placeholder for query evaluator."""

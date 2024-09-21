@@ -485,13 +485,13 @@ def Data(**kwargs):
     return dataset
 
 
-def V(*args):
-    """Expect args[0] to be the name (string) of a column in the dataset."""
-    global dataset
-    log.debug("V %s %s %s", args, type(dataset), len(dataset))
-    if dataset and isinstance(dataset, list):
-        return [item.get(args[0], '') for item in dataset]
-    return []
+# def V(*args):
+#     """Expect args[0] to be the name (string) of a column in the dataset."""
+#     global dataset
+#     log.debug("V %s %s %s", args, type(dataset), len(dataset))
+#     if dataset and isinstance(dataset, list):
+#         return [item.get(args[0], '') for item in dataset]
+#     return []
 
 
 def Q(query='', result=None, alternate=None):
@@ -559,15 +559,22 @@ def L(lookup: str, target: str, result: str, default: Any = '') -> LookupType:
 def T(source: str, data: dict = None):
     """Use source as template to convert dictionary into a string result."""
     global dataset
-    environment = jinja2.Environment(str)
-    template = environment.from_string(source)
+    #breakpoint()
+    environment = jinja2.Environment()
+    template = environment.from_string(str(source))
+    return template
+    '''
     template_data = data if data else dataset
     try:
         result = template.render(template_data)
+        # print(result)
+        return result
     except jinja2.exceptions.UndefinedError as err:
         tools.feedback(f'Unable to process data with this template ({err})', True)
-    # print(result)
-    return result
+    except Exception as err:
+        tools.feedback(f'Unable to process data with this template ({err})', True)
+    return ''
+'''
 
 
 def Set(_object, **kwargs):

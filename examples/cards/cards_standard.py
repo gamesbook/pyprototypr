@@ -35,20 +35,20 @@ Data(matrix=combos, extra=2)  # (re)set no. of cards based on length
 
 # card layout elements
 value_top = Common(x=1.0, y=8.4, font_size=40)
-value_black = text(common=value_top, stroke=black, text=V('VALUE'))
-value_red = text(common=value_top, stroke=red, text=V('VALUE'))
+value_black = text(common=value_top, stroke=black, text=T('{{VALUE}}'))
+value_red = text(common=value_top, stroke=red, text=T('{{VALUE}}'))
 
 value_low = Common(x=5.5, y=2.4, font_size=40, rotation=180)
-value_low_black = text(common=value_low, stroke=black, text=V('VALUE'))
-value_low_red = text(common=value_low, stroke=red, text=V('VALUE'))
+value_low_black = text(common=value_low, stroke=black, text=T('{{VALUE}}'))
+value_low_red = text(common=value_low, stroke=red, text=T('{{VALUE}}'))
 
 marker_base = Common(x=1.0, y=7.3, font_size=42)
-marker_black = text(common=marker_base, stroke=black, text=V('SUIT'))
-marker_red = text(common=marker_base, stroke=red, text=V('SUIT'))
+marker_black = text(common=marker_base, stroke=black, text=T('{{SUIT}}'))
+marker_red = text(common=marker_base, stroke=red, text=T('{{SUIT}}'))
 
 marker_low = Common(x=5.5, y=3.6, font_size=42, rotation=180)
-marker_low_black = text(common=marker_low, stroke=black, text=V('SUIT'))
-marker_low_red = text(common=marker_low, stroke=red, text=V('SUIT'))
+marker_low_black = text(common=marker_low, stroke=black, text=T('{{SUIT}}'))
+marker_low_red = text(common=marker_low, stroke=red, text=T('{{SUIT}}'))
 
 # cards setup
 Card("1-26", value_black, value_low_black, marker_black, marker_low_black)

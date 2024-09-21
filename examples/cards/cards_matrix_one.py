@@ -34,7 +34,10 @@ outline = rectangle(
     x=0.75, y=1.5,
     height=7.8, width=5.1,
     rounded=0.5,
-    fill=V('SUIT'), stroke=V('SUIT'))
+    stroke=T('{{SUIT}}'),
+    fill=T('{{SUIT}}'),
+    )
+
 icon_top = hexagon(
     x=1.1, y=7.5,
     side=0.8,
@@ -42,7 +45,7 @@ icon_top = hexagon(
 value_top = text(
     x=1.9, y=7.8,
     font_size=28,
-    text=V('VALUE'),
+    text=T('{{VALUE}}'),
     align="centre",
     stroke=darkslategrey)
 icon_btm = hexagon(
@@ -53,24 +56,24 @@ value_btm = text(
     x=4.7, y=2.8,
     font_size=28,
     align="centre",
-    text=V('VALUE'),
+    text=T('{{VALUE}}'),
     stroke=darkslategrey,
     rotation=180)
 picture = text(
     x=3.15, y=4.4,
     stroke=white,
     font_size=76,
-    text=V('IMAGE'))
+    text=T('{{IMAGE}}'))
 deco_top = hexagon(
     x=1.2, y=7.6,
     side=0.7,
     fill=None,
-    stroke=V('SUIT'))
+    stroke=T('{{SUIT}}'))
 deco_btm = hexagon(
     x=4, y=1.9,
     side=0.7,
     fill=None,
-    stroke=V('SUIT'))
+    stroke=T('{{SUIT}}'))
 
 # card setup
 Card(
