@@ -16,6 +16,8 @@ import logging
 import math
 import os
 # third party
+import jinja2
+from jinja2.environment import Template
 from svglib.svglib import svg2rlg
 from reportlab.pdfgen import canvas as reportlab_canvas
 from reportlab.pdfbase import pdfmetrics
@@ -55,6 +57,7 @@ from reportlab.lib.colors import (
     cornflower, firebrick)
 # local
 from pyprototypr.utils import geoms, tools
+from pyprototypr.utils.support import LookupType
 
 log = logging.getLogger(__name__)
 
@@ -601,6 +604,8 @@ class BaseCanvas:
         self.use_abs_1 = False
         self.use_abs_c = False
         self.clockwise =  True
+        # ---- deck
+        self.deck_data = []
 
     def get_canvas(self):
         """Return reportlab canvas object"""
@@ -892,6 +897,9 @@ class BaseShape:
         self.hatch_cap = kwargs.get('hatch_cap', cnv.hatch_cap)
         self.hatch_dots = kwargs.get('hatch_dots', cnv.line_dots)
         self.hatch_dashes = kwargs.get('hatch_dashes', cnv.dashes)
+        # ---- deck
+        self.deck_data = kwargs.get('deck_data', [])  # list of dicts
+
         # ---- OTHER
         # defaults for attributes called/set elsewhere e.g. in draw()
         self.use_abs = False
@@ -1597,22 +1605,47 @@ class BaseShape:
                     canvas, point.x, point.y, f'{label} {point.x:.2f},{point.y:.2f}')
                 canvas.circle(point.x, point.y, 2, stroke=1, fill=1)
 
-    # def V(self, *args):
-    #     """Placeholder for value evaluator."""
-    #     try:
-    #         return self.dataset[self.shape_id].get(args[0], '')
-    #     except Exception:
-    #         if not self.shape_id:
-    #             tools.feedback('No ID - unable to locate item!')
-    #         elif self.dataset[self.shape_id]:
-    #             tools.feedback(f'Unable to locate item #{self.shape_id} in dataset!')
-    #         else:
-    #             tools.feedback(f'Unable to locate column {args[0]}!')
-    #     return ''
+    def handle_custom_values(self, the_element, ID):
+        """Process custom values for a Shape's properties.
 
-    def Q(self, *args):
-        """Placeholder for query evaluator."""
-        tools.feedback('NOT YET AVAILABLE')
+        Custom values should be stored in self.deck_data as a list of dicts:
+        e.g. [{'SUIT': 'hearts', 'VALUE': 10}, {'SUIT': 'clubs', 'VALUE': 10}]
+        which are used for a set of Cards, or similar placeholder items.
+
+        Values can be accessed via a Jinja template using e.g. T("{{ SUIT }}")
+        """
+        if not self.deck_data:
+            return the_element
+        new_element = None
+        if isinstance(the_element, BaseShape):
+            new_element = copy.copy(the_element)
+            keys = vars(the_element).keys()
+            for key in keys:
+                value = getattr(the_element, key)
+                # if key=='stroke' or key == 'fill':  # breakpoint()
+                #     print('*',  f'{ID=} {value=}', type(value))
+                if isinstance(value, Template):
+                    record = self.deck_data[ID]
+                    try:
+                        custom_value = value.render(record)
+                        setattr(new_element, key, custom_value)
+                        # print('  +++', f'{ID=} {key=} {custom_value=}', '=>', getattr(new_element, key))
+                    except jinja2.exceptions.UndefinedError as err:
+                        tools.feedback(
+                            f'Unable to process data with this template ({err})', True)
+                    except Exception as err:
+                        tools.feedback(
+                            f'Unable to process data with this template ({err})', True)
+                elif isinstance(value, LookupType):
+                    record = self.deck_data[ID]
+                    lookup_value = record[value.column]
+                    custom_value = value.lookups.get(lookup_value, None)
+                    setattr(new_element, key, custom_value)
+                    # print('+++', f'{ID=} {key=} {custom_value=}', '=>', getattr(new_element, key))
+        if new_element:
+            return new_element
+        return the_element  # no changes needed or made
+
 
 
 class GroupBase(list):

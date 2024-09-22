@@ -12,15 +12,15 @@ Create(filename="objects.pdf", margin=1, margin_top=0.25)
 header = Common(x=0, y=27, font_size=24, align="left")
 header_font = Common(font_size=16, align="left")
 
-Text(common=header, text="Miscellaneous Objects")
+Text(common=header, text="Miscellaneous Objects #1")
 
-Text(common=header_font, x=6, y=23, text="Coin: circle with steps radii + an inner circle")
+Text(common=header_font, x=6, y=23, text="Coin: circle with step-created radii + an inner circle")
 # circles 24 radii - i.e. one every 15 degrees
 Circle(cx=3, cy=23, radius=2, fill=skyblue, stroke_width=2, radii=steps(0,360,15))
 Circle(cx=3, cy=23, radius=1.5, fill=skyblue, label="5", font_size=48)
 
 Text(align="left", x=9, y=20, wrap=True, width=10, height=4, font_size=16,
-     text='<b>Warning Sign:</b> rounded rectangles plus a sequence of "E" chevrons')
+     text='<b>Warning Sign:</b> rounded rectangles plus a sequence of "E" (east) chevrons')
 Rectangle(x=1, y=17, width=7.5, height=3, rounded=0.5, stroke=black, fill=black)
 Rectangle(x=1.1, y=17.1, width=7.3, height=2.8, rounded=0.5, stroke_width=2, stroke=yellow, fill=None)
 Sequence(
@@ -44,7 +44,7 @@ Rectangle(
     hatch=1, hatch_width=1, hatch_directions='o', hatch_stroke=sienna,
     stroke=sienna, stroke_width=3, fill=lightcyan)
 
-Text(common=header_font, x=5, y=7, text="Start Player: circles + radii using steps() function")
+Text(common=header_font, x=5, y=7, text="Start Player Token: circles + radii using steps() function")
 Polygon(cx=3, cy=7.5, height=3, sides=8, fill=black)
 Circle(x=1.75, y=6.25, fill=black, radius=1.25,
        radii=[0,45,90,135,180,225,270,315], radii_stroke=gold, radii_stroke_width=2)
@@ -62,7 +62,7 @@ Rectangle(x=1.7, y=0.9, height=3, width=2.6,
           stroke=sienna, stroke_width=5, fill=skyblue)
 PageBreak()
 
-Text(common=header, text="Miscellaneous  Objects #2")
+Text(common=header, text="Miscellaneous Objects #2")
 
 Text(common=header_font, x=5, y=25, text="Wormhole: rotation, nested hexagons")
 poly6 = Common(x=2, y=25, fill=None, sides=6)

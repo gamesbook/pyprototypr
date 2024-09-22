@@ -182,18 +182,27 @@ class SequenceShape(BaseShape):
             log.debug("flat_eles:%s", flat_elements)
             for each_flat_ele in flat_elements:
                 flat_ele = copy.copy(each_flat_ele)  # allow props to be reset
-                log.debug("flat_ele:%s", flat_ele)
+                # print(f" @@LAY@@ {flat_ele=}")
                 try:  # normal element
-                    flat_ele.draw(off_x=off_x, off_y=off_y, ID=_ID, **kwargs)
+                    if self.deck_data:
+                        new_ele = self.handle_custom_values(flat_ele, _ID)
+                    else:
+                        new_ele = flat_ele
+                    new_ele.draw(off_x=off_x, off_y=off_y, ID=_ID, **kwargs)
                 except AttributeError:
-                    new_ele = flat_ele(cid=_ID)
-                    log.debug("%s %s", new_ele, type(new_ele))
+                    new_ele = flat_ele(cid=_ID) if flat_ele else None
+                    # print(f"   @@LAY@@ {new_ele=}, type={type(new_ele)}")
                     if new_ele:
                         flat_new_eles = tools.flatten(new_ele)
                         log.debug("%s", flat_new_eles)
                         for flat_new_ele in flat_new_eles:
                             log.debug("%s", flat_new_ele)
-                            flat_new_ele.draw(
+                            if self.deck_data:
+                                new_flat_new_ele = self.handle_custom_values(flat_new_ele, _ID)
+                            else:
+                                new_flat_new_ele = flat_new_ele
+                            # print(f"   @@LAY@@ {new_flat_new_ele=}, type={type(new_flat_new_ele)}")
+                            new_flat_new_ele.draw(
                                 off_x=off_x, off_y=off_y, ID=_ID, **kwargs
                             )
 

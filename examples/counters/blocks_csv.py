@@ -3,6 +3,7 @@
 
 Written by: Derek Hohls
 Created on: 9 August 2024
+Updated on: 22 September 2024
 
 Notes:
 
@@ -71,12 +72,13 @@ shield_blue = rectangle(common=shield, fill=blue, hatch_stroke=white, hatch_dire
 shield_red = rectangle(common=shield, fill=white, hatch_stroke=red, hatch_directions='n e')
 
 # card construction
-Card("all", Q("SIDE`=`English", tile_red))
-Card("all", Q("SIDE`=`Scots", tile_blue))
+Card("all", S("{{ SIDE == 'English' }}", tile_red))
+Card("all", S("{{ SIDE == 'Scots' }}", tile_blue))
 Card("all", base, outline, move, title, strength, pic)
-Card("all", Q("DOTS`=`4", dots4))
-Card("all", Q("DOTS`=`3", dots3))
-Card("all", Q("SHIELD`=`red", shield_red))
-Card("all", Q("SHIELD`=`blue", shield_blue))
+Card("all", S("{{ DOTS == '4' }}", dots4))
+Card("all", S("{{ DOTS == '3' }}", dots3))
+Card("all", S("{{ SHIELD == 'red' }}", shield_red))
+Card("all", S("{{ SHIELD == 'blue' }}", shield_blue))
 
-Save(output='png')
+#Save(output='png')
+Save()

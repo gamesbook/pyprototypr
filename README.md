@@ -1,14 +1,14 @@
 # pyprototypr
 
-__pyprototypr__ is a utility written in Python for designing and creating simple,
-regular, graphical output in PDF format via a script.
+__pyprototypr__ is a utility written in Python for designing and creating
+simple, regular, graphical output in PDF (or PNG) format via a script.
 
-__pyprototypr__  has been created to handle prototyping of cards, counters, tiles
-and boards for board games, but can be also used for creation of any simple
-design that has regular or repetitive elements; typically containing a mix of
-graphics and text.
+__pyprototypr__  has been created to handle prototyping of cards, counters,
+tiles and boards for board games, but can be also used for creation of any
+simple design that has regular or repetitive elements; typically containing
+a mix of graphics and text.
 
-> You do not need to know the Python to use __pyprototypr__!
+> You do not need to know the Python to be able to use __pyprototypr__!
 
 ## Documentation
 
@@ -20,15 +20,17 @@ probably read some of the introductory sections before proceeding ...
 
 ## Requirements
 
-__pyprototypr__ requires a version of Python 3.11 or higher.
+__pyprototypr__ requires a version of Python 3.11 or higher to be installed
+and running on your machine.
 
-If this is **not** your default Python version, you may want to use **pyenv**
-(or [pyenv-win](https://github.com/pyenv-win/pyenv-win) on Windows) to install
-and use __pyprototypr__ in a virtual environment.
+If this is **not** your default Python version, or Python is not installed on
+your machine, may want to use [uv](https://docs.astral.sh/uv/guides/install-python)
+which is a cross-platform tool to install both Python and __pyprototypr__.
 
 ## Quick Start (for the impatient)
 
-Install __pyprototypr__ via:
+Assuming that Python 3.11 or higher is installed on your machine, you can
+install __pyprototypr__ via:
 ```
 pip install pyprototypr
 ```
@@ -70,6 +72,10 @@ If this works, then download and try out other scripts from any of the `examples
 sub-directories (**note** some examples may require additional files such as
 images, CSV files, or spreadsheets).
 
+## Contributions
+
+Please see the [list of contributors](CONTRIBUTORS.txt).
+
 ## Work-in-Progress
 
 These features are not guaranteed to be addressed, but they are current / potential
@@ -86,22 +92,24 @@ areas of work or development.
     * [ ] Cross shape
     * [ ] Pod shape
     * [ ] Diamond shape
-* [ ] Simple objects:
+* [ ] Common objects:
     * [ ] Cube (rhombus composite)
-    * [ ] Domino (with outline?)
-    * [ ] Picture frame (trapezoid composite)
-* [ ] Arrow: styling; angled
+    * [ ] Domino (dots with outline?)
+    * [ ] Die (6-side with dots)
+    * [ ] Picture Frame (trapezoid composite)
+* [ ] Arrow: basic styling; angled
 * [x] Circle, Rectangle, Hexagon: centre cross
 * [x] Rectangle: with notches
 * [x] Hexagons: "pointy" layout
-* [ ] Hexagons: 18xx example
+* [ ] Hexagons: 18xx tile example (requires `Arcs`!)
 * [ ] Line:
     * [x] end style
     * [ ] join style
 * [ ] Polyline: add arcs
 * [ ] Arcs (pathways) inside a hexagon (**in progress**)
 * [ ] Shortcut notation for styling of: area, line, text, etc.
-* [ ] Track: layout shapes along a rectangle, circle or polygon  (**in progress**)
+* [ ] Track: layout shapes along a rectangle, circle or polygon (**in progress**)
+* [ ] Notches: different styles
 * [x] Interior hatching:
     * [x] rectangle
     * [x] hexagon
@@ -117,24 +125,23 @@ areas of work or development.
     * [ ] Triangle
 * [ ] Cards:
     * [ ] allow for copies of a card
-    * [ ] 'wrapper' for counters (smaller default size)
+    * [ ] 'wrapper' for counters (default 1" squares)
 
 ## Planned/Potential Board Examples
 
 * [ ] Abstract boards: Go, Ludo, 9 Mens Morris, Wari, Queens Guard, Backgammon
 * [ ] Wargame board: Squad Leader with terrain features (vector and bitmap)
-* [ ] Traveller board: showing a fully styled Star system (custom Shape?)
+* [ ] Traveller board: showing a fully styled Star system (demo a custom Shape?)
 * [x] WarpWar board: showing a fully-styled sector
-* [ ] 18xx board: show a basic map with tracks, towns and off-map areas
-
+* [ ] 18xx board: show a basic map with tracks, towns, cities and off-map areas
 ## Acknowledgements
 
 As always, with Python, you are building "on the shoulders of giants".
 In this case, the
 [ReportLab PDF Toolkit](https://https://docs.reportlab.com/reportlab/userguide/ch1_intro/)
 provides all of the core infrastructure used to do the underlying graphics
-processing; __pyprototypr__ is really a customised wrapper to simplify common
-uses and needs around its numerous and extensive capabilities.
+processing and PDF file creation; __pyprototypr__ is a customised wrapper to
+simplify common uses and needs around its numerous and extensive capabilities.
 
 Additional libraries in use include:
 
@@ -143,3 +150,4 @@ Additional libraries in use include:
 * `xlrd` https://pypi.org/project/xlrd/ - support for access to Excel `.xls` files
 * `openpyxl` https://pypi.org/project/openpyxl/ - support for access to Excel `.xlsx` files
 * `pymupdf` https://pymupdf.io/ - support for export to PNG images
+* `jinja` https://jinja.palletsprojects.com - template logic with variables (for cards)

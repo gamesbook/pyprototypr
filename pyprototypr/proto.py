@@ -70,7 +70,7 @@ from .layouts import (
     VirtualLayout, RectangularLayout, TriangularLayout,
     VirtualTrack,  RectangularTrack, PolygonalTrack,
     ConnectShape, RepeatShape, SequenceShape)
-from .groups import DeckShape, Query, Lookup, LookupType
+from .groups import DeckShape, Switch, Lookup, LookupType
 from ._version import __version__
 from pyprototypr.utils.support import steps, excel_column, equi, numbers, letters
 from pyprototypr.utils.tools import base_fonts
@@ -494,28 +494,26 @@ def Data(**kwargs):
 #     return []
 
 
-def Q(query='', result=None, alternate=None):
+def S(test='', result=None, alternate=None):
     """
-    Enable querying/selection of data from a dataset list
+    Enable selection of data from a dataset list
 
-        query: str
-            boolean-type expression which can be evaluated to return a True
-            e.g. 'name`=`fred' filters item for dataset['name'] == 'fred'
+        test: str
+            boolean-type Jinja expression which can be evaluated to return True/False
+            e.g. {{ NAME == 'fred' }} gets the column "NAME" value from the dataset
+            and tests its equivalence to the value "fred"
         result: str or element
-            returned if query is True
+            returned if `test` evaluates to True
         alternate: str or element
-            OPTIONAL; returned if query is False; if not supplied, then None
+            OPTIONAL; returned if `test` evaluates to False; if not supplied, then None
     """
     global dataset
 
     if dataset and isinstance(dataset, list):
-        query_list = tools.query_construct(query)
-        # [[key, operator, target, LINKER], ...]
-        for query_item in query_list:
-            vals = [item.get(query_item[0], '') for item in dataset]
-            query_item[0] = vals
-            # [(list_of_possible_targets, operator, target, LINKER), ...]
-        return Query(query=query_list, result=result, alternate=alternate)
+        environment = jinja2.Environment()
+        template = environment.from_string(str(test))
+        return Switch(
+            template=template, result=result, alternate=alternate, dataset=dataset)
     return None
 
 
@@ -557,24 +555,12 @@ def L(lookup: str, target: str, result: str, default: Any = '') -> LookupType:
 
 
 def T(source: str, data: dict = None):
-    """Use source as template to convert dictionary into a string result."""
+    """Use source to create a jinja template."""
     global dataset
-    #breakpoint()
+
     environment = jinja2.Environment()
     template = environment.from_string(str(source))
     return template
-    '''
-    template_data = data if data else dataset
-    try:
-        result = template.render(template_data)
-        # print(result)
-        return result
-    except jinja2.exceptions.UndefinedError as err:
-        tools.feedback(f'Unable to process data with this template ({err})', True)
-    except Exception as err:
-        tools.feedback(f'Unable to process data with this template ({err})', True)
-    return ''
-'''
 
 
 def Set(_object, **kwargs):

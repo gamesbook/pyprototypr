@@ -4,88 +4,61 @@ Create layouts - grids, repeats, sequences and tracks - for pyprototypr
 """
 # lib
 import copy
-from collections import namedtuple
 import logging
 import math
 
 # third party
 import jinja2
-from jinja2.environment import Template
 # local
 from pyprototypr.utils import tools  # geoms,
 from pyprototypr.base import BaseShape
+from pyprototypr.layouts import SequenceShape
 from pyprototypr.shapes import (
-    CircleShape, HexShape, ImageShape, RectangleShape, SquareShape)
+    CircleShape, HexShape, ImageShape, RectangleShape,  SquareShape)
+from pyprototypr.utils.support import LookupType
 
 log = logging.getLogger(__name__)
 
 DEBUG = False
 
-LookupType = namedtuple("LookupType", ["column", "lookups"])
-
 # ---- Functions
 
 
-# class Value:
-#     """
-#     Class wrapper for a list of values possible for a card attribute.
-
-#     Note:
-#         This class will be instantiated in the `proto` module, via a
-#         script's call to the V() function.
-#     """
-
-#     def __init__(self, **kwargs):
-#         self.datalist = kwargs.get("datalist", [])
-#         self.members = []  # card IDs, of which the affected card is a member
-
-#     def __call__(self, cid):
-#         """Return datalist item number 'ID' (card number)."""
-#         log.debug("datalist:%s cid:%s", self.datalist, cid)
-#         try:
-#             x = self.datalist[cid]
-#             return x
-#         except (ValueError, TypeError, IndexError):
-#             return None
-
-
-class Query:
+class Switch:
     """
-    Query to select an element or a value for a card attribute.
+    Decide if to use an element or a value for a card attribute.
 
     Note:
-        This class will be instantiated in the `proto` module, via a
-        script's call to the Q() function.
+        * This class is instantiated in the `proto` module, via a script's call
+          to the S() function.
+        * The class __call__ is accessed via the CardShape draw_card() method
     """
 
     def __init__(self, **kwargs):
-        self.query = kwargs.get("query", [])
-        self.result = kwargs.get("result", None)
-        self.alternate = kwargs.get("alternate", None)
+        self.switch_template = kwargs.get("template", None)
+        self.result = kwargs.get("result", None)  # usually a Shape
+        self.alternate = kwargs.get("alternate", None)  # usually a Shape
+        self.dataset = kwargs.get("dataset", [])
         self.members = []  # card IDs, of which the affected card is a member
 
     def __call__(self, cid):
-        """Process the query, for a given card 'ID' in the dataset."""
-        result = None
-        results = []
-        for _query in self.query:
-            log.debug("_query %s %s", len(_query), _query)
-            if _query and len(_query) >= 4:
-                result = tools.comparer(
-                    val=_query[0][cid], operator=_query[1], target=_query[2]
-                )
-            results.append(result)
-            results.append(_query[3])
-        # compare across all
-        result = tools.boolean_join(results)
-        log.debug("cid %s Results %s", cid, results)
-        if result is not None:
-            if result:
+        """Process the test, for a given card 'ID' in the dataset."""
+        record = self.dataset[cid]  # dict data for chosen card
+        try:
+            outcome = self.switch_template.render(record)
+            # print('  +++', f'{ID=} {self.test} {outcome=}')
+            boolean = outcome.lower() in ("yes", "y", "true", "t", "1")
+            if boolean:
                 return self.result
             else:
                 return self.alternate
-        else:
-            tools.feedback(f'Query "{self.query}" is incorrectly constructed.')
+        except jinja2.exceptions.UndefinedError as err:
+            tools.feedback(
+                f'Switch "{self.test}" is incorrectly constructed ({err})', True)
+        except Exception as err:
+            tools.feedback(
+                f'Switch "{self.test}" is incorrectly constructed ({err})', True)
+        return None
 
 
 class Lookup:
@@ -140,39 +113,6 @@ class CardShape(BaseShape):
         self.kwargs.pop("width", None)
         self.kwargs.pop("height", None)
         self.image = kwargs.get('image', None)
-        self.deck_data = []
-
-    def handle_custom_values(self, the_element, ID):
-        """Process custom values for a Shape's properties."""
-        new_element = None
-        if isinstance(the_element, BaseShape):
-            new_element = copy.copy(the_element)
-            keys = vars(the_element).keys()
-            for key in keys:
-                value = getattr(the_element, key)
-                # if key=='stroke' or key == 'fill':  # breakpoint()
-                #     print('*',  f'{ID=} {value=}', type(value))
-                if isinstance(value, Template):
-                    record = self.deck_data[ID]
-                    try:
-                        custom_value = value.render(record)
-                        setattr(new_element, key, custom_value)
-                        # print('  +++', f'{ID=} {key=} {custom_value=}', '=>', getattr(new_element, key))
-                    except jinja2.exceptions.UndefinedError as err:
-                        tools.feedback(
-                            f'Unable to process data with this template ({err})', True)
-                    except Exception as err:
-                        tools.feedback(
-                            f'Unable to process data with this template ({err})', True)
-                elif isinstance(value, LookupType):
-                    record = self.deck_data[ID]
-                    lookup_value = record[value.column]
-                    custom_value = value.lookups.get(lookup_value, None)
-                    setattr(new_element, key, custom_value)
-                    # print('+++', f'{ID=} {key=} {custom_value=}', '=>', getattr(new_element, key))
-        if new_element:
-            return new_element
-
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an element on a given canvas."""
@@ -180,7 +120,7 @@ class CardShape(BaseShape):
 
     def draw_card(self, cnv, row, col, cid, **kwargs):
         """Draw a card on a given canvas."""
-        # log.debug("Card r:%s c:%s id:%s shp:%s", row, col, cid, self.shape)
+        # tools.feedback(f"\n\nCard {row=} {col=} {cid=} {self.shape=}")
         image = kwargs.get('image', None)
         # ---- draw outline
         label = "ID:%s" % cid if self.show_id else ""
@@ -225,33 +165,39 @@ class CardShape(BaseShape):
         # ---- draw card elements
         flat_elements = tools.flatten(self.elements)
         for index, flat_ele in enumerate(flat_elements):
-            #breakpoint()
+            # tools.feedback(f'*** {index=} {flat_ele=}', False)
             # ---- * replace image source placeholder
             if image and isinstance(flat_ele, ImageShape):
-                # tools.feedback(f'*** {image=} {flat_ele=} {flat_ele.kwargs=}')
+                #tools.feedback(f'*** {image=}', False)
                 if flat_ele.kwargs.get('source', '').lower() in ['*', 'all']:
                     flat_ele.source = image
 
             members = self.members or flat_ele.members
+            # tools.feedback(f' *** {members=}', False)
             try:
                 # ---- * normal element
                 iid = members.index(cid + 1)
-                # tools.feedback(f"*** {iid=} {col=} {self.width=} / {row=} {self.height=} {flat_ele.text=}")
-                flat_ele = self.handle_custom_values(flat_ele, cid)  # calculated values
-                flat_ele.draw(
+                # tools.feedback(f"  *** {index=} {iid=} {flat_ele=} / {col=} {self.width=} / {row=} {self.height=}")
+                new_ele = self.handle_custom_values(flat_ele, cid)  # calculated values
+                new_ele.draw(
                     cnv=cnv, off_x=col * self.width, off_y=row * self.height, ID=iid
                 )
             except AttributeError:
-                # ---- * query ... get a new element ... or not!?
-                log.debug("self.shape_id:%s", self.shape_id)
-                new_ele = flat_ele(cid=self.shape_id)  # uses __call__ on Query
+                # ---- * switch ... get a new element ... or not!?
+                # print(f"  ^^^ {self.shape_id=}  {flat_ele=}")
+                new_ele = flat_ele(cid=self.shape_id) if flat_ele else None # uses __call__ on Switch
                 if new_ele:
                     flat_new_eles = tools.flatten(new_ele)
+                    # print(f"    ~~~ {flat_new_eles=}")
                     for flat_new_ele in flat_new_eles:
+                        # print(f"      --- PRE  --- {flat_new_ele=}")
                         members = flat_new_ele.members or self.members
                         iid = members.index(cid + 1)
-                        flat_new_ele = self.handle_custom_values(flat_new_ele, iid)  # calculate
-                        flat_new_ele.draw(
+                        custom_new_ele = self.handle_custom_values(flat_new_ele, iid)  # calculate
+                        # print(f"      --- POST --- {custom_new_ele=}")
+                        if isinstance(custom_new_ele, SequenceShape):
+                            custom_new_ele.deck_data = self.deck_data
+                        custom_new_ele.draw(
                             cnv=cnv,
                             off_x=col * self.width,
                             off_y=row * self.height,

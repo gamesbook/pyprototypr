@@ -111,26 +111,26 @@ def boolean_join(items):
     return result
 
 
-def query_construct(string):
-    """
-    Split a query string into a list of lists.
+# def query_construct(string):
+#     """
+#     Split a query string into a list of lists.
 
-    string: str
-        boolean-type expression which can be evaluated to return a True
-        e.g.1 'name`=`fred' filters item for dataset['name'] == 'fred'
-        e.g.2 name`fred is a shortcut for the equals expression!
-        e.g.3 'name`=`fred`&`height`<`6' filters item for:
-            dataset['name'] == 'fred' and dataset['height'] < 6.0
-    """
-    result = []
-    if string:
-        items = string.split("`")
-        if len(items) == 2:
-            items.insert(1, "=")
-        for item1, item2, item3, item4 in grouper(4, items):
-            result.append([item1, item2, item3, item4])
-        return result
-    return [(None, None, None)]
+#     string: str
+#         boolean-type expression which can be evaluated to return a True
+#         e.g.1 'name`=`fred' filters item for dataset['name'] == 'fred'
+#         e.g.2 name`fred is a shortcut for the equals expression!
+#         e.g.3 'name`=`fred`&`height`<`6' filters item for:
+#             dataset['name'] == 'fred' and dataset['height'] < 6.0
+#     """
+#     result = []
+#     if string:
+#         items = string.split("`")
+#         if len(items) == 2:
+#             items.insert(1, "=")
+#         for item1, item2, item3, item4 in grouper(4, items):
+#             result.append([item1, item2, item3, item4])
+#         return result
+#     return [(None, None, None)]
 
 
 def as_int(value, label, maximum=None, minimum=None) -> int:

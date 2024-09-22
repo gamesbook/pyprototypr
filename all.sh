@@ -60,6 +60,6 @@ python examples/various/unicode.py -d /tmp/demo
 python examples/various/world_clocks.py -d /tmp/demo
 # -- Board Game Geek
 echo "Creating BGG game sheet..."
-# python examples/bgg/example01.py -d /tmp/demo
+python examples/bgg/example01.py -d /tmp/demo
 
 echo "Done!"

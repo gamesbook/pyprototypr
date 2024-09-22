@@ -3,6 +3,7 @@
 Support utilities for draw module
 """
 # lib
+from collections import namedtuple
 import itertools
 import os
 import math
@@ -11,6 +12,8 @@ import string
 from typing import Any
 # third-party
 import pymupdf
+
+LookupType = namedtuple("LookupType", ["column", "lookups"])
 
 
 def feedback(item, stop=False, warn=False):
