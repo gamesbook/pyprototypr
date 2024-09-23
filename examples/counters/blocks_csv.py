@@ -17,10 +17,10 @@ from pyprototypr import *
 
 # create counters
 Create(filename='blocks_csv.pdf')
-Deck(width=2.9, height=2.9, grid_marks=True)
+CounterSheet(width=2.9, height=2.9, grid_marks=True)
 
 # load data
-Data(filename="blocks.csv")  # (re)set no. of cards based on chosen rows in file
+Data(filename="blocks.csv")  # (re)set no. of counters based on chosen rows in file
 
 # common colors
 blue = "#005F9C"
@@ -71,14 +71,14 @@ shield = Common(x=1.1, y=.8, height=0.9, width=0.7, hatch=1, hatch_width=3)
 shield_blue = rectangle(common=shield, fill=blue, hatch_stroke=white, hatch_directions='ne nw')
 shield_red = rectangle(common=shield, fill=white, hatch_stroke=red, hatch_directions='n e')
 
-# card construction
-Card("all", S("{{ SIDE == 'English' }}", tile_red))
-Card("all", S("{{ SIDE == 'Scots' }}", tile_blue))
-Card("all", base, outline, move, title, strength, pic)
-Card("all", S("{{ DOTS == '4' }}", dots4))
-Card("all", S("{{ DOTS == '3' }}", dots3))
-Card("all", S("{{ SHIELD == 'red' }}", shield_red))
-Card("all", S("{{ SHIELD == 'blue' }}", shield_blue))
+# counter assembly
+Counter("all", S("{{ SIDE == 'English' }}", tile_red))
+Counter("all", S("{{ SIDE == 'Scots' }}", tile_blue))
+Counter("all", base, outline, move, title, strength, pic)
+Counter("all", S("{{ DOTS == '4' }}", dots4))
+Counter("all", S("{{ DOTS == '3' }}", dots3))
+Counter("all", S("{{ SHIELD == 'red' }}", shield_red))
+Counter("all", S("{{ SHIELD == 'blue' }}", shield_blue))
 
 #Save(output='png')
 Save()

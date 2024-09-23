@@ -1955,25 +1955,25 @@ class RectangleShape(BaseShape):
         # ---- validate properties
         is_notched = True if (self.notch or self.notch_x or self.notch_y) else False
         is_chevron = True if (self.chevron or self.chevron_height) else False
-        is_points = True if self.points else False
+        is_peaks = True if self.peaks else False
         if (self.rounding or self.rounded) and is_notched:
             tools.feedback("Cannot use rounding or rounded with notch.", True)
         if (self.rounding or self.rounded) and is_chevron:
             tools.feedback("Cannot use rounding or rounded with chevron.", True)
-        if (self.rounding or self.rounded) and is_points:
-            tools.feedback("Cannot use rounding or rounded with points.", True)
+        if (self.rounding or self.rounded) and is_peaks:
+            tools.feedback("Cannot use rounding or rounded with peaks.", True)
         if self.hatch and is_notched and self.hatch > 1:
             tools.feedback("Cannot use multiple hatches with notch.", True)
         if self.hatch and is_chevron:
             tools.feedback("Cannot use hatch with chevron.", True)
         if is_notched and is_chevron:
             tools.feedback("Cannot use notch and chevron together.", True)
-        if is_notched and is_points:
-            tools.feedback("Cannot use notch and points together.", True)
-        if is_chevron and is_points:
-            tools.feedback("Cannot use chevron and points together.", True)
-        if self.hatch and is_points:
-            tools.feedback("Cannot use hatch and points together.", True)
+        if is_notched and is_peaks:
+            tools.feedback("Cannot use notch and peaks together.", True)
+        if is_chevron and is_peaks:
+            tools.feedback("Cannot use chevron and peaks together.", True)
+        if self.hatch and is_peaks:
+            tools.feedback("Cannot use hatch and peaks together.", True)
         # ---- calculate properties
         x, y = self.calculate_xy()
         # ---- overrides for grid layout
@@ -2111,8 +2111,8 @@ class RectangleShape(BaseShape):
                         pass  # TODO
             else:
                 self.vertices.append(Point(x, y))
-        # ---- * points vertices
-        elif is_points:
+        # ---- * peaks vertices
+        elif is_peaks:
             half_height = self._u.height / 2.0
             half_width = self._u.width / 2.0
             self.vertices = []
@@ -2193,7 +2193,7 @@ class RectangleShape(BaseShape):
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- draw rectangle
-        if is_notched or is_chevron or is_points:
+        if is_notched or is_chevron or is_peaks:
             pth = cnv.beginPath()
             pth.moveTo(*self.vertices[0])
             for vertex in self.vertices:
@@ -2553,7 +2553,7 @@ class SquareShape(RectangleShape):
         """Total length of bounding line."""
         length = 2.0 * (self._u.width + self._u.height)
         if units:
-            return self.points_to_value(length)
+            return self.peaks_to_value(length)
         else:
             return length
 

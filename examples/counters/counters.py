@@ -3,12 +3,14 @@
 
 Written by: Derek Hohls
 Created on: 29 February 2016
+Updated on: 22 September 2024
 """
 from pyprototypr import *
 
+Create(filename='tannenberg.pdf')
+
 # create counters
-Create(filename='tannenberg.pdf')  #,
-Deck(cards=18, width=2.6, height=2.6, fill=yellow)
+CounterSheet(counters=18, width=2.6, height=2.6, fill=yellow)
 
 # basic values
 german_marker = 'ironcross_small.png'  # http://cliparts.co/clipart/3214807
@@ -24,7 +26,7 @@ out = rectangle(x=0.8, y=1.2, width=1.0, height=0.6, stroke_width=0.5, fill=None
 lu = line(x=0.8, y=1.2, x1=1.8, y1=1.8, stroke=black, stroke_width=0.5)
 ld = line(x=0.8, y=1.8, x1=1.8, y1=1.2, stroke=black, stroke_width=0.5)
 rect1 = rectangle(x=0.8, y=1.2, width=1.0, height=0.3, stroke_width=0.5, fill=black)
-circ1 = circle(x=1.3, y=1.5, radius=0.1, stroke_width=0.1, fill=black)
+circ1 = circle(cx=1.3, cy=1.5, radius=0.1, stroke_width=0.1, fill=black)
 
 # unit types
 inf = group(out, lu, ld)
@@ -52,12 +54,12 @@ HQ_russian = group(russian, HQ)
 art_russian = group(russian, art, battalion)
 
 # generate counter images
-Card("1-3", inf_german)
-Card("4-6", cav_german)
-Card("7-9", HQ_russian)
-Card("10-12", inf_russian_A)
-Card("13-14", art_russian)
-Card("15-16", marker_german)
-Card("17-18", marker_russian)
+Counter("1-3", inf_german)
+Counter("4-6", cav_german)
+Counter("7-9", HQ_russian)
+Counter("10-12", inf_russian_A)
+Counter("13-14", art_russian)
+Counter("15-16", marker_german)
+Counter("17-18", marker_russian)
 
 Save()

@@ -9,10 +9,10 @@ from pyprototypr import *
 
 # create counters
 Create(filename='tannenberg_csv.pdf')
-Deck(width=2.6, height=2.6, fill=white)
+CounterSheet(width=2.6, height=2.6, fill=white)
 
 # load data
-Data(filename="counters.csv")  # (re)set no. of cards based on chosen rows in file
+Data(filename="counters.csv")  # (re)set no. of counters based on chosen rows in file
 
 # colors and text labels
 grey = "#B8BAB1"
@@ -48,16 +48,16 @@ marker_russian = group(
     russian,
     image('russianeagle_small.png', x=0.4, y=0.4, width=1.8, height=1.8))
 
-# construct counters  ("small cards")
-Card("all", S("{{ NATION == 'ger' }}", german))
-Card("all", S("{{ NATION == 'rus' }}", russian))
-Card("all",
+# construct counters
+Counter("all", S("{{ NATION == 'ger' }}", german))
+Counter("all", S("{{ NATION == 'rus' }}", russian))
+Counter("all",
      S("{{ TYPE == 'INF' }}", inf),
      S("{{ TYPE == 'CAV' }}", cav),
      S("{{ TYPE == 'ART' }}", art),
      S("{{ TYPE == 'HQ' }}", HQ))
-Card("all", S("{{ TYPE == 'MARKER' and NATION == 'ger' }}", marker_german))
-Card("all", S("{{ TYPE == 'MARKER' and NATION == 'rus' }}", marker_russian))
-Card("all", value, size, ident)
+Counter("all", S("{{ TYPE == 'MARKER' and NATION == 'ger' }}", marker_german))
+Counter("all", S("{{ TYPE == 'MARKER' and NATION == 'rus' }}", marker_russian))
+Counter("all", value, size, ident)
 
 Save()
