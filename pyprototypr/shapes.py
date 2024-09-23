@@ -1868,8 +1868,12 @@ class RectangleShape(BaseShape):
                 tools.feedback(
                     'No hatching permissible with this size rounding in the rectangle',
                     True)
-        if self.notch or self.notch_x or self.notch_y:
-            tools.feedback('No hatching permissible with a notched Rectangle', True)
+        if self.notch and self.hatch > 1 or self.notch_x or self.notch_y:
+            if 'ne' in _dirs or 'sw' in _dirs or 'se' in _dirs or 'nw' in _dirs \
+                    or 'd' in _dirs:
+                tools.feedback(
+                    'Multi- diagonal hatching not permissible in a notched Rectangle',
+                    True)
         # ---- set canvas
         self.set_canvas_props(
             index=ID,
@@ -1958,8 +1962,8 @@ class RectangleShape(BaseShape):
             tools.feedback("Cannot use rounding or rounded with chevron.", True)
         if (self.rounding or self.rounded) and is_points:
             tools.feedback("Cannot use rounding or rounded with points.", True)
-        if self.hatch and is_notched:
-            tools.feedback("Cannot use hatch with notch.", True)
+        if self.hatch and is_notched and self.hatch > 1:
+            tools.feedback("Cannot use multiple hatches with notch.", True)
         if self.hatch and is_chevron:
             tools.feedback("Cannot use hatch with chevron.", True)
         if is_notched and is_chevron:
@@ -1998,6 +2002,7 @@ class RectangleShape(BaseShape):
             y = -self._u.height / 2.0
         # ---- * notch vertices
         if is_notched:
+            _notch_style = self.notch_style.lower()
             if self.notch_corners:
                 _ntches = self.notch_corners.split()
                 _notches = [str(ntc).upper() for ntc in _ntches]
@@ -2007,25 +2012,103 @@ class RectangleShape(BaseShape):
             self.vertices = []
             if 'SW' in _notches:
                 self.vertices.append(Point(x, y + n_y))
+                match _notch_style:
+                    case 'snip' | 's':
+                        pass
+                    case 'fold' | 'd':
+                        self.vertices.append(Point(x, y))
+                        self.vertices.append(Point(x + n_x, y))
+                        self.vertices.append(Point(x, y + n_y))
+                    case 'flap' | 'p':
+                        self.vertices.append(Point(x + n_x, y + n_y))
+                        self.vertices.append(Point(x + n_x, y))
+                        self.vertices.append(Point(x, y + n_y))
+                    case 'step' | 't':
+                        pass
+                    case 'bite' | 'b':
+                        tools.feedback('notch style bite NOT YET IMPLEMENTED')  # TODO
             else:
                 self.vertices.append(Point(x, y))
             if 'NW' in _notches:
                 self.vertices.append(Point(x, y + self._u.height - n_y))
-                self.vertices.append(Point(x + n_x, y + self._u.height))
+                match _notch_style:
+                    case 'snip' | 's':
+                        self.vertices.append(Point(x + n_x, y + self._u.height))
+                    case 'fold' | 'd':
+                        self.vertices.append(Point(x + n_x, y + self._u.height))
+                        self.vertices.append(Point(x, y + self._u.height))
+                        self.vertices.append(Point(x, y + self._u.height - n_y))
+                        self.vertices.append(Point(x + n_x, y + self._u.height))
+                    case 'flap' | 'p':
+                        self.vertices.append(Point(x + n_x, y + self._u.height))
+                        self.vertices.append(Point(x + n_x, y + self._u.height - n_y))
+                        self.vertices.append(Point(x, y + self._u.height - n_y))
+                        self.vertices.append(Point(x + n_x, y + self._u.height))
+                    case 'step' | 't':
+                        self.vertices.append(Point(x + n_x, y + self._u.height - n_y))
+                        self.vertices.append(Point(x + n_x, y + self._u.height))
+                    case 'bite' | 'b':
+                        pass  # TODO
             else:
                 self.vertices.append(Point(x, y + self._u.height))
             if 'NE' in _notches:
                 self.vertices.append(Point(x + self._u.width - n_x, y + self._u.height))
-                self.vertices.append(Point(x + self._u.width, y + self._u.height - n_y))
+                match _notch_style:
+                    case 'snip' | 's':
+                        self.vertices.append(Point(x + self._u.width, y + self._u.height - n_y))
+                    case 'fold' | 'd':
+                        self.vertices.append(Point(x + self._u.width, y + self._u.height - n_y))
+                        self.vertices.append(Point(x + self._u.width, y + self._u.height))
+                        self.vertices.append(Point(x + self._u.width - n_x, y + self._u.height))
+                        self.vertices.append(Point(x + self._u.width, y + self._u.height - n_y))
+                    case 'flap' | 'p':
+                        self.vertices.append(Point(x + self._u.width, y + self._u.height - n_y))
+                        self.vertices.append(Point(x + self._u.width - n_x, y + self._u.height - n_y))
+                        self.vertices.append(Point(x + self._u.width - n_x, y + self._u.height))
+                        self.vertices.append(Point(x + self._u.width, y + self._u.height - n_y))
+                    case 'step' | 't':
+                        self.vertices.append(Point(x + self._u.width - n_x, y + self._u.height - n_y))
+                        self.vertices.append(Point(x + self._u.width, y + self._u.height - n_y))
+                    case 'bite' | 'b':
+                        pass  # TODO
             else:
                 self.vertices.append(Point(x + self._u.width, y + self._u.height))
             if 'SE' in _notches:
                 self.vertices.append(Point(x + self._u.width, y + n_y))
-                self.vertices.append(Point(x + self._u.width - n_x, y))
+                match _notch_style:
+                    case 'snip' | 's':
+                        self.vertices.append(Point(x + self._u.width - n_x, y))
+                    case 'fold' | 'd':
+                        self.vertices.append(Point(x + self._u.width - n_x, y))
+                        self.vertices.append(Point(x + self._u.width, y))
+                        self.vertices.append(Point(x + self._u.width, y + n_y))
+                        self.vertices.append(Point(x + self._u.width - n_x, y))
+                    case 'flap' | 'p':
+                        self.vertices.append(Point(x + self._u.width - n_x, y))
+                        self.vertices.append(Point(x + self._u.width - n_x, y + n_y))
+                        self.vertices.append(Point(x + self._u.width, y + n_y))
+                        self.vertices.append(Point(x + self._u.width - n_x, y))
+                    case 'step' | 't':
+                        self.vertices.append(Point(x + self._u.width - n_x, y + n_y))
+                        self.vertices.append(Point(x + self._u.width - n_x, y))
+                    case 'bite' | 'b':
+                        pass  # TODO
             else:
                 self.vertices.append(Point(x + self._u.width, y))
             if 'SW' in _notches:
-                self.vertices.append(Point(x + n_x, y))
+                match _notch_style:
+                    case 'snip' | 's':
+                        self.vertices.append(Point(x + n_x, y))
+                    case 'fold' | 'o':
+                        self.vertices.append(Point(x + n_x, y))
+                    case 'flap' | 'l':
+                        self.vertices.append(Point(x + n_x, y))
+                    case 'step' | 't':
+                        self.vertices.append(Point(x + n_x, y))
+                        self.vertices.append(Point(x + n_x, y + n_y))
+                        self.vertices.append(Point(x, y + n_y))
+                    case 'bite' | 'b':
+                        pass  # TODO
             else:
                 self.vertices.append(Point(x, y))
         # ---- * points vertices

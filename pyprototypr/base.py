@@ -506,6 +506,7 @@ class BaseCanvas:
         self.notch_corners = self.defaults.get('notch_corners', 'sw nw ne se')
         self.notch_x = self.defaults.get('notch_x', 0)
         self.notch_y = self.defaults.get('notch_y', 0)
+        self.notch_style = self.defaults.get('notch_style', 'snip')
         self.chevron = self.defaults.get('chevron', '')
         self.chevron_height = kwargs.get('chevron_height', 0)
         self.peaks = kwargs.get('peaks', [])
@@ -801,13 +802,14 @@ class BaseShape:
         self.y_2 = self.kw_float(kwargs.get('y2', cnv.y_2))
         self.x_3 = self.kw_float(kwargs.get('x3', cnv.x_3))
         self.y_3 = self.kw_float(kwargs.get('y3', cnv.y_3))
-        # ---- rect / card
+        # ---- rectangle / card
         self.rounding = self.kw_float(kwargs.get('rounding', cnv.rounding))
         self.rounded = kwargs.get('rounded', cnv.rounded)
         self.notch = self.kw_float(kwargs.get('notch', cnv.notch))
         self.notch_corners = kwargs.get('notch_corners', cnv.notch_corners)
         self.notch_x = self.kw_float(kwargs.get('notch_x', cnv.notch_x))
         self.notch_y = self.kw_float(kwargs.get('notch_y', cnv.notch_y))
+        self.notch_style = kwargs.get('notch_style', cnv.notch_style)
         self.chevron = kwargs.get('chevron', cnv.chevron)
         self.chevron_height = self.kw_float(kwargs.get('chevron_height', cnv.chevron_height))
         self.peaks = kwargs.get('peaks', cnv.peaks)
@@ -1200,6 +1202,12 @@ class BaseShape:
             if str(self.star_pattern).lower() not in \
                     ['random', 'r', 'cluster', 'c', ]:
                 issue.append(f'"{self.pattern}" is an invalid starfield pattern!')
+                correct = False
+        # ---- rectangle - notches
+        if self.notch_style:
+            if str(self.notch_style).lower() not in \
+                    ['snip', 's', 'fold', 'o', 'bite', 'b', 'flap', 'l', 'step', 't']:
+                issue.append(f'"{self.notch_style}" is an invalid notch_style!')
                 correct = False
         # ---- rectangle - peaks
         if self.peaks:

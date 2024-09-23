@@ -99,4 +99,12 @@ Ellipse(cx=2, cy=16, width=3, height=1, rotation=270, stroke_width=1, outline=re
 #        cx=2, cy=16, width=3, height=1, rotation=120*r + 30, stroke_width=1, outline=black)
 Circle(cx=2, cy=16, radius=0.2, fill_stroke=red)
 
+Text(common=header_font, x=5, y=12.5,
+     text="German Cross: rectangle with a hatch and notches")
+Rectangle(
+    height=2.8, width=2.8, x=0.5, y=11, fill=white, stroke=black, stroke_width=2,
+    hatch=1, hatch_width=22, hatch_stroke=black,
+    hatch_directions='o',
+    notch=0.7, notch_style='step')
+
 Save()
