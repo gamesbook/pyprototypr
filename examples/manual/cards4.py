@@ -17,7 +17,7 @@ Deck(cards=25,
      width=3.8)
 
 # create some text, with the default font, and centre it at a location
-mytext = text(text="25!", point=(1.9, 1.0))
+mytext = text(text="25!", point=(1.9, 2.5))
 
 # customize a specific card (number 25) in the deck with 'mytext'
 Card("25", mytext)

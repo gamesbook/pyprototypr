@@ -72,7 +72,8 @@ from .layouts import (
     ConnectShape, RepeatShape, SequenceShape)
 from .groups import DeckShape, Switch, Lookup, LookupType
 from ._version import __version__
-from pyprototypr.utils.support import steps, excel_column, equi, numbers, letters
+from pyprototypr.utils.support import (
+    steps, excels, excel_column, equi, numbers, letters)
 from pyprototypr.utils.tools import base_fonts
 from pyprototypr.utils import geoms, tools, support
 from pyprototypr.utils.geoms import Point, Place  # namedtuples
@@ -397,6 +398,14 @@ def Card(sequence, *elements):
                            ' (Check "cards" setting in Deck)')
 
 
+def Counter(sequence, *elements):
+    """Add one or more elements to a counter or counter.
+
+    NOTE: A Counter receives its `draw()` command via Save()!
+    """
+    Card(sequence, *elements)
+
+
 def Deck(**kwargs):
     """Initialise a deck with all its settings, including source(s) of data.
 
@@ -414,6 +423,27 @@ def Deck(**kwargs):
     margin_top = kwargs.get('margin_top', margin)
     margin_bottom = kwargs.get('margin_bottom', margin)
     margin_right = kwargs.get('margin_right', margin)
+    deck = DeckShape(**kwargs)
+
+
+def CounterSheet(**kwargs):
+    """Initialise a deck with all its settings, including source(s) of data.
+
+    NOTE: A CounterSheet (aka Deck) receives its `draw()` command from Save()!
+    """
+    global cnv
+    global deck
+    global margin
+    global margin_left
+    global margin_top
+    global margin_bottom
+    global margin_right
+    margin = kwargs.get('margin', margin)
+    margin_left = kwargs.get('margin_left', margin)
+    margin_top = kwargs.get('margin_top', margin)
+    margin_bottom = kwargs.get('margin_bottom', margin)
+    margin_right = kwargs.get('margin_right', margin)
+    kwargs['_is_countersheet'] = True
     deck = DeckShape(**kwargs)
 
 

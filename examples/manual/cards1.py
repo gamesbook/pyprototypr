@@ -7,5 +7,5 @@ Created on: 29 February 2016
 from pyprototypr import *
 
 Create()
-Deck(cards=9)
+Deck())
 Save()

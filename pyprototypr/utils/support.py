@@ -227,6 +227,14 @@ def excel_column(value: int = 1):
     return converter(num)
 
 
+def excels(start, end, step=1, REAL=True):
+    """Return a list of Excel col numbers from start to end, at step intervals.
+    """
+    nums = steps(start, end, step=step, REAL=REAL)
+    result = [excel_column(num) for num in nums]
+    return result
+
+
 def pdf_to_png(filename: str, dpi: int = 300, names: list = None):
     """Extract pages from PDF as PNG image(s)."""
     feedback(f'Saving page(s) from "{filename}" as PNG image file(s)...')

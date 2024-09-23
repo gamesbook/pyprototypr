@@ -90,14 +90,14 @@ A few sizes are given descriptive names; this makes them a little easier to set.
 * **|** - the
 * **|** - the
 
-* **caltrops** - a descriptive term for the relative size of the "caltrop" -
+* **caltrops** - a descriptive term for the relative dimensions of the "caltrop" -
   the little three-pointed shape drawn at the vertex of a hexagon; this
   can be set to: _small_, _medium_ or _large_
 * **diameter** - the diameter of a `Circle`
 * **dot_point** - the diameter of a small `Dot` in **points**
 * **cross_size** - the length and width of the two interescting lines to be
   drawn at the centre of a shape
-* **height** - the vertical size of a shape e.g. a `Rectangle` or a bitmap
+* **height** - the vertical dimension of a shape e.g. a `Rectangle` or a bitmap
   `Image`
 * **margin** - used in `Create` command to set all margins for a page; the
   default for any margin is 1.25cm / 12.5mm (1/2 of an inch)
@@ -105,8 +105,8 @@ A few sizes are given descriptive names; this makes them a little easier to set.
 * **margin_bottom** - used in `Create` command to set bottom margin for a page
 * **margin_left** - used in `Create` command to set left margin for a page
 * **margin_right** - used in `Create` command to set right margin for a page
-* **pagesize** - used in `Create` command to set the size of the pages in the
-  documents; either ISO series (A0 down to A8; or B6 down to B0) or a USA type
+* **pagesize** - used in `Create` command to set the page format in the
+  document; either ISO series (A0 down to A8; or B6 down to B0) or a USA type
   (_NOTE:_ the pagesize is not wrapped in quotes!)
 * **radius** - the radius of a `Circle`
 * **scaling** - the amount by which an SVG image should be shrunk or
@@ -117,7 +117,7 @@ A few sizes are given descriptive names; this makes them a little easier to set.
 * **stroke_width** - the thickness of a line in **points**; many specific
   widths are set by prefixing this term with the name of the item in question;
   examples: **cross_stroke_width**; **grid_stroke_width**; **radii_stroke_width**
-* **width** - the horizontal size of a shape e.g. a `Rectangle` or a bitmap
+* **width** - the horizontal dimension of a shape e.g. a `Rectangle` or a bitmap
   `Image`
 
 
@@ -200,7 +200,7 @@ Properties that use direction include:
 * **debug** - a value can be set for this that will cause underlying values
   or locations to be displayed e.g. using `debug="n"` for a layout will show
   small dots where each point in that layout exists
-* **perimeter** - used to demacate the boundary of a `StarField`; one of
+* **perimeter** - used to demarcate the boundary of a `StarField`; one of
   _circle_, _rectangle_ or _polygon_
 * **peaks** - a series of sets, each containing a primary compass direction
   and a value, that designate that the edge of a rectangle should be drawn

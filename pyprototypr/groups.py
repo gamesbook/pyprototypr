@@ -108,8 +108,14 @@ class CardShape(BaseShape):
         super(CardShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # tools.feedback(f'*** CardShape {kwargs=}')
         self.elements = []  # container for objects which get added to the card
-        self.height = kwargs.get("height", 8.8)
-        self.width = kwargs.get("width", 6.3)
+        if kwargs.get("_is_countersheet", False):
+            default_height = 2.54
+            default_width = 2.54
+        else:
+            default_height = 8.8
+            default_width = 6.3
+        self.height = kwargs.get("height", default_height)
+        self.width = kwargs.get("width", default_width)
         self.kwargs.pop("width", None)
         self.kwargs.pop("height", None)
         self.image = kwargs.get('image', None)
@@ -219,9 +225,18 @@ class DeckShape(BaseShape):
         # tools.feedback(f'*** DeckShape {kwargs=}')
         # ---- cards
         self.deck = []  # container for CardShape objects
-        self.cards = kwargs.get("cards", 9)  # default total number of cards
-        self.height = kwargs.get("height", 8.8)  # OVERWRITE
-        self.width = kwargs.get("width", 6.3)  # OVERWRITE
+        if kwargs.get("_is_countersheet", False):
+            default_items = 70
+            default_height = 2.54
+            default_width = 2.54
+        else:
+            default_items = 9
+            default_height = 8.8
+            default_width = 6.3
+        self.counters = kwargs.get("counters", default_items)
+        self.cards = kwargs.get("cards", self.counters)  # default total number of cards
+        self.height = kwargs.get("height", default_height)  # OVERWRITE
+        self.width = kwargs.get("width", default_width)  # OVERWRITE
         self.sequence = kwargs.get("sequence", [])  # e.g. "1-2" or "1-5,8,10"
         self.template = kwargs.get("template", None)
         # ---- user provided-rows and -columns
