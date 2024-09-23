@@ -1151,25 +1151,28 @@ def Blueprint(**kwargs):
              y=zero_pt.y / kwargs['units'] - kwargs['size'] / 4.0,
              text="0",
              common=_common)
-    # ---- subgrid
+    # ---- draw subgrid
     if kwargs.get('subdivisions'):
         local_kwargs = copy(kwargs)
-        local_kwargs['size'] = size / int(kwargs.get('subdivisions'))
+        sub_count = int(kwargs.get('subdivisions'))
+        local_kwargs['size'] = float(size / sub_count)
         for col in range(0, cols):
-            for row in range(0, rows):
-                off_x = float(kwargs['size']) * col
-                off_y = float(kwargs['size']) * row
+            for row in range(0, rows + 1):
+                off_x = float(local_kwargs['size']) * col
+                off_y = float(local_kwargs['size']) * row
                 # log.warning("col:%s row:%s off_x:%s off_y:%s", col, row, off_x, off_y)
-                local_kwargs['rows'] = int(kwargs.get('subdivisions'))
-                local_kwargs['cols'] = int(kwargs.get('subdivisions'))
+                local_kwargs['rows'] = sub_count
+                local_kwargs['cols'] = sub_count
                 local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
                 local_kwargs['stroke'] = kwargs.get('subdivisions_stroke', kwargs['stroke'])
                 local_kwargs['dashes'] = kwargs.get('subdivisions_dashes')
                 local_kwargs['dots'] = kwargs.get('subdivisions_dots')
+                print(sub_count, local_kwargs)
                 subgrid = GridShape(canvas=cnv, **local_kwargs)
                 subgrid.draw(off_x=off_x, off_y=off_y)
     # ---- draw Blueprint grid
-    grid = GridShape(line_dots=line_dots, **kwargs)  # don't add canvas as arg here!
+    print(kwargs)
+    grid = GridShape(canvas=cnv, line_dots=line_dots, **kwargs)  # don't add canvas as arg here!
     grid.draw(cnv=cnv)
     return grid
 
