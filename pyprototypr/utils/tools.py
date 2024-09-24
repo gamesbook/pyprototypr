@@ -133,7 +133,7 @@ def boolean_join(items):
 #     return [(None, None, None)]
 
 
-def as_int(value, label, maximum=None, minimum=None) -> int:
+def as_int(value, label, maximum=None, minimum=None, allow_none=False) -> int:
     """Set a value to an int; or stop if an invalid value
 
     >>> as_int(value='3', label='N')
@@ -149,6 +149,8 @@ def as_int(value, label, maximum=None, minimum=None) -> int:
     # >>> as_int(value='3.1', label='N')
     # FEEDBACK:: 3.1 is not a valid N integer!
     """
+    if value is None and allow_none:
+        return value
     _label = f" for {label}" if label else ' of'
     try:
         the_value = int(value)

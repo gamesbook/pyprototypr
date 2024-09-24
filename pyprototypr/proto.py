@@ -64,11 +64,10 @@ from .shapes import (
     PolygonShape, PolylineShape, RectangleShape,
     RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape,
     SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape,
-    GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE)
+    GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE, SHAPES_WITH_VERTICES)
 from .layouts import (
     GridShape, DotGridShape,
     VirtualLayout, RectangularLayout, TriangularLayout,
-    VirtualTrack,  RectangularTrack, PolygonalTrack,
     ConnectShape, RepeatShape, SequenceShape)
 from .groups import DeckShape, Switch, Lookup, LookupType
 from ._version import __version__
@@ -1678,34 +1677,8 @@ def Layout(grid, **kwargs):
 def Track(track=None, **kwargs):
     global cnv
 
-    kwargs = kwargs
-    _spaces = kwargs.get('spaces', 8)
-    spaces = tools.as_int(_spaces, 'spaces', minimum=4)  # number of spaces around track
-    shapes = kwargs.get('shapes', [])  # shape(s) to draw at the locations
-    # ---- check kwargs inputs
-    if not track:
-        track = RectangularTrack(fill_color=DEBUG_COLOR)
-    if not isinstance(track, VirtualTrack):
-        tools.feedback(f"The value '{track}' is not a valid track!", True)
-    if not shapes:
-        # create a default shape
-        side = track.calculate_perimeter(units=True) / spaces
-        # tools.feedback(f'*** default square: {side=} {spaces=}')
-        shapes = [square(side=side, label="{count}")]
-    # ---- validate shape type(s)
-    for shp in shapes:
-        if not isinstance(shp, (SquareShape, CircleShape)):
-            tools.feedback("Only square or circle shapes allowed!", True)
-    # ---- walk the track & draw shape(s)
-    shape_id = 0
-    track_points = enumerate(track.next_location(shapes=shapes, spaces=spaces))
-    for count, t_pt in track_points:
-        if track.final and count + 1 >= track.final:
-            break  # stop early
-        # ---- execute the draw()
-        shape = copy(shapes[shape_id])  # enable overwrite/change of properties
+    def format_label(shape, data):
         # ---- supply data to text fields
-        data = {'x': t_pt.x, 'y': t_pt.y, 'count': count + 1}
         try:
             shape.label = shapes[shape_id].label.format(**data)  # replace {xyz} entries
             shape.title = shapes[shape_id].title.format(**data)
@@ -1715,12 +1688,63 @@ def Track(track=None, **kwargs):
             tools.feedback(
                 f'You cannot use {text[0]} as a special field; remove the {{ }} brackets',
                 True)
+
+    kwargs = kwargs
+    angles = kwargs.get('angles', [])
+    stop = tools.as_int(kwargs.get('stop', None), 'stop', allow_none=True)
+    start = tools.as_int(kwargs.get('start', None), 'start', allow_none=True)
+    # ---- check kwargs inputs
+    if not track:
+        track = Rectangle(fill_color=DEBUG_COLOR)
+    track_name = track.__class__.__name__
+    track_abbr = track_name.replace('Shape', '')
+    if track_name == 'CircleShape':
+        if not angles:
+            tools.feedback(f"An angles list is needed for a Circle-based Track!", True)
+    elif track_name not in SHAPES_WITH_VERTICES:
+        tools.feedback(f"Unable to use a {track_abbr} for a Track!", True)
+    shapes = kwargs.get('shapes', [square(label="{count}")])  # shape(s) to draw at the locations
+    # ---- create Circle vertices
+    if track_name == 'CircleShape':
+        track_points = []
+        # calculate vertices along circumference
+        for angle in angles:
+            c_pt = geoms.point_on_circle(
+                point_centre=Point(track._u.cx, track._u.cy),
+                radius=track._u.radius,
+                angle=angle)
+            track_points.append(
+                Point(c_pt.x + track._o.delta_x, c_pt.y + track._o.delta_y))
+    else:
+        # ---- get normal vertices
+        if isinstance(track.vertices, list):
+            track_points = track.vertices
+        else:
+            track_points = track.get_vertices()
+
+    # TODO - change start point!?
+
+    # ---- walk the track & draw shape(s)
+    shape_id = 0
+    for index, track_point in enumerate(track_points):
+        if start is not None and index + 1 < start:
+            continue
+        # ---- * stop early if index exceeded
+        if stop and index + 1 >= stop:
+            break
+        # ---- * enable overwrite/change of properties
+        shape = copy(shapes[shape_id])
+        # ---- * supply data to text fields
+        data = {'x': track_point.x, 'y': track_point.y, 'count': index + 1}
+        format_label(shape, data)
         # ---- supply data to change shape's location
-        shape.cx = shape.points_to_value(t_pt.x - track._o.delta_x)
-        shape.cy = shape.points_to_value(t_pt.y - track._o.delta_y)
-        # shape.width = t_pt.width  # recalculated to fit on track
-        # tools.feedback(f'*** {shape.cx}, {shape.cy}')
+        # TODO - can choose line centre, not vertex, as the cx,cy position
+        shape.cx = shape.points_to_value(track_point.x - track._o.delta_x)
+        shape.cy = shape.points_to_value(track_point.y - track._o.delta_y)
+        # tools.feedback(f'Track*** {shape.cx=}, {shape.cy=}')
+        # TODO - calculate rotation if required; either implied OR explicit
         shape.set_unit_properties()
+        # tools.feedback(f'Track*** {shape._u}')
         shape.draw(cnv)
         shape_id += 1
         if shape_id > len(shapes) - 1:

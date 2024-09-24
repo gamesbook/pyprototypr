@@ -17,8 +17,7 @@ from reportlab.lib.pagesizes import (
     letter, legal, elevenSeventeen, B6, B5, B4, B3, B2, B0, landscape)
 
 # local
-from pyprototypr.utils.geoms import (
-    Point, Link, Location, TrackPoint)  # named tuples
+from pyprototypr.utils.geoms import Point, Link, Location  # named tuples
 from pyprototypr.utils import geoms, tools
 from pyprototypr.base import (
     BaseShape, BaseCanvas, GridShape, UNITS, COLORS, PAGES, DEBUG_COLOR)
@@ -28,9 +27,15 @@ log = logging.getLogger(__name__)
 DEBUG = False
 GRID_SHAPES_WITH_CENTRE = [
     'CircleShape', 'CompassShape', 'DotShape', 'HexShape', 'PolygonShape',
-    'RectangleShape', 'RhombusShape', 'SquareShape', 'StadiumShape', ] # EllipseShape ???
+    'RectangleShape', 'RhombusShape', 'SquareShape', 'StadiumShape', 'EllipseShape',
+]
 GRID_SHAPES_NO_CENTRE = [
      'TextShape', 'StarShape', ]
+# following shapes must have vertices accessible WITHOUT calling draw()
+SHAPES_WITH_VERTICES = [
+    'PolygonShape', 'RectangleShape', 'RhombusShape', 'SquareShape',
+    'PolylineShape', 'LineShape',
+]
 # NOT GRID:  ArcShape, BezierShape, PolylineShape, ChordShape
 
 
@@ -55,13 +60,15 @@ class ImageShape(BaseShape):
         # ---- convert to using units
         height = self._u.height
         width = self._u.width
-        if self.cx and self.cy and width and height:
-            x = self._u.cx - width / 2.0 + self._o.delta_x
-            y = self._u.cy - height / 2.0 + self._o.delta_y
-        elif self.cx and self.cy and not (width or height):
-            tools.feedback(
-                "Must supply width and height for use with cx and cy.", stop=True
-            )
+        if self.cx is not None and self.cy is not None:
+            if width and height:
+                x = self._u.cx - width / 2.0 + self._o.delta_x
+                y = self._u.cy - height / 2.0 + self._o.delta_y
+            else:
+                tools.feedback(
+                    "Must supply width and height for use with cx and cy.",
+                    stop=True
+                )
         else:
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
@@ -255,7 +262,7 @@ class CircleShape(BaseShape):
         super(CircleShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # ---- perform overrides
         self.radius = self.radius or self.diameter / 2.0
-        if self.cx and self.cy:
+        if self.cx is not None and self.cy is not None:
             self.x = self.cx - self.radius
             self.y = self.cy - self.radius
         else:
@@ -585,7 +592,7 @@ class CompassShape(BaseShape):
         super(CompassShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # overrides
         self.radius = self.radius or self.diameter / 2.0
-        if self.cx and self.cy:
+        if self.cx is not None and self.cy is not None:
             self.x = self.cx - self.radius
             self.y = self.cy - self.radius
             self.width = 2.0 * self.radius
@@ -658,7 +665,7 @@ class CompassShape(BaseShape):
             self.x_c = self.col * 2.0 * radius + radius + self._o.delta_x
             self.y_c = self.row * 2.0 * radius + radius + self._o.delta_y
             log.debug("row:%s col:%s x:%s y:%s", self.col, self.row, self.x_c, self.y_c)
-        elif self.cx and self.cy:
+        elif self.cx is not None and self.cy is not None:
             self.x_c = self._u.cx + self._o.delta_x
             self.y_c = self._u.cy + self._o.delta_y
         else:
@@ -842,7 +849,7 @@ class EllipseShape(BaseShape):
         if self.row is not None and self.col is not None:
             x = self.col * self._u.width + self._o.delta_x
             y = self.row * self._u.height + self._o.delta_y
-        elif self.cx and self.cy:
+        elif self.cx is not None and self.cy is not None:
             x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
             y = self._u.cy - self._u.height / 2.0 + self._o.delta_y
         else:
@@ -1336,7 +1343,7 @@ class HexShape(BaseShape):
                 # recalculate start x,y
                 x = x_d - half_flat
                 y = y_d - half_side - side / 2.0
-            elif self.cx and self.cy:
+            elif self.cx is not None and self.cy is not None:
                 # cx,cy are centre; create x_d, y_d as the unit-formatted hex centre
                 x_d = self._u.cx + self._o.delta_y
                 y_d = self._u.cy + self._o.delta_x
@@ -1383,7 +1390,7 @@ class HexShape(BaseShape):
                 # recalculate start x,y
                 x = x_d - half_side - side / 2.0
                 y = y_d - half_flat
-            elif self.cx and self.cy:
+            elif self.cx is not None and self.cy is not None:
                 # cx,cy are centre; create x_d, y_d as the unit-formatted hex centre
                 x_d = self._u.cx + self._o.delta_x
                 y_d = self._u.cy + self._o.delta_y
@@ -1537,7 +1544,7 @@ class PolygonShape(BaseShape):
         self.use_height = True if self.is_kwarg('height') else False
         self.use_radius = True if self.is_kwarg('radius') else False
         # ---- perform overrides
-        if self.cx and self.cy:
+        if self.cx is not None and self.cy is not None:
             self.x, self.y = self.cx, self.cy
         # ---- RESET UNIT PROPS (last!)
         self.set_unit_properties()
@@ -1617,6 +1624,20 @@ class PolygonShape(BaseShape):
             cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
 
     def get_vertices(self, rotation: float = 0, is_rotated: bool = False):
+        """Calculate vertices of polygon.
+        """
+        # convert to using units
+        if is_rotated:
+            x, y = 0., 0.  # centre for now-rotated canvas
+        else:
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
+        radius = self.get_radius()
+        # calculate vertices - assumes x,y marks the centre point
+        vertices = geoms.polygon_vertices(self.sides, radius, Point(x, y), rotation)
+        return vertices
+
+    def get_geometry(self, rotation: float = 0, is_rotated: bool = False):
         """Calculate centre, radius and vertices of polygon.
         """
         # convert to using units
@@ -1625,8 +1646,8 @@ class PolygonShape(BaseShape):
         else:
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
-        # calculate vertices - assumes x,y marks the centre point
         radius = self.get_radius()
+        # calculate vertices - assumes x,y marks the centre point
         vertices = geoms.polygon_vertices(self.sides, radius, Point(x, y), rotation)
         return x, y, radius, vertices
 
@@ -1646,7 +1667,7 @@ class PolygonShape(BaseShape):
         elif self.radius:
             side = self.u_radius
         # ---- calc centre (in units)
-        if self.cx and self.cy:
+        if self.cx is not None and self.cy is not None:
             x = self._u.cx + self._o.delta_x
             y = self._u.cy + self._o.delta_y
         else:
@@ -1671,7 +1692,7 @@ class PolygonShape(BaseShape):
                 (self.orientation.lower() == 'pointy' and (self.sides - 2) % 4 == 0):
             interior = ((self.sides - 2) * 180.0) / self.sides
             flatten = (180 - interior) / 2.0
-        x, y, radius, vertices = self.get_vertices(
+        x, y, radius, vertices = self.get_geometry(
             rotation=flatten, is_rotated=is_rotated)
         # ---- invalid polygon?
         if not vertices or len(vertices) == 0:
@@ -1711,16 +1732,28 @@ class PolylineShape(BaseShape):
     Multi-part line on a given canvas.
     """
 
-    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Draw a polyline on a given canvas."""
-        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
-        cnv = cnv.canvas if cnv else self.canvas.canvas
+    def get_points(self) -> list:
         points = tools.tuple_split(self.points)
         if not points:
             points = self.points
         if not points or len(points) == 0:
-            tools.feedback("No Polyline points to draw - or points are incorrect!")
-            return
+            tools.feedback("No Polyline points to draw - or points are incorrect!", True)
+        return points
+
+    def get_vertices(self):
+        """Return polyline vertices in canvasunits
+        """
+        points = self.get_points()
+        vertices = [
+            Point(self.unit(pt[0]) + self._o.delta_x,
+                  self.unit(pt[1]) + self._o.delta_y) for pt in points]
+        return vertices
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw a polyline on a given canvas."""
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        points = self.get_points()
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- draw polyline
@@ -1733,7 +1766,7 @@ class PolylineShape(BaseShape):
             if key == 0:
                 pth.moveTo(x, y)
             pth.lineTo(x, y)
-        cnv.drawPath(pth, stroke=1, fill=0)
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=0)
 
 
 class RectangleShape(BaseShape):
@@ -1744,7 +1777,7 @@ class RectangleShape(BaseShape):
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(RectangleShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # overrides to centre shape
-        if self.cx and self.cy:
+        if self.cx is not None and self.cy is not None:
             self.x = self.cx - self.width / 2.0
             self.y = self.cy - self.height / 2.0
             # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
@@ -1764,8 +1797,8 @@ class RectangleShape(BaseShape):
         else:
             return length
 
-    def set_vertices(self, rotation=0, **kwargs):
-        """Set vertices for rectangle without hatches."""
+    def get_vertices(self, rotation=0, **kwargs):
+        """Get vertices for rectangle without notches."""
         if rotation:
             kwargs['rotation'] = rotation
         x, y = self.calculate_xy(**kwargs)
@@ -1831,7 +1864,7 @@ class RectangleShape(BaseShape):
         if self.row is not None and self.col is not None:
             x = self.col * self._u.width + self._o.delta_x
             y = self.row * self._u.height + self._o.delta_y
-        elif self.cx and self.cy:
+        elif self.cx is not None and self.cy is not None:
             x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
             y = self._u.cy - self._u.height / 2.0 + self._o.delta_y
         else:
@@ -2186,9 +2219,9 @@ class RectangleShape(BaseShape):
                 self.vertices.append(Point(x + self._u.width + delta_m, y + self._u.height / 2.0))
                 self.vertices.append(Point(x + self._u.width, y))
             else:
-                self.vertices = self.set_vertices(**kwargs)
+                self.vertices = self.get_vertices(**kwargs)
         else:
-            self.vertices = self.set_vertices(**kwargs)
+            self.vertices = self.get_vertices(**kwargs)
         # tools.feedback(f'*** {len(self.vertices)=}')
         # ---- set canvas
         self.set_canvas_props(index=ID)
@@ -2233,7 +2266,7 @@ class RectangleShape(BaseShape):
             )
         # ---- draw hatch
         if self.hatch:
-            vertices = self.set_vertices(rotation=rotation, **kwargs)
+            vertices = self.get_vertices(rotation=rotation, **kwargs)
             self.draw_hatch(cnv, ID, vertices, self.hatch)
         # ---- grid marks
         self.set_canvas_props(
@@ -2320,7 +2353,7 @@ class RhombusShape(BaseShape):
         if self.use_abs_c:
             x = self._abs_cx
             y = self._abs_cy
-        elif self.cx and self.cy:
+        elif self.cx is not None and self.cy is not None:
             x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
             y = self._u.cy - self._u.height / 2.0 + self._o.delta_y
         elif self.use_abs:
@@ -2445,7 +2478,7 @@ class SectorShape(BaseShape):
             tools.feedback('Either provide x or cx for Sector', True)
         if self.cy is None and self.y is None:
             tools.feedback('Either provide y or cy for Sector', True)
-        if self.cx and self.cy:
+        if self.cx is not None and self.cy is not None:
             self.x = self.cx - self.radius
             self.y = self.cy - self.radius
             self.x_1 = self.cx + self.radius
@@ -2460,7 +2493,7 @@ class SectorShape(BaseShape):
             self.x_c = self.col * 2.0 * radius + radius
             self.y_c = self.row * 2.0 * radius + radius
             # log.debug(f"{self.col=}, {self.row=}, {self.x_c=}, {self.y_c=}")
-        elif self.cx and self.cy:
+        elif self.cx is not None and self.cy is not None:
             self.x_c = self._u.cx
             self.y_c = self._u.cy
         else:
@@ -2571,7 +2604,7 @@ class StadiumShape(BaseShape):
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(StadiumShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # overrides to centre shape
-        if self.cx and self.cy:
+        if self.cx is not None and self.cy is not None :
             self.x = self.cx - self.width / 2.0
             self.y = self.cy - self.height / 2.0
             # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
@@ -2588,7 +2621,7 @@ class StadiumShape(BaseShape):
         if self.row is not None and self.col is not None:
             x = self.col * self._u.width + self._o.delta_x
             y = self.row * self._u.height + self._o.delta_y
-        elif self.cx and self.cy:
+        elif self.cx is not None and self.cy is not None:
             x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
             y = self._u.cy - self._u.height / 2.0 + self._o.delta_y
         else:
@@ -2733,7 +2766,7 @@ class StarShape(BaseShape):
         if self.use_abs_c:
             x = self._abs_cx
             y = self._abs_cy
-        elif self.cx and self.cy:
+        elif self.cx is not None and self.cy is not None:
             x = self._u.cx + self._o.delta_x
             y = self._u.cy + self._o.delta_y
         # calc - assumes x and y are the centre!

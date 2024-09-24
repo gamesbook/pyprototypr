@@ -372,8 +372,8 @@ class BaseCanvas:
         self.width = self.defaults.get('width', self.side)
         self.x = self.defaults.get('x', self.defaults.get('left', 1))
         self.y = self.defaults.get('y', self.defaults.get('bottom', 1))
-        self.cx = self.defaults.get('cx', None)
-        self.cy = self.defaults.get('cy', None)
+        self.cx = self.defaults.get('cx', None)  # NB! not 0; needed for internal check
+        self.cy = self.defaults.get('cy', None)  # NB! not 0; needed for internal check
         self.scaling = self.defaults.get('scaling', None)
         self.dot_point = self.defaults.get('dot_point', 3.0)  # points
         # ---- to be calculated ...
