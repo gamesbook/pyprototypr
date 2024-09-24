@@ -8,7 +8,7 @@ Notes:
 
 from pyprototypr import *
 
-Create(filename="hexhex_board_circles.pdf", margin=0.5, pagesize=A4)
+Create(filename="hexhex_board_circles.pdf", margin=0.5, paper=A4)
 
 # Game Board
 Hexagons(

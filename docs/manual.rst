@@ -433,7 +433,7 @@ page on which the design will be created, as well the details of the output file
 In **pyprototypr** it is defined by the instruction::
 
     Create(filename = *filename*,
-           pagesize = *pagesize*,
+           paper = *paper*,
            margin = *margin*,
            landscape = True|False,
            fonts= * fonts*
@@ -445,7 +445,7 @@ where:
  *  *fonts* - for example, [('Steelfish', 'steelfis.ttf')]
  *  *filename* - an optional value for the name of the output file to be
     created (defaults to *output.pdf*); this name must be wrapped in a pair of "
- *  *pagesize* - an optional value for the size of paper; this can be, for
+ *  *paper* - an optional value for the size of paper; this can be, for
     example, one of the A- or B- series used in the Metric system, as well as
     the Letter or Legal sizes used in the United States.  The value is **NOT**
     wrapped in a pair of "". The default page size is *A4*.
@@ -1058,14 +1058,14 @@ on an A4-sized page (*A4* being the default page size for **pyprototypr**).
 A simple card deck example: Take 2
 ----------------------------------
 
-Open up a new text file with a text file editor (on Windows, use NotePad,
+Open up a new text file with a text file editor (on Windows, use NotePad++,
 on OS X, use TextEdit) and type the following:
 
 .. code-block:: python
 
     from pyprototypr import *
 
-    Create(pagesize=A3,
+    Create(paper=A3,
            filename="example2.pdf")
     Deck(cards=9)
     Save()
@@ -1074,7 +1074,7 @@ You can see that the `Create`_ instruction has now been expanded with new
 `properties`_ (the items appearing in brackets). A property is just a name,
 followed by an "=" sign, and then a value of some type.
 
-In this case, the page size property has been set to *A3* (note, no "" around
+In this case, the paper property has been set to *A3* (note, no "" around
 the A3), and a specific file name has been chosen for the output PDF.
 
 The `Create`_ instruction is split over multiple lines to make it easier to read;

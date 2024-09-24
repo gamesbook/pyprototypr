@@ -8,7 +8,7 @@ Created on: 19 September 2024
 from pyprototypr import *
 
 Create(filename="customised_hexagon.pdf",
-       pagesize=A8,
+       paper=A8,
        margin_top=0.2,
        margin_left=0.15,
        margin_right=0.2,

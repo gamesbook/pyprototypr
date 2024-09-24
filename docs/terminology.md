@@ -105,9 +105,9 @@ A few sizes are given descriptive names; this makes them a little easier to set.
 * **margin_bottom** - used in `Create` command to set bottom margin for a page
 * **margin_left** - used in `Create` command to set left margin for a page
 * **margin_right** - used in `Create` command to set right margin for a page
-* **pagesize** - used in `Create` command to set the page format in the
+* **paper** - used in `Create` command to set the paper format in the
   document; either ISO series (A0 down to A8; or B6 down to B0) or a USA type
-  (_NOTE:_ the pagesize is not wrapped in quotes!)
+  (_NOTE:_ the value for paper is **not** wrapped in quotes!)
 * **radius** - the radius of a `Circle`
 * **scaling** - the amount by which an SVG image should be shrunk or
   expanded e.g. 0.5 makes it half-size and 2.0 doubles its size; but because

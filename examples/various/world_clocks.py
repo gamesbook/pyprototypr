@@ -20,7 +20,7 @@ from time import gmtime, mktime
 import argparse
 
 Create(filename="world_clocks.pdf",
-        pagesize=landscape(A5),
+        paper=landscape(A5),
         margin_top=0.5,
         margin_left=0.15,
         margin_bottom=0.15,

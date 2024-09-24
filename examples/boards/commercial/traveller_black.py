@@ -9,7 +9,7 @@ Notes:
 
 from pyprototypr import *
 
-Create(filename="traveller_black.pdf", margin=0.25, pagesize=A4)
+Create(filename="traveller_black.pdf", margin=0.25, paper=A4)
 
 # set colors
 map_fill = black

@@ -295,10 +295,10 @@ page on which the design will be created, as well the details of the output file
 In **pyprototypr** it is defined by the instruction::
 
     Create(filename = *filename*,
-           pagesize = *pagesize*,
+           paper = *paper*,
            margin = *margin*,
            landscape = True|False,
-           fonts= * fonts*
+           fonts = *fonts*
            color = *color*,
            units = *units*)
 
@@ -307,10 +307,10 @@ where:
  *  *fonts* - for example, [('Steelfish', 'steelfis.ttf')]
  *  *filename* - an optional value for the name of the output file to be
     created (defaults to *output.pdf*); this name must be wrapped in a pair of "
- *  *pagesize* - an optional value for the size of paper; this can be, for
+ *  *paper* - an optional value for the paper format; this can be, for
     example, one of the A- or B- series used in the Metric system, as well as
     the Letter or Legal sizes used in the United States.  The value is **NOT**
-    wrapped in a pair of "". The default page size is *A4*.
+    wrapped in a pair of "". The default paper is *A4*.
  *  *margin* -  an optional enclosure of (`top`, `left`, `bottom`, `right`),
     representing the measurements for the margin between the page edge and the
     cards. Usually only the `top`, `left` are specified, and **pyprototypr**

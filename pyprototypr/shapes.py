@@ -2248,12 +2248,12 @@ class RectangleShape(BaseShape):
             pth.lineTo(deltag, gy)
             pth.moveTo(0, gy + self._u.height)
             pth.lineTo(deltag, gy + self._u.height)
-            gx, gy = x, self.pagesize[1]  # top-side
+            gx, gy = x, self.paper[1]  # top-side
             pth.moveTo(gx, gy)
             pth.lineTo(gx, gy - deltag)
             pth.moveTo(gx + self._u.width, gy)
             pth.lineTo(gx + self._u.width, gy - deltag)
-            gx, gy = self.pagesize[0], y  # right-side
+            gx, gy = self.paper[0], y  # right-side
             pth.moveTo(gx, gy)
             pth.lineTo(gx - deltag, gy)
             pth.moveTo(gx, gy + self._u.height)
@@ -2975,7 +2975,7 @@ class FooterShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(FooterShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        # self.page_width = kwargs.get('pagesize', (canvas.width, canvas.height))[0]
+        # self.page_width = kwargs.get('paper', (canvas.width, canvas.height))[0]
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw footer on a given canvas page."""

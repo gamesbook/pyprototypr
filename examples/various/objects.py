@@ -65,7 +65,7 @@ PageBreak()
 Text(common=header, text="Miscellaneous Objects #2")
 
 Text(common=header_font, x=5, y=25, text="Wormhole: rotation, nested hexagons")
-poly6 = Common(x=2, y=25, fill=None, sides=6)
+poly6 = Common(x=2, y=25, fill=None, sides=6, stroke_width=1)
 Polygon(common=poly6, radius=1.50)
 Polygon(common=poly6, radius=1.35, rotation=15)
 Polygon(common=poly6, radius=1.20, rotation=30)
@@ -84,14 +84,14 @@ Circle(cx=2, cy=22, radius=1,
 Circle(cx=2, cy=22, radius=0.75, fill="#63B1BB", stroke="#63B1BB")
 Dot(x=2.5, y=22.5, stroke=white, dot_point=3)
 
-Text(common=header_font, x=5, y=19, text="Gear: nested circles with 8 offset radii")
+Text(common=header_font, x=5, y=19, text="Gear: nested circles; one with 8 offset radii")
 Circle(cx=2, cy=19, radius=0.5,
        fill=None, stroke=grey, stroke_width=8,
        radii=[0,45,90,135,180,225,270,315],
        radii_offset=0.8, radii_length=0.2, radii_stroke=grey, radii_stroke_width=8)
 Circle(cx=2, cy=19, radius=0.15, fill_stroke=grey)
 
-Text(common=header_font, x=5, y=16, text="Atom: rotated ellipses")
+Text(common=header_font, x=5, y=16, text="Atom: ellipses with rotation; circle")
 Ellipse(cx=2, cy=16, width=3, height=1, rotation=30, stroke_width=1, outline=red)
 Ellipse(cx=2, cy=16, width=3, height=1, rotation=150, stroke_width=1, outline=red)
 Ellipse(cx=2, cy=16, width=3, height=1, rotation=270, stroke_width=1, outline=red)
@@ -103,8 +103,9 @@ Text(common=header_font, x=5, y=12.5,
      text="German Cross: rectangle with a hatch and notches")
 Rectangle(
     height=2.8, width=2.8, x=0.5, y=11, fill=white, stroke=black, stroke_width=2,
-    hatch=1, hatch_width=22, hatch_stroke=black,
-    hatch_directions='o',
+    hatch=1, hatch_width=22, hatch_stroke=black, hatch_directions='o',
     notch=0.7, notch_style='step')
+Rectangle(
+    height=2.8, width=2.8, x=0.5, y=11, fill=None, stroke=white, stroke_width=3)
 
-Save()
+Save(output='png')

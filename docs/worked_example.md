@@ -27,13 +27,14 @@ As can be seen there are four lines in the file:
    every script you write must start with this
 *  *Line 2* - `Create()` tells **pyprototypr**  to setup an output PDF file in
    which this design of will be saved.  Because no further information is given,
-   the default values for sizes and colours will used, as well as the default page
-   size, which is an A4 page. Every script you write will must have this as the next
-   line.
-*  *Line 3* - `Deck()` means that **pyprototypr** defines a deck with a default number
-   of *9* cards, with each card having the same, default size (a "Poker" card size).
-*  *Line 4* - `Save()` gives the go-ahead to create the output file on disc. Usually,
-   every script you write will have this as the last line.
+   the default values for sizes and colours will used, as well as the default
+   paper format, which is an A4 page. Every script you write will must have this
+   as the next line.
+*  *Line 3* - `Deck()` means that **pyprototypr** defines a deck with a default
+   number of *9* cards, with each card having the same, default size (i.e. a
+   "Poker" card size).
+*  *Line 4* - `Save()` gives the go-ahead to create the output file on disc.
+   Usually, every script you write will have this as the last line.
 
 Now save the text file, for example, as `cards1.py`.  Then open a command-line
 window (as described in [Setting Up](setting_up.md) ) and change to the
@@ -59,7 +60,7 @@ remember to start each line with **NO** any blank spaces):
 ```python
 from pyprototypr import *
 
-Create(pagesize=A3, filename="example2.pdf")
+Create(paper=A3, filename="example2.pdf")
 Deck()
 Save()
 ```
@@ -69,16 +70,17 @@ new details appearing inside the brackets. These items are called *properties*
 and each item is separated by a ",".  Each **property** is defined by a name,
 followed by an "=" (equals) sign, and then a value of some kind.
 
-In this case, the `pagesize` property has been set equal to a value of *A3*
-(note, there are **no** *""* delimiters around the term *A3*), and a specific
-file name has been chosen for the output PDF; in this case `example2.pdf`.
+In this case, the `paper` property has been set equal to a value of *A3*;
+note that there are **no** *""* delimiters around the value `A3`, as the names
+of the different types of paper are "built-in". Also, a specific file name has
+been chosen for the output PDF; in this case `example2.pdf`.
 
 A blank line has been added before the `Create()` instruction. Adding blank
 lines helps make your file more readable, but **pyprototypr** does *not* use or
 require them.
 
-Now save this new file, for example, as `cards2.py`. Open a command-line window and
-change to the directory where the file has been saved.
+Now save this new file, for example, as `cards2.py`. Open a command-line window
+and change to the directory where the file has been saved.
 
 Type the following:
 ```

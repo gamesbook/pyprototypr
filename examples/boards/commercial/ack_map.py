@@ -8,7 +8,7 @@ Notes:
 
 from pyprototypr import *
 
-Create(filename="ack_map.pdf", margin=0.5, pagesize=landscape(A3))
+Create(filename="ack_map.pdf", margin=0.5, paper=landscape(A3))
 
 deepgrey = "#666666"
 

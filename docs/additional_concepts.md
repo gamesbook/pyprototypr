@@ -18,11 +18,15 @@ Naming of things is supposed to be one of the harder aspects of programming.
 
 If you work with the built-in commands and and their properties, the set of
 names to use is already chosen for you. However, if you want to start using
-some additional options, such as assigning shortcut names to reuse items in
-multiple places, then you need to be aware of the wider set of so-called
-"rerserved" names available as part of Python.  If your shortcut name is the
-same as one of those, you'll overwite it and your scripts may fail in strange
-ways!
+some additional options, such as assigning [shortcut names](#short) to reuse
+items in multiple places, then you need to be aware of the wider set of so-
+called "reserved" names available as part of Python.  If your shortcut name
+is the same as one of those, you'll overwite it and your scripts may fail in
+strange ways!
+
+> *NOTE* __pyprototypr__, like Python, is case-sensitive - unlike some computer
+> languages or file names that are used in Windows); a lowercase name is *NOT*
+> the same as an uppercase version of it!
 
 Basic built-in names include: False, None, True, and, as, assert, async,
 await, break, class, continue, def, del, elif, else, except, finally, for,
@@ -107,43 +111,46 @@ vertically in the form of a number of bullets:
 * third.
 
 A column in a spreadsheet can be thought of as such a vertical list (but you
-would not usually put an "and".)
+would not usually use an "and"!)
 
 Lists in **pyprototypr** are written in a similar way but they need to be
-identified by wrapping them at their start and end by the use of brackets.
+identified by wrapping them at their start and end by the use of *brackets*.
 
-The brackets that are used are so-called **square brackets** - [ and ].
+The brackets that are used are so-called **square brackets** - `[` and `]`.
 Items in the list are separated by commas.
 
 * If they are numbers then that's all you need: for example, *[1, 3, 5, 7]* - this
   list is a series of odd numbers.
 * If they are words, or strings of text then each item must be wrapped in quotes:
-  for example, *['apples', 'oranges', 'bananas', 'plums']*.
+  for example, *['apples', 'oranges', 'bananas', 'plums']*  or
+  *["apples", "oranges", "bananas", "plums"]* (remember that quotes can be single
+  or double)
 
-Note that there is **no** usage of the word "and" in these lists!
+> Note that there is **no** usage of the word "and" in these lists!
 
-A list is normally given an assignment; for example:
+A list is normally given an assignment to store it in memory for use by the
+script; for example:
 ```
 groceries = ['apples', 'oranges', 'bananas', 'plums']
 ```
-This is so that the list can be referred to by using the shorthand reference
-name (in this case "groceries").  There are various examples of the use of
-lists of elsewhere in these documents and also in the script examples.
+This is so that the list can be referred to in the script by using the shorthand
+reference name (in this case "groceries").  There are various examples of the
+use of lists of elsewhere in these documents and also in the script examples.
 
 
 ## Errors  <a name="errors"></a>
 
-While **pyprototypr** will attempt to check the details of the script, its
-unlikely to be able to catch every mistake; under the hood, Python will also
-report on errors, for example:
+While **pyprototypr** will attempt to check many details of the script, its
+unlikely to be able to catch every mistake that might be made; "under the hood"
+Python will itself also report on errors, for example:
 ```
     Arc(x=1, y=1, x=2, y1=3)
                   ^^^
 SyntaxError: keyword argument repeated: x
 ```
 It will attempt to identify the type and location of the error - a `SyntaxError`
-is really a grammar error of same type - as well as what the cause might be.
-Here, you'd need to change this to `x1` which is the intended property.
+is just a grammar error of some type - as well as what the cause *might* be.
+Here, you'd need to change this to `x1` which would be the intended property.
 
 Another example:
 ```
@@ -153,14 +160,14 @@ NameError: name 'bred' is not defined
 ```
 In this case, the script uses the name of something - `bred` - which is unknown.
 It could be a simple spelling mistake e.g. it should be `red` or possibly you'd
-meant to define `bred` as special color before using it for the rectangle.
+meant to define `bred` as special color before using it for the Rectangle.
 
 Another example:
 ```
-    pagesize=A8
+    paper=A8 cards=9
              ^^
 SyntaxError: invalid syntax. Perhaps you forgot a comma?
 ```
 Another `SyntaxError` where Python tries to assess what the cause might be. Here,
 you'd need to add "," (comma) at the end of property as each one must be
-comma-separated.
+comma-separated (a space is not sufficient).

@@ -10,7 +10,7 @@ Created on: 30 July 2024
 
 from pyprototypr import *
 
-Create(filename="warpwar.pdf", margin=0.5, pagesize=A2)
+Create(filename="warpwar.pdf", margin=0.5, paper=A2)
 
 # set map colors
 map_fill = black

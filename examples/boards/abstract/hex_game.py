@@ -8,7 +8,7 @@ Notes:
 
 from pyprototypr import *
 
-Create(filename="hex_game_board.pdf", margin=0.5, pagesize=landscape(A4))
+Create(filename="hex_game_board.pdf", margin=0.5, paper=landscape(A4))
 
 # Background Player Areas
 RightAngledTriangle(

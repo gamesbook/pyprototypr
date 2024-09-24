@@ -8,7 +8,7 @@ Notes:
 
 from pyprototypr import *
 
-Create(filename="squadleader.pdf", margin=0.5, margin_bottom=0, pagesize=landscape(A4))
+Create(filename="squadleader.pdf", margin=0.5, margin_bottom=0, paper=landscape(A4))
 
 # set primary color
 empty_hex = darkseagreen

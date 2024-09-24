@@ -8,7 +8,7 @@ Created on: 19 May 2024
 from pyprototypr import *
 
 Create(filename="layouts_basic.pdf",
-       pagesize=A8,
+       paper=A8,
        margin_top=0.2,
        margin_left=0.15,
        margin_right=0.2)

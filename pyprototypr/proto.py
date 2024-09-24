@@ -110,7 +110,7 @@ def Create(**kwargs):
     global margin_top
     global margin_bottom
     global margin_right
-    global pagesize
+    global paper
     global font_size
     global pargs
     global footer
@@ -127,7 +127,7 @@ def Create(**kwargs):
     fonts = kwargs.get('fonts', [])
     landscape = kwargs.get('landscape', False)
     kwargs = margins(**kwargs)
-    pagesize = kwargs.get('pagesize', A4)
+    paper = kwargs.get('paper', A4)
     defaults = kwargs.get('defaults', None)
     units = kwargs.get('units', cm)
     footer = None
@@ -159,14 +159,15 @@ def Create(**kwargs):
     filename = os.path.join(pargs.directory, _filename)
     # tools.feedback(f"output: {filename}", False)
     # ---- canvas and deck
-    cnv = BaseCanvas(filename, pagesize=pagesize, defaults=defaults)
+    cnv = BaseCanvas(filename, paper=paper, defaults=defaults)
     if landscape:
-        cnv.canvas.setPageSize(landscape(cnv.pagesize))
-        page_width = cnv.pagesize[1]  # point units (1/72 of an inch)
-        page_height = cnv.pagesize[0]  # point units (1/72 of an inch)
+        breakpoint()
+        cnv.canvas.setPageSize(landscape(cnv.paper))
+        page_width = cnv.paper[1]  # point units (1/72 of an inch)
+        page_height = cnv.paper[0]  # point units (1/72 of an inch)
     else:
-        page_width = cnv.pagesize[0]  # point units (1/72 of an inch)
-        page_height = cnv.pagesize[1]  # point units (1/72 of an inch)
+        page_width = cnv.paper[0]  # point units (1/72 of an inch)
+        page_height = cnv.paper[1]  # point units (1/72 of an inch)
     if kwargs.get('fill'):
         cnv.setFillColor(kwargs.get('fill'))
         cnv.rect(
@@ -187,13 +188,13 @@ def Footer(**kwargs):
     global margin_left
     global margin_bottom
     global margin_right
-    global pagesize
+    global paper
     global font_size
     global footer
     global footer_draw  # always draw
     global page_count
 
-    kwargs['pagesize'] = pagesize
+    kwargs['paper'] = paper
     if not kwargs.get('font_size'):
         kwargs['font_size'] = font_size
     footer_draw = kwargs.get('draw', False)
@@ -213,7 +214,7 @@ def PageBreak(**kwargs):
     global cnv
     global deck
     global page_count
-    global pagesize
+    global paper
     global font_size
     global footer
     global footer_draw
@@ -223,7 +224,7 @@ def PageBreak(**kwargs):
     kwargs = margins(**kwargs)
     if kwargs.get("footer", footer_draw):
         if footer is None:
-            kwargs['pagesize'] = pagesize
+            kwargs['paper'] = paper
             kwargs['font_size'] = font_size
             footer = FooterShape(_object=None, canvas=cnv, **kwargs)
         footer.draw(cnv=cnv, ID=page_count, text=None, **kwargs)
@@ -1072,7 +1073,7 @@ def Grid(**kwargs):
 def Blueprint(**kwargs):
     global cnv
     global deck
-    global pagesize
+    global paper
     global margin_left
     global margin_top
     global margin_bottom
@@ -1108,14 +1109,14 @@ def Blueprint(**kwargs):
     kwargs['y'] = kwargs.get('y', 0)
     m_x = kwargs['units'] * (margin_left + margin_right)
     m_y = kwargs['units'] * (margin_top + margin_bottom)
-    _cols = (pagesize[0] - m_x) / (kwargs['units'] * float(kwargs['side']))
-    _rows = (pagesize[1] - m_y) / (kwargs['units'] * float(kwargs['side']))
+    _cols = (paper[0] - m_x) / (kwargs['units'] * float(kwargs['side']))
+    _rows = (paper[1] - m_y) / (kwargs['units'] * float(kwargs['side']))
     rows = int(_rows)
     cols = int(_cols)
     kwargs['rows'] = kwargs.get('rows', rows)
     kwargs['cols'] = kwargs.get('cols', cols)
     kwargs['stroke_width'] = kwargs.get('stroke_width', 0.2)  # fine line
-    default_font_size = 10 * math.sqrt(pagesize[0]) / math.sqrt(A4[0])
+    default_font_size = 10 * math.sqrt(paper[0]) / math.sqrt(A4[0])
     line_dots = kwargs.get('line_dots', False)
     kwargs['font_size'] = kwargs.get('font_size', default_font_size)
     line_stroke, page_fill = set_style(kwargs.get('style', None))
@@ -1124,7 +1125,7 @@ def Blueprint(**kwargs):
     # ---- page color (optional)
     if kwargs['fill'] is not None:
         cnv.canvas.setFillColor(kwargs['fill'])
-        cnv.canvas.rect(0, 0, pagesize[0], pagesize[1], stroke=0, fill=1)
+        cnv.canvas.rect(0, 0, paper[0], paper[1], stroke=0, fill=1)
     # ---- numbering
     if numbering:
         _common = Common(

@@ -8,7 +8,7 @@ Created on: 19 August 2024
 from pyprototypr import *
 
 Create(filename="clock.pdf",
-        pagesize=A7,
+        paper=A7,
         margin_top=0.5,
         margin_left=0.15,
         margin_bottom=0.15,

@@ -8,7 +8,7 @@ Created on: 9 August 2024
 from pyprototypr import *
 
 Create(filename="chords.pdf",
-        pagesize=A8,
+        paper=A8,
         margin_top=0.5,
         margin_left=0.15,
         margin_bottom=0.15,

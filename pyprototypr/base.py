@@ -280,7 +280,7 @@ COLORS = {
     "BARRIER_18XX": "#660000",  # Blood Red
     "WHITE_18XX": "#FFFFFF",  # White
 }
-# ---- page sizes
+# ---- paper formats
 PAGES = {
     "LETTER": LETTER,
     "landscape": landscape,
@@ -310,7 +310,7 @@ WIDTH = 0.1
 class BaseCanvas:
     """Wrapper/extended class for a ReportLab canvas."""
 
-    def __init__(self, filename=None, pagesize=None, **kwargs):
+    def __init__(self, filename=None, paper=None, **kwargs):
         self.jsonfile = kwargs.get('defaults', None)
         self.defaults = {}
         # ---- setup defaults
@@ -328,9 +328,12 @@ class BaseCanvas:
                     tools.feedback(
                         f'Unable to find or load the file "{self.jsonfile}"'
                         f' - also checked in "{filepath}".', True)
-        # ---- page & canvas
-        _pagesize = pagesize or self.defaults.get('pagesize', A4)
-        self.canvas = reportlab_canvas.Canvas(filename=filename, pagesize=_pagesize)
+        # ---- paper & canvas
+        _paper = paper or self.defaults.get('paper', A4)
+        # **NOTE** ReportLab uses 'pagesize' to track the page dimensions;
+        #          the named paper formats, e.g. A4, are just tuples storing
+        #          (width,height) as points values
+        self.canvas = reportlab_canvas.Canvas(filename=filename, pagesize=_paper)
         # ---- constants
         self.default_length = 1
         self.show_id = False  # True
@@ -344,10 +347,10 @@ class BaseCanvas:
         self.kwargs = kwargs
         self.run_debug = False
         self.units = self.get_units(self.defaults.get('units'), cm)
-        # ---- page
-        self.pagesize = _pagesize
-        self.page_width = self.pagesize[0] / self.units  # user-units e.g. cm
-        self.page_height = self.pagesize[1] / self.units  # user-units e.g. cm
+        # ---- paper
+        self.paper = _paper
+        self.page_width = self.paper[0] / self.units  # user-units e.g. cm
+        self.page_height = self.paper[1] / self.units  # user-units e.g. cm
         self.margin = self.defaults.get('margin', 1)
         self.margin_top = self.defaults.get('margin_top', self.margin)
         self.margin_bottom = self.defaults.get('margin_bottom', self.margin)
@@ -625,7 +628,7 @@ class BaseCanvas:
         return default
 
     def get_page(self, name=None, default=A4):
-        """Get a page-size by name from a pre-defined dictionary."""
+        """Get a paper format by name from a pre-defined dictionary."""
         if name:
             return PAGES.get(name, default)
         return default
@@ -655,8 +658,8 @@ class BaseShape:
         self.shape = kwargs.get('shape', cnv.shape)
         self.run_debug = kwargs.get("debug", cnv.run_debug)
         self.units = kwargs.get('units', cnv.units)
-        # ---- page
-        self.pagesize = kwargs.get('pagesize') or cnv.pagesize
+        # ---- paper
+        self.paper = kwargs.get('paper') or cnv.paper
         self.margin = self.kw_float(kwargs.get('margin', cnv.margin))
         self.margin_top = self.kw_float(kwargs.get('margin_top', cnv.margin_top))
         self.margin_bottom = self.kw_float(kwargs.get('margin_bottom', cnv.margin_bottom))
@@ -666,8 +669,8 @@ class BaseShape:
         self.grid_stroke = kwargs.get('grid_stroke', cnv.grid_stroke)
         self.grid_stroke_width = self.kw_float(kwargs.get('grid_stroke_width', cnv.grid_stroke_width))
         self.grid_length = self.kw_float(kwargs.get('grid_length', cnv.grid_length))
-        self.page_width = self.pagesize[0] / self.units
-        self.page_height = self.pagesize[1] / self.units
+        self.page_width = self.paper[0] / self.units
+        self.page_height = self.paper[1] / self.units
         # ---- sizes and positions
         self.row = kwargs.get('row', cnv.row)
         self.col = self.kw_int(kwargs.get('col', kwargs.get('column', cnv.col)))
@@ -974,8 +977,8 @@ class BaseShape:
             self.radius = self.diameter / 2.0
 
         self._u = UnitProperties(
-            self.pagesize[0],  # width, in points
-            self.pagesize[1],  # height, in points
+            self.paper[0],  # width, in points
+            self.paper[1],  # height, in points
             self.unit(self.margin_left) if self.margin_left is not None else None,
             self.unit(self.margin_right) if self.margin_right is not None else None,
             self.unit(self.margin_bottom) if self.margin_bottom is not None else None,
@@ -1104,7 +1107,7 @@ class BaseShape:
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an element on a given canvas."""
         self._o = self.set_offset_props(off_x, off_y)
-        # self._abs... variable are absolute page locations in native units
+        # self._abs... variable are absolute locations in native units
         #  they are for internal use only and are not expected to be called by the user
         #  if set, they should be used to ignore/bypass any other values for calculating
         #  the starting point or centre point for drawing a shape
