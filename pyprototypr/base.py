@@ -512,7 +512,7 @@ class BaseCanvas:
         self.peaks = kwargs.get('peaks', [])
         self.peaks_dict = {}
         # ---- stadium
-        self.edges = self.defaults.get('edges', 'north south')
+        self.edges = self.defaults.get('edges', 'east west')
         # ---- grid / card layout
         self.grid = None  # some Shapes can auto-generate a GridShape
         self.rows = self.defaults.get('rows', 0)
@@ -546,11 +546,11 @@ class BaseCanvas:
         self.centre_shape = self.defaults.get('centre_shape', '')
         self.centre_shape_x = self.defaults.get('centre_shape_x', 0)
         self.centre_shape_y = self.defaults.get('centre_shape_y', 0)
-        self.dot_size = self.defaults.get('dot_size', 0)
+        self.dot = self.defaults.get('dot', 0)
         self.dot_stroke = self.get_color(self.defaults.get('dot_stroke'), self.stroke)
         self.dot_stroke_width = self.defaults.get('dot_stroke_width', self.stroke_width)
         self.dot_fill = self.defaults.get('dot_fill', self.dot_stroke)  # colors match
-        self.cross_size = self.defaults.get('cross_size', 0)
+        self.cross = self.defaults.get('cross', 0)
         self.cross_stroke = self.get_color(self.defaults.get('cross_stroke'), black)
         self.cross_stroke_width = self.defaults.get('cross_stroke_width', self.stroke_width)
         # ---- hexagon / polygon
@@ -849,10 +849,10 @@ class BaseShape:
         self.dot_stroke = kwargs.get('dot_stroke', cnv.dot_stroke)
         self.dot_stroke_width = self.kw_float(kwargs.get('dot_stroke_width', cnv.dot_stroke_width))
         self.dot_fill = kwargs.get('dot_fill', cnv.dot_fill)
-        self.dot_size = self.kw_float(kwargs.get('dot_size', cnv.dot_size))
+        self.dot = self.kw_float(kwargs.get('dot', cnv.dot))
         self.cross_stroke = kwargs.get('cross_stroke', cnv.cross_stroke)
         self.cross_stroke_width = self.kw_float(kwargs.get('cross_stroke_width', cnv.cross_stroke_width))
-        self.cross_size = self.kw_float(kwargs.get('cross_size', cnv.cross_size))
+        self.cross = self.kw_float(kwargs.get('cross', cnv.cross))
         # ---- hexagon / polygon
         self.orientation = kwargs.get('orientation', cnv.orientation)
         # ---- hexagon
@@ -1517,22 +1517,18 @@ class BaseShape:
 
     def draw_dot(self, canvas, x, y):
         """Draw a small dot on a shape (normally the centre).
-
-        Requires native units (i.e. points)!
         """
-        if self.dot_size:
-            dot_size = self.unit(self.dot_size)
+        if self.dot:
+            dot_size = self.unit(self.dot)
             canvas.setFillColor(self.dot_stroke)
             canvas.setStrokeColor(self.dot_stroke)
             canvas.circle(x, y, dot_size, stroke=1, fill=1)
 
     def draw_cross(self, canvas, x, y):
         """Draw a cross on a shape (normally the centre).
-
-        Requires native units (i.e. points)!
         """
-        if self.cross_size:
-            cross_size = self.unit(self.cross_size)
+        if self.cross:
+            cross_size = self.unit(self.cross)
             canvas.setFillColor(self.cross_stroke)
             canvas.setStrokeColor(self.cross_stroke)
             canvas.setLineWidth(self.cross_stroke_width)

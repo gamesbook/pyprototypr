@@ -29,11 +29,11 @@ PageBreak()
 # ---- dot & cross
 Blueprint()
 Text(common=txt, text="Dots & Crosses")
-Hexagon(x=-0.25, y=4, height=2, dot_size=0.1, dot_stroke=red)
-Hexagon(x=1.75, y=3.5, height=2, cross_size=0.25, cross_stroke=red, cross_stroke_width=1)
-Hexagon(x=0, y=1, height=2, dot_size=0.1, dot_stroke=red,
+Hexagon(x=-0.25, y=4, height=2, dot=0.1, dot_stroke=red)
+Hexagon(x=1.75, y=3.5, height=2, cross=0.25, cross_stroke=red, cross_stroke_width=1)
+Hexagon(x=0, y=1, height=2, dot=0.1, dot_stroke=red,
         orientation='pointy')
-Hexagon(x=2, y=1, height=2, cross_size=0.25, cross_stroke=red, cross_stroke_width=1,
+Hexagon(x=2, y=1, height=2, cross=0.25, cross_stroke=red, cross_stroke_width=1,
         orientation='pointy')
 PageBreak()
 
@@ -78,7 +78,7 @@ PageBreak()
 # ---- radii - pointy
 Blueprint(stroke_width=0.5)
 Text(common=txt, text="Hex Pointy: radii")
-hxg = Common(height=1.5, dot_size=0.05, dot_stroke=red, orientation="pointy", font_size=8)
+hxg = Common(height=1.5, dot=0.05, dot_stroke=red, orientation="pointy", font_size=8)
 Hexagon(common=hxg, x=0.25, y=0.25, radii='sw', label="SW")
 Hexagon(common=hxg, x=0.25, y=2.15, radii='nw', label="NW")
 Hexagon(common=hxg, x=0.25, y=4, radii='n', label="N")
@@ -90,7 +90,7 @@ PageBreak()
 # ---- radii - flat
 Blueprint(stroke_width=0.5)
 Text(common=txt, text="Hex Flat: radii")
-hxg = Common(height=1.5, dot_size=0.05, dot_stroke=red, orientation="flat", font_size=8)
+hxg = Common(height=1.5, dot=0.05, dot_stroke=red, orientation="flat", font_size=8)
 Hexagon(common=hxg, x=0.25, y=0.25, radii='sw', label="SW")
 Hexagon(common=hxg, x=0.25, y=2.15, radii='w', label="W")
 Hexagon(common=hxg, x=0.25, y=4, radii='nw', label="NW")

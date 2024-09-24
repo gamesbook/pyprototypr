@@ -94,9 +94,9 @@ A few sizes are given descriptive names; this makes them a little easier to set.
   the little three-pointed shape drawn at the vertex of a hexagon; this
   can be set to: _small_, _medium_ or _large_
 * **diameter** - the diameter of a `Circle`
-* **dot_point** - the diameter of a small `Dot` in **points**
-* **cross_size** - the length and width of the two interescting lines to be
-  drawn at the centre of a shape
+* **dot_size** - the diameter of a small `Dot` in **points**
+* **cross** - the height and width of the intersecting lines drawn at the
+  centre of a shape
 * **height** - the vertical dimension of a shape e.g. a `Rectangle` or a bitmap
   `Image`
 * **margin** - used in `Create` command to set all margins for a page; the

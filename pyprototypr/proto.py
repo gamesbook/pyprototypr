@@ -1079,7 +1079,7 @@ def Blueprint(**kwargs):
     global margin_right
 
     def set_style(style_name):
-        """Set blueprint color and fill."""
+        """Set Blueprint color and fill."""
         match style_name:
             case 'green':
                 color, fill = "#CECE2C", "#35705E"
@@ -1098,18 +1098,18 @@ def Blueprint(**kwargs):
     if kwargs.get('common'):
         tools.feedback('The "common" property cannot be used with a Blueprint.', True)
     kwargs['units'] = kwargs.get('units', cm)
-    size = 1.0
+    side = 1.0
     if kwargs['units'] == inch:
-        size = 0.5
+        side = 0.5
     # override defaults ... otherwise grid not "next" to margins
     numbering = kwargs.get('numbering', True)
-    kwargs['size'] = kwargs.get('size', size)
+    kwargs['side'] = kwargs.get('side', side)
     kwargs['x'] = kwargs.get('x', 0)
     kwargs['y'] = kwargs.get('y', 0)
     m_x = kwargs['units'] * (margin_left + margin_right)
     m_y = kwargs['units'] * (margin_top + margin_bottom)
-    _cols = (pagesize[0] - m_x) / (kwargs['units'] * float(kwargs['size']))
-    _rows = (pagesize[1] - m_y) / (kwargs['units'] * float(kwargs['size']))
+    _cols = (pagesize[0] - m_x) / (kwargs['units'] * float(kwargs['side']))
+    _rows = (pagesize[1] - m_y) / (kwargs['units'] * float(kwargs['side']))
     rows = int(_rows)
     cols = int(_cols)
     kwargs['rows'] = kwargs.get('rows', rows)
@@ -1132,14 +1132,14 @@ def Blueprint(**kwargs):
             stroke=kwargs['stroke'],
             units=kwargs['units'])
         for x in range(1, kwargs['cols'] + 1):
-            Text(x=x*size,
-                 y=kwargs['y'] - kwargs['size'] / 2.0,
-                 text=str(x*size),
+            Text(x=x*side,
+                 y=kwargs['y'] - kwargs['side'] / 2.0,
+                 text=str(x*side),
                  common=_common)
         for y in range(1, kwargs['rows'] + 1):
-            Text(x=kwargs['x'] - kwargs['size'] / 2.0,
-                 y=y*size - _common.points_to_value(kwargs['font_size']) / 2.0,
-                 text=str(y*size),
+            Text(x=kwargs['x'] - kwargs['side'] / 2.0,
+                 y=y*side - _common.points_to_value(kwargs['font_size']) / 2.0,
+                 text=str(y*side),
                  common=_common)
         # draw "zero" number
         z_x, z_y = kwargs['units'] * margin_left, kwargs['units'] * margin_bottom
@@ -1147,31 +1147,24 @@ def Blueprint(**kwargs):
         corner_frac = corner_dist * 0.66 / kwargs['units']
         # tools.feedback(f'*** {z_x=} {z_y=} {corner_dist=}')
         zero_pt = geoms.point_on_line(Point(0, 0), Point(z_x, z_y), corner_frac)
-        Text(x=zero_pt.x / kwargs['units'] - kwargs['size'] / 4.0,
-             y=zero_pt.y / kwargs['units'] - kwargs['size'] / 4.0,
+        Text(x=zero_pt.x / kwargs['units'] - kwargs['side'] / 4.0,
+             y=zero_pt.y / kwargs['units'] - kwargs['side'] / 4.0,
              text="0",
              common=_common)
     # ---- draw subgrid
     if kwargs.get('subdivisions'):
         local_kwargs = copy(kwargs)
         sub_count = int(kwargs.get('subdivisions'))
-        local_kwargs['size'] = float(size / sub_count)
-        for col in range(0, cols):
-            for row in range(0, rows + 1):
-                off_x = float(local_kwargs['size']) * col
-                off_y = float(local_kwargs['size']) * row
-                # log.warning("col:%s row:%s off_x:%s off_y:%s", col, row, off_x, off_y)
-                local_kwargs['rows'] = sub_count
-                local_kwargs['cols'] = sub_count
-                local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
-                local_kwargs['stroke'] = kwargs.get('subdivisions_stroke', kwargs['stroke'])
-                local_kwargs['dashes'] = kwargs.get('subdivisions_dashes')
-                local_kwargs['dots'] = kwargs.get('subdivisions_dots')
-                print(sub_count, local_kwargs)
-                subgrid = GridShape(canvas=cnv, **local_kwargs)
-                subgrid.draw(off_x=off_x, off_y=off_y)
+        local_kwargs['side'] = float(side / sub_count)
+        local_kwargs['rows'] = sub_count * kwargs['rows']
+        local_kwargs['cols'] = sub_count * kwargs['cols']
+        local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
+        local_kwargs['stroke'] = kwargs.get('subdivisions_stroke', kwargs['stroke'])
+        local_kwargs['dashes'] = kwargs.get('subdivisions_dashes')
+        local_kwargs['dots'] = kwargs.get('subdivisions_dots')
+        subgrid = GridShape(canvas=cnv, **local_kwargs)
+        subgrid.draw(cnv=cnv)
     # ---- draw Blueprint grid
-    print(kwargs)
     grid = GridShape(canvas=cnv, line_dots=line_dots, **kwargs)  # don't add canvas as arg here!
     grid.draw(cnv=cnv)
     return grid

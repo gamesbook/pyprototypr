@@ -51,7 +51,7 @@ PageBreak()
 # ---- dot & cross
 Blueprint()
 Text(common=txt, text="Rectangle: dot & cross")
-Rectangle(height=3, width=2, x=1, y=1, cross_size=0.75, dot_size=0.15)
+Rectangle(height=3, width=2, x=1, y=1, cross=0.75, dot=0.15)
 PageBreak()
 
 # ---- hatch
@@ -149,9 +149,9 @@ PageBreak()
 # ---- rotation
 Blueprint()
 Text(common=txt, text="Rectangle: red => rotation 45\u00B0")
-Rectangle(cx=2, cy=3, width=1.5, height=3, dot_size=0.06)
+Rectangle(cx=2, cy=3, width=1.5, height=3, dot=0.06)
 Rectangle(cx=2, cy=3, width=1.5, height=3, fill=None,
-          stroke=red, stroke_width=.3, rotation=45, dot_size=0.04)
+          stroke=red, stroke_width=.3, rotation=45, dot=0.04)
 PageBreak()
 
 # ---- notches

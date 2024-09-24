@@ -31,7 +31,7 @@ Text(common=header, text="Blueprint plus shapes with labels")
 Polygon(x=4, y=24.5, radius=2, angle=30, label="polygon6")
 Polygon(x=10, y=24.5, radius=2, sides=8, angle=22.5, label="polygon8")
 Polygon(x=16, y=24.5, radius=2.5, sides=2.5, angle=30, label="polygon3")
-Rectangle(x=2, y=18.5, width=6, height=3, label="rectangle")
+Rectangle(x=2, y=18.5, width=5, height=3, label="rectangle")
 # TODO Trapezoid(cx=16, cy=15, width=3.5, height=3.5, label="Trapezoid")
 Stadium(x=14.5, y=19, width=3, height=2, label="stadium")
 Hexagon(x=2, y=13, side=2, label="hexagon")
@@ -47,10 +47,10 @@ PageBreak()
 # ---- centre shapes and blueprint + label
 Blueprint()
 Text(common=header, text="Centred shapes with centre point and x-y label")
-dot = Common(dot_size=0.2, dot_stroke=yellow)
+dot = Common(dot=0.2, dot_stroke=yellow)
 
-Rectangle(cx=3, cy=23, width=5, height=4, label="rectangle:3-23", common=dot)
-EquilateralTriangle(x=7, y=21, side=4, label="triangle:9-23", common=dot)
+Rectangle(cx=3, cy=23, width=5, height=3, label="rectangle:3-23", common=dot)
+EquilateralTriangle(x=7, y=21, side=4, label="triangle:9-22", common=dot)
 Stadium(cx=15, cy=23, width=3, height=2, label="stadium:15-23", common=dot)
 
 Hexagon(cx=3, cy=17, side=2, label="hexagon:3-17", orientation="flat", common=dot)
@@ -65,17 +65,17 @@ Star(cx=3, cy=5, vertices=5, radius=2, label="star:3-5", common=dot)
 Rhombus(cx=16, cy=5, width=3, height=5, label="rhombus:16-5", common=dot)
 Square(cx=9, cy=5, side=3, label="square:9-5", common=dot)
 
-Dot(x=8.5, y=1, dot_point=6, label="dot:1-8.5")
+Dot(x=9.5, y=1, dot_point=6, label="dot:1-9.5")
 
 PageBreak()
 
 # ---- centre shapes and blueprint + heading
 Blueprint()
 Text(common=header, text="Centred shapes with centre point and x-y heading")
-dot = Common(dot_size=0.2, dot_stroke=blue)
+dot = Common(dot=0.2, dot_stroke=blue)
 
-Rectangle(cx=3, cy=23, width=5, height=4, heading="rectangle:3-23", common=dot)
-EquilateralTriangle(x=7, y=21, side=4, heading="triangle:9-23", common=dot)
+Rectangle(cx=3, cy=23, width=5, height=3, heading="rectangle:3-23", common=dot)
+EquilateralTriangle(x=7, y=21, side=4, heading="triangle:9-22", common=dot)
 Stadium(cx=15, cy=23, width=3, height=2, heading="stadium:15-23", common=dot)
 
 Hexagon(cx=3, cy=17, side=2, heading="hexagon:3-17", orientation="flat", common=dot)
@@ -90,17 +90,17 @@ Star(cx=3, cy=5, vertices=5, radius=2, heading="star:3-5", common=dot)
 Rhombus(cx=16, cy=5, width=3, height=5, heading="rhombus:16-5", common=dot)
 Square(cx=9, cy=5, side=3, heading="square:9-5", common=dot)
 
-Dot(x=8.5, y=1, dot_point=6, heading="dot:1-8.5")
+Dot(x=9.5, y=1, dot_point=6, heading="dot:1-9.5")
 
 PageBreak()
 
 # ---- centre shapes and blueprint + title
 Blueprint()
 Text(common=header, text="Centred shapes with centre point and x-y title")
-dot = Common(dot_size=0.2, dot_stroke=green)
+dot = Common(dot=0.2, dot_stroke=green)
 
-Rectangle(cx=3, cy=23, width=5, height=4, title="rectangle:3-23", common=dot)
-EquilateralTriangle(x=7, y=21, side=4, title="triangle:9-23", common=dot)
+Rectangle(cx=3, cy=23, width=5, height=3, title="rectangle:3-23", common=dot)
+EquilateralTriangle(x=7, y=21, side=4, title="triangle:9-22", common=dot)
 Stadium(cx=15, cy=23, width=3, height=2, title="stadium:15-23", common=dot)
 
 Hexagon(cx=3, cy=17, side=2, title="hexagon:3-17", orientation="flat", common=dot)
@@ -115,7 +115,7 @@ Star(cx=3, cy=5, vertices=5, radius=2, title="star:3-5", common=dot)
 Rhombus(cx=16, cy=5, width=3, height=5, title="rhombus:16-5", common=dot)
 Square(cx=9, cy=5, side=3, title="square:9-5", common=dot)
 
-Dot(x=8.5, y=1, dot_point=6, title="dot:1-8.5")
+Dot(x=9.5, y=1, dot_point=6, title="dot:1-9.5")
 
 PageBreak()
 
@@ -143,17 +143,17 @@ PageBreak()
 Text(common=header, text="Filled shapes")
 Line(x=11, y=17, x1=11, y1=20, stroke=yellow, stroke_width=2)
 Line(x=11, y=17, x1=15, y1=17, stroke=red, stroke_width=2)
-Line(x=11, y=20, length=5, angle=-36.86, stroke=blue, stroke_width=2, dot_size=0.1, dot_stroke=blue)
+Line(x=11, y=20, length=5, angle=-36.86, stroke=blue, stroke_width=2, dot=0.1, dot_stroke=blue)
 
-Rectangle(x=6, y=8, width=5, height=3, stroke_width=2, dot_size=0.1)
-Rhombus(x=1, y=7, width=3, height=5, stroke_width=1, ill=lightyellow, dot_size=0.1)
-Circle(cx=15.5, cy=10, radius=2.5, fill=green, stroke=red, stroke_width=1, dot_size=0.1)
-Ellipse(x=3, y=16, x1=9, y1=20, fill=tan, stroke=green, dot_size=0.1)
+Rectangle(x=6, y=8, width=5, height=3, stroke_width=2, dot=0.1)
+Rhombus(x=1, y=7, width=3, height=5, stroke_width=1, ill=lightyellow, dot=0.1)
+Circle(cx=15.5, cy=10, radius=2.5, fill=green, stroke=red, stroke_width=1, dot=0.1)
+Ellipse(x=3, y=16, x1=9, y1=20, fill=tan, stroke=green, dot=0.1)
 # different-sided polygons
-Polygon(x=3, y=24, radius=2, fill=gold, dot_size=0.1, angle=30)  # sides=6
-Polygon(x=8, y=24, sides=8, radius=2, fill=saddlebrown, dot_size=0.1, angle=22.5)
-Polygon(x=13, y=24, sides=3, radius=2, fill=olive, dot_size=0.1, angle=30)
-Rectangle(x=16, y=23, width=3, height=3, pattern="13.png", dot_size=0.1)
+Polygon(x=3, y=24, radius=2, fill=gold, dot=0.1, angle=30)  # sides=6
+Polygon(x=8, y=24, sides=8, radius=2, fill=saddlebrown, dot=0.1, angle=22.5)
+Polygon(x=13, y=24, sides=3, radius=2, fill=olive, dot=0.1, angle=30)
+Rectangle(x=16, y=23, width=3, height=3, pattern="13.png", dot=0.1)
 # house
 points = [
     (7, 2),
@@ -208,7 +208,7 @@ Hexagons(
     side=1.69,
     margin_left=-1.69,
     margin_bottom=-2.529,
-    dot_size=0.04,
+    dot=0.05,
     dot_stroke=black,
     coord_position="top",
     coord_font_size=9,

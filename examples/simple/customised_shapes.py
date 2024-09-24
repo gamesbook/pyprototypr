@@ -40,10 +40,10 @@ PageBreak()
 # ---- dot & cross
 Blueprint()
 Text(common=txt, text="Dots & Crosses")
-Circle(cx=1, cy=1, radius=1, dot_size=0.1, dot_stroke=green)
-Circle(cx=3, cy=1, radius=1, cross_size=0.25, cross_stroke=green, cross_stroke_width=1)
-Polygon(cx=1, cy=3, sides=8, radius=1, dot_size=0.1, dot_stroke=orange)
-Polygon(cx=3, cy=3, sides=8, diameter=2, cross_size=0.25, cross_stroke=orange, cross_stroke_width=1)
+Circle(cx=1, cy=1, radius=1, dot=0.1, dot_stroke=green)
+Circle(cx=3, cy=1, radius=1, cross=0.25, cross_stroke=green, cross_stroke_width=1)
+Polygon(cx=1, cy=3, sides=8, radius=1, dot=0.1, dot_stroke=orange)
+Polygon(cx=3, cy=3, sides=8, diameter=2, cross=0.25, cross_stroke=orange, cross_stroke_width=1)
 PageBreak()
 
 # ---- centre placement
@@ -160,7 +160,7 @@ PageBreak()
 
 # ---- grids (plain; dot)
 Text(common=txt, text='Grid: gray; 1/3"; thick')
-Grid(size=0.8, stroke=gray, stroke_width=0.5)
+Grid(side=0.85, stroke=gray, stroke_width=0.5)
 PageBreak()
 
 Text(common=txt, text='DotGrid: "Moleskine" setting')
@@ -170,7 +170,7 @@ PageBreak()
 # ---- arc
 Blueprint()
 Text(common=txt, text="Arc; 'inside' rect")
-Rectangle(x=1, y=1, height=1, width=2, dot_size=0.01,
+Rectangle(x=1, y=1, height=1, width=2, dot=0.01,
           label_size=8, stroke=red, fill=None,
           label="Arc(x=1, y=1, x1=3, y1=2)")
 Arc(x=1, y=1, x1=3, y1=2)
@@ -269,7 +269,7 @@ Polygon(cx=2, cy=4, sides=8, radius=1, radii=1)
 Polygon(
     cx=2, cy=1, sides=10, radius=1, radii=1,
     radii_offset=0.5, radii_length=0.25, radii_stroke_width=1,
-    dot_size=0.1, dot_stroke=red)
+    dot=0.1, dot_stroke=red)
 PageBreak()
 
 # ---- dates
@@ -296,17 +296,17 @@ PageBreak()
 # ---- rotation: rhombus
 Blueprint()
 Text(common=txt, text="Rhombus: red => rotation 60\u00B0")
-Rhombus(cx=2, cy=3, width=1.5, height=2*equi(1.5), dot_size=0.06)
+Rhombus(cx=2, cy=3, width=1.5, height=2*equi(1.5), dot=0.06)
 Rhombus(cx=2, cy=3, width=1.5, height=2*equi(1.5), fill=None,
-        stroke=red, stroke_width=.3, rotation=60, dot_size=0.04)
+        stroke=red, stroke_width=.3, rotation=60, dot=0.04)
 PageBreak()
 
 # ---- rotation: stadium
 Blueprint()
 Text(common=txt, text="Stadium: red => rotation 30\u00B0")
-Stadium(cx=2, cy=3, width=1.25, height=2, dot_size=0.06)
+Stadium(cx=2, cy=3, width=1.25, height=2, dot=0.06)
 Stadium(cx=2, cy=3, width=1.25, height=2, fill=None,
-        stroke=red, stroke_width=.3, rotation=30, dot_size=0.04)
+        stroke=red, stroke_width=.3, rotation=30, dot=0.04)
 PageBreak()
 
 # ---- rotation: polygon
