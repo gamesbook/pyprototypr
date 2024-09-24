@@ -37,17 +37,20 @@
 
 These descriptions of the available shapes assume you are familiar with the concepts,
 terms and ideas presented in [Basic Concepts](basic_concepts.md) - especially
-*units*, *properties* and *defaults*.
+*units*, *properties* and *defaults*.  It will also help to at least read through
+the section on [Additional Concepts](additional_concepts.md).
 
-Where possible, basic examples show how a shape would appear on a page when **only**
-the default properties are used.  This means for most cases, *lines* are drawn in black,
-with a width of 1mm (0.1cm) and shapes are *filled* with a white color. The default
-length or height in most cases is 1cm.
+Where possible, the basic examples first show how a shape would appear on a page
+when **only** the default properties are used.  This means for most cases, that
+*lines* are drawn in black, with a stroke width of 1mm (0.1cm) and shapes are
+*filled* with a white color. The default length or height in most cases is 1cm.
 
 To make it easier to see where and how a shape has been drawn, these examples have
-been created with a background grid for reference: the values of **x** appear across
-the lower edge of the grid (left to right); those for **y** along the left side (bottom
-to top).
+been created with a background grid (which __pyprototypr__ refers to as a
+`Blueprint`) for cross-reference: the values of **x** appear across the lower
+edge of the grid (increasing from left to right); those for **y** along the
+left side (increasing from bottom to top).  The grid respects the margins that
+have been set, although the numbers themselves are drawn inside the margin!
 
 > The graphics for these examples were generated from the scripts in the `examples`
 > directory - look at the [default_shapes](../examples/simple/default_shapes.py) and
@@ -56,8 +59,8 @@ to top).
 
 ## Commonalities <a name="commonalties"></a>
 
-There are some properties that can be set for many of the shapes; examples of these
-are presented at the end, rather than being repeated across every shape.
+There are some properties that can be set for many of the shapes; examples of
+these are presented at the end, rather than being repeated across every shape.
 
 
 ## Linear Shapes <a name="linear_shapes"></a>
@@ -98,9 +101,9 @@ A line effectively has only 1 dimension.
   <tr>
     <td><img src="images/examples/simple/defaults/polyline.png"></td>
     <td>
-    <p>This example shows an example of the shape can be constructed using a series of
-       points for the line (<b>Note</b> if the points are <b>not</b> defined, then
-       the script will not work and will show an error message):</p>
+    <p>This example shows an example of the shape can be constructed using a series
+       of points for the line (<b>Note</b> if the points are <b>not</b> defined,
+       then the script will not work and will show an error message):</p>
     <pre>Polyline(points=[(0, 0), (1, 1), (2, 0)])</pre>
     <p>As can be seen from the example; at a minimum, you need to use three points
     to draw a *Polyline*:
@@ -153,12 +156,11 @@ A line effectively has only 1 dimension.
     "background" reference on which other shapes can be drawn and positioned; or as a
     "foreground" overlay to verify shape positions.  It's unlikely to be used as part
     of a final drawing!</p>
-    <p>It has the following properties based on the defaults:
+    <p>It has the following properties based on the defaults:</p>
       <ul>
         <li>grid interval of 1cm,</li>
         <li>starts at x-position 1cm and at y-position 1cm,</li>
       </ul>
-    </p>
     </td>
   </tr>
   <tr>
@@ -168,11 +170,11 @@ A line effectively has only 1 dimension.
     <td><img src="images/examples/simple/defaults/blueprint-sub.png"></td>
     <td>
       <pre>Blueprint(subdivisions=5, stroke_width=0.8)</pre>
-       <p>In this example, the Blueprint shows how additional lines can be added  between
-       the primary ones; their width is set to a fraction of the normal grid lines
-       ("stroke_width").  For this example, the normal grid lines <i>stroke_width</i>
-       has been made thicker than usual.
-       </p>
+      <p>In this example, the Blueprint shows how additional lines can be added
+      between the primary ones; their width is set to a fraction of the normal
+      grid lines ("stroke_width").  For this example, the normal grid lines
+      <i>stroke_width</i> has been made thicker than usual to help show that
+      change.</p>
     </td>
   </tr>
 </table>
@@ -189,6 +191,7 @@ A line effectively has only 1 dimension.
     <td>
     <p>This example shows how the shape can be constructed:</p>
     <pre>Chord(shape=Circle(), angle=135, angle1=45)</pre>
+
     <p>This command will draw a line connecting two points on the circumference of a
     circle.  These points will be defined by the places intersected by two radii
     extending from the centre of the circle.  The radii themselves are not drawn but
@@ -410,9 +413,12 @@ the default fill color is white.
 
 ### Hexagon [&#9650;](#index_shapes) <a name="hexagon"></a>
 
-Hexagons are a shape widely used in gaming, second only to squares, because of their
-ability to create a uniform grid. There is therefore some focus in **pyprototypr** on
-being able to set special properties for them (that are not applicable to other shapes).
+Hexagons are a shape widely used in gaming, second only to squares, because of
+their ability to create a uniform grid with centres of each hexagon being
+equidistant from others.
+
+There is therefore some focus in **pyprototypr** on being able to set special
+properties for these shapes that are not applicable to others.
 
 <table>
   <tr>
@@ -466,16 +472,17 @@ being able to set special properties for them (that are not applicable to other 
 
 ## Compound Shapes <a name="compound_shapes"></a>
 
-These shapes are created by combining a single shape into a multiple repeated pattern.
+These shapes are created by combining a single shape into a multiple, repeated
+pattern.
 
 ### Hexagons [&#9650;](#index_shapes) <a name="hexagons"></a>
 
-Hexagons are often drawn in a "honeycomb" arrangement to form a grid - for games this
-is often used to delineate the spaces in which playing pieces can be placed and their
-movement regulated.
+Hexagons are often drawn in a "honeycomb" arrangement to form a grid - for games
+this is often used to delineate the spaces in which playing pieces can be placed
+and their movement regulated.
 
-> Further information about using hexagons in grids can be found in the section on
-> [Hexagonal Grids](hexagonal_grids.md).
+> Further information about using hexagons in grids can be found in the section
+> on [Hexagonal Grids](hexagonal_grids.md).
 
 <table>
   <tr>
@@ -487,11 +494,11 @@ movement regulated.
     <td>
     <p>This example shows the shape constructed using the command:</p>
     <pre>Hexagons(rows=2, cols=2)</pre>
-    <p>Each hexagon has the usual default properties, but the grid itself also has the
-       following defaults:
+    <p>Each hexagon has the usual default properties, but the grid itself also
+       has the following defaults:
       <ul>
-        <li><i>orientation</i> is flat; the top of the hexagon is parallel to the bottom
-            of the page,</li>
+        <li><i>orientation</i> is flat; the top of the hexagon is parallel to
+        the bottom of the page,</li>
       </ul>
     </p>
     </td>

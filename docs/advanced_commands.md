@@ -1,9 +1,10 @@
 # pyprototypr: Advanced Commands
 
 This section deals with some of the more advanced - and potentially more complex -
-concepts and options in **pyprototypr** - its therefore important that are you familar
-with all of the basic concepts presented in the documentation, have understood how its
-used via the various examples, and are comfortable with creating and using scripts.
+concepts and options in **pyprototypr** - its therefore important that you are
+familiar with all of the basic concepts presented in the documentation, have
+understood how these are used via the various examples, and are therefore
+comfortable with creating and using scripts.
 
 ## Data Lists
 

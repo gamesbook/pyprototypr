@@ -14,7 +14,7 @@ other, similar, regular graphical design of your choice.
 
 You will then use Python to "run" the script. Python will take the file you have
 written, and step through it, line by line, from top to bottom, to finally create
-an output PDF file (r, optionally, PNG image) that will show the outcome of this
+an output PDF file (or, optionally, PNG image) that will show the outcome of this
 process - hopefully with your desired design!
 
 If you want to make changes to the design, then you add to, delete, or change the
@@ -130,7 +130,7 @@ color of an area, and _"stroke"_ to set the color of a line.
 
 ## Working with units
 
-All positions, heights, widths, distances, line thicknesses and other kinds of
+All positions, heights, widths, distances, line thickness’s and other kinds of
 lengths or sizes all need to be measured in a particular set of **units**.
 
 In the USA, people tend to use the so-called Imperial System. In

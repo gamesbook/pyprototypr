@@ -18,9 +18,9 @@ Naming of things is supposed to be one of the harder aspects of programming.
 
 If you work with the built-in commands and and their properties, the set of
 names to use is already chosen for you. However, if you want to start using
-some additional options, such as assigning [shortcut names](#short) to reuse
+some additional options, such as assigning [short-cut names](#short) to reuse
 items in multiple places, then you need to be aware of the wider set of so-
-called "reserved" names available as part of Python.  If your shortcut name
+called "reserved" names available as part of Python.  If your short-cut name
 is the same as one of those, you'll overwite it and your scripts may fail in
 strange ways!
 

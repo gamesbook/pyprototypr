@@ -39,7 +39,7 @@ other tools would be of better use.
 > https://www.redblobgames.com/grids/hexagons/
 
 A quick footnote.  The 18xx train games hex maps are often criticised for their
-poor aesthetic. A fascinating article that enages with this topic - and perhaps
+poor aesthetic. A fascinating article that engages with this topic - and perhaps
 relevant even at a prototyping stage - is available at
 https://medium.com/grandtrunkgames/mawgd4-18xx-tiles-and-18xx-maps-8a409bba4230 .
 

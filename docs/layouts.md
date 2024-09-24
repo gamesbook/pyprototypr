@@ -2,14 +2,15 @@
 
 ## Overview
 
-__pyprototypr__ allows you to place elements that make up your design anywhere within
-a page, or over a series of pages within a Deck, but it also includes commands that
-let you place, or "layout", elements in a more repetitive or regular way within a page.
+__pyprototypr__ allows you to place elements that make up your design anywhere
+within a page, or over a series of pages within a Deck, but it also includes
+commands that let you place, or "layout", elements in a more repetitive or
+regular way within a page.
 
 To support this, __pyprototypr__ includes a number of different kinds of **layouts**.
 
-The most basic layout is that of a simple **sequence**, with elements placed at regular
-x- and y-positions in a linear direction.
+The most basic layout is that of a simple **sequence**, with elements placed at
+regular x- and y-positions in a linear direction.
 
 In a similar way elements can be placed along a **track**. The track can be defined as
 the border of a rectangle or polygon shape; or at regular interval along the
@@ -43,17 +44,19 @@ Linear layout:
 Track-based layout, where the elements are positioned on the line used to
 delineate a shape:
 
-* **RectangularTrack()** - allows elements to be placed along the border of a rectangle
+* **RectangularTrack()** - allows elements to be placed along the border of a
+  rectangle
 * **PolygonTrack()** - allows elements to be placed along the border of a polygon
-* **CircularTrack()** - allows elements to be placed along the circumference of a circle
+* **CircularTrack()** - allows elements to be placed along the circumference of
+  a circle
 
-Grid-based layouts, where elements appear in two-dimensonal space:
+Grid-based layouts, where elements appear in two-dimensional space:
 
-* **RectangularLayout()** - allows elements to be placed at a series of differing x-
-  and y-points with rectangular spacing; the x- and y-values will correspond to the
-  centre of the element being placed.
-* **TriangularLayout()** - allows elements to be placed at a series of differing x-
-  and y-points with triangular spacing; the x- and y-values will correspond to the
-  centre of the element being placed.
+* **RectangularLayout()** - allows elements to be placed at a series of differing
+  x- and y-points with rectangular spacing; the x- and y-values will correspond
+  to the centre of the element being placed.
+* **TriangularLayout()** - allows elements to be placed at a series of differing
+  x- and y-points with triangular spacing; the x- and y-values will correspond
+  to the centre of the element being placed.
 * **IrregularLayout()** - allows elements to be placed at a series of x-
   and y-points that are completely defined by the script- they could even be random!

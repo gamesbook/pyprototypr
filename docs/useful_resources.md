@@ -1,7 +1,7 @@
 # pyprototypr: Useful Resources
 
-> *NOTE* Inclusion of these links does not constitute a recommendation of them or
-> their use.
+> *NOTE* Inclusion of these links does not constitute a recommendation of them
+> or their use!
 
 ## Free Icons and Images
 
@@ -21,7 +21,7 @@
   used for game design.
 
 > Please also see the section on [hexagonal grids](hexagonal_grids.md) which lists
-> tools for working with hexagonal layoutsa
+> tools for working with hexagonal layouts.
 
 ## boardgamegeek
 

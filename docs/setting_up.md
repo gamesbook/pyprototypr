@@ -13,9 +13,11 @@ Its possible that you may already one or more already installed.
 ## Installing Python
 
 **pyprototypr** requires a device e.g. laptop or desktop (but probably not a
-smart phone) that already has the correct version of Python (version 3.11) installed.
+smart phone) that already has the correct version of Python (version 3.11)
+installed.
 
-If your device does not have Python installed, it can be obtained from http://www.python.org/download/.
+If your device does not have Python installed, it can be obtained from
+http://www.python.org/download/.
 
 A very detailed and useful guide to installing on Windows is at:
 https://www.tomshardware.com/how-to/install-python-on-windows-10-and-11
@@ -70,14 +72,14 @@ example, in a virtual environment.
 ### PDF Viewer
 
 You will also need a program that can display PDF files; for example,
-*Adobe Acrobat* (cross-platform), or **evince** (Linux), or **Preview** (Mac),
-or **foxit** (Windows). Most modern web browsers should also be able to open
+*Adobe Acrobat* (cross-platform), or **Evince** (Linux), or **Preview** (Mac),
+or **Foxit** (Windows). Most modern web browsers should also be able to open
 and display PDF files.
 
 ### Core Fonts (optional)
 
 For Linux users, it is recommended that you install Microsoft's Core Fonts -
-see http://mscorefonts2.sourceforge.net/ - Ubuntu users can install these via::
+see http://mscorefonts2.sourceforge.net/ - Ubuntu users can install these via:
 ```
 sudo apt-get install ttf-mscorefonts-installer
 ```
@@ -94,6 +96,7 @@ Create()
 Text(text="Hello World")
 Save()
 ```
+
 Save the file; call it something like *test.py*.  (The ".py" indicates its a
 Python file - this is useful but not essential).
 
@@ -117,4 +120,4 @@ actual name of the file you created.
 There should now be a new file called `test.pdf` in the same directory.
 
 You should be able to open and view this PDF file via your PDF viewer. It should
-be a mostly blank page with the phrase *Hello World* at the bottom-left.
+be a mostly blank page with the phrase *Hello World* near the bottom-left.
