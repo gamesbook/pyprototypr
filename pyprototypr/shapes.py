@@ -31,13 +31,13 @@ GRID_SHAPES_WITH_CENTRE = [
 ]
 GRID_SHAPES_NO_CENTRE = [
      'TextShape', 'StarShape', ]
-# following shapes must have vertices accessible WITHOUT calling draw()
-SHAPES_WITH_VERTICES = [
-    'PolygonShape', 'RectangleShape', 'RhombusShape', 'SquareShape',
-    'PolylineShape', 'LineShape',
-]
 # NOT GRID:  ArcShape, BezierShape, PolylineShape, ChordShape
 
+# following shapes must have vertices accessible WITHOUT calling draw()
+SHAPES_FOR_TRACK = [
+    'LineShape', 'PolygonShape', 'PolylineShape', 'RectangleShape', 'RhombusShape',
+    'SquareShape',
+]
 
 class ImageShape(BaseShape):
     """
@@ -1542,6 +1542,7 @@ class PolygonShape(BaseShape):
         super(PolygonShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         self.use_diameter = True if self.is_kwarg('diameter') else False
         self.use_height = True if self.is_kwarg('height') else False
+        self.use_width = True if self.is_kwarg('width') else False
         self.use_radius = True if self.is_kwarg('radius') else False
         # ---- perform overrides
         if self.cx is not None and self.cy is not None:
@@ -1549,13 +1550,15 @@ class PolygonShape(BaseShape):
         # ---- RESET UNIT PROPS (last!)
         self.set_unit_properties()
 
-    def get_radius(self):
+    def get_radius(self) -> float:
         if self.radius and self.use_radius:
             radius = self._u.radius
         elif self.diameter and self.use_diameter:
             radius = self._u.diameter / 2.0
         elif self.height and self.use_height:
             radius = self._u.height / 2.0
+        elif self.width and self.use_width:
+            radius = self._u.width / 2.0
         else:
             side = self._u.side
             sides = int(self.sides)
@@ -1563,16 +1566,16 @@ class PolygonShape(BaseShape):
             radius = side / (2.0 * math.sin(math.pi / sides))
         return radius
 
-    def calculate_area(self):
+    def calculate_area(self) -> float:
         sides = int(self.sides)
         radius = self.get_radius()
         area = (sides * radius * radius / 2.0) * math.sin(2.0 * math.pi / sides)
         return area
 
     def draw_mesh(self, cnv, ID, vertices: list):
-        """Draw lines connecting each of the vertices to mid-points of other sides.
+        """Lines connecting each vertex to mid-points of opposing sides.
         """
-        tools.feedback('Sorry, mesh for Polygon is not yet implemented.', True)
+        tools.feedback('Sorry, the mesh for Polygon is not yet implemented.', True)
         ''' TODO - autodraw (without dirs)
         self.set_canvas_props(
             index=ID,
@@ -1592,9 +1595,36 @@ class PolygonShape(BaseShape):
                 self.draw_lines_between_sides(cnv, side, lines, vertices, (1, 2), (6, 5))
         '''
 
-    def draw_radii(self, cnv, ID, centre: Point, vertices: list):
-        """Draw lines connecting the polygon centre to each of the vertices.
+    def get_centre(self) -> Point:
+        """Calculate the centre as a Point (in units)
         """
+        if self.cx is not None and self.cy is not None:
+            x = self._u.cx + self._o.delta_x
+            y = self._u.cy + self._o.delta_y
+        else:
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
+        return Point(x, y)
+
+    def get_angles(self, rotation: float = 0, is_rotated: bool = False) -> list:
+        """Angles of lines connecting the Polygon centre to each of the vertices.
+        """
+        centre = self.get_centre()
+        vertices = self.get_vertices(rotation, is_rotated)
+        angles = []
+        for vertex in vertices:
+            _, angle = geoms.angles_from_points(centre.x, centre.y, vertex.x, vertex.y)
+            angles.append(angle)
+        return angles
+
+    def draw_radii(
+            self, cnv, ID, centre: Point = None, vertices: list = None, rotation: float = None):
+        """Draw lines connecting the Polygon centre to each of the vertices.
+        """
+        if not centre:
+            centre = self.get_center()
+        if not vertices:
+            vertices = self.get_vertices(rotation=rotation)
         _radii = []
         for vertex in vertices:
             _, angle = geoms.angles_from_points(centre.x, centre.y, vertex.x, vertex.y)
@@ -1667,12 +1697,8 @@ class PolygonShape(BaseShape):
         elif self.radius:
             side = self.u_radius
         # ---- calc centre (in units)
-        if self.cx is not None and self.cy is not None:
-            x = self._u.cx + self._o.delta_x
-            y = self._u.cy + self._o.delta_y
-        else:
-            x = self._u.x + self._o.delta_x
-            y = self._u.y + self._o.delta_y
+        centre = self.get_centre()
+        x, y = centre.x, centre.y
         # ---- handle rotation: START
         is_rotated = False
         rotation = kwargs.get('rotation', self.rotation)
@@ -1796,6 +1822,17 @@ class RectangleShape(BaseShape):
             return self.points_to_value(length)
         else:
             return length
+
+    def get_angles(self, rotation=0, **kwargs):
+        """Get angles from centre to vertices for rectangle without notches."""
+        x, y = self.calculate_xy(**kwargs)
+        vertices = self.get_vertices(rotation=rotation, **kwargs)
+        centre = Point(x + self._u.height / 2.0, y + self._u.height / 2.0)
+        angles = []
+        for vtx in vertices:
+            _, angle = geoms.angles_from_points(centre.x, centre.y, vtx.x, vtx.y)
+            angles.append(angle)
+        return angles
 
     def get_vertices(self, rotation=0, **kwargs):
         """Get vertices for rectangle without notches."""

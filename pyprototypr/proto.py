@@ -64,7 +64,7 @@ from .shapes import (
     PolygonShape, PolylineShape, RectangleShape,
     RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape,
     SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape,
-    GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE, SHAPES_WITH_VERTICES)
+    GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE, SHAPES_FOR_TRACK)
 from .layouts import (
     GridShape, DotGridShape,
     VirtualLayout, RectangularLayout, TriangularLayout,
@@ -1691,19 +1691,33 @@ def Track(track=None, **kwargs):
 
     kwargs = kwargs
     angles = kwargs.get('angles', [])
+    rotation_style = kwargs.get('rotation_style', None)
     stop = tools.as_int(kwargs.get('stop', None), 'stop', allow_none=True)
     start = tools.as_int(kwargs.get('start', None), 'start', allow_none=True)
+
     # ---- check kwargs inputs
     if not track:
-        track = Rectangle(fill_color=DEBUG_COLOR)
+        track = Polygon(sides=4, fill_color=DEBUG_COLOR)
     track_name = track.__class__.__name__
     track_abbr = track_name.replace('Shape', '')
     if track_name == 'CircleShape':
-        if not angles:
-            tools.feedback(f"An angles list is needed for a Circle-based Track!", True)
-    elif track_name not in SHAPES_WITH_VERTICES:
+        if not angles or not isinstance(angles, list) or len(angles) < 2:
+            tools.feedback(
+                f"A list of 2 or more angles is needed for a Circle-based Track!", True)
+    elif track_name in ['SquareShape', 'RectangleShape']:
+        angles = track.get_angles()
+    elif track_name == 'PolygonShape':
+        angles = track.get_angles()
+    elif track_name not in SHAPES_FOR_TRACK:
         tools.feedback(f"Unable to use a {track_abbr} for a Track!", True)
+    if rotation_style:
+        _rotation_style = str(rotation_style).lower()
+        if _rotation_style not in ['o', 'outwards', 'inwards', 'i' ]:
+            tools.feedback(f"The rotation_style '{rotation_style}' is not valid", True)
+    else:
+        _rotation_style = None
     shapes = kwargs.get('shapes', [square(label="{count}")])  # shape(s) to draw at the locations
+
     # ---- create Circle vertices
     if track_name == 'CircleShape':
         track_points = []
@@ -1741,11 +1755,21 @@ def Track(track=None, **kwargs):
         # TODO - can choose line centre, not vertex, as the cx,cy position
         shape.cx = shape.points_to_value(track_point.x - track._o.delta_x)
         shape.cy = shape.points_to_value(track_point.y - track._o.delta_y)
-        # tools.feedback(f'Track*** {shape.cx=}, {shape.cy=}')
-        # TODO - calculate rotation if required; either implied OR explicit
+        # tools.feedback(f'Track* {shape.cx=}, {shape.cy=}')
+        if _rotation_style:
+            match _rotation_style:
+                case 'i' | 'inwards':
+                    shape_rotation = 90 + angles[index]
+                case 'o' | 'outwards':
+                    shape_rotation = angles[index] - 90
+                case _:
+                    raise NotImplementedError(
+                        f"The rotation_style '{_rotation_style}' is not valid")
+        else:
+            shape_rotation = 0
         shape.set_unit_properties()
         # tools.feedback(f'Track*** {shape._u}')
-        shape.draw(cnv)
+        shape.draw(cnv, rotation=shape_rotation)
         shape_id += 1
         if shape_id > len(shapes) - 1:
             shape_id = 0  # reset and start again

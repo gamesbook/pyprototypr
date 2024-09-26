@@ -7,13 +7,13 @@ python examples/simple/demo.py -d /tmp/demo
 python examples/simple/diagram.py -d /tmp/demo
 python examples/simple/default_shapes.py -d /tmp/demo
 python examples/simple/hexagons.py -d /tmp/demo
-python examples/simple/track_shapes.py -d /tmp/demo
 # --  examples: customised
 echo "Creating customised examples..."
-python examples/simple/customised_shapes.py -d /tmp/demo
+python examples/simple/customised_blueprint.py -d /tmp/demo
 python examples/simple/customised_hexagon.py -d /tmp/demo
 python examples/simple/customised_rectangle.py -d /tmp/demo
-python examples/simple/customised_blueprint.py -d /tmp/demo
+python examples/simple/customised_shapes.py -d /tmp/demo
+python examples/simple/customised_tracks.py -d /tmp/demo
 # -- examples: simple: layouts
 python examples/simple/layouts/layouts_basic.py -d /tmp/demo
 python examples/simple/layouts/layouts_basic_rectangular.py -d /tmp/demo
