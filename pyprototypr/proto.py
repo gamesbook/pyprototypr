@@ -1692,6 +1692,7 @@ def Track(track=None, **kwargs):
     kwargs = kwargs
     angles = kwargs.get('angles', [])
     rotation_style = kwargs.get('rotation_style', None)
+    anticlockwise = tools.as_bool(kwargs.get('anticlockwise', None))
     stop = tools.as_int(kwargs.get('stop', None), 'stop', allow_none=True)
     start = tools.as_int(kwargs.get('start', None), 'start', allow_none=True)
 
@@ -1736,13 +1737,25 @@ def Track(track=None, **kwargs):
         else:
             track_points = track.get_vertices()
 
-    # TODO - change start point!?
+    # ---- change drawing order
+    if anticlockwise:
+        track_points = list(reversed(track_points))
+        _swop = len(track_points) - 1
+        track_points = track_points[_swop:] + track_points[:_swop]
+
+    # ---- change start point
+    # move the order of vertices
+    if start is not None:
+        _start = start - 1
+        if _start > len(track_points):
+            tools.feedback(
+                f'The start value "{start}" must be less than the number of vertices!',
+                True)
+        track_points = track_points[_start:] + track_points[:_start]
 
     # ---- walk the track & draw shape(s)
     shape_id = 0
     for index, track_point in enumerate(track_points):
-        if start is not None and index + 1 < start:
-            continue
         # ---- * stop early if index exceeded
         if stop and index + 1 >= stop:
             break

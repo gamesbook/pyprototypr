@@ -28,56 +28,77 @@ PageBreak()
 # ---- default track + shape
 Blueprint()
 Text(common=txt, text="Track: default + shape")
-shp = circle(cx=1, cy=1, radius=0.5, label='X-{count}', fill=None)
+shp = circle(cx=1, cy=1, radius=0.5, fill=None)
 Track(rectangle(), shapes=[shp]*4)
 PageBreak()
 
 # ---- default track + shape
 Blueprint()
-Text(common=txt, text="Track: default + shape")
-shp = circle(cx=1, cy=1, radius=0.5, label='X-{count}')
+Text(common=txt, text="Track: default + count")
+shp = circle(cx=1, cy=1, radius=0.5, label='{count}')
 Track(rectangle(), shapes=[shp]*4)
 PageBreak()
 
 # ---- square track + shape
 Blueprint()
-Text(common=txt, text="Track: square + shape")
+Text(common=txt, text="Track: square")
 shp = star(cx=1, cy=1, vertices=5, radius=0.5, label='{count}')
 Track(square(side=1.5), shapes=[shp]*4)
 PageBreak()
 
 # # ---- polygon track + shape
 Blueprint()
-Text(common=txt, text="Track: polygon + shape")
+Text(common=txt, text="Track: polygon: 8-sides")
 shp = hexagon(cx=1, cy=1, height=0.5, label='{count}')
 Track(polygon(cx=2, cy=3, radius=1.5, sides=8), shapes=[shp]*8)
 PageBreak()
 
 # # ---- polygon track + shape
 Blueprint()
-Text(common=txt, text="Track: polygon + shape + stop")
+Text(common=txt, text="Track: polygon with stop")
 shp = hexagon(cx=1, cy=1, height=0.5, label='{count}')
-Track(polygon(cx=2, cy=3, radius=1.5, sides=8), shapes=[shp]*8, start=2, stop=8)
+Track(polygon(cx=2, cy=3, radius=1.5, sides=8), shapes=[shp]*8, stop=7)
 PageBreak()
 
 # ---- polyline track + shape
 Blueprint()
-Text(common=txt, text="Track: polyline + shape")
+Text(common=txt, text="Track: polyline")
 shp = hexagon(cx=1, cy=1, height=0.5, label='{count}')
 Track(Polyline(points=[(0, 0), (1, 2), (2, 1), (3, 3), (1, 5)]), shapes=[shp]*8)
 PageBreak()
 
 # # ---- circle track + shape
 Blueprint()
-Text(common=txt, text="Track: circle + shape")
+Text(common=txt, text="Track: circle displayed")
 #shp = rhombus(cx=1, cy=1, width=0.25, height=0.5, label='{count}')
 shp = hexagon(cx=1, cy=1, height=0.5, label='{count}')
 Track(Circle(cx=2, cy=3, radius=1.5), angles=[30,120,210,300], shapes=[shp]*8)
 PageBreak()
 
+# ---- polygon track
+Blueprint()
+Text(common=txt, text="Track: polygon: 6-sides")
+shp = rectangle(cx=1, cy=1, width=0.5, height=0.5, label='{count}', peaks=[("n", 0.25)])
+Track(
+    polygon(cx=2, cy=3, sides=6, radius=1.5),
+    shapes=[shp]*6,
+)
+PageBreak()
+
+# ---- polygon track + anticlockwise
+Blueprint()
+Text(common=txt, text="Track: polygon: anticlockwise")
+shp = rectangle(cx=1, cy=1, width=0.5, height=0.5, label='{count}', peaks=[("n", 0.25)])
+Track(
+    polygon(cx=2, cy=3, sides=6, radius=1.5),
+    shapes=[shp]*6,
+    anticlockwise='t',
+)
+PageBreak()
+
 # ---- polygon track + rotation shape
 Blueprint()
-Text(common=txt, text="Track: polygon/shape rotate 'i'")
+Text(common=txt, text="Track: polygon: rotate 'i'")
 shp = rectangle(cx=1, cy=1, width=0.5, height=0.5, label='{count}', peaks=[("n", 0.25)])
 Track(
     polygon(cx=2, cy=3, sides=6, radius=1.5),
@@ -99,7 +120,7 @@ PageBreak()
 
 # ---- circle track + rotation shape
 Blueprint()
-Text(common=txt, text="Track: circle/shape rotate 'o'")
+Text(common=txt, text="Track: Circle: rotate 'o'")
 shp = rectangle(cx=1, cy=1, width=0.5, height=0.5, label='{count}', peaks=[("n", 0.25)])
 Track(
     Circle(cx=2, cy=3, radius=1.5),
@@ -109,13 +130,25 @@ Track(
 )
 PageBreak()
 
+# ---- square track + rotation shape
 Blueprint()
-Text(common=txt, text="Track: square/shape rotate 'i'")
+Text(common=txt, text="Track: square: rotate 'i'")
 shp = rectangle(cx=1, cy=1, width=0.5, height=0.5, label='{count}', peaks=[("n", 0.25)])
 Track(
     Square(cx=2, cy=3, side=2),
     shapes=[shp]*4,
     rotation_style='i',
+)
+PageBreak()
+
+# ---- square track + rotation shape
+Blueprint()
+Text(common=txt, text="Track: square: rotate 'o'")
+shp = rectangle(cx=1, cy=1, width=0.5, height=0.5, label='{count}', peaks=[("n", 0.25)])
+Track(
+    Square(cx=2, cy=3, side=2),
+    shapes=[shp]*4,
+    rotation_style='o',
 )
 PageBreak()
 

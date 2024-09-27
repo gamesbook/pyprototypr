@@ -167,6 +167,16 @@ def as_int(value, label, maximum=None, minimum=None, allow_none=False) -> int:
         feedback(f"The {value}{label} is not a valid integer!", True)
 
 
+def as_bool(value, label=None, allow_none=True) -> bool:
+    """Convert a value to a boolean
+    """
+    if value is None and allow_none:
+        return value
+    _label = f" for {label}" if label else ' of'
+    result = str(value).lower() in ("yes", "ja", "oui", "y", "true", "t", "1")
+    return result
+
+
 def as_float(value, label, maximum=None, minimum=None) -> int:
     """Set a value to an float; or stop if an invalid value
 

@@ -607,7 +607,7 @@ class BaseCanvas:
         self.use_abs = False
         self.use_abs_1 = False
         self.use_abs_c = False
-        self.clockwise =  True
+        self.clockwise = True
         # ---- deck
         self.deck_data = []
 
