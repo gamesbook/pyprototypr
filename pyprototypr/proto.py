@@ -1756,6 +1756,8 @@ def Track(track=None, **kwargs):
     # ---- walk the track & draw shape(s)
     shape_id = 0
     for index, track_point in enumerate(track_points):
+        # TODO - delink shape index from track vertex index !
+        # ---- * skip unwanted vertex
         # ---- * stop early if index exceeded
         if stop and index + 1 >= stop:
             break

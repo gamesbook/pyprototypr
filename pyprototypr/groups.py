@@ -47,7 +47,7 @@ class Switch:
         try:
             outcome = self.switch_template.render(record)
             # print('  +++', f'{ID=} {self.test} {outcome=}')
-            boolean = outcome.lower() in ("yes", "y", "true", "t", "1")
+            boolean = tools.as_bool(outcome)
             if boolean:
                 return self.result
             else:
