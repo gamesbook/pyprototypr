@@ -75,6 +75,11 @@ Rhombus(cx=1, cy=1)
 PageBreak()
 
 Blueprint(stroke_width=0.5)
+Text(common=header, text="Trapezoid")
+Trapezoid()
+PageBreak()
+
+Blueprint(stroke_width=0.5)
 Text(common=header, text="Star")
 Star()
 PageBreak()

@@ -25,25 +25,15 @@ Blueprint(subdivisions=5, stroke_width=0.5, style='invert')
 Text(common=txt, text="Blueprint: subdiv;invert;stroke")
 PageBreak()
 
-# ---- circle hatch
-Blueprint()
-Text(common=txt, text="Circle: hatch")
-Circle(cx=2, cy=5.2, radius=.7, hatch_stroke=red, hatch=4, label='4')  # all directions
-Circle(cx=1, cy=3.7, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='o', label='o')
-Circle(cx=3, cy=3.7, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='d', label='d')
-Circle(cx=1, cy=2.2, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='e', label='e')
-Circle(cx=3, cy=2.2, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='n', label='n')
-Circle(cx=1, cy=0.7, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='ne', label='ne')
-Circle(cx=3, cy=0.7, radius=.7, hatch_stroke=red, hatch=7, hatch_directions='nw', label='nw')
-PageBreak()
-
 # ---- dot & cross
 Blueprint()
 Text(common=txt, text="Dots & Crosses")
-Circle(cx=1, cy=1, radius=1, dot=0.1, dot_stroke=green)
-Circle(cx=3, cy=1, radius=1, cross=0.25, cross_stroke=green, cross_stroke_width=1)
+Rhombus(cx=1, cy=5, side=2, dot=0.1, dot_stroke=red)
+Rhombus(cx=3, cy=5, side=2, cross=0.25, cross_stroke=red, cross_stroke_width=1)
 Polygon(cx=1, cy=3, sides=8, radius=1, dot=0.1, dot_stroke=orange)
 Polygon(cx=3, cy=3, sides=8, diameter=2, cross=0.25, cross_stroke=orange, cross_stroke_width=1)
+Stadium(cx=1, cy=1, side=1, dot=0.1, dot_stroke=blue)
+Stadium(cx=3, cy=1, side=1, cross=0.25, cross_stroke=blue, cross_stroke_width=1)
 PageBreak()
 
 # ---- centre placement
@@ -63,7 +53,7 @@ Star()
 PageBreak()
 
 Blueprint()
-Text(common=txt, text="Ellipse: centre + width=3, height=2")
+Text(common=txt, text="Ellipse: centre; width=3, height=2")
 Ellipse(cx=2, cy=1, width=3, height=2)
 PageBreak()
 
@@ -122,7 +112,7 @@ StarField(
 PageBreak()
 
 Blueprint()
-Text(common=txt, text="StarField: Poly. multi-color&size")
+Text(common=txt, text="StarField: Poly; multi-color&size")
 plys = Common(x=1.5, y=1.4, sides=10, radius=1.5)
 Polygon(common=plys, fill=black)
 StarField(
@@ -185,6 +175,18 @@ Stadium(x=0, y=4, height=1, width=1, edges='e', fill=tan, label="east")
 Stadium(x=3, y=5, height=1, width=1, edges='w', fill=tan, label="west")
 PageBreak()
 
+# ---- trapezoid
+Blueprint()
+Text(common=txt, text="Trapezoid: flip")
+eqt = Common(x=2, y=2, side=2)
+Trapezoid(
+    x=2, y=2,
+    width=3, width2=2,
+    flip="south",
+    label="flip",
+    hand="east", fill="yellow")
+PageBreak()
+
 # ---- sequence
 Blueprint()
 Text(common=txt, text="Sequence: direction and value")
@@ -237,31 +239,6 @@ Text(common=txt, text="Chord: 135 to 45 degrees")
 Chord(shape=Circle(cx=2, cy=2, radius=2, fill=None), angle=135, angle1=45, label="chord")
 PageBreak()
 
-# ---- circle radii
-Blueprint()
-Text(common=txt, text="Circle: radii (single & overlapped)")
-Circle(x=0, y=0,
-       radius=2,
-       radii=[45,135,225,315],
-       radii_stroke_width=1,
-       radii_length=1.5)
-Circle(x=0, y=0,
-       radius=2,
-       fill=None,
-       radii=[0,90,180,270],
-       radii_stroke_width=3,
-       radii_stroke=red)
-Circle(cx=3, cy=5,
-       radius=1,
-       fill=green,
-       stroke=orange,
-       stroke_width=1,
-       radii=[0,90,180,270,45,135,225,315],
-       radii_stroke_width=8,
-       radii_stroke=orange,
-       radii_length=0.8)
-PageBreak()
-
 # ---- polygon radii
 Blueprint()
 Text(common=txt, text="Polygon: radii (default & custom)")
@@ -303,10 +280,10 @@ PageBreak()
 
 # ---- rotation: stadium
 Blueprint()
-Text(common=txt, text="Stadium: red => rotation 30\u00B0")
+Text(common=txt, text="Stadium: red => rotation 60\u00B0")
 Stadium(cx=2, cy=3, width=1.25, height=2, dot=0.06)
 Stadium(cx=2, cy=3, width=1.25, height=2, fill=None,
-        stroke=red, stroke_width=.3, rotation=30, dot=0.04)
+        stroke=red, stroke_width=.3, rotation=60, dot=0.04)
 PageBreak()
 
 # ---- rotation: polygon

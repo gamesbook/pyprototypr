@@ -61,9 +61,9 @@ from .shapes import (
     ArcShape, ArrowShape, BezierShape, ChordShape, CircleShape, CommonShape,
     CompassShape, DotShape, EllipseShape,
     EquilateralTriangleShape, FooterShape, HexShape, ImageShape, LineShape,
-    PolygonShape, PolylineShape, RectangleShape,
-    RhombusShape, RightAngledTriangleShape, SectorShape, ShapeShape,
-    SquareShape, StadiumShape, StarShape, StarFieldShape, TextShape,
+    PolygonShape, PolylineShape, RectangleShape, RhombusShape,
+    RightAngledTriangleShape, SectorShape, ShapeShape, SquareShape,
+    StadiumShape, StarShape, StarFieldShape, TextShape, TrapezoidShape,
     GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE, SHAPES_FOR_TRACK)
 from .layouts import (
     GridShape, DotGridShape,
@@ -1042,6 +1042,23 @@ def text(*args, **kwargs):
     _obj = args[0] if args else None
     return TextShape(_object=_obj, canvas=cnv, **kwargs)
 
+
+def Trapezoid(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    trp = trapezoid(row=row, col=col, **kwargs)
+    trp.draw()
+    return trp
+
+
+def trapezoid(row=None, col=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    kwargs['row'] = row
+    kwargs['col'] = col
+    return TrapezoidShape(canvas=cnv, **kwargs)
 
 # ---- grids ====
 

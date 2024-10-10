@@ -448,6 +448,44 @@ class CircleShape(BaseShape):
                     pth.lineTo(diam_pt.x, diam_pt.y)
                 cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
 
+    def draw_petal(self, cnv, ID, x_c: float, y_c: float):
+        """Draw "petals" going outwards from the circumference.
+
+        The offset will start the petals a certain distance away; and the height
+        will determine the size of their peaks. Odd number of petals will have
+        the first one's point aligned with north direction; even number will
+        have the valley aligned with the northern most point of the circle.
+
+        Args:
+            x_c: x-centre of circle
+            y_c: y-centre of circle
+        """
+        if self.petal:
+            center = Point(x_c, y_c)
+            gap = 360 / self.petal
+            shift = gap / 2. if self.petal & 1 else 0
+            offset = self.unit(self.petal_offset, label='petal offset')
+            height = self.unit(self.petal_height, label='petal height')
+            petal_vertices = []
+            for angle in (90 - shift, 450 - shift, gap):
+                angle = angle - 360. if angle > 360. else angle
+                # triangle/curve petal points
+                petal_vertices.append(
+                    geoms.point_on_circle(
+                    center, self._u.radius + offset + height, angle - gap / 2))
+                petal_vertices.append(
+                    geoms.point_on_circle(center, self.radius + offset, angle))
+            # ---- draw and fill
+            pth = cnv.beginPath()
+            pth.moveTo(*self.petal_vertices[0])
+            for vertex in self.petal_vertices:
+                pth.lineTo(*vertex)   # TODO - calculate for arc/curve
+            pth.close()
+            cnv.drawPath(
+                pth,
+                stroke=1 if self.petal_stroke else 0,
+                fill=1 if self.petal_fill else 0)
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw circle on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
@@ -479,6 +517,17 @@ class CircleShape(BaseShape):
             x, y, self._u.radius,
             stroke=1 if self.stroke else 0,
             fill=1 if self.fill else 0)
+        # ---- draw petal
+        if self.petal:
+            if self.rotation:
+                # tools.feedback(f'*** {self.petal=}, {self.rotation=}, {type(cnv)}')
+                cnv.saveState()
+                cnv.translate(self.x_c, self.y_c)
+                self.draw_petal(cnv, ID, self.petal, 0, 0)
+                cnv.rotate(self.rotation)
+                cnv.restoreState()
+            else:
+                self.draw_petal(cnv, ID, self.petal, self.x_c, self.y_c)
         # ---- draw hatch
         if self.hatch:
             if self.rotation:
@@ -1767,7 +1816,7 @@ class PolylineShape(BaseShape):
         return points
 
     def get_vertices(self):
-        """Return polyline vertices in canvasunits
+        """Return polyline vertices in canvas units
         """
         points = self.get_points()
         vertices = [
@@ -2433,6 +2482,8 @@ class RhombusShape(BaseShape):
         cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        # ---- cross
+        self.draw_cross(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- text
         self.draw_heading(cnv, ID, x + self._u.width / 2.0, y + self._u.height, **kwargs)
         self.draw_label(cnv, ID, x + self._u.width / 2.0, y + self._u.height / 2.0, **kwargs)
@@ -2888,7 +2939,7 @@ class StarFieldShape(BaseShape):
         if isinstance(self.enclosure, CircleShape):
             x_c, y_c = self.enclosure.calculate_centre()
         if isinstance(self.enclosure, PolygonShape):
-            x_c, y_c, radius, vertices = self.enclosure.get_vertices()
+            x_c, y_c, radius, vertices = self.enclosure.get_geometry()
         stars = 0
         while stars < self.star_count:
             if isinstance(self.enclosure, RectangleShape):
@@ -3017,6 +3068,119 @@ class TextShape(BaseShape):
             # tools.feedback(f"*** {x_t=} {y_t=} {_text=} {_sequence} {rotation=}")
             cnv.setFillColor(self.stroke)
             self.draw_multi_string(cnv, x_t, y_t, _text, rotation=rotation)
+
+
+class TrapezoidShape(BaseShape):
+    """
+    Trapezoid on a given canvas.
+    """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        """."""
+        super(TrapezoidShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        if self.width2 >= self.width:
+            tools.feedback("The secondary width cannot be longer than the primary!", True)
+        self.delta_width = self._u.width - self._u.width2
+        # overrides to centre shape
+        if self.cx is not None and self.cy is not None:
+            self.x = self.cx - self.width / 2.0
+            self.y = self.cy - self.height / 2.0
+            # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
+        self.kwargs = kwargs
+
+    def calculate_area(self):
+        """Calculate area of trapezoid."""
+        return self._u.width2 * self._u.height + 2.0 * self.delta_width * self._u.height
+    def calculate_perimeter(self, units=False):
+        """Total length of bounding perimeter."""
+        length = 2.0 * math.sqrt(self.delta_width + self._u.height) + self._u.width2 + self._u.width
+        if units:
+            return self.points_to_value(length)
+        else:
+            return length
+
+    def calculate_xy(self, rotation: float = 0):
+        # ---- adjust start
+        if self.use_abs_c:
+            x = self._abs_cx
+            y = self._abs_cy
+        elif self.cx is not None and self.cy is not None:
+            x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
+            y = self._u.cy - self._u.height / 2.0 + self._o.delta_y
+        elif self.use_abs:
+            x = self._abs_x
+            y = self._abs_y
+        else:
+            x = self._u.x + self._o.delta_x
+            y = self._u.y + self._o.delta_y
+        cx = x + self._u.width / 2.0
+        if self.flip.lower() in ['s', 'south']:
+            cy = y - self._u.height / 2.0
+        else:
+            cy = y + self._u.height / 2.0
+        return cx, cy, x, y
+
+    def get_vertices(self, rotation: float = 0, **kwargs):
+        """Calculate vertices of trapezoid."""
+        # set start
+        cx, cy, x, y = self.calculate_xy(rotation)
+        # build array
+        sign = -1 if self.flip.lower() in ['s', 'south'] else 1
+        self.delta_width = self._u.width - self._u.width2
+        vertices = []
+        vertices.append(Point(x, y))
+        vertices.append(Point(
+            x + 0.5 * self.delta_width,
+            y + sign * self._u.height))
+        vertices.append(Point(
+            x + 0.5 * self.delta_width + self._u.width2,
+            y + sign * self._u.height))
+        vertices.append(Point(x + self._u.width, y))
+        return vertices
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw a trapezoid on a given canvas."""
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
+        # ---- handle rotation: START
+        rotation = kwargs.get('rotation', self.rotation)
+        if rotation:
+            # tools.feedback(f'*** IMAGE {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
+            cnv.saveState()
+            # move the canvas origin
+            # reset centre and "bottom left"
+            cx, cy = 0, 0
+            x = -self._u.width / 2.0
+            y = -self._u.height / 2.0
+            if ID is not None:
+                # cnv.translate(cx + self._u.margin_left, cy + self._u.margin_bottom)
+                cnv.translate(cx, cy)
+            else:
+                cnv.translate(cx, cy)
+            cnv.rotate(rotation)
+        # ---- draw trapezoid
+        cx, cy, x, y = self.calculate_xy(rotation)
+        self.vertices = self.get_vertices(rotation)
+        pth = cnv.beginPath()
+        pth.moveTo(*self.vertices[0])
+        for vertex in self.vertices:
+            pth.lineTo(*vertex)
+        pth.close()
+        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
+        # ---- dot
+        self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
+        # ---- text
+        sign = -1 if self.flip.lower() in ['s', 'south'] else 1
+        self.draw_heading(cnv, ID, x + self._u.width / 2.0, y + sign * self._u.height, **kwargs)
+        self.draw_label(cnv, ID, x + self._u.width / 2.0, y + sign * self._u.height / 2.0, **kwargs)
+        self.draw_title(cnv, ID, x + self._u.width / 2.0, y, **kwargs)
+        # ---- handle rotation: END
+        if rotation:
+            cnv.restoreState()
+
+
 
 # ---- Other
 

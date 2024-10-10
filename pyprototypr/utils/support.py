@@ -68,6 +68,33 @@ def letters(start='a', stop='z'):
         for c in range(ord(start), ord(stop) + 1):
             yield chr(c)
     return list(gen())
+    
+    
+def roman(value: int) -> str:
+    """Convert an integer to a Roman number 
+    
+    Source:
+        https://www.geeksforgeeks.org/converting-decimal-number-lying-between-1-to-3999-to-roman-numerals/
+    """
+    try:
+        num = abs(int(value))
+    except Exception:
+        feedback(f'The value "{value}" is not a valid integer', True)
+        return    
+
+    # Store Roman values of digits from 0-9 at different places
+    m = ["", "M", "MM", "MMM"]
+    c = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM "]
+    x = ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"]
+    i = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
+
+    # Converting to Roman
+    thousands = m[num // 1000]
+    hundreds = c[(num % 1000) // 100]
+    tens = x[(num % 100) // 10]
+    ones = i[num % 10]
+    ans = thousands + hundreds + tens + ones
+    return ans
 
 
 def steps(start, end, step=1, REAL=True):

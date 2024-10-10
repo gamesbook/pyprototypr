@@ -78,6 +78,7 @@ UnitProperties = namedtuple(
         'cy',
         'height',
         'width',
+        'width2',
         'radius',
         'diameter',
         'side',
@@ -356,20 +357,14 @@ class BaseCanvas:
         self.margin_bottom = self.defaults.get('margin_bottom', self.margin)
         self.margin_left = self.defaults.get('margin_left', self.margin)
         self.margin_right = self.defaults.get('margin_right', self.margin)
-        # ---- grid cut marks
-        self.grid_marks = self.defaults.get('grid_marks', 0)
-        self.grid_stroke = self.get_color(self.defaults.get('grid_stroke'), grey)
-        self.grid_stroke_width = self.defaults.get('grid_stroke_width', WIDTH)
-        self.grid_length = self.defaults.get('grid_length', 0.85)  # 1/3 inch
-        self.grid_offset = self.defaults.get('grid_offset', 0)
         # ---- sizes and positions
         self.row = self.defaults.get('row', None)
         self.col = self.defaults.get('col', self.defaults.get('column', None))
         self.side = self.defaults.get('side', 1)  # equal length sides
         self.height = self.defaults.get('height', self.side)
         self.width = self.defaults.get('width', self.side)
+        self.width2 = self.defaults.get('width', self.width * 0.5)
         self.depth = self.defaults.get('depth', self.side)  # diamond
-        self.width = self.defaults.get('width', self.side)
         self.x = self.defaults.get('x', self.defaults.get('left', 1))
         self.y = self.defaults.get('y', self.defaults.get('bottom', 1))
         self.cx = self.defaults.get('cx', None)  # NB! not 0; needed for internal check
@@ -392,16 +387,9 @@ class BaseCanvas:
         self.rotation = self.defaults.get('rotation', 0)  # degrees
         self.direction = self.defaults.get('direction', 'north')
         self.position = self.defaults.get('position', None)
-        self.flip = self.defaults.get('flip', 'north')
+        self.flip = self.defaults.get('flip', 'north')  # north/south
         self.elevation = self.defaults.get('elevation', 'horizontal')
         self.facing = self.defaults.get('facing', 'out')  # out/in
-        # ---- line style
-        self.line_stroke = self.defaults.get('line_stroke', WIDTH)
-        self.line_width = self.defaults.get('line_width', WIDTH)
-        self.line_cap = self.defaults.get('line_cap', None)
-        self.line_dots = self.defaults.get(
-            'line_dots', self.defaults.get('dots', False))
-        self.dashes = self.defaults.get('dashes', None)
         # ---- color and transparency
         fill = self.defaults.get('fill', self.defaults.get('fill_color'))
         self.fill = self.get_color(fill, white)
@@ -412,8 +400,8 @@ class BaseCanvas:
         # ---- stroke
         stroke = self.defaults.get('stroke', self.defaults.get('stroke_color'))
         self.stroke = self.get_color(stroke, black)
-        self.outline = self.defaults.get('outline', None)
         self.stroke_width = self.defaults.get('stroke_width', WIDTH)
+        self.outline = self.defaults.get('outline', None)
         # ---- overwrite fill & stroke
         if self.fill_stroke:
             self.stroke = self.fill_stroke
@@ -429,6 +417,19 @@ class BaseCanvas:
         self.wrap = self.defaults.get('wrap', False)
         self.align = self.defaults.get('align', 'centre')  # centre,left,right,justify
         self._alignment = TA_LEFT  # see to_alignment()
+        # ---- grid cut marks
+        self.grid_marks = self.defaults.get('grid_marks', 0)
+        self.grid_stroke = self.get_color(self.defaults.get('grid_stroke'), grey)
+        self.grid_stroke_width = self.defaults.get('grid_stroke_width', WIDTH)
+        self.grid_length = self.defaults.get('grid_length', 0.85)  # 1/3 inch
+        self.grid_offset = self.defaults.get('grid_offset', 0)
+        # ---- line style
+        self.line_stroke = self.defaults.get('line_stroke', WIDTH)
+        self.line_width = self.defaults.get('line_width', WIDTH)
+        self.line_cap = self.defaults.get('line_cap', None)
+        self.line_dots = self.defaults.get(
+            'line_dots', self.defaults.get('dots', False))
+        self.dashes = self.defaults.get('dashes', None)
         # ---- text: base
         self.text = self.defaults.get('text', '')
         self.text_size = self.defaults.get('text_size', self.font_size)
@@ -451,7 +452,8 @@ class BaseCanvas:
         self.title_face = self.defaults.get('title_face', self.font_face)
         self.title_stroke = self.get_color(
             self.defaults.get('title_stroke', self.stroke))
-        self.title_stroke_width = self.defaults.get('title_stroke_width', self.stroke_width)
+        self.title_stroke_width = self.defaults.get(
+            'title_stroke_width', self.stroke_width)
         self.title_dx = self.defaults.get('title_dx', 0)
         self.title_dy = self.defaults.get('title_dy', 0)
         self.title_rotation = self.defaults.get('title_rotation', 0)
@@ -461,7 +463,8 @@ class BaseCanvas:
         self.heading_face = self.defaults.get('heading_face', self.font_face)
         self.heading_stroke = self.get_color(
             self.defaults.get('heading_stroke'), self.stroke)
-        self.heading_stroke_width = self.defaults.get('heading_stroke_width', self.stroke_width)
+        self.heading_stroke_width = self.defaults.get(
+            'heading_stroke_width', self.stroke_width)
         self.heading_dx = self.defaults.get('heading_dx', 0)
         self.heading_dy = self.defaults.get('heading_dy', 0)
         self.heading_rotation = self.defaults.get('heading_rotation', 0)
@@ -539,11 +542,22 @@ class BaseCanvas:
         self.radii_cap = self.defaults.get('radii_cap', None)
         self.radii_line_dots = self.defaults.get('radii_line_dots', self.line_dots)
         self.radii_dashes = self.defaults.get('radii_dashes', self.dashes)
+        # ---- circle
+        self.petal = self.defaults.get('petal', 0)
+        self.petal_style = self.defaults.get('petal_style', 'triangle')
+        self.petal_height = self.defaults.get('petal_height', 1)
+        self.petal_offset = self.defaults.get('petal_offset', 0)
+        self.petal_stroke = self.defaults.get('petal_stroke', self.stroke)
+        self.petal_stroke_width = self.defaults.get('petal_stroke_width', WIDTH)
+        self.petal_fill = self.defaults.get('petal_fill', self.fill)
+        self.petal_line_dots = self.defaults.get('petal_line_dots', self.line_dots)
+        self.petal_dashes = self.defaults.get('petal_dashes', self.dashes)
         # ---- compass
         self.perimeter = self.defaults.get('perimeter', 'circle')
         self.directions = self.defaults.get('directions', None)
-        # ---- triangle
+        # ---- triangle / trapezoid
         self.flip = self.defaults.get('flip', 'north')
+        # ---- triangle
         self.hand = self.defaults.get('hand', 'east')
         # ---- hexagon / circle
         self.centre_shape = self.defaults.get('centre_shape', '')
@@ -665,6 +679,7 @@ class BaseShape:
         self.margin_bottom = self.kw_float(kwargs.get('margin_bottom', cnv.margin_bottom))
         self.margin_left = self.kw_float(kwargs.get('margin_left', cnv.margin_left))
         self.margin_right = self.kw_float(kwargs.get('margin_right', cnv.margin_right))
+        # ---- grid marks
         self.grid_marks = self.kw_float(kwargs.get('grid_marks', cnv.grid_marks))
         self.grid_stroke = kwargs.get('grid_stroke', cnv.grid_stroke)
         self.grid_stroke_width = self.kw_float(kwargs.get('grid_stroke_width', cnv.grid_stroke_width))
@@ -677,6 +692,7 @@ class BaseShape:
         self.side = self.kw_float(kwargs.get('side', cnv.side))  # equal length sides
         self.height = self.kw_float(kwargs.get('height', self.side))
         self.width = self.kw_float(kwargs.get('width', self.side))
+        self.width2 = self.kw_float(kwargs.get('width2', cnv.width2))
         self.depth = self.kw_float(kwargs.get('depth', self.side))  # diamond
         self.x = self.kw_float(kwargs.get('x', kwargs.get('left', cnv.x)))
         self.y = self.kw_float(kwargs.get('y', kwargs.get('bottom', cnv.y)))
@@ -833,17 +849,33 @@ class BaseShape:
         # ---- circle / hexagon / polygon
         self.radii = kwargs.get('radii', cnv.radii)
         self.radii_stroke = kwargs.get('radii_stroke', cnv.radii_stroke)
-        self.radii_stroke_width = self.kw_float(kwargs.get('radii_stroke_width', cnv.radii_stroke_width))
+        self.radii_stroke_width = self.kw_float(
+            kwargs.get('radii_stroke_width', cnv.radii_stroke_width))
         self.radii_length = self.kw_float(kwargs.get('radii_length', cnv.radii_length))
         self.radii_offset = self.kw_float(kwargs.get('radii_offset', cnv.radii_offset))
         self.radii_cap = kwargs.get('radii_cap', cnv.radii_cap)
         self.radii_line_dots = kwargs.get('radii_line_dots', cnv.line_dots)
         self.radii_dashes = kwargs.get('radii_dashes', cnv.dashes)
+        # ---- circle
+        self.petal = self.kw_int(kwargs.get('petal', cnv.petal))
+        self.petal_style = kwargs.get('petal_style', cnv.petal_style)
+        self.petal_height = self.kw_float(
+            kwargs.get('petal_height', cnv.petal_height))
+        self.petal_offset = self.kw_float(
+            kwargs.get('petal_offset', cnv.petal_offset))
+        self.petal_stroke = kwargs.get('petal_stroke', cnv.petal_stroke)
+        self.petal_stroke_width = self.kw_float(
+            kwargs.get('petal_stroke_width', cnv.petal_stroke_width))
+        self.petal_fill = kwargs.get('petal_fill', cnv.petal_fill)
+        self.petal_line_dots = kwargs.get(
+            'petal_line_dots', cnv.petal_line_dots)
+        self.petal_dashes = kwargs.get('petal_dashes', cnv.petal_dashes)
         # ---- compass
         self.perimeter = kwargs.get('perimeter', 'circle')  # circle|rectangle|hexagon
         self.directions = kwargs.get('directions', None)
-        # ---- triangle
+        # ---- triangle / trapezoid
         self.flip = kwargs.get('flip', 'north')
+        # ---- triangle
         self.hand = kwargs.get('hand', 'east')
         # ---- hexagon / circle / polygon
         self.centre_shape = kwargs.get('centre_shape', '')
@@ -975,6 +1007,8 @@ class BaseShape:
             self.height = self.side  # square
         if self.diameter and not self.radius:
             self.radius = self.diameter / 2.0
+        if self.width and not self.width2:
+            self.width2 = 0.5 * self.width
 
         self._u = UnitProperties(
             self.paper[0],  # width, in points
@@ -989,10 +1023,12 @@ class BaseShape:
             self.unit(self.cy) if self.cy is not None else None,
             self.unit(self.height) if self.height is not None else None,
             self.unit(self.width) if self.width is not None else None,
+            self.unit(self.width2) if self.width2 is not None else None,
             self.unit(self.radius) if self.radius is not None else None,
             self.unit(self.diameter) if self.diameter is not None else None,
             self.unit(self.side) if self.side is not None else None,
             self.unit(self.length) if self.length is not None else None)
+
 
     def set_offset_props(self, off_x=0, off_y=0):
         """Get OffsetProperties for a Shape."""
@@ -1080,7 +1116,7 @@ class BaseShape:
             _stwd = ext(stroke_width) or ext(self.stroke_width)
             canvas.setLineWidth(_stwd)
         except TypeError:
-            tools.feedback('Please check the stroke_width setting of "{_stwd}"; it should be a number.')
+            tools.feedback(f'Please check the stroke_width setting of "{_stwd}"; it should be a number.')
         except AttributeError:
             pass
         # ---- line cap
@@ -1180,6 +1216,11 @@ class BaseShape:
             if str(self.position).lower() not in \
                     ['top', 'bottom', 'center', 'middle',  't', 'b', 'c', 'm', ]:
                 issue.append(f'"{self.position}" is an invalid position!')
+                correct = False
+        if self.petal_style:
+            if str(self.petal_style).lower() not in \
+                    ['triangle', 'curve', 'rectangle', 't', 'c', 'r']:
+                issue.append(f'"{self.petal_style}" is an invalid petal style!')
                 correct = False
         # ---- hexagons
         if self.coord_style:
