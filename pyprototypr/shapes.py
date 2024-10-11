@@ -289,7 +289,7 @@ class CircleShape(BaseShape):
     def calculate_area(self):
         return math.pi * self._u.radius * self._u.radius
 
-    def calculate_perimeter(self, units=False):
+    def calculate_perimeter(self, units: bool = False):
         """Total length of bounding line (circumference)."""
         length = math.pi * 2.0 * self._u.radius
         if units:
@@ -448,7 +448,7 @@ class CircleShape(BaseShape):
                     pth.lineTo(diam_pt.x, diam_pt.y)
                 cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
 
-    def draw_petal(self, cnv, ID, x_c: float, y_c: float):
+    def draw_petals(self, cnv, ID, x_c: float, y_c: float):
         """Draw "petals" going outwards from the circumference.
 
         The offset will start the petals a certain distance away; and the height
@@ -460,31 +460,31 @@ class CircleShape(BaseShape):
             x_c: x-centre of circle
             y_c: y-centre of circle
         """
-        if self.petal:
+        if self.petals:
             center = Point(x_c, y_c)
-            gap = 360 / self.petal
-            shift = gap / 2. if self.petal & 1 else 0
-            offset = self.unit(self.petal_offset, label='petal offset')
-            height = self.unit(self.petal_height, label='petal height')
-            petal_vertices = []
+            gap = 360 / self.petals
+            shift = gap / 2. if self.petals & 1 else 0
+            offset = self.unit(self.petals_offset, label='petals offset')
+            height = self.unit(self.petals_height, label='petals height')
+            petals_vertices = []
             for angle in (90 - shift, 450 - shift, gap):
                 angle = angle - 360. if angle > 360. else angle
-                # triangle/curve petal points
-                petal_vertices.append(
+                # triangle/curve petals points
+                petals_vertices.append(
                     geoms.point_on_circle(
                     center, self._u.radius + offset + height, angle - gap / 2))
-                petal_vertices.append(
+                petals_vertices.append(
                     geoms.point_on_circle(center, self.radius + offset, angle))
             # ---- draw and fill
             pth = cnv.beginPath()
-            pth.moveTo(*self.petal_vertices[0])
-            for vertex in self.petal_vertices:
+            pth.moveTo(*petals_vertices[0])
+            for vertex in petals_vertices:
                 pth.lineTo(*vertex)   # TODO - calculate for arc/curve
             pth.close()
             cnv.drawPath(
                 pth,
-                stroke=1 if self.petal_stroke else 0,
-                fill=1 if self.petal_fill else 0)
+                stroke=1 if self.petals_stroke else 0,
+                fill=1 if self.petals_fill else 0)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw circle on a given canvas."""
@@ -517,17 +517,17 @@ class CircleShape(BaseShape):
             x, y, self._u.radius,
             stroke=1 if self.stroke else 0,
             fill=1 if self.fill else 0)
-        # ---- draw petal
-        if self.petal:
+        # ---- draw petals
+        if self.petals:
             if self.rotation:
-                # tools.feedback(f'*** {self.petal=}, {self.rotation=}, {type(cnv)}')
+                # tools.feedback(f'*** {self.petals=}, {self.rotation=}, {type(cnv)}')
                 cnv.saveState()
                 cnv.translate(self.x_c, self.y_c)
-                self.draw_petal(cnv, ID, self.petal, 0, 0)
+                self.draw_petals(cnv, ID, 0, 0)
                 cnv.rotate(self.rotation)
                 cnv.restoreState()
             else:
-                self.draw_petal(cnv, ID, self.petal, self.x_c, self.y_c)
+                self.draw_petals(cnv, ID, self.x_c, self.y_c)
         # ---- draw hatch
         if self.hatch:
             if self.rotation:
@@ -1864,7 +1864,7 @@ class RectangleShape(BaseShape):
     def calculate_area(self):
         return self._u.width * self._u.height
 
-    def calculate_perimeter(self, units=False):
+    def calculate_perimeter(self, units: bool = False):
         """Total length of bounding perimeter."""
         length = 2.0 * (self._u.width + self._u.height)
         if units:
@@ -2670,7 +2670,7 @@ class SquareShape(RectangleShape):
     def calculate_area(self):
         return self._u.width * self._u.height
 
-    def calculate_perimeter(self, units=False):
+    def calculate_perimeter(self, units: bool = False):
         """Total length of bounding line."""
         length = 2.0 * (self._u.width + self._u.height)
         if units:
@@ -3079,27 +3079,29 @@ class TrapezoidShape(BaseShape):
         """."""
         super(TrapezoidShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         if self.width2 >= self.width:
-            tools.feedback("The secondary width cannot be longer than the primary!", True)
+            tools.feedback(
+                "The secondary width cannot be longer than the primary!", True)
         self.delta_width = self._u.width - self._u.width2
         # overrides to centre shape
         if self.cx is not None and self.cy is not None:
             self.x = self.cx - self.width / 2.0
             self.y = self.cy - self.height / 2.0
-            # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
         self.kwargs = kwargs
 
     def calculate_area(self):
         """Calculate area of trapezoid."""
         return self._u.width2 * self._u.height + 2.0 * self.delta_width * self._u.height
-    def calculate_perimeter(self, units=False):
+
+    def calculate_perimeter(self, units: bool = False):
         """Total length of bounding perimeter."""
-        length = 2.0 * math.sqrt(self.delta_width + self._u.height) + self._u.width2 + self._u.width
+        length = 2.0 * math.sqrt(self.delta_width + self._u.height) + \
+            self._u.width2 + self._u.width
         if units:
             return self.points_to_value(length)
         else:
             return length
 
-    def calculate_xy(self, rotation: float = 0):
+    def calculate_xy(self):
         # ---- adjust start
         if self.use_abs_c:
             x = self._abs_cx
@@ -3120,10 +3122,14 @@ class TrapezoidShape(BaseShape):
             cy = y + self._u.height / 2.0
         return cx, cy, x, y
 
-    def get_vertices(self, rotation: float = 0, **kwargs):
+    def get_vertices(self, **kwargs):
         """Calculate vertices of trapezoid."""
         # set start
-        cx, cy, x, y = self.calculate_xy(rotation)
+        _cx, _cy, _x, _y = self.calculate_xy()  # for direct call without draw()
+        cx = kwargs.get('cx', _cx)
+        cy = kwargs.get('cy', _cy)
+        x = kwargs.get('x', _x)
+        y = kwargs.get('y', _y)
         # build array
         sign = -1 if self.flip.lower() in ['s', 'south'] else 1
         self.delta_width = self._u.width - self._u.width2
@@ -3144,16 +3150,17 @@ class TrapezoidShape(BaseShape):
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # ---- set canvas
         self.set_canvas_props(index=ID)
+        cx, cy, x, y = self.calculate_xy()
         # ---- handle rotation: START
         rotation = kwargs.get('rotation', self.rotation)
         if rotation:
-            # tools.feedback(f'*** IMAGE {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
+            # tools.feedback(f'*** TRAP {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
             cnv.saveState()
-            # move the canvas origin
             # reset centre and "bottom left"
             cx, cy = 0, 0
             x = -self._u.width / 2.0
             y = -self._u.height / 2.0
+            # move the canvas origin
             if ID is not None:
                 # cnv.translate(cx + self._u.margin_left, cy + self._u.margin_bottom)
                 cnv.translate(cx, cy)
@@ -3161,8 +3168,7 @@ class TrapezoidShape(BaseShape):
                 cnv.translate(cx, cy)
             cnv.rotate(rotation)
         # ---- draw trapezoid
-        cx, cy, x, y = self.calculate_xy(rotation)
-        self.vertices = self.get_vertices(rotation)
+        self.vertices = self.get_vertices(cx=cx, cy=cy, x=x, y=y)  # self.get_vertices()  #
         pth = cnv.beginPath()
         pth.moveTo(*self.vertices[0])
         for vertex in self.vertices:
@@ -3179,8 +3185,6 @@ class TrapezoidShape(BaseShape):
         # ---- handle rotation: END
         if rotation:
             cnv.restoreState()
-
-
 
 # ---- Other
 

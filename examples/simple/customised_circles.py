@@ -61,11 +61,11 @@ PageBreak()
 # ---- circle petals
 Blueprint()
 Text(common=txt, text="Circle: petals")
-Circle(x=0, y=0, radius=2,
+Circle(cx=2, cy=1.5, radius=1,
        petals=12,
        petals_stroke_width=1,
        petals_height=0.5)
-Circle(x=3, y=3, radius=2,
+Circle(cx=2, cy=4.5, radius=1,
        fill=None,
        petals=8,
        petals_stroke_width=3,

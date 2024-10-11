@@ -543,15 +543,15 @@ class BaseCanvas:
         self.radii_line_dots = self.defaults.get('radii_line_dots', self.line_dots)
         self.radii_dashes = self.defaults.get('radii_dashes', self.dashes)
         # ---- circle
-        self.petal = self.defaults.get('petal', 0)
-        self.petal_style = self.defaults.get('petal_style', 'triangle')
-        self.petal_height = self.defaults.get('petal_height', 1)
-        self.petal_offset = self.defaults.get('petal_offset', 0)
-        self.petal_stroke = self.defaults.get('petal_stroke', self.stroke)
-        self.petal_stroke_width = self.defaults.get('petal_stroke_width', WIDTH)
-        self.petal_fill = self.defaults.get('petal_fill', self.fill)
-        self.petal_line_dots = self.defaults.get('petal_line_dots', self.line_dots)
-        self.petal_dashes = self.defaults.get('petal_dashes', self.dashes)
+        self.petals = self.defaults.get('petals', 0)
+        self.petals_style = self.defaults.get('petals_style', 'triangle')
+        self.petals_height = self.defaults.get('petals_height', 1)
+        self.petals_offset = self.defaults.get('petals_offset', 0)
+        self.petals_stroke = self.defaults.get('petals_stroke', self.stroke)
+        self.petals_stroke_width = self.defaults.get('petals_stroke_width', WIDTH)
+        self.petals_fill = self.defaults.get('petals_fill', self.fill)
+        self.petals_line_dots = self.defaults.get('petals_line_dots', self.line_dots)
+        self.petals_dashes = self.defaults.get('petals_dashes', self.dashes)
         # ---- compass
         self.perimeter = self.defaults.get('perimeter', 'circle')
         self.directions = self.defaults.get('directions', None)
@@ -857,19 +857,19 @@ class BaseShape:
         self.radii_line_dots = kwargs.get('radii_line_dots', cnv.line_dots)
         self.radii_dashes = kwargs.get('radii_dashes', cnv.dashes)
         # ---- circle
-        self.petal = self.kw_int(kwargs.get('petal', cnv.petal))
-        self.petal_style = kwargs.get('petal_style', cnv.petal_style)
-        self.petal_height = self.kw_float(
-            kwargs.get('petal_height', cnv.petal_height))
-        self.petal_offset = self.kw_float(
-            kwargs.get('petal_offset', cnv.petal_offset))
-        self.petal_stroke = kwargs.get('petal_stroke', cnv.petal_stroke)
-        self.petal_stroke_width = self.kw_float(
-            kwargs.get('petal_stroke_width', cnv.petal_stroke_width))
-        self.petal_fill = kwargs.get('petal_fill', cnv.petal_fill)
-        self.petal_line_dots = kwargs.get(
-            'petal_line_dots', cnv.petal_line_dots)
-        self.petal_dashes = kwargs.get('petal_dashes', cnv.petal_dashes)
+        self.petals = self.kw_int(kwargs.get('petals', cnv.petals))
+        self.petals_style = kwargs.get('petals_style', cnv.petals_style)
+        self.petals_height = self.kw_float(
+            kwargs.get('petals_height', cnv.petals_height))
+        self.petals_offset = self.kw_float(
+            kwargs.get('petals_offset', cnv.petals_offset))
+        self.petals_stroke = kwargs.get('petals_stroke', cnv.petals_stroke)
+        self.petals_stroke_width = self.kw_float(
+            kwargs.get('petals_stroke_width', cnv.petals_stroke_width))
+        self.petals_fill = kwargs.get('petals_fill', cnv.petals_fill)
+        self.petals_line_dots = kwargs.get(
+            'petals_line_dots', cnv.petals_line_dots)
+        self.petals_dashes = kwargs.get('petals_dashes', cnv.petals_dashes)
         # ---- compass
         self.perimeter = kwargs.get('perimeter', 'circle')  # circle|rectangle|hexagon
         self.directions = kwargs.get('directions', None)
@@ -1217,10 +1217,10 @@ class BaseShape:
                     ['top', 'bottom', 'center', 'middle',  't', 'b', 'c', 'm', ]:
                 issue.append(f'"{self.position}" is an invalid position!')
                 correct = False
-        if self.petal_style:
-            if str(self.petal_style).lower() not in \
+        if self.petals_style:
+            if str(self.petals_style).lower() not in \
                     ['triangle', 'curve', 'rectangle', 't', 'c', 'r']:
-                issue.append(f'"{self.petal_style}" is an invalid petal style!')
+                issue.append(f'"{self.petals_style}" is an invalid petals style!')
                 correct = False
         # ---- hexagons
         if self.coord_style:
