@@ -549,7 +549,7 @@ class BaseCanvas:
         self.petals_offset = self.defaults.get('petals_offset', 0)
         self.petals_stroke = self.defaults.get('petals_stroke', self.stroke)
         self.petals_stroke_width = self.defaults.get('petals_stroke_width', WIDTH)
-        self.petals_fill = self.defaults.get('petals_fill', self.fill)
+        self.petals_fill = self.defaults.get('petals_fill', None)
         self.petals_line_dots = self.defaults.get('petals_line_dots', self.line_dots)
         self.petals_dashes = self.defaults.get('petals_dashes', self.dashes)
         # ---- compass

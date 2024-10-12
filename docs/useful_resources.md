@@ -6,9 +6,10 @@
 ## Free Icons and Images
 
 * https://openclipart.org/
+* https://www.svgrepo.com/
+* https://game-icons.net/
 
-
-## SVG Images
+## Card Images
 
 * Playing Cards - the section has a table showing a number of symbols linked
   to image files: https://en.wikipedia.org/wiki/Playing_card#Modern_formats

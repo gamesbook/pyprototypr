@@ -18,7 +18,7 @@ from reportlab.lib.pagesizes import (
 
 # local
 from pyprototypr.utils.geoms import Point, Link, Location  # named tuples
-from pyprototypr.utils import geoms, tools
+from pyprototypr.utils import geoms, tools, support
 from pyprototypr.base import (
     BaseShape, BaseCanvas, GridShape, UNITS, COLORS, PAGES, DEBUG_COLOR)
 
@@ -453,8 +453,8 @@ class CircleShape(BaseShape):
 
         The offset will start the petals a certain distance away; and the height
         will determine the size of their peaks. Odd number of petals will have
-        the first one's point aligned with north direction; even number will
-        have the valley aligned with the northern most point of the circle.
+        the first one's point aligned with north direction; an even number will
+        have the "valley" aligned with the northern most point of the circle.
 
         Args:
             x_c: x-centre of circle
@@ -462,20 +462,30 @@ class CircleShape(BaseShape):
         """
         if self.petals:
             center = Point(x_c, y_c)
-            gap = 360 / self.petals
+            gap = 360. / self.petals
             shift = gap / 2. if self.petals & 1 else 0
             offset = self.unit(self.petals_offset, label='petals offset')
             height = self.unit(self.petals_height, label='petals height')
             petals_vertices = []
-            for angle in (90 - shift, 450 - shift, gap):
+            # ---- calculate points
+            angles = support.steps(90 - shift, 450 - shift, gap)
+            for angle in angles:
+                print(f'{angle=} {gap=} {shift=} ')
                 angle = angle - 360. if angle > 360. else angle
                 # triangle/curve petals points
                 petals_vertices.append(
                     geoms.point_on_circle(
-                    center, self._u.radius + offset + height, angle - gap / 2))
+                        center, self._u.radius + offset + height, angle - gap / 2.))
                 petals_vertices.append(
-                    geoms.point_on_circle(center, self.radius + offset, angle))
+                    geoms.point_on_circle(center, self._u.radius + offset, angle))
             # ---- draw and fill
+            self.set_canvas_props(
+                index=ID,
+                fill=self.petals_fill,
+                stroke=self.petals_stroke,
+                stroke_width=self.petals_stroke_width,
+                dashes=self.petals_dashes,
+                line_dots=self.petals_line_dots)
             pth = cnv.beginPath()
             pth.moveTo(*petals_vertices[0])
             for vertex in petals_vertices:
@@ -492,10 +502,8 @@ class CircleShape(BaseShape):
         # tools.feedback(f"*** Circle: {self._o.delta_x=} {self._o.delta_y=}")
         cnv = cnv.canvas if cnv else self.canvas.canvas
         # ---- set centre & area
-        x, y = self.calculate_centre()
+        x, y = self.calculate_centre()  # self.x_c, self.y_c
         self.area = self.calculate_area()
-        # ---- set canvas
-        self.set_canvas_props(index=ID)
         # ---- handle rotation: START
         is_rotated = False
         rotation = kwargs.get('rotation', self.rotation)
@@ -511,12 +519,6 @@ class CircleShape(BaseShape):
             cnv.rotate(rotation)
             x, y = 0, 0
             self.x_c, self.y_c = 0, 0
-        # ---- draw circle
-        # tools.feedback(f'*** Circle: {x=} {y=}')
-        cnv.circle(
-            x, y, self._u.radius,
-            stroke=1 if self.stroke else 0,
-            fill=1 if self.fill else 0)
         # ---- draw petals
         if self.petals:
             if self.rotation:
@@ -528,6 +530,14 @@ class CircleShape(BaseShape):
                 cnv.restoreState()
             else:
                 self.draw_petals(cnv, ID, self.x_c, self.y_c)
+        # tools.feedback(f'*** Circle: {x=} {y=}')
+        # ---- set canvas
+        self.set_canvas_props(index=ID)
+        # ---- draw circle
+        cnv.circle(
+            x, y, self._u.radius,
+            stroke=1 if self.stroke else 0,
+            fill=1 if self.fill else 0)
         # ---- draw hatch
         if self.hatch:
             if self.rotation:

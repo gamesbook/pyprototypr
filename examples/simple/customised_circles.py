@@ -60,15 +60,20 @@ PageBreak()
 
 # ---- circle petals
 Blueprint()
-Text(common=txt, text="Circle: petals")
+Text(common=txt, text="Circle: petals (triangular)")
 Circle(cx=2, cy=1.5, radius=1,
-       petals=12,
-       petals_stroke_width=1,
-       petals_height=0.5)
+        petals=11,
+        petals_offset=0.25,
+        petals_stroke_width=1,
+        petals_line_dots=1,
+        petals_height=0.25,
+        petals_fill=grey)
 Circle(cx=2, cy=4.5, radius=1,
        fill=None,
+       stroke=None,
        petals=8,
        petals_stroke_width=3,
+       petals_height=0.25,
        petals_stroke=red,
        petals_fill=yellow)
 
