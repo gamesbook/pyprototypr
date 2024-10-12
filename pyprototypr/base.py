@@ -443,8 +443,8 @@ class BaseCanvas:
         self.label_stroke = self.get_color(
             self.defaults.get('label_stroke'), self.stroke)
         self.label_stroke_width = self.defaults.get('label_stroke_width', self.stroke_width)
-        self.label_dx = self.defaults.get('label_dx', 0)
-        self.label_dy = self.defaults.get('label_dy', 0)
+        self.label_mx = self.defaults.get('label_mx', 0)
+        self.label_my = self.defaults.get('label_my', 0)
         self.label_rotation = self.defaults.get('label_rotation', 0)
         # ---- text: title
         self.title = self.defaults.get('title', '')
@@ -454,8 +454,8 @@ class BaseCanvas:
             self.defaults.get('title_stroke', self.stroke))
         self.title_stroke_width = self.defaults.get(
             'title_stroke_width', self.stroke_width)
-        self.title_dx = self.defaults.get('title_dx', 0)
-        self.title_dy = self.defaults.get('title_dy', 0)
+        self.title_mx = self.defaults.get('title_mx', 0)
+        self.title_my = self.defaults.get('title_my', 0)
         self.title_rotation = self.defaults.get('title_rotation', 0)
         # ---- text: heading
         self.heading = self.defaults.get('heading', '')
@@ -465,8 +465,8 @@ class BaseCanvas:
             self.defaults.get('heading_stroke'), self.stroke)
         self.heading_stroke_width = self.defaults.get(
             'heading_stroke_width', self.stroke_width)
-        self.heading_dx = self.defaults.get('heading_dx', 0)
-        self.heading_dy = self.defaults.get('heading_dy', 0)
+        self.heading_mx = self.defaults.get('heading_mx', 0)
+        self.heading_my = self.defaults.get('heading_my', 0)
         self.heading_rotation = self.defaults.get('heading_rotation', 0)
         # ---- text block
         self.outline_stroke = self.defaults.get('outline_stroke', self.fill)
@@ -761,8 +761,8 @@ class BaseShape:
         self.label_face = kwargs.get('label_face', self.font_face)
         self.label_stroke = kwargs.get('label_stroke', self.stroke)
         self.label_stroke_width = self.kw_float(kwargs.get('label_stroke_width', self.stroke_width))
-        self.label_dx = self.kw_float(kwargs.get('label_dx', 0))
-        self.label_dy = self.kw_float(kwargs.get('label_dy', 0))
+        self.label_mx = self.kw_float(kwargs.get('label_mx', 0))
+        self.label_my = self.kw_float(kwargs.get('label_my', 0))
         self.label_rotation = self.kw_float(kwargs.get('label_rotation', 0))
         # ---- text: title
         self.title = kwargs.get('title', cnv.title)
@@ -770,8 +770,8 @@ class BaseShape:
         self.title_face = kwargs.get('title_face', self.font_face)
         self.title_stroke = kwargs.get('title_stroke', self.stroke)
         self.title_stroke_width = self.kw_float(kwargs.get('title_stroke_width', self.stroke_width))
-        self.title_dx = self.kw_float(kwargs.get('title_dx', 0))
-        self.title_dy = self.kw_float(kwargs.get('title_dy', 0))
+        self.title_mx = self.kw_float(kwargs.get('title_mx', 0))
+        self.title_my = self.kw_float(kwargs.get('title_my', 0))
         self.title_rotation = self.kw_float(kwargs.get('title_rotation', 0))
         # ---- text: heading
         self.heading = kwargs.get('heading', cnv.heading)
@@ -779,8 +779,8 @@ class BaseShape:
         self.heading_face = kwargs.get('heading_face', self.font_face)
         self.heading_stroke = kwargs.get('heading_stroke', self.stroke)
         self.heading_stroke_width = self.kw_float(kwargs.get('heading_stroke_width', self.stroke_width))
-        self.heading_dx = self.kw_float(kwargs.get('heading_dx', 0))
-        self.heading_dy = self.kw_float(kwargs.get('heading_dy', 0))
+        self.heading_mx = self.kw_float(kwargs.get('heading_mx', 0))
+        self.heading_my = self.kw_float(kwargs.get('heading_my', 0))
         self.heading_rotation = self.kw_float(kwargs.get('heading_rotation', 0))
         # ---- text block
         self.outline_stroke = kwargs.get('outline_stroke', cnv.outline_stroke)
@@ -1519,8 +1519,8 @@ class BaseShape:
         _rotation = rotation or self.heading_rotation
         if ttext:
             y_off = y_offset or self.title_size / 2.0
-            y = y + self.unit(self.heading_dy)
-            x = x + self.unit(self.heading_dx)
+            y = y + self.unit(self.heading_my)
+            x = x + self.unit(self.heading_mx)
             canvas.setFont(self.font_face, self.heading_size)
             canvas.setFillColor(self.heading_stroke)
             self.draw_multi_string(
@@ -1535,8 +1535,8 @@ class BaseShape:
         _rotation = rotation or self.label_rotation
         if ttext:
             y = y - (self.label_size / 3.0) if centred else y
-            y = y + self.unit(self.label_dy)
-            x = x + self.unit(self.label_dx)
+            y = y + self.unit(self.label_my)
+            x = x + self.unit(self.label_mx)
             canvas.setFont(self.font_face, self.label_size)
             canvas.setFillColor(self.label_stroke)
             self.draw_multi_string(
@@ -1551,8 +1551,8 @@ class BaseShape:
         _rotation = rotation or self.title_rotation
         if ttext:
             y_off = y_offset or self.title_size
-            y = y + self.unit(self.title_dy)
-            x = x + self.unit(self.title_dx)
+            y = y + self.unit(self.title_my)
+            x = x + self.unit(self.title_mx)
             canvas.setFont(self.font_face, self.title_size)
             canvas.setFillColor(self.title_stroke)
             self.draw_multi_string(

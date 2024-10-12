@@ -48,7 +48,7 @@ def the_clock(x=3, y=3.5, hours=12, minutes=0, gmt=0, label="PROTO", numbers=Tru
     hours = hours if hours <= 12 else hours - 12
     # basic clock frame
     Circle(cx=x, cy=y, radius=2.5, fill=face, stroke_width=6,
-           label_size=7, label_dy=1, label=label.upper())
+           label_size=7, label_my=1, label=label.upper())
     # minutes
     Circle(cx=x, cy=y, radius=2.3, radii=steps(0,360,6), stroke=face, fill=None,
            radii_length=0.15, radii_offset=2.2, radii_stroke_width=0.5)

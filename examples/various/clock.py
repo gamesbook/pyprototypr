@@ -21,7 +21,7 @@ Text(common=header, text="Basic Clock")
 
 # basic clock frame
 Circle(cx=3, cy=4.5, radius=2.5, stroke_width=6,
-       label_size=6, label_dy=1, label="PROTO")
+       label_size=6, label_my=1, label="PROTO")
 # minutes
 Circle(cx=3, cy=4.5, radius=2.3, radii=steps(0,360,6), stroke=white, fill=None,
        radii_length=0.15, radii_offset=2.2, radii_stroke_width=0.5)
