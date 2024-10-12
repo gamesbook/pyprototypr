@@ -43,7 +43,8 @@ Circle(x=0, y=0, radius=2,
        radii=[45,135,225,315],
        radii_stroke_width=1,
        radii_dotted=1,
-       radii_length=1.5)
+       radii_offset=0.5,
+       radii_length=1.25)
 Circle(x=0, y=0, radius=2,
        fill=None,
        radii=[0,90,180,270],
@@ -61,7 +62,7 @@ PageBreak()
 
 # ---- circle petals
 Blueprint()
-Text(common=txt, text="Circle: petals (triangular)")
+Text(common=txt, text="Circle: petals; triangle style")
 Circle(cx=2, cy=1.5, radius=1,
         petals=11,
         petals_offset=0.25,
@@ -70,12 +71,58 @@ Circle(cx=2, cy=1.5, radius=1,
         petals_height=0.25,
         petals_fill=grey)
 Circle(cx=2, cy=4.5, radius=1,
-       outline=None,
+       stroke=None,
+       fill=None,
        petals=8,
        petals_stroke_width=3,
        petals_height=0.25,
        petals_stroke=red,
        petals_fill=yellow)
+PageBreak()
+
+# ---- circle petals
+Blueprint()
+Text(common=txt, text="Circle: petals; curve style")
+Circle(cx=2, cy=1.5, radius=1,
+        petals=11,
+        petals_style="curve",
+        petals_offset=0.25,
+        petals_stroke_width=1,
+        petals_dotted=1,
+        petals_height=0.5,
+        petals_fill=grey)
+Circle(cx=2, cy=4.5, radius=1,
+       stroke=None,
+       fill=None,
+       petals=8,
+       petals_style="c",
+       petals_stroke_width=3,
+       petals_height=0.5,
+       petals_stroke=red,
+       petals_fill=yellow)
+PageBreak()
+
+# ---- circle petals
+Blueprint()
+Text(common=txt, text="Circle: petals; petal style")
+Circle(cx=2, cy=1.5, radius=1,
+        petals=11,
+        petals_style="petal",
+        petals_offset=0.25,
+        petals_stroke_width=1,
+        petals_dotted=1,
+        petals_height=0.25,
+        petals_fill=grey)
+Circle(cx=2, cy=4.5, radius=1,
+       stroke=None,
+       fill=None,
+       petals=8,
+       petals_style="p",
+       petals_stroke_width=3,
+       petals_height=0.25,
+       petals_stroke=red,
+       petals_fill=yellow)
+
 
 Save()
 # Save(output='png', dpi=600)

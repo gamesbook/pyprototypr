@@ -63,10 +63,30 @@ def degrees_to_xy(degrees: float, radius: float, origin: Point) -> Point:
 
     Args:
         * degrees: normal angle (NOT radians)
+
+    Doc test
+    >>> R = degrees_to_xy(300, 5, Point(0,0))
+    >>> assert round(R.x, 2) == 2.5
+    >>> assert round(R.y, 2) == -4.33
+    >>> R = degrees_to_xy(210, 5, Point(0,0))
+    >>> assert round(R.x, 2) == -4.33
+    >>> assert round(R.y, 2) == -2.5
+    >>> R = degrees_to_xy(120, 5, Point(0,0))
+    >>> assert round(R.x, 2) == -2.5
+    >>> assert round(R.y, 2) == 4.33
+    >>> R = degrees_to_xy(30, 5, Point(0,0))
+    >>> assert round(R.x, 2) == 4.33
+    >>> assert round(R.y, 2) == 2.5
+
+    >>> R = degrees_to_xy(120, 19, Point(85,113))
+    >>> assert round(R.x, 2) == 75.5
+    >>> assert round(R.y, 2) == 129.45
     """
+    #print(f'+++ degrees_to_xy :: {degrees=}, {radius=}, {origin=}')
     radians = float(degrees) * math.pi / 180.0
     x_o = math.cos(radians) * radius + origin.x
-    y_o = math.sin(-radians) * radius + origin.y
+    y_o = math.sin(radians) * radius + origin.y
+    #print('+++ +++', Point(x_o, y_o))
     return Point(x_o, y_o)
 
 
@@ -116,6 +136,9 @@ def length_of_line(start: Point, end: Point) -> float:
 
 def point_on_line(point_start: Point, point_end: Point, distance: float) -> Point:
     """Calculate new Point at a distance along a line defined by its end Points
+
+    Doc Test:
+
     >>> P = Point(0,2)
     >>> Q = Point(4,4)
     >>> D = 3
@@ -171,9 +194,9 @@ def point_on_circle(point_centre: Point, radius: float, angle: float) -> Point:
     >>> P = Point(0,0)
     >>> R = 3.0
     >>> T = 45.0
-    >>> R = point_on_line(P, R, T)
-    >>> assert round(R.x, 4) == 2.6833
-    >>> assert round(R.y, 4) == 2.6833
+    >>> R = point_on_circle(P, R, T)
+    >>> assert round(R.x, 4) == 2.1213
+    >>> assert round(R.y, 4) == 2.1213
     """
     if radius == 0.0:
         return point_centre
@@ -345,6 +368,23 @@ def bezier_arc_segment(
     x2 = x3 - dx2 * k
     y2 = y3 - dy2 * k
     return (x0, y0), (x1, y1, x2, y2, x3, y3)
+
+
+def circle_angles(radius: float, chord: float):
+    """Calculate interior angles of isosceles triangle formed inside a circle.
+
+    Source:
+        https://www.quora.com/How-do-you-find-the-angles-of-an-isosceles-triangle-given-three-sides
+
+    Doc Test:
+
+    >>> R = circle_angles(5., 6.)
+    >>> assert round(R[0], 2) == 73.74
+    >>> assert round(R[1], 2) == 53.13
+    """
+    top = math.acos((2. * radius**2 - chord**2) / (2. * radius**2))
+    base = (180. -  math.degrees(top)) / 2.
+    return math.degrees(top), base, base
 
 
 if __name__ == "__main__":

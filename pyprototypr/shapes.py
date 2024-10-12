@@ -15,7 +15,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.pagesizes import (
     A8, A7, A6, A5, A4, A3, A2, A1, A0, LETTER, LEGAL, ELEVENSEVENTEEN,
     letter, legal, elevenSeventeen, B6, B5, B4, B3, B2, B0, landscape)
-
+from reportlab.lib.colors import red, green
 # local
 from pyprototypr.utils.geoms import Point, Link, Location  # named tuples
 from pyprototypr.utils import geoms, tools, support
@@ -469,14 +469,86 @@ class CircleShape(BaseShape):
             petals_vertices = []
             # ---- calculate points
             angles = support.steps(90 - shift, 450 - shift, gap)
-            for angle in angles:
+            # print(f' ^ {self.petals=} {angles=}')
+            for index, angle in enumerate(angles):
                 angle = angle - 360. if angle > 360. else angle
-                # triangle/curve petals points
-                petals_vertices.append(
-                    geoms.point_on_circle(
-                        center, self._u.radius + offset + height, angle - gap / 2.))
-                petals_vertices.append(
-                    geoms.point_on_circle(center, self._u.radius + offset, angle))
+                # print(f'  ^^^ {index=} {angle=} ')
+                petals_style = self.petals_style.lower()
+                if petals_style not in ['triangle', 't']:
+                    if len(angles) < self.petals + 1:
+                        angles.append(angles[-1] + gap)
+                match petals_style:
+                    case 'triangle' | 't':
+                        petals_vertices.append(
+                            geoms.point_on_circle(
+                                center,
+                                self._u.radius + offset + height,
+                                angle - gap / 2.))
+                        petals_vertices.append(
+                            geoms.point_on_circle(
+                                center,
+                                self._u.radius + offset,
+                                angle))
+                    case 'curve' | 'c':
+                        if index == 0:
+                            # start point (for first "current" petal location)
+                            petals_vertices.append(
+                                geoms.point_on_circle(
+                                    center,
+                                    self._u.radius + offset,
+                                    angle + gap))
+                        else:
+                            # 3 points for create arc/bezier 'bounding box':
+                            # the curveTo method starts painting a Bezier curve
+                            # beginning at the current location, using
+                            # (x1,y1), (x2,y2), and (x3,y3) as the other
+                            # three control points, leaving brush on (x3,y3)
+                            pt1 = geoms.point_on_circle(
+                                center,
+                                self._u.radius + offset + height,
+                                angle)
+                            pt2 = geoms.point_on_circle(
+                                center,
+                                self._u.radius + offset + height,
+                                angle + gap)
+                            pt3 = geoms.point_on_circle(
+                                center,
+                                self._u.radius + offset,
+                                angle + gap)
+                            petals_vertices.append((pt1, pt2, pt3))
+                            # print(f'  {pt1=} {pt2=} {pt3=}')
+                    case 'petal' | 'p':
+                        if index == 0:
+                            # start point (for first "current" curve location)
+                            last_pt = geoms.point_on_circle(
+                                center,
+                                self._u.radius + offset,
+                                angle)
+                            petals_vertices.append(last_pt)
+                            self._debug(cnv, point=last_pt, label='start', color=red)
+                        else:
+                            # 3 points for create arc/bezier 'bounding box':
+                            # the curveTo method starts painting a Bezier curve
+                            # beginning at the current location, using
+                            # (x1,y1), (x2,y2), and (x3,y3) as the other
+                            # three control points, leaving brush on (x3,y3)
+                            next_pt = geoms.point_on_circle(
+                                center,
+                                self._u.radius + offset,
+                                angle)
+                            self._debug(cnv, point=next_pt, label=f'next:{index}', color=green)
+                            chord = abs(geoms.length_of_line(last_pt, next_pt))
+                            box_height = chord / 2. * 4. / 3.
+                            _, _, chord_angle = geoms.circle_angles(self._u.radius, chord)
+                            pt0_angle = angles[index - 1] + (90 - chord_angle)
+                            pt1_angle = angle - (90 - chord_angle)
+                            # print(f' * {chord_angle=} {pt0_angle=} {pt1_angle=}')
+                            pt0 = geoms.degrees_to_xy(pt0_angle, box_height, last_pt)
+                            pt1 = geoms.degrees_to_xy(pt1_angle, box_height, next_pt)
+                            petals_vertices.append((pt0, pt1, next_pt))
+                            last_pt = next_pt
+                            self._debug(cnv, point=next_pt, label=f'last:{index}', color=red)
+                            # print(f'  {pt0=} {pt1=} {next_pt=} ')
             # ---- draw and fill
             self.set_canvas_props(
                 index=ID,
@@ -487,8 +559,20 @@ class CircleShape(BaseShape):
                 dotted=self.petals_dotted)
             pth = cnv.beginPath()
             pth.moveTo(*petals_vertices[0])
-            for vertex in petals_vertices:
-                pth.lineTo(*vertex)   # TODO - calculate for arc/curve
+            match self.petals_style:
+                case 'triangle' | 't':
+                    for vertex in petals_vertices:
+                        pth.lineTo(*vertex)
+                case 'curve' | 'c' | 'petal' | 'p':
+                    for index, vertex in enumerate(petals_vertices):
+                        if index == 0:
+                            continue  # already have a "start" location on path
+                        pth.curveTo(
+                            vertex[0].x, vertex[0].y,
+                            vertex[1].x, vertex[1].y,
+                            vertex[2].x, vertex[2].y)
+                        if index in [1, 1]:
+                            self._debug(cnv, vertices=[vertex[0], vertex[1], vertex[2]])
             pth.close()
             cnv.drawPath(
                 pth,

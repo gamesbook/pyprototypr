@@ -1028,7 +1028,6 @@ class BaseShape:
             self.unit(self.side) if self.side is not None else None,
             self.unit(self.length) if self.length is not None else None)
 
-
     def set_offset_props(self, off_x=0, off_y=0):
         """Get OffsetProperties for a Shape."""
         margin_left = self.unit(self.margin_left) if self.margin_left is not None else None
@@ -1052,7 +1051,7 @@ class BaseShape:
             dotted=None,
             dashed=None,
             debug=False):
-        """Set reportlab canvas properties for font, line and colors"""
+        """Set Reportlab canvas properties for font, line and colors"""
 
         def ext(prop):
             if isinstance(prop, str):
@@ -1089,10 +1088,11 @@ class BaseShape:
                         alpha = float(_transparency) / 100.0
                     except Exception:
                         tools.feedback(
-                            f'Unable to use "{_transparency}" as the transparency'
-                            ' - it must be from 1 to 100', True)
+                            f'Unable to use "{_transparency}" as transparency'
+                            ' value - it must be from 1 to 100', True)
                     z = Color(_fill.red, _fill.green, _fill.blue, alpha)
-                    # tools.feedback(f'~~~ Transp. color set: {z} vs. {_fill}')
+                    if debug:
+                        tools.feedback(f'~~~ Transp. color set: {z} vs {_fill}')
                     _fill = z
                 canvas.setFillColor(_fill)
                 if debug:
@@ -1142,10 +1142,12 @@ class BaseShape:
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an element on a given canvas."""
         self._o = self.set_offset_props(off_x, off_y)
-        # self._abs... variable are absolute locations in native units
-        #  they are for internal use only and are not expected to be called by the user
-        #  if set, they should be used to ignore/bypass any other values for calculating
-        #  the starting point or centre point for drawing a shape
+        # self._abs... variable are absolute locations in native units;
+        #  They are for internal use only and are not expected
+        #  to be called by the user.
+        #  If set, they should be used to ignore/bypass any other values
+        #  for calculating the starting point or centre point
+        #  for drawing a shape
         self._abs_x = kwargs.get('_abs_x', None)
         self._abs_y = kwargs.get('_abs_y', None)
         self._abs_x1 = kwargs.get('_abs_x1', None)
@@ -1163,12 +1165,12 @@ class BaseShape:
         pdfmetrics.registerFont(TTFont(font_name, font_file))
 
     def check_settings(self) -> tuple:
-        """Check that the user-supplied parameters are correct"""
+        """Check that the user-supplied parameters for choices are correct"""
         correct = True
         issue = []
         if self.align:
-            if str(self.align).lower() not in \
-                    ['left', 'right', 'justify', 'centre', 'l', 'r', 'j', 'c', ]:
+            if str(self.align).lower() not in [
+                    'left', 'right', 'justify', 'centre', 'l', 'r', 'j', 'c']:
                 issue.append(f'"{self.align}" is an invalid align!')
                 correct = False
         if self.caltrops:
@@ -1183,17 +1185,15 @@ class BaseShape:
                 _edges = self.edges
             for edge in _edges:
                 if str(edge).lower() not in [
-                        'north', 'south', 'east', 'west', 'n', 'e', 'w', 's', ]:
+                        'north', 'south', 'east', 'west', 'n', 'e', 'w', 's']:
                     issue.append(f'"{edge}" is an invalid choice in {self.edges}!')
                     correct = False
         if self.flip:
-            if str(self.flip).lower() not in \
-                    ['north', 'south', 'n', 's', ]:
+            if str(self.flip).lower() not in ['north', 'south', 'n', 's']:
                 issue.append(f'"{self.flip}" is an invalid flip!')
                 correct = False
         if self.hand:
-            if str(self.hand).lower() not in \
-                    ['west', 'east', 'w', 'e', ]:
+            if str(self.hand).lower() not in ['west', 'east', 'w', 'e', ]:
                 issue.append(f'"{self.hand}" is an invalid hand!')
                 correct = False
         if self.elevation:
@@ -1202,54 +1202,55 @@ class BaseShape:
                 issue.append(f'"{self.elevation}" is an invalid elevation!')
                 correct = False
         if self.orientation:
-            if str(self.orientation).lower() not in \
-                    ['flat', 'pointy',  'f', 'p', ]:
+            if str(self.orientation).lower() not in ['flat', 'pointy', 'f', 'p']:
                 issue.append(f'"{self.orientation}" is an invalid orientation!')
                 correct = False
         if self.perimeter:
-            if str(self.perimeter).lower() not in \
-                    ['circle', 'rectangle', 'hexagon', 'c', 'r', 'h', ]:
+            if str(self.perimeter).lower() not in [
+                    'circle', 'rectangle', 'hexagon', 'c', 'r', 'h']:
                 issue.append(f'"{self.perimeter}" is an invalid perimeter!')
                 correct = False
         if self.position:
-            if str(self.position).lower() not in \
-                    ['top', 'bottom', 'center', 'middle',  't', 'b', 'c', 'm', ]:
+            if str(self.position).lower() not in [
+                    'top', 'bottom', 'center', 'middle',  't', 'b', 'c', 'm']:
                 issue.append(f'"{self.position}" is an invalid position!')
                 correct = False
         if self.petals_style:
-            if str(self.petals_style).lower() not in \
-                    ['triangle', 'curve', 'rectangle', 't', 'c', 'r']:
+            if str(self.petals_style).lower() not in [
+                    'triangle', 'curve', 'rectangle', 'petal',
+                    't', 'c', 'r', 'p']:
                 issue.append(f'"{self.petals_style}" is an invalid petals style!')
                 correct = False
         # ---- hexagons
         if self.coord_style:
-            if str(self.coord_style).lower() not in \
-                    ['l', 'linear', 'd', 'diagonal', ]:
+            if str(self.coord_style).lower() not in [
+                     'linear', 'diagonal', 'l', 'd']:
                 issue.append(f'"{self.coord_style}" is an invalid coord style!')
                 correct = False
         # ---- arrows
         if self.head_style:
-            if str(self.head_style).lower() not in \
-                    ['line', 'l', 'line2', 'l2', 'line3', 'l3', 'triangle', 't',
-                     'diamond', 'd', 'notch', 'n', 'spear', 's', 'circle', 'c', ]:
+            if str(self.head_style).lower() not in [
+                    'line', 'l', 'line2', 'l2', 'line3', 'l3', 'triangle', 't',
+                    'diamond', 'd', 'notch', 'n', 'spear', 's', 'circle', 'c']:
                 issue.append(f'"{self.head_style}" is an invalid arrow head_style!')
                 correct = False
         if self.tail_style:
-            if str(self.tail_style).lower() not in \
-                    ['line', 'l', 'line2', 'l2', 'line3', 'l3', 'feather', 'f',
-                     'circle', 'c', ]:
+            if str(self.tail_style).lower() not in [
+                    'line', 'l', 'line2', 'l2', 'line3', 'l3', 'feather', 'f',
+                    'circle', 'c']:
                 issue.append(f'"{self.tail_style}" is an invalid arrow tail_style!')
                 correct = False
         # ---- starfield
         if self.star_pattern:
-            if str(self.star_pattern).lower() not in \
-                    ['random', 'r', 'cluster', 'c', ]:
+            if str(self.star_pattern).lower() not in [
+                    'random', 'cluster', 'r', 'c']:
                 issue.append(f'"{self.pattern}" is an invalid starfield pattern!')
                 correct = False
         # ---- rectangle - notches
         if self.notch_style:
-            if str(self.notch_style).lower() not in \
-                    ['snip', 's', 'fold', 'o', 'bite', 'b', 'flap', 'l', 'step', 't']:
+            if str(self.notch_style).lower() not in [
+                    'snip', 's', 'fold', 'o', 'bite', 'b', 'flap', 'l',
+                    'step', 't']:
                 issue.append(f'"{self.notch_style}" is an invalid notch_style!')
                 correct = False
         # ---- rectangle - peaks
@@ -1638,14 +1639,15 @@ class BaseShape:
                     y = self.points_to_value(vert.y)
                     self.draw_multi_string(
                         canvas, vert.x, vert.y, f'{key}:{x:.2f},{y:.2f}')
+                    canvas.circle(vert.x, vert.y, 1, stroke=1, fill=1)
             # display labelled point (geoms.Point)
             if kwargs.get('point', []):
                 point = kwargs.get('point')
                 label = kwargs.get('label', '')
-                canvas.setFillColor(self.debug_color)
-                canvas.setStrokeColor(self.debug_color)
+                canvas.setFillColor(kwargs.get('color', self.debug_color))
+                canvas.setStrokeColor(kwargs.get('color', self.debug_color))
                 canvas.setLineWidth(0.1)
-                canvas.setFont(self.font_face, 6)
+                canvas.setFont(self.font_face, 4)
                 x = self.points_to_value(point.x)
                 y = self.points_to_value(point.y)
                 self.draw_multi_string(
