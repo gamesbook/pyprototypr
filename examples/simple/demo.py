@@ -335,7 +335,7 @@ Image(
 PageBreak()
 
 # ---- text alignment (default is centre);
-Text(common=header, text="Text: face, styling and alignments")
+Text(common=header, text="Text: face, styling, wrap and align")
 
 Rectangle(x=0.75, y=23.5, width=7.5, height=3, stroke_width=1, stroke=grey) #, heading="Aligments")
 Text(text="sholes\ntypewriter!", x=4.5, y=26)  #  add line break via \n
@@ -354,19 +354,29 @@ nonumy deterruisset ne sed, cum cu quet reque <b>signiferumque</b>.<br/>
 <font face="times" color="red" size="15">Qui at primis regione consetetur.</font>
 Id vis viris antiopam gloriatur, muscipit ex has, an ius mazim.
 """
-Rectangle(x=4.5, y=0, width=10, height=5, stroke_width=1, stroke=grey)
-Text(
-    x=4.5, y=5, width=10, height=5, wrap=True, align="left", text=LATIN, stroke=blue
-)
-Rectangle(x=4.5, y=6, width=10, height=5, stroke_width=1, stroke=grey)
-Text(x=4.5, y=11, width=10, height=5, wrap=True, align="right", text=LATIN)
+# path for img assumes this file is called from the project root ...
+IMAGE = LATIN + '<img src="examples/simple/13.png" height="10" valign="bottom"/>' +\
+    ' per at ullum iracundia intellegam.'
 
-Rectangle(x=4.5, y=12, width=10, height=5, stroke_width=1, stroke=grey)
-Text(x=4.5, y=17, width=10, height=5, wrap=True, align="centre", text=LATIN)
+header = Common(x=1, font_size=18, align="left", width=2.5, height=2, wrap=True)
+
+Rectangle(x=4.5, y=1, width=10, height=5.5, stroke_width=1, stroke=grey)
+Text(
+    x=4.5, y=6.5, width=10, height=5, wrap=True, align="left", text=IMAGE, stroke=blue
+)
+Text(common=header, y=4, text="Align: Left")
+
+Rectangle(x=4.5, y=7, width=10, height=5, stroke_width=1, stroke=grey)
+Text(x=4.5, y=12, width=10, height=5, wrap=True, align="right", text=LATIN)
+Text(common=header, y=10, text="Align: Right")
+
+Rectangle(x=4.5, y=12.5, width=10, height=5, stroke_width=1, stroke=grey)
+Text(x=4.5, y=17.5, width=10, height=5, wrap=True, align="centre", text=LATIN)
+Text(common=header, y=16, text="Align: Centre")
 
 Rectangle(x=4.5, y=18, width=10, height=5, stroke_width=1, stroke=grey)
 Text(x=4.5, y=23, width=10, height=5, wrap=True, align="justify", text=LATIN)
-# PageBreak()
+Text(common=header, y=21, text="Align: Justify")
 
 # ---- cards
 Deck(cards=9)
