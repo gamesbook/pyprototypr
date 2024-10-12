@@ -431,8 +431,8 @@ class CircleShape(BaseShape):
                 index=ID,
                 stroke=self.radii_stroke,
                 stroke_width=self.radii_stroke_width,
-                dashes=self.radii_dashes,
-                line_dots=self.radii_line_dots)
+                dashed=self.radii_dashed,
+                dotted=self.radii_dotted)
             for rad_angle in _radii:
                 # points based on length of line, offset and the angle in degrees
                 diam_pt = geoms.point_on_circle(Point(x_c, y_c), rad_length, rad_angle)
@@ -470,7 +470,6 @@ class CircleShape(BaseShape):
             # ---- calculate points
             angles = support.steps(90 - shift, 450 - shift, gap)
             for angle in angles:
-                print(f'{angle=} {gap=} {shift=} ')
                 angle = angle - 360. if angle > 360. else angle
                 # triangle/curve petals points
                 petals_vertices.append(
@@ -484,8 +483,8 @@ class CircleShape(BaseShape):
                 fill=self.petals_fill,
                 stroke=self.petals_stroke,
                 stroke_width=self.petals_stroke_width,
-                dashes=self.petals_dashes,
-                line_dots=self.petals_line_dots)
+                dashed=self.petals_dashed,
+                dotted=self.petals_dotted)
             pth = cnv.beginPath()
             pth.moveTo(*petals_vertices[0])
             for vertex in petals_vertices:
@@ -1463,9 +1462,9 @@ class HexShape(BaseShape):
         # ---- canvas
         self.set_canvas_props(index=ID)
         if self.caltrops or self.caltrops_fraction:
-            line_dashes = self.calculate_caltrops(
+            line_dashed = self.calculate_caltrops(
                 self.side, self.caltrops, self.caltrops_fraction, self.caltrops_invert)
-            cnv.setDash(array=line_dashes)
+            cnv.setDash(array=line_dashed)
         # ---- calculate vertical hexagon (clockwise)
         if self.orientation.lower() in ['p', 'pointy']:
             self.vertices = [  # clockwise from bottom-left; relative to centre
@@ -1695,8 +1694,8 @@ class PolygonShape(BaseShape):
             index=ID,
             stroke=self.radii_stroke,
             stroke_width=self.radii_stroke_width,
-            dashes=self.radii_dashes,
-            line_dots=self.radii_line_dots)
+            dashed=self.radii_dashed,
+            dotted=self.radii_dotted)
         for rad_angle in _radii:
             # points based on length of line, offset and the angle in degrees
             diam_pt = geoms.point_on_circle(centre, rad_length, rad_angle)

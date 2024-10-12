@@ -1133,7 +1133,7 @@ def Blueprint(**kwargs):
     kwargs['cols'] = kwargs.get('cols', cols)
     kwargs['stroke_width'] = kwargs.get('stroke_width', 0.2)  # fine line
     default_font_size = 10 * math.sqrt(paper[0]) / math.sqrt(A4[0])
-    line_dots = kwargs.get('line_dots', False)
+    dotted = kwargs.get('dotted', False)
     kwargs['font_size'] = kwargs.get('font_size', default_font_size)
     line_stroke, page_fill = set_style(kwargs.get('style', None))
     kwargs['stroke'] = kwargs.get('stroke', line_stroke)
@@ -1177,12 +1177,12 @@ def Blueprint(**kwargs):
         local_kwargs['cols'] = sub_count * kwargs['cols']
         local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
         local_kwargs['stroke'] = kwargs.get('subdivisions_stroke', kwargs['stroke'])
-        local_kwargs['dashes'] = kwargs.get('subdivisions_dashes')
+        local_kwargs['dashed'] = kwargs.get('subdivisions_dashed')
         local_kwargs['dots'] = kwargs.get('subdivisions_dots')
         subgrid = GridShape(canvas=cnv, **local_kwargs)
         subgrid.draw(cnv=cnv)
     # ---- draw Blueprint grid
-    grid = GridShape(canvas=cnv, line_dots=line_dots, **kwargs)  # don't add canvas as arg here!
+    grid = GridShape(canvas=cnv, dotted=dotted, **kwargs)  # don't add canvas as arg here!
     grid.draw(cnv=cnv)
     return grid
 

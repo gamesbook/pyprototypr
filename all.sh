@@ -10,6 +10,7 @@ python examples/simple/hexagons.py -d /tmp/demo
 # --  examples: customised
 echo "Creating customised examples..."
 python examples/simple/customised_blueprint.py -d /tmp/demo
+python examples/simple/customised_circle.py -d /tmp/demo
 python examples/simple/customised_hexagon.py -d /tmp/demo
 python examples/simple/customised_rectangle.py -d /tmp/demo
 python examples/simple/customised_shapes.py -d /tmp/demo

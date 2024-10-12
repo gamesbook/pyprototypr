@@ -427,9 +427,9 @@ class BaseCanvas:
         self.line_stroke = self.defaults.get('line_stroke', WIDTH)
         self.line_width = self.defaults.get('line_width', WIDTH)
         self.line_cap = self.defaults.get('line_cap', None)
-        self.line_dots = self.defaults.get(
-            'line_dots', self.defaults.get('dots', False))
-        self.dashes = self.defaults.get('dashes', None)
+        self.dotted = self.defaults.get(
+            'dotted', self.defaults.get('dotted', False))
+        self.dashed = self.defaults.get('dashed', None)
         # ---- text: base
         self.text = self.defaults.get('text', '')
         self.text_size = self.defaults.get('text_size', self.font_size)
@@ -540,8 +540,8 @@ class BaseCanvas:
         self.radii_length = self.defaults.get('radii_length', None)  # default: circle radius
         self.radii_offset = self.defaults.get('radii_offset', 0)
         self.radii_cap = self.defaults.get('radii_cap', None)
-        self.radii_line_dots = self.defaults.get('radii_line_dots', self.line_dots)
-        self.radii_dashes = self.defaults.get('radii_dashes', self.dashes)
+        self.radii_dotted = self.defaults.get('radii_dotted', self.dotted)
+        self.radii_dashed = self.defaults.get('radii_dashed', self.dashed)
         # ---- circle
         self.petals = self.defaults.get('petals', 0)
         self.petals_style = self.defaults.get('petals_style', 'triangle')
@@ -550,8 +550,8 @@ class BaseCanvas:
         self.petals_stroke = self.defaults.get('petals_stroke', self.stroke)
         self.petals_stroke_width = self.defaults.get('petals_stroke_width', WIDTH)
         self.petals_fill = self.defaults.get('petals_fill', None)
-        self.petals_line_dots = self.defaults.get('petals_line_dots', self.line_dots)
-        self.petals_dashes = self.defaults.get('petals_dashes', self.dashes)
+        self.petals_dotted = self.defaults.get('petals_dotted', self.dotted)
+        self.petals_dashed = self.defaults.get('petals_dashed', self.dashed)
         # ---- compass
         self.perimeter = self.defaults.get('perimeter', 'circle')
         self.directions = self.defaults.get('directions', None)
@@ -616,7 +616,7 @@ class BaseCanvas:
         self.hatch_stroke_width = self.defaults.get('hatch_stroke_width', self.stroke_width)
         self.hatch_dots = self.defaults.get('hatch_dots', None)
         self.hatch_cap = self.defaults.get('hatch_cap', self.line_cap)
-        self.hatch_dashes = self.defaults.get('hatch_dashes', None)# ---- OTHER
+        self.hatch_dashed = self.defaults.get('hatch_dashed', None)# ---- OTHER
         # defaults for attributes called/set elsewhere e.g. in draw()
         self.use_abs = False
         self.use_abs_1 = False
@@ -722,9 +722,8 @@ class BaseShape:
         # ---- line style
         self.line_width = self.kw_float(kwargs.get('line_width', cnv.line_width))
         self.line_cap = kwargs.get('line_cap', cnv.line_cap)
-        self.line_dots = kwargs.get('line_dots',
-                                    kwargs.get('dots', cnv.line_dots))
-        self.dashes = kwargs.get('dashes', None)
+        self.dotted = kwargs.get('dotted', kwargs.get('dots', cnv.dotted))
+        self.dashed = kwargs.get('dashed', None)
         # ---- fill color
         self.fill = kwargs.get('fill', kwargs.get('fill_color', cnv.fill))
         # ---- stroke
@@ -854,8 +853,8 @@ class BaseShape:
         self.radii_length = self.kw_float(kwargs.get('radii_length', cnv.radii_length))
         self.radii_offset = self.kw_float(kwargs.get('radii_offset', cnv.radii_offset))
         self.radii_cap = kwargs.get('radii_cap', cnv.radii_cap)
-        self.radii_line_dots = kwargs.get('radii_line_dots', cnv.line_dots)
-        self.radii_dashes = kwargs.get('radii_dashes', cnv.dashes)
+        self.radii_dotted = kwargs.get('radii_dotted', cnv.dotted)
+        self.radii_dashed = kwargs.get('radii_dashed', cnv.dashed)
         # ---- circle
         self.petals = self.kw_int(kwargs.get('petals', cnv.petals))
         self.petals_style = kwargs.get('petals_style', cnv.petals_style)
@@ -867,9 +866,9 @@ class BaseShape:
         self.petals_stroke_width = self.kw_float(
             kwargs.get('petals_stroke_width', cnv.petals_stroke_width))
         self.petals_fill = kwargs.get('petals_fill', cnv.petals_fill)
-        self.petals_line_dots = kwargs.get(
-            'petals_line_dots', cnv.petals_line_dots)
-        self.petals_dashes = kwargs.get('petals_dashes', cnv.petals_dashes)
+        self.petals_dotted = kwargs.get(
+            'petals_dotted', cnv.petals_dotted)
+        self.petals_dashed = kwargs.get('petals_dashed', cnv.petals_dashed)
         # ---- compass
         self.perimeter = kwargs.get('perimeter', 'circle')  # circle|rectangle|hexagon
         self.directions = kwargs.get('directions', None)
@@ -932,8 +931,8 @@ class BaseShape:
         self.hatch_stroke_width = self.kw_float(kwargs.get('hatch_width', cnv.hatch_stroke_width))
         self.hatch_stroke = kwargs.get('hatch_stroke', cnv.stroke)
         self.hatch_cap = kwargs.get('hatch_cap', cnv.hatch_cap)
-        self.hatch_dots = kwargs.get('hatch_dots', cnv.line_dots)
-        self.hatch_dashes = kwargs.get('hatch_dashes', cnv.dashes)
+        self.hatch_dots = kwargs.get('hatch_dots', cnv.dotted)
+        self.hatch_dashed = kwargs.get('hatch_dashed', cnv.dashed)
         # ---- deck
         self.deck_data = kwargs.get('deck_data', [])  # list of dicts
 
@@ -1050,8 +1049,8 @@ class BaseShape:
             stroke=None,
             stroke_width=None,
             stroke_cap=None,
-            line_dots=None,
-            dashes=None,
+            dotted=None,
+            dashed=None,
             debug=False):
         """Set reportlab canvas properties for font, line and colors"""
 
@@ -1128,14 +1127,14 @@ class BaseShape:
                 canvas.setLineCap(2)
             else:
                 tools.feedback(f'Line cap type "{_stroke_cap}" cannot be used.', False)
-        # ---- set line dots / dashes
-        _line_dots = ext(line_dots) or ext(self.line_dots)
-        _dashes = ext(dashes) or ext(self.dashes)
-        if _line_dots:
+        # ---- set line dots / dashed
+        _dotted = ext(dotted) or ext(self.dotted)
+        _dashed = ext(dashed) or ext(self.dashed)
+        if _dotted:
             _dots = self.values_to_points([0.03, 0.03])
             canvas.setDash(array=_dots)
-        elif _dashes:
-            dash_points = self.values_to_points(_dashes)
+        elif _dashed:
+            dash_points = self.values_to_points(_dashed)
             canvas.setDash(array=dash_points)
         else:
             canvas.setDash(array=[])

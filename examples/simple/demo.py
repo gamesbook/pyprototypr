@@ -234,12 +234,12 @@ Line(
     y=9,
     x1=19,
     y1=9,
-    dashes=[0.2, 0.2, 0.2, 0.2, 1.0, 0.0],
+    dashed=[0.2, 0.2, 0.2, 0.2, 1.0, 0.0],
     stroke=green,
     stroke_width=2,
-    label="dashes=[0.2, 0.2, 0.2, 0.2, 1, 0]",
+    label="dashed=[0.2, 0.2, 0.2, 0.2, 1, 0]",
 )
-Line(x=0, y=5, x1=19, y1=5, line_dots=True, stroke=blue, stroke_width=2, label="dots")
+Line(x=0, y=5, x1=19, y1=5, dotted=True, stroke=blue, stroke_width=2, label="dotted")
 PageBreak()
 
 # ---- bezier / arc

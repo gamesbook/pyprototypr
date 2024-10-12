@@ -48,8 +48,8 @@ Blueprint(subdivisions=5)
 Text(common=txt, text="Blueprint: subdivisions=5")
 PageBreak()
 
-Blueprint(subdivisions=5, subdivisions_dashes=[0.01, 0.01, 0])
-Text(common=txt, text="Blueprint: subdivisions as dashes")
+Blueprint(subdivisions=5, subdivisions_dashed=[0.01, 0.01, 0])
+Text(common=txt, text="Blueprint: dashed subdivisions")
 PageBreak()
 
 Save()

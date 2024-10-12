@@ -13,7 +13,7 @@ exactly how these can used.
 
 ## Table of Contents for Terms
 
-* [Colour-orientated](#colour)
+* [Color-orientated](#color)
 * [Location- and position-orientated](#location)
 * [Size- and length-orientated](#size)
 * [Amount- and count-orientated](#count)
@@ -24,7 +24,7 @@ exactly how these can used.
 * [](#)
 
 
-## Colour-orientated terms <a name="colour"></a>
+## Color-orientated terms <a name="color"></a>
 
 Color is defined in the same way as it is in pages that appear on the web i.e.
 in RGB (red-green-blue) *hexadecimal* format - for example, `#A0522D`
@@ -35,20 +35,24 @@ Colors can also be chosen from a pre-defined list of names - for example
 [colorset.pdf](../examples/colorset.pdf) - that shows all the names and colors
 that are available.
 
-> **NOTE:** It is possible to use the term  _None_ in place of a specific
+In general, color can be set for the lines (**stroke**) and areas (**fill**)
+that are being drawn on a page.
+
+> **NOTE:** It is possible to use the term _None_ in place of a specific
 > color; this effectively means that nothing will be drawn there - so, an
 > "invisible" line or area!
 
-* **fill** - the color in which an area is filled
 * **dot_fill** - the color in which a circle is to be drawn at the centre of a
   shape
-* **stroke** - the color in which a line or text is drawn; many specific
-  strokes are set by prefixing this term with the name of the item in question;
-  examples: **cross_stroke**; **grid_stroke**; **radii_stroke**;
-  **label_stroke**
-* **stroke_fill** - sets both the area and line color at the same time
-* **outline** - set the line color, and also set the fill as `None`, at the same
-  time
+* **fill** - the color in which an area is filled
+* **outline** - sets the line color, and at the same time sets the fill to
+  be `None`
+* **stroke** - the color in which a line or text is drawn; there are many
+  strokes for particular types of lines that are set by prefixing this term
+  with the name of the item in question; for example: **cross_stroke**;
+  **grid_stroke**; **radii_stroke**; **label_stroke**; **petals_stroke** etc.
+* **stroke_fill** - sets both the line ("stroke") and area ("fill") to be the
+  same color
 
 
 ## Location- and position-orientated terms <a name="location"></a>
@@ -58,22 +62,23 @@ must be placed somewhere on the page; each thing must have both a horizontal
 position - its **x** value - and a vertical position - its **x** value. These
 respectively represent the distances from the left- and bottom-edge of a page.
 
-* **position** - the relative location with a shape; can be one of:
-  _top_, _middle_, _center_, or _bottom_
 * **align** - used to position text relative to its starting location; can be
   one of: _justify_, _left_, _right_, or _centre_ / _center_
-* **x** - the location of a point in the horizontal direction; its often the
-  case that the distance is not absolute, but relative to some other value
-  e.g. distance from a margin; or the edge of a `Card`
-* **y** - the location of a point in the vertical direction; its often the
-  case that the distance is not absolute, but relative to some other value
-  e.g. distance from a margin; or the edge of a `Card`
 * **cx** - the centre location of a shape, going in the horizontal direction;
   its often the case that the distance is not absolute, but relative to some
   other value e.g. distance from a margin; or the edge of a `Card`
 * **cy** - the centre location of a shape, going in the vertical direction;
   its often the case that the distance is not absolute, but relative to some
   other value e.g. distance from a margin; or the edge of a `Card`
+* **position** - the relative location with a shape; can be one of:
+  _top_, _middle_, _center_, or _bottom_
+* **x** - the location of a point in the horizontal direction; its often the
+  case that the distance is not absolute, but relative to some other value
+  e.g. distance from a margin; or the edge of a `Card`
+* **y** - the location of a point in the vertical direction; its often the
+  case that the distance is not absolute, but relative to some other value
+  e.g. distance from a margin; or the edge of a `Card`
+
 
 ## Size- and length-orientated terms <a name="size"></a>
 
@@ -181,11 +186,11 @@ Properties that use direction include:
 
 ## Styling-orientated terms <a name="styling"></a>
 
-* **line_dots** - allows a line to be broken into a series of dots of fixed
-  size (3 points each, with a gap of 3 poinst between them)
-* **dashes** - allows a line to be broken into a series of dashes of
+* **dotted** - allows a line to be broken into a series of dots of fixed size
+  (3 points in length; with a gap of 3 points between each)
+* **dashed** - allows a line to be broken into a series of short lines of
   specific lengths, separated by spaces of specific lengths; there can
-  any number of these in a list.
+  any number of these length/space pairs in a list.
 
 
 ## Display-orientated terms <a name="display""></a>
