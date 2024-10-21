@@ -1118,6 +1118,7 @@ def Blueprint(**kwargs):
     side = 1.0
     if kwargs['units'] == inch:
         side = 0.5
+    decimals = tools.as_int(kwargs.get('decimals', 1), "Blueprint decimals")
     # override defaults ... otherwise grid not "next" to margins
     numbering = kwargs.get('numbering', True)
     kwargs['side'] = kwargs.get('side', side)
@@ -1151,12 +1152,12 @@ def Blueprint(**kwargs):
         for x in range(1, kwargs['cols'] + 1):
             Text(x=x*side,
                  y=kwargs['y'] - kwargs['side'] / 2.0,
-                 text=str(x*side),
+                 text=f'{x*side:{1}.{decimals}f}',
                  common=_common)
         for y in range(1, kwargs['rows'] + 1):
             Text(x=kwargs['x'] - kwargs['side'] / 2.0,
                  y=y*side - _common.points_to_value(kwargs['font_size']) / 2.0,
-                 text=str(y*side),
+                 text=f'{y*side:{1}.{decimals}f}',
                  common=_common)
         # draw "zero" number
         z_x, z_y = kwargs['units'] * margin_left, kwargs['units'] * margin_bottom
