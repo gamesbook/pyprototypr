@@ -100,7 +100,8 @@ Example #1
 ++++++++++
 
 .. |pic1| image:: images/examples/simple/defaults/line.png
-   :width: 200
+   :width: 300
+   :align: top
 
 |pic1| This example shows the shape constructed using the command with only defaults::
     Line()
