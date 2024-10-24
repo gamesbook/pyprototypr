@@ -81,16 +81,44 @@ Linear Shapes
 Arc
 ~~~
 
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/arc.png
+   :width: 300
+   :align: left
+
 
 Bezier
 ~~~~~~
 
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/bezier.png
+   :width: 300
+   :align: left
+
 Chord
 ~~~~~
 
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/chord.png
+   :width: 300
+   :align: left
+
 
 Dot
-~~~~~
+~~~
+
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/dot.png
+   :width: 300
+   :align: left
 
 
 Line 
@@ -99,7 +127,7 @@ Line
 Example #1
 ++++++++++
 
-.. figure:: images/examples/simple/defaults/line.png
+.. image:: images/examples/simple/defaults/line.png
    :width: 300
    :align: left
 
@@ -115,6 +143,13 @@ It has the following properties based on the defaults:
 Polyline
 ~~~~~~~~
 
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/polyline.png
+   :width: 300
+   :align: left
+
 
 Enclosed Shapes
 ---------------
@@ -129,43 +164,109 @@ the shape can be filled with a color; the default fill color is *white*.
     `colors <../examples/colorset.pdf>`_ document.
 
 
-
 Circle
 ~~~~~~
+
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/circle.png
+   :width: 300
+   :align: left
 
 Compass
 ~~~~~~~
 
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/compass.png
+   :width: 300
+   :align: left
+
 Ellipse
 ~~~~~~~
+
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/ellipse.png
+   :width: 300
+   :align: left
 
 Hexagon
 ~~~~~~~
 
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/hexagon.png
+   :width: 300
+   :align: left
+
 Polygon
 ~~~~~~~
+
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/polygon.png
+   :width: 300
+   :align: left
 
 Rectangle
 ~~~~~~~~~
 
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/rectangle.png
+   :width: 300
+   :align: left
+
 Square
 ~~~~~~
+
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/square.png
+   :width: 300
+   :align: left
 
 Stadium
 ~~~~~~~
 
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/stadium.png
+   :width: 300
+   :align: left
+
 Star
 ~~~~
 
+Example #1
+++++++++++
 
+.. image:: images/examples/simple/defaults/star.png
+   :width: 300
+   :align: left
 
 
 Compound Shapes
 ---------------
 
-
 Blueprint
 ~~~~~~~~~
+
+Example #1
+++++++++++
+
+.. image:: images/examples/simple/defaults/blueprint.png
+   :width: 300
+   :align: left
 
 Hexagons
 ~~~~~~~~
