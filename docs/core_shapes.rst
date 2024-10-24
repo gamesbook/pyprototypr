@@ -101,9 +101,9 @@ Example #1
 
 .. |pic1| image:: images/examples/simple/defaults/line.png
    :width: 200
+   :align: left
 
 |pic1| This example shows the shape constructed using the command with only defaults::
-
     Line()
 
 It has the following properties based on the defaults:
