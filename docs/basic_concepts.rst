@@ -99,7 +99,7 @@ Examples of some of the available geometric **shapes** include:
 -  Square
 -  Stadium
 
-Descriptions of all of these elements, and how to create and use them,
+Descriptions of all of these shapes, and how to create and use them,
 are provided in the section on `Core Shapes <core_shapes.rst>`__.
 
 Defining elements’ properties

@@ -18,12 +18,15 @@ Note, however, that this project "breaks" a few normal conventions:
 Documentation
 =============
 
-Documents are written in reStructuredText. Some useful web resources:
+Documents are written in reStructuredText. Some helpful web resources:
 
-- https://github.com/retext-project/retext - a reStructuredText editor
-- https://github.com/pydanny/restructuredtext/blob/master/sphinx_tutorial.rst - Sphinx
 - https://github.com/DevDungeon/reStructuredText-Documentation-Reference - guide
 - https://docutils.sourceforge.io/docs/user/rst/quickstart.html - quick start
 - https://docutils.sourceforge.io/docs/user/rst/quickref.html - detailed summary
 - https://jwodder.github.io/kbits/posts/rst-hyperlinks/ - all about links
 - https://docutils.sourceforge.io/docs/ref/rst/directives.html - directives
+
+Some useful tools:
+
+- https://github.com/retext-project/retext - a reStructuredText editor
+- https://github.com/pydanny/restructuredtext/blob/master/sphinx_tutorial.rst - Sphinx

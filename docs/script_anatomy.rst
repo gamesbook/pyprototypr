@@ -7,32 +7,43 @@ Script Anatomy
 Start, Middle and End
 =====================
 
+
 Basic Shapes
 ============
 
+
+Card Decks
+==========
+
+
 Layout, Repeats and Tracks
 ==========================
+
 
 Commands
 ========
 
 Create Command
-~~~~~~~~~~~~~~
+--------------
 
 PageBreak Command
-~~~~~~~~~~~~~~~~~
+-----------------
 
 Save Command
-~~~~~~~~~~~~
+------------
+
 
 Comments
 ========
 
+
 Drawing vs Creating
 ===================
 
+
 The FEEDBACK Message
 ====================
+
 
 Making Mistakes
 ===============
