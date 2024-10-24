@@ -1,40 +1,41 @@
-pyprototypr: Script Anatomy
-===========================
+==============
+Script Anatomy
+==============
 
 **To Be Done**
 
 Start, Middle and End
----------------------
+=====================
 
 Basic Shapes
-------------
+============
 
 Layout, Repeats and Tracks
---------------------------
+==========================
 
 Commands
---------
+========
 
 Create Command
 ~~~~~~~~~~~~~~
 
-Page Command
-~~~~~~~~~~~~
+PageBreak Command
+~~~~~~~~~~~~~~~~~
 
 Save Command
 ~~~~~~~~~~~~
 
 Comments
---------
+========
 
 Drawing vs Creating
--------------------
+===================
 
 The FEEDBACK Message
---------------------
+====================
 
 Making Mistakes
----------------
+===============
 
 It is, unfortunately, all too easy to make mistakes while writing
 scripts.
@@ -55,13 +56,11 @@ using ``u=2.0`` when you meant to say ``y=2.0`` (which can happen
 because those two letters are located right next to each other on a
 keyboard). In this case, the script will “fail silently” because
 properties that don’t exist are simply ignored. This kind of mistake is
-musg harder to spot, often because the default value will then be used
+must harder to spot, often because the default value will then be used
 instead and it will seem as though the script is drawing something
 incorrectly.
 
-Supplying the script with a **duplicate propertyt**, for example:
-
-::
+Supplying the script with a **duplicate property**, for example::
 
        display = hexagon(stroke=black, fill=white, height=2, stroke=2)
                                                              ^^^^^^^^
@@ -70,3 +69,6 @@ Supplying the script with a **duplicate propertyt**, for example:
 This kind of mistake is usually easier to see as both keywords, in this
 case, are part of the same commmand and error you see highlights the
 repetition.
+
+Errors are discussed further in the `Additional Concepts <additional_concepts.rst>`_.
+

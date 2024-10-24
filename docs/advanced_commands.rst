@@ -9,22 +9,22 @@ in the documentation, have understood how these are used via the various
 examples, and are therefore comfortable with creating and using scripts.
 
 Data Lists
-----------
+==========
 
 **To Be Done**
 
 Repeats
--------
+=======
 
 **To Be Done**
 
 Permutations and Combinations
------------------------------
+=============================
 
 **To Be Done**
 
 Grid-based Layouts
-------------------
+==================
 
 **pyprototypr** allows you to place elements that make up your design
 anywhere within a page, or over a series of pages within a deck, but it

@@ -1,8 +1,9 @@
-pyprototypr: Layouts
-====================
+=======
+Layouts
+=======
 
 Overview 
----------
+========
 
 **pyprototypr** allows you to place elements that make up your design
 anywhere within a page, or over a series of pages within a ``Deck``, but
@@ -28,21 +29,24 @@ various of the built-in shapes - for example, ``Hexagons`` - or it can
 be constructed using a supplied set of properties. Because these grids
 do not themselves appear on the page, they are termed “virtual grids”.
 
-A virtual grid is not itself specifically drawn; rather it contains a
+A virtual grid is **not** specifically drawn on the page; rather it contains a
 set of points at which elements can be drawn. This set of points can be
 accessed indirectly, by providing a sequence or list of elements, which
-are then drawn in the order required, starting from a known point on the
-grid; or each point can be referred to by directly using its identity
-and the element then assigned to that point’s position.
+are then drawn in the order specified, starting from a known point on the
+grid; *or* each point can be referred to directly by using its identity
+and the element can then be assigned to that point’s position.
 
-The first approach is useful when the entire grid will be filled with a
-single element (or a repeating set of elements), and the second is more
-suitable when only some locations of the grid will be used, or a much
-finer degrees of control is needed with differing elements going into
-very specific - possibly irregular - places.
+.. NOTE::
+
+   The *first approach* is useful when the entire grid will be filled with a
+   single element (or a repeating set of elements), and the *second approach* 
+   is more suitable when only some locations of the grid will be used, or if a
+   much finer degree of control is needed with differing elements going into
+   very specific - and possibly irregular - places.
+
 
 Command Summary 
-----------------
+===============
 
 Very briefly, the different kinds of layout commands are as follows.
 
@@ -68,4 +72,8 @@ Grid-based layouts, where elements appear in two-dimensional space:
    could even be random!
 
 Sequence Command 
------------------
+================
+
+
+Track Command 
+=============

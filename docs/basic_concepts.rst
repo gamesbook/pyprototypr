@@ -47,7 +47,7 @@ later on.
 In summary - the *order* of instructions in a script is important!
 
    For more on how scripts are constructed see `Script
-   Anatomy <script_anatomy.rst>`__.
+   Anatomy <script_anatomy.rst>`_.
 
 The “page” concept
 ------------------
@@ -118,7 +118,7 @@ concepts of stroke and width). A circle will have its size defined by a
    used in **pyprototypr**; more specific terms are used instead.
 
 All of these kinds of settings are called **properties**. Most of the
-common properties are described in the `Terminology <terminology.md>`__.
+common properties are described in the `Terminology <terminology.rst>`__.
 
 Working with color
 ------------------
