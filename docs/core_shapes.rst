@@ -1,37 +1,42 @@
 pyprototypr: Core Shapes
 ========================
 
+.. |copy| unicode:: U+000A9 .. COPYRIGHT SIGN
+   :trim:
+.. |deg|  unicode:: U+00B0 .. DEGREE SIGN
+   :ltrim:
+
 Table of Contents
 -----------------
 
--  `Index of Shapes <#index_shapes>`__
--  `Overview <#overview>`__
--  `Commonalities <#commonalties>`__
--  `Linear Shapes <#linear_shapes>`__
--  `Enclosed Shapes <#enclosed_shapes>`__
--  `Compound Shapes <#compound_shapes>`__
--  `Shapes’ Common Properties <#common_properties>`__
+-  `Index of Shapes`_
+-  `Overview`_
+-  `Commonalities`_
+-  `Linear Shapes`_
+-  `Enclosed Shapes`_
+-  `Compound Shapes`_
+-  `Shapes' Common Properties`_
 
-Alphabetic Index of Shapes 
----------------------------
+Index of Shapes 
+---------------
 
--  `Arc <#arc>`__
--  `Blueprint <#blueprint>`__
--  `Bezier <#bezier>`__
--  `Circle <#circle>`__
--  `Compass <#compass>`__
--  `Chord <#chord>`__
--  `Dot <#dot>`__
--  `Ellipse <#ellipse>`__
--  `Hexagon <#hexagon>`__
--  `Hexagons <#hexagons>`__
--  `Line <#line>`__
--  `Polygon <#polygon>`__
--  `Polyline <#polyline>`__
--  `Rectangle <#rectangle>`__
--  `Square <#square>`__
--  `Stadium <#stadium>`__
--  `Star <#star>`__
+-  `Arc`_
+-  `Blueprint`_
+-  `Bezier`_
+-  `Circle`_
+-  `Compass`_
+-  `Chord`_
+-  `Dot`_
+-  `Ellipse`_
+-  `Hexagon`_
+-  `Hexagons`_
+-  `Line`_
+-  `Polygon`_
+-  `Polyline`_
+-  `Rectangle`_
+-  `Square`_
+-  `Stadium`_
+-  `Star`_
 
 
 Overview 
@@ -39,9 +44,9 @@ Overview
 
 These descriptions of the available shapes assume you are familiar with
 the concepts, terms and ideas presented in `Basic
-Concepts <basic_concepts.md>`__ - especially *units*, *properties* and
+Concepts <basic_concepts.md>`_ - especially *units*, *properties* and
 *defaults*. It will also help to at least read through the section on
-`Additional Concepts <additional_concepts.md>`__.
+`Additional Concepts <additional_concepts.rst>`_.
 
 Where possible, the basic examples first show how a shape would appear
 on a page when **only** the default properties are used. This means for
@@ -59,8 +64,8 @@ numbers themselves are drawn inside the margin!
 
    The graphics for these examples were generated from the scripts in
    the ``examples`` directory - look at the
-   `default_shapes <../examples/simple/default_shapes.py>`__ and
-   `customised_shapes <../examples/simple/customised_shapes.py>`__
+   `default_shapes <../examples/simple/default_shapes.py>`_ and
+   `customised_shapes <../examples/simple/customised_shapes.py>`_
    files.
 
 Commonalities 
@@ -73,32 +78,107 @@ across every shape.
 Linear Shapes 
 --------------
 
+Arc
+~~~
+
+
+Bezier
+~~~~~~
+
+Chord
+~~~~~
+
+
+Dot
+~~~~~
+
+
 Line 
 ~~~~
 
 Example #1
 ++++++++++
 
-.. container:: twocol
+.. |pic1| image:: images/examples/simple/defaults/line.png
+   :width: 200
 
-   .. container:: leftside
+|pic1| This example shows the shape constructed using the command with only defaults::
 
-      .. image:: images/examples/simple/defaults/line.png
-        :width: 80
-        :align: left
+    Line()
 
-   .. container:: rightside
+It has the following properties based on the defaults:
 
-      This example shows the shape constructed using the command with all defaults::
+- length of 1cm,
+- starts at x-position 1cm and at y-position 1cm,
+- heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east").
 
-          Line()
-
-      It has the following properties based on the defaults:
-
-      - length of 1cm,</li>
-      - starts at x-position 1cm and at y-position 1cm,
-      - heading/default direction is 0 (anti-clockwise from 0 "east").
+Polyline
+~~~~~~~~
 
 
-Shapes Common Properties 
+Enclosed Shapes
+---------------
+
+These shapes are created by enclosing an area; the most basic being a simple rectangle.
+They effectively have 2 dimensions (*height* and *width*). 
+
+The difference between enclosed and linear shapes is that the area enclosed by 
+the shape can be filled with a color; the default fill color is *white*.
+
+    **pyprototypr** comes with a predefined set of named colors, shown in the
+    `colors <../examples/colorset.pdf>`_ document.
+
+
+
+Circle
+~~~~~~
+
+Compass
+~~~~~~~
+
+Ellipse
+~~~~~~~
+
+Hexagon
+~~~~~~~
+
+Polygon
+~~~~~~~
+
+Rectangle
+~~~~~~~~~
+
+Square
+~~~~~~
+
+Stadium
+~~~~~~~
+
+Star
+~~~~
+
+
+
+
+Compound Shapes
+---------------
+
+
+Blueprint
+~~~~~~~~~
+
+Hexagons
+~~~~~~~~
+
+Hexagons are often drawn in a "honeycomb" arrangement to form a grid - for games
+this is often used to delineate the spaces in which playing pieces can be placed
+and their movement regulated.
+
+> Further information about using hexagons in grids can be found in the section
+> on `Hexagonal Grids <hexagonal_grids.rst>`_.
+
+
+
+
+Shapes' Common Properties 
 -------------------------
