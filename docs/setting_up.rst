@@ -3,7 +3,7 @@ pyprototypr: Setting Up
 
 There are four parts to being able to use **pyprototypr**:
 
-1. Install the correct version of Python
+1. Install the correct version of `Python <http://www.python.org>`_
 2. Install and set-up **pyprototypr**
 3. Install a text editing program
 4. Install a PDF viewer (e.g. *Adobe Acrobat*)
@@ -20,11 +20,11 @@ not a smart phone) that already has the correct version of Python
 If your device does not have Python installed, it can be obtained from
 http://www.python.org/download/.
 
-A very detailed and useful guide to installing on Windows is at:
+A very detailed and useful guide to installing Python on Windows is at:
 https://www.tomshardware.com/how-to/install-python-on-windows-10-and-11
 
 This guide will also take you through installing
-`NotePad++ <https://notepad-plus-plus.org/>`__ which is the recommended
+`NotePad++ <https://notepad-plus-plus.org/>`_ which is the recommended
 Windows editor for creating **pyprototypr** scripts.
 
 For MacOS, there is a helpful guide on working with Python from
@@ -47,13 +47,9 @@ window**. The way you do this depends on your operating system.
 
 When the command-line window appears, type::
 
-::
-
    python --version
 
 You should see something like::
-
-::
 
    Python 3.11.5
 
@@ -66,12 +62,8 @@ Installing **pyprototypr**
 
 The simplest way to install **pyprototypr** itself is via::
 
-::
-
    pip install pyprototypr
 
-The manual also provides alternate, more complex ways of installing, for
-example, in a virtual environment.
 
 Other Software Installs
 -----------------------
@@ -89,9 +81,7 @@ Core Fonts (optional)
 
 For Linux users, it is recommended that you install Microsoft’s Core
 Fonts - see http://mscorefonts2.sourceforge.net/ - Ubuntu users can
-install these via:
-
-::
+install these via::
 
    sudo apt-get install ttf-mscorefonts-installer
 
@@ -101,9 +91,7 @@ Checking if **pyprototypr** works
 To now check that ``pyprototypr`` works, you should create a small test
 file.
 
-Open your text editor and type (or copy and paste) the following:
-
-::
+Open your text editor and type - or copy and paste - the following (but do not start any line with spaces!)::
 
    from pyprototypr import *
    Create()
@@ -117,15 +105,11 @@ Now use Python to “run” this file.
 
 By “run”, its meant that you open a command-line window (see the section
 **Test that Python is installed**), change to the directory in which the
-test file was created, for example:
-
-::
+test file was created, for example::
 
    cd C:/
 
-and then type:
-
-::
+and then type::
 
    python test.py
 

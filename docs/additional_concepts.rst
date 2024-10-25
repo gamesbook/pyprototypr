@@ -85,9 +85,9 @@ will create and draw a ``Rectangle`` shape on the page; but::
 
     area = rectangle()
 
-will create a ``Rectangle`` shape, and store a reference to it in the variable
-called ``area`` (for use later on in the script) but will **not** draw it on the
-page.
+will create a ``Rectangle`` shape, and store a reference to it in the
+variable called ``area`` (for use later on in the script) but will **not** 
+draw it on the page.
 
 Quotes in Text 
 ==============
@@ -211,7 +211,8 @@ Python-specific Errors
 Python attempts to identify the type and location of the error - a
 ``SyntaxError`` is just a grammar error of some type - as well as what
 the cause *might* be. Here, its found you have used the word ``x`` twice,
-so in this case you’d need to change the second one to ``x1`` which is probably the intended property::
+so in this case you’d need to change the second one to ``x1`` which is probably 
+the intended property::
 
    Arc(x=1, y=1, x1=2, y1=3)
 

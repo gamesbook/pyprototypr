@@ -17,8 +17,8 @@ other.
     **pyprototypr** that you **must** know
 4.  `Additional Concepts <additional_concepts.rst>`_ - additional
     aspects of **pyprototypr** that can also help you create scripts
-5.  `A Worked Example <worked_example.rst>`_ - a step-by-step example of
-    creating a script
+5.  `Worked Examples <worked_example.rst>`_ - step-by-step
+    examples of setting up and running scripts to generate cards
 6.  `Script Anatomy <script_anatomy.rst>`_ - how a script is constructed
 7.  `Core Shapes <core_shapes.rst>`_ - a tour of the core elements
     available to you
@@ -31,7 +31,7 @@ other.
 11. `Hexagonal Grids <hexagonal_grids.rst>`_ - how to create designs or
     layouts on a hexagonal grid
 12. `Terminology <terminology.rst>`_ - description of meaning and
-    purpose of properties
+    purpose of element's properties
 13. `Using Python Commands <python_commands.rst>`_ - how to work with
     loops and if statements for more flexibility
 14. `Descriptions of Available Examples <examples/index.rst>`_ - brief

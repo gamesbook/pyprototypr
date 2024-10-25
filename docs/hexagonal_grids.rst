@@ -9,7 +9,7 @@ particularly suitable in providing an overlay for maps. As such they
 have been used for decades in war games and role playing games, but also
 as grids or tiles in board games - one of the more well-known examples
 of this is in the popular game *“Catan”*, first released as *“Settlers
-of Catan”*\ ” in the early 1990s.
+of Catan”* in the early 1990s.
 
 There are in fact a number of software tools available for creating
 hexagonal grids of various kinds. A few of them, some of which are
@@ -44,11 +44,14 @@ these other tools would be of better use.
    grids are designed and calculated the single most useful reference is
    https://www.redblobgames.com/grids/hexagons/
 
-A quick footnote. The 18xx train games hex maps are often criticised for
-their poor aesthetic. A fascinating article that engages with this topic
-- and perhaps relevant even at a prototyping stage - is available at
+A Small Footnote 
+~~~~~~~~~~~~~~~~
+
+The 18xx train games hex maps are often criticised for their poor aesthetic. 
+A fascinating article that engages with this topic - and is perhaps relevant 
+even at the prototyping stage being supported by this program - is available at
 https://medium.com/grandtrunkgames/mawgd4-18xx-tiles-and-18xx-maps-8a409bba4230
-.
+
 
 A Basic Hexagonal Grid
 ----------------------

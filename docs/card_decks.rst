@@ -14,12 +14,12 @@ about books. Businesses in the 20th century used Rolodexes and business
 cards as ways to track and exchange information about individuals. Early
 computers used a form of index cards called “punch” cards to store their
 data. Playing cards, of course, have been popular both in China and
-Europe coming into use somewhere in the 9th and 14th centuries
-respectively.
+Europe; coming into more widespread use somewhere in the 9th and 14th 
+centuries respectively.
 
-The vast rise in popularity of a game like *Magic the Gathering*, from
+The massive rise in popularity of a game like *Magic the Gathering*, from
 the 1990s, has inspired the greater use of cards in all aspects of the
-modern board gaming experience, with cards taking a predominant role in
+modern board gaming experience, with cards taking the predominant role in
 many of them.
 
 A Basic Deck

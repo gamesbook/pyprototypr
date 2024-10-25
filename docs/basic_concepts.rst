@@ -5,10 +5,24 @@ Basic Concepts
 Like many other specialised tools, **pyprototypr** has its own set of
 terms and concepts that act as “short-cuts” to help in discussions. Some
 of these are likely to be common to other graphics editing or
-programming tools.
+programming tools.  
 
-How you’ll use **pyprototypr**
-------------------------------
+Table of Contents
+-----------------
+
+- `How you’ll use pyprototypr`_
+- `The “script” concept`_
+- `The “position” concept`_
+- `The “element” concept`_
+- `Defining elements’ properties`_
+- `Working with color`_
+- `Working with units`_
+- `The “stroke” concept`_
+- `The “default” concept`_
+
+
+How you’ll use pyprototypr
+--------------------------
 
 You will be using **pyprototypr** to write what is termed a *script*
 i.e. a recipe or list of instructions that are stored in a file. These
@@ -38,23 +52,23 @@ if they are there and are just as important!
 So, for example, a page may contain rectangles representing cards. Each
 card may then have additional rectangles placed on it, representing some
 aspect that is part of your card design. Those rectangles, in turn,
-could have various images or icons placed on them. So, each item can
-“obscure” some part - or even all - of the item it is placed on.
+could have text, images or icons on/inside them. So, each item that is
+created later can “obscure” some part - or even all - of the item it is placed on which came earlier.
 
 Its also possible to define things earlier in a script that are reused
 later on.
 
-In summary - the *order* of instructions in a script is important!
+In summary - the *order* of instructions in a script is important as this
+will affect what you see at the end!
 
-   For more on how scripts are constructed see `Script
+   For more detail on how scripts are constructed see `Script
    Anatomy <script_anatomy.rst>`_.
 
-The “page” concept
-------------------
+The “position” concept
+----------------------
 
-When using **pyprototypr** what you are doing is defining where and how
-various things appear on a *page*. A script can create multiple pages,
-but will always have at least one.
+When using **pyprototypr** what you are doing is defining *where* and 
+*how* various things should appear on a *page*. A script can create multiple pages, but will always have at least one.
 
 The position of something is *where* it will be drawn on the page. To do
 this, you provide values for both **x** - the horizontal position - and
@@ -112,7 +126,7 @@ For example, the rectangle which represents the outline of a card has a
 the horizontal direction). The line used to draw the rectangle also has
 a *stroke width* and a *stroke color* (see below for more about the
 concepts of stroke and width). A circle will have its size defined by a
-*radius* or a *diameter*, and so on.
+value for its *radius* or *diameter*, and so on.
 
    *NOTE:* Because the word “size” is such a general one, its not really
    used in **pyprototypr**; more specific terms are used instead.
@@ -150,8 +164,8 @@ kinds of lengths or sizes all need to be measured in a particular set of
 
 In the USA, people tend to use the so-called Imperial System. In
 **pyprototypr** this means that distances might be measured in units of
-inches (inches are often shown with an *“* symbol in documents, but in
-**pyprototypr** inches are referred to using the term *inch*).
+inches (inches are often shown with an *"* (double quotes) symbol in
+documents, but in **pyprototypr** inches are referred to using the term *inch*).
 
 In almost all of the rest of the world, the Metric System is in use. In
 **pyprototypr** this means that distances will be measured in units of
@@ -164,8 +178,8 @@ can choose to use millimetres (abbreviated in **pyprototypr** as *mm*).
 **pyprototypr** also allows units of *points*, which are the measurement
 units traditionally used in the printing industry. There are 72 points
 in 1 inch. Internal calculations in **pyprototypr** are all done in
-units i.e. all inputs, regardless of being inches or centimetres are
-converted to points.
+point units i.e. all inputs, regardless of being inches or centimetres 
+are converted to points.
 
 The “stroke” concept
 --------------------
@@ -173,7 +187,8 @@ The “stroke” concept
 While the majority of size-based properties in **pyprototypr** work with
 the “normal” units you have chosen - inches or centimetres - some use
 points. These include font height, that you’re likely familiar with, and
-line thickness - termed “stroke width”.
+line thickness - termed “stroke width”. (The reason for this is to
+maintain consistency with existing tools.)
 
 The “default” concept
 ----------------------
@@ -181,7 +196,7 @@ The “default” concept
 A “default”, in terms of **pyprototypr**, is a value or setting for
 something (usually a *property*) which is used unless you specify
 otherwise. This is helpful for quickly drawing or testing something
-until you’re ready to make decisions about your own setting or value.
+until you're ready to make decisions about your own setting or value.
 
 Some examples of defaults are:
 
@@ -193,9 +208,9 @@ Some examples of defaults are:
 -  the default line *length* is 1 (one) - with default units that is 1cm
 -  the default line *stroke width* is 1 point - that corresponds to
    1/72” (or 0.353 mm)
--  the default line *stroke* color is ``black`` - which is a hexadecimal
+-  the default line *stroke* color is ``black`` - which has a hexadecimal
    value of **#000000**
--  the default area *fill* color is ``white`` - which is a hexadecimal
+-  the default area *fill* color is ``white`` - which has a hexadecimal
    value of **#FFFFFF**
 -  the default *font* is Arial, with a size (height) of 12 points and a
-   stroke color black
+   stroke color of ``black``

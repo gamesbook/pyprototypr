@@ -1,10 +1,11 @@
-pyprototypr: Using Python Commands
-==================================
+=====================
+Using Python Commands
+=====================
 
 Background
-----------
+==========
 
-   If you already know the Python programming language, you can skip
+   **NOTE** If you already know the Python programming language, you can skip
    this section!
 
 Working with an actual programming language, if you’re not a programmer,
@@ -20,7 +21,7 @@ flexibility in terms of the way you can write scripts - without adding
 too much complexity. These are *not* essential but *may* be very useful.
 
 Introduction
-------------
+============
 
 As you may already have worked out; the normal operation of the script
 is to start with the first statement and then go on to the next one and
@@ -36,12 +37,12 @@ can be used in a script if you want to. The ones below are just to show
 you some idea of the “basics”.
 
 Loops
------
+=====
 
 A loop represents a section of your script that you want to repeat a
-number of times.
+certain number of times.
 
-If you were doing a recipe, for example, it might say: *Add a cup of
+If you were reading a recipe, for example, it might say: *Add a cup of
 flour and add an egg and mix; add another cup of flour and add another
 egg and mix; add a third cup of flour and a third egg and mix*. So this
 is really the same set of actions that gets repeated three times. You
@@ -75,8 +76,8 @@ The line ends with ``:`` to show that it is expected that more lines
 will follow.
 
 The lines immediately following this set-up line are all the actions
-that must happen each time. These lines must all be indented 4 spaces
-and lined up below each other to show they are part of the loop.
+that must happen each time. **These lines must all be indented 4 spaces
+and lined up below each other to show they are part of the loop.**
 (*Note:* ignore the words used here; they are just to indicate the
 concept of actions… more practical examples are shown below!).
 
@@ -117,19 +118,6 @@ Note that we have used a different word in place of the usual ``count``.
 It does not matter too much which word you use; so pick one that makes
 sense in terms of what you’re trying to achieve by using it.
 
-Multiple loops can be used to control different values. For example:
-
-::
-
-   for y_location in range(1, 3):
-       for x_location in range(1, 3):
-           Circle(x=x_location, y=y_location)
-
-Here the outer loop runs twice, setting values for both ``x`` and ``y``.
-The outer loop happens twice, and for each time it happens, the inner
-loop happens twice. So there are actually four times (2 times 2) that
-the actions - in this case, drawing a Circle - are carried out.
-
 The value of the loop count normally goes up by 1 each time; but you can
 set a third value, inside the brackets, for the ``range`` that is a
 different increment number. For example:
@@ -143,8 +131,37 @@ Here count takes on the values 1, 3 and 5; because the third value of 2
 is added to the count value each time the loop operates. When count
 reaches 7, the loop ends right away.
 
+Multiple Loops
+--------------
+
+Multiple loops can be used to control different values. For example::
+
+   for y_location in range(1, 3):
+       for x_location in range(1, 3):
+           Circle(x=x_location, y=y_location)
+
+Here the outer loop runs twice, setting values for both ``x`` and ``y``.
+The outer loop happens twice, and for each time it happens, the inner
+loop happens twice. So there are actually four times (2 times 2) that
+the actions - in this case, drawing a Circle - are carried out.
+
+Python has a shortcut for handling multiple loops that you can use at your 
+discretion called ``zip``.
+
+If you wanted to draw a ``Circle`` at three locations, in three different
+colors, you can store all of these in lists and then do the drawing in a loop.
+
+For example::
+
+    x_pos = [1, 2, 3]
+    y_pos = [3, 2, 1]
+    fills = [red, green, yellow]
+    for x, y, fill in zip(x_pos, y_pos, fills):
+        Circle(cx=x, cy=y, fill=fill)
+
+
 If Statements
--------------
+=============
 
 An ``if`` statement is a way to allow the computer to make decisions
 based on the information available to it.
@@ -157,9 +174,7 @@ driving, but if the light is red we come to a stop.
 In a similar way we can set up a statement to allow the script to behave
 differently according to information that it has.
 
-So an ``if`` statement will look something like this:
-
-::
+So an ``if`` statement will look something like this::
 
    if color == green:
        keep_driving()
@@ -190,9 +205,7 @@ should the comparison be false, for example because the value stored in
 ``color`` is red or orange, then the second part of the if statement
 will be carried out - in this case the ``stop driving`` action.
 
-An ``if`` statement can be used inside a loop, for example:
-
-::
+An ``if`` statement can be used inside a loop, for example::
 
    for count in range(1, 5):
        if count < 3:
@@ -200,7 +213,27 @@ An ``if`` statement can be used inside a loop, for example:
        else:
            Rectangle(x=1, y=count)
 
-Here, the script will either draw a Circle or a Rectangle depending on
-the value of ``count``: if its less than than 3 (the ``<`` comparison is
-a “less than” check), then a Circle, otherwise if its 3 or more, then a
-Rectangle.
+Here, the script will either draw a ``Circle`` or a ``Rectangle`` depending 
+on the value of ``count``: if its less than than 3 (the ``<`` comparison is
+a “less than” check), then draw a ``Circle``, otherwise if its 3 or more, then 
+draw a ``Rectangle``.
+
+Multi-part If Statements
+------------------------
+
+An ``if`` statement can deal with multiple choices as well.  To continue with
+the driving example, we know there are three colors and so the program must
+handle all of them.  Any options after the first one are handled with a 
+``elif`` prefix - short for "else if"::
+
+   if color == green:
+       keep_driving()
+   elif color == orange:
+       slow_down()
+   elif color == red:
+       stop_driving()
+   else:
+       pull_over()
+
+In this example, the driver might be unsure what to do if the light has 
+malfunctioned!
