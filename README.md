@@ -13,7 +13,7 @@ a mix of graphics and text.
 ## Documentation
 
 The online documentation for __pyprototypr__ starts with the
-[Table of Contents](https://github.com/gamesbook/pyprototypr/blob/master/docs/index.md)
+[Table of Contents](https://github.com/gamesbook/pyprototypr/blob/master/docs/index.rst)
 
 If you're not familiar with any kind of programming or scripting, you should
 probably read some of the introductory sections before proceeding ...
@@ -25,7 +25,7 @@ and running on your machine.
 
 If this is **not** your default Python version, or Python is not installed on
 your machine, may want to use [uv](https://docs.astral.sh/uv/guides/install-python)
-which is a cross-platform tool to install both Python and __pyprototypr__.
+which is a cross-platform tool able to install both Python and __pyprototypr__.
 
 ## Quick Start (for the impatient)
 
@@ -86,7 +86,7 @@ areas of work or development.
     * [x] Square shape
     * [x] Equilateral Triangle shape
     * [x] Sector shape (wedge of a circle)
-    * [ ] Trapezoid shape
+    * [x] Trapezoid shape
     * [ ] Parallelogram shape
     * [ ] Wave shape
     * [ ] Cross shape
@@ -109,7 +109,7 @@ areas of work or development.
 * [ ] Arcs (pathways) inside a hexagon (**in progress**)
 * [ ] Shortcut notation for styling of: area, line, text, etc.
 * [ ] Track: layout shapes along a rectangle, circle or polygon (**in progress**)
-* [ ] Notches: different styles
+* [x] Notches: different styles for a Rectangle
 * [x] Interior hatching:
     * [x] rectangle
     * [x] hexagon
@@ -122,6 +122,7 @@ areas of work or development.
     * [x] shape labels (at centre of shape)
     * [x] Polygon
     * [x] Stadium
+    * [ ] Trapezoid
     * [ ] Triangle
 * [ ] Cards:
     * [ ] allow for copies of a card
@@ -134,6 +135,7 @@ areas of work or development.
 * [ ] Traveller board: showing a fully styled Star system (demo a custom Shape?)
 * [x] WarpWar board: showing a fully-styled sector
 * [ ] 18xx board: show a basic map with tracks, towns, cities and off-map areas
+
 ## Acknowledgements
 
 As always, with Python, you are building "on the shoulders of giants".
@@ -149,5 +151,5 @@ Additional libraries in use include:
 * `bgg-api` https://pypi.org/project/bgg-api/ - support for access to the BoardGameGeek API
 * `xlrd` https://pypi.org/project/xlrd/ - support for access to Excel `.xls` files
 * `openpyxl` https://pypi.org/project/openpyxl/ - support for access to Excel `.xlsx` files
-* `pymupdf` https://pymupdf.io/ - support for export to PNG images
+* `pymupdf` https://pymupdf.io/ - support for export from PDF to PNG images
 * `jinja` https://jinja.palletsprojects.com - template logic with variables (for cards)
