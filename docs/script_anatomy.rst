@@ -7,19 +7,6 @@ Script Anatomy
 Start, Middle and End
 =====================
 
-
-Basic Shapes
-============
-
-
-Card Decks
-==========
-
-
-Layout, Repeats and Tracks
-==========================
-
-
 Commands
 ========
 
@@ -32,6 +19,9 @@ PageBreak Command
 Save Command
 ------------
 
+Other Commands
+--------------
+
 
 Comments
 ========
@@ -39,6 +29,17 @@ Comments
 
 Drawing vs Creating
 ===================
+
+Basic Shapes
+============
+
+
+Card Decks
+==========
+
+
+Layout, Repeats and Tracks
+==========================
 
 
 The FEEDBACK Message
@@ -65,21 +66,21 @@ stop at this point and give you a feedback message.
 Supplying the script a **property that does not exist**, for example,
 using ``u=2.0`` when you meant to say ``y=2.0`` (which can happen
 because those two letters are located right next to each other on a
-keyboard). In this case, the script will “fail silently” because
-properties that don’t exist are simply ignored. This kind of mistake is
-must harder to spot, often because the default value will then be used
-instead and it will seem as though the script is drawing something
-incorrectly.
+keyboard and the letters are bit similar). In this case, the script will 
+“fail silently” because properties that don’t exist are simply ignored. 
+This kind of mistake is much harder to spot; often because the default value 
+will then be used instead and it will seem as though the script is drawing something incorrectly.
 
 Supplying the script with a **duplicate property**, for example::
 
-       display = hexagon(stroke=black, fill=white, height=2, stroke=2)
-                                                             ^^^^^^^^
+   display = hexagon(stroke=black, fill=white, height=2, stroke=2)
+                                                         ^^^^^^^^
    SyntaxError: keyword argument repeated: stroke
 
 This kind of mistake is usually easier to see as both keywords, in this
-case, are part of the same commmand and error you see highlights the
-repetition.
+case, are part of the same commmand and error message you see also highlights 
+the repetition with the ``^^^^^^^^`` characters.
 
-Errors are discussed further in the `Additional Concepts <additional_concepts.rst>`_.
+Errors are discussed further in the `Additional Concepts 
+<additional_concepts.rst>`_ section.
 

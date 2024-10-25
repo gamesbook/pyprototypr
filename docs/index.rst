@@ -38,5 +38,5 @@ other.
     walkthoughs of many of the examples provided with **pyprototypr**
 15. `Development Notes <development.rst>`_ - notes for programmers wanting
     to develop further in or with  **pyprototypr**
-16. `Additional Resources <additional_resources.rst>`_ - links to
-    information for supplementing pyprototypr
+16. `Useful Resources <useful_resources.rst>`_ - links to
+    tools and websites related to boardgame prototyping
