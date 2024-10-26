@@ -5,7 +5,8 @@ Worked Examples for a Deck of Cards
 These examples assumes that you have set-up your computer with Python and
 have tested to check that you can create a test file which generates a
 PDF. If not, please first see the `Setting Up <setting_up.md>`__
-document.
+document. It will also be helpful if you have read the 
+`Basic Concepts <basic_concepts.rst>`_ section.
 
    **Remember** when you create and edit your files, do **not** use a
    word processor such as “Word”, “Pages” or “LibreOffice” - but a text
@@ -36,7 +37,8 @@ As can be seen there are four lines in the file:
    file in which this design of will be saved. Because no further
    information is given, the default values for sizes and colours will
    used, as well as the default paper format, which is an A4 page. Every
-   script you write *must* have this as the next line.
+   script you write *must* have this line before any further **pyprototypr**
+   instructions/commands are supplied.
 -  *Line 3* - ``Deck()`` means that **pyprototypr** is defining a deck.
    Because there is no other information given, it will create the default 
    number cards - *9* cards - with each card having the same default size 

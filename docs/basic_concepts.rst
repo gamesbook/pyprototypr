@@ -13,8 +13,9 @@ Table of Contents
 - `How you’ll use pyprototypr`_
 - `The “script” concept`_
 - `The “position” concept`_
+- `The “command” concept`_
 - `The “element” concept`_
-- `Defining elements’ properties`_
+- `Setting properties`_
 - `Working with color`_
 - `Working with units`_
 - `The “stroke” concept`_
@@ -47,14 +48,14 @@ the sense that the instructions which come first create underlying parts
 that are “deeper down”; in the same way that a foundation is below a
 floor, which in turn is below the walls, which are below the ceiling,
 which is below the roof. The lower layers are often not “visible”, even
-if they are there and are just as important!
+if they are there, but they are just as important!
 
 So, for example, a page may contain rectangles representing cards. Each
 card may then have additional rectangles placed on it, representing some
 aspect that is part of your card design. Those rectangles, in turn,
 could have text, images or icons on/inside them. So, each item that is
 created later can “obscure” some part - or even all - of the item it is placed 
-on which came earlier.
+on which was defined previously.
 
 Its also possible to define things earlier in a script that are reused
 later on.
@@ -62,7 +63,7 @@ later on.
 In summary - the *order* of instructions in a script is important as this
 will affect what you see at the end!
 
-   For more detail on how scripts are constructed see `Script
+   For more detail on how what goes into a script, see `Script
    Anatomy <script_anatomy.rst>`_.
 
 The “position” concept
@@ -90,8 +91,19 @@ distances in **pyprototypr** are considered to be relative to the margin
 settings i.e. if the default page margin, for all edges of the the page
 in the previous example, was 2.5cm (1”) then to locate a point at those
 same distances would mean using an **x position** of 8cm and a **y
-position** of 12.3cm, as the position’s values will effectively be each
-increased by the margin size.
+position** of 12.3cm, as the margin size will effectively be added onto 
+the supplied values for the position.
+
+The “command” concept
+---------------------
+
+Instructions in **pyprototypr** are termed *commands*.  These usually are
+written with an initial capital letter. They are effectively "imperative"
+in nature, causing something to happen; for example:
+
+- ``Save()`` - tells the program to save the output to file
+-  ``Circle()``  - tells the program to draw a circle
+
 
 The “element” concept
 ---------------------
@@ -118,10 +130,10 @@ Examples of some of the available geometric **shapes** include:
 Descriptions of all of these shapes, and how to create and use them,
 are provided in the section on `Core Shapes <core_shapes.rst>`__.
 
-Defining elements’ properties
------------------------------
+Setting properties
+------------------
 
-Elements can have other settings apart from their position.
+*Elements* can have other settings apart from their position.
 
 For example, the rectangle which represents the outline of a card has a
 *height* (its size in the vertical direction) and a *width* (its size in
@@ -132,6 +144,9 @@ value for its *radius* or *diameter*, and so on.
 
    *NOTE:* Because the word “size” is such a general one, its not really
    used in **pyprototypr**; more specific terms are used instead.
+
+Similarly, the settings for the creation of a document can be provided,
+such its color, *paper* size and so on.
 
 All of these kinds of settings are called **properties**. Most of the
 common properties are described in the `Terminology <terminology.rst>`__.
@@ -204,6 +219,8 @@ Some examples of defaults are:
 
 -  the default *margin* for pages in the output PDF is 1.25cm (or half
    of 1 inch)
+-  the default *paper* size for pages in the output PDF is A4 (similar to
+   the US letter size)
 -  the default *units* are centimetres (*cm*)
 -  the default *x* and *y* positions are each 1 (one) - with default
    units that equals 1cm

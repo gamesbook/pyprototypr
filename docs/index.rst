@@ -20,23 +20,25 @@ other.
 5.  `Script Anatomy <script_anatomy.rst>`_ - how a script is constructed
 6.  `Additional Concepts <additional_concepts.rst>`_ - additional
     aspects of **pyprototypr** that can also help with script creation
-7.  `Core Shapes <core_shapes.rst>`_ - a tour of the core elements
-    available to you
+7.  `Core Shapes <core_shapes.rst>`_ - a tour of the core geometries
+    available and how to construct them
 8.  `Card Decks <card_decks.rst>`_ - how to create a deck, or set, of
     cards/tiles
 9.  `Advanced Commands <advanced_commands.rst>`_ - how to work with
     common/reused items and repetitive elements
-10. `Layouts <layouts.rst>`_ - how to work with different kinds of
+10. `Customised Shapes <customised_shapes.rst>`_ - how to refine the
+    appearance of certain kinds of shapes
+11. `Layouts <layouts.rst>`_ - how to work with different kinds of
     layouts
-11. `Hexagonal Grids <hexagonal_grids.rst>`_ - how to create designs or
+12. `Hexagonal Grids <hexagonal_grids.rst>`_ - how to create designs or
     layouts on a hexagonal grid
-12. `Terminology <terminology.rst>`_ - description of meaning and
-    purpose of element's properties
-13. `Using Python Commands <python_commands.rst>`_ - how to work with
+13. `Terminology <terminology.rst>`_ - common jargon, and descriptions of 
+    elements' properties
+14. `Using Python Commands <python_commands.rst>`_ - how to work with
     loops and if statements for more flexibility
-14. `Descriptions of Available Examples <examples/index.rst>`_ - brief
+15. `Descriptions of Available Examples <examples/index.rst>`_ - brief
     walkthoughs of many of the examples provided with **pyprototypr**
-15. `Development Notes <development.rst>`_ - notes for programmers wanting
+16. `Development Notes <development.rst>`_ - notes for programmers wanting
     to develop further in or with  **pyprototypr**
-16. `Useful Resources <useful_resources.rst>`_ - links to
+17. `Useful Resources <useful_resources.rst>`_ - links to
     tools and websites related to boardgame prototyping

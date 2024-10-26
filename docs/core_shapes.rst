@@ -1,5 +1,6 @@
-pyprototypr: Core Shapes
-========================
+===========
+Core Shapes
+===========
 
 .. |copy| unicode:: U+000A9 .. COPYRIGHT SIGN
    :trim:
