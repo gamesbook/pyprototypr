@@ -15,19 +15,35 @@ customisation properties available; rather refer to their specific
 descriptions to understand exactly how these can used.
 
 Table of Contents
------------------
+=================
 
--  `Color-orientated Terms`_
--  `Location- and position-orientated Terms`_
--  `Size- and length-orientated Terms`_
--  `Amount- and count-orientated Terms`_
--  `Direction-orientated Terms`_
--  `Styling-orientated Terms`_
--  `Display-orientated Terms`_
--  `Miscellaneous Terms`_
+- `pyprototypr Jargon`_
+- `Color-orientated Terms`_
+- `Location- and position-orientated Terms`_
+- `Size- and length-orientated Terms`_
+- `Amount- and count-orientated Terms`_
+- `Direction-orientated Terms`_
+- `Styling-orientated Terms`_
+- `Display-orientated Terms`_
+- `Miscellaneous Terms`_
 
-Color-orientated terms 
------------------------
+pyprototypr Jargon
+==================
+
+**pyprototypr** uses a number of 'generic' terms which you'll see throught the
+documentation:
+
+- **script** - a file containing all **pyprototypr** instructions
+- **command** - an instruction within a **pyprototypr** file
+- **element** - a
+- **shape** - a geometric element e.g. circle or square, or text or a line 
+  or a grid; something that can be drawn
+- **run** - to cause Python to act on the script so that all instructions are
+  carried out; this should usually cause an output file to be created (or 
+  recreated)
+
+Color-orientated Terms 
+======================
 
 Color is defined in the same way as it is in pages that appear on the
 web i.e. in RGB (red-green-blue) *hexadecimal* format - for example,
@@ -60,7 +76,7 @@ In general, color can be set for the lines (**stroke**) and areas
    be the same color
 
 Location- and position-orientated Terms 
-----------------------------------------
+=======================================
 
 Everything in **pyprototypr** that needs to be displayed or drawn or
 positioned must be placed somewhere on the page; each thing must have
@@ -88,8 +104,8 @@ left- and bottom-edge of a page.
    the case that the distance is not absolute, but relative to some
    other value e.g. distance from a margin; or the edge of a ``Card``
 
-Size- and length-orientated terms 
-----------------------------------
+Size- and length-orientated Terms 
+=================================
 
 The majority of length - and width, height, diameter etc. - properties
 will be numeric values, corresponding to the **unit** in use (unless
@@ -106,63 +122,48 @@ to set.
 -  **caltrops** - a descriptive term for the relative dimensions of a
    “caltrop” - the small three-pointed shape drawn at the vertex of a
    hexagon - which can be set one of: *small*, *medium* or *large*
-
 -  **diameter** - the diameter of a ``Circle``
-
 -  **dot_size** - the diameter of a small ``Dot`` in **points**
-
 -  **cross** - the height and width of the intersecting lines drawn at
    the centre of a shape
-
 -  **height** - the vertical dimension of a shape e.g. a ``Rectangle``
    or a bitmap ``Image``
-
 -  **margin** - used in ``Create`` command to set all margins for a
    page; the default for any margin is 1.25cm / 12.5mm (1/2 of an inch)
-
 -  **margin_top** - used in ``Create`` command to set top margin for a
    page
-
 -  **margin_bottom** - used in ``Create`` command to set bottom margin
    for a page
-
 -  **margin_left** - used in ``Create`` command to set left margin for a
    page
-
 -  **margin_right** - used in ``Create`` command to set right margin for
    a page
-
 -  **paper** - used in ``Create`` command to set the paper format in the
    document; either ISO series (A0 down to A8; or B6 down to B0) or a
    USA type; the default is A4. (*NOTE:* the value for paper is **not**
    wrapped in quotes!)
-
 -  **radius** - the radius of a ``Circle``
-
 -  **scaling** - the amount by which an SVG image should be shrunk or
    expanded e.g. 0.5 makes it half-size and 2.0 doubles its size; but
    because SVG is a vector-format, there will be no loss of resolution
    through scaling
-
 -  **side** - the length of a side of some shapes (e.g. ``Square``,
    ``Polygon``, ``Grid``) as well as the distance between each adjacent
    point in a ``TriangularLayout``
-
 -  **stroke_width** - the thickness of a line in **points**; many
    specific widths are set by prefixing this term with the name of the
    item in question; examples: **cross_stroke_width**;
    **grid_stroke_width**; **radii_stroke_width**
-
 -  **width** - the horizontal dimension of a shape e.g. a ``Rectangle``
    or a bitmap ``Image``
 
 Amount- and count-orientated Terms 
------------------------------------
+==================================
 
 -  **sides** - the number of sides of a ``Polygon`` shape
 
 Direction-orientated Terms 
----------------------------
+==========================
 
 In general, there are two primary ways of determining direction of
 something; either by compass direction or angle. Other descriptive
@@ -217,7 +218,7 @@ Properties that use direction include:
    should first placed when creating a track.
 
 Styling-orientated Terms 
--------------------------
+========================
 
 -  **dotted** - allows a line to be broken into a series of dots of
    fixed size (3 points in length; with a gap of 3 points between each)
@@ -226,7 +227,7 @@ Styling-orientated Terms
    can any number of these length/space pairs in a list.
 
 Display-orientated Terms
-------------------------
+========================
 
 -  **hidden** - a list of locations, indicated either by their sequence
    number (i.e. their position in the drawing order) or their row and
@@ -238,7 +239,7 @@ Display-orientated Terms
    display - the rest are ignored
 
 Miscellaneous Terms
--------------------
+===================
 
 -  **debug** - a value can be set for this that will cause underlying
    values or locations to be displayed e.g. using ``debug="n"`` for a

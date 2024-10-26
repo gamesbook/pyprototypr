@@ -3,7 +3,7 @@ Decks of Cards
 ==============
 
 Introduction
-------------
+============
 
 Cards are a common and widely used method of storing and transmitting
 small sets of related data.
@@ -22,7 +22,26 @@ the 1990s, has inspired the greater use of cards in all aspects of the
 modern board gaming experience, with cards taking the predominant role in
 many of them.
 
-A Basic Deck
-------------
+Basic Concepts
+==============
 
-**To Be Done**
+A common element in many games is a deck - or multiple decks - of cards.
+
+    **pyprototypr** also considers items such tiles or counters to be "cards";
+    they are really just "shapes containing other shapes"
+
+There are two core concepts: the ``Card()`` and the ``Deck()``.
+
+A ``Card()``command is used to specify the design for a card, or range of
+cards, typically using elements that have already been defined.  The patterns
+or designs can appear on multiple cards.
+
+A ``Deck()``command is used to specify type, size and number of cards that will 
+be used to create all cards in the deck.
+
+Data Sources
+============
+
+
+
+

@@ -53,7 +53,8 @@ So, for example, a page may contain rectangles representing cards. Each
 card may then have additional rectangles placed on it, representing some
 aspect that is part of your card design. Those rectangles, in turn,
 could have text, images or icons on/inside them. So, each item that is
-created later can “obscure” some part - or even all - of the item it is placed on which came earlier.
+created later can “obscure” some part - or even all - of the item it is placed 
+on which came earlier.
 
 Its also possible to define things earlier in a script that are reused
 later on.
@@ -68,7 +69,8 @@ The “position” concept
 ----------------------
 
 When using **pyprototypr** what you are doing is defining *where* and 
-*how* various things should appear on a *page*. A script can create multiple pages, but will always have at least one.
+*how* various things should appear on a *page*. A script can create multiple 
+pages, but will always have at least one.
 
 The position of something is *where* it will be drawn on the page. To do
 this, you provide values for both **x** - the horizontal position - and

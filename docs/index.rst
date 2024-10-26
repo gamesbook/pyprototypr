@@ -15,11 +15,11 @@ other.
     on your computer
 3.  `Basic Concepts <basic_concepts.rst>`_ - core aspects of
     **pyprototypr** that you **must** know
-4.  `Additional Concepts <additional_concepts.rst>`_ - additional
-    aspects of **pyprototypr** that can also help you create scripts
-5.  `Worked Examples <worked_example.rst>`_ - step-by-step
+4.  `Basic Worked Examples <worked_example.rst>`_ - step-by-step
     examples of setting up and running scripts to generate cards
-6.  `Script Anatomy <script_anatomy.rst>`_ - how a script is constructed
+5.  `Script Anatomy <script_anatomy.rst>`_ - how a script is constructed
+6.  `Additional Concepts <additional_concepts.rst>`_ - additional
+    aspects of **pyprototypr** that can also help with script creation
 7.  `Core Shapes <core_shapes.rst>`_ - a tour of the core elements
     available to you
 8.  `Card Decks <card_decks.rst>`_ - how to create a deck, or set, of
