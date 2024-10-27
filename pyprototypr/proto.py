@@ -263,8 +263,9 @@ def Save(**kwargs):
     output = kwargs.get('output', None)
     dpi = support.to_int(kwargs.get('dpi', 300), 'dpi')
     names = kwargs.get('names', None)
+    directory = kwargs.get('directory', None)
     if output:
-        support.pdf_to_png(filename, dpi, names)
+        support.pdf_to_png(filename, dpi, names, directory)
 
 
 def save(**kwargs):

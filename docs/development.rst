@@ -2,18 +2,28 @@
 Development
 ===========
 
+These notes are aimed at those who might be developing further, who want to
+use as part of other Python projects.
+
+
 Coding
 ======
 
 In general, follow the `Zen of Python <https://peps.python.org/pep-0020/>`_ ...
+but also try to follow the style of the code in the rest of the project.
 
 Note, however, that this project "breaks" a few normal conventions:
 
 - Use of ``global`` variables in the ``proto.py`` file
-- Extensive use of ``**kwargs**`` for the various shapes which means that a user 
-  could pass in a key+value setting that simply gets ignored without raising an 
-  error; this could be improved by creating numerous subclasses with a more 
+- Extensive use of ``**kwargs**`` for the various shapes which means that a user
+  could pass in a key+value setting that simply gets ignored without raising an
+  error; this could be improved by creating numerous subclasses with a more
   extensive inheritance framework, but...
+- Use of ``from pyprototypr import *`` for running scripts; you could force a
+  user to import only what they need but that makes it really tedious for them;
+  if you are using it as part of another project, then of course you should
+  follow the normal approach of only importing what you need!
+
 
 Documentation
 =============

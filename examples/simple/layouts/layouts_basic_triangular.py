@@ -71,7 +71,6 @@ PageBreak()
 
 # ---- north facing; multicols
 
-
 Blueprint(stroke_width=0.5)
 Text(common=header, text="TriangularLayout: North/2 cols + debug")
 tri = TriangularLayout(facing='north', y=5, x=2, side=.66, cols=2)
@@ -92,7 +91,6 @@ PageBreak()
 
 # ---- layout with shapes
 
-
 circles = Common(x=0, y=0, diameter=1.0, label="{count}/{col}-{row}", label_size=6)
 a_circle = circle(common=circles)
 
@@ -108,4 +106,5 @@ tri = TriangularLayout(side=1.0, cols=3, x=2, y=2, facing="south")
 Layout(tri, shapes=[a_circle,])
 PageBreak()
 
+#Save(directory="/tmp/dtest", output='png', names=[None]*10 + ['a','b','c'])
 Save()

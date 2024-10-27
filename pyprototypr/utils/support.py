@@ -29,7 +29,13 @@ def feedback(item, stop=False, warn=False):
 
 
 def equi(side: Any):
-    """Calculate height of equilateral triangle from a side."""
+    """Calculate height of equilateral triangle from a side.
+
+    Doc Test:
+
+    >>> equi(5)
+    4.330127018922194
+    """
     _side = to_float(side)
     return math.sqrt(_side**2 - (0.5 * _side)**2)
 
@@ -39,6 +45,12 @@ def numbers(*args):
 
     'frange6' from http://code.activestate.com/recipes/\
                    66472-frange-a-range-function-with-float-increments/
+
+    Doc Test:
+
+    >>> dg = numbers(5.0, 10.0, 0.5)
+    >>> assert next(dg) == 5.0
+    >>> assert next(dg) == 5.5
     """
     start = 0.0
     step = 1.0
@@ -62,25 +74,52 @@ def numbers(*args):
         v += step
 
 
-def letters(start='a', stop='z'):
-    """Return list of characters between two letters."""
+def letters(start: str = 'a', stop: str = 'z'):
+    """Return list of characters between two letters.
+
+    Doc Test:
+
+    >>> letters('b', 'd')
+    ['b', 'c', 'd']
+    """
     def gen():
         for c in range(ord(start), ord(stop) + 1):
             yield chr(c)
     return list(gen())
-    
-    
-def roman(value: int) -> str:
-    """Convert an integer to a Roman number 
-    
+
+
+def roman(value: int, REAL=True) -> str:
+    """Convert an integer to a Roman number
+
     Source:
         https://www.geeksforgeeks.org/converting-decimal-number-lying-between-1-to-3999-to-roman-numerals/
+
+    Note:
+        REAL is only used for doctest, to bypass sys.exist() problem
+
+    Doc Test:
+
+    >>> roman(5)
+    'V'
+    >>> roman(50)
+    'L'
+    >>> roman(55)
+    'LV'
+    >>> roman(555)
+    'DLV'
+    >>> roman(5555, False)
+    FEEDBACK:: Cannot convert a number above 3999 to Roman
+    >>> roman('a', False)
+    FEEDBACK:: The value "a" is not a valid integer
     """
     try:
         num = abs(int(value))
     except Exception:
-        feedback(f'The value "{value}" is not a valid integer', True)
-        return    
+        feedback(f'The value "{value}" is not a valid integer', REAL)
+        return
+    if num > 3999:
+        feedback('Cannot convert a number above 3999 to Roman', REAL)
+        return None
 
     # Store Roman values of digits from 0-9 at different places
     m = ["", "M", "MM", "MMM"]
@@ -165,7 +204,15 @@ def steps(start, end, step=1, REAL=True):
 
 
 def split(string, delim=' '):
-    """Split a string on the delim."""
+    """Split a string on the delim.
+
+    Doc Test:
+
+    >>> split('a b')
+    ['a', 'b']
+    >>> split('a,b', ',')
+    ['a', 'b']
+    """
     return string.split(delim)
 
 
@@ -178,6 +225,14 @@ def combinations(_object, size=2, repeat=1, delimiter=','):
             how many items to take from list to create a combo
         repeat: int
             how many times to repeat item in original list
+
+    Doc Test:
+
+    >>> combinations([1,2,3])
+    ['12', '13', '23']
+    >>> combinations('1,2,3')
+    ['12', '13', '23']
+
     """
     try:
         size = int(size)
@@ -215,31 +270,55 @@ def combinations(_object, size=2, repeat=1, delimiter=','):
 
 
 def to_int(value: Any, name: str = '',  fail: bool = True) -> int:
-    """Convert value to an integer."""
+    """Convert value to an integer.
+
+    Doc Test:
+
+    >>> to_int('3')
+    3
+    >>> to_int('a', fail=False)
+    FEEDBACK:: Unable to convert "a" into a whole number!
+    >>> to_int('a', name="foo", fail=False)
+    FEEDBACK:: Unable to use foo value of "a" - needs to be a whole number!
+    """
     try:
         return int(value)
     except Exception as err:
         if name:
-            feedback(f'Unable to use {name} of "{value}" - needs to be a whole number!', fail)
+            feedback(f'Unable to use {name} value of "{value}" - needs to be a whole number!', fail)
         else:
             feedback(f'Unable to convert "{value}" into a whole number!', fail)
 
 
 def to_float(value: Any, name: str = '',  fail: bool = True) -> float:
-    """Convert value to a float."""
+    """Convert value to a float.ccto_float('3')
+    3.0
+    >>> to_float('a', fail=False)
+    FEEDBACK:: Unable to convert "a" into a floating point number!
+    >>> to_float('a', name="foo", fail=False)
+    FEEDBACK:: Unable to use foo value of "a" - needs to be a floating point number!
+    """
     try:
         return float(value)
     except Exception as err:
         if name:
-            feedback(f'Unable to use {name} of "{value}" - needs to be a floating point number!', fail)
+            feedback(f'Unable to use {name} value of "{value}" - needs to be a floating point number!', fail)
         else:
             feedback(f'Unable to convert "{value}" into a floating point number!', fail)
 
 
 def excel_column(value: int = 1):
     """Convert a number into an Excel column letter.
+
     Ref:
         https://stackoverflow.com/questions/23861680/
+
+    Doc Test:
+
+    >>> excel_column(1)
+    'A'
+    >>> excel_column(27)
+    'AA'
     """
 
     def converter(num):
@@ -256,42 +335,59 @@ def excel_column(value: int = 1):
 
 def excels(start, end, step=1, REAL=True):
     """Return a list of Excel col numbers from start to end, at step intervals.
+
+    Doc Test:
+
+    >>> excels(1, 2)
+    ['A', 'B']
+    >>> excels(27, 29)
+    ['AA', 'AB', 'AC']
     """
     nums = steps(start, end, step=step, REAL=REAL)
     result = [excel_column(num) for num in nums]
     return result
 
 
-def pdf_to_png(filename: str, dpi: int = 300, names: list = None):
+def pdf_to_png(filename: str, dpi: int = 300, names: list = None, directory: str = None):
     """Extract pages from PDF as PNG image(s)."""
     feedback(f'Saving page(s) from "{filename}" as PNG image file(s)...')
-    basename = os.path.splitext(filename)[0]
-    dirname = os.path.dirname(filename)
+    _filename = os.path.basename(filename)
+    basename = os.path.splitext(_filename)[0]
+    dirname = directory or os.path.dirname(filename)
+    # validate directory
+    if not os.path.exists(dirname):
+        feedback(f'Cannot find the directory "{dirname}" - please create this.',
+                 True)
     # validate names list
     if names is not None:
         if isinstance(names, list):
             for name in names:
-                if not isinstance(name, str):
-                    feedback(f'Each item in names settings "{names}" must be text.',
+                if not (isinstance(name, str) or name is None):
+                    feedback(f'Each item in names settings "{names}" must be text or None.',
                              True)
         else:
-            feedback(f'The names settings "{names}" must be a list of names.', False, True)
+            feedback(f'The names setting "{names}" must be a list of names.',
+                     False, True)
             names = None
-    # save pages as png files
+        if len(names) != len(list(set(names))):
+            feedback(f'The names setting "{names}" does not contain a unique list of names.',
+                     False, True)
+    # save pages as .png files
     try:
         doc = pymupdf.open(filename)
         pages = doc.page_count
         for pg_number, page in enumerate(doc):
             pix = page.get_pixmap(dpi=dpi)
             if names and pg_number < len(names):
-                breakpoint()
-                iname = os.path.join(dirname, f"{names[pg_number]}.png")
-                pix.save(iname)
+                if names[pg_number] is not None:
+                    iname = os.path.join(dirname, f"{names[pg_number]}.png")
+                    pix.save(iname)
             else:
                 if pages > 1:
-                    pix.save(f"{basename}-{page.number + 1}.png")
+                    iname = os.path.join(dirname, f"{basename}-{page.number + 1}.png")
                 else:
-                    pix.save(f"{basename}.png")
+                    iname = os.path.join(dirname, f"{basename}.png")
+                pix.save(iname)
     except Exception as err:
         feedback(f'Unable to extract images for {filename} - {err}!')
 
