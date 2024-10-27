@@ -121,6 +121,25 @@ Example #1
    :width: 300
    :align: left
 
+Test
+~~~~
+
+.. |ccl| image:: images/examples/simple/defaults/line.png
+   :width: 300
+
+===== ======
+|ccl| This example shows the shape constructed using the command with only   
+      defaults::
+      
+          Line()
+      
+      It has the following properties based on the defaults:
+        
+      - length of 1cm,
+      - starts at x-position 1cm and at y-position 1cm,
+      - heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east").
+===== ======
+
 
 Line 
 ~~~~

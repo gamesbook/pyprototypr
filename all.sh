@@ -16,6 +16,7 @@ python examples/simple/customised_rectangle.py -d /tmp/demo
 python examples/simple/customised_shapes.py -d /tmp/demo
 python examples/simple/customised_tracks.py -d /tmp/demo
 # -- examples: simple: layouts
+echo "Creating customised layouts..."
 python examples/simple/layouts/layouts_basic.py -d /tmp/demo
 python examples/simple/layouts/layouts_basic_rectangular.py -d /tmp/demo
 python examples/simple/layouts/layouts_basic_triangular.py -d /tmp/demo
