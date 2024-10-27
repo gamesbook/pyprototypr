@@ -32,11 +32,11 @@ A common element in many games is a deck - or multiple decks - of cards.
 
 There are two core concepts: the ``Card()`` and the ``Deck()``.
 
-A ``Card()``command is used to specify the design for a card, or range of
+A ``Card()`` command is used to specify the design for a card, or range of
 cards, typically using elements that have already been defined.  The patterns
 or designs can appear on multiple cards.
 
-A ``Deck()``command is used to specify type, size and number of cards that will 
+A ``Deck()`` command is used to specify type, size and number of cards that will 
 be used to create all cards in the deck.
 
 Data Sources

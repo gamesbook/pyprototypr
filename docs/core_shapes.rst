@@ -85,7 +85,6 @@ across every shape.
 Linear Shapes
 --------------
 
-
 Arc 
 ~~~
 `^ <shapeIndex_>`_
