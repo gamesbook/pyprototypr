@@ -1082,9 +1082,6 @@ class BaseShape:
                     tools.feedback('~~~ NO fill color set!')
             else:
                 _fill = ext(fill) or ext(self.fill)
-
-                #if _fill == "#224484": breakpoint()
-
                 canvas.setFillColor(_fill)
                 _transparency = ext(self.transparency)
                 if _transparency:
@@ -1103,7 +1100,7 @@ class BaseShape:
                                 f'~ Transp. color set: {alpha_fill} vs {_fill}')
                         _fill = alpha_fill
                         canvas.setFillColor(_fill)
-                    except:
+                    except Exception:
                         tools.feedback('Unable to set transparency for {_fill}')
                 if debug:
                     tools.feedback(f'~~~ Fill color set: {_fill}')
