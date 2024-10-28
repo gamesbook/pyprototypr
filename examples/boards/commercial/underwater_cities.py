@@ -21,10 +21,6 @@ Image("images/world_map.png", x=7, y=6, width=52.4, height=32)
 # Grid
 Grid(x=0.25, y=0.4, side=1.25, stroke="#587CBC")
 
-# Translucent "sea" overlay
-
-# Scoring Track
-
 # Outline
 drect = Common(fill=None, stroke=grey, dashed=[0,0.05,0.05], rounding=0.5, stroke_width=2)
 
@@ -73,13 +69,35 @@ Repeat(grect, cols=5, rows=1, offset=7, gap=1)
 lock_grn = image('images/padlock-open-green.png', x=7, y=1, width=1.5, height=1.5)
 Repeat(lock_grn, rows=5, cols=1, offset=7, gap=1)
 
-# "S" Cards
+# Special Cards
+special_grn = "#4A8D86"
+special_grn_rect = rectangle(
+    y=9.5, x=34.5, width=5.5, height=8.5, fill_stroke=special_grn, rounding=0.5,
+    transparency=80, label="S", label_size=164, label_stroke="#69A8B9")
+Repeat(special_grn_rect, cols=3, rows=2, offset_across=9.5, offset_down=7,)
+
+# Government Cards
+gov_blue = "#666D8A"
+gov_blue_rect = rectangle(y=24, x=11, width=5.5, height=8.5, fill_stroke=gov_blue, rounding=0.5, transparency=90)
+Repeat(gov_blue_rect, cols=3, rows=1, offset=7)
+
+# Free Action Space
+free_action_btm = "#3A495C"
+free_action_top = "#517C8F"
+Rectangle(x=19.5, y=9.5, width=5.5, height=2.5, fill_stroke=free_action_btm, rounding=0.5)
+Rectangle(x=19.5, y=12, width=5.5, height=3.5, fill_stroke=free_action_top, rounding=0.5)
+Rectangle(common=drect, x=19, y=9, height=7, width=6.5)
 
 # Game Name
-Rectangle(x=45, y=1, width=10.5, height=4, fill="#4C588C", stroke="#788CCB", stroke_width=2)
+name_fill = "#4C588C"
+name_stroke = "#788CCB"
+name_rect = Common(fill=name_fill, stroke=name_stroke, stroke_width=2)
+Rectangle(common=name_rect, x=45, y=1, width=10.5, height=4)
 Rectangle(
-    x=45, y=3.75, width=10.5, height=1.25,
-    fill="#4C588C", stroke="#788CCB", stroke_width=2,
+    common=name_rect, x=45, y=3.75, width=10.5, height=1.25,
     label="PROJECT: UNDERWATER CITIES", label_size=18)
+
+# Scoring Track
+
 
 Save()
