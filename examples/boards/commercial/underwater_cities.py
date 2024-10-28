@@ -4,8 +4,8 @@
 Written by: Derek Hohls
 Created on: 27 October 2024
 Notes:
-    This is not a complete "copy" of the board; just to show how some aspects
-    could be implemented
+    This is not a complete "copy" of the board; its just to show how
+    some aspects could be implemented
 """
 from pyprototypr import *
 
@@ -20,6 +20,9 @@ Image("images/world_map.png", x=7, y=6, width=52.4, height=32)
 
 # Grid
 Grid(x=0.25, y=0.4, side=1.25, stroke="#587CBC")
+
+# Partial blur
+Rectangle(x=0, y=0, width=59.4, height=42, fill=white, transparency=20)
 
 # Outline
 drect = Common(fill=None, stroke=grey, dashed=[0,0.05,0.05], rounding=0.5, stroke_width=2)
@@ -82,10 +85,10 @@ gov_blue_rect = rectangle(y=24, x=11, width=5.5, height=8.5, fill_stroke=gov_blu
 Repeat(gov_blue_rect, cols=3, rows=1, offset=7)
 
 # Free Action Space
-free_action_btm = "#3A495C"
-free_action_top = "#517C8F"
-Rectangle(x=19.5, y=9.5, width=5.5, height=2.5, fill_stroke=free_action_btm, rounding=0.5)
+free_action_top = "#016EB3"
+free_action_btm = "#014B8A"
 Rectangle(x=19.5, y=12, width=5.5, height=3.5, fill_stroke=free_action_top, rounding=0.5)
+Rectangle(x=19.5, y=9.5, width=5.5, height=3, fill_stroke=free_action_btm, rounding=0.5)
 Rectangle(common=drect, x=19, y=9, height=7, width=6.5)
 
 # Game Name
@@ -98,6 +101,21 @@ Rectangle(
     label="PROJECT: UNDERWATER CITIES", label_size=18)
 
 # Scoring Track
-
+score_common = Common(
+    cx=0, cy=0, radius=0.75, stroke_width=3, fill=None, dot=.5, label_size=21)
+score_base = circle(
+    common=score_common, stroke="#11B6E4", dot_stroke="#008FCE")
+score_5 = circle(
+    common=score_common, stroke="#7BC9E6", dot_stroke="#3FA1BB",
+    label="{count}", label_stroke=white)
+score_10 = circle(
+    common=score_common, stroke="#EEE544", dot_stroke="#B5CDB0",
+    label="{count}", label_stroke=white)
+score_track = RectangularLayout(
+    x=7.5, y=7.75,
+    cols=32, rows=19, interval=1.54,
+    start="SE", direction="west", pattern="outer")
+Layout(score_track,
+       shapes=[score_base]*4 + [score_5] + [score_base]*4 + [score_10])
 
 Save()

@@ -1661,7 +1661,7 @@ def Layout(grid, **kwargs):
             # breakpoint()
             cx = loc.x * shape.units + shape._o.delta_x
             cy = loc.y * shape.units + shape._o.delta_y
-            shape.draw(_abs_cx=cx, _abs_cy=cy, rotation=rotation)
+            shape.draw(_abs_cx=cx, _abs_cy=cy, rotation=rotation, text_sequence=f'{loc.sequence}')
             shape_id += 1
         if shape_id > len(shapes) - 1:
             shape_id = 0  # reset and start again

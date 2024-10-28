@@ -477,7 +477,7 @@ class RectangularLayout(VirtualLayout):
         max_outer = 2 * self.rows + (self.cols - 2) * 2
         corner = None
         # print(f'\n*** {self.start=} {self.layout_size=} {max_outer=} {self.stop=} {clockwise=}')
-        # triangular layout
+        # ---- triangular layout
         if self.side:
             self.col_spacing = self.side
             self.row_spacing = math.sqrt(3) / 2. * self.side

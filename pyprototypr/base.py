@@ -1104,8 +1104,9 @@ class BaseShape:
                         tools.feedback('Unable to set transparency for {_fill}')
                 if debug:
                     tools.feedback(f'~~~ Fill color set: {_fill}')
-        except AttributeError:
-            tools.feedback('Unable to set fill color ')
+        except (ValueError, AttributeError):
+            issue = f'"{_fill}" is not a valid value' if _fill else "no value provided!"
+            tools.feedback(f'Unable to set fill color:- {issue}', True)
         try:
             if stroke in [None, []] and self.stroke in [None, []]:
                 canvas.setStrokeColor(black, 0)  # full transparency
@@ -1516,7 +1517,7 @@ class BaseShape:
         """Draw a multi-string on the canvas.
         """
         self.draw_multi_string(
-            canvas=canvas, x=x, y=y, string=string, align=align, rotation=rotation)
+            canvas=canvas, x=x, y=y, string=string, align=align, rotation=rotation, **kwargs)
 
     def draw_heading(self, canvas, ID, x, y, y_offset=0, align=None, rotation=0, **kwargs):
         """Draw the heading for a shape (normally above the shape).
