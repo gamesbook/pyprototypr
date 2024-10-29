@@ -115,12 +115,7 @@ class SequenceShape(BaseShape):
     Set of shapes drawn at points
     """
 
-    def __init__(self, _object=None, canvas=None, **kwargs):
-        super(SequenceShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        self._object = _object or TextShape(_object=None, canvas=canvas, **kwargs)
-        # ---- set props
-        self.setting_list = []
-        self.setting = kwargs.get('setting', (1, 1, 1, 'number'))
+    def calculate_setting_list(self):
         if not isinstance(self.setting, tuple):
             tools.feedback(f"Sequence setting '{self.setting}' must be a set!", True)
         if len(self.setting) < 2:
@@ -136,7 +131,8 @@ class SequenceShape(BaseShape):
             self.set_type = 'number' \
                 if isinstance(self.set_start, (int, float, complex)) \
                 else 'letter'
-        # ---- calculate sequence values
+        # ---- store sequence values in setting_list
+        self.setting_list = []
         try:
             if self.set_type.lower() in ['n', 'number']:
                 self.set_stop = self.setting[1] + 1 if self.set_inc > 0 else self.setting[1] - 1
@@ -159,8 +155,18 @@ class SequenceShape(BaseShape):
                     f"'{self.set_type}' must be either number or letter!", True)
         except Exception as err:
             log.info(err)
-            tools.feedback(f"Unable to evaluate Sequence setting '{self.setting}';"
-                           " - please check and try again!", True)
+            tools.feedback(
+                f"Unable to evaluate Sequence setting '{self.setting}';"
+                " - please check and try again!", True)
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(SequenceShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        self._object = _object or TextShape(_object=None, canvas=canvas, **kwargs)
+        self.setting = kwargs.get('setting', (1, 1, 1, 'number'))
+        if isinstance(self.setting, list):
+            self.setting_list = self.setting
+        else:
+            self.calculate_setting_list()
 
         self.gap_x = self.gap_x or self.gap
         self.gap_y = self.gap_y or self.gap
