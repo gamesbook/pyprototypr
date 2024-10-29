@@ -49,7 +49,7 @@ Hexagon(common=hxgn, x=0, y=4, orientation='flat', hatch_directions='nw', label=
 Hexagon(common=hxgn, x=2, y=4, orientation='pointy', hatch_directions='nw', label="nw/se")
 PageBreak()
 
-# ---- hatch + text
+# ---- hatch + text - flat
 Blueprint()
 Text(common=txt, text="Hexagon: flat; text; hatch")
 Hexagon(
@@ -57,12 +57,12 @@ Hexagon(
     height=2,
     hatch=3,
     hatch_stroke=red,
-    debug=True,
     title="Title",
     label="Label",
     heading="Heading")
 PageBreak()
 
+# ---- hatch + text - pointy
 Blueprint()
 Text(common=txt, text="Hexagon: pointy; text; hatch")
 Hexagon(
@@ -72,6 +72,7 @@ Hexagon(
     hatch_stroke=red,
     orientation='pointy',
     title="Title",
+    label="Label",
     heading="Heading")
 PageBreak()
 
@@ -103,5 +104,13 @@ PageBreak()
 Text(common=txt, text="Hexagon END...")
 PageBreak(footer=True)
 
-Save()
-# Save(output='png', dpi=600)
+Save(
+     output='png',
+     dpi=600,
+     directory="docs/images/examples/simple/custom/hexagon",
+     names=[
+        None,
+        "centre", "dot_cross", "hatch",
+        "hatch_text_flat", "hatch_text_pointy",
+        "radii_flat", "radii_pointy",
+        None])
