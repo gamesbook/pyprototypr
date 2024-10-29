@@ -369,7 +369,8 @@ def pdf_to_png(filename: str, dpi: int = 300, names: list = None, directory: str
             feedback(f'The names setting "{names}" must be a list of names.',
                      False, True)
             names = None
-        if len(names) != len(list(set(names))):
+        _names = [name in names if name is not None else name]
+        if len(_names) != len(list(set(_names))):
             feedback(f'The names setting "{names}" does not contain a unique list of names.',
                      False, True)
     # save pages as .png files

@@ -37,10 +37,10 @@ Stadium(cx=3, cy=1, side=1, cross=0.25, cross_stroke=blue, cross_stroke_width=1)
 PageBreak()
 
 # ---- centre placement
-# Blueprint()
-# Text(common=txt, text="Trapezoid: cx=2, cy=3")
-# Trapezoid(cx=2, cy=3)
-# PageBreak()
+Blueprint()
+Text(common=txt, text="Trapezoid: cx=2, cy=3")
+Trapezoid(cx=2, cy=3)
+PageBreak()
 
 Blueprint()
 Text(common=txt, text="Rhombus: cx=2, cy=3")
@@ -189,7 +189,7 @@ PageBreak()
 
 # ---- sequence
 Blueprint()
-Text(common=txt, text="Sequence: direction and value")
+Text(common=txt, text="Sequence: direction; values; list")
 Sequence(
     text(x=1, y=4),
     setting=('h','b',-2,'letter'),
@@ -203,17 +203,17 @@ Sequence(
     gap_x=0.5,
     )
 Sequence(
-    text(x=1, y=1.5),
-    setting=(10,2,-2,'number'),
-    gap_x=0.5,
+    text(x=0.5, y=1.5, text="${SEQUENCE}"),
+    setting=(10, 2, -2, 'number'),
+    gap_x=0.8,
     )
 Sequence(
-    text(x=1, y=.85),
-    setting=(10,14,1,'number'),
-    gap_x=0.66,
+    circle(cx=3.5, cy=5.5, radius=0.3, label="{SEQUENCE}"),
+    setting=[4, 'B?', 2, 'C!'],
+    gap_y=-0.7,
     )
 Sequence(
-    text(x=1, y=0.25, text="${SEQUENCE}"),
+    rectangle(x=0.5, y=0.25, height=1, width=0.6, label="{SEQUENCE}"),
     setting=(1,5,1,'number'),
     gap_x=0.66,
     )
@@ -311,5 +311,21 @@ PageBreak()
 Text(common=txt, text="Shapes END...")
 PageBreak(footer=True)
 
-Save()
-# Save(output='png', dpi=600)
+#Save()
+Save(
+     output='png',
+     dpi=600,
+     directory="docs/images/examples/simple/customised",
+     names=[
+        None,
+        "blueprint_subdiv", "dots_crosses", "trapezoid", "rhombus","star",
+        "ellipse_centre",  "polygon", "arrow", "right_angled_triangle",
+        "compass", "lines", "starfield_rectangle", "starfield_circle",
+        "starfield_poly", "equilateral_triangle", "right_angled_triangle_flip",
+        "sectors", "grid_gray", "dotgrid_moleskine", "arc",
+        "stadium_edges", "trapezoid_flip", "sequence_values",
+        "sequence_shapes", "chord", "polygon_radii", "dates_formats",
+        "images_normal_rotation", "rhombus_red_rotation",
+        "stadium_red_rotation", "polygon_rotation_flat",
+        "polygon_rotation_pointy",
+        None])

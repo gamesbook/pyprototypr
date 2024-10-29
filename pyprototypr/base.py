@@ -397,16 +397,19 @@ class BaseCanvas:
         self.debug_color = self.get_color(
             self.defaults.get('debug_color'), DEBUG_COLOR)
         self.fill_stroke = self.defaults.get('fill_stroke', None)
+        self.stroke_fill = self.defaults.get('stroke_fill', None)  # alias
         # ---- stroke
         stroke = self.defaults.get('stroke', self.defaults.get('stroke_color'))
         self.stroke = self.get_color(stroke, black)
         self.stroke_width = self.defaults.get('stroke_width', WIDTH)
         self.outline = self.defaults.get('outline', None)
         # ---- overwrite fill & stroke
+        if self.stroke_fill:  # alias
+            self.stroke = self.stroke_fill
+            self.fill = self.stroke_fill
         if self.fill_stroke:
             self.stroke = self.fill_stroke
             self.fill = self.fill_stroke
-            print(f'*** {self.stroke=} {self.fill=}')
         # if self.outline:
         #     self.stroke = self.outline
         #     self.fill = None
