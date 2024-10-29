@@ -17,6 +17,9 @@ Footer(draw=False)
 
 txt = Common(x=0, y=6, font_size=8, align="left")
 
+Text(common=txt, text="Circle START...")
+PageBreak(footer=True)
+
 # ---- circle hatch
 Blueprint()
 Text(common=txt, text="Circle: hatch")
@@ -122,7 +125,19 @@ Circle(cx=2, cy=4.5, radius=1,
        petals_height=0.25,
        petals_stroke=red,
        petals_fill=yellow)
+PageBreak()
+
+# ---- END
+Text(common=txt, text="Rectangle END...")
+PageBreak(footer=True)
 
 
-Save()
-# Save(output='png', dpi=600)
+Save(
+     output='png',
+     dpi=600,
+     directory="docs/images/examples/simple/custom/circle",
+     names=[
+        None,
+        "hatch", "dot_cross", "radii",
+        "petals_triangle", "petals_curve", "petals_petal",
+        None])
