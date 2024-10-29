@@ -257,6 +257,8 @@ def Save(**kwargs):
         cnv.canvas.showPage()
     try:
         cnv.canvas.save()
+    except RuntimeError as err:
+        tools.feedback(f'Unable to save "{filename}" - {err}', True)
     except FileNotFoundError as err:
         tools.feedback(f'Unable to save "{filename}" - {err}', True)
 

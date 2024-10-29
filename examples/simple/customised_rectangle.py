@@ -170,4 +170,12 @@ Text(common=txt, text="Rectangle END...")
 PageBreak(footer=True)
 
 Save()
-# Save(output='png', dpi=600)
+Save(
+     output='png',
+     dpi=600,
+     directory="docs/images/examples/simple/custom/rectangle",
+     names=[
+        None,
+        "centre", "notch", "dot_cross", "hatch", "rounding", "chevron",
+        "peak", "label_offset", "rotation", "notch_style",
+        None])
