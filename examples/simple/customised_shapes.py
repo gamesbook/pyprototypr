@@ -125,18 +125,25 @@ PageBreak()
 # ---- equilateral triangle: hatch
 Blueprint()
 Text(common=txt, text="Equilateral Triangle; text; hatch")
-EquilateralTriangle(x=0, y=1, side=4, hatch=5, hatch_stroke=red,
-                    title='Title', heading='Heading', label='Label')
+# EquilateralTriangle(x=2, y=3, side=1, hatch=5, hatch_stroke=red,
+#                     title='Title', heading='Heading', label='Label')
+# EquilateralTriangle(x=2, y=1, side=1, flip="north", hand="east", label="NE", fill="yellow")
+# EquilateralTriangle(x=2, y=1, side=1, flip="south", hand="east", label="SE", fill="green")
+# EquilateralTriangle(x=2, y=1, side=1, flip="north", hand="west", label="NW", fill="red")
+# EquilateralTriangle(x=2, y=1, side=1, flip="south", hand="west", label="SW", fill="blue")
+#EquilateralTriangle(x=1, y=2, side=1, stroke_width=1, rotation=45)
+EquilateralTriangle(cx=2, cy=2, side=1, stroke_width=1, dot=.02, label="|+|", rotation=45, debug=True)
+EquilateralTriangle(cx=3, cy=4, side=1, stroke_width=1, dot=.02, label="|+|")
 PageBreak()
 
 # ---- RA Triangle
 Blueprint()
 Text(common=txt, text="Right Angled Triangle: flip/hand")
 eqt = Common(x=2, y=2, side=2)
-EquilateralTriangle(common=eqt, flip="north", hand="east", label="UR", fill="yellow")
-EquilateralTriangle(common=eqt, flip="south", hand="east", label="DR", fill="green")
-EquilateralTriangle(common=eqt, flip="north", hand="west", label="UL", fill="red")
-EquilateralTriangle(common=eqt, flip="south", hand="west", label="DL", fill="blue")
+RightAngledTriangle(common=eqt, flip="north", hand="east", label="NE", fill="yellow")
+RightAngledTriangle(common=eqt, flip="south", hand="east", label="SE", fill="green")
+RightAngledTriangle(common=eqt, flip="north", hand="west", label="NW", fill="red")
+RightAngledTriangle(common=eqt, flip="south", hand="west", label="SW", fill="blue")
 PageBreak()
 
 # ---- sector
@@ -311,21 +318,21 @@ PageBreak()
 Text(common=txt, text="Shapes END...")
 PageBreak(footer=True)
 
-#Save()
-Save(
-     output='png',
-     dpi=600,
-     directory="docs/images/examples/simple/customised",
-     names=[
-        None,
-        "blueprint_subdiv", "dots_crosses", "trapezoid", "rhombus","star",
-        "ellipse_centre",  "polygon", "arrow", "right_angled_triangle",
-        "compass", "lines", "starfield_rectangle", "starfield_circle",
-        "starfield_poly", "equilateral_triangle", "right_angled_triangle_flip",
-        "sectors", "grid_gray", "dotgrid_moleskine", "arc",
-        "stadium_edges", "trapezoid_flip", "sequence_values",
-        "sequence_shapes", "chord", "polygon_radii", "dates_formats",
-        "images_normal_rotation", "rhombus_red_rotation",
-        "stadium_red_rotation", "polygon_rotation_flat",
-        "polygon_rotation_pointy",
-        None])
+Save()
+# Save(
+#      output='png',
+#      dpi=600,
+#      directory="docs/images/customised",
+#      names=[
+#         None,
+#         "blueprint_subdiv", "dots_crosses", "trapezoid", "rhombus","star",
+#         "ellipse_centre",  "polygon", "arrow", "right_angled_triangle",
+#         "compass", "lines", "starfield_rectangle", "starfield_circle",
+#         "starfield_poly", "equilateral_triangle", "right_angled_triangle_flip",
+#         "sectors", "grid_gray", "dotgrid_moleskine", "arc",
+#         "stadium_edges", "trapezoid_flip", "sequence_values",
+#         "sequence_shapes", "chord", "polygon_radii", "dates_formats",
+#         "images_normal_rotation", "rhombus_red_rotation",
+#         "stadium_red_rotation", "polygon_rotation_flat",
+#         "polygon_rotation_pointy",
+#         None])

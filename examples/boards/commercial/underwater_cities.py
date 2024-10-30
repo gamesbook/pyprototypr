@@ -119,9 +119,9 @@ EquilateralTriangle(x=21, y=13.5, side=0.7, rotation=60)
 name_fill = "#4C588C"
 name_stroke = "#788CCB"
 name_rect = Common(fill=name_fill, stroke=name_stroke, stroke_width=2)
-Rectangle(common=name_rect, x=45, y=1, width=10.5, height=4)
+Rectangle(common=name_rect, x=44, y=1, width=10.5, height=4)
 Rectangle(
-    common=name_rect, x=45, y=3.75, width=10.5, height=1.25,
+    common=name_rect, x=44, y=3.75, width=10.5, height=1.25,
     label="PROJECT: UNDERWATER CITIES", label_size=18)
 
 # Scoring Track
@@ -185,5 +185,6 @@ disc_rect = Common(
     width=9.5, height=5.4,  rounding=0.5, transparency=80)
 Rectangle(common=disc_rect, fill_stroke="#483D8B", x=44, y=36.5)
 Rectangle(common=disc_rect, fill_stroke="#0275CC", x=44, y=29)
+Image('images/trash-can-blue.png', x=49, y=39, width=2.5, height=2.5, rotation=90)
 
 Save()

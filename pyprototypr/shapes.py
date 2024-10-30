@@ -289,7 +289,7 @@ class CircleShape(BaseShape):
     def calculate_area(self):
         return math.pi * self._u.radius * self._u.radius
 
-    def calculate_perimeter(self, units: bool = False):
+    def calculate_perimeter(self, units: bool = False) -> float:
         """Total length of bounding line (circumference)."""
         length = math.pi * 2.0 * self._u.radius
         if units:
@@ -1085,21 +1085,25 @@ class EquilateralTriangleShape(BaseShape):
                 self.draw_lines_between_sides(
                     cnv, side, lines, vertices, (0, 2), (1, 2))
 
-    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Draw an equilateraltriangle on a given canvas."""
-        cnv = cnv.canvas if cnv else self.canvas.canvas
-        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
-        # calculate points
-        x, y = self._u.x, self._u.y
-        hand = self.hand.lower() if self.hand else 'east'
-        flip = self.flip.lower() if self.flip else 'north'
-        angle = self.angle
-        side = self._u.side if self._u.side else self._u.width
+    def calculate_area(self) -> float:
+        _side = self._u.side if self._u.side else self._u.width
+        return math.sqrt(3) / 4. * _side**2
+
+    def calculate_perimeter(self, units: bool = False) -> float:
+        """Total length of bounding line."""
+        _side = self._u.side if self._u.side else self._u.width
+        length = 3 * _side
+        if units:
+            return self.points_to_value(length)
+        else:
+            return length
+
+    def get_vertices(
+            self, x: float, y: float, side: float, hand: str, flip: str) -> list:
         height = 0.5 * math.sqrt(3) * side  # ½√3(a)
-        # tools.feedback(f'*** {hand=} {flip=} {side=} {height=} {self.fill=} {self.stroke=}')
-        self.vertices = []
+        vertices = []
         pt0 = Point(x + self._o.delta_x, y + self._o.delta_y)
-        self.vertices.append(pt0)
+        vertices.append(pt0)
         if hand == 'west' or hand == 'w':
             x2 = pt0.x - side
             y2 = pt0.y
@@ -1112,33 +1116,80 @@ class EquilateralTriangleShape(BaseShape):
             y3 = pt0.y + height
         elif flip == 'south' or flip == 's':
             y3 = pt0.y - height
-        self.vertices.append(Point(x2, y2))
-        self.vertices.append(Point(x3, y3))
+        vertices.append(Point(x2, y2))
+        vertices.append(Point(x3, y3))
+        return vertices
+
+    def get_centroid(self, vertices: list) -> Point:
+        x_c = (vertices[0].x + vertices[1].x + vertices[2].x) / 3.0
+        y_c = (vertices[0].y + vertices[1].y + vertices[2].y) / 3.0
+        return Point(x_c, y_c)
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw an equilateraltriangle on a given canvas."""
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        # ---- calculate points
+        x, y = self._u.x, self._u.y
+        # angle = self.angle
+        side = self._u.side if self._u.side else self._u.width
+        height = 0.5 * math.sqrt(3) * side  # ½√3(a)
+        if self.cx and self.cy:
+            self.centroid = Point(self._u.cx, self._u.cy)
+            centroid_to_vertex = side / math.sqrt(3)
+            y_off = height - centroid_to_vertex
+            x = self._u.cx - side / 2.0
+            y = self._u.cy - (height - centroid_to_vertex)
+            print(f'** {side=} {height=} {centroid_to_vertex=} {y_off=}')
+        # tools.feedback(f'*** {side=} {height=} {self.fill=} {self.stroke=}')
+        self.vertices = self.get_vertices(x, y, side, self.hand, self.flip)
+        self.centroid = self.get_centroid(self.vertices)
+        # ---- handle rotation: START
+        rotation = kwargs.get('rotation', self.rotation)
+        if rotation:
+            # tools.feedback(f'*** EQT {ID=} {rotation=} {x=}, {y=}')
+            cnv.saveState()
+            # move the canvas origin
+            if ID is not None:
+                cnv.translate(self.centroid.x, self.centroid.y)
+            else:
+                cnv.translate(self.centroid.x, self.centroid.y)
+            cnv.rotate(rotation)
+            # reset centre and "bottom left"
+            self.centroid = Point(0, 0)
+            centroid_to_vertex = side / math.sqrt(3)
+            y_off = height - centroid_to_vertex
+            x = 0. - side / 2.0
+            y = 0. - y_off
+            print(f'*R {side=} {height=} {centroid_to_vertex=} {y_off=}')
+            print(f'*R {x=}, {y=}')
+            self.vertices = self.get_vertices(x, y, side, self.hand, self.flip)
+        # tools.feedback(f'*** {self.centroid=}')
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- draw equilateral triangle
-        x_sum, y_sum = 0, 0
         pth = cnv.beginPath()
         pth.moveTo(self.vertices[0].x, self.vertices[0].y)
         for key, vertex in enumerate(self.vertices):
             pth.lineTo(vertex.x, vertex.y)
         pth.close()
         cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
-        # ---- calculate centroid
-        x_c = (self.vertices[0].x + self.vertices[1].x + self.vertices[2].x) / 3.0
-        y_c = (self.vertices[0].y + self.vertices[1].y + self.vertices[2].y) / 3.0
-        # tools.feedback(f'*** {x_c=} {y_c=}')
         # ---- debug
         self._debug(cnv, vertices=self.vertices)
         # ---- draw hatch
         if self.hatch:
             self.draw_hatch(cnv, ID, side, self.vertices, self.hatch)
         # ---- dot
-        self.draw_dot(cnv, x_c, y_c)
+        self.draw_dot(cnv, self.centroid.x, self.centroid.y)
         # ---- text
-        self.draw_heading(cnv, ID, x_c, y_c + height * 2.0 / 3.0, **kwargs)
-        self.draw_label(cnv, ID, x_c, y_c, **kwargs)
-        self.draw_title(cnv, ID, x_c, y_c - height / 3.0, **kwargs)
+        self.draw_heading(
+            cnv, ID, self.centroid.x, self.centroid.y + height * 2.0 / 3.0, **kwargs)
+        self.draw_label(cnv, ID, self.centroid.x, self.centroid.y, **kwargs)
+        self.draw_title(
+            cnv, ID, self.centroid.x, self.centroid.y - height / 3.0, **kwargs)
+        # ---- handle rotation: END
+        if rotation:
+            cnv.restoreState()
 
 
 class HexShape(BaseShape):
@@ -1954,10 +2005,10 @@ class RectangleShape(BaseShape):
     def __str__(self):
         return f'{self.__class__.__name__}::{self.kwargs}'
 
-    def calculate_area(self):
+    def calculate_area(self) -> float:
         return self._u.width * self._u.height
 
-    def calculate_perimeter(self, units: bool = False):
+    def calculate_perimeter(self, units: bool = False) -> float:
         """Total length of bounding perimeter."""
         length = 2.0 * (self._u.width + self._u.height)
         if units:
@@ -2760,10 +2811,10 @@ class SquareShape(RectangleShape):
     def __str__(self):
         return f'{self.__class__.__name__}::{self.kwargs}'
 
-    def calculate_area(self):
+    def calculate_area(self) -> float:
         return self._u.width * self._u.height
 
-    def calculate_perimeter(self, units: bool = False):
+    def calculate_perimeter(self, units: bool = False) -> float:
         """Total length of bounding line."""
         length = 2.0 * (self._u.width + self._u.height)
         if units:
@@ -3185,7 +3236,7 @@ class TrapezoidShape(BaseShape):
         """Calculate area of trapezoid."""
         return self._u.width2 * self._u.height + 2.0 * self.delta_width * self._u.height
 
-    def calculate_perimeter(self, units: bool = False):
+    def calculate_perimeter(self, units: bool = False) -> float:
         """Total length of bounding perimeter."""
         length = 2.0 * math.sqrt(self.delta_width + self._u.height) + \
             self._u.width2 + self._u.width
