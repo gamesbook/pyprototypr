@@ -16,7 +16,11 @@ money = rectangle(
     fill_stroke=gold, height=1.2, width=0.8, rounding=0.1,
     hatch=5, hatch_directions='w', hatch_stroke=black,
     label_stroke=black, label_size=18)
-pipe = image("images/pipe.png", width=1, height=0.5)
+pipe = image("images/pipe.png", width=2, height=0.75)
+card_icon = rectangle(fill=white, label_stroke=black, label_size=32)
+card_icon_small = rectangle(common=card_icon, height=1.2, width=0.8, rounding=0.1)
+card_icon_med = rectangle(common=card_icon, height=1.7, width=1.2, rounding=0.15)
+card_icon_large = rectangle(common=card_icon, height=2.2, width=1.6, rounding=0.2)
 
 # Base Color - A2 page is 42cm x 59.4cm
 deepsea = "#17366F"
@@ -29,12 +33,15 @@ Image("images/world_map.png", x=7, y=6, width=52.4, height=32)
 Grid(x=0.25, y=0.4, side=1.25, stroke="#587CBC")
 
 # Partial blur
-Rectangle(x=0, y=0, width=59.4, height=42, fill=white, transparency=20)
+#Rectangle(x=0, y=0, width=59.4, height=42, fill=white, transparency=20)
 
 # Outline
 drect = Common(fill=None, stroke=grey, dashed=[0,0.05,0.05], rounding=0.5, stroke_width=2)
 
 # Action Cards Slots: Red
+rrect = rectangle(common=drect, x=-0.5, y=4.25, height=6., width=6.75)
+Repeat(rrect, rows=5, cols=1, offset=7, gap=1)
+
 action_red = "#D4322D"
 action_red_rect = rectangle(x=-0.5, y=4.5, width=6.5, height=5.5, fill_stroke=action_red, rounding=0.5)
 Repeat(action_red_rect, rows=5, cols=1, offset=7, gap=1)
@@ -43,13 +50,15 @@ action_red_dark = "#9D2622"
 red_dark = Rectangle(y=4.5, x=0, width=2.5, height=5.5, fill_stroke=action_red_dark)
 Repeat(red_dark, rows=5, cols=1, offset=7, gap=1)
 
-rrect = rectangle(common=drect, x=-0.5, y=4.25, height=6., width=6.75)
-Repeat(rrect, rows=5, cols=1, offset=7, gap=1)
+lock_red = image('images/padlock-open-red.png', x=1.5, y=7.25, width=1.5, height=1.5, rotation=270)
+Repeat(lock_red, rows=5, cols=1, offset=3.5)
 
-lock_red = image('images/padlock-open-red.png', x=1, y=7, width=1.5, height=1.5)
-Repeat(lock_red, rows=5, cols=1, offset=7, gap=1)
+Rectangle(common=card_icon_med, x=4, y=34.5, label="A", rotation=270)
 
 # Action Cards Slots: Orange
+orect = rectangle(common=drect, y=36.75, x=6.75, width=6., height=6.75)
+Repeat(orect, cols=5, rows=1, offset=7, gap=1)
+
 action_ong = "#FFAD01"
 action_ong_rect = rectangle(x=7, y=37, width=5.5, height=6.5, fill_stroke=action_ong, rounding=0.5)
 Repeat(action_ong_rect, cols=5, rows=1, offset=7, gap=1)
@@ -58,26 +67,28 @@ action_ong_dark = "#FE9402"
 ong_dark = Rectangle(y=40, x=7, width=5.5, height=2.5, fill_stroke=action_ong_dark)
 Repeat(ong_dark, cols=5, rows=1, offset=7, gap=1)
 
-orect = rectangle(common=drect, y=36.75, x=6.75, width=6., height=6.75)
-Repeat(orect, cols=5, rows=1, offset=7, gap=1)
+lock_ong = image('images/padlock-open-orange.png', x=9, y=40.5, width=1.5, height=1.5)
+Repeat(lock_ong, rows=1, cols=5, offset=7)
 
-lock_grn = image('images/padlock-open-orange.png', x=7, y=36, width=1.5, height=1.5)
-Repeat(lock_grn, rows=5, cols=1, offset=7, gap=1)
+Rectangle(common=card_icon_large, x=24, y=37.5, label="A", rotation=180)
 
 # Action Cards Slots: Green
+grect = rectangle(common=drect, y=-0.5, x=6.75, width=6., height=6.75)
+Repeat(grect, cols=5, rows=1, offset=7, gap=1)
+
 action_grn = "#017A51"
 action_grn_rect = rectangle(y=-0.5, x=7, width=5.5, height=6.5, fill_stroke=action_grn, rounding=0.5)
-Repeat(action_grn_rect, cols=5, rows=1, offset=7, gap=1)
+Repeat(action_grn_rect, cols=5, rows=1, offset=7)
 
 action_grn_dark = "#005D33"
 grn_dark = Rectangle(y=0, x=7, width=5.5, height=2.5, fill_stroke=action_grn_dark)
 Repeat(grn_dark, cols=5, rows=1, offset=7, gap=1)
 
-grect = rectangle(common=drect, y=-0.5, x=6.75, width=6., height=6.75)
-Repeat(grect, cols=5, rows=1, offset=7, gap=1)
+lock_grn = image('images/padlock-open-green.png', x=9, y=0.5, width=1.5, height=1.5)
+Repeat(lock_grn, rows=1, cols=5, offset=7, gap=1)
 
-lock_grn = image('images/padlock-open-green.png', x=7, y=1, width=1.5, height=1.5)
-Repeat(lock_grn, rows=5, cols=1, offset=7, gap=1)
+Rectangle(common=card_icon_large, x=36, y=3, label="A")
+Image(common=pipe, x=28.5, y=4)
 
 # Special Cards
 special_grn = "#4A8D86"
@@ -97,7 +108,12 @@ free_action_btm = "#014B8A"
 Rectangle(x=19.5, y=12, width=5.5, height=3.5, fill_stroke=free_action_top, rounding=0.5)
 Rectangle(x=19.5, y=9.5, width=5.5, height=3, fill_stroke=free_action_btm, rounding=0.5)
 Rectangle(common=drect, x=19, y=9, height=7, width=6.5)
-Rectangle(common=money, label="2", x=23.5, y=13)
+# ... action icons
+Rectangle(common=money, label="2", x=23.5, y=13.25)
+Rectangle(common=card_icon_small, x=20, y=13.25)
+Rectangle(common=card_icon_small, x=22.25, y=13.5)
+Rectangle(common=card_icon_small, x=22.5, y=13)
+EquilateralTriangle(x=21, y=13.5, side=0.7, rotation=60)
 
 # Game Name
 name_fill = "#4C588C"
@@ -154,20 +170,20 @@ Circle(cx=11.5, cy=9.9, radius=0.5, fill_stroke=dimgray)
 Circle(cx=14, cy=9.9, radius=0.5, fill_stroke=darkorchid)
 
 Sequence(
-    text(x=10.4, y=18.4, font_size=32, stroke=orange),
+    text(x=10.4, y=18.4, font_size=32, stroke=orange, text="{SEQUENCE}."),
     setting=(1,4,1,'number'),
     gap_y=-2.1)
 Sequence(
-    text(x=12.8, y=18.4, font_size=32, stroke=white),
+    text(x=12.8, y=18.4, font_size=32, stroke=white, text="{SEQUENCE}."),
     setting=(1,4,1,'number'),
     gap_y=-2.1)
 
-Rectangle(common=money, label="1", x=13.5, y=14)
+Rectangle(common=money, label="1", x=13.75, y=14)
 
-# Discards
+# Draw/Discards
 disc_rect = Common(
-    width=9.5, height=5.4, fill_stroke="#0275CC", rounding=0.5, transparency=80)
-Rectangle(common=disc_rect, x=44, y=36.5)
-Rectangle(common=disc_rect, x=44, y=29)
+    width=9.5, height=5.4,  rounding=0.5, transparency=80)
+Rectangle(common=disc_rect, fill_stroke="#483D8B", x=44, y=36.5)
+Rectangle(common=disc_rect, fill_stroke="#0275CC", x=44, y=29)
 
 Save()
