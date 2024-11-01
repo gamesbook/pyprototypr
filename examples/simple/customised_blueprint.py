@@ -17,7 +17,7 @@ Create(filename="customised_blueprint.pdf",
 txt = Common(x=0, y=6, font_size=8, align="left")
 
 Blueprint()
-Text(common=txt, text="Blueprint")
+Text(common=txt, text="Blueprint:defaults")
 PageBreak()
 
 Blueprint(stroke_width=0.8)
@@ -52,4 +52,17 @@ Blueprint(subdivisions=5, subdivisions_dashed=[0.01, 0.01, 0])
 Text(common=txt, text="Blueprint: dashed subdivisions")
 PageBreak()
 
-Save()
+Blueprint(decimals=1)
+Text(common=txt, text="Blueprint: decimals")
+PageBreak()
+
+Save(
+     output='png',
+     dpi=600,
+     directory="docs/images/custom/blueprint",
+     names=[
+        "defaults", "stroke_width", "stroke_red",
+        "style_blue", "style_green", "style_grey",
+        "style_stroke", "subdivisions", "subdivisions_dashed",
+        "decimals"
+     ])

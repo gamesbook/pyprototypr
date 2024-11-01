@@ -172,7 +172,7 @@ PageBreak(footer=True)
 Save(
      output='png',
      dpi=600,
-     directory="docs/images/examples/simple/custom/rectangle",
+     directory="docs/images/custom/rectangle",
      names=[
         None,
         "centre", "notch", "dot_cross", "hatch", "rounding", "chevron",

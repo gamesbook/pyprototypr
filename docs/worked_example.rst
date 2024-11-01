@@ -4,16 +4,16 @@ Worked Examples for a Deck of Cards
 
 These examples assumes that you have set-up your computer with Python and
 have tested to check that you can create a test file which generates a
-PDF. If not, please first see the `Setting Up <setting_up.md>`__
+PDF. If not, please first see the `Setting Up <setting_up.md>`_
 document. It will also be helpful if you have read the 
 `Basic Concepts <basic_concepts.rst>`_ section.
 
    **Remember** when you create and edit your files, do **not** use a
    word processor such as “Word”, “Pages” or “LibreOffice” - but a text
    file editor instead e.g. on Windows, use *NotePad* or
-   `NotePad++ <https://notepad-plus-plus.org/>`__; and on OS X, use
-   *TextEdit*!  A useful editor should be able to color-code your text to
-   make it slightly easier to work with.
+   `NotePad++ <https://notepad-plus-plus.org/>`_; and on OS X, use
+   *TextEdit* or `CotEditor <https://coteditor.com/>`_!  A useful editor 
+   should be able to color-code your text to make it easier to work with.
 
 A simple card deck example: Take 1
 ----------------------------------

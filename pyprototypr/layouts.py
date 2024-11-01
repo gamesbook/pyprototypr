@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Create layouts - grids, repeats, sequences, tracks and connections - for pyprototypr
+Create grids, repeats, sequences, layouts and connections - for pyprototypr
 """
 # lib
 import copy
@@ -142,7 +142,6 @@ class SequenceShape(BaseShape):
                 self.setting_list = []
                 start, stop = ord(self.set_start), ord(self.set_stop)
                 curr = start
-                # breakpoint()
                 while True:
                     if self.set_inc > 0 and curr > stop:
                         break
@@ -178,7 +177,6 @@ class SequenceShape(BaseShape):
 
         for key, item in enumerate(self.setting_list):
             _ID = ID if ID is not None else self.shape_id
-            # breakpoint()
             kwargs['text_sequence'] = f'{item}'
             # tools.feedback(f'*   @Seqnc@ {self.gap_x=}, {self.gap_y=}')
             off_x = _off_x + key * self.gap_x
@@ -260,8 +258,6 @@ class RepeatShape(BaseShape):
                 self.across = list(range(1, self.across + 1))
             except TypeError:
                 pass
-        # self.repeat_ = kwargs.get('repeat_', None)
-        # self.repeat_ = kwargs.get('repeat_', None)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         log.debug("oc:%s od:%s", self.offset_across, self.offset_down)
@@ -335,8 +331,8 @@ class VirtualLayout(VirtualShape):
     """
     Common properties and methods to define a virtual layout.
 
-    A virtual layout is not drawn on the canvas; rather it provides locations/points
-    where user-defined shapes will be drawn.
+    A virtual layout is not drawn on the canvas; rather it provides the
+    locations/points where user-defined shapes will be drawn.
     """
     global cnv
     global deck
@@ -418,16 +414,19 @@ class VirtualLayout(VirtualShape):
         """Return full lower-case value of primary compass direction."""
         if not compass:
             return None
-        if str(compass).lower() in ['n', 'north']:
-            return 'north'
-        elif str(compass).lower() in ['s', 'south']:
-            return 'south'
-        elif str(compass).lower() in ['e', 'east']:
-            return 'east'
-        elif str(compass).lower() in ['w', 'west']:
-            return 'west'
-        else:
-            raise ValueError(f'"{compass}" is an invalid compass direction!')
+        _compass = str(compass).lower()
+        match _compass:
+            case 'n' | 'north':
+                return 'north'
+            case 's' | 'south':
+                return 'south'
+            case 'e' | 'east':
+                return 'east'
+            case 'w' | 'west':
+                return 'west'
+            case _:
+                raise ValueError(
+                    f'"{compass}" is an invalid primary compass direction!')
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""
@@ -479,6 +478,9 @@ class RectangularLayout(VirtualLayout):
                 row_start = self.rows
                 col_start = self.cols
                 clockwise = True if _dir in ['south', 's'] else False
+            case _:
+                raise ValueError(
+                    f'"{self.direction}" is an invalid secondary compass direction!')
         col, row, count = col_start, row_start, 0
         max_outer = 2 * self.rows + (self.cols - 2) * 2
         corner = None

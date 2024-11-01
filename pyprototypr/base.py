@@ -1682,8 +1682,6 @@ class BaseShape:
             keys = vars(the_element).keys()
             for key in keys:
                 value = getattr(the_element, key)
-                # if key=='stroke' or key == 'fill':  # breakpoint()
-                #     print('*',  f'{ID=} {value=}', type(value))
                 if isinstance(value, Template):
                     record = self.deck_data[ID]
                     try:

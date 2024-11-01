@@ -107,7 +107,7 @@ PageBreak(footer=True)
 Save(
      output='png',
      dpi=600,
-     directory="docs/images/examples/simple/custom/hexagon",
+     directory="docs/images/custom/hexagon",
      names=[
         None,
         "centre", "dot_cross", "hatch",

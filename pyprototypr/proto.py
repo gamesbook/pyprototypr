@@ -1121,7 +1121,7 @@ def Blueprint(**kwargs):
     side = 1.0
     if kwargs['units'] == inch:
         side = 0.5
-    decimals = tools.as_int(kwargs.get('decimals', 1), "Blueprint decimals")
+    decimals = tools.as_int(kwargs.get('decimals', 0), "Blueprint decimals")
     # override defaults ... otherwise grid not "next" to margins
     numbering = kwargs.get('numbering', True)
     kwargs['side'] = kwargs.get('side', side)
@@ -1660,7 +1660,6 @@ def Layout(grid, **kwargs):
                     f'You cannot use {text[0]} as a special field; remove the {{ }} brackets',
                     True)
             # ---- * execute shape.draw()
-            # breakpoint()
             cx = loc.x * shape.units + shape._o.delta_x
             cy = loc.y * shape.units + shape._o.delta_y
             shape.draw(_abs_cx=cx, _abs_cy=cy, rotation=rotation, text_sequence=f'{loc.sequence}')

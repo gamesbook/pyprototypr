@@ -1189,7 +1189,7 @@ class EquilateralTriangleShape(BaseShape):
             cnv, ID, self.centroid.x, self.centroid.y - height / 3.0, **kwargs)
         # ---- handle rotation: END
         if rotation:
-            cnv.restoreState()
+            pass # cnv.restoreState()
 
 
 class HexShape(BaseShape):
@@ -2145,7 +2145,6 @@ class RectangleShape(BaseShape):
             stroke_cap=self.hatch_cap)
         # ---- draw items
         if num >= 1:
-            # breakpoint()
             if 'ne' in _dirs or 'sw' in _dirs or 'd' in _dirs:  # UP to the right
                 pth = cnv.beginPath()
                 pth.moveTo(vertices[0].x, vertices[0].y)
