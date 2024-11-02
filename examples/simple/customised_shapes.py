@@ -270,11 +270,12 @@ PageBreak()
 # ---- rotation: image
 Rectangle(x=0, y=0, height=6, width=4, fill=khaki)
 Text(common=txt, text="Images: normal & rotation")
-Blueprint()
-Image("sholes_typewriter.png", x=0, y=0, width=1.5, height=1.5, heading="PNG")
-Image("sholes_typewriter.png", x=2, y=0, width=1.5, height=1.5, heading="60\u00B0", rotation=60)
-Image("noun-typewriter-3933515.svg", x=0, y=4, width=1.5, height=1.6, scaling=0.15, title="SVG")
-Image("noun-typewriter-3933515.svg", x=2, y=4, width=1.5, height=1.6, scaling=0.15, title="45\u00B0", rotation=45)
+Blueprint(style="green")
+# Image("sholes_typewriter.png", x=1, y=1, width=1.5, height=1.5, heading="PNG")
+# Image("sholes_typewriter.png", x=0.5, y=1, width=1.5, height=1.5, heading="45", rotation=45)
+Image("sholes_typewriter.png", x=2, y=1, width=1.5, height=1.5, heading="60\u00B0", rotation=0)
+#Image("noun-typewriter-3933515.svg", x=0, y=4, width=1.5, height=1.6, scaling=0.15, title="SVG")
+#Image("noun-typewriter-3933515.svg", x=2, y=4, width=1.5, height=1.6, scaling=0.15, title="45\u00B0", rotation=45)
 PageBreak()
 
 # ---- rotation: rhombus
@@ -318,21 +319,21 @@ PageBreak()
 Text(common=txt, text="Shapes END...")
 PageBreak(footer=True)
 
-Save()
-# Save(
-#      output='png',
-#      dpi=600,
-#      directory="docs/images/customised",
-#      names=[
-#         None,
-#         "blueprint_subdiv", "dots_crosses", "trapezoid", "rhombus","star",
-#         "ellipse_centre",  "polygon", "arrow", "right_angled_triangle",
-#         "compass", "lines", "starfield_rectangle", "starfield_circle",
-#         "starfield_poly", "equilateral_triangle", "right_angled_triangle_flip",
-#         "sectors", "grid_gray", "dotgrid_moleskine", "arc",
-#         "stadium_edges", "trapezoid_flip", "sequence_values",
-#         "sequence_shapes", "chord", "polygon_radii", "dates_formats",
-#         "images_normal_rotation", "rhombus_red_rotation",
-#         "stadium_red_rotation", "polygon_rotation_flat",
-#         "polygon_rotation_pointy",
-#         None])
+#Save()
+Save(
+     output='png',
+     dpi=600,
+     directory="docs/images/customised",
+     names=[
+        None,
+        "blueprint_subdiv", "dots_crosses", "trapezoid", "rhombus","star",
+        "ellipse_centre",  "polygon", "arrow", "right_angled_triangle",
+        "compass", "lines", "starfield_rectangle", "starfield_circle",
+        "starfield_poly", "equilateral_triangle", "right_angled_triangle_flip",
+        "sectors", "grid_gray", "dotgrid_moleskine", "arc",
+        "stadium_edges", "trapezoid_flip", "sequence_values",
+        "sequence_shapes", "chord", "polygon_radii", "dates_formats",
+        "images_normal_rotation", "rhombus_red_rotation",
+        "stadium_red_rotation", "polygon_rotation_flat",
+        "polygon_rotation_pointy",
+        None])

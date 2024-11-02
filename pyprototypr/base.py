@@ -1054,7 +1054,7 @@ class BaseShape:
             dotted=None,
             dashed=None,
             debug=False):
-        """Set Reportlab canvas properties for font, line and colors"""
+        """Set Reportlab canvas properties for fill, font, line and colors"""
 
         def ext(prop):
             if isinstance(prop, str):

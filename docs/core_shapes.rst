@@ -92,7 +92,7 @@ Arc
 Example #1
 ++++++++++
 
-.. |arc| image:: images/examples/simple/defaults/arc.png
+.. |arc| image:: images/defaults/arc.png
    :width: 300
 
 ===== ======
@@ -113,7 +113,7 @@ Bezier
 Example #1
 ++++++++++
 
-.. |bez| image:: images/examples/simple/defaults/bezier.png
+.. |bez| image:: images/defaults/bezier.png
    :width: 300
 
 ===== ======
@@ -134,7 +134,7 @@ Chord
 Example #1
 ++++++++++
 
-.. |chd| image:: images/examples/simple/defaults/chord.png
+.. |chd| image:: images/defaults/chord.png
    :width: 300
 
 ===== ======
@@ -156,7 +156,7 @@ Dot
 Example #1
 ++++++++++
 
-.. |dot| image:: images/examples/simple/defaults/dot.png
+.. |dot| image:: images/defaults/dot.png
    :width: 300
 
 ===== ======
@@ -177,7 +177,7 @@ Line
 Example #1
 ++++++++++
 
-.. |lne| image:: images/examples/simple/defaults/line.png
+.. |lne| image:: images/defaults/line.png
    :width: 300
 
 ===== ======
@@ -200,7 +200,7 @@ Polyline
 Example #1
 ++++++++++
 
-.. |ply| image:: images/examples/simple/defaults/polyline.png
+.. |ply| image:: images/defaults/polyline.png
    :width: 300
 
 ===== ======
@@ -234,7 +234,7 @@ Circle
 Example #1
 ++++++++++
 
-.. |ccl| image:: images/examples/simple/defaults/circle.png
+.. |ccl| image:: images/defaults/circle.png
    :width: 300
 
 ===== ======
@@ -256,7 +256,7 @@ Compass
 Example #1
 ++++++++++
 
-.. |cmp| image:: images/examples/simple/defaults/compass.png
+.. |cmp| image:: images/defaults/compass.png
    :width: 300
 
 ===== ======
@@ -279,7 +279,7 @@ Ellipse
 Example #1
 ++++++++++
 
-.. |ell| image:: images/examples/simple/defaults/ellipse.png
+.. |ell| image:: images/defaults/ellipse.png
    :width: 300
 
 ===== ======
@@ -301,7 +301,7 @@ Hexagon
 Example #1
 ++++++++++
 
-.. |hex| image:: images/examples/simple/defaults/hexagon.png
+.. |hex| image:: images/defaults/hexagon.png
    :width: 300
 
 ===== ======
@@ -324,7 +324,7 @@ Polygon
 Example #1
 ++++++++++
 
-.. |pol| image:: images/examples/simple/defaults/polygon.png
+.. |pol| image:: images/defaults/polygon.png
    :width: 300
 
 ===== ======
@@ -346,7 +346,7 @@ Rectangle
 Example #1
 ++++++++++
 
-.. |rct| image:: images/examples/simple/defaults/rectangle.png
+.. |rct| image:: images/defaults/rectangle.png
    :width: 300
 
 ===== ======
@@ -368,7 +368,7 @@ Square
 Example #1
 ++++++++++
 
-.. |sqr| image:: images/examples/simple/defaults/square.png
+.. |sqr| image:: images/defaults/square.png
    :width: 300
 
 ===== ======
@@ -390,7 +390,7 @@ Stadium
 Example #1
 ++++++++++
 
-.. |std| image:: images/examples/simple/defaults/stadium.png
+.. |std| image:: images/defaults/stadium.png
    :width: 300
 
 ===== ======
@@ -413,7 +413,7 @@ Star
 Example #1
 ++++++++++
 
-.. |str| image:: images/examples/simple/defaults/star.png
+.. |str| image:: images/defaults/star.png
    :width: 300
 
 ===== ======
@@ -437,7 +437,7 @@ Trapezoid
 Example #1
 ++++++++++
 
-.. |trp| image:: images/examples/simple/defaults/trapezoid.png
+.. |trp| image:: images/defaults/trapezoid.png
    :width: 300
 
 ===== ======
@@ -461,7 +461,7 @@ Blueprint
 Example #1
 ++++++++++
 
-.. |blp| image:: images/examples/simple/defaults/blueprint.png
+.. |blp| image:: images/defaults/blueprint.png
    :width: 300
 
 ===== ======
@@ -486,7 +486,7 @@ Grid
 Example #1
 ++++++++++
 
-.. |grd| image:: images/examples/simple/defaults/grid.png
+.. |grd| image:: images/defaults/grid.png
    :width: 300
 
 ===== ======

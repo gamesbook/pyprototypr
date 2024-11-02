@@ -1189,7 +1189,7 @@ class EquilateralTriangleShape(BaseShape):
             cnv, ID, self.centroid.x, self.centroid.y - height / 3.0, **kwargs)
         # ---- handle rotation: END
         if rotation:
-            pass # cnv.restoreState()
+            cnv.restoreState()
 
 
 class HexShape(BaseShape):

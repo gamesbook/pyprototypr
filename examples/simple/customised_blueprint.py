@@ -20,8 +20,8 @@ Blueprint()
 Text(common=txt, text="Blueprint:defaults")
 PageBreak()
 
-Blueprint(stroke_width=0.8)
-Text(common=txt, text="Blueprint: stroke_width=0.8")
+Blueprint(stroke_width=2)
+Text(common=txt, text="Blueprint: stroke_width=2")
 PageBreak()
 
 Blueprint(stroke=red)
