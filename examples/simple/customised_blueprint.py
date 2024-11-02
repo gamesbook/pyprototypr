@@ -20,12 +20,8 @@ Blueprint()
 Text(common=txt, text="Blueprint:defaults")
 PageBreak()
 
-Blueprint(stroke_width=2)
-Text(common=txt, text="Blueprint: stroke_width=2")
-PageBreak()
-
-Blueprint(stroke=red)
-Text(common=txt, text="Blueprint: stroke=red")
+Blueprint(stroke_width=1, stroke=red)
+Text(common=txt, text="Blueprint: stroke-red; width=1")
 PageBreak()
 
 Blueprint(style='invert')
@@ -44,11 +40,11 @@ Blueprint(style='grey', stroke=purple)
 Text(common=txt, text="Blueprint: grey; stroke=purple")
 PageBreak()
 
-Blueprint(subdivisions=5)
+Blueprint(subdivisions=5, stroke_width=.5)
 Text(common=txt, text="Blueprint: subdivisions=5")
 PageBreak()
 
-Blueprint(subdivisions=5, subdivisions_dashed=[0.01, 0.01, 0])
+Blueprint(subdivisions=5, subdivisions_dashed=[0.01, 0.01, 0], stroke_width=.5)
 Text(common=txt, text="Blueprint: dashed subdivisions")
 PageBreak()
 
@@ -61,7 +57,7 @@ Save(
      dpi=600,
      directory="docs/images/custom/blueprint",
      names=[
-        "defaults", "stroke_width", "stroke_red",
+        "defaults", "stroke_width_red",
         "style_blue", "style_green", "style_grey",
         "style_stroke", "subdivisions", "subdivisions_dashed",
         "decimals"

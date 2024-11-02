@@ -1088,6 +1088,7 @@ class BaseShape:
                 canvas.setFillColor(_fill)
                 _transparency = ext(self.transparency)
                 if _transparency:
+                    breakpoint()
                     try:
                         alpha = float(_transparency) / 100.0
                     except Exception:
@@ -1107,9 +1108,11 @@ class BaseShape:
                         tools.feedback('Unable to set transparency for {_fill}')
                 if debug:
                     tools.feedback(f'~~~ Fill color set: {_fill}')
+
         except (ValueError, AttributeError):
             issue = f'"{_fill}" is not a valid value' if _fill else "no value provided!"
             tools.feedback(f'Unable to set fill color:- {issue}', True)
+
         try:
             if stroke in [None, []] and self.stroke in [None, []]:
                 canvas.setStrokeColor(black, 0)  # full transparency
@@ -1149,6 +1152,7 @@ class BaseShape:
             canvas.setDash(array=dash_points)
         else:
             canvas.setDash(array=[])
+
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an element on a given canvas."""

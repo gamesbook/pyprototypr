@@ -62,7 +62,7 @@ class GridShape(BaseShape):
         for x_col in range(0, self.cols + 1):
             x_cols.append(x + x_col * width)
         # ---- set canvas
-        # self.set_canvas_props(index=ID)  # this causes Image to disappear ???
+        self.set_canvas_props(index=ID)  # this causes Image to disappear ???
         # ---- draw grid
         cnv.grid(x_cols, y_cols)  # , stroke=1, fill=1)
 

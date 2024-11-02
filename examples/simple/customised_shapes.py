@@ -18,6 +18,7 @@ Footer(draw=False)
 txt = Common(x=0, y=6, font_size=8, align="left")
 
 Text(common=txt, text="Shapes START...")
+Text(x=0, y=5, font_size=8, align="left", text=Today())
 PageBreak(footer=True)
 
 # ---- blueprint custom
@@ -38,33 +39,13 @@ PageBreak()
 
 # ---- centre placement
 Blueprint()
-Text(common=txt, text="Trapezoid: cx=2, cy=3")
-Trapezoid(cx=2, cy=3)
-PageBreak()
-
-Blueprint()
-Text(common=txt, text="Rhombus: cx=2, cy=3")
-Rhombus(cx=2, cy=3)
-PageBreak()
-
-Blueprint()
-Text(common=txt, text="Star")
-Star()
-PageBreak()
-
-Blueprint()
-Text(common=txt, text="Ellipse: centre; width=3, height=2")
-Ellipse(cx=2, cy=1, width=3, height=2)
-PageBreak()
-
-Blueprint()
-Text(common=txt, text="Polygon: cx=2, cy=3, sides=10")
-Polygon(cx=2, cy=3, sides=10)
-PageBreak()
-
-Blueprint()
-Text(common=txt, text="Arrow")
-Arrow()
+Text(common=txt, text="Centred")
+shp_font = Common(font_size=6, stroke=red)
+Trapezoid(common=shp_font, cx=1, cy=5, heading="Trapezoid cx=1;cy=5")
+Rhombus(common=shp_font, cx=3, cy=5, heading="Rhombus cx=3;cy=5")
+Star(common=shp_font, cx=1, cy=3, heading="Star cx=1;cy=3")
+Ellipse(common=shp_font, cx=3, cy=3, width=2, height=1, heading="Ellipse cx=3;cy=3")
+Polygon(common=shp_font, cx=2, cy=1, sides=7, label="Polygon-7 cx2=;cy=1")
 PageBreak()
 
 # ---- RA triangles
@@ -96,19 +77,19 @@ Blueprint()
 Text(common=txt, text="StarField: Rectangle; multi-color")
 Rectangle(x=0, y=0, height=3, width=3, fill=black)
 StarField(
-    density=20,
+    density=80,
     enclosure=rectangle(x=0, y=0, height=3, width=3),
-    colors=[white, white, white, red, green, blue],
-    sizes=[0.2])
+    colors=[white, white, red, green, blue],
+    sizes=[0.4])
 PageBreak()
 
 Blueprint()
 Text(common=txt, text="StarField: Circle; multi-size")
 Circle(x=0, y=0, radius=1.5, fill=black)
 StarField(
-    density=20,
+    density=30,
     enclosure=circle(x=0, y=0, radius=1.5),
-    sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
+    sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.5])
 PageBreak()
 
 Blueprint()
@@ -185,9 +166,8 @@ PageBreak()
 # ---- trapezoid
 Blueprint()
 Text(common=txt, text="Trapezoid: flip")
-eqt = Common(x=2, y=2, side=2)
 Trapezoid(
-    x=2, y=2,
+    x=1, y=2,
     width=3, width2=2,
     flip="south",
     label="flip",
@@ -259,23 +239,21 @@ PageBreak()
 # ---- dates
 Blueprint()
 Text(common=txt, text="Dates: format and styles")
-dtext = Common(x=0.5, align="left", font_size=8)
-Text(common=dtext, y=5, text=Today())
-Text(common=dtext, y=4, text=Today(details="date", style="usa"))
-Text(common=dtext, y=3, text=Today(details="date", style="eur"))
-Text(common=dtext, y=2, text=Today(details="datetime", style="usa"))
-Text(common=dtext, y=1, text=Today(details="datetime", style="eur"))
+dtext = Common(x=0.25, align="left", font_size=8)
+Text(common=dtext, y=5, text="1.  "+Today())
+Text(common=dtext, y=4, text="2.  "+Today(details="date", style="usa"))
+Text(common=dtext, y=3, text="3.  "+Today(details="date", style="eur"))
+Text(common=dtext, y=2, text="4.  "+Today(details="datetime", style="usa"))
+Text(common=dtext, y=1, text="5.  "+Today(details="datetime", style="eur"))
 PageBreak()
 
 # ---- rotation: image
-Rectangle(x=0, y=0, height=6, width=4, fill=khaki)
+Blueprint(style="grey")
 Text(common=txt, text="Images: normal & rotation")
-Blueprint(style="green")
-# Image("sholes_typewriter.png", x=1, y=1, width=1.5, height=1.5, heading="PNG")
-# Image("sholes_typewriter.png", x=0.5, y=1, width=1.5, height=1.5, heading="45", rotation=45)
-Image("sholes_typewriter.png", x=2, y=1, width=1.5, height=1.5, heading="60\u00B0", rotation=0)
-#Image("noun-typewriter-3933515.svg", x=0, y=4, width=1.5, height=1.6, scaling=0.15, title="SVG")
-#Image("noun-typewriter-3933515.svg", x=2, y=4, width=1.5, height=1.6, scaling=0.15, title="45\u00B0", rotation=45)
+Image("sholes_typewriter.png", x=0, y=1, width=1.5, height=1.5, title="PNG")
+Image("sholes_typewriter.png", x=2, y=1, width=1.5, height=1.5, title="60\u00B0", rotation=60)
+Image("noun-typewriter-3933515.svg", x=0, y=4, width=1.5, height=1.6, scaling=0.15, title="SVG")
+Image("noun-typewriter-3933515.svg", x=2, y=4, width=1.5, height=1.6, scaling=0.15, title="45\u00B0", rotation=45)
 PageBreak()
 
 # ---- rotation: rhombus
@@ -326,8 +304,7 @@ Save(
      directory="docs/images/customised",
      names=[
         None,
-        "blueprint_subdiv", "dots_crosses", "trapezoid", "rhombus","star",
-        "ellipse_centre",  "polygon", "arrow", "right_angled_triangle",
+        "blueprint_subdiv", "dots_crosses", "centred", "right_angled_triangle",
         "compass", "lines", "starfield_rectangle", "starfield_circle",
         "starfield_poly", "equilateral_triangle", "right_angled_triangle_flip",
         "sectors", "grid_gray", "dotgrid_moleskine", "arc",
