@@ -311,7 +311,7 @@ WIDTH = 0.1
 class BaseCanvas:
     """Wrapper/extended class for a ReportLab canvas."""
 
-    def __init__(self, filename=None, paper=None, **kwargs):
+    def __init__(self, filename=None, paper=None, defaults=None, **kwargs):
         self.jsonfile = kwargs.get('defaults', None)
         self.defaults = {}
         # ---- setup defaults
@@ -329,15 +329,21 @@ class BaseCanvas:
                     tools.feedback(
                         f'Unable to find or load the file "{self.jsonfile}"'
                         f' - also checked in "{filepath}".', True)
-        # ---- paper & canvas
+        # ---- override file defaults with BaseCanvas kwargs
+        if kwargs:
+            _kwargs = kwargs['kwargs']
+            for kwarg in _kwargs:
+                self.defaults[kwarg] = _kwargs[kwarg]
+        # ---- paper, pagesize & canvas
         _paper = paper or self.defaults.get('paper', A4)
         # **NOTE** ReportLab uses 'pagesize' to track the page dimensions;
         #          the named paper formats, e.g. A4, are just tuples storing
-        #          (width,height) as points values
+        #          (width, height) values using points units, so A4 is :
+        #          (595.2755905511812, 841.8897637795277)
         self.canvas = reportlab_canvas.Canvas(filename=filename, pagesize=_paper)
         # ---- constants
         self.default_length = 1
-        self.show_id = False  # True
+        self.show_id = False
         # ---- general
         self.shape = self.defaults.get('shape', 'rectangle')
         self.shape_id = None
@@ -635,6 +641,8 @@ class BaseCanvas:
     def get_color(self, name=None, default=black):
         """Get a color by name from a pre-defined dictionary."""
         if name:
+            if isinstance(name, Color):
+                return name
             return COLORS.get(name, default)
         return default
 
@@ -1088,7 +1096,6 @@ class BaseShape:
                 canvas.setFillColor(_fill)
                 _transparency = ext(self.transparency)
                 if _transparency:
-                    breakpoint()
                     try:
                         alpha = float(_transparency) / 100.0
                     except Exception:

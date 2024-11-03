@@ -44,7 +44,7 @@ Centred
 
 Cross and Dot
 -------------
-`^ <pageIndex_>`_
+`^ <pageindex_>`_
 
 .. |rdc| image:: images/custom/rectangle/dot_cross.png
    :width: 300
@@ -83,7 +83,7 @@ Hatch
 `^ <pageIndex_>`_
 
 .. |rht| image:: images/custom/rectangle/hatch.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |rht| This example shows a Rectangle constructed using the command::
@@ -169,7 +169,7 @@ Rounding
 `^ <pageIndex_>`_
 
 .. |rnd| image:: images/custom/rectangle/rounding.png
-   :width: 300
+   :width: 350
 
 ===== ======
 |rnd| This example shows a Rectangle constructed using the command::
@@ -193,7 +193,7 @@ Centre
 `^ <pageIndex_>`_
 
 .. |hcn| image:: images/custom/hexagon/centre.png
-   :width: 300
+   :width: 350
 
 ===== ======
 |hcn| This example shows a Hexagon constructed using the command::
@@ -211,7 +211,7 @@ Cross & Dot
 `^ <pageIndex_>`_
 
 .. |hcd| image:: images/custom/hexagon/dot_cross.png
-   :width: 300
+   :width: 30
 
 ===== ======
 |hcd| This example shows a Hexagon constructed using the command::
@@ -228,11 +228,11 @@ Cross & Dot
 -----------
 `^ <pageIndex_>`_
 
-.. |hcd| image:: images/custom/hexagon/dot_cross.png
+.. |hdc| image:: images/custom/hexagon/dot_cross.png
    :width: 300
 
 ===== ======
-|hcd| This example shows a Hexagon constructed using the command::
+|hdc| This example shows a Hexagon constructed using the command::
 
           Hexagon()
 

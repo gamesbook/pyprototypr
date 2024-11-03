@@ -158,18 +158,17 @@ def Create(**kwargs):
     filename = os.path.join(pargs.directory, _filename)
     # tools.feedback(f"output: {filename}", False)
     # ---- canvas and deck
-    cnv = BaseCanvas(filename, paper=paper, defaults=defaults)
+    cnv = BaseCanvas(filename, paper=paper, defaults=defaults, kwargs=kwargs)
     if landscape:
-        breakpoint()
         cnv.canvas.setPageSize(landscape(cnv.paper))
         page_width = cnv.paper[1]  # point units (1/72 of an inch)
         page_height = cnv.paper[0]  # point units (1/72 of an inch)
     else:
         page_width = cnv.paper[0]  # point units (1/72 of an inch)
         page_height = cnv.paper[1]  # point units (1/72 of an inch)
-    if kwargs.get('fill'):
-        cnv.setFillColor(kwargs.get('fill'))
-        cnv.rect(
+    if kwargs.get('page_fill'):
+        cnv.canvas.setFillColor(kwargs.get('page_fill'))
+        cnv.canvas.rect(
             0, 0, page_width, page_height, stroke=0, fill=1)
     if _cards:
         Deck(canvas=cnv, sequence=range(1, _cards + 1), **kwargs)  # deck variable
