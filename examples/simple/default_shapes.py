@@ -10,9 +10,10 @@ from pyprototypr import *
 
 Create(filename="default_shapes.pdf",
        paper=A8,
-       margin_top=0.2,
-       margin_left=0.15,
-       margin_right=0.2)
+       margin=0.75,
+       margin_right=0.2, margin_top=0.2,
+       font_size=8,
+       stroke_width=0.5)
 
 header = Common(x=0, y=6, font_size=8, align="left")
 
@@ -45,33 +46,18 @@ Circle()
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Circle: cx=1, cy=1")
-Circle(cx=1, cy=1)
-PageBreak()
-
-Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagon")
 Hexagon()
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagon: vertical")
+Text(common=header, text="Hexagon: pointy")
 Hexagon(orientation="pointy")
-PageBreak()
-
-Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagon: cx=1, cy=1")
-Hexagon(cx=1, cy=1)
 PageBreak()
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Rhombus")
 Rhombus()
-PageBreak()
-
-Blueprint(stroke_width=0.5)
-Text(common=header, text="Rhombus: cx=1, cy=1")
-Rhombus(cx=1, cy=1)
 PageBreak()
 
 Blueprint(stroke_width=0.5)
@@ -87,11 +73,6 @@ PageBreak()
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Ellipse")
 Ellipse()
-PageBreak()
-
-Blueprint(stroke_width=0.5)
-Text(common=header, text="Ellipse: cx=1, cy=1")
-Ellipse(cx=1, cy=1)
 PageBreak()
 
 Blueprint(stroke_width=0.5)
@@ -211,11 +192,6 @@ Chord(shape=Circle(), angle=135, angle1=45)
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Circle: radii [30,150]")
-Circle(cx=1, cy=1, radii=[30,150])
-PageBreak()
-
-Blueprint(stroke_width=0.5)
 Text(common=header, text='RectangularLayout: "invisible"')
 Layout(RectangularLayout())
 PageBreak()
@@ -225,5 +201,17 @@ Text(common=header, text='RectangularLayout: "debug"')
 Layout(RectangularLayout(), debug='normal')
 PageBreak()
 
-
-Save(output='png', dpi=600)
+Save(output='png',
+     dpi=600,
+     directory="docs/images/defaults",
+     names=[
+        'blueprint', 'blueprint-sub', 'text', 'line', 'rectangle',
+        'circle', 'hexagon-flat', 'hexagon-pointy', 'rhombus',
+        'trapezoid', 'star', 'ellipse', 'polygon',  'arrow',
+        'rightangle',  'equiangle', 'compass',  'hexagons-2x2',
+        'grid', 'arc', 'bezier', 'polyline',
+        'shape', 'sector', 'sequence', 'square',
+        'stadium', 'starfield', 'dot', 'dotgrid', 'fill-stroke',
+        'transparency', 'track-rectangle', 'chord',
+        'rectangular_layout', 'rectangular_layout_debug',
+     ])

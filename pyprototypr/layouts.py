@@ -9,7 +9,7 @@ import math
 # third party
 # local
 from pyprototypr.utils.geoms import Point, Location, Place  # named tuples
-from pyprototypr.utils import geoms, tools
+from pyprototypr.utils import geoms, tools, support
 from pyprototypr.base import BaseShape, BaseCanvas
 from pyprototypr.shapes import (
     CircleShape, LineShape, PolygonShape, PolylineShape, RectangleShape, TextShape)
@@ -149,11 +149,25 @@ class SequenceShape(BaseShape):
                         break
                     self.setting_list.append(chr(curr))
                     curr += self.set_inc
+            elif self.set_type.lower() in ['r', 'roman']:
+                self.set_stop = self.setting[1] + 1 if self.set_inc > 0 else self.setting[1] - 1
+                self.setting_iterator = range(self.set_start, self.set_stop, self.set_inc)
+                _setting_list = list(self.setting_iterator)
+                self.setting_list = [
+                    support.roman(int(value)) for value in _setting_list]
+            elif self.set_type.lower() in ['e', 'excel']:
+                self.set_stop = self.setting[1] + 1 if self.set_inc > 0 else self.setting[1] - 1
+                self.setting_iterator = range(self.set_start, self.set_stop, self.set_inc)
+                _setting_list = list(self.setting_iterator)
+                self.setting_list = [
+                    support.excel_column(int(value)) for value in _setting_list]
             else:
                 tools.feedback(
-                    f"'{self.set_type}' must be either number or letter!", True)
+                    f"The settings type '{self.set_type}' must rather be one of:"
+                    " number, roman, excel or letter!", True)
+            # tools.feedback(f'{self.setting_list=}')
         except Exception as err:
-            log.info(err)
+            log.warning(err)
             tools.feedback(
                 f"Unable to evaluate Sequence setting '{self.setting}';"
                 " - please check and try again!", True)

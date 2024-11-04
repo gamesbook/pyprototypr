@@ -9,10 +9,12 @@ from pyprototypr import *
 
 Create(filename="customised_shapes.pdf",
        paper=A8,
-       margin_top=0.2,
-       margin_left=0.15,
-       margin_right=0.2,
-       font_size=8)
+       margin=0.75,
+       margin_right=0.2, margin_top=0.2,
+       font_size=8,
+       stroke_width=0.5,
+       )
+
 Footer(draw=False)
 
 txt = Common(x=0, y=6, font_size=8, align="left")
@@ -174,49 +176,56 @@ Trapezoid(
     hand="east", fill="yellow")
 PageBreak()
 
-# ---- sequence
+# ---- sequence_values
 Blueprint()
-Text(common=txt, text="Sequence: direction; values; list")
+Text(common=txt, text="Sequence: text; values")
 Sequence(
-    text(x=1, y=4),
+    text(x=1, y=5.5),
+    setting=(10, 0, -2, 'number'),
+    gap_x=0.5,
+    )
+Sequence(
+    text(x=1, y=3.5),
     setting=('h','b',-2,'letter'),
     gap_y=0.5,
     gap_x=0.5,
     )
 Sequence(
-    text(x=1, y=3.5),
+    text(x=1, y=3),
     setting=('B','H',2,'letter'),
     gap_y=-0.5,
     gap_x=0.5,
     )
 Sequence(
-    text(x=0.5, y=1.5, text="${SEQUENCE}"),
-    setting=(10, 2, -2, 'number'),
-    gap_x=0.8,
+    text(x=0.5, y=1),
+    setting=(5, 11, 1, 'roman'),
+    gap_x=0.5,
     )
 Sequence(
-    circle(cx=3.5, cy=5.5, radius=0.3, label="{SEQUENCE}"),
-    setting=[4, 'B?', 2, 'C!'],
-    gap_y=-0.7,
-    )
-Sequence(
-    rectangle(x=0.5, y=0.25, height=1, width=0.6, label="{SEQUENCE}"),
-    setting=(1,5,1,'number'),
-    gap_x=0.66,
+    text(x=0.5, y=0.25),
+    setting=(27, 57, 5, 'excel'),
+    gap_x=0.5,
     )
 PageBreak()
 
+# ---- sequence_shapes
 Blueprint()
-Text(common=txt, text="Sequence: shapes, label, title")
+Text(common=txt, text="Sequence: shapes, label")
+Sequence(
+    circle(cx=3.5, cy=5, radius=0.3, label="{SEQUENCE}"),
+    setting=[4, 'B?', 2, 'C!', 'VI'],
+    gap_y=-0.7,
+    )
 Sequence(
     rectangle(x=0.25, y=0.25, height=0.75, width=1, label_size=8, label="${SEQUENCE}"),
     setting=(1, 3, 1, 'number'),
     gap_x=1.2,
     )
 Sequence(
-    circle(x=0.25, y=1.5, radius=0.5, title_size=8, title="Fig. {SEQUENCE}"),
+    hexagon(x=0.5, y=1.5, radius=0.5, title_size=8, title="Fig. {SEQUENCE}"),
     setting=('C', 'A', -1),
     gap_y=1.5,
+    gap_x=0.5,
     )
 PageBreak()
 

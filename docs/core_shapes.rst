@@ -33,6 +33,7 @@ Index of Shapes
 -  `Compass`_
 -  `Chord`_
 -  `Dot`_
+-  `DotGrid`_
 -  `Ellipse`_
 -  `Grid`_
 -  `Hexagon`_
@@ -44,6 +45,8 @@ Index of Shapes
 -  `Square`_
 -  `Stadium`_
 -  `Star`_
+-  `Starfield`_
+-  `Text`_
 -  `Trapezoid`_
 
 Overview
@@ -56,14 +59,15 @@ Concepts <basic_concepts.md>`_ - especially *units*, *properties* and
 `Additional Concepts <additional_concepts.rst>`_.
 
 Where possible, the basic examples first show how a shape would appear
-on a page when **only** the default properties are used. This means for
-most cases, that *lines* are drawn in black, with a stroke width of 1mm
-(0.1cm) and shapes are *filled* with a white color. The default length
-or height in most cases is 1cm.
+on a page when **only** the default properties are used.
+This means for most cases, that *lines* are drawn in black, and shapes are
+*filled* with a white color. The default length or height in most cases is 1cm.
+The only change has been to make the default line width thicker, for easier
+viewing of the PNG images.
 
 To make it easier to see where and how a shape has been drawn, these
 examples have been created with a background grid (which **pyprototypr**
-refers to as a ``Blueprint``) for cross-reference: the values of **x**
+refers to as a `Blueprint`_) for cross-reference: the values of **x**
 appear across the lower edge of the grid (increasing from left to
 right); those for **y** along the left side (increasing from bottom to
 top). The grid respects the margins that have been set, although the
@@ -78,22 +82,22 @@ numbers themselves are drawn inside the margin!
 Commonalities
 --------------
 
-There are some properties that can be set for many of the shapes;
-examples of these are presented at the end, rather than being repeated
-across every shape.
+There are some properties that can be set for almost all of the shapes;
+examples of these are presented in the section on `Shapes' Common Properties`_
+at the end, rather than being repeated across every shape.
 
 Linear Shapes
 --------------
 
-Arc 
+Arc
 ~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |arc| image:: images/defaults/arc.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |arc| This example shows the shape constructed using the command with only
@@ -103,18 +107,18 @@ Example #1
 
       It has the following properties based on the defaults:
 
-      - starts at x-position 1cm and at y-position 1cm
+      - origin is at x-position 1cm and at y-position 1cm
 ===== ======
 
 Bezier
 ~~~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |bez| image:: images/defaults/bezier.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |bez| This example shows the shape constructed using the command with only
@@ -131,21 +135,32 @@ Chord
 ~~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |chd| image:: images/defaults/chord.png
-   :width: 300
+   :width: 330
 
 ===== ======
-|chd| This example shows the shape constructed using the command with only
-      defaults::
+|chd| If the shape constructed using only default properties, there will be
+      nothing to see::
 
           Chord()
 
-      It has the following properties based on the defaults:
+      This example then shows the shape constructed using the command with these
+      properties::
 
-      - starts at x-position 1cm and at y-position 1cm
+          Chord(shape=Circle(), angle=135, angle1=45)
+
+      It has the following properties based on these values:
+
+      - the circle that helps defines the start and end of the chord line is
+        located with its "corner" at x-position 1cm and at y-position 1cm
+      - the start of chord is at the intersection of the radius of the circle
+        at 135 |deg| with the circle's circumference
+      - the end of chord is at the intersection of the radius of the circle
+        at 45 |deg| with the circle's circumference
+
 ===== ======
 
 
@@ -153,11 +168,11 @@ Dot
 ~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |dot| image:: images/defaults/dot.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |dot| This example shows the shape constructed using the command with only
@@ -168,17 +183,21 @@ Example #1
       It has the following properties based on the defaults:
 
       - centre at x-position 1cm and at y-position 1cm
+      - diameter of 3 points; there are 72 points in an inch, so this is 1/24th
+        of an inch, or approximately 1mm (0.1cm), in size
+      - fill color for a Dot is the same as the stroke - default is black
 ===== ======
+
 
 Line
 ~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |lne| image:: images/defaults/line.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |lne| This example shows the shape constructed using the command with only
@@ -193,26 +212,65 @@ Example #1
       - heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east")
 ===== ======
 
+
 Polyline
 ~~~~~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |ply| image:: images/defaults/polyline.png
-   :width: 300
+   :width: 330
 
 ===== ======
-|ply| This example shows the shape constructed using the command with only
-      defaults::
+|ply| If the shape constructed using only default properties, there will be
+      nothing to see::
 
           Polyline()
 
-      It has the following properties based on the defaults:
+      This example then shows the shape constructed using the command with these
+      properties::
 
-      - starts at x-position 1cm and at y-position 1cm
+          Polyline(points=[(0, 0), (1, 1), (2, 0)])
+
+      It has the following properties based on these values:
+
+      - starts at x-position 0cm and at y-position 0cm
+      - second point is at x-position 1cm and at y-position 1cm
+      - third point is at x-position 2cm and at y-position 0cm
 ===== ======
+
+
+Text
+~~~~
+`^ <shapeIndex_>`_
+
+It may seem strange to view text as a "shape"; but from a drawing point of
+view, its really just a series of complex lines drawn in a particular pattern!
+Thus text has size, color and position in common with many other shapes, as
+well as its own special properties.
+
+Example 1.
+++++++++++
+
+.. |txt| image:: images/defaults/text.png
+   :width: 330
+
+===== ======
+|txt| This example shows the shape constructed using the command with only
+      defaults; except for the **text** property - this is changed otherwise
+      there would not be any text to see!::
+
+          Text(text="Hello World")
+
+      It otherwise has the following properties based on the defaults:
+
+      - centred at x-position 1cm and at y-position 1cm
+      - default font size is 12 points
+      - default font face is Arial
+===== ======
+
 
 
 Enclosed Shapes
@@ -231,11 +289,16 @@ Circle
 ~~~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+.. NOTE::
+
+   There is more detail about the properties that can be defined for a
+   Circle in the `customised shapes' Circle <customised_shapes.rst#circle>`_.
+
+Example 1.
 ++++++++++
 
 .. |ccl| image:: images/defaults/circle.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |ccl| This example shows the shape constructed using the command with only
@@ -249,15 +312,16 @@ Example #1
       - diameter of 1cm
 ===== ======
 
+
 Compass
 ~~~~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |cmp| image:: images/defaults/compass.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |cmp| This example shows the shape constructed using the command with only
@@ -269,18 +333,21 @@ Example #1
 
       - lower-left "corner" at x-position 1cm and at y-position 1cm
       - diameter of 1cm
-      - compass lines in all 8 directions, extending from the centre outwards
+      - lines in all 8 directions, extending from the centre outwards; these
+        represent the primary - North, South, East and West - and secondary -
+        North-East, South-East, Notth-West and South- West directions.
 ===== ======
+
 
 Ellipse
 ~~~~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |ell| image:: images/defaults/ellipse.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |ell| This example shows the shape constructed using the command with only
@@ -291,21 +358,33 @@ Example #1
       It has the following properties based on the defaults:
 
       - lower-left "corner" at x-position 1cm and at y-position 1cm
-      - diameter of 1cm
+      - height of 1cm
+      - width of 1cm
+
+      Because the *height* and *width* default to the same value, it appears
+      as a `Circle`_.
+
 ===== ======
+
 
 Hexagon
 ~~~~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+.. NOTE::
+
+   There is more detail about the properties that can be defined for a
+   Hexagon in the `customised shapes' Hexagon <customised_shapes.rst#hexagon>`_ section.
+
+
+Example 1.
 ++++++++++
 
-.. |hex| image:: images/defaults/hexagon.png
-   :width: 300
+.. |hx1| image:: images/defaults/hexagon-flat.png
+   :width: 330
 
 ===== ======
-|hex| This example shows the shape constructed using the command with only
+|hx1| This example shows the shape constructed using the command with only
       defaults::
 
           Hexagon()
@@ -317,15 +396,35 @@ Example #1
       - "flat" top
 ===== ======
 
+Example 2.
+++++++++++
+
+.. |hx2| image:: images/defaults/hexagon-pointy.png
+   :width: 330
+
+===== ======
+|hx2| This example shows the shape constructed using the command with only
+      one change to the defaults::
+
+          Hexagon(orientation="pointy")
+
+      It has the following properties based on the defaults:
+
+      - lower-left "corner" at x-position 1cm and at y-position 1cm
+      - flat-to-flat height of 1cm
+      - "pointy" top set via the *orientation*
+===== ======
+
+
 Polygon
 ~~~~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |pol| image:: images/defaults/polygon.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |pol| This example shows the shape constructed using the command with only
@@ -335,7 +434,7 @@ Example #1
 
       It has the following properties based on the defaults:
 
-      - starts at x-position 1cm and at y-position 1cm
+      - centre at x-position 1cm and at y-position 1cm
       - has 6 sides
 ===== ======
 
@@ -343,11 +442,16 @@ Rectangle
 ~~~~~~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+.. NOTE::
+
+   There is more detail about the properties that can be defined for a
+   Rectangle in the `customised shapes' Rectangle <customised_shapes.rst#rectangle>`_.
+
+Example 1.
 ++++++++++
 
 .. |rct| image:: images/defaults/rectangle.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |rct| This example shows the shape constructed using the command with only
@@ -359,17 +463,21 @@ Example #1
 
       - lower-left corner at x-position 1cm and at y-position 1cm
       - side of 1cm
+
+      Because all sides of the Rectangle are equal, it appears as though it
+      is a `Square`_.
 ===== ======
+
 
 Square
 ~~~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |sqr| image:: images/defaults/square.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |sqr| This example shows the shape constructed using the command with only
@@ -383,15 +491,16 @@ Example #1
       - side of 1cm
 ===== ======
 
+
 Stadium
 ~~~~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |std| image:: images/defaults/stadium.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |std| This example shows the shape constructed using the command with only
@@ -406,15 +515,16 @@ Example #1
       - curved ends at ???
 ===== ======
 
+
 Star
 ~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |str| image:: images/defaults/star.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |str| This example shows the shape constructed using the command with only
@@ -430,15 +540,43 @@ Example #1
 ===== ======
 
 
+Starfield
+~~~~~~~~~
+`^ <shapeIndex_>`_
+
+Example 1.
+++++++++++
+
+.. |str| image:: images/defaults/starfield.png
+   :width: 330
+
+===== ======
+|str| This example shows the shape constructed using the command with only
+      defaults::
+
+          Starfield()
+
+      It has the following properties based on the defaults:
+
+      - centre at x-position 1cm and at y-position 1cm
+      - "height" of 1cm
+      - 10 randomly placed white 'dots'
+
+      Because the default fill color is white, this example adds an extra
+      `Rectangle()` shape, with a fill of black, which is drawn first and is
+      hence "behind" the field of dotts
+===== ======
+
+
 Trapezoid
 ~~~~~~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |trp| image:: images/defaults/trapezoid.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |trp| This example shows the shape constructed using the command with only
@@ -458,11 +596,16 @@ Blueprint
 ~~~~~~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+.. NOTE::
+
+   There is more detail about the properties that can be defined for a
+   Blueprint in the `section on customised shapes <customised_shapes.rst#blueprint>`_.
+
+Example 1.
 ++++++++++
 
 .. |blp| image:: images/defaults/blueprint.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |blp| This example shows the shape constructed using the command with only
@@ -476,18 +619,42 @@ Example #1
       - has vertical and horizontal filling the page up to the margins
       - has spacing between lines of 1cm
       - default line color is a shade of blue (``AA``)
-      - numbers 
+      - numbers
 ===== ======
+
+
+DotGrid
+~~~~~~~
+`^ <shapeIndex_>`_
+
+Example 1.
+++++++++++
+
+.. |dtg| image:: images/defaults/dotgrid.png
+   :width: 330
+
+===== ======
+|dtg| This example shows the shape constructed using the command with only
+      defaults::
+
+          DotGrid()
+
+      It has the following properties based on the defaults:
+
+      - lower left at x-position 0cm and at y-position 0cm
+      - set of 2 x 2 dots, spaced 1cm apart
+===== ======
+
 
 Grid
 ~~~~
 `^ <shapeIndex_>`_
 
-Example #1
+Example 1.
 ++++++++++
 
 .. |grd| image:: images/defaults/grid.png
-   :width: 300
+   :width: 330
 
 ===== ======
 |grd| This example shows the shape constructed using the command with only
@@ -510,8 +677,31 @@ Hexagons are often drawn in a "honeycomb" arrangement to form a grid - for games
 this is often used to delineate the spaces in which playing pieces can be placed
 and their movement regulated.
 
-    Further information about using hexagons in grids can be found in the section
-    on `Hexagonal Grids <hexagonal_grids.rst>`_.
+.. NOTE::
+
+    Very detailed information about using hexagons in grids can be found in the
+    section on `Hexagonal Grids <hexagonal_grids.rst>`_.
+
+Example 1.
+++++++++++
+
+.. |hex| image:: images/defaults/hexagons-2x2.png
+   :width: 330
+
+===== ======
+|hex| This example shows the shape constructed using the command with two
+      basic properties; the number of rows and columns in the grid::
+
+          Hexagons(rows=2, cols=2)
+
+      It has the following properties based on the defaults:
+
+      - lower-left "corner" at x-position 1cm and at y-position 1cm
+      - flat-to-flat hexagon height of 1cm
+      - "flat" top hexagons
+      - the "odd" columns - which include the first one - are offset one-half
+        of a hex "down"
+===== ======
 
 
 Shapes' Common Properties

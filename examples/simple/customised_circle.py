@@ -9,10 +9,11 @@ from pyprototypr import *
 
 Create(filename="customised_circles.pdf",
        paper=A8,
-       margin_top=0.2,
-       margin_left=0.15,
-       margin_right=0.2,
-       font_size=8)
+       margin=0.75,
+       margin_right=0.2, margin_top=0.2,
+       font_size=8,
+       stroke_width=0.5)
+
 Footer(draw=False)
 
 txt = Common(x=0, y=6, font_size=8, align="left")
