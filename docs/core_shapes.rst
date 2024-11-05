@@ -65,13 +65,14 @@ This means for most cases, that *lines* are drawn in black, and shapes are
 The only change has been to make the default line width thicker, for easier
 viewing of the PNG images.
 
-To make it easier to see where and how a shape has been drawn, these
+To make it easier to see where and how a shape has been drawn, most of these
 examples have been created with a background grid (which **pyprototypr**
 refers to as a `Blueprint`_) for cross-reference: the values of **x**
 appear across the lower edge of the grid (increasing from left to
 right); those for **y** along the left side (increasing from bottom to
-top). The grid respects the margins that have been set, although the
-numbers themselves are drawn inside the margin!
+top). The grid respects the margins that have been set - so "0" is actually
+offset from the actual page corner - although the Blueprint numbering is,
+itself, inside the margin!
 
    The graphics for these examples were generated from the scripts in
    the ``examples`` directory - look at the
@@ -109,6 +110,34 @@ Example 1.
 
       - origin is at x-position 1cm and at y-position 1cm
 ===== ======
+
+
+Example 2.
+++++++++++
+
+.. |ac2| image:: images/customised/arc.png
+   :width: 330
+
+===== ======
+|ac2| This example shows the shape constructed using the command with these
+      properties::
+
+          Arc(x=1, y=1, x1=3, y1=2)
+
+      For reference, the Arc is surrounded by a red Rectangle::
+
+          Rectangle(
+              x=1, y=1, height=1, width=2, dot=0.01,
+              label_size=8, stroke=red, fill=None,
+              label="Arc(x=1, y=1, x1=3, y1=2)"
+          )
+
+      It has the following properties:
+
+      - origin is at x-position 1cm and at y-position 1cm
+      - the secondary x-position and y-position are at 3cm and 2cm
+===== ======
+
 
 Bezier
 ~~~~~~
@@ -336,6 +365,40 @@ Example 1.
       - lines in all 8 directions, extending from the centre outwards; these
         represent the primary - North, South, East and West - and secondary -
         North-East, South-East, Notth-West and South- West directions.
+===== ======
+
+Example 2.
+++++++++++
+
+.. |cm2| image:: images/customised/compass.png
+   :width: 330
+
+===== ======
+|cm2| This example shows the shape constructed using the command with different
+      properties. The top right::
+
+          Compass(cx=3, cy=3, perimeter='rectangle', height=2, width=3)
+
+      It has the following properties:
+
+      - centred at x-position 3cm and at y-position 3cm
+      - *perimeter* defines the shape of 'box' that is used to defined where
+        the lines of the compass extend; in this case its a rectangle with a
+        height of `2` cm and width of `3` cm.
+      - lines extend, by default, in all 8 directions
+
+      The lower left::
+
+          Compass(cx=1, cy=1, perimeter='hexagon')
+
+      It has the following properties:
+
+      - centred at x-position 1cm and at y-position 1cm
+      - *perimeter* defines the shape of 'box' that is used to defined where
+        the lines of the compass extend; in this case its a hexagon with a
+        default diameter of 1cm
+      - lines extend, for a hexagon, in 6 directions
+
 ===== ======
 
 
@@ -596,10 +659,18 @@ Blueprint
 ~~~~~~~~~
 `^ <shapeIndex_>`_
 
+This shape is primarily intended to support drawing while it is "in progress".
+It provides a quick and convenient way to orientate and place other shapes
+that *are* required for the final product.  Typically one would just comment
+out the command when its purpose has been served.
+
+However, different styling options are provided that can make it more useful
+for different contexts.
+
 .. NOTE::
 
-   There is more detail about the properties that can be defined for a
-   Blueprint in the `section on customised shapes <customised_shapes.rst#blueprint>`_.
+   There is more detail about the various properties that can be defined for a
+   Blueprint in the section on `customised Blueprint <customised_shapes.rst#blueprint>`_.
 
 Example 1.
 ++++++++++
@@ -615,11 +686,34 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - starts at the lower-left corner, as defied by the page margins
-      - has vertical and horizontal filling the page up to the margins
+      - starts at the lower-left corner, as defined by the page margins
+      - has vertical and horizontal lines filling the page from the lower left
+        corner up to the right and top margins
       - has spacing between lines of 1cm
-      - default line color is a shade of blue (``AA``)
-      - numbers
+      - default line color is a shade of blue (`#2F85AC`)
+      - the x- and y-axis are numbered from the lower left corner
+===== ======
+
+Example 2.
+++++++++++
+
+.. |bl2| image:: images/customised/blueprint_subdiv.png
+   :width: 330
+
+===== ======
+|bl2| This example shows the shape constructed using the command with these
+      properties::
+
+          Blueprint(subdivisions=5, stroke_width=0.5, style='invert')
+
+      It has the following properties set:
+
+      - *subdivisions* - set to `5`; these are thinner lines drawn between
+        the primary lines - they do not have any numbering
+      - *stroke_width* - set to `0.5`; this slightly thicker primary line makes
+        the grid more visible
+      - *style* - set to `invert` so that the lines are white and the fill color
+        is now blue
 ===== ======
 
 
@@ -645,6 +739,34 @@ Example 1.
       - set of 2 x 2 dots, spaced 1cm apart
 ===== ======
 
+Example 2.
+++++++++++
+
+.. |dg1| image:: images/customised/dotgrid_moleskine.png
+   :width: 330
+
+===== ======
+|dg1| This example shows the shape constructed using the command with the
+      following properties::
+
+          DotGrid(
+             stroke=darkgray, width=0.5, height=0.5, dot_point=1, offset_y=-0.25
+          )
+
+      It is meant to simulate the dot grid found in Moleskine notebooks, and so
+      it has the following properties set:
+
+      - *width* and *height* are the spacing in x and y directions respectively
+      - *dot_point* is set to be smaller than the default of 3
+      - *stroke* color of `darkgrey` is a lighter color than default of black
+      - *offset_y* moves the start of the grid downwards
+
+      *NOTE* If you were to actually create a page that you might use, you
+      could consider setting the page color to something like `cornsilk` to
+      provide a suitable backdrop; do this by setting the *fill* property of
+      the `Create()` command.
+===== ======
+
 
 Grid
 ~~~~
@@ -666,6 +788,26 @@ Example 1.
 
       - starts at lower-left corner of page defined by the margin
       - has a default size of 2 in each of the x- and y-directions
+===== ======
+
+Example 2.
+++++++++++
+
+.. |gr2| image:: images/customised/grid_gray.png
+   :width: 330
+
+===== ======
+|gr2| This example shows the shape constructed using the command with the
+      following properties::
+
+          Grid(side=0.85, stroke=gray, stroke_width=0.5)
+
+      It has the following properties based on the defaults:
+
+      - *side* - the value of `0.85` cm equates to about 1/3 of an inch
+      - *stroke_width* - set to `0.5` points; this slightly thicker line makes
+        the grid more visible
+      - *stroke* color of `gray` is a lighter color than default of black
 ===== ======
 
 

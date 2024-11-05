@@ -138,11 +138,12 @@ Sector(common=sctm, angle=160)
 Sector(common=sctm, angle=280)
 PageBreak()
 
-# ---- grids (plain; dot)
+# ---- grid
 Text(common=txt, text='Grid: gray; 1/3"; thick')
 Grid(side=0.85, stroke=gray, stroke_width=0.5)
 PageBreak()
 
+# ---- dotgrid
 Text(common=txt, text='DotGrid: "Moleskine" setting')
 DotGrid(stroke=darkgray, width=0.5, height=0.5, dot_point=1, offset_y=-0.25)
 PageBreak()
