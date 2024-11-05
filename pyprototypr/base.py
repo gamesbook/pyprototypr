@@ -988,7 +988,7 @@ class BaseShape:
 
     def unit(self, item, units=None, skip_none=False, label=''):
         """Convert an item into the appropriate unit system."""
-        log.debug("units %s %s", units, self.units)
+        log.debug("units %s %s :: label: %s", units, self.units, label)
         if item is None and skip_none:
             return None
         if not units:
@@ -997,9 +997,9 @@ class BaseShape:
             _item = tools.as_float(item, label)
             return _item * units
         except (TypeError, ValueError):
-            _label = f' {label}' or ''
+            _label = f' {label}' if label else ''
             tools.feedback(
-                f'Unable to set unit-value for{_label}: "{item}".'
+                f'Unable to set unit value for{_label}: {item}.'
                 ' Please check that this is a valid value.',
                 stop=True)
 
@@ -1133,10 +1133,12 @@ class BaseShape:
         except AttributeError:
             pass
         try:
-            _stwd = ext(stroke_width) or ext(self.stroke_width)
-            canvas.setLineWidth(_stwd)
+            the_stwd = ext(stroke_width) or ext(self.stroke_width)
+            canvas.setLineWidth(the_stwd)  # units are points!
         except TypeError:
-            tools.feedback(f'Please check the stroke_width setting of "{_stwd}"; it should be a number.')
+            tools.feedback(
+                f'Please check the stroke_width setting of "{the_stwd}";'
+                ' it should be a number.')
         except AttributeError:
             pass
         # ---- line cap

@@ -169,7 +169,7 @@ PageBreak()
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Fill & Stroke")
-Rectangle(fill=yellow, stroke=red, stroke_width=5)
+Rectangle(fill=yellow, stroke=red, stroke_width=6)
 PageBreak()
 
 Blueprint(stroke_width=0.5)

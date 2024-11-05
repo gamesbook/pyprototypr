@@ -1,14 +1,14 @@
 # pyprototypr
 
 __pyprototypr__ is a utility written in Python for designing and creating
-simple, regular, graphical output in PDF (or PNG) format via a script.
+simple, regular, graphical outputs in PDF (or PNG) format via a script.
 
 __pyprototypr__  has been created to handle prototyping of cards, counters,
 tiles and boards for board games, but can be also used for creation of any
 simple design that has regular or repetitive elements; typically containing
 a mix of graphics and text.
 
-> You do not need to know the Python to be able to use __pyprototypr__!
+> You do not need to know the Python language to be able to use __pyprototypr__!
 
 ## Documentation
 
@@ -16,20 +16,20 @@ The online documentation for __pyprototypr__ starts with the
 [Table of Contents](https://github.com/gamesbook/pyprototypr/blob/master/docs/index.rst)
 
 If you're not familiar with any kind of programming or scripting, you should
-probably read some of the introductory sections before proceeding ...
+probably read some of the introductory sections before proceeding...
 
 ## Requirements
 
-__pyprototypr__ requires a version of Python 3.11 or higher to be installed
+__pyprototypr__ requires Python (version of 3.11 or higher) to be installed
 and running on your machine.
 
-If this is **not** your default Python version, or Python is not installed on
+If this is **not** your current Python version, or Python is not installed on
 your machine, may want to use [uv](https://docs.astral.sh/uv/guides/install-python)
 which is a cross-platform tool able to install both Python and __pyprototypr__.
 
 ## Quick Start (for the impatient)
 
-Assuming that Python 3.11 or higher is installed on your machine, you can
+Assuming that Python 3.11 or higher is installed on your machine, you can then
 install __pyprototypr__ via:
 ```
 pip install pyprototypr
@@ -42,8 +42,8 @@ sub-directories.
 As a quick test, make a copy of `example1.py` script from the `examples/manual`
 directory. To do so, open the
 [example1.py](https://github.com/gamesbook/pyprototypr/blob/master/examples/manual/example1.py)
-link in your browser, click on the `Raw` button, and then save the web page as
-a file into a local directory on your machine.
+link in your browser, click on the `Raw` button (near the top right), and then
+save the web page as a file into a local directory on your machine.
 
 Open a command-line window (also known as a  *terminal* or a *console*), change to the
 directory where you saved the above file and type:
@@ -72,14 +72,17 @@ If this works, then download and try out other scripts from any of the `examples
 sub-directories (**note** some examples may require additional files such as
 images, CSV files, or spreadsheets).
 
+The examples are also described further in the
+[documents](https://github.com/gamesbook/pyprototypr/blob/master/docs/index.rst)
+
 ## Contributions
 
 Please see the [list of contributors](CONTRIBUTORS.txt).
 
 ## Work-in-Progress
 
-These features are not guaranteed to be addressed, but they are current / potential
-areas of work or development.
+These features are **not** guaranteed to be implemented, but they are
+current / potential areas of work or development that have been identified.
 
 * [x] Page numbering
 * [ ] New shapes:
@@ -94,18 +97,18 @@ areas of work or development.
     * [ ] Diamond shape
 * [ ] Common objects:
     * [ ] Cube (rhombus composite)
-    * [ ] Domino (dots with outline?)
-    * [ ] Die (6-side with dots)
+    * [ ] Domino (dots inside rectangle outline)
+    * [ ] Die (6-sided with dots)
     * [ ] Picture Frame (trapezoid composite)
 * [ ] Arrow: basic styling; angled
 * [x] Circle, Rectangle, Hexagon: centre cross
 * [x] Rectangle: with notches
 * [x] Hexagons: "pointy" layout
-* [ ] Hexagons: 18xx tile example (requires `Arcs`!)
+* [ ] Hexagons: 18xx tile example (requires `Arcs` below!)
 * [ ] Line:
     * [x] end style
     * [ ] join style
-* [ ] Polyline: add arcs
+* [ ] Polyline: create arcs along path
 * [ ] Arcs (pathways) inside a hexagon (**in progress**)
 * [ ] Shortcut notation for styling of: area, line, text, etc.
 * [ ] Track: layout shapes along a rectangle, circle or polygon (**in progress**)
@@ -127,6 +130,8 @@ areas of work or development.
 * [ ] Cards:
     * [ ] allow for copies of a card
     * [ ] 'wrapper' for counters (default 1" squares)
+* [_] Color:
+    * [ ] add support for CMYK
 
 ## Planned/Potential Board Examples
 
@@ -142,8 +147,9 @@ As always, with Python, you are building "on the shoulders of giants".
 In this case, the
 [ReportLab PDF Toolkit](https://https://docs.reportlab.com/reportlab/userguide/ch1_intro/)
 provides all of the core infrastructure used to do the underlying graphics
-processing and PDF file creation; __pyprototypr__ is a customised wrapper to
-simplify common uses and needs around its numerous and extensive capabilities.
+processing and PDF file creation; __pyprototypr__ is effectively a highly
+customised wrapper to simplify common uses around its existing and extensive
+capabilities.
 
 Additional libraries in use include:
 

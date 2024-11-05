@@ -699,10 +699,72 @@ Example 1.
       - lower-left "corner" at x-position 1cm and at y-position 1cm
       - flat-to-flat hexagon height of 1cm
       - "flat" top hexagons
+      - size of two rows by two columns ("cols")
       - the "odd" columns - which include the first one - are offset one-half
-        of a hex "down"
+        of a hexagon "down"
 ===== ======
 
 
 Shapes' Common Properties
 -------------------------
+
+Fill and Stroke
+~~~~~~~~~~~~~~~
+
+Almost every single shape will have a *stroke*, corresponding to the color of
+the line used to draw it, and a *stroke_width* which is the thickness in
+points (72 points per inch).  All `Enclosed Shapes`_ will have a *fill*
+corresponding to the color used for the area inside it.
+
+.. |fst| image:: images/defaults/fill-stroke.png
+   :width: 330
+
+===== ======
+|fst| This example shows a shape constructed using the command::
+
+          Rectangle(fill=yellow, stroke=red, stroke_width=6)
+
+      The shape has the following properties:
+
+      - *fill* color of yellow (this corresponds to hexadecimal value `#FFFF00`)
+      - *stroke* color of red (this corresponds to hexadecimal value `#FF0000`)
+      - *stroke_width* of 6 points (this corresponds to about 2mm)
+===== ======
+
+Transparency
+~~~~~~~~~~~~
+
+All `Enclosed Shapes`_, that have a *fill*, can have a transparency value set
+that will affect the fill color used for the area inside them.
+
+.. |trn| image:: images/defaults/transparency.png
+   :width: 330
+
+===== ======
+|trn| This example shows a number of Rectangles constructed as follows::
+
+          Rectangle(
+            x=1, y=3, height=1, width=2,
+            fill="#008000", stroke=silver, transparency=25, label="25%")
+          Rectangle(
+            x=1, y=4, height=1, width=2,
+            fill="#008000", stroke=silver, transparency=50, label="50%")
+          Rectangle(
+            x=1, y=5, height=1, width=2, fill="#008000",
+            stroke=silver, transparency=75, label="75%")
+
+          Rectangle(
+            x=0, y=0, height=2, width=2, fill=yellow, stroke=yellow)
+          Rectangle(
+            x=1, y=1, height=2, width=2, fill=red, stroke=red, transparency=50)
+
+      The first three Rectangles shape have the following property set:
+
+      - *transparency* - the lower the value, the more "see through" the color is
+
+      The last Rectangle, which also has a transparency value, is drawn
+      partially over the Rectangle on the lower-left.  This means there is an
+      apparent color change in the overlapping section, because some of the
+      underlying color is partially visible.
+
+===== ======

@@ -27,17 +27,16 @@ log = logging.getLogger(__name__)
 DEBUG = False
 GRID_SHAPES_WITH_CENTRE = [
     'CircleShape', 'CompassShape', 'DotShape', 'HexShape', 'PolygonShape',
-    'RectangleShape', 'RhombusShape', 'SquareShape', 'StadiumShape', 'EllipseShape',
-]
+    'RectangleShape', 'RhombusShape', 'SquareShape', 'StadiumShape',
+    'EllipseShape', ]
 GRID_SHAPES_NO_CENTRE = [
      'TextShape', 'StarShape', ]
 # NOT GRID:  ArcShape, BezierShape, PolylineShape, ChordShape
 
 # following shapes must have vertices accessible WITHOUT calling draw()
 SHAPES_FOR_TRACK = [
-    'LineShape', 'PolygonShape', 'PolylineShape', 'RectangleShape', 'RhombusShape',
-    'SquareShape',
-]
+    'LineShape', 'PolygonShape', 'PolylineShape', 'RectangleShape',
+    'RhombusShape', 'SquareShape', ]
 
 class ImageShape(BaseShape):
     """
@@ -73,7 +72,7 @@ class ImageShape(BaseShape):
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
         # ---- load image
-        # tools.feedback(f'*** IMAGE {ID=} {_source=} {x=} {y=} {self.scaling=} ')
+        # tools.feedback(f'*** IMGE {ID=} {_source=} {x=} {y=} {self.scaling=}')
         img, is_svg = self.load_image(_source, self.scaling)
         if not img:
             tools.feedback(
@@ -83,7 +82,7 @@ class ImageShape(BaseShape):
         # assumes 1 pt == 1 pixel ?
         if rotation:
             # ---- rotated image
-            # tools.feedback(f'*** IMAGE {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
+            # tools.feedback(f'*** IMGE {ID=} {rotation=} {self._u.x=} {self._u.y=}')
             cnv.saveState()
             # move the canvas origin
             if ID is not None:
@@ -111,7 +110,7 @@ class ImageShape(BaseShape):
                 from reportlab.graphics import renderPDF
                 renderPDF.draw(img, cnv, x=x, y=y)
             else:
-                # TODO -> use height=10 OR width=12 AND preserveAspectRatio=True,
+                # TODO -> use height=10 OR width=12 AND preserveAspectRatio=True
                 cnv.drawImage(img, x=x, y=y, width=width, height=height, mask="auto")
         # ---- text
         xc = x + width / 2.0
