@@ -35,6 +35,7 @@ Index of Shapes
 -  `Dot`_
 -  `DotGrid`_
 -  `Ellipse`_
+-  `EquilateralTriangle`_
 -  `Grid`_
 -  `Hexagon`_
 -  `Hexagons`_
@@ -346,6 +347,10 @@ Compass
 ~~~~~~~
 `^ <shapeIndex_>`_
 
+A Compass is often thought of a specific device used for navigation. Here,
+its abstracted somewhat to indicate directional lines drawn within an
+enclosing shape; by default, circle.
+
 Example 1.
 ++++++++++
 
@@ -364,7 +369,7 @@ Example 1.
       - diameter of 1cm
       - lines in all 8 directions, extending from the centre outwards; these
         represent the primary - North, South, East and West - and secondary -
-        North-East, South-East, Notth-West and South- West directions.
+        North-East, South-East, North-West and South-West directions.
 ===== ======
 
 Example 2.
@@ -375,7 +380,7 @@ Example 2.
 
 ===== ======
 |cm2| This example shows the shape constructed using the command with different
-      properties.  The top left:
+      properties.  The top left::
 
           Compass(cx=1, cy=5, perimeter='circle', directions="ne nw s")
 
@@ -383,7 +388,7 @@ Example 2.
 
       - centred at x-position 1cm and at y-position 5cm
       - *directions* define where the radial lines extend; in this case to the
-        North-East , North-West and South
+        North-East, North-West and South
 
       The centre::
 
@@ -410,8 +415,9 @@ Example 2.
       - centred at x-position 3cm and at y-position 1cm
       - *perimeter* defines the shape of 'hexagon' that is used to defined where
         the radial lines of the compass extend; in this case its in a
-        hexagon with a default diameter of 1cm
-      - lines extend, for a hexagon, in 6 directions i.e. no North or South
+        hexagon with a default diameter of 1cm, so lines extend in 6 directions
+        i.e. no North or South
+      - *radii_stroke_width* defines the line thickness used for the radii
 ===== ======
 
 
@@ -439,6 +445,82 @@ Example 1.
 
       Because the *height* and *width* default to the same value, it appears
       as a `Circle`_.
+
+===== ======
+
+
+
+EquilateralTriangle
+~~~~~~~~~~~~~~~~~~~
+`^ <shapeIndex_>`_
+
+Example 1.
+++++++++++
+
+.. |eqi| image:: images/defaults/equiangle.png
+   :width: 330
+
+===== ======
+|eqi| This example shows the shape constructed using the command with only
+      defaults::
+
+          EquilateralTriangle()
+
+      It has the following properties based on the defaults:
+
+      - lower-left "corner" at x-position 1cm and at y-position 1cm
+      - side of 1cm; all sides are equal
+===== ======
+
+Example 2.
+++++++++++
+
+.. |eq2| image:: images/customised/equilateral_triangle.png
+   :width: 330
+
+===== ======
+|eq2| This example shows the shape constructed using the command with the
+      various properties.  In the lower section::
+
+        EquilateralTriangle(
+          x=2, y=1, flip="north", hand="east", label="NE", fill=gold)
+        EquilateralTriangle(
+          x=2, y=1, flip="south", hand="east", label="SE", fill=lime)
+        EquilateralTriangle(
+          x=2, y=1, flip="north", hand="west", label="NW", fill=red)
+        EquilateralTriangle(
+          x=2, y=1, flip="south", hand="west", label="SW", fill=blue)
+
+      These have the following properties:
+
+      - starting position at x-position 2cm and at y-position 1cm
+      - default side of 1cm; all sides are equal
+      - *flip* - this can be `north` or `south` and will cause the triangle to
+        either point up or down relative to the starting position
+      - *hand*  - this can be `west` or `east` and will cause the triangle to
+        be drawn to the left or the right relative to the starting position
+
+      The middle section shows::
+
+        EquilateralTriangle(
+          x=2, y=3, side=1.5, hatch=5, hatch_stroke=red,
+          title='Title', heading='Head')
+
+      - starting position at x-position 2cm and at y-position 3cm
+      - *side* of 1.5cm; all sides are equal
+      - *hatch* of 5 - this means there will be 5 equally spaced lines drawn
+        between opposing sides which run parallel to the third side
+      - *hatch_stroke* - customise the hatch lines to show them as `red`
+
+      The top section shows::
+
+        EquilateralTriangle(
+            x=1, y=4, stroke_width=1, rotation=45, dot=.05)
+
+      - starting position at x-position 1cm and at y-position 4cm
+      - *dot* - in the centre
+      - *rotation* - of 45 |deg| (from the baseline, anti-clockwise) about
+        the centre
 
 ===== ======
 
@@ -623,24 +705,109 @@ Starfield
 Example 1.
 ++++++++++
 
-.. |str| image:: images/defaults/starfield.png
+.. |sf0| image:: images/defaults/starfield.png
    :width: 330
 
 ===== ======
-|str| This example shows the shape constructed using the command with only
+|sf0| This example shows the shape constructed using the command with only
       defaults::
 
           Starfield()
 
       It has the following properties based on the defaults:
 
-      - centre at x-position 1cm and at y-position 1cm
+      - lower left-corner at x-position 0cm and at y-position 0cm
       - "height" of 1cm
       - 10 randomly placed white 'dots'
 
       Because the default fill color is white, this example adds an extra
       `Rectangle()` shape, with a fill of black, which is drawn first and is
-      hence "behind" the field of dotts
+      hence "behind" the field of dots.
+===== ======
+
+Example 2.
+++++++++++
+
+.. |sf1| image:: images/customised/starfield_rectangle.png
+   :width: 330
+
+===== ======
+|sf1| This example shows the shape constructed using the command with the
+      following properties::
+
+        StarField(
+            density=80,
+            enclosure=rectangle(x=0, y=0, height=3, width=3),
+            colors=[white, white, red, green, blue],
+            sizes=[0.4])
+
+      It has the following properties set:
+
+      - lower left-corner at x-position 0cm and at y-position 0cm
+      - *height* and *width* each of 3cm
+      - 80 randomly placed 'dots'
+      - *colors* - are a list
+      - *sizes* - are a list; in this case just one value
+
+      Because the default fill color is white, this example adds an extra
+      `Rectangle()` shape, with a fill of black, which is drawn first and is
+      hence "behind" the field of dots.
+===== ======
+
+Example 3.
+++++++++++
+
+.. |sf2| image:: images/customised/starfield_circle.png
+   :width: 330
+
+===== ======
+|sf2| This example shows the shape constructed using the command with the
+      following properties::
+
+        StarField(
+            density=30,
+            enclosure=circle(x=0, y=0, radius=1.5),
+            sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.5])
+
+      It has the following properties set:
+
+      - lower left "corner" at x-position 1cm and at y-position 1cm
+      - "height" of 1cm
+      - 30 randomly placed 'dots'
+      - *sizes* - are a list
+
+      Because the default fill color is white, this example adds an extra
+      `Circle()` shape, with a fill of black, which is drawn first and is
+      hence "behind" the field of dots.
+===== ======
+
+Example 4.
+++++++++++
+
+.. |sf3| image:: images/customised/starfield_poly.png
+   :width: 330
+
+===== ======
+|sf3| This example shows the shape constructed using the command with the
+      following properties::
+
+        StarField(
+            density=50,
+            enclosure=polygon(x=1.5, y=1.4, sides=10, radius=1.5),
+            colors=[white, white, white, red, green, blue],
+            sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
+
+      It has the following properties set:
+
+      - lower left "corner" at x-position 1.5cm and at y-position 1.4cm
+      - radius of 1.5cm
+      - 50 randomly placed 'dots'
+      - *colors* - are a list
+      - *sizes* - are a list
+
+      Because the default fill color is white, this example adds an extra
+      `Polygon()` shape, with a fill of black, which is drawn first and is
+      hence "behind" the field of dots.
 ===== ======
 
 

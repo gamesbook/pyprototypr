@@ -100,7 +100,7 @@ plys = Common(x=1.5, y=1.4, sides=10, radius=1.5)
 Polygon(common=plys, fill=black)
 StarField(
     density=50,
-    enclosure=polygon(common=plys),
+    enclosure=polygon(x=1.5, y=1.4, sides=10, radius=1.5),
     colors=[white, white, white, red, green, blue],
     sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
 PageBreak()
@@ -108,15 +108,20 @@ PageBreak()
 # ---- equilateral triangle: hatch
 Blueprint()
 Text(common=txt, text="Equilateral Triangle; text; hatch")
-# EquilateralTriangle(x=2, y=3, side=1, hatch=5, hatch_stroke=red,
-#                     title='Title', heading='Heading', label='Label')
-# EquilateralTriangle(x=2, y=1, side=1, flip="north", hand="east", label="NE", fill="yellow")
-# EquilateralTriangle(x=2, y=1, side=1, flip="south", hand="east", label="SE", fill="green")
-# EquilateralTriangle(x=2, y=1, side=1, flip="north", hand="west", label="NW", fill="red")
-# EquilateralTriangle(x=2, y=1, side=1, flip="south", hand="west", label="SW", fill="blue")
-#EquilateralTriangle(x=1, y=2, side=1, stroke_width=1, rotation=45)
-EquilateralTriangle(cx=2, cy=2, side=1, stroke_width=1, dot=.02, label="|+|", rotation=45, debug=True)
-EquilateralTriangle(cx=3, cy=4, side=1, stroke_width=1, dot=.02, label="|+|")
+EquilateralTriangle(
+    x=2, y=3, side=1.5, hatch=5, hatch_stroke=red, title='Title', heading='Head')
+EquilateralTriangle(
+    x=2, y=1, flip="north", hand="east", label="NE", fill=gold)
+EquilateralTriangle(
+    x=2, y=1, flip="south", hand="east", label="SE", fill=lime)
+EquilateralTriangle(
+    x=2, y=1, flip="north", hand="west", label="NW", fill=red)
+EquilateralTriangle(
+    x=2, y=1, flip="south", hand="west", label="SW", fill=blue)
+EquilateralTriangle(
+    x=1, y=4, stroke_width=1, rotation=45, dot=.05)
+# EquilateralTriangle(cx=2, cy=2, side=1, stroke_width=1, dot=.02, label="|+|", rotation=45, debug=True)
+# EquilateralTriangle(cx=3, cy=4, side=1, stroke_width=1, dot=.02, label="|+|")
 PageBreak()
 
 # ---- RA Triangle

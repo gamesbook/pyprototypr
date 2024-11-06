@@ -905,7 +905,7 @@ class CompassShape(BaseShape):
                     case 'e' | '2':
                         self.rectangle_radius(cnv, ID, vertices, 90, height, width)
                     case 'se' | '3':
-                        self.rectangle_radius(cnv, ID, vertices, 135, height, width)
+                        self.rectangle_radius(cnv, ID, vertices, 315, height, width)
                     case 's' | '4':
                         self.rectangle_radius(cnv, ID, vertices, 180, height, width)
                     case 'sw' | '5':
