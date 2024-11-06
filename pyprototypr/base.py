@@ -429,12 +429,12 @@ class BaseCanvas:
         # ---- grid cut marks
         self.grid_marks = self.defaults.get('grid_marks', 0)
         self.grid_stroke = self.get_color(self.defaults.get('grid_stroke'), grey)
-        self.grid_stroke_width = self.defaults.get('grid_stroke_width', WIDTH)
+        self.grid_stroke_width = self.defaults.get('grid_stroke_width', self.stroke_width)
         self.grid_length = self.defaults.get('grid_length', 0.85)  # 1/3 inch
         self.grid_offset = self.defaults.get('grid_offset', 0)
         # ---- line style
         self.line_stroke = self.defaults.get('line_stroke', WIDTH)
-        self.line_width = self.defaults.get('line_width', WIDTH)
+        self.line_width = self.defaults.get('line_width', self.stroke_width)
         self.line_cap = self.defaults.get('line_cap', None)
         self.dotted = self.defaults.get(
             'dotted', self.defaults.get('dotted', False))
@@ -545,7 +545,7 @@ class BaseCanvas:
         # ---- circle and hex only
         self.radii = self.defaults.get('radii', [])
         self.radii_stroke = self.defaults.get('radii_stroke', black)
-        self.radii_stroke_width = self.defaults.get('radii_stroke_width', WIDTH)
+        self.radii_stroke_width = self.defaults.get('radii_stroke_width', self.stroke_width)
         self.radii_length = self.defaults.get('radii_length', None)  # default: circle radius
         self.radii_offset = self.defaults.get('radii_offset', 0)
         self.radii_cap = self.defaults.get('radii_cap', None)
@@ -557,7 +557,7 @@ class BaseCanvas:
         self.petals_height = self.defaults.get('petals_height', 1)
         self.petals_offset = self.defaults.get('petals_offset', 0)
         self.petals_stroke = self.defaults.get('petals_stroke', self.stroke)
-        self.petals_stroke_width = self.defaults.get('petals_stroke_width', WIDTH)
+        self.petals_stroke_width = self.defaults.get('petals_stroke_width', self.stroke_width)
         self.petals_fill = self.defaults.get('petals_fill', None)
         self.petals_dotted = self.defaults.get('petals_dotted', self.dotted)
         self.petals_dashed = self.defaults.get('petals_dashed', self.dashed)
@@ -856,7 +856,7 @@ class BaseShape:
         self.vertices = self.kw_int(kwargs.get('vertices', cnv.vertices))
         self.sides = kwargs.get('sides', cnv.sides)
         self.points = kwargs.get('points', cnv.points)
-        # ---- circle / hexagon / polygon
+        # ---- circle / hexagon / polygon / compass
         self.radii = kwargs.get('radii', cnv.radii)
         self.radii_stroke = kwargs.get('radii_stroke', cnv.radii_stroke)
         self.radii_stroke_width = self.kw_float(

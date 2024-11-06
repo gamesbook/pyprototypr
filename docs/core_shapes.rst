@@ -375,30 +375,43 @@ Example 2.
 
 ===== ======
 |cm2| This example shows the shape constructed using the command with different
-      properties. The top right::
+      properties.  The top left:
 
-          Compass(cx=3, cy=3, perimeter='rectangle', height=2, width=3)
+          Compass(cx=1, cy=5, perimeter='circle', directions="ne nw s")
 
-      It has the following properties:
+      The Compass shape has the following properties:
 
-      - centred at x-position 3cm and at y-position 3cm
-      - *perimeter* defines the shape of 'box' that is used to defined where
-        the lines of the compass extend; in this case its a rectangle with a
-        height of `2` cm and width of `3` cm.
-      - lines extend, by default, in all 8 directions
+      - centred at x-position 1cm and at y-position 5cm
+      - *directions* define where the radial lines extend; in this case to the
+        North-East , North-West and South
 
-      The lower left::
+      The centre::
 
-          Compass(cx=1, cy=1, perimeter='hexagon')
+          Compass(
+              cx=2, cy=3, perimeter='rectangle', height=2, width=3,
+              radii_stroke=red)
 
-      It has the following properties:
+      The Compass shape has the following properties:
 
-      - centred at x-position 1cm and at y-position 1cm
-      - *perimeter* defines the shape of 'box' that is used to defined where
-        the lines of the compass extend; in this case its a hexagon with a
-        default diameter of 1cm
-      - lines extend, for a hexagon, in 6 directions
+      - centred at x-position 2cm and at y-position 3cm
+      - *perimeter* defines the shape of 'rectangle' that is used to define
+        where the radial lines of the compass extend; in this case its in a
+        rectangle with a height of `2` cm and width of `3` cm.
+      - radial lines extend, by default, in all 8 directions - to the centre of
+        the rectangle's bounding lines and to its corners
+      - *radii_stroke* defines the line colors used
 
+      The lower right::
+
+          Compass(cx=3, cy=1, perimeter='hexagon', radii_stroke_width=2)
+
+      The Compass shape has the following properties:
+
+      - centred at x-position 3cm and at y-position 1cm
+      - *perimeter* defines the shape of 'hexagon' that is used to defined where
+        the radial lines of the compass extend; in this case its in a
+        hexagon with a default diameter of 1cm
+      - lines extend, for a hexagon, in 6 directions i.e. no North or South
 ===== ======
 
 

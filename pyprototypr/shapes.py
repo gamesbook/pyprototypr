@@ -741,54 +741,85 @@ class CompassShape(BaseShape):
         self.x_c = None
         self.y_c = None
 
-    def circle_radius(self, cnv, angle):
+    def draw_radius(self, cnv, ID, x, y, absolute=False):
+        self.set_canvas_props(
+            index=ID,
+            stroke=self.radii_stroke,
+            stroke_width=self.radii_stroke_width,
+            dashed=self.radii_dashed,
+            dotted=self.radii_dotted)
+        pth = cnv.beginPath()
+        # tools.feedback(
+        #    f'*** radius {self.x_c=:.2f} {self.y_c=:.2f}; {x=:.2f} {y=:.2f}')
+        pth.moveTo(self.x_c, self.y_c)
+        if absolute:
+            pth.lineTo(x, y)
+        else:
+            pth.lineTo(x + self.x_c, y + self.y_c)
+        cnv.drawPath(
+            pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
+
+    def circle_radius(self, cnv, ID, angle):
         """Calc x,y on circle and draw line from centre to it."""
         x = self._u.radius * math.sin(math.radians(angle))
         y = self._u.radius * math.cos(math.radians(angle))
-        pth = cnv.beginPath()
-        pth.moveTo(self.x_c, self.y_c)
-        pth.lineTo(x + self.x_c, y + self.y_c)
-        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
+        self.draw_radius(cnv, ID, x, y)
 
-    def rectangle_ranges(self, height, width):
-        """Calculate angle ranges inside rectangle."""
-        ranges = []
-        first = math.degrees(math.atan((width / 2.0) / (height / 2.0)))
-        ranges.append((0, first))
-        half_second = math.degrees(math.atan((height / 2.0) / (width / 2.0)))
-        second = 2 * half_second + first
-        ranges.append((first, second))
-        third = second + 2 * first
-        ranges.append((second, third))
-        fourth = third + 2 * half_second
-        ranges.append((third, fourth))
-        ranges.append((fourth, 360.0))
-        # tools.feedback(f'*** {ranges=}')
-        return ranges
+    # def rectangle_ranges(self, height, width):
+    #     """Calculate angle ranges inside rectangle."""
+    #     ranges = []
+    #     first = math.degrees(math.atan((width / 2.0) / (height / 2.0)))
+    #     ranges.append((0, first))
+    #     half_second = math.degrees(math.atan((height / 2.0) / (width / 2.0)))
+    #     second = 2 * half_second + first
+    #     ranges.append((first, second))
+    #     third = second + 2 * first
+    #     ranges.append((second, third))
+    #     fourth = third + 2 * half_second
+    #     ranges.append((third, fourth))
+    #     ranges.append((fourth, 360.0))
+    #     tools.feedback(f'*** {ranges=}')
+    #     return ranges
 
-    def rectangle_radius(self, cnv, ranges, angle, height, width):
+    def rectangle_radius(self, cnv, ID, vertices, angle, height, width):
         """Calc x,y on rectangle and draw line from centre to it."""
-        radians = math.radians(angle)
-        if angle == 0:
-            radius = 0.5 * height
-        elif angle == 90:
-            radius = 0.5 * width
-        elif angle == 180:
-            radius = 0.5 * height
-        elif angle == 270:
-            radius = 0.5 * width
-        elif angle > ranges[0][0] and angle <= ranges[0][1]:
-            radius = (0.5 * height) / math.sin(radians)
-        else:
-            tools.feedback(f'{angle} not in range', True)
 
-        x = radius * math.sin(radians)
-        y = radius * math.cos(radians)
-        pth = cnv.beginPath()
-        # tools.feedback(f'*** {self.x_c=}, {self.y_c=}')
-        pth.moveTo(self.x_c, self.y_c)
-        pth.lineTo(x + self.x_c, y + self.y_c)
-        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
+        def get_xy(radians, radius):
+            x = radius * math.sin(radians)
+            y = radius * math.cos(radians)
+            return x, y
+
+        # tools.feedback(f'*** {angle=}', False)
+        radians = math.radians(angle)
+        match angle:
+            # ---- primary directions
+            case 0:
+                x, y = get_xy(radians, 0.5 * height)
+                self.draw_radius(cnv, ID, x, y)
+            case 90:
+                x, y = get_xy(radians, 0.5 * width)
+                self.draw_radius(cnv, ID, x, y)
+            case 180:
+                x, y = get_xy(radians, 0.5 * height)
+                self.draw_radius(cnv, ID, x, y)
+            case 270:
+                x, y = get_xy(radians, 0.5 * width)
+                self.draw_radius(cnv, ID, x, y)
+            # ---- secondary directions
+            case 45:
+                x, y = vertices[2].x, vertices[2].y
+                self.draw_radius(cnv, ID, x, y, True)
+            case 135:
+                x, y = vertices[1].x, vertices[1].y
+                self.draw_radius(cnv, ID, x, y, True)
+            case 225:
+                x, y = vertices[0].x, vertices[0].y
+                self.draw_radius(cnv, ID, x, y, True)
+            case 315:
+                x, y = vertices[3].x, vertices[3].y
+                self.draw_radius(cnv, ID, x, y, True)
+            case _:
+                tools.feedback(f'{angle} not in range', True)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw compass on a given canvas."""
@@ -838,70 +869,78 @@ class CompassShape(BaseShape):
             for direction in _directions:
                 match direction:
                     case 'n' | '0':
-                        self.circle_radius(cnv, 0)
+                        self.circle_radius(cnv, ID, 0)
                     case 'ne' | '1':
-                        self.circle_radius(cnv, 45)
+                        self.circle_radius(cnv, ID, 45)
                     case 'e' | '2':
-                        self.circle_radius(cnv, 90)
+                        self.circle_radius(cnv, ID, 90)
                     case 'se' | '3':
-                        self.circle_radius(cnv, 135)
+                        self.circle_radius(cnv, ID, 135)
                     case 's' | '4':
-                        self.circle_radius(cnv, 180)
+                        self.circle_radius(cnv, ID, 180)
                     case 'sw' | '5':
-                        self.circle_radius(cnv, 225)
+                        self.circle_radius(cnv, ID, 225)
                     case 'w' | '6':
-                        self.circle_radius(cnv, 270)
+                        self.circle_radius(cnv, ID, 270)
                     case 'nw' | '7':
-                        self.circle_radius(cnv, 315)
+                        self.circle_radius(cnv, ID, 315)
                     case _:
                         pass
         # ---- draw compass in rect
         if self.perimeter == 'rectangle':
-            ranges = self.rectangle_ranges(height, width)
+            if self.radii_length is not None:
+                tools.feedback(
+                    'radii_length cannot be used for a rectangle-perimeter Compass',
+                    False, True)
+            rect = RectangleShape(**self.kwargs)
+            rotation = 0
+            vertices = rect.get_vertices(rotation, **kwargs)
+
             for direction in _directions:
                 match direction:
                     case 'n' | '0':
-                        self.rectangle_radius(cnv, ranges, 0, height, width)
+                        self.rectangle_radius(cnv, ID, vertices, 0, height, width)
                     case 'ne' | '1':
-                        self.rectangle_radius(cnv, ranges, 45, height, width)
+                        self.rectangle_radius(cnv, ID, vertices, 45, height, width)
                     case 'e' | '2':
-                        self.rectangle_radius(cnv, ranges, 90, height, width)
+                        self.rectangle_radius(cnv, ID, vertices, 90, height, width)
                     case 'se' | '3':
-                        pass
+                        self.rectangle_radius(cnv, ID, vertices, 135, height, width)
                     case 's' | '4':
-                        self.rectangle_radius(cnv, ranges, 180, height, width)
+                        self.rectangle_radius(cnv, ID, vertices, 180, height, width)
                     case 'sw' | '5':
-                        pass
+                        self.rectangle_radius(cnv, ID, vertices, 225, height, width)
                     case 'w' | '6':
-                        self.rectangle_radius(cnv, ranges, 270, height, width)
+                        self.rectangle_radius(cnv, ID, vertices, 270, height, width)
                     case 'nw' | '7':
-                        pass
+                        self.rectangle_radius(cnv, ID, vertices, 135, height, width)
                     case _:
                         pass
-
         # ---- draw compass in hex
         if self.perimeter == 'hexagon':
             for direction in _directions:
                 match direction:
                     case 'n' | '0':
-                        self.circle_radius(cnv, 0)
+                        self.circle_radius(cnv, ID, 0)
                     case 'ne' | '1':
-                        self.circle_radius(cnv, 60)
+                        self.circle_radius(cnv, ID, 60)
                     case 'e' | '2':
                         pass
                     case 'se' | '3':
-                        self.circle_radius(cnv, 120)
+                        self.circle_radius(cnv, ID, 120)
                     case 's' | '4':
-                        self.circle_radius(cnv, 180)
+                        self.circle_radius(cnv, ID, 180)
                     case 'sw' | '5':
-                        self.circle_radius(cnv, 240)
+                        self.circle_radius(cnv, ID, 240)
                     case 'w' | '6':
                         pass
                     case 'nw' | '7':
-                        self.circle_radius(cnv, 300)
+                        self.circle_radius(cnv, ID, 300)
                     case _:
                         pass
 
+        # ---- cross
+        self.draw_cross(cnv, self.x_c, self.y_c)
         # ---- dot
         self.draw_dot(cnv, self.x_c, self.y_c)
         # ---- text
@@ -1998,7 +2037,7 @@ class RectangleShape(BaseShape):
         if self.cx is not None and self.cy is not None:
             self.x = self.cx - self.width / 2.0
             self.y = self.cy - self.height / 2.0
-            # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
+            # tools.feedback(f"INIT {self.cx=} {self.cy=} {self.x=} {self.y=}")
         self.kwargs = kwargs
 
     def __str__(self):
@@ -2031,12 +2070,20 @@ class RectangleShape(BaseShape):
         if rotation:
             kwargs['rotation'] = rotation
         x, y = self.calculate_xy(**kwargs)
-        return [  # clockwise from bottom-left; relative to centre
+        vertices = [  # clockwise from bottom-left; relative to centre
             Point(x, y),
             Point(x, y + self._u.height),
             Point(x + self._u.width, y + self._u.height),
             Point(x + self._u.width, y),
         ]
+        # tools.feedback(
+        #     '*** RECT VERTS '
+        #     f' /0: {vertices[0][0]:.2f};{vertices[0][1]:.2f}'
+        #     f' /1: {vertices[1][0]:.2f};{vertices[1][1]:.2f}'
+        #     f' /2: {vertices[2][0]:.2f};{vertices[2][1]:.2f}'
+        #     f' /3: {vertices[3][0]:.2f};{vertices[3][1]:.2f}'
+        # )
+        return vertices
 
     def set_coord(self, cnv, x_d, y_d):
         """Set (optionally draw) the coords of the rectangle."""

@@ -62,9 +62,9 @@ PageBreak()
 # ---- compass
 Blueprint()
 Text(common=txt, text="Compass")
-Compass(cx=1, cy=1, perimeter='hexagon')
-Compass(cx=2, cy=2, perimeter='circle')
-Compass(cx=3, cy=3, perimeter='rectangle', height=2, width=3)
+Compass(cx=3, cy=1, perimeter='hexagon', radii_stroke_width=2)
+Compass(cx=1, cy=5, perimeter='circle', directions="ne nw s")
+Compass(cx=2, cy=3, perimeter='rectangle', height=2, width=3, radii_stroke=red)
 PageBreak()
 
 # ---- lines (multiple) labels
