@@ -3095,9 +3095,9 @@ class StarFieldShape(BaseShape):
     A StarField is specified by the following properties:
      * density (average number of stars per square unit; default is 10)
      * colors (list of individual star colors; default is [white])
-     * enclosure (regular shape inside which it is drawn; default is a rectangle)
+     * enclosure (regular shape inside which its drawn; default is a rectangle)
      * sizes (list of individual star sizes; default is [0.1])
-     * star_pattern (random | cluster | )
+     * star_pattern (random | cluster) - NOT YET IMPLEMENTED
 
     Ref:
         https://codeboje.de/starfields-and-galaxies-python/

@@ -2,9 +2,8 @@
 Terminology
 ===========
 
-**pyprototypr** uses many terms; most of which should - hopefully - be
-reasonably obvious by their name, or by the context in which they are
-used.
+**pyprototypr** uses many terms; most of which should - hopefully - be fairly
+obvious by their name, or by the context in which they are used.
 
 However, in order to help with clarity, below is a reasonably
 comprehensive list of terms used in different places, grouped by what
@@ -30,19 +29,25 @@ Table of Contents
 pyprototypr Jargon
 ==================
 
-**pyprototypr** uses a number of 'generic' terms which you'll see throught the
-documentation:
+**pyprototypr** uses a number of 'generic' terms which you'll see in many places
+in the documentation:
 
 - **script** - a file containing all **pyprototypr** instructions
-- **command** - an instruction within a **pyprototypr** file
+- **command** - an instruction that is specified in a **pyprototypr** file
 - **element** - a
-- **shape** - a geometric element e.g. circle or square, or text or a line 
+- **shape** - a geometric element e.g. circle or square, or text or a line
   or a grid; something that can be drawn
+- **property** - an aspect of a command or shape that helps define how it works
+  or looks; for example, a circle might have its size defined by using a radius
+  property of 2 centimetres.
 - **run** - to cause Python to act on the script so that all instructions are
-  carried out; this should usually cause an output file to be created (or 
+  carried out; this should usually cause an output file to be created (or
   recreated)
+- **vertex** / **vertices** - the sharp "points" at the intersection of the
+  lines used to construct a shape; for example,  a triangle has 3 vertices and
+  a square has 4.
 
-Color-orientated Terms 
+Color-orientated Terms
 ======================
 
 Color is defined in the same way as it is in pages that appear on the
@@ -75,46 +80,48 @@ In general, color can be set for the lines (**stroke**) and areas
 -  **stroke_fill** - sets both the line (“stroke”) and area (“fill”) to
    be the same color
 
-Location- and position-orientated Terms 
+Location- and position-orientated Terms
 =======================================
 
 Everything in **pyprototypr** that needs to be displayed or drawn or
 positioned must be placed somewhere on the page; each thing must have
 both a horizontal position - its **x** value - and a vertical position -
-its **x** value. These respectively represent the distances from the
+its **y** value. These respectively represent the distances from the
 left- and bottom-edge of a page.
 
 -  **align** - used to position text relative to its starting location;
    can be one of: *justify*, *left*, *right*, or *centre*
 -  **cx** - the centre location of a shape, going in the horizontal
-   direction; its often the case that the distance is not absolute, but
-   relative to some other value e.g. distance from a margin; or the edge
+   direction; its usually the case that the distance is not absolute, but
+   relative to some other value e.g. distance from a margin; or the edge
    of a ``Card``
 -  **cy** - the centre location of a shape, going in the vertical
-   direction; its often the case that the distance is not absolute, but
-   relative to some other value e.g. distance from a margin; or the edge
+   direction; its usually the case that the distance is not absolute, but
+   relative to some other value e.g. distance from a margin; or the edge
    of a ``Card``
 -  **position** - the relative location with a shape; can be one of:
    *top*, *middle*, *center*, or *bottom*
 -  **x** - the location of a point in the horizontal direction; its
-   often the case that the distance is not absolute, but relative to
-   some other value e.g. distance from a margin; or the edge of a
+   usually the case that the distance is not absolute, but relative to
+   some other value e.g. distance from a margin; or the edge of a
    ``Card``
--  **y** - the location of a point in the vertical direction; its often
+-  **y** - the location of a point in the vertical direction; its usually
    the case that the distance is not absolute, but relative to some
-   other value e.g. distance from a margin; or the edge of a ``Card``
+   other value e.g. distance from a margin; or the edge of a ``Card``
 
-Size- and length-orientated Terms 
+Size- and length-orientated Terms
 =================================
 
 The majority of length - and width, height, diameter etc. - properties
 will be numeric values, corresponding to the **unit** in use (unless
-otherwise noted). The default is usually 1 e.g. 1cm.
+otherwise noted). The default is usually 1 e.g. 1cm.  The default *unit** is
+*centimetres* ("cm").
 
-Some sizes set in **points** - there are 72 points in an inch - so as to
+Some sizes are set in **points** - there are 72 points in an inch - so as to
 align with existing conventions, or simply because these items are
 typically very tiny. As far as possible, the term **size** is reserved
-for these settings; for example, **font_size**, **dot_size**,
+for these settings; for example, **font_size**, **dot_size**. An exception
+is **stroke_width** which is also in points, again because of convention.
 
 A few sizes are given descriptive names; this makes them a little easier
 to set.
@@ -126,7 +133,7 @@ to set.
 -  **dot_size** - the diameter of a small ``Dot`` in **points**
 -  **cross** - the height and width of the intersecting lines drawn at
    the centre of a shape
--  **height** - the vertical dimension of a shape e.g. a ``Rectangle``
+-  **height** - the vertical dimension of a shape e.g. a ``Rectangle``
    or a bitmap ``Image``
 -  **margin** - used in ``Create`` command to set all margins for a
    page; the default for any margin is 1.25cm / 12.5mm (1/2 of an inch)
@@ -144,36 +151,36 @@ to set.
    wrapped in quotes!)
 -  **radius** - the radius of a ``Circle``
 -  **scaling** - the amount by which an SVG image should be shrunk or
-   expanded e.g. 0.5 makes it half-size and 2.0 doubles its size; but
+   expanded e.g. 0.5 makes it half-size and 2.0 doubles its size; but
    because SVG is a vector-format, there will be no loss of resolution
    through scaling
--  **side** - the length of a side of some shapes (e.g. ``Square``,
+-  **side** - the length of a side of some shapes (e.g. ``Square``,
    ``Polygon``, ``Grid``) as well as the distance between each adjacent
    point in a ``TriangularLayout``
 -  **stroke_width** - the thickness of a line in **points**; many
    specific widths are set by prefixing this term with the name of the
    item in question; examples: **cross_stroke_width**;
    **grid_stroke_width**; **radii_stroke_width**
--  **width** - the horizontal dimension of a shape e.g. a ``Rectangle``
+-  **width** - the horizontal dimension of a shape e.g. a ``Rectangle``
    or a bitmap ``Image``
 
-Amount- and count-orientated Terms 
+Amount- and count-orientated Terms
 ==================================
 
 -  **sides** - the number of sides of a ``Polygon`` shape
 
-Direction-orientated Terms 
+Direction-orientated Terms
 ==========================
 
 In general, there are two primary ways of determining direction of
-something; either by compass direction or angle. Other descriptive
+something; either by compass direction or by angle. Other, more descriptive
 directions are also used.
 
 The *angle* is the amount of rotation, in degrees, starting from a value
-of 0 (zero) which is assumed to be the line parallel to the bottom of
+of zero (0)) which is assumed to be the line parallel to the bottom of
 the page (as you would normally look at it). Ninety (90) degrees is the
-angle of a line to the side of the page, and so on. The maximum rotation
-is 360 degrees.
+angle of a line to the side of the page, and so on. The maximum allowed
+rotation is 360 degrees i.e. a sweep around a full circle.
 
 A *compass direction* is one of the following:
 
@@ -193,7 +200,7 @@ Secondary compass directions (with abbreviations shown in brackets):
 
    *NOTE* - if a compass direction is used in the context of a
    **hexagon**, the angle is “reinterpreted” to match its context
-   e.g. the angle for NorthEast for a ‘pointy’ hexagon is 60, not 45,
+   e.g. the angle for NorthEast for a ‘pointy’ hexagon is 60, not 45,
    degrees.
 
 Properties that use direction include:
@@ -202,22 +209,22 @@ Properties that use direction include:
    direction of travel around a circle
 -  **direction** - can be any primary compass direction; used to show
    the travel route when moving through various types of layouts
-   e.g. ``RectangularLayout``
+   e.g. ``RectangularLayout``
 -  **edges** - can be any primary compass direction; used to indicate
    the sides of a ``Square`` or ``Rectangle``
 -  **facing** - can be any primary compass direction; used to show
-   orientation of some types of layouts e.g. ``DiamondLayout``
--  **flip** - the relative vertical direction in which a triangle or rhombus 
+   orientation of some types of layouts e.g. ``DiamondLayout``
+-  **flip** - the relative vertical direction in which a triangle or rhombus
    must be drawn; can be either: *north* or *south*
 -  **hand** - the relative horizontal direction in which a triangle must
    be drawn; can be either: *east* or *west*
 -  **orientation** - used for drawing hexagons; can be either: *flat* or
    *pointy*
 -  **start** - can be any secondary compass direction; for example, it is
-   used to show in which corner of a ``RectangularLayout`` that shapes 
+   used to show in which corner of a ``RectangularLayout`` that shapes
    should first placed when creating a track.
 
-Styling-orientated Terms 
+Styling-orientated Terms
 ========================
 
 -  **dotted** - allows a line to be broken into a series of dots of
@@ -230,11 +237,13 @@ Display-orientated Terms
 ========================
 
 -  **hidden** - a list of locations, indicated either by their sequence
-   number (i.e. their position in the drawing order) or their row and
+   number (i.e. their position in the drawing order) or their row and
    column identifier which should **not** be used for display - the rest
    are displayed as normal
+-  **radii** - if given a value of `True` will cause the radii of a polygon
+   to be shown
 -  **shown** - a list of locations, indicated either by their sequence
-   number (i.e. their position in the drawing order) or their row and
+   number (i.e. their position in the drawing order) or their row and
    column identifier which are the only ones that **must** be used for
    display - the rest are ignored
 
@@ -242,11 +251,16 @@ Miscellaneous Terms
 ===================
 
 -  **debug** - a value can be set for this that will cause underlying
-   values or locations to be displayed e.g. using ``debug="n"`` for a
+   values or locations to be displayed e.g. using ``debug="n"`` for a
    layout will show small dots where each point in that layout exists
 -  **perimeter** - used to demarcate the boundary of a ``StarField``;
    one of *circle*, *rectangle* or *polygon*
 -  **peaks** - a series of sets, each containing a primary compass
    direction and a value, that designate that the edge of a rectangle
-   should be drawn as a triangular “peak”; e.g. a set of ``('n', 2)``
-   would draw a 2cm high triangle on the upper (north) edge.
+   should be drawn as a triangular “peak”; e.g. a set of ``('n', 2)``
+   would draw a 2cm high triangle on the upper (north) edge
+-  **PNG** - Portable Network Graphic - a file format in which an image can
+   be stored; its useful because its supports transparent backgrounds
+-  **SVG** - Scaleable Vector Graphics - a file format in which an image can
+   be stored; its a vector-format unlike the bitmap- or raster-format of PNG
+   and JPEG files

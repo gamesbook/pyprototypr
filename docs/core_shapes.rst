@@ -578,6 +578,10 @@ Polygon
 ~~~~~~~
 `^ <shapeIndex_>`_
 
+A polygon is a shape of constructed of any number of sides of equal length.
+A hexagon is just a polygon with 6 sides and an octagon is just a polygon with
+8 sides.
+
 Example 1.
 ++++++++++
 
@@ -595,6 +599,105 @@ Example 1.
       - centre at x-position 1cm and at y-position 1cm
       - has 6 sides
 ===== ======
+
+Example 2.
+++++++++++
+
+.. |pl1| image:: images/customised/polygon_sizes.png
+   :width: 330
+
+===== ======
+|pl1| This example shows three shapes constructed using the command with the
+      following properties::
+
+        Polygon(cx=1, cy=5, sides=7, radius=1, label="Seven")
+        Polygon(cx=2, cy=3, sides=6, radius=1, label="Six")
+        Polygon(cx=3, cy=1, sides=5, radius=1, label="Five")
+
+      It can be seen that each shape is constructed as follows:
+
+      - *centre* - using `cx` and `cy` values
+      - *radius* - 1cm in each case
+      - *sides* - varying from 7 down to 5
+
+      Even-sided polygons have a "flat" top, whereas odd-sided ones are
+      asymmetrical.
+===== ======
+
+Example 3.
+++++++++++
+
+.. |pl2| image:: images/customised/polygon_radii.png
+   :width: 330
+
+===== ======
+|pl2| This example shows the shape constructed using the command with the
+      additional properties.
+
+      The top example::
+
+          Polygon(cx=2, cy=4, sides=8, radius=1, radii=True)
+
+      It has the following properties:
+
+      - *centre* at x-position 2cm and at y-position 4cm, with a *radius*
+        size of 1cm
+      - *sides* - 8
+      - *radii* - set to `True` to force lines to be drawn from each of the
+        vertices of the polygon to its centre
+
+      The lower example::
+
+          Polygon(
+              cx=2, cy=1, sides=10, radius=1,
+              radii=True,
+              radii_offset=0.75, radii_length=0.25, radii_stroke_width=1,
+              dot=0.1, dot_stroke=red)
+
+      It has the following properties:
+
+      - *centre* at x-position 2cm and at y-position 1cm, with a *radius*
+        size of 1cm
+      - *sides* - 10
+      - *radii* - set to `True` to force lines to be drawn from the centre of
+        the polygon to each of its vertices; the radii properties are then set:
+
+        - *radii_offset* - set to 0.5cm; the distance away from the centre that
+          the radii will start to be drawn
+        - *radii_length*  - set to 0.75cm; the length is shorter than that of
+          the complete distance from vertex to centre, so the line goes in the
+          same direction but never touches the vertex or the centre
+        - *radii_stroke_width* set to 1point; a slightly thicker line
+===== ======
+
+Example 4.
+++++++++++
+
+.. |pl3| image:: images/customised/polygon_rotation_flat.png
+   :width: 330
+
+===== ======
+|pl3| This example shows five shapes constructed using the command with
+      additional properties::
+
+        Polygon(common=poly6, y=1, x=1.0, label="0")
+        Polygon(common=poly6, y=2, x=1.5, rotation=15, label="15")
+        Polygon(common=poly6, y=3, x=2.0, rotation=30, label="30")
+        Polygon(common=poly6, y=4, x=2.5, rotation=45, label="45")
+        Polygon(common=poly6, y=5, x=3.0, rotation=60, label="60")
+
+      The examples have the following properties:
+
+      - *centre* - using `cx` and `cy` values
+      - *radius* - 1cm in each case
+      - *sides* - the default of 6 in each case ("hexagon" shape)
+      - *rotation* - varies from 0 |deg| to 60 |deg| (counter-clockwise from the
+        horizontal); the fact that the angle of the sides of the polygon is
+        30 |deg| creates a type of regularity, so that a rotation of 60 |deg|
+        appears to repeat the first polygon - but the slope of the label inside
+        the polygon clearly shows the rotation.
+===== ======
+
 
 Rectangle
 ~~~~~~~~~
@@ -717,8 +820,8 @@ Example 1.
       It has the following properties based on the defaults:
 
       - lower left-corner at x-position 0cm and at y-position 0cm
-      - "height" of 1cm
-      - 10 randomly placed white 'dots'
+      - an enclosing area with *height* and *width* of 1cm
+      - 10 randomly placed white *color* 'dots' (the starfield *density*)
 
       Because the default fill color is white, this example adds an extra
       `Rectangle()` shape, with a fill of black, which is drawn first and is
@@ -736,22 +839,27 @@ Example 2.
       following properties::
 
         StarField(
-            density=80,
             enclosure=rectangle(x=0, y=0, height=3, width=3),
+            density=80,
             colors=[white, white, red, green, blue],
             sizes=[0.4])
 
       It has the following properties set:
 
       - lower left-corner at x-position 0cm and at y-position 0cm
-      - *height* and *width* each of 3cm
-      - 80 randomly placed 'dots'
-      - *colors* - are a list
-      - *sizes* - are a list; in this case just one value
+      - *enclosure* - the rectangle size determines the boundaries of the area
+        (*height* and *width* each of 3cm) inside of which the stars (dots) are
+        randomly drawn
+      - *density* - there will be a total of "80 multiplied by the enclosure
+        area" dots drawn
+      - *colors* - are a list of colors, one of which will be randomly chosen
+        each time before drawing a dot
+      - *sizes* - are a list of randomly chosen dot sizes; in this case there is
+        just one value and so all dots will be same size
 
       Because the default fill color is white, this example adds an extra
-      `Rectangle()` shape, with a fill of black, which is drawn first and is
-      hence "behind" the field of dots.
+      `Rectangle()` shape, with a fill color of black, which is drawn first and
+      is hence "behind" the field of dots.
 ===== ======
 
 Example 3.
@@ -765,19 +873,22 @@ Example 3.
       following properties::
 
         StarField(
-            density=30,
             enclosure=circle(x=0, y=0, radius=1.5),
+            density=30,
             sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.5])
 
       It has the following properties set:
 
-      - lower left "corner" at x-position 1cm and at y-position 1cm
-      - "height" of 1cm
-      - 30 randomly placed 'dots'
-      - *sizes* - are a list
+      - lower left "corner" at x-position 0cm and at y-position 0cm
+      - *enclosure* - the circle radius (1.5cm) determines the boundaries of
+        the area inside of which the stars (dots) are randomly drawn
+      - *density* - there will be a total of "30 multiplied by the enclosure
+        area" dots drawn
+      - *sizes* - are a list of available dot sizes, one of which is randomly
+        chosen each time before drawing a dot
 
       Because the default fill color is white, this example adds an extra
-      `Circle()` shape, with a fill of black, which is drawn first and is
+      `Circle()` shape, with a fill color of black, which is drawn first and is
       hence "behind" the field of dots.
 ===== ======
 
@@ -792,22 +903,26 @@ Example 4.
       following properties::
 
         StarField(
-            density=50,
             enclosure=polygon(x=1.5, y=1.4, sides=10, radius=1.5),
+            density=50,
             colors=[white, white, white, red, green, blue],
             sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
 
       It has the following properties set:
 
       - lower left "corner" at x-position 1.5cm and at y-position 1.4cm
-      - radius of 1.5cm
-      - 50 randomly placed 'dots'
-      - *colors* - are a list
-      - *sizes* - are a list
+      - *enclosure* - the polygon radius (1.5cm) determines the boundaries of
+        the area inside of which the stars (dots) are randomly drawn
+      - *density* - there will be a total of "50 multiplied by the enclosure
+        area" dots drawn
+      - *colors* - a list of available dot colors, one of which is randomly
+        chosen each time before drawing a dot
+      - *sizes* - are a list of available dot sizes, one of which is randomly
+        chosen each time before drawing a dot
 
       Because the default fill color is white, this example adds an extra
-      `Polygon()` shape, with a fill of black, which is drawn first and is
-      hence "behind" the field of dots.
+      `Polygon()` shape, with a fill color of black, which is drawn first and
+      is hence "behind" the field of dots.
 ===== ======
 
 

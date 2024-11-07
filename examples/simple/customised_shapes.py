@@ -79,8 +79,8 @@ Blueprint()
 Text(common=txt, text="StarField: Rectangle; multi-color")
 Rectangle(x=0, y=0, height=3, width=3, fill=black)
 StarField(
-    density=80,
     enclosure=rectangle(x=0, y=0, height=3, width=3),
+    density=80,
     colors=[white, white, red, green, blue],
     sizes=[0.4])
 PageBreak()
@@ -89,8 +89,8 @@ Blueprint()
 Text(common=txt, text="StarField: Circle; multi-size")
 Circle(x=0, y=0, radius=1.5, fill=black)
 StarField(
-    density=30,
     enclosure=circle(x=0, y=0, radius=1.5),
+    density=30,
     sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.5])
 PageBreak()
 
@@ -99,8 +99,8 @@ Text(common=txt, text="StarField: Poly; multi-color&size")
 plys = Common(x=1.5, y=1.4, sides=10, radius=1.5)
 Polygon(common=plys, fill=black)
 StarField(
-    density=50,
     enclosure=polygon(x=1.5, y=1.4, sides=10, radius=1.5),
+    density=50,
     colors=[white, white, white, red, green, blue],
     sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
 PageBreak()
@@ -244,10 +244,10 @@ PageBreak()
 # ---- polygon radii
 Blueprint()
 Text(common=txt, text="Polygon: radii (default & custom)")
-Polygon(cx=2, cy=4, sides=8, radius=1, radii=1)
+Polygon(cx=2, cy=4, sides=8, radius=1, radii=True)
 Polygon(
-    cx=2, cy=1, sides=10, radius=1, radii=1,
-    radii_offset=0.5, radii_length=0.25, radii_stroke_width=1,
+    cx=2, cy=1, sides=10, radius=1, radii=True,
+    radii_offset=0.75, radii_length=0.25, radii_stroke_width=1,
     dot=0.1, dot_stroke=red)
 PageBreak()
 
@@ -308,6 +308,14 @@ Polygon(common=poly6, y=4, x=2.5, rotation=45, label="45")
 Polygon(common=poly6, y=5, x=3.0, rotation=60, label="60")
 PageBreak()
 
+# ---- polygon sizes
+Blueprint()
+Text(common=txt, text="Polygon: sizes")
+Polygon(cx=1, cy=5, sides=7, radius=1, label="Seven")
+Polygon(cx=2, cy=3, sides=6, radius=1, label="Six")
+Polygon(cx=3, cy=1, sides=5, radius=1, label="Five")
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Shapes END...")
 PageBreak(footer=True)
@@ -327,5 +335,5 @@ Save(
         "sequence_shapes", "chord", "polygon_radii", "dates_formats",
         "images_normal_rotation", "rhombus_red_rotation",
         "stadium_red_rotation", "polygon_rotation_flat",
-        "polygon_rotation_pointy",
+        "polygon_rotation_pointy", "polygon_sizes",
         None])
