@@ -145,7 +145,7 @@ PageBreak()
 
 # ---- grid
 Text(common=txt, text='Grid: gray; 1/3"; thick')
-Grid(side=0.85, stroke=gray, stroke_width=0.5)
+Grid(side=0.85, stroke=gray, stroke_width=1)
 PageBreak()
 
 # ---- dotgrid
@@ -316,6 +316,12 @@ Polygon(cx=2, cy=3, sides=6, radius=1, label="Six")
 Polygon(cx=3, cy=1, sides=5, radius=1, label="Five")
 PageBreak()
 
+# ---- grid cols and rows
+Blueprint()
+Text(common=txt, text='Grid: gray; 3x4; thick')
+Grid(x=0.5, y=0.5, cols=3, rows=4, height=1.25, width=1, stroke=gray, stroke_width=1)
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Shapes END...")
 PageBreak(footer=True)
@@ -335,5 +341,5 @@ Save(
         "sequence_shapes", "chord", "polygon_radii", "dates_formats",
         "images_normal_rotation", "rhombus_red_rotation",
         "stadium_red_rotation", "polygon_rotation_flat",
-        "polygon_rotation_pointy", "polygon_sizes",
+        "polygon_rotation_pointy", "polygon_sizes", "grid_3x4",
         None])

@@ -3392,7 +3392,7 @@ class CommonShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Not applicable."""
-        tools.feedback("This shape cannot be drawn.")
+        tools.feedback("The Common shape cannot be drawn.", True)
 
 
 class FooterShape(BaseShape):

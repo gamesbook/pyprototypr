@@ -281,10 +281,11 @@ def margins(**kwargs):
     global margin_bottom
     global margin_right
     kwargs['margin'] = kwargs.get('margin', margin)
-    kwargs['margin_left'] = kwargs.get('margin_left', margin)
-    kwargs['margin_top'] = kwargs.get('margin_top', margin)
-    kwargs['margin_bottom'] = kwargs.get('margin_bottom', margin)
-    kwargs['margin_right'] = kwargs.get('margin_right', margin)
+    kwargs['margin_left'] = kwargs.get('margin_left', margin_left or margin)
+    kwargs['margin_top'] = kwargs.get('margin_top', margin_top or margin)
+    kwargs['margin_bottom'] = kwargs.get('margin_bottom', margin_bottom or margin)
+    kwargs['margin_right'] = kwargs.get('margin_right', margin_right or margin)
+    # breakpoint()
     return kwargs
 
 
@@ -1180,8 +1181,10 @@ def Blueprint(**kwargs):
         local_kwargs['cols'] = sub_count * kwargs['cols']
         local_kwargs['stroke_width'] = kwargs.get('stroke_width') / 2.0
         local_kwargs['stroke'] = kwargs.get('subdivisions_stroke', kwargs['stroke'])
-        local_kwargs['dashed'] = kwargs.get('subdivisions_dashed')
-        local_kwargs['dots'] = kwargs.get('subdivisions_dots')
+        local_kwargs['dashed'] = kwargs.get('subdivisions_dashed', [])
+        local_kwargs['dotted'] = kwargs.get('subdivisions_dotted', True)
+        if local_kwargs['dashed']:
+            local_kwargs['dotted'] = False
         subgrid = GridShape(canvas=cnv, **local_kwargs)
         subgrid.draw(cnv=cnv)
     # ---- draw Blueprint grid

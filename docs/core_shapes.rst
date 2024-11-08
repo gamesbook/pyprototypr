@@ -503,10 +503,12 @@ Example 2.
       The middle section shows::
 
         EquilateralTriangle(
-          x=2, y=3, side=1.5, hatch=5, hatch_stroke=red,
-          title='Title', heading='Head')
+            x=2, y=3, side=1.5,
+            hatch=5, hatch_stroke=red,
+            title='Title', heading='Head'
+        )
 
-      - starting position at x-position 2cm and at y-position 3cm
+      - starting position at *x*-position 2cm and at *y*-position 3cm
       - *side* of 1.5cm; all sides are equal
       - *hatch* of 5 - this means there will be 5 equally spaced lines drawn
         between opposing sides which run parallel to the third side
@@ -515,7 +517,8 @@ Example 2.
       The top section shows::
 
         EquilateralTriangle(
-            x=1, y=4, stroke_width=1, rotation=45, dot=.05)
+            x=1, y=4, stroke_width=1, rotation=45, dot=.05
+        )
 
       - starting position at x-position 1cm and at y-position 4cm
       - *dot* - in the centre
@@ -652,7 +655,8 @@ Example 3.
               cx=2, cy=1, sides=10, radius=1,
               radii=True,
               radii_offset=0.75, radii_length=0.25, radii_stroke_width=1,
-              dot=0.1, dot_stroke=red)
+              dot=0.1, dot_stroke=red
+          )
 
       It has the following properties:
 
@@ -842,7 +846,8 @@ Example 2.
             enclosure=rectangle(x=0, y=0, height=3, width=3),
             density=80,
             colors=[white, white, red, green, blue],
-            sizes=[0.4])
+            sizes=[0.4]
+        )
 
       It has the following properties set:
 
@@ -875,7 +880,8 @@ Example 3.
         StarField(
             enclosure=circle(x=0, y=0, radius=1.5),
             density=30,
-            sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.5])
+            sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.5]
+        )
 
       It has the following properties set:
 
@@ -906,7 +912,8 @@ Example 4.
             enclosure=polygon(x=1.5, y=1.4, sides=10, radius=1.5),
             density=50,
             colors=[white, white, white, red, green, blue],
-            sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
+            sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45]
+        )
 
       It has the following properties set:
 
@@ -1044,9 +1051,9 @@ Example 2.
 |dg1| This example shows the shape constructed using the command with the
       following properties::
 
-          DotGrid(
-             stroke=darkgray, width=0.5, height=0.5, dot_point=1, offset_y=-0.25
-          )
+        DotGrid(
+            stroke=darkgray, width=0.5, height=0.5, dot_point=1, offset_y=-0.25
+        )
 
       It is meant to simulate the dot grid found in Moleskine notebooks, and so
       it has the following properties set:
@@ -1067,6 +1074,10 @@ Grid
 ~~~~
 `^ <shapeIndex_>`_
 
+A Grid is a series of crossed lines - both in the vertical and horizontal
+directions - which will, by default, fill the page, as far as possible,
+between its margins.
+
 Example 1.
 ++++++++++
 
@@ -1082,7 +1093,7 @@ Example 1.
       It has the following properties based on the defaults:
 
       - starts at lower-left corner of page defined by the margin
-      - has a default size of 2 in each of the x- and y-directions
+      - has a default grid interval of `1cm` in both the x- and y-direction
 ===== ======
 
 Example 2.
@@ -1093,16 +1104,48 @@ Example 2.
 
 ===== ======
 |gr2| This example shows the shape constructed using the command with the
-      following properties::
+      following properties (and without a `Blueprint`_ background)::
 
-          Grid(side=0.85, stroke=gray, stroke_width=0.5)
+          Grid(side=0.85, stroke=gray, stroke_width=1)
 
       It has the following properties based on the defaults:
 
       - *side* - the value of `0.85` cm equates to about 1/3 of an inch
-      - *stroke_width* - set to `0.5` points; this slightly thicker line makes
-        the grid more visible
+      - *stroke_width* - set to `1` point; this much thicker line makes
+        the grid clearly visible
       - *stroke* color of `gray` is a lighter color than default of black
+===== ======
+
+Example 3.
+++++++++++
+
+.. |gr3| image:: images/customised/grid_3x4.png
+   :width: 330
+
+===== ======
+|gr3| This example shows the shape constructed using the command with the
+      following properties::
+
+          Grid(
+              x=0.5, y=0.5,
+              height=1.25, width=1,
+              cols=3, rows=4,
+              stroke=gray, stroke_width=1
+          )
+
+      It has the following properties based on the defaults:
+
+      - *x* and *y* - each to to `0.5`cm; this offsets the lower-left corner
+        of the grid from the page margin
+      - *height* - value of `1.25` cm set for the row height
+      - *width* - value of `1` cm set for the column width
+      - *cols* and *rows* - the grid now has a fixed size  - 3 columns wide by
+        4 rows high - rather than being automatically calculated to fill up
+        the page
+      - *stroke_width* - set to `1` point; this much thicker line makes
+        the grid clearly visible
+      - *stroke* color of `gray` is a lighter color than default of black
+
 ===== ======
 
 
@@ -1180,28 +1223,32 @@ that will affect the fill color used for the area inside them.
 ===== ======
 |trn| This example shows a number of Rectangles constructed as follows::
 
-          Rectangle(
+        Rectangle(
             x=1, y=3, height=1, width=2,
-            fill="#008000", stroke=silver, transparency=25, label="25%")
-          Rectangle(
+            fill="#008000", stroke=silver, transparency=25, label="25%"
+        )
+        Rectangle(
             x=1, y=4, height=1, width=2,
-            fill="#008000", stroke=silver, transparency=50, label="50%")
-          Rectangle(
+            fill="#008000", stroke=silver, transparency=50, label="50%"
+        )
+        Rectangle(
             x=1, y=5, height=1, width=2, fill="#008000",
-            stroke=silver, transparency=75, label="75%")
+            stroke=silver, transparency=75, label="75%"
+        )
 
-          Rectangle(
-            x=0, y=0, height=2, width=2, fill=yellow, stroke=yellow)
-          Rectangle(
-            x=1, y=1, height=2, width=2, fill=red, stroke=red, transparency=50)
+        Rectangle(
+            x=0, y=0, height=2, width=2, fill=yellow, stroke=yellow
+        )
+        Rectangle(
+            x=1, y=1, height=2, width=2, fill=red, stroke=red, transparency=50
+        )
 
-      The first three Rectangles shape have the following property set:
+      The first three Rectangles shapes have the following property set:
 
-      - *transparency* - the lower the value, the more "see through" the color is
+      - *transparency* - the lower the value, the more "see through" the color
 
       The last Rectangle, which also has a transparency value, is drawn
       partially over the Rectangle on the lower-left.  This means there is an
       apparent color change in the overlapping section, because some of the
       underlying color is partially visible.
-
 ===== ======

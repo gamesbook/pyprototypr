@@ -354,15 +354,15 @@ class BaseCanvas:
         self.kwargs = kwargs
         self.run_debug = False
         self.units = self.get_units(self.defaults.get('units'), cm)
-        # ---- paper
+        # ---- paper & margins
         self.paper = _paper
         self.page_width = self.paper[0] / self.units  # user-units e.g. cm
         self.page_height = self.paper[1] / self.units  # user-units e.g. cm
         self.margin = self.defaults.get('margin', 1)
-        self.margin_top = self.defaults.get('margin_top', self.margin)
-        self.margin_bottom = self.defaults.get('margin_bottom', self.margin)
-        self.margin_left = self.defaults.get('margin_left', self.margin)
-        self.margin_right = self.defaults.get('margin_right', self.margin)
+        self.margin_top = self.defaults.get('margin_top', None)
+        self.margin_bottom = self.defaults.get('margin_bottom', None)
+        self.margin_left = self.defaults.get('margin_left', None)
+        self.margin_right = self.defaults.get('margin_right', None)
         # ---- sizes and positions
         self.row = self.defaults.get('row', None)
         self.col = self.defaults.get('col', self.defaults.get('column', None))
@@ -683,7 +683,7 @@ class BaseShape:
         self.shape = kwargs.get('shape', cnv.shape)
         self.run_debug = kwargs.get("debug", cnv.run_debug)
         self.units = kwargs.get('units', cnv.units)
-        # ---- paper
+        # ---- paper & margins
         self.paper = kwargs.get('paper') or cnv.paper
         self.margin = self.kw_float(kwargs.get('margin', cnv.margin))
         self.margin_top = self.kw_float(kwargs.get('margin_top', cnv.margin_top))
@@ -1041,8 +1041,8 @@ class BaseShape:
 
     def set_offset_props(self, off_x=0, off_y=0):
         """Get OffsetProperties for a Shape."""
-        margin_left = self.unit(self.margin_left) if self.margin_left is not None else None
-        margin_bottom = self.unit(self.margin_bottom) if self.margin_bottom is not None else None
+        margin_left = self.unit(self.margin_left) if self.margin_left is not None else self.margin
+        margin_bottom = self.unit(self.margin_bottom) if self.margin_bottom is not None else self.margin
         off_x = self.unit(off_x) if off_x is not None else None
         off_y = self.unit(off_y) if off_y is not None else None
         return OffsetProperties(

@@ -10,7 +10,8 @@ from pyprototypr import *
 Create(filename="customised_blueprint.pdf",
        paper=A8,
        margin_top=0.2,
-       margin_left=0.15,
+       margin_left=0.75,
+       margin_bottom=0.75,
        margin_right=0.2,
        font_size=8)
 
@@ -40,12 +41,12 @@ Blueprint(style='grey', stroke=purple)
 Text(common=txt, text="Blueprint: grey; stroke=purple")
 PageBreak()
 
-Blueprint(subdivisions=5, stroke_width=.5)
-Text(common=txt, text="Blueprint: subdivisions=5")
+Blueprint(subdivisions=4, stroke_width=.5)
+Text(common=txt, text="Blueprint: 4 subdivisions (dotted)")
 PageBreak()
 
 Blueprint(subdivisions=5, subdivisions_dashed=[0.01, 0.01, 0], stroke_width=.5)
-Text(common=txt, text="Blueprint: dashed subdivisions")
+Text(common=txt, text="Blueprint: 5 dashed subdivisions")
 PageBreak()
 
 Blueprint(decimals=1)
