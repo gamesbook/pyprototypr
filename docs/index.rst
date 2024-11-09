@@ -1,11 +1,11 @@
 pyprototypr: Table of Contents
 ==============================
 
-The **pyprototypr** documentation consists of the sections described
+The **pyprototypr** documentation consists of all the sections listed
 below.
 
-Although its great to be able to just “jump in” and start using a
-program, these sections are designed to be read in order - apart from
+Although its great to be able to “jump in” and just start using a
+program, the sections below are designed to be read in order - apart from
 the examples, they all contain useful information and build on each
 other.
 
@@ -15,28 +15,32 @@ other.
     on your computer
 3.  `Basic Concepts <basic_concepts.rst>`_ - core aspects of
     **pyprototypr** that you **must** know
-4.  `Basic Worked Examples <worked_example.rst>`_ - step-by-step
-    examples of setting up and running scripts to generate cards
+4.  `A First Example <worked_example.rst>`_ - step-by-step
+    example of setting up and running scripts to generate a deck of cards
 5.  `Script Anatomy <script_anatomy.rst>`_ - how a script is constructed
 6.  `Additional Concepts <additional_concepts.rst>`_ - additional
     aspects of **pyprototypr** that can also help with script creation
 7.  `Core Shapes <core_shapes.rst>`_ - a tour of the core geometries
-    available and how to construct them
+    available and how to construct and customise them
 8.  `Card Decks <card_decks.rst>`_ - how to create a deck, or set, of
     cards/tiles
 9.  `Advanced Commands <advanced_commands.rst>`_ - how to work with
     common/reused items and repetitive elements
 10. `Customised Shapes <customised_shapes.rst>`_ - how to refine the
-    appearance of certain kinds of shapes
+    appearance of certain shapes; circles, hexagons and rectangles
 11. `Layouts <layouts.rst>`_ - how to work with different kinds of
     layouts
 12. `Hexagonal Grids <hexagonal_grids.rst>`_ - how to create designs or
     layouts on a hexagonal grid
-13. `Terminology <terminology.rst>`_ - common jargon, and descriptions of 
-    elements' properties
+13. `Terminology <terminology.rst>`_ - summary of common jargon and descriptions
+    of many of the elements' properties
+
+The following are supplementary sections that you're likely to need when
+doing more advanced scipts:
+
 14. `Using Python Commands <python_commands.rst>`_ - how to work with
     loops and if statements for more flexibility
-15. `Descriptions of Available Examples <examples/index.rst>`_ - brief
+15. `Descriptions of Supplied Examples <examples/index.rst>`_ - brief
     walkthoughs of many of the examples provided with **pyprototypr**
 16. `Development Notes <development.rst>`_ - notes for programmers wanting
     to develop further in or with  **pyprototypr**

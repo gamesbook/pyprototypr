@@ -28,12 +28,12 @@ def feedback(item, stop=False, warn=False):
         quit()
 
 
-def equi(side: Any):
+def equilateral_height(side: Any):
     """Calculate height of equilateral triangle from a side.
 
     Doc Test:
 
-    >>> equi(5)
+    >>> equilateral_height(5)
     4.330127018922194
     """
     _side = to_float(side)

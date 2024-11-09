@@ -41,6 +41,7 @@ Index of Shapes
 -  `Hexagon`_
 -  `Hexagons`_
 -  `Line`_
+-  `Lines`_
 -  `Polygon`_
 -  `Polyline`_
 -  `Rectangle`_
@@ -133,7 +134,7 @@ Example 2.
       To help with visualisation, the Arc is surrounded by a red Rectangle::
 
         Rectangle(
-            x=1, y=1, height=1, width=2, dot=0.01,
+            x=1, y=1, height=1, width=2, dot=0.02,
             stroke=red, fill=None,
             title="Arc(x=1, y=1, x1=3, y1=2)")
         )
@@ -247,6 +248,25 @@ Example 1.
       - heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east")
 ===== ======
 
+Example 2.
+++++++++++
+
+.. |ln1| image:: images/customised/line_custom.png
+   :width: 330
+
+===== ======
+|ln1| This example shows the shape constructed using commands with the
+      following properties::
+
+          Line()
+
+      It has the following properties based on the defaults:
+
+      - starts at x-position 1cm and at y-position 1cm
+      - length of 1cm
+      - heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east")
+===== ======
+
 
 Polyline
 ~~~~~~~~
@@ -307,19 +327,20 @@ Example 1.
 ===== ======
 
 
-
 Enclosed Shapes
 ---------------
 `^ <pageIndex_>`_
 
 These shapes are created by enclosing an area; the most basic being a simple rectangle.
-They effectively have 2 dimensions (*height* and *width*).
+They effectively have two dimensions: *height* and *width*.
 
 The difference between enclosed and linear shapes is that the area enclosed by
 the shape can be filled with a color; the default fill color is *white*.
+There is an overview on how color is used in the
+`Basic Concepts section <basic_concepts.rst>`_
 
-    **pyprototypr** comes with a predefined set of named colors, shown in the
-    `colors <../examples/colorset.pdf>`_ document.
+    *Reminder:* **pyprototypr** comes with a predefined set of named colors, shown in the
+    `colors <../examples/colorset.pdf>`_ PDF file.
 
 Circle
 ~~~~~~
@@ -328,7 +349,7 @@ Circle
 .. NOTE::
 
    There is more detail about the properties that can be defined for a
-   Circle in the `customised shapes' Circle <customised_shapes.rst#circle>`_.
+   Circle in the `customised Circles <customised_shapes.rst#circle>`_ section.
 
 Example 1.
 ++++++++++
@@ -701,11 +722,12 @@ Example 4.
       - *centre* - using `cx` and `cy` values
       - *radius* - 1cm in each case
       - *sides* - the default of 6 in each case ("hexagon" shape)
-      - *rotation* - varies from 0 |deg| to 60 |deg| (counter-clockwise from the
+      - *rotation* - varies from 0 |deg| to 60 |deg| (anti-clockwise from the
         horizontal); the fact that the angle of the sides of the polygon is
-        30 |deg| creates a type of regularity, so that a rotation of 60 |deg|
-        appears to repeat the first polygon - but the slope of the label inside
-        the polygon clearly shows the rotation.
+        30 |deg| creates a type of regularity, so that the polygon with the
+        rotation of 60 |deg| appears to match the first polygon - but the slope
+        of the label inside that polygon clearly shows that rotation has
+        happened.
 ===== ======
 
 
@@ -1048,13 +1070,28 @@ Example 1.
       - starts at x-position 1cm and at y-position 1cm
 ===== ======
 
+
+.. _compoundIndex:
+
 Compound Shapes
 ---------------
 `^ <pageIndex_>`_
 
+Compound shapes are ones composed of multiple elements; but the program takes
+care of drawing all of them based on the properties supplied.
+
+The following are all such shapes:
+
+- `Blueprint`_
+- `DotGrid`_
+- `Grid`_
+- `Hexagons`_
+- `Lines`_
+
+
 Blueprint
 ~~~~~~~~~
-`^ <shapeIndex_>`_
+`^ <compoundIndex_>`_
 
 This shape is primarily intended to support drawing while it is "in progress".
 It provides a quick and convenient way to orientate and place other shapes
@@ -1116,7 +1153,7 @@ Example 2.
 
 DotGrid
 ~~~~~~~
-`^ <shapeIndex_>`_
+`^ <compoundIndex_>`_
 
 Example 1.
 ++++++++++
@@ -1167,7 +1204,7 @@ Example 2.
 
 Grid
 ~~~~
-`^ <shapeIndex_>`_
+`^ <compoundIndex_>`_
 
 A Grid is a series of crossed lines - both in the vertical and horizontal
 directions - which will, by default, fill the page, as far as possible,
@@ -1230,7 +1267,7 @@ Example 3.
 
       It has the following properties based on the defaults:
 
-      - *x* and *y* - each to to `0.5`cm; this offsets the lower-left corner
+      - *x* and *y* - each set to `0.5`cm; this offsets the lower-left corner
         of the grid from the page margin
       - *height* - value of `1.25` cm set for the row height
       - *width* - value of `1` cm set for the column width
@@ -1246,7 +1283,7 @@ Example 3.
 
 Hexagons
 ~~~~~~~~
-`^ <shapeIndex_>`_
+`^ <compoundIndex_>`_
 
 Hexagons are often drawn in a "honeycomb" arrangement to form a grid - for games
 this is often used to delineate the spaces in which playing pieces can be placed
@@ -1279,6 +1316,73 @@ Example 1.
         of a hexagon "down"
 ===== ======
 
+
+Lines
+~~~~~~
+`^ <compoundIndex_>`_
+
+Lines are simply a series of parallel lines drawn over repeating rows - for
+horizontal lines - or columns - for vertical lines.
+
+
+Example 1.
+++++++++++
+
+.. |ls0| image:: images/defaults/lines.png
+   :width: 330
+
+===== ======
+|ls0| This example shows the shape constructed using the command with only
+      defaults::
+
+          Lines()
+
+      It has the following properties based on the defaults:
+
+      - starts at x-position 1cm and at y-position 1cm
+      - heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east")
+      - has a default number of lines of 1
+      - line length of 1cm
+===== ======
+
+Example 2.
+++++++++++
+
+.. |ls1| image:: images/customised/lines.png
+   :width: 330
+
+===== ======
+|ls1| This example shows the shapes constructed using the command with the
+      following properties::
+
+        Lines(
+            x=1, x1=4, y=1, y1=1,
+            rows=2, height=1,
+            label_size=8, label="rows; ht=1.0")
+        Lines(
+            x=1, x1=1, y=3, y1=6,
+            cols=2, width=1.5,
+            label_size=8, label="col; wd=1.5")
+
+      The first command has the following properties:
+
+      - *x* and *y* - both set at `1` cm
+      - *rows* - set to 2 to create 2 parallel horizontal lines
+      - *height* - value of `1` cm set for the row height; this is the
+        separation between each line
+
+      The second command has the following properties:
+
+      - *x* and *y* - both set at `1` cm
+      - *cols* - set to 2 to create 2 parallel vertical lines
+      - *width* - value of `1.5` cm set for the column width; this is the
+        separation between each line
+
+
+      Note that the *label* that has been set applies to each line that is
+      drawn.
+===== ======
+
 .. _commonIndex:
 
 Shapes' Common Properties
@@ -1291,6 +1395,7 @@ The following are properties common to many shapes:
 - `cx and cy`_
 - `Fill and Stroke`_
 - `Dots and Crosses`_
+- `Rotation`_
 - `Transparency`_
 
 
@@ -1318,7 +1423,6 @@ position of the shape.
 Dots and Crosses
 ~~~~~~~~~~~~~~~~
 `^ <commonIndex_>`_
-
 
 For shapes that have a definable centre - such as a `Circle`_, a `Square`_
 or a `Hexagon`_ - it is possible to place a dot, a cross - or both - at this
@@ -1383,12 +1487,83 @@ corresponding to the color used for the area inside it.
 ===== ======
 
 
+Rotation
+~~~~~~~~
+`^ <commonIndex_>`_
+
+Every shape that has a calculated centre will allow for a *rotation* property.
+Rotation takes place in anti-clockwise direction around the centre of the shape.
+
+Example 1. Rhombus
+++++++++++++++++++
+
+.. |rt1| image:: images/customised/rhombus_red_rotation.png
+   :width: 330
+
+===== ======
+|rt1| This example shows the shape constructed using these commands::
+
+        Rhombus(
+            cx=2, cy=3, width=1.5, height=2*equilateral_height(1.5), dot=0.06)
+        Rhombus(
+            cx=2, cy=3, width=1.5, height=2*equilateral_height(1.5), dot=0.04,
+            fill=None, stroke=red, rotation=60)
+
+      The shape with the black outline and large dot in the centre is the
+      "normal" Rhombus.
+
+      The shape with the red outline and smaller, red dot in the centre is the
+      rotated Rhombus.
+
+      - *fill* color is `None` so no fill is used; this makes it completely
+        transparent.
+      - *stroke* of 60 is the number of degrees, anti-clockwise direction, that
+        it has been rotated
+
+      Because the second shape is completely transparent, its possible to see
+      how it is drawn relative to the first.
+===== ======
+
+
+Example 2. Polygon
+++++++++++++++++++
+
+.. |rt2| image:: images/customised/polygon_rotation_pointy.png
+   :width: 330
+
+===== ======
+|rt2| This example shows five shapes constructed using the command with
+      additional properties::
+
+        Polygon(common=poly6, y=1, x=1.0, label="0")
+        Polygon(common=poly6, y=2, x=1.5, rotation=15, label="15")
+        Polygon(common=poly6, y=3, x=2.0, rotation=30, label="30")
+        Polygon(common=poly6, y=4, x=2.5, rotation=45, label="45")
+        Polygon(common=poly6, y=5, x=3.0, rotation=60, label="60")
+
+      The examples have the following properties:
+
+      - *centre* - using `cx` and `cy` values
+      - *radius* - 1cm in each case
+      - *sides* - the default of 6 in each case ("hexagon" shape)
+      - *rotation* - varies from 0 |deg| to 60 |deg| (anti-clockwise from the
+        horizontal); the fact that the angle of the sides of the polygon is
+        30 |deg| creates a type of regularity, so that the polygon with the
+        rotation of 60 |deg| appears to match the first polygon - but the slope
+        of the label inside that polygon clearly shows that rotation has
+        happened.
+===== ======
+
+
 Transparency
 ~~~~~~~~~~~~
 `^ <commonIndex_>`_
 
 All `Enclosed Shapes`_, that have a *fill*, can have a transparency value set
 that will affect the fill color used for the area inside them.
+
+If a shape should be completely transparent - i.e. no color at all being
+visible - then set the *fill* value to `None`.
 
 .. |trn| image:: images/defaults/transparency.png
    :width: 330

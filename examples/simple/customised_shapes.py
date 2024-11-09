@@ -156,7 +156,7 @@ PageBreak()
 # ---- arc
 Blueprint()
 Text(common=txt, text="Arc; 'inside' rect")
-Rectangle(x=1, y=1, height=1, width=2, dot=0.01,
+Rectangle(x=1, y=1, height=1, width=2, dot=0.02,
           stroke=red, fill=None,
           title="Arc(x=1, y=1, x1=3, y1=2)")
 Arc(x=1, y=1, x1=3, y1=2)
@@ -274,9 +274,9 @@ PageBreak()
 # ---- rotation: rhombus
 Blueprint()
 Text(common=txt, text="Rhombus: red => rotation 60\u00B0")
-Rhombus(cx=2, cy=3, width=1.5, height=2*equi(1.5), dot=0.06)
-Rhombus(cx=2, cy=3, width=1.5, height=2*equi(1.5), fill=None,
-        stroke=red, stroke_width=.3, rotation=60, dot=0.04)
+Rhombus(cx=2, cy=3, width=1.5, height=2*equilateral_height(1.5), dot=0.06)
+Rhombus(cx=2, cy=3, width=1.5, height=2*equilateral_height(1.5), dot=0.04,
+        fill=None, stroke=red, rotation=60)
 PageBreak()
 
 # ---- rotation: stadium

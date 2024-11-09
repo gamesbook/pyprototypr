@@ -201,6 +201,11 @@ Text(common=header, text='RectangularLayout: "debug"')
 Layout(RectangularLayout(), debug='normal')
 PageBreak()
 
+Blueprint(stroke_width=0.5)
+Text(common=header, text='Lines')
+Lines()
+PageBreak()
+
 Save(output='png',
      dpi=600,
      directory="docs/images/defaults",
@@ -213,5 +218,5 @@ Save(output='png',
         'shape', 'sector', 'sequence', 'square',
         'stadium', 'starfield', 'dot', 'dotgrid', 'fill-stroke',
         'transparency', 'track-rectangle', 'chord',
-        'rectangular_layout', 'rectangular_layout_debug',
+        'rectangular_layout', 'rectangular_layout_debug', 'lines',
      ])
