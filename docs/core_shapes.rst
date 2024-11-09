@@ -9,6 +9,7 @@ Core Shapes
 .. |uar|  unicode:: U+02191 .. Black Up-Pointing Triangle
    :ltrim:
 
+.. _pageIndex:
 
 Table of Contents
 -----------------
@@ -43,6 +44,7 @@ Index of Shapes
 -  `Polygon`_
 -  `Polyline`_
 -  `Rectangle`_
+-  `Sector`_
 -  `Square`_
 -  `Stadium`_
 -  `Star`_
@@ -52,6 +54,7 @@ Index of Shapes
 
 Overview
 ---------
+`^ <pageIndex_>`_
 
 These descriptions of the available shapes assume you are familiar with
 the concepts, terms and ideas presented in `Basic
@@ -63,17 +66,17 @@ Where possible, the basic examples first show how a shape would appear
 on a page when **only** the default properties are used.
 This means for most cases, that *lines* are drawn in black, and shapes are
 *filled* with a white color. The default length or height in most cases is 1cm.
-The only change has been to make the default line width thicker, for easier
-viewing of the PNG images.
+The only change, for these examples, has been to make the default line width
+thicker for easier viewing of the PNG images.
 
 To make it easier to see where and how a shape has been drawn, most of these
 examples have been created with a background grid (which **pyprototypr**
-refers to as a `Blueprint`_) for cross-reference: the values of **x**
+refers to as a `Blueprint`_ shape) for cross-reference: the values of **x**
 appear across the lower edge of the grid (increasing from left to
 right); those for **y** along the left side (increasing from bottom to
 top). The grid respects the margins that have been set - so "0" is actually
-offset from the actual page corner - although the Blueprint numbering is,
-itself, inside the margin!
+offset from the physical page corner ... but you will observe that the
+Blueprint numbering itself is inside the margin area!
 
    The graphics for these examples were generated from the scripts in
    the ``examples`` directory - look at the
@@ -83,13 +86,15 @@ itself, inside the margin!
 
 Commonalities
 --------------
+`^ <pageIndex_>`_
 
 There are some properties that can be set for almost all of the shapes;
 examples of these are presented in the section on `Shapes' Common Properties`_
-at the end, rather than being repeated across every shape.
+at the end, rather than being described for every single shape.
 
 Linear Shapes
 --------------
+`^ <pageIndex_>`_
 
 Arc
 ~~~
@@ -125,15 +130,15 @@ Example 2.
 
           Arc(x=1, y=1, x1=3, y1=2)
 
-      For reference, the Arc is surrounded by a red Rectangle::
+      To help with visualisation, the Arc is surrounded by a red Rectangle::
 
-          Rectangle(
-              x=1, y=1, height=1, width=2, dot=0.01,
-              label_size=8, stroke=red, fill=None,
-              label="Arc(x=1, y=1, x1=3, y1=2)"
-          )
+        Rectangle(
+            x=1, y=1, height=1, width=2, dot=0.01,
+            stroke=red, fill=None,
+            title="Arc(x=1, y=1, x1=3, y1=2)")
+        )
 
-      It has the following properties:
+      The Arc has the following properties:
 
       - origin is at x-position 1cm and at y-position 1cm
       - the secondary x-position and y-position are at 3cm and 2cm
@@ -305,6 +310,7 @@ Example 1.
 
 Enclosed Shapes
 ---------------
+`^ <pageIndex_>`_
 
 These shapes are created by enclosing an area; the most basic being a simple rectangle.
 They effectively have 2 dimensions (*height* and *width*).
@@ -734,6 +740,66 @@ Example 1.
 ===== ======
 
 
+Sector
+~~~~~~
+`^ <shapeIndex_>`_
+
+A Sector is like the triangular-shaped wedge that is often cut from a pizza
+or cake. It extends from the centre of a "virtual" circle outwards to its
+enclosing diameter.  The two "arms" of the sector will cover a certain number
+of degrees of the circle (from 1 to 360).
+
+Example 1.
+++++++++++
+
+.. |sct| image:: images/defaults/sector.png
+   :width: 330
+
+===== ======
+|sct| This example shows the shape constructed using the command with only
+      defaults::
+
+          Sector()
+
+      It has the following properties based on the defaults:
+
+      - lower-left "corner"at x-position 1cm and at y-position 1cm
+      - sector is then drawn inside a circle of diameter 1cm, with an
+        *angle_width* of 90 |deg|
+===== ======
+
+Example 2.
+++++++++++
+
+.. |sc1| image:: images/customised/sectors.png
+   :width: 330
+
+===== ======
+|sc1| This example shows examples of the shape constructed using the command
+      the following properties::
+
+        sctm = Common(cx=2, cy=3, radius=2, fill=black, angle_width=43)
+        Sector(common=sctm, angle=40)
+        Sector(common=sctm, angle=160)
+        Sector(common=sctm, angle=280)
+
+      These all have the following Common properties:
+
+      - centred at x-position 2cm and at y-position 3cm
+      - *radius* of 2cm for the enclosing "virtual" circle
+      - *fill* color of black
+      - *angle_width* - determines the coverage (width of the sector); in these
+        cases it is 43 |deg|
+
+      Each sector in this example is drawn at a different *angle*; with the
+      this being the "virtual" centre-line  extending through the sector from
+      the middle of the  enclosing "virtual" circle.
+
+===== ======
+
+
+
+
 Square
 ~~~~~~
 `^ <shapeIndex_>`_
@@ -761,6 +827,9 @@ Stadium
 ~~~~~~~
 `^ <shapeIndex_>`_
 
+A Stadium is a shape constructed with a rectangle as a base, and then rounded
+projections extending from one or more of the sides.
+
 Example 1.
 ++++++++++
 
@@ -777,7 +846,32 @@ Example 1.
 
       - straight edge start at x-position 1cm and at y-position 1cm
       - height and width of 1cm each
-      - curved ends at ???
+      - curved ends at the east (right) and west (left) sides
+===== ======
+
+Example 2.
+++++++++++
+
+.. |st1| image:: images/customised/stadium_edges.png
+   :width: 330
+
+===== ======
+|st1| This example shows example of the shape constructed using the command
+      with the following properties::
+
+        Stadium(x=0, y=0, height=1, width=1, edges='n', fill=tan, label="north")
+        Stadium(x=3, y=1, height=1, width=1, edges='s', fill=tan, label="south")
+        Stadium(x=0, y=4, height=1, width=1, edges='e', fill=tan, label="east")
+        Stadium(x=3, y=5, height=1, width=1, edges='w', fill=tan, label="west")
+
+      These have the following properties set:
+
+      - *height* and *width* - of 1cm and 1cm respectively
+      - *edges* - the display of the rounded projection(s) are set by using
+        a letter representing the direction, where 'n' is north ("up"),
+        's' is south ("down"), 'e' is east ("right") and 'w' is west ("left"");
+        one or more can be used together with spaces between them e.g. 'n e'
+        for north **and** east.
 ===== ======
 
 
@@ -956,6 +1050,7 @@ Example 1.
 
 Compound Shapes
 ---------------
+`^ <pageIndex_>`_
 
 Blueprint
 ~~~~~~~~~
@@ -1184,12 +1279,88 @@ Example 1.
         of a hexagon "down"
 ===== ======
 
+.. _commonIndex:
 
 Shapes' Common Properties
 -------------------------
+`^ <pageIndex_>`_
+
+The following are properties common to many shapes:
+
+- `x and y`_
+- `cx and cy`_
+- `Fill and Stroke`_
+- `Dots and Crosses`_
+- `Transparency`_
+
+
+x and y
+~~~~~~~
+`^ <commonIndex_>`_
+
+Almost every shape will need to have its position set.  The commom way to do
+this is by setting a value for *x* - the distance from the left margin of the
+page (or card) to the left edge of the shape; and *y* - the distance from the
+bottom margin of the page (or card) to the bottom edge of the shape.
+
+
+cx and cy
+~~~~~~~~~
+`^ <commonIndex_>`_
+
+Almost every shape will need to have its position set.  For shapes that allow it,
+a commom way to do this is by setting a value for *cx* - the distance from the
+left margin of the page (or card) to the centre position of the shape and
+*y* - the distance from the bottom margin of the page (or card) to the centre
+position of the shape.
+
+
+Dots and Crosses
+~~~~~~~~~~~~~~~~
+`^ <commonIndex_>`_
+
+
+For shapes that have a definable centre - such as a `Circle`_, a `Square`_
+or a `Hexagon`_ - it is possible to place a dot, a cross - or both - at this
+location.
+
+.. |dnc| image:: images/customised/dots_crosses.png
+   :width: 330
+
+===== ======
+|dnc| This example shows various shapes constructed using the following
+      commands::
+
+        Rhombus(cx=1, cy=5, side=2, dot=0.1, dot_stroke=red)
+        Rhombus(
+           cx=3, cy=5, side=2,
+           cross=0.25, cross_stroke=red, cross_stroke_width=1)
+
+        Polygon(cx=1, cy=3, sides=8, radius=1, dot=0.1, dot_stroke=orange)
+        Polygon(
+           cx=3, cy=3, sides=8, diameter=2,
+           cross=0.25, cross_stroke=orange, cross_stroke_width=1)
+
+        Stadium(cx=1, cy=1, side=1, dot=0.1, dot_stroke=blue)
+        Stadium(
+            cx=3, cy=1, side=1,
+            cross=0.25, cross_stroke=blue, cross_stroke_width=1)
+
+      The shapes have their properties set as follows:
+
+      - *cx* and *cy* set the centre point of the shape
+      - *dot* - sets the size of dot at the centre
+      - *dot_stroke*  - sets the color of the dot (note that it is "filled in"
+        with that same color)
+      - *cross* - sets the height and width of the lines that cross at the centre
+      - *cross_stroke*  - sets the color of the cross lines
+      - *cross_stroke_width* - the thickness of the cross lines
+===== ======
+
 
 Fill and Stroke
 ~~~~~~~~~~~~~~~
+`^ <commonIndex_>`_
 
 Almost every single shape will have a *stroke*, corresponding to the color of
 the line used to draw it, and a *stroke_width* which is the thickness in
@@ -1211,8 +1382,10 @@ corresponding to the color used for the area inside it.
       - *stroke_width* of 6 points (this corresponds to about 2mm)
 ===== ======
 
+
 Transparency
 ~~~~~~~~~~~~
+`^ <commonIndex_>`_
 
 All `Enclosed Shapes`_, that have a *fill*, can have a transparency value set
 that will affect the fill color used for the area inside them.

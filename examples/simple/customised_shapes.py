@@ -134,7 +134,7 @@ RightAngledTriangle(common=eqt, flip="north", hand="west", label="NW", fill="red
 RightAngledTriangle(common=eqt, flip="south", hand="west", label="SW", fill="blue")
 PageBreak()
 
-# ---- sector
+# ---- sectors
 Blueprint()
 Text(common=txt, text="Sectors: 3 with same centre")
 sctm = Common(cx=2, cy=3, radius=2, fill=black, angle_width=43,)
@@ -157,16 +157,16 @@ PageBreak()
 Blueprint()
 Text(common=txt, text="Arc; 'inside' rect")
 Rectangle(x=1, y=1, height=1, width=2, dot=0.01,
-          label_size=8, stroke=red, fill=None,
-          label="Arc(x=1, y=1, x1=3, y1=2)")
+          stroke=red, fill=None,
+          title="Arc(x=1, y=1, x1=3, y1=2)")
 Arc(x=1, y=1, x1=3, y1=2)
 PageBreak()
 
 # ---- stadium
 Blueprint()
 Text(common=txt, text="Stadium: edges")
-Stadium(x=0, y=0, height=1, width=2, edges='n', fill=tan, label="north")
-Stadium(x=2, y=2, height=1, width=2, edges='S', fill=tan, label="south")
+Stadium(x=0, y=0, height=1, width=1, edges='n', fill=tan, label="north")
+Stadium(x=3, y=1, height=1, width=1, edges='s', fill=tan, label="south")
 Stadium(x=0, y=4, height=1, width=1, edges='e', fill=tan, label="east")
 Stadium(x=3, y=5, height=1, width=1, edges='w', fill=tan, label="west")
 PageBreak()
