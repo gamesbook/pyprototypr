@@ -55,7 +55,7 @@ Index of Shapes
 
 Overview
 ---------
-`^ <pageIndex_>`_
+`↑ <pageIndex_>`_
 
 These descriptions of the available shapes assume you are familiar with
 the concepts, terms and ideas presented in `Basic
@@ -87,19 +87,21 @@ Blueprint numbering itself is inside the margin area!
 
 Commonalities
 --------------
-`^ <pageIndex_>`_
+`↑ <pageIndex_>`_
 
 There are some properties that can be set for almost all of the shapes;
 examples of these are presented in the section on `Shapes' Common Properties`_
 at the end, rather than being described for every single shape.
 
+.. _linearIndex:
+
 Linear Shapes
 --------------
-`^ <pageIndex_>`_
+`↑ <shapeIndex_>`_
 
 Arc
 ~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 Example 1.
 ++++++++++
@@ -148,7 +150,7 @@ Example 2.
 
 Bezier
 ~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 Example 1.
 ++++++++++
@@ -167,9 +169,28 @@ Example 1.
       - starts at x-position 1cm and at y-position 1cm
 ===== ======
 
+Example 2.
+++++++++++
+
+.. |bz1| image:: images/customised/bezier_custom.png
+   :width: 330
+
+===== ======
+|bz1| This example shows the shape constructed using the command with the
+      following properties::
+
+          Bezier(x=0, y=1, x1=4, y1=3, x2=3, y2=4, x3=4, y3=6, stroke_width=1)
+
+      It has the following properties based on the defaults:
+
+      - starts at x-position `0` cm and at y-position `1` cm
+      - has the inflection points set by *x1* and *y1* and then *x2* and *y2*
+      - ends at position *x3* of `4` cm and at *y3* of `6` cm
+===== ======
+
 Chord
 ~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 Example 1.
 ++++++++++
@@ -202,7 +223,7 @@ Example 1.
 
 Dot
 ~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 Example 1.
 ++++++++++
@@ -227,7 +248,7 @@ Example 1.
 
 Line
 ~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 Example 1.
 ++++++++++
@@ -258,19 +279,46 @@ Example 2.
 |ln1| This example shows the shape constructed using commands with the
       following properties::
 
-          Line()
+        Line(x=0, y=1, length=4, stroke=lime, stroke_width=2)
+        Line(x=0, y=2, length=4, angle=15, stroke=red)
+        Line(x=0, y=3, x1=4, y1=4, stroke=blue, stroke_width=1,
+             dashed=[0.2, 0.2, 0.2, 0.2, 1.0, 0.0])
+        Line(x=0, y=4, x1=4, y1=5, dotted=True, stroke=gold, stroke_width=1)
 
-      It has the following properties based on the defaults:
+      The medium red line and the medium yellow line both have:
 
-      - starts at x-position 1cm and at y-position 1cm
-      - length of 1cm
-      - heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east")
+      - *x* and *y* set as their starting point
+      - *x1* and *y1* set as their ending point
+
+      and the line length is calculated based on these points.
+
+      The thick green line and the thin red line both have:
+
+      - *x* and *y* set as their starting point
+      - *length* to set the specific size of the line
+
+      The thin red line has:
+
+      - *angle* - of 15 |deg| (from the baseline, anti-clockwise) to guide
+        the direction in which the line is drawn; if not given (as in the case
+        of the thick green line) this will be 0 |deg|
+
+      The medium red line and the medium yellow line have their styles set so
+      that they are not normal solid lines:
+
+      - *dotted* - has a value of `True`, which then generates a series of
+        alternating small lines and gaps
+      - *dashed* - has a list, shown by the square brackets from `[` to `]`,
+        which provides a set of "on"/"off" values; the line is drawn for a
+        distance matching an "on" value followed by a gap matching an "off"
+        value; when the end of the list is reached it starts again until the
+        full length of the line is drawn
 ===== ======
 
 
 Polyline
 ~~~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 Example 1.
 ++++++++++
@@ -299,7 +347,7 @@ Example 1.
 
 Text
 ~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 It may seem strange to view text as a "shape"; but from a drawing point of
 view, its really just a series of complex lines drawn in a particular pattern!
@@ -329,7 +377,7 @@ Example 1.
 
 Enclosed Shapes
 ---------------
-`^ <pageIndex_>`_
+`↑ <pageIndex_>`_
 
 These shapes are created by enclosing an area; the most basic being a simple rectangle.
 They effectively have two dimensions: *height* and *width*.
@@ -344,7 +392,7 @@ There is an overview on how color is used in the
 
 Circle
 ~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 .. NOTE::
 
@@ -372,7 +420,7 @@ Example 1.
 
 Compass
 ~~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 A Compass is often thought of a specific device used for navigation. Here,
 its abstracted somewhat to indicate directional lines drawn within an
@@ -450,7 +498,7 @@ Example 2.
 
 Ellipse
 ~~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 Example 1.
 ++++++++++
@@ -479,7 +527,7 @@ Example 1.
 
 EquilateralTriangle
 ~~~~~~~~~~~~~~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 Example 1.
 ++++++++++
@@ -557,7 +605,7 @@ Example 2.
 
 Hexagon
 ~~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 .. NOTE::
 
@@ -606,7 +654,7 @@ Example 2.
 
 Polygon
 ~~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 A polygon is a shape of constructed of any number of sides of equal length.
 A hexagon is just a polygon with 6 sides and an octagon is just a polygon with
@@ -733,7 +781,7 @@ Example 4.
 
 Rectangle
 ~~~~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 .. NOTE::
 
@@ -764,7 +812,7 @@ Example 1.
 
 Sector
 ~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 A Sector is like the triangular-shaped wedge that is often cut from a pizza
 or cake. It extends from the centre of a "virtual" circle outwards to its
@@ -824,7 +872,7 @@ Example 2.
 
 Square
 ~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 Example 1.
 ++++++++++
@@ -847,7 +895,7 @@ Example 1.
 
 Stadium
 ~~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 A Stadium is a shape constructed with a rectangle as a base, and then rounded
 projections extending from one or more of the sides.
@@ -899,7 +947,7 @@ Example 2.
 
 Star
 ~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 Example 1.
 ++++++++++
@@ -923,7 +971,7 @@ Example 1.
 
 Starfield
 ~~~~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 Example 1.
 ++++++++++
@@ -1051,7 +1099,7 @@ Example 4.
 
 Trapezoid
 ~~~~~~~~~
-`^ <shapeIndex_>`_
+`↑ <shapeIndex_>`_
 
 Example 1.
 ++++++++++
@@ -1075,7 +1123,7 @@ Example 1.
 
 Compound Shapes
 ---------------
-`^ <pageIndex_>`_
+`↑ <pageIndex_>`_
 
 Compound shapes are ones composed of multiple elements; but the program takes
 care of drawing all of them based on the properties supplied.
@@ -1091,7 +1139,7 @@ The following are all such shapes:
 
 Blueprint
 ~~~~~~~~~
-`^ <compoundIndex_>`_
+`↑ <shapeIndex_>`_
 
 This shape is primarily intended to support drawing while it is "in progress".
 It provides a quick and convenient way to orientate and place other shapes
@@ -1153,7 +1201,7 @@ Example 2.
 
 DotGrid
 ~~~~~~~
-`^ <compoundIndex_>`_
+`↑ <shapeIndex_>`_
 
 Example 1.
 ++++++++++
@@ -1204,7 +1252,7 @@ Example 2.
 
 Grid
 ~~~~
-`^ <compoundIndex_>`_
+`↑ <shapeIndex_>`_
 
 A Grid is a series of crossed lines - both in the vertical and horizontal
 directions - which will, by default, fill the page, as far as possible,
@@ -1283,7 +1331,7 @@ Example 3.
 
 Hexagons
 ~~~~~~~~
-`^ <compoundIndex_>`_
+`↑ <shapeIndex_>`_
 
 Hexagons are often drawn in a "honeycomb" arrangement to form a grid - for games
 this is often used to delineate the spaces in which playing pieces can be placed
@@ -1319,7 +1367,7 @@ Example 1.
 
 Lines
 ~~~~~~
-`^ <compoundIndex_>`_
+`↑ <shapeIndex_>`_
 
 Lines are simply a series of parallel lines drawn over repeating rows - for
 horizontal lines - or columns - for vertical lines.
@@ -1387,7 +1435,7 @@ Example 2.
 
 Shapes' Common Properties
 -------------------------
-`^ <pageIndex_>`_
+`↑ <pageIndex_>`_
 
 The following are properties common to many shapes:
 
@@ -1401,7 +1449,7 @@ The following are properties common to many shapes:
 
 x and y
 ~~~~~~~
-`^ <commonIndex_>`_
+`↑ <commonIndex_>`_
 
 Almost every shape will need to have its position set.  The commom way to do
 this is by setting a value for *x* - the distance from the left margin of the
@@ -1411,7 +1459,7 @@ bottom margin of the page (or card) to the bottom edge of the shape.
 
 cx and cy
 ~~~~~~~~~
-`^ <commonIndex_>`_
+`↑ <commonIndex_>`_
 
 Almost every shape will need to have its position set.  For shapes that allow it,
 a commom way to do this is by setting a value for *cx* - the distance from the
@@ -1422,7 +1470,7 @@ position of the shape.
 
 Dots and Crosses
 ~~~~~~~~~~~~~~~~
-`^ <commonIndex_>`_
+`↑ <commonIndex_>`_
 
 For shapes that have a definable centre - such as a `Circle`_, a `Square`_
 or a `Hexagon`_ - it is possible to place a dot, a cross - or both - at this
@@ -1464,7 +1512,7 @@ location.
 
 Fill and Stroke
 ~~~~~~~~~~~~~~~
-`^ <commonIndex_>`_
+`↑ <commonIndex_>`_
 
 Almost every single shape will have a *stroke*, corresponding to the color of
 the line used to draw it, and a *stroke_width* which is the thickness in
@@ -1489,7 +1537,7 @@ corresponding to the color used for the area inside it.
 
 Rotation
 ~~~~~~~~
-`^ <commonIndex_>`_
+`↑ <commonIndex_>`_
 
 Every shape that has a calculated centre will allow for a *rotation* property.
 Rotation takes place in anti-clockwise direction around the centre of the shape.
@@ -1557,7 +1605,7 @@ Example 2. Polygon
 
 Transparency
 ~~~~~~~~~~~~
-`^ <commonIndex_>`_
+`↑ <commonIndex_>`_
 
 All `Enclosed Shapes`_, that have a *fill*, can have a transparency value set
 that will affect the fill color used for the area inside them.

@@ -5,7 +5,9 @@ Basic Concepts
 Like many other specialised tools, **pyprototypr** has its own set of
 terms and concepts that act as “short-cuts” to help in discussions. Some
 of these are likely to be common to other graphics editing or
-programming tools.  
+programming tools.
+
+.. _pageIndex:
 
 Table of Contents
 -----------------
@@ -15,18 +17,19 @@ Table of Contents
 - `The “position” concept`_
 - `The “command” concept`_
 - `The “element” concept`_
-- `Setting properties`_
+- `Element properties`_
 - `Working with color`_
 - `Working with units`_
 - `The “stroke” concept`_
 - `The “default” concept`_
 
 
-How you’ll use pyprototypr
---------------------------
+How you’ll use *pyprototypr*
+----------------------------
+`↑ <pageIndex_>`_
 
 You will be using **pyprototypr** to write what is termed a *script*
-i.e. a recipe or list of instructions that are stored in a file. These
+i.e. a recipe or list of instructions that are stored in a file. These
 instructions are used to define a game board, a set of cards or tiles,
 or any other, similar, regular graphical design of your choice.
 
@@ -42,6 +45,7 @@ again to create an updated PDF file.
 
 The “script” concept
 --------------------
+`↑ <pageIndex_>`_
 
 Creating a *script* is similar to the process of building a house; in
 the sense that the instructions which come first create underlying parts
@@ -54,7 +58,7 @@ So, for example, a page may contain rectangles representing cards. Each
 card may then have additional rectangles placed on it, representing some
 aspect that is part of your card design. Those rectangles, in turn,
 could have text, images or icons on/inside them. So, each item that is
-created later can “obscure” some part - or even all - of the item it is placed 
+created later can “obscure” some part - or even all - of the item it is placed
 on which was defined previously.
 
 Its also possible to define things earlier in a script that are reused
@@ -66,11 +70,14 @@ will affect what you see at the end!
    For more detail on how what goes into a script, see `Script
    Anatomy <script_anatomy.rst>`_.
 
+.. _position:
+
 The “position” concept
 ----------------------
+`↑ <pageIndex_>`_
 
-When using **pyprototypr** what you are doing is defining *where* and 
-*how* various things should appear on a *page*. A script can create multiple 
+When using **pyprototypr** what you are doing is defining *where* and
+*how* various things should appear on a *page*. A script can create multiple
 pages, but will always have at least one.
 
 The position of something is *where* it will be drawn on the page. To do
@@ -88,14 +95,15 @@ position** of 5.5”.
 
 As the use of margins is common for most documents and drawings, *all*
 distances in **pyprototypr** are considered to be relative to the margin
-settings i.e. if the default page margin, for all edges of the the page
+settings i.e. if the default page margin, for all edges of the the page
 in the previous example, was 2.5cm (1”) then to locate a point at those
 same distances would mean using an **x position** of 8cm and a **y
-position** of 12.3cm, as the margin size will effectively be added onto 
+position** of 12.3cm, as the margin size will effectively be added onto
 the supplied values for the position.
 
 The “command” concept
 ---------------------
+`↑ <pageIndex_>`_
 
 Instructions in **pyprototypr** are termed *commands*.  These usually are
 written with an initial capital letter. They are effectively "imperative"
@@ -107,6 +115,7 @@ in nature, causing something to happen; for example:
 
 The “element” concept
 ---------------------
+`↑ <pageIndex_>`_
 
 Rather than use the slightly clumsy term “thing”, **pyprototypr** uses
 the term *element*.
@@ -130,10 +139,13 @@ Examples of some of the available geometric **shapes** include:
 Descriptions of all of these shapes, and how to create and use them,
 are provided in the section on `Core Shapes <core_shapes.rst>`__.
 
-Setting properties
-------------------
+.. _properties:
 
-*Elements* can have other settings apart from their position.
+Element properties
+------------------
+`↑ <pageIndex_>`_
+
+*Elements* can have other settings apart from their `position <position_>`_
 
 For example, the rectangle which represents the outline of a card has a
 *height* (its size in the vertical direction) and a *width* (its size in
@@ -153,11 +165,12 @@ common properties are described in the `Terminology <terminology.rst>`__.
 
 Working with color
 ------------------
+`↑ <pageIndex_>`_
 
 Everything we see has color.
 
 Color in **pyprototypr**, is defined in the same way as it is in pages
-that appear on the web i.e. in RGB (red-green-blue) *hexadecimal* format
+that appear on the web i.e. in RGB (red-green-blue) *hexadecimal* format
 - for example, ``#A0522D`` represents a shade of the color that we would
 likely term “brown”.
 
@@ -174,8 +187,9 @@ set the color of an area, and *“stroke”* to set the color of a line.
 
 Working with units
 ------------------
+`↑ <pageIndex_>`_
 
-All positions, heights, widths, distances, line thickness’s and other
+All positions, heights, widths, distances, line thicknesses and other
 kinds of lengths or sizes all need to be measured in a particular set of
 **units**.
 
@@ -195,24 +209,26 @@ can choose to use millimetres (abbreviated in **pyprototypr** as *mm*).
 **pyprototypr** also allows units of *points*, which are the measurement
 units traditionally used in the printing industry. There are 72 points
 in 1 inch. Internal calculations in **pyprototypr** are all done in
-point units i.e. all inputs, regardless of being inches or centimetres 
+point units i.e. all inputs, regardless of being inches or centimetres
 are converted to points.
 
 The “stroke” concept
 --------------------
+`↑ <pageIndex_>`_
 
-While the majority of size-based properties in **pyprototypr** work with
-the “normal” units you have chosen - inches or centimetres - some use
+While the majority of size-based `properties <properties_>`_ in **pyprototypr**
+work with the “normal” units you have chosen - inches or centimetres - some use
 points. These include font height, that you’re likely familiar with, and
 line thickness - termed “stroke width”. (The reason for this is to
 maintain consistency with existing tools.)
 
 The “default” concept
 ----------------------
+`↑ <pageIndex_>`_
 
 A “default”, in terms of **pyprototypr**, is a value or setting for
-something (usually a *property*) which is used unless you specify
-otherwise. This is helpful for quickly drawing or testing something
+something (usually a `property <properties_>`_) which is used unless you
+specify otherwise. This is helpful for quickly drawing or testing something
 until you're ready to make decisions about your own setting or value.
 
 Some examples of defaults are:

@@ -322,6 +322,22 @@ Text(common=txt, text='Grid: gray; 3x4; thick')
 Grid(x=0.5, y=0.5, cols=3, rows=4, height=1.25, width=1, stroke=gray, stroke_width=1)
 PageBreak()
 
+# ---- line - custom
+Blueprint()
+Text(common=txt, text='Line: locations; styles')
+Line(x=0, y=1, length=4, stroke=lime, stroke_width=2)
+Line(x=0, y=2, length=4, angle=15, stroke=red)
+Line(x=0, y=3, x1=4, y1=4, stroke=blue, stroke_width=1,
+     dashed=[0.2, 0.2, 0.2, 0.2, 1.0, 0.0])
+Line(x=0, y=4, x1=4, y1=5, dotted=True, stroke=gold, stroke_width=1)
+PageBreak()
+
+# ---- bezier - custom
+Blueprint()
+Text(common=txt, text="Bezier line ")
+Bezier(x=0, y=1, x1=4, y1=3, x2=3, y2=4, x3=4, y3=6, stroke_width=1)
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Shapes END...")
 PageBreak(footer=True)
@@ -342,4 +358,5 @@ Save(
         "images_normal_rotation", "rhombus_red_rotation",
         "stadium_red_rotation", "polygon_rotation_flat",
         "polygon_rotation_pointy", "polygon_sizes", "grid_3x4",
+        "line_custom", "bezier_custom",
         None])
