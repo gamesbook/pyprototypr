@@ -35,8 +35,8 @@ Rhombus(cx=1, cy=5, side=2, dot=0.1, dot_stroke=red)
 Rhombus(cx=3, cy=5, side=2, cross=0.25, cross_stroke=red, cross_stroke_width=1)
 Polygon(cx=1, cy=3, sides=8, radius=1, dot=0.1, dot_stroke=orange)
 Polygon(cx=3, cy=3, sides=8, diameter=2, cross=0.25, cross_stroke=orange, cross_stroke_width=1)
-Stadium(cx=1, cy=1, side=1, dot=0.1, dot_stroke=blue)
-Stadium(cx=3, cy=1, side=1, cross=0.25, cross_stroke=blue, cross_stroke_width=1)
+Stadium(cx=1, cy=1, side=1, stroke=blue, dot=0.1)
+Stadium(cx=3, cy=1, side=1, stroke=blue, cross=0.25, cross_stroke_width=1)
 PageBreak()
 
 # ---- centre placement
@@ -148,7 +148,7 @@ Text(common=txt, text='Grid: gray; 1/3"; thick')
 Grid(side=0.85, stroke=gray, stroke_width=1)
 PageBreak()
 
-# ---- dotgrid
+# ---- dotgrid - Moleskin
 Text(common=txt, text='DotGrid: "Moleskine" setting')
 DotGrid(stroke=darkgray, width=0.5, height=0.5, dot_point=1, offset_y=-0.25)
 PageBreak()
@@ -267,8 +267,8 @@ Blueprint(style="grey")
 Text(common=txt, text="Images: normal & rotation")
 Image("sholes_typewriter.png", x=0, y=1, width=1.5, height=1.5, title="PNG")
 Image("sholes_typewriter.png", x=2, y=1, width=1.5, height=1.5, title="60\u00B0", rotation=60)
-Image("noun-typewriter-3933515.svg", x=0, y=4, width=1.5, height=1.6, scaling=0.15, title="SVG")
-Image("noun-typewriter-3933515.svg", x=2, y=4, width=1.5, height=1.6, scaling=0.15, title="45\u00B0", rotation=45)
+Image("noun-typewriter-3933515.svg", x=0, y=4, scaling=0.15, title="SVG")
+Image("noun-typewriter-3933515.svg", x=2, y=4, scaling=0.15, title="45\u00B0", rotation=45)
 PageBreak()
 
 # ---- rotation: rhombus
@@ -334,8 +334,38 @@ PageBreak()
 
 # ---- bezier - custom
 Blueprint()
-Text(common=txt, text="Bezier line ")
+Text(common=txt, text="Bezier line")
 Bezier(x=0, y=1, x1=4, y1=3, x2=3, y2=4, x3=4, y3=6, stroke_width=1)
+PageBreak()
+
+# ---- ellipse - custom
+Blueprint()
+Text(common=txt, text="Ellipse - centre; tall")
+Ellipse(cx=2, cy=3, width=3, height=4, dot=0.1)
+PageBreak()
+
+# ---- rectangle - custom
+Blueprint()
+Text(common=txt, text="Rectangle - centre; tall")
+Rectangle(cx=2, cy=3, width=3, height=4, dot=0.1)
+PageBreak()
+
+# ---- square - custom
+Blueprint()
+Text(common=txt, text="Square - centre; dot")
+Square(cx=2, cy=3, side=3, dot=0.1)
+PageBreak()
+
+# ---- trapezoid - custom
+Blueprint()
+Text(common=txt, text="Trapezoid - centre; dot")
+Trapezoid(cx=2, cy=3, width=3, width2=2, height=4, flip='s', dot=0.1)
+PageBreak()
+
+# ---- image - base
+Blueprint()
+Text(common=txt, text="Image: default")
+Image("sholes_typewriter.png")
 PageBreak()
 
 # ---- END
@@ -358,5 +388,6 @@ Save(
         "images_normal_rotation", "rhombus_red_rotation",
         "stadium_red_rotation", "polygon_rotation_flat",
         "polygon_rotation_pointy", "polygon_sizes", "grid_3x4",
-        "line_custom", "bezier_custom",
+        "line_custom", "bezier_custom", "ellipse_custom", "rectangle_custom",
+        "square_custom", "trapezoid_custom", "image_default",
         None])

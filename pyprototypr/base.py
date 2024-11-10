@@ -895,7 +895,7 @@ class BaseShape:
         self.dot_stroke_width = self.kw_float(kwargs.get('dot_stroke_width', cnv.dot_stroke_width))
         self.dot_fill = kwargs.get('dot_fill', self.stroke)
         self.dot = self.kw_float(kwargs.get('dot', cnv.dot))
-        self.cross_stroke = kwargs.get('cross_stroke', cnv.cross_stroke)
+        self.cross_stroke = kwargs.get('cross_stroke', self.stroke)
         self.cross_stroke_width = self.kw_float(kwargs.get('cross_stroke_width', cnv.cross_stroke_width))
         self.cross = self.kw_float(kwargs.get('cross', cnv.cross))
         # ---- hexagon / polygon

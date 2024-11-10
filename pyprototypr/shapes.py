@@ -3305,11 +3305,14 @@ class TrapezoidShape(BaseShape):
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
         cx = x + self._u.width / 2.0
+        cy = y + self._u.height / 2.0
         if self.flip.lower() in ['s', 'south']:
+            y = y + self._u.height
             cy = y - self._u.height / 2.0
+        if self.cx is not None and self.cy is not None:
+            return self._u.cx, self._u.cy, x, y
         else:
-            cy = y + self._u.height / 2.0
-        return cx, cy, x, y
+            return cx, cy, x, y
 
     def get_vertices(self, **kwargs):
         """Calculate vertices of trapezoid."""
@@ -3364,10 +3367,12 @@ class TrapezoidShape(BaseShape):
             pth.lineTo(*vertex)
         pth.close()
         cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
-        # ---- dot
-        self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
-        # ---- text
         sign = -1 if self.flip.lower() in ['s', 'south'] else 1
+        # ---- dot
+        self.draw_dot(cnv, x + self._u.width / 2.0, y + sign * self._u.height / 2.0)
+        # ---- dot
+        self.draw_cross(cnv, x + self._u.width / 2.0, y + sign * self._u.height / 2.0)
+        # ---- text
         self.draw_heading(cnv, ID, x + self._u.width / 2.0, y + sign * self._u.height, **kwargs)
         self.draw_label(cnv, ID, x + self._u.width / 2.0, y + sign * self._u.height / 2.0, **kwargs)
         self.draw_title(cnv, ID, x + self._u.width / 2.0, y, **kwargs)

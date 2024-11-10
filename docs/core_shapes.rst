@@ -6,8 +6,6 @@ Core Shapes
    :trim:
 .. |deg|  unicode:: U+00B0 .. DEGREE SIGN
    :ltrim:
-.. |uar|  unicode:: U+02191 .. Black Up-Pointing Triangle
-   :ltrim:
 
 .. _pageIndex:
 
@@ -40,6 +38,7 @@ Index of Shapes
 -  `Grid`_
 -  `Hexagon`_
 -  `Hexagons`_
+-  `Image`_
 -  `Line`_
 -  `Lines`_
 -  `Polygon`_
@@ -58,28 +57,28 @@ Overview
 `↑ <pageIndex_>`_
 
 These descriptions of the available shapes assume you are familiar with
-the concepts, terms and ideas presented in `Basic
+the concepts, terms and ideas for **pyprototypr** as presented in `Basic
 Concepts <basic_concepts.md>`_ - especially *units*, *properties* and
 *defaults*. It will also help to at least read through the section on
 `Additional Concepts <additional_concepts.rst>`_.
 
 Where possible, the basic examples first show how a shape would appear
 on a page when **only** the default properties are used.
-This means for most cases, that *lines* are drawn in black, and shapes are
-*filled* with a white color. The default length or height in most cases is 1cm.
-The only change, for these examples, has been to make the default line width
-thicker for easier viewing of the PNG images.
+This means for most cases, that *lines* are drawn in black and shapes are
+*filled* with a white color. The default length, width or height in most cases
+is 1cm. The only change, for these examples, has been to make the default line
+width (aka *stroke_width*) thicker for easier viewing of the small PNG images.
 
 To make it easier to see where and how a shape has been drawn, most of these
 examples have been created with a background grid (which **pyprototypr**
-refers to as a `Blueprint`_ shape) for cross-reference: the values of **x**
-appear across the lower edge of the grid (increasing from left to
-right); those for **y** along the left side (increasing from bottom to
+refers to as a `Blueprint`_ shape) added to the page for cross-reference:
+the values of **x** appear across the lower edge of the grid (increasing from
+left to right); those for **y** along the left side (increasing from bottom to
 top). The grid respects the margins that have been set - so "0" is actually
 offset from the physical page corner ... but you will observe that the
 Blueprint numbering itself is inside the margin area!
 
-   The graphics for these examples were generated from the scripts in
+   The graphics for these examples were generated from two of the scripts in
    the ``examples`` directory - look at the
    `default_shapes <../examples/simple/default_shapes.py>`_ and
    `customised_shapes <../examples/simple/customised_shapes.py>`_
@@ -91,7 +90,10 @@ Commonalities
 
 There are some properties that can be set for almost all of the shapes;
 examples of these are presented in the section on `Shapes' Common Properties`_
-at the end, rather than being described for every single shape.
+at the end, rather than being described in detail for every single shape.
+
+    Bear in mind that if properties are provided for a shape that it does not
+    support, that property and value will simply be ignored.
 
 .. _linearIndex:
 
@@ -327,7 +329,7 @@ Example 1.
    :width: 330
 
 ===== ======
-|ply| If the shape constructed using only default properties, there will be
+|ply| If the shape was constructed using only default properties, there will be
       nothing to see::
 
           Polyline()
@@ -523,6 +525,26 @@ Example 1.
 
 ===== ======
 
+Example 2.
+++++++++++
+
+.. |el1| image:: images/customised/ellipse_custom.png
+   :width: 330
+
+===== ======
+|el1| This example shows the shape constructed using the command with these
+      properties::
+
+          Ellipse(cx=2, cy=3, width=3, height=4, dot=0.1)
+
+      It has the following properties set for it:
+
+      - centre at x-position `2` cm and at y-position `3` cm
+      - *height* of 4cm
+      - *width* of 3cm
+
+      Because the *height* is greater than the *width* it has more an egg-shape.
+===== ======
 
 
 EquilateralTriangle
@@ -786,7 +808,8 @@ Rectangle
 .. NOTE::
 
    There is more detail about the properties that can be defined for a
-   Rectangle in the `customised shapes' Rectangle <customised_shapes.rst#rectangle>`_.
+   Rectangle in the `customised Rectangle <customised_shapes.rst#rectangle>`_
+   section.
 
 Example 1.
 ++++++++++
@@ -800,13 +823,35 @@ Example 1.
 
           Rectangle()
 
-      It has the following properties based on the defaults:
+      It has the following properties set for it:
 
       - lower-left corner at x-position 1cm and at y-position 1cm
-      - side of 1cm
+      - *width* and *height* - default to 1cm
 
       Because all sides of the Rectangle are equal, it appears as though it
       is a `Square`_.
+===== ======
+
+Example 2.
+++++++++++
+
+.. |rc1| image:: images/customised/rectangle_custom.png
+   :width: 330
+
+===== ======
+|rc1| This example shows the shape constructed using the command with these
+      properties::
+
+          Rectangle(cx=2, cy=3, width=3, height=4, dot=0.1)
+
+      It has the following properties set for it:
+
+      - centre at x-position `2` cm and at y-position `3` cm
+      - *height* of 4cm
+      - *width* of 3cm
+
+      Because the *height* is greater than the *width* it has a card-like
+      appearance.
 ===== ======
 
 
@@ -864,10 +909,7 @@ Example 2.
       Each sector in this example is drawn at a different *angle*; with the
       this being the "virtual" centre-line  extending through the sector from
       the middle of the  enclosing "virtual" circle.
-
 ===== ======
-
-
 
 
 Square
@@ -890,6 +932,24 @@ Example 1.
 
       - lower-left corner at x-position 1cm and at y-position 1cm
       - side of 1cm
+===== ======
+
+Example 2.
+++++++++++
+
+.. |sq1| image:: images/customised/square_custom.png
+   :width: 330
+
+===== ======
+|sq1| This example shows the shape constructed using the command with these
+      properties::
+
+          Square(cx=2, cy=3, side=3, dot=0.1)
+
+      It has the following properties set for it:
+
+      - centre at x-position `2` cm and at y-position `3` cm
+      - *side* of `3` cm; both *width* and *height* match this
 ===== ======
 
 
@@ -1111,11 +1171,35 @@ Example 1.
 |trp| This example shows the shape constructed using the command with only
       defaults::
 
-          Z()
+          Trapezoid()
 
       It has the following properties based on the defaults:
 
       - starts at x-position 1cm and at y-position 1cm
+      - *width* of `1` cm
+      - *height* of `1` cm
+      - the "top" edge of the shape (*width2*) defaults to half the *width*
+===== ======
+
+Example 2.
+++++++++++
+
+.. |tr1| image:: images/customised/trapezoid_custom.png
+   :width: 330
+
+===== ======
+|tr1| This example shows the shape constructed using the command with these
+      properties::
+
+          Trapezoid(cx=2, cy=3, width=3, width2=2, height=4, flip='s', dot=0.1)
+
+      It has the following properties set for it:
+
+      - centre at x-position `2` cm and at y-position `3` cm
+      - *width* of `3` cm
+      - *height* of `4` cm
+      - *width2* ("top" edge) of `2` cm
+      - *flip* of `s` (for `South`) means the "top" is drawn below the base
 ===== ======
 
 
@@ -1134,6 +1218,7 @@ The following are all such shapes:
 - `DotGrid`_
 - `Grid`_
 - `Hexagons`_
+- `Image`_
 - `Lines`_
 
 
@@ -1190,12 +1275,13 @@ Example 2.
 
       It has the following properties set:
 
-      - *subdivisions* - set to `5`; these are thinner lines drawn between
-        the primary lines - they do not have any numbering
+      - *subdivisions* - set to `5`; these are the number of thinner lines that
+        are drawn between each pair of primary lines - they do not have any
+        numbering and are *dotted*
       - *stroke_width* - set to `0.5`; this slightly thicker primary line makes
         the grid more visible
-      - *style* - set to `invert` so that the lines are white and the fill color
-        is now blue
+      - *style* - set to `invert` so that the lines and number colors are white
+        and the fill color is now blue
 ===== ======
 
 
@@ -1217,8 +1303,9 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower left at x-position 0cm and at y-position 0cm
-      - set of 2 x 2 dots, spaced 1cm apart
+      - lower left at the absolute page x-position 0cm and at y-position 0cm
+        i.e. the margins are ignore
+      - a set, spaced 1cm apart, extending to the right- and top- margins
 ===== ======
 
 Example 2.
@@ -1241,12 +1328,12 @@ Example 2.
       - *width* and *height* are the spacing in x and y directions respectively
       - *dot_point* is set to be smaller than the default of 3
       - *stroke* color of `darkgrey` is a lighter color than default of black
-      - *offset_y* moves the start of the grid downwards
+      - *offset_y* moves the start of the grid slightly downwards by 1/4 of a cm
 
-      *NOTE* If you were to actually create a page that you might use, you
-      could consider setting the page color to something like `cornsilk` to
-      provide a suitable backdrop; do this by setting the *fill* property of
-      the `Create()` command.
+      **NOTE** If you wanted to create a notebook page that for actual use,
+      you could consider setting the page color to something like `cornsilk` to
+      provide a suitable backdrop for the light grey of the grid; do this by
+      setting the *fill* property of the `Create()` command.
 ===== ======
 
 
@@ -1313,9 +1400,9 @@ Example 3.
               stroke=gray, stroke_width=1
           )
 
-      It has the following properties based on the defaults:
+      It has the following properties set for it:
 
-      - *x* and *y* - each set to `0.5`cm; this offsets the lower-left corner
+      - *x* and *y* - each set to `0.5` cm; this offsets the lower-left corner
         of the grid from the page margin
       - *height* - value of `1.25` cm set for the row height
       - *width* - value of `1` cm set for the column width
@@ -1325,7 +1412,90 @@ Example 3.
       - *stroke_width* - set to `1` point; this much thicker line makes
         the grid clearly visible
       - *stroke* color of `gray` is a lighter color than default of black
+===== ======
 
+
+Image
+~~~~~
+`↑ <shapeIndex_>`_
+
+Pedantically speaking, an image is not like the other shapes in the sense that
+it does not consist of lines and areas drawn by **pyprototypr**  itself.  It is
+an external file which is simply inserted into the drawing. It does, however,
+share a number of common aspects with other shapes - such as an x & y position,
+a width and height and the ability to be rotated. It can also be "drawn over"
+by other shapes appearing further on in a script.
+
+
+Example 1.
+++++++++++
+
+.. |im1| image:: images/customised/image_default.png
+   :width: 330
+
+===== ======
+|im1| If the shape was constructed using only default properties, there will be
+      nothing to see::
+
+          Image()
+
+      This example then shows the shape constructed with just a single property::
+
+        Image("sholes_typewriter.png")
+
+      It has the following other properties based on the defaults:
+
+      - lower-left corner at x-position 1cm and at y-position 1cm
+      - *width* and *height* - default to 1cm; this may distort the image if it
+        is not square in shape
+===== ======
+
+Example 2.
+++++++++++
+
+.. |im2| image:: images/customised/images_normal_rotation.png
+   :width: 330
+
+===== ======
+|im2| This example shows the shape constructed using the command with the
+      following properties::
+
+        Image(
+          "sholes_typewriter.png",
+          x=0, y=1, width=1.5, height=1.5, title="PNG")
+        Image(
+          "sholes_typewriter.png",
+          x=2, y=1, width=1.5, height=1.5, title="60\u00B0",
+          rotation=60)
+        Image(
+          "noun-typewriter-3933515.svg",
+          x=0, y=4, scaling=0.15, title="SVG")
+        Image(
+          "noun-typewriter-3933515.svg",
+          x=2, y=4, scaling=0.15, title="45\u00B0",
+          rotation=45)
+
+      Each image has the following properties set for it:
+
+      - name of the image file; this must be the first property set
+      - *x* and *y* - these values set the lower-left corner
+
+      The PNG images also have the following properties set for them:
+
+      - *height* - set to `1.5` cm; this value may cause some distortion
+      - *width* - set to `1.5` cm; this value may cause some distortion
+
+      The SVG images also have the following properties set for them:
+
+      - *scaling* - set to a fraction of `0.15` i.e. 15% of its actual size;
+        because SVG is a vector format, there will be no distortion.
+
+      Two of the images - ones on the right - are rotated about a centre point
+      (calculated based on the image's height and width)
+
+      The `Blueprint`_ background is set to `grey`; just to highlight that both
+      images have transparent sections and that anything "behind" them will
+      show through.
 ===== ======
 
 
@@ -1357,11 +1527,11 @@ Example 1.
       It has the following properties based on the defaults:
 
       - lower-left "corner" at x-position 1cm and at y-position 1cm
-      - flat-to-flat hexagon height of 1cm
+      - flat-to-flat hexagon *height* of 1cm
       - "flat" top hexagons
-      - size of two rows by two columns ("cols")
-      - the "odd" columns - which include the first one - are offset one-half
-        of a hexagon "down"
+      - size of two *rows* by two *cols* ("columns")
+      - the "odd" columns - which includes the first one - are offset one-half
+        of a hexagon "downwards"
 ===== ======
 
 
@@ -1442,7 +1612,7 @@ The following are properties common to many shapes:
 - `x and y`_
 - `cx and cy`_
 - `Fill and Stroke`_
-- `Dots and Crosses`_
+- `Dot and Cross`_
 - `Rotation`_
 - `Transparency`_
 
@@ -1451,9 +1621,9 @@ x and y
 ~~~~~~~
 `↑ <commonIndex_>`_
 
-Almost every shape will need to have its position set.  The commom way to do
-this is by setting a value for *x* - the distance from the left margin of the
-page (or card) to the left edge of the shape; and *y* - the distance from the
+Almost every shape will need to have its position set.  The common way to do
+this is by setting a value for **x** - the distance from the left margin of the
+page (or card) to the left edge of the shape; and **y** - the distance from the
 bottom margin of the page (or card) to the bottom edge of the shape.
 
 
@@ -1462,19 +1632,20 @@ cx and cy
 `↑ <commonIndex_>`_
 
 Almost every shape will need to have its position set.  For shapes that allow it,
-a commom way to do this is by setting a value for *cx* - the distance from the
+a common way to do this is by setting a value for **cx** - the distance from the
 left margin of the page (or card) to the centre position of the shape and
-*y* - the distance from the bottom margin of the page (or card) to the centre
+**cy** - the distance from the bottom margin of the page (or card) to the centre
 position of the shape.
 
 
-Dots and Crosses
-~~~~~~~~~~~~~~~~
+Dot and Cross
+~~~~~~~~~~~~~
 `↑ <commonIndex_>`_
 
 For shapes that have a definable centre - such as a `Circle`_, a `Square`_
 or a `Hexagon`_ - it is possible to place a dot, a cross - or both - at this
-location.
+location.  The color for these items will, if not provided, take on the color
+of the shape which they are part of; see the `Stadium` example below.
 
 .. |dnc| image:: images/customised/dots_crosses.png
    :width: 330
@@ -1493,20 +1664,22 @@ location.
            cx=3, cy=3, sides=8, diameter=2,
            cross=0.25, cross_stroke=orange, cross_stroke_width=1)
 
-        Stadium(cx=1, cy=1, side=1, dot=0.1, dot_stroke=blue)
+        Stadium(cx=1, cy=1, side=1, stroke=blue, dot=0.1)
         Stadium(
-            cx=3, cy=1, side=1,
+            cx=3, cy=1, side=1, stroke=blue,
             cross=0.25, cross_stroke=blue, cross_stroke_width=1)
 
       The shapes have their properties set as follows:
 
       - *cx* and *cy* set the centre point of the shape
       - *dot* - sets the size of dot at the centre
-      - *dot_stroke*  - sets the color of the dot (note that it is "filled in"
-        with that same color)
+      - *dot_stroke*  - sets the color of the dot (note that the dot is "filled
+        in" with that same color); defaults to the stroke of the shape that it
+        is part of
       - *cross* - sets the height and width of the lines that cross at the centre
-      - *cross_stroke*  - sets the color of the cross lines
-      - *cross_stroke_width* - the thickness of the cross lines
+      - *cross_stroke*  - sets the color of the cross lines; defaults to the
+        stroke of the shape that it is part of
+      - *cross_stroke_width* - sets the thickness of the cross lines
 ===== ======
 
 
@@ -1531,7 +1704,13 @@ corresponding to the color used for the area inside it.
 
       - *fill* color of yellow (this corresponds to hexadecimal value `#FFFF00`)
       - *stroke* color of red (this corresponds to hexadecimal value `#FF0000`)
-      - *stroke_width* of 6 points (this corresponds to about 2mm)
+      - *stroke_width* of 6 points (this corresponds to about 2mm or 0.2cm)
+      - default *height* and *width* of `1` cm
+
+      It can be seen that very thick lines "straddle" a centre line running
+      through the defined location; so in this case the Rectangle is both
+      larger in outer dimensions than the expected 1x1cm and smaller in the
+      inner dimensions than the expected 1x1cm.
 ===== ======
 
 
@@ -1539,8 +1718,9 @@ Rotation
 ~~~~~~~~
 `↑ <commonIndex_>`_
 
-Every shape that has a calculated centre will allow for a *rotation* property.
-Rotation takes place in anti-clockwise direction around the centre of the shape.
+Every shape that has a calculated centre will suport a *rotation* property.
+Rotation takes place in anti-clockwise direction, from the horizontal, around
+the centre of the shape.
 
 Example 1. Rhombus
 ++++++++++++++++++
@@ -1565,7 +1745,7 @@ Example 1. Rhombus
 
       - *fill* color is `None` so no fill is used; this makes it completely
         transparent.
-      - *stroke* of 60 is the number of degrees, anti-clockwise direction, that
+      - *stroke* of 60 is the number of degrees, anti-clockwise, that
         it has been rotated
 
       Because the second shape is completely transparent, its possible to see
