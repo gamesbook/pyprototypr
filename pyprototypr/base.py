@@ -978,7 +978,10 @@ class BaseShape:
         self.set_unit_properties()
 
     def __str__(self):
-        return f'{self.__class__.__name__}::{self.kwargs}'
+        try:
+            return f'{self.__class__.__name__}::{self.kwargs}'
+        except:
+            return f'{self.__class__.__name__}'
 
     def kw_float(self, value, label: str = ''):
         return tools.as_float(value, label) if value is not None else value

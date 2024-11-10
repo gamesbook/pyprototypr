@@ -272,9 +272,6 @@ class CircleShape(BaseShape):
         # ---- RESET UNIT PROPS (last!)
         self.set_unit_properties()
 
-    def __str__(self):
-        return f'{self.__class__.__name__}::{self.kwargs}'
-
     def calculate_centre(self):
         # ---- calculated centre
         if self.use_abs_c:
@@ -2040,9 +2037,6 @@ class RectangleShape(BaseShape):
             # tools.feedback(f"INIT {self.cx=} {self.cy=} {self.x=} {self.y=}")
         self.kwargs = kwargs
 
-    def __str__(self):
-        return f'{self.__class__.__name__}::{self.kwargs}'
-
     def calculate_area(self) -> float:
         return self._u.width * self._u.height
 
@@ -2853,9 +2847,6 @@ class SquareShape(RectangleShape):
         self.set_unit_properties()
         self.kwargs = kwargs
 
-    def __str__(self):
-        return f'{self.__class__.__name__}::{self.kwargs}'
-
     def calculate_area(self) -> float:
         return self._u.width * self._u.height
 
@@ -2886,9 +2877,6 @@ class StadiumShape(BaseShape):
             self.y = self.cy - self.height / 2.0
             # tools.feedback(f"INIT Old x:{x} Old y:{y} New X:{self.x} New Y:{self.y}")
         self.kwargs = kwargs
-
-    def __str__(self):
-        return f'{self.__class__.__name__}::{self.kwargs}'
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a stadium on a given canvas."""
@@ -3105,9 +3093,6 @@ class StarFieldShape(BaseShape):
     TODO:
         Implement : createElipticStarfield()
     """
-
-    def __str__(self):
-        return f'{self._kwargs}'
 
     def draw_star(self, cnv, position: Point):
         """Draw a single star at a Point (x,y)."""
@@ -3391,9 +3376,6 @@ class CommonShape(BaseShape):
     def __init__(self, _object=None, canvas=None, **kwargs):
         self._kwargs = kwargs
         super(CommonShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-
-    def __str__(self):
-        return f'{self._kwargs}'
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Not applicable."""
