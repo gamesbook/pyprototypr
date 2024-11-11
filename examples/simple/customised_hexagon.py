@@ -23,8 +23,9 @@ PageBreak(footer=True)
 
 # ---- centre placement
 Blueprint()
-Text(common=txt, text="Hexagon: cx=2, cy=3")
-Hexagon(cx=2, cy=3)
+Text(common=txt, text="Hexagon: cx & cy")
+Hexagon(cx=2, cy=1)
+Hexagon(cx=2, cy=3, orientation='pointy')
 PageBreak()
 
 # ---- dot & cross
@@ -42,16 +43,22 @@ Hexagon(x=2, y=1, height=2,
         orientation='pointy')
 PageBreak()
 
-# ---- hatch
+# ---- hatch - flat
 Blueprint()
-Text(common=txt, text="Hexagon: hatch + directions")
-hxgn = Common(height=1.5, hatch=5, hatch_stroke=red)
-Hexagon(common=hxgn, x=0, y=0, orientation='flat', hatch_directions='e', label="e/w")
-Hexagon(common=hxgn, x=2, y=0, orientation='pointy', hatch_directions='n', label="n/s")
-Hexagon(common=hxgn, x=0, y=2, orientation='flat', hatch_directions='ne', label="ne/sw")
-Hexagon(common=hxgn, x=2, y=2, orientation='pointy', hatch_directions='ne', label="ne/sw")
-Hexagon(common=hxgn, x=0, y=4, orientation='flat', hatch_directions='nw', label="nw/se")
-Hexagon(common=hxgn, x=2, y=4, orientation='pointy', hatch_directions='nw', label="nw/se")
+Text(common=txt, text="Hexagon: flat; hatch")
+hxgn = Common(height=1.5, hatch=5, hatch_stroke=red, orientation='flat')
+Hexagon(common=hxgn, x=2, y=0, hatch_directions='e', label="e/w")
+Hexagon(common=hxgn, x=2, y=2, hatch_directions='ne', label="ne/sw")
+Hexagon(common=hxgn, x=2, y=4, hatch_directions='nw', label="nw/se")
+PageBreak()
+
+# ---- hatch - pointy
+Blueprint()
+Text(common=txt, text="Hexagon: pointy; hatch")
+hxgn = Common(height=1.5, hatch=5, hatch_stroke=red, orientation='pointy')
+Hexagon(common=hxgn, x=2, y=0, hatch_directions='n', label="n/s")
+Hexagon(common=hxgn, x=2, y=2, hatch_directions='ne', label="ne/sw")
+Hexagon(common=hxgn, x=2, y=4, hatch_directions='nw', label="nw/se")
 PageBreak()
 
 # ---- text - flat
@@ -111,7 +118,8 @@ Save(
      directory="docs/images/custom/hexagon",
      names=[
         None,
-        "centre", "dot_cross", "hatch",
+        "centre", "dot_cross",
+        "hatch_flat", "hatch_pointy",
         "hatch_text_flat", "hatch_text_pointy",
         "radii_flat", "radii_pointy",
         None])
