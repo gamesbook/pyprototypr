@@ -30,7 +30,6 @@ PageBreak()
 # ---- notches
 Blueprint()
 Text(common=txt, text="Rectangle & Notches")
-Rectangle(height=2, width=1, x=0, y=0, label="x:0 y:0", label_size=5)
 Rectangle(
     x=2, y=1,
     height=2, width=1,
@@ -52,7 +51,7 @@ PageBreak()
 # ---- dot & cross
 Blueprint()
 Text(common=txt, text="Rectangle: dot & cross")
-Rectangle(height=3, width=2, x=1, y=1, cross=0.75, dot=0.15)
+Rectangle(height=3, width=2, cross=0.75, dot=0.15)
 PageBreak()
 
 # ---- hatch

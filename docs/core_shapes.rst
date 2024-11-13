@@ -1676,7 +1676,7 @@ of the shape which they are part of; see the `Stadium` example below.
       - *dot_stroke*  - sets the color of the dot (note that the dot is "filled
         in" with that same color); defaults to the stroke of the shape that it
         is part of
-      - *cross* - sets the height and width of the lines that cross at the centre
+      - *cross* - sets the length of each of the two lines that cross at the centre
       - *cross_stroke*  - sets the color of the cross lines; defaults to the
         stroke of the shape that it is part of
       - *cross_stroke_width* - sets the thickness of the cross lines
