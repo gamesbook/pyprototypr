@@ -32,10 +32,12 @@ in `Core Shapes <core_shapes.md>`_.
 
 To make it easier to see where and how a shape has been drawn, most of these
 examples have been created with a background grid (which **pyprototypr**
-refers to as a `Blueprint`_ shape) added to the page for cross-reference. In
-addition, the default line width (aka *stroke_width*) has been made thicker
-for easier viewing of the small PNG images.
+refers to as a `Blueprint`_ shape) added to the page - a small A8 "business card"
+size - for cross-reference. In addition, the default line width (aka *stroke_width*)
+has been made thicker for easier viewing of the small PNG images.
 
+
+.. _rectIndex:
 
 Rectangle
 =========
@@ -44,9 +46,20 @@ Rectangle
 A Rectangle is a very common shape in many designs; there are a number of ways
 that it can be customised.
 
+- `Centred <rectCentred_>`_
+- `Cross and Dot <rectCross_>`_
+- `Chevron <rectChevron_>`_
+- `Hatch <rectHatch_>`_
+- `Notch <rectNotch_>`_
+- `Peak <rectPeak_>`_
+- `Rotation <rectRotation_>`_
+- `Rounding <rectRounding_>`_
+
+.. _rectCentred:
+
 Centred
 -------
-`^ <pageIndex_>`_
+`^ <rectIndex_>`_
 
 .. |rcn| image:: images/custom/rectangle/centre.png
    :width: 330
@@ -62,9 +75,11 @@ Centred
         centimetres respectively
 ===== ======
 
+.. _rectCross:
+
 Cross and Dot
 -------------
-`^ <pageindex_>`_
+`^ <rectindex_>`_
 
 A cross or a dot are symbols that mark the centre of the Rectangle.
 
@@ -76,7 +91,7 @@ A cross or a dot are symbols that mark the centre of the Rectangle.
 
           Rectangle(height=3, width=2, cross=0.75, dot=0.15)
 
-      It has the following properties:
+      It has the following properties that differ from the defaults:
 
       - *height* and *width* are used to set the size of the Rectangle at `3`
         and `2` centimetres respectively
@@ -86,9 +101,11 @@ A cross or a dot are symbols that mark the centre of the Rectangle.
         for the dot is the same as the stroke (default is black)
 ===== ======
 
+.. _rectChevron:
+
 Chevron
 -------
-`^ <pageIndex_>`_
+`^ <rectIndex_>`_
 
 A chevron converts sides of the Rectangle into two triangular peaks that both
 point in a specified direction.  This creates an arrow-like effect.
@@ -120,7 +137,7 @@ point in a specified direction.  This creates an arrow-like effect.
             chevron='E', chevron_height=0.5
         )
 
-      The Rectangles all have the following properties:
+      The Rectangles all have the following properties that differ from the defaults:
 
       - *x* and *y*, *height* and *width* - set the basic configuration
       - *label*, *title* and *heading* - text to describe the shape's setting
@@ -130,12 +147,14 @@ point in a specified direction.  This creates an arrow-like effect.
         the rectangle
 ===== ======
 
+.. _rectHatch:
+
 Hatch
 -----
-`^ <pageIndex_>`_
+`^ <rectIndex_>`_
 
-Hatches are lines that are drawn, in a specified direction, across the length
-or width of the Rectangle.
+Hatches are a set of parallel lines that are drawn, in a specified direction, across
+the length or width of the Rectangle in a vertical, horizontal or diagonal direction.
 
 .. |rht| image:: images/custom/rectangle/hatch.png
    :width: 330
@@ -158,15 +177,37 @@ or width of the Rectangle.
         Rectangle(common=htch, x=1.5, y=4, hatch_directions='o', label="O")
         Rectangle(common=htch, x=3, y=4, hatch_directions='d', label="D")
 
-      These have the following properties:
+      These Rectangles all share the following Common properties that differ from the
+      defaults:
 
-      - ...
-      - ...
+      - *height* and *width* - set the basic configuration
+      - *hatch* - sets the **number** of lines to be drawn; the spacing between them is
+        equal and depends on the direction
+      - *hatch_width* - set to `0.1` point; a fairly thin line
+      - *hatch_stroke* - set to the color `red` to make it stand out from the sides
+
+      Each Rectangle has its own setting for:
+
+      - *x* and *y* - different positions on the page for the lower-left corner
+      - *label* - text to help identify it
+      - *hatch_directions* - if not specified, hatches will be drawn in all directions -
+        otherwise:
+
+        - `n` (North) or `s` (South) draws vertical lines;
+        - `w` (West) or `e` (East) draws horizontal lines;
+        - `nw` (North-West) or `se` (South-East) draws diagonal lines from top-left to
+          bottom-right;
+        - `ne` (North-East) or `sw` (South-West) draws diagonal lines from
+          bottom-left to top-right;
+        - `o` (orthogonal) draws vertical **and** horizontal lines;
+        - `d` (diagonal) draws diagonal lines between all corners
 ===== ======
+
+.. _rectNotch:
 
 Notch
 -----
-`^ <pageIndex_>`_
+`^ <rectIndex_>`_
 
 Notches are small indents - or outdents - that are drawn in the corners of the
 Rectangle.
@@ -191,7 +232,7 @@ Rectangle.
             notch_y=0.25,  notch_x=0.5, notch_corners="NW SE",
         )
 
-      These have the following properties:
+      These shares the following properties:
 
       - *x* and *y*, *height* and *width* - set the basic configuration
       - *label*, *label_size* - text to describe the shape's setting
@@ -212,19 +253,46 @@ Rectangle.
 ===== ======
 
 ===== ======
-|rns| These examples shows a Rectangle constructed using the command::
+|rns| These examples shows Rectangles constructed using these commands::
 
-          Rectangle()
+        styles = Common(
+          height=1, width=3.5, x=0.25, notch=0.25, label_size=7, fill=silver)
 
-      Each style type results in a slightly different effect:
+        Rectangle(
+          common=styles, y=0,  notch_style='snip',
+          label='Notch: snip (s)')
+        Rectangle(
+          common=styles, y=1.25, notch_style='step',
+          label='Notch: step (t)')
+        Rectangle(
+          common=styles, y=2.5, notch_style='fold',
+          label='Notch: fold (o)')
+        Rectangle(
+          common=styles, y=3.75, notch_style='flap',
+          label='Notch: flap (l)')
 
-      - ...
-      - ...
+      These Rectangles all share the following Common properties that differ from the
+      defaults:
+
+      - *height* and *width* - set the basic configuration
+      - *x* - sets the position of the left edge
+      - *fill* - set to the color `silver` so the interior color differs from the
+        default white elsewhere
+      - *notch* - sets the size of notch, in terms of distance from the corner
+
+      Each *notch_style* results in a slightly different effect:
+
+      - *flap* - makes it appear that the corner has a small, liftable flap
+      - *fold* - makes it appear there is a crease across the corner
+      - *step* - is sillohette of a step "cut out"
+      - *snip* - is a small triangle "cut out"; this is the default style
 ===== ======
+
+.. _rectPeak:
 
 Peak
 ----
-`^ <pageIndex_>`_
+`^ <rectIndex_>`_
 
 A peak is small triangular shape that juts out from the side of a Rectangle in
 a specified direction
@@ -236,31 +304,48 @@ a specified direction
 |rpk| This example shows Rectangles constructed using these commands::
 
         Rectangle(
-          x=1, y=1, width=2, height=1,
-          font_size=6, label="peaks = *",
-          peaks=[("*",0.2)], )
+            x=1, y=4, width=2, height=1.5,
+            font_size=6, label="points = s",
+            peaks=[("s", 1), ("e", 0.25)]
+        )
         Rectangle(
-          x=1, y=4, width=2, height=1.5,
-          font_size=6, label="points = s",
-          peaks=[("s",1)], )
+            x=1, y=1, width=2, height=1,
+            font_size=6, label="peaks = *",
+            peaks=[("*", 0.2)]
+        )
 
-      These have the following properties:
+      The Rectangles all have the following properties that differ from the defaults:
 
-      - ...
-      - ...
+      - *x* and *y*, *width* and *height* - set the basic configuration
+      - *label*, *font_size* - for the text to describe the shape's peak setting
+      - *peaks* - the value(s) used to create the peak; this is a list, shown by the
+        square brackets from `[` to `]`, of one or more sets, each enclosed by the round
+        brackets, consisting of a *directions* and a peak *size*.  Directions are the
+        primary compass directions - (n)orth, (s)outh, (e)ast and (w)est, and sizes are
+        the distances of the centre of the peak from the edge of the Rectangle.
+        As a short-cut the direction value of `*` means that peaks are drawn in all
+        four directions.
 ===== ======
+
+.. _rectRotation:
 
 Rotation
 --------
-`^ <pageIndex_>`_
+`^ <rectIndex_>`_
 
 .. |rrt| image:: images/custom/rectangle/rotation.png
    :width: 330
 
-===== ======
-|rrt| This example shows a Rectangle constructed using the command::
+Rotation takes place in anti-clockwise direction, from the horizontal, around
+the centre of the Rectangle.
 
-          Rectangle()
+===== ======
+|rrt| This example shows Rectangles constructed using the commands::
+
+        Rectangle(cx=2, cy=3, width=1.5, height=3, dot=0.06)
+        Rectangle(
+            cx=2, cy=3, width=1.5, height=3, fill=None,
+            stroke=red, stroke_width=.3, rotation=45, dot=0.04)
 
       It has the following properties:
 
@@ -268,9 +353,11 @@ Rotation
       - ...
 ===== ======
 
+.. _rectRounding:
+
 Rounding
 --------
-`^ <pageIndex_>`_
+`^ <rectIndex_>`_
 
 .. |rnd| image:: images/custom/rectangle/rounding.png
    :width: 330
@@ -286,6 +373,8 @@ Rounding
       - ...
 ===== ======
 
+
+
 .. _hexIndex:
 
 Hexagon
@@ -297,6 +386,7 @@ which is the default, or *pointy*. The examples below show how commands can be
 applied to each.
 
 
+.. _hexCentre:
 
 Centre
 ------
@@ -316,6 +406,8 @@ Centre
       - ...
       - ...
 ===== ======
+
+.. _hexCross:
 
 Dot & Cross
 -----------
@@ -345,6 +437,8 @@ Dot & Cross
       - ...
 ===== ======
 
+.. _hexHachFlat:
+
 Hatch: Flat
 -----------
 `^ <hexIndex_>`_
@@ -366,6 +460,7 @@ Hatch: Flat
       - ...
 ===== ======
 
+.. _hexHatchPointy:
 
 Hatch: Pointy
 -------------
@@ -387,6 +482,8 @@ Hatch: Pointy
       - ...
       - ...
 ===== ======
+
+.. _hexRadii:
 
 Radii
 -----
@@ -459,6 +556,7 @@ Radii: Pointy
       - *label* - the text displayed in the centre
 ===== ======
 
+.. _hexText:
 
 Text: Flat
 ----------
@@ -530,6 +628,9 @@ This shape is primarily intended to support drawing while it is "in progress".
 It provides a quick and convenient way to orientate and place other shapes
 that *are* required for the final product.  Typically one would just comment
 out the command when its purpose has been served.
+
+
+.. _blueSub:
 
 Subdivisions - dotted
 ---------------------

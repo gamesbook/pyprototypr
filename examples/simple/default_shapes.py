@@ -206,6 +206,11 @@ Text(common=header, text='Lines')
 Lines()
 PageBreak()
 
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Match Fill and Stroke")
+Circle(fill_stroke=aqua)
+PageBreak()
+
 Save(output='png',
      dpi=600,
      directory="docs/images/defaults",
@@ -219,4 +224,5 @@ Save(output='png',
         'stadium', 'starfield', 'dot', 'dotgrid', 'fill-stroke',
         'transparency', 'track-rectangle', 'chord',
         'rectangular_layout', 'rectangular_layout_debug', 'lines',
+        'fill-and-stroke'
      ])

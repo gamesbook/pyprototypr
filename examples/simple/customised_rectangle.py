@@ -130,7 +130,7 @@ PageBreak()
 Blueprint()
 Text(common=txt, text="Rectangle: peaks")
 Rectangle(x=1, y=1, width=2, height=1, peaks=[("*",0.2)], font_size=6, label="peaks = *")
-Rectangle(x=1, y=4, width=2, height=1.5, peaks=[("s",1)], font_size=6, label="points = s")
+Rectangle(x=1, y=4, width=2, height=1.5, peaks=[("s",1), ("e",0.25)], font_size=6, label="points = s")
 PageBreak()
 
 # ---- label offsets
@@ -157,12 +157,12 @@ PageBreak()
 # ---- notches
 Blueprint()
 Text(common=txt, text="Rectangle : Notch Styles")
-styles = rectangle(height=1, width=3.5, x=0.25, label_size=7, fill=silver)
-Rectangle(common=styles, y=0, notch=0.25, notch_style='snip', label='Notch: snip (s)')
-Rectangle(common=styles, y=1.25, notch=0.25, notch_style='step', label='Notch: step (t)')
-Rectangle(common=styles, y=2.5, notch=0.25, notch_style='fold', label='Notch: fold (o)')
-Rectangle(common=styles, y=3.75, notch=0.25, notch_style='flap', label='Notch: flap (l)')
-Rectangle(common=styles, y=5, label='Notch: bite (NOT WORKING)')
+styles = Common(height=1, width=3.5, x=0.25, notch=0.25, label_size=7, fill=silver)
+Rectangle(common=styles, y=0, notch_style='snip', label='Notch: snip (s)')
+Rectangle(common=styles, y=1.5, notch_style='step', label='Notch: step (t)')
+Rectangle(common=styles, y=3, notch_style='fold', label='Notch: fold (o)')
+Rectangle(common=styles, y=4.5, notch_style='flap', label='Notch: flap (l)')
+# Rectangle(common=styles, y=5, label='Notch: bite (NOT WORKING)')
 PageBreak()
 
 # ---- END

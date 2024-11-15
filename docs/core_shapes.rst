@@ -71,11 +71,11 @@ width (aka *stroke_width*) thicker for easier viewing of the small PNG images.
 
 To make it easier to see where and how a shape has been drawn, most of these
 examples have been created with a background grid (which **pyprototypr**
-refers to as a `Blueprint`_ shape) added to the page for cross-reference:
-the values of **x** appear across the lower edge of the grid (increasing from
-left to right); those for **y** along the left side (increasing from bottom to
-top). The grid respects the margins that have been set - so "0" is actually
-offset from the physical page corner ... but you will observe that the
+refers to as a `Blueprint`_ shape) added to the page  - a small A8 "business card"
+size - for cross-reference: the values of **x** appear across the lower edge of the
+grid (increasing from left to right); those for **y** along the left side (increasing
+from bottom to top). The grid respects the margins that have been set - so "0" is
+actually offset from the physical page corner ... but you will observe that the
 Blueprint numbering itself is inside the margin area!
 
    The graphics for these examples were generated from two of the scripts in
@@ -490,11 +490,11 @@ Example 2.
       The Compass shape has the following properties:
 
       - centred at x-position 3cm and at y-position 1cm
-      - *perimeter* defines the shape of 'hexagon' that is used to defined where
+      - *perimeter* - defines the shape of 'hexagon' that is used to defined where
         the radial lines of the compass extend; in this case its in a
         hexagon with a default diameter of 1cm, so lines extend in 6 directions
         i.e. no North or South
-      - *radii_stroke_width* defines the line thickness used for the radii
+      - *radii_stroke_width* - set to `2` points; a much thicker line
 ===== ======
 
 
@@ -768,7 +768,7 @@ Example 3.
         - *radii_length*  - set to 0.75cm; the length is shorter than that of
           the complete distance from vertex to centre, so the line goes in the
           same direction but never touches the vertex or the centre
-        - *radii_stroke_width* set to 1point; a slightly thicker line
+        - *radii_stroke_width* - set to `1` point; a slightly thicker line
 ===== ======
 
 Example 4.
@@ -1378,9 +1378,8 @@ Example 2.
       It has the following properties based on the defaults:
 
       - *side* - the value of `0.85` cm equates to about 1/3 of an inch
-      - *stroke_width* - set to `1` point; this much thicker line makes
-        the grid clearly visible
-      - *stroke* color of `gray` is a lighter color than default of black
+      - *stroke_width* - set to `1` point; this thicker line makes the grid more visible
+      - *stroke* color - set to `gray` i.e. a lighter color than default of black
 ===== ======
 
 Example 3.
@@ -1692,25 +1691,41 @@ the line used to draw it, and a *stroke_width* which is the thickness in
 points (72 points per inch).  All `Enclosed Shapes`_ will have a *fill*
 corresponding to the color used for the area inside it.
 
-.. |fst| image:: images/defaults/fill-stroke.png
+.. |fsb| image:: images/defaults/fill-stroke.png
    :width: 330
 
 ===== ======
-|fst| This example shows a shape constructed using the command::
+|fsb| This example shows a shape constructed using the command::
 
           Rectangle(fill=yellow, stroke=red, stroke_width=6)
 
-      The shape has the following properties:
+      The shape has the following properties that differ from the defaults:
 
-      - *fill* color of yellow (this corresponds to hexadecimal value `#FFFF00`)
-      - *stroke* color of red (this corresponds to hexadecimal value `#FF0000`)
-      - *stroke_width* of 6 points (this corresponds to about 2mm or 0.2cm)
-      - default *height* and *width* of `1` cm
+      - *fill* color of yellow (this corresponds to hexadecimal value `#FFFF00`)  that
+        defines what color the interior of the shape is
+      - *stroke* color of red (this corresponds to hexadecimal value `#FF0000`) that
+        defines what color the border of the shape is
+      - *stroke_width* - set to `6` points (this corresponds to about 2mm or 0.2cm)
 
       It can be seen that very thick lines "straddle" a centre line running
       through the defined location; so in this case the Rectangle is both
       larger in outer dimensions than the expected 1x1cm and smaller in the
       inner dimensions than the expected 1x1cm.
+===== ======
+
+.. |fst| image:: images/defaults/fill-and-stroke.png
+   :width: 330
+
+===== ======
+|fst| This example shows a shape constructed using the command::
+
+          Circle(fill_stroke=aqua)
+
+      The shape has the following properties that differ from the defaults:
+
+      - *fill_stroke* color of aqua (this corresponds to hexadecimal value `#00FFFF`)
+        is a shortcut which sets **both** the *fill* and *stroke* at same time, so that
+        the line used to draw the circumference is the same as the interior.
 ===== ======
 
 
