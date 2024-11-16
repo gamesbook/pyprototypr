@@ -1,26 +1,95 @@
-pyprototypr: Setting Up
-=======================
+==========
+Setting Up
+==========
 
-There are four parts to being able to use **pyprototypr**:
+.. _pageIndex:
+
+Table of Contents
+=================
+
+- `Outline`_
+- `Python in 1 minute`_
+- `Installing Python`_
+- `Installing pyprototypr`_
+- `Other Software Installs`_
+- `Checking if pyprototypr works`_
+- `Python in the cloud`_
+
+Outline
+=======
+`↑ <pageIndex_>`_
+
+There are four parts to being able to use **pyprototypr** on your own
+machine:
 
 1. Install the correct version of `Python <http://www.python.org>`_
 2. Install and set-up **pyprototypr**
 3. Install a text editing program
 4. Install a PDF viewer (e.g. *Adobe Acrobat*)
 
-Its possible that you may already one or more already installed.
+Its possible that you may already have one or more of these programs installed.
+
+Python in 1 minute
+==================
+`↑ <pageIndex_>`_
+
+Why do you need Python before starting?
+
+When you work with Python, you do not create executable files, such as the
+typical `.exe` ones you find on Windows (or `.app` on macOS). Instead, Python
+itself is loaded and then it "runs" your Python file/script (the `.py` ones)
+on your behalf.  So, running any Python scripts requires that you first install
+Python itself.
+
+Python is composed of many built-in libaries, or "packages", each of which
+handles some aspect of a program. Python is designed to be extended by adding
+on third-party packages written by other programmers; `ReportLab`, for example,
+is one of those, as is **pyprototypr**. Python does not come with those packages
+built-in - you need to install then after Python itself has been installed.
+
+Installing Python packages is handled by a tool called "pip", which is typically
+installed at the same time as Python itself.
 
 Installing Python
------------------
+=================
+`↑ <pageIndex_>`_
 
 **pyprototypr** requires a device e.g. laptop or desktop (but probably
 not a smart phone) that already has the correct version of Python
-(version 3.11) installed.
+(version 3.11 or higher) installed.
 
-If your device does not have Python installed, it can be obtained from
-http://www.python.org/download/.
+Linux users
+-----------
 
-A very detailed and useful guide to installing Python on Windows is at:
+You likely already have a version of Python installed.  To setup a new virtual
+environment, you can use a modern tool such as `uv`; see
+https://ubuntushell.com/install-uv-python-package-manager/
+
+You can then use `uv` to install an updated version of Python as well as this
+virtual environment; for example::
+
+    uv venv --python 3.11.6
+
+New packages can be installed using `uv` and `pip`::
+
+    uv pip install reportlab
+
+`uv` has extensive documentation at https://docs.astral.sh/uv/
+
+Windows and mac Users
+---------------------
+
+If you have no experience of working with Python, then "miniconda" is a fairly
+simple way of using Python; see
+https://docs.anaconda.com/miniconda/miniconda-install/ for instructions on
+downloading and running the installer. Make sure you choose a version that will
+install Python 3.11 or higher (3.11, 3.12, 3.13 etc.)
+
+Once it is installed, you can install new packages using `pip`.
+
+Alternative Options
+~~~~~~~~~~~~~~~~~~~
+Another very detailed and useful guide to installing Python on Windows is at:
 https://www.tomshardware.com/how-to/install-python-on-windows-10-and-11
 
 This guide will also take you through installing
@@ -32,7 +101,7 @@ For MacOS, there is a helpful guide on working with Python from
 http://www.pyladies.com/blog/Get-Your-Mac-Ready-for-Python-Programming/
 
 Test that Python is installed
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------
 
 In order to test that Python is installed, start a **command-line
 window**. The way you do this depends on your operating system.
@@ -43,7 +112,7 @@ window**. The way you do this depends on your operating system.
 -  For Mac OS X users - go to your Applications/Utilities folder and
    choose “Terminal”.
 
--  For Linux users; you should already know how to open a Terminal!!
+-  For Linux users; you should already know how to open a Terminal!
 
 When the command-line window appears, type::
 
@@ -58,18 +127,20 @@ The exact number after the “11” does not matter.
 You can now close the command-line window.
 
 Installing **pyprototypr**
---------------------------
+==========================
+`↑ <pageIndex_>`_
 
-The simplest way to install **pyprototypr** itself is via::
+The simplest way to install **pyprototypr** itself is via `pip`::
 
    pip install pyprototypr
 
 
 Other Software Installs
------------------------
+=======================
+`↑ <pageIndex_>`_
 
 PDF Viewer
-~~~~~~~~~~
+----------
 
 You will also need a program that can display PDF files; for example,
 *Adobe Acrobat* (cross-platform), or **Evince** (Linux), or **Preview**
@@ -77,7 +148,7 @@ You will also need a program that can display PDF files; for example,
 able to open and display PDF files.
 
 Core Fonts (optional)
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 For Linux users, it is recommended that you install Microsoft’s Core
 Fonts - see http://mscorefonts2.sourceforge.net/ - Ubuntu users can
@@ -86,7 +157,8 @@ install these via::
    sudo apt-get install ttf-mscorefonts-installer
 
 Checking if **pyprototypr** works
----------------------------------
+=================================
+`↑ <pageIndex_>`_
 
 To now check that ``pyprototypr`` works, you should create a small test
 file.
@@ -104,8 +176,8 @@ its a Python file - this is useful but not essential).
 Now use Python to “run” this file.
 
 By “run”, its meant that you open a command-line window (see the section
-**Test that Python is installed**), change to the directory in which the
-test file was created, for example::
+`Test that Python is installed`_), change to the directory in which the
+test file was created, for example on Windows::
 
    cd C:/
 
@@ -122,3 +194,23 @@ directory.
 You should be able to open and view this PDF file via your PDF viewer.
 It should be a mostly blank page with the phrase *Hello World* near the
 bottom-left.
+
+
+Python in the cloud
+===================
+`↑ <pageIndex_>`_
+
+If you do not want to install Python, you can try a cloud-based version.
+
+You will need to register on this site: https://www.pythonanywhere.com/ and
+use the tools and infrastructure they provide.
+
+    **NOTE** The environment used for `pythonanywhere` is a Linux-based one
+    and likely unfamiliar if you're a Windows user - especially if you're not
+    used to working via a "shell" in a terminal, or command-line, interface.
+
+*pythonanywhere* provides a terminal (`bash`) that you can use to install Python
+packages via `pip` and the option to upload files - such as **pyprototypr**
+scripts. Once scripts are uploaded there, they can be run in the terminal.
+
+*pythonanywhere* has its own documentation to help you work further with it.
