@@ -32,9 +32,10 @@ in `Core Shapes <core_shapes.md>`_.
 
 To make it easier to see where and how a shape has been drawn, most of these
 examples have been created with a background grid (which **pyprototypr**
-refers to as a `Blueprint`_ shape) added to the page - a small A8 "business card"
-size - for cross-reference. In addition, the default line width (aka *stroke_width*)
-has been made thicker for easier viewing of the small PNG images.
+refers to as a `Blueprint`_ shape) added to the page - which is a small A8
+"business card" size - for cross-reference. In addition, the default line width
+(aka *stroke_width*) has been made thicker for easier viewing of the small
+PNG images.
 
 A number of examples also used the `Common` command - this allows shared
 properties to be defined once and then used by any number of shapes.
@@ -395,7 +396,7 @@ into the arc of a quarter-circle.
       The first Rectangle has these properties:
 
       - *rounding* - set to `0.5`; the radius of the circle used for the corner
-      - *hatch* - set to  `3`; the number of lines crossing the Rectangle in
+      - *hatch* - set to `3`; the number of lines crossing the Rectangle in
         both vertical and horizontal directions.
 
       The second Rectangle has these properties:
@@ -592,14 +593,14 @@ Radii: Flat
 -----------
 `^ <hexIndex_>`_
 
-Radii are like spokes of a bicyle wheel; they are drawn from the vertices
+Radii are like spokes of a bicycle wheel; they are drawn from the vertices
 of a Hexagon towards its centre.
 
 .. |hrf| image:: images/custom/hexagon/radii_flat.png
    :width: 330
 
 ===== ======
-|hrf| This example shows a Hexagon constructed using the command::
+|hrf| This example shows Hexagons constructed using the commands::
 
         hxg = Common(
             height=1.5, font_size=8,
@@ -629,7 +630,7 @@ Radii: Pointy
 -------------
 `^ <hexIndex_>`_
 
-Radii are like spokes of a bicyle wheel; they are drawn from the vertices
+Radii are like spokes of a bicycle wheel; they are drawn from the vertices
 of a Hexagon towards its centre.
 
 .. |hrp| image:: images/custom/hexagon/radii_pointy.png
@@ -678,10 +679,16 @@ Text: Flat
             label="Label",
             heading="Heading")
 
-      It has the following properties:
+      It has the following properties that differ from the defaults:
 
-      - ...
-      - ...
+      - *y* and *height* used to draw the shape; upwards and larger
+      - *heading* - this text appears above the shape  (slightly offset)
+      - *label* - this text appears in the middle of the shape
+      - *title* - this test appears below the shape (slightly offset)
+
+      All of this text is, by default, centred horizontally. Each can be further
+      customised in terms of its color, size and font face by appending
+      *_stroke*, *_size* and *_face* respectively to the text type's name.
 ===== ======
 
 .. _hexTextPointy:
@@ -704,10 +711,17 @@ Text: Pointy
             label="Label",
             heading="Heading")
 
-      It has the following properties:
+      It has the following properties that differ from the defaults:
 
-      - ...
-      - ...
+      - *y* and *height* used to draw the shape; upwards and larger
+      - *heading* - this text appears above the shape  (slightly offset)
+      - *label* - this text appears in the middle of the shape
+      - *title* - this text appears below the shape (slightly offset)
+
+      All of this text is, by default, centred horizontally. Each can be further
+      customised in terms of its color, size and font face by appending
+      *_stroke*, *_size* and *_face* respectively to the text type's name.
+
 ===== ======
 
 
@@ -717,9 +731,299 @@ Circle
 ======
 `↑ <pageIndex_>`_
 
-A Circle is a very common shape in many designs; it provides a numbers of
+A Circle is a very common shape in many designs; it provides a number of
 ways that it can be customised.
 
+- `Dot and Cross <circleCross_>`_
+- `Hatch <circleHatch_>`_
+- `Radii <circleRadii_>`_
+- `Petals: petal <circlePetalsPetal_>`_
+- `Petals: curve <circlePetalsCurve_>`_
+- `Petals: triangle <circlePetalsTriangle_>`_
+
+.. _circleCross:
+
+Dot & Cross
+-----------
+`^ <circleIndex_>`_
+
+.. |ccd| image:: images/custom/circle/dot_cross.png
+   :width: 330
+
+===== ======
+|ccd| This example shows Circles constructed using these commands::
+
+        Circle(cx=1, cy=1, radius=1, dot=0.1, dot_stroke=green)
+        Circle(
+            cx=3, cy=1, radius=1,
+            cross=0.25, cross_stroke=green, cross_stroke_width=1)
+
+      These Circles have properties set as follows:
+
+      - *cx* and *cy* - set the centre position of the Circle
+      - *radius* - sets the distance from centre to circumference
+      - *dot* - sets the size of dot at the centre
+      - *dot_stroke*  - sets the color of the dot (note that the dot is "filled
+        in" with that same color)
+      - *cross* - sets the length of each of the two lines that cross at the centre
+      - *cross_stroke*  - sets the color of the cross lines
+      - *cross_stroke_width* - sets the thickness of the cross lines
+===== ======
+
+.. _circleHatch:
+
+Hatch
+-----
+`^ <circleIndex_>`_
+
+Hatches are a set of parallel lines that are drawn, in a specified direction,
+across the Circle from one opposing side to another in a vertical, horizontal
+or diagonal direction.
+
+.. |chf| image:: images/custom/circle/hatch.png
+   :width: 330
+
+===== ======
+|chf| This example shows Circles constructed using these commands::
+
+        htc = Common(radius=0.7, hatch=5, hatch_stroke=red)
+        Circle(common=htc, cx=2, cy=5.2, label='5')
+        Circle(common=htc, cx=1, cy=3.7, hatch_directions='o', label='o')
+        Circle(common=htc, cx=3, cy=3.7, hatch_directions='d', label='d')
+        Circle(common=htc, cx=1, cy=2.2, hhatch_directions='e', label='e')
+        Circle(common=htc, cx=3, cy=2.2, hatch_directions='n', label='n')
+        Circle(common=htc, cx=1, cy=0.7, hatch_directions='ne', label='ne')
+        Circle(common=htc, cx=3, cy=0.7, hatch_directions='nw', label='nw')
+
+      These Circles all share the following Common properties that differ
+      from the defaults:
+
+      - *radius* - sets the basic size
+      - *hatch* - sets the **number** of lines to be drawn; the spacing between
+        them is equal and depends on the direction
+      - *hatch_stroke* - set to the color `red` to make it stand out from the
+        hexagon sides
+
+      Each Circle has its own setting for:
+
+      - *cx* and *cy* - different positions on the page for the centres
+      - *label* - text to help identify it
+      - *hatch_directions* - if not specified, hatches will be drawn in all
+        directions - as seen in top-most circle - otherwise:
+
+        - `o` (orthogonal) draws vertical **and** horizontal lines;
+        - `d` (diagonal) draws diagonal lines between all corners
+        - `e` (East) or `w` (West) or draws horizontal lines;
+        - `n` (West) or `s` (East) draws vertical lines;
+        - `ne` (North-East) or `sw` (South-West) draws diagonal lines from
+          bottom-left to top-right;
+        - `nw` (North-West) or `se` (South-East) draws diagonal lines from
+          top-left to bottom-right;
+===== ======
+
+.. _circleRadii:
+
+Radii
+-----
+`^ <circleIndex_>`_
+
+Radii are like spokes of a bicycle wheel; they are drawn from the circumference
+of a Circle towards its centre.
+
+.. |crr| image:: images/custom/circle/radii.png
+   :width: 330
+
+===== ======
+|crr| This example shows Circles constructed using the commands::
+
+        Circle(x=0, y=0, radius=2,
+               fill=None,
+               radii=[45,135,225,315],
+               radii_stroke_width=1,
+               radii_dotted=True,
+               radii_offset=1,
+               radii_length=1.25)
+        Circle(x=0, y=0, radius=2,
+               fill=None,
+               radii=[0,90,180,270],
+               radii_stroke_width=3,
+               radii_stroke=red)
+        Circle(cx=3, cy=5, radius=1,
+               fill=green, stroke=orange, stroke_width=1,
+               radii=[0,90,180,270,45,135,225,315],
+               radii_stroke_width=8,
+               radii_stroke=orange,
+               radii_length=0.8)
+
+      These Circles have some of the following properties:
+
+      - *x* and *y* to set the lower-left position; or *cx* and *cy* to set the
+        centre
+      - *fill* - the color inside the Circle; if `None` then it is transparent
+      - *radii* - a list of angles (in |deg|) sets the directions at which the
+        radii lines are drawn
+      - *radii_stroke_width* - if set, will determine the thickness of the radii
+      - *radii_dotted* - if set to True, will make the radii lines dotted
+      - *radii_stroke* - if set, will determine the color of the radii
+      - *radii_length* - if set, will change the length of the radii lines
+        from the default (centre to circumference) to another length
+      - *radii_offset* - if set, will move the endpoint of the radii line
+        **away** from the centre
+===== ======
+
+.. _circlePetalsPetal:
+
+Petals - petal
+--------------
+`^ <circleIndex_>`_
+
+Petals are projecting shapes drawn from the circumference of a Circle outwards
+at regular intervals.  They are typically used to create a "flower" or "sun"
+effect.
+
+.. |cpp| image:: images/custom/circle/petals_petal.png
+   :width: 330
+
+===== ======
+|cpp| This example shows Circles constructed using the commands::
+
+        Circle(cx=2, cy=1.5, radius=1,
+                petals=11,
+                petals_style="petal",
+                petals_offset=0.25,
+                petals_stroke_width=1,
+                petals_dotted=1,
+                petals_height=0.25,
+                petals_fill=grey)
+        Circle(cx=2, cy=4.5, radius=1,
+               stroke=None,
+               fill=None,
+               petals=8,
+               petals_style="p",
+               petals_stroke_width=3,
+               petals_height=0.25,
+               petals_stroke=red,
+               petals_fill=yellow)
+
+      These Circles have the following properties:
+
+      - *cx*, *cy*, *radius*, *stroke* and *fill* - set the properties of the
+        `Circle`_
+      - *petals* - sets the number of petals to drawn
+      - *petals_style* - a style of `p` or `petal` affects the way petals are
+        drawn
+      - *petals_offset* - sets the distance of the lowest point of the petal
+        line away from the circle's circumference
+      - *petals_stroke_width* - sets the thickness of the line used to draw
+        the petals
+      - *petals_fill* - sets the color of the area between the line used to
+        draw the petals, and the circle itself
+      - *petals_dotted* - if True, sets the line style to `dotted`
+      - *petals_height* - sets the distance between the highest and the lowest
+        points of the petal line
+
+===== ======
+
+.. _circlePetalsCurve:
+
+Petals - curve
+--------------
+`^ <circleIndex_>`_
+
+Petals are projecting shapes drawn from the circumference of a Circle outwards
+at regular intervals.  They are typically used to create a "flower" or "sun"
+effect.
+
+.. |cpc| image:: images/custom/circle/petals_curve.png
+   :width: 330
+
+===== ======
+|cpc| This example shows Circles constructed using the commands::
+
+        Circle(cx=2, cy=1.5, radius=1,
+               petals=11,
+               petals_style="curve",
+               petals_offset=0.25,
+               petals_stroke_width=1,
+               petals_dotted=1,
+               petals_height=0.5,
+               petals_fill=grey)
+        Circle(cx=2, cy=4.5, radius=1,
+               stroke=None,  fill=None,
+               petals=8,
+               petals_style="c",
+               petals_stroke_width=3,
+               petals_height=0.5,
+               petals_stroke=red,
+               petals_fill=yellow)
+
+      These Circles have the following properties:
+
+      - *cx*, *cy*, *radius*, *stroke* and *fill* - set the properties of the
+        `Circle`_
+      - *petals* - sets the number of petals to drawn
+      - *petals_style* - a style of `c` or `curve` affects the way petals are
+        drawn
+      - *petals_offset* - sets the distance of the lowest point of the petal
+        line away from the circle's circumference
+      - *petals_stroke_width* - sets the thickness of the line used to draw
+        the petals
+      - *petals_fill* - sets the color of the area between the line used to
+        draw the petals, and the circle itself
+      - *petals_dotted* - if True, sets the line style to `dotted`
+      - *petals_height* - sets the distance between the highest and the lowest
+        points of the petal line
+
+===== ======
+
+.. _circlePetalsTriangle:
+
+Petals - triangle
+-----------------
+`^ <circleIndex_>`_
+
+Petals are projecting shapes drawn from the circumference of a Circle outwards
+at regular intervals.  They are typically used to create a "flower" or "sun"
+effect.
+
+.. |cpt| image:: images/custom/circle/petals_triangle.png
+   :width: 330
+
+===== ======
+|cpt| This example shows Circles constructed using the commands::
+
+        Circle(cx=2, cy=1.5, radius=1,
+                petals=11,
+                petals_offset=0.25,
+                petals_stroke_width=1,
+                petals_dotted=True,
+                petals_height=0.25,
+                petals_fill=grey)
+        Circle(cx=2, cy=4.5, radius=1,
+               stroke=None, fill=None,
+               petals=8,
+               petals_stroke_width=3,
+               petals_height=0.25,
+               petals_stroke=red,
+               petals_fill=yellow)
+
+      These Circles have the following properties:
+
+      - *cx*, *cy*, *radius*, *stroke* and *fill* - set the properties of the
+        `Circle`_
+      - *petals* - sets the number of petals to drawn
+      - *petals_offset* - sets the distance of the lowest point of the petal
+        line away from the circle's circumference
+      - *petals_stroke_width* - sets the thickness of the line used to draw
+        the petals
+      - *petals_fill* - sets the color of the area between the line used to
+        draw the petals, and the circle itself
+      - *petals_dotted* - if True, sets the line style to `dotted`
+      - *petals_height* - sets the distance between the highest and the lowest
+        points of the petal line
+
+      Note that these petals have a default *petals_style* of `t` or `triangle`.
+===== ======
 
 
 .. _blueprintIndex:
@@ -729,22 +1033,30 @@ Blueprint
 `↑ <pageIndex_>`_
 
 This shape is primarily intended to support drawing while it is "in progress".
+It can take on the appearance of typical "cutting board".
 It provides a quick and convenient way to orientate and place other shapes
 that *are* required for the final product.  Typically one would just comment
 out the command when its purpose has been served.
 
+- `Subdivisions <blueSub_>`_
+- `Style: Blue <blueStyleBlue_>`_
+- `Style: Green <blueStyleGreen_>`_
+- `Style: Grey <blueStyleGrey_>`_
+- `Stroke <blueStroke_>`_
+- `Fill <blueFill_>`_
+- `Decimals <blueDec_>`_
 
 .. _blueSub:
 
-Subdivisions - dotted
----------------------
+Subdivisions
+------------
 `↑ <blueprintIndex_>`_
 
-.. |bl2| image:: images/custom/blueprint/subdivisions.png
+.. |bl1| image:: images/custom/blueprint/subdivisions.png
    :width: 330
 
 ===== ======
-|bl2| This example shows the shape constructed using the command with these
+|bl1| This example shows the shape constructed using the command with these
       properties::
 
           Blueprint(subdivisions=5, stroke_width=0.5)
@@ -753,7 +1065,135 @@ Subdivisions - dotted
 
       - *subdivisions* - set to `5`; these are the number of thinner lines that
         are drawn between each pair of primary lines - they do not have any
-        numbering and are *dotted*
+        numbering and are automatically drawn witjh *dotted* style
       - *stroke_width* - set to `0.5`; this slightly thicker primary line makes
         the grid more visible
+===== ======
+
+.. _blueStyleBlue:
+
+Style - Blue
+------------
+`↑ <blueprintIndex_>`_
+
+.. |bl2| image:: images/custom/blueprint/style_blue.png
+   :width: 330
+
+===== ======
+|bl2| This example shows the Blueprint constructed using the command with these
+      properties::
+
+          Blueprint(style='blue')
+
+      It has the following properties set:
+
+      - *style* - set to `blue`; this affects both the line and the background
+        colors
+===== ======
+
+.. _blueStyleGreen:
+
+Style - Green
+-------------
+`↑ <blueprintIndex_>`_
+
+.. |bl3| image:: images/custom/blueprint/style_green.png
+   :width: 330
+
+===== ======
+|bl3| This example shows the Blueprint constructed using the command with these
+      properties::
+
+          Blueprint(style='green')
+
+      It has the following properties set:
+
+      - *style* - set to `green`; this affects both the line and the background
+        colors
+===== ======
+
+.. _blueStyleGrey:
+
+Style - Grey
+------------
+`↑ <blueprintIndex_>`_
+
+.. |bl4| image:: images/custom/blueprint/style_grey.png
+   :width: 330
+
+===== ======
+|bl4| This example shows the Blueprint constructed using the command with these
+      properties::
+
+          Blueprint(style='grey')
+
+      It has the following properties set:
+
+      - *style* - set to `grey`; this affects both the line and the background
+        colors
+===== ======
+
+.. _blueStroke:
+
+Stroke
+------
+`↑ <blueprintIndex_>`_
+
+.. |bl5| image:: images/custom/blueprint/stroke_width_red.png
+   :width: 330
+
+===== ======
+|bl5| This example shows the shape constructed using the command with these
+      properties::
+
+          Blueprint(stroke_width=1, stroke=red)
+
+      It has the following properties set:
+
+      - *stroke* - set to `red`; ; changes the grid line color
+      - *stroke_width* - set to `1`; this much thicker primary line makes
+        the grid more visible
+===== ======
+
+.. _blueFill:
+
+Fill
+----
+`↑ <blueprintIndex_>`_
+
+.. |bl6| image:: images/custom/blueprint/style_stroke.png
+   :width: 330
+
+===== ======
+|bl6| This example shows the shape constructed using the command with these
+      properties::
+
+          Blueprint(style='grey', stroke=purple)
+
+      It has the following properties set:
+
+      - *style* - see `Style: Grey <blueStyleGrey_>`_ above
+      - *stroke* - set to `purple`; changes the grid line color and overrides
+        the default color used for that style
+===== ======
+
+.. _blueDec:
+
+Decimals
+--------
+`↑ <blueprintIndex_>`_
+
+.. |bl7| image:: images/custom/blueprint/decimals.png
+   :width: 330
+
+===== ======
+|bl7| This example shows the shape constructed using the command with these
+      properties::
+
+          Blueprint(decimals=1)
+
+      It has the following properties set:
+
+      - *decimals* - set to `1`; these are the number of decimal points to
+        be displayed in the grid numbers
 ===== ======

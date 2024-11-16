@@ -24,13 +24,14 @@ PageBreak(footer=True)
 # ---- circle hatch
 Blueprint()
 Text(common=txt, text="Circle: hatch")
-Circle(cx=2, cy=5.2, radius=.7, hatch_stroke=red, hatch=4, label='4')  # all directions
-Circle(cx=1, cy=3.7, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='o', label='o')
-Circle(cx=3, cy=3.7, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='d', label='d')
-Circle(cx=1, cy=2.2, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='e', label='e')
-Circle(cx=3, cy=2.2, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='n', label='n')
-Circle(cx=1, cy=0.7, radius=.7, hatch_stroke=red, hatch=5, hatch_directions='ne', label='ne')
-Circle(cx=3, cy=0.7, radius=.7, hatch_stroke=red, hatch=7, hatch_directions='nw', label='nw')
+htc = Common(radius=0.7, hatch=5, hatch_stroke=red,)
+Circle(common=htc, cx=2, cy=5.2, label='5')  # all directions
+Circle(common=htc, cx=1, cy=3.7, hatch_directions='o', label='o')
+Circle(common=htc, cx=3, cy=3.7, hatch_directions='d', label='d')
+Circle(common=htc, cx=1, cy=2.2, hatch_directions='e', label='e')
+Circle(common=htc, cx=3, cy=2.2, hatch_directions='n', label='n')
+Circle(common=htc, cx=1, cy=0.7, hatch_directions='ne', label='ne')
+Circle(common=htc, cx=3, cy=0.7, hatch_directions='nw', label='nw')
 PageBreak()
 
 # ---- circle dot & cross
@@ -44,10 +45,11 @@ PageBreak()
 Blueprint()
 Text(common=txt, text="Circle: radii (single & overlapped)")
 Circle(x=0, y=0, radius=2,
+       fill=None,
        radii=[45,135,225,315],
        radii_stroke_width=1,
-       radii_dotted=1,
-       radii_offset=0.5,
+       radii_dotted=True,
+       radii_offset=1,
        radii_length=1.25)
 Circle(x=0, y=0, radius=2,
        fill=None,
@@ -64,7 +66,7 @@ Circle(cx=3, cy=5, radius=1,
        radii_length=0.8)
 PageBreak()
 
-# ---- circle petals
+# ---- circle petals: triangle
 Blueprint()
 Text(common=txt, text="Circle: petals; triangle style")
 Circle(cx=2, cy=1.5, radius=1,
@@ -84,7 +86,7 @@ Circle(cx=2, cy=4.5, radius=1,
        petals_fill=yellow)
 PageBreak()
 
-# ---- circle petals
+# ---- circle petals: curve
 Blueprint()
 Text(common=txt, text="Circle: petals; curve style")
 Circle(cx=2, cy=1.5, radius=1,
@@ -106,7 +108,7 @@ Circle(cx=2, cy=4.5, radius=1,
        petals_fill=yellow)
 PageBreak()
 
-# ---- circle petals
+# ---- circle petals: petal
 Blueprint()
 Text(common=txt, text="Circle: petals; petal style")
 Circle(cx=2, cy=1.5, radius=1,
@@ -129,7 +131,7 @@ Circle(cx=2, cy=4.5, radius=1,
 PageBreak()
 
 # ---- END
-Text(common=txt, text="Rectangle END...")
+Text(common=txt, text="Circle END...")
 PageBreak(footer=True)
 
 

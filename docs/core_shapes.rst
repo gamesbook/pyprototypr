@@ -76,13 +76,13 @@ Some shapes have additional properties available that allow even further styling
 
 To make it easier to see where and how a shape has been drawn, most of these
 examples have been created with a background grid (which **pyprototypr**
-refers to as a `Blueprint`_ shape) added to the page  - a small A8 "business card"
-size - for cross-reference: the values of **x** appear across the lower edge of the
-grid (increasing from left to right); those for **y** along the left side (increasing
-from bottom to top). The grid respects the margins that have been set - so the
-lower-left grid corner shown as "0" is actually offset from the physical page
-corner... but you will observe that the Blueprint numbering itself is located
-inside the margin area!
+refers to as a `Blueprint`_ shape) added to the page  - which is a small A8
+"business card" size - for cross-reference: the values of **x** appear across
+the lower edge of the grid (increasing from left to right); those for **y**
+along the left side (increasing from bottom to top). The grid respects the
+margins that have been set - so the lower-left grid corner shown as "0" is
+actually offset from the physical page corner... but you will observe that
+the Blueprint numbering itself is located inside the margin area!
 
    The graphics for these examples were generated from either of two of the
    scripts saved in the ``examples`` directory - look at the
@@ -1384,7 +1384,7 @@ Example 1.
       It has the following properties based on the defaults:
 
       - starts at lower-left corner of page defined by the margin
-      - has a default grid interval of ``1` cm` in both the x- and y-direction
+      - has a default grid interval of `1` cm in both the x- and y-direction
 ===== ======
 
 Example 2.
@@ -1844,7 +1844,7 @@ The three "simple" text types that can be added to a shape are:
 
 All types are, by default, centred horizontally. Each type can be customised
 in terms of its color, size and face by appending *_stroke*, *_size* and
-*_font_face* respectively to the type's name.
+*_face* respectively to the type's name.
 
 The *label* text can, in addition, be **moved** relative to the shape's centre
 by using *mx* and *my* properties; positive values will move the text to
