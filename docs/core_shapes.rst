@@ -59,27 +59,33 @@ Overview
 These descriptions of the available shapes assume you are familiar with
 the concepts, terms and ideas for **pyprototypr** as presented in `Basic
 Concepts <basic_concepts.md>`_ - especially *units*, *properties* and
-*defaults*. It will also help to at least read through the section on
+*defaults*. It will also help to at least browse through the section on
 `Additional Concepts <additional_concepts.rst>`_.
 
 Where possible, the basic examples first show how a shape would appear
-on a page when **only** the default properties are used.
-This means for most cases, that *lines* are drawn in black and shapes are
-*filled* with a white color. The default length, width or height in most cases
-is 1cm. The only change, for these examples, has been to make the default line
-width (aka *stroke_width*) thicker for easier viewing of the small PNG images.
+on a page when **only** the default properties are used. This means that,
+for most cases, that *lines* are drawn in **black** and shapes that have an
+enclosed area are *filled* with a **white** color. The default length, width
+or height in most cases is **1cm**. The only change from default, for these
+examples,  has been to make the default line width (*stroke_width*) thicker
+for easier viewing of the small PNG images.
+
+Most shapes can be styled by setting one or more of the `Shapes' Common Properties`_.
+
+Some shapes have additional properties available that allow even further styling.
 
 To make it easier to see where and how a shape has been drawn, most of these
 examples have been created with a background grid (which **pyprototypr**
 refers to as a `Blueprint`_ shape) added to the page  - a small A8 "business card"
 size - for cross-reference: the values of **x** appear across the lower edge of the
 grid (increasing from left to right); those for **y** along the left side (increasing
-from bottom to top). The grid respects the margins that have been set - so "0" is
-actually offset from the physical page corner ... but you will observe that the
-Blueprint numbering itself is inside the margin area!
+from bottom to top). The grid respects the margins that have been set - so the
+lower-left grid corner shown as "0" is actually offset from the physical page
+corner... but you will observe that the Blueprint numbering itself is located
+inside the margin area!
 
-   The graphics for these examples were generated from two of the scripts in
-   the ``examples`` directory - look at the
+   The graphics for these examples were generated from either of two of the
+   scripts saved in the ``examples`` directory - look at the
    `default_shapes <../examples/simple/default_shapes.py>`_ and
    `customised_shapes <../examples/simple/customised_shapes.py>`_
    scripts.
@@ -92,8 +98,8 @@ There are some properties that can be set for almost all of the shapes;
 examples of these are presented in the section on `Shapes' Common Properties`_
 at the end, rather than being described in detail for every single shape.
 
-    Bear in mind that if properties are provided for a shape that it does not
-    support, that property and value will simply be ignored.
+    **HINT** Bear in mind that if a property, that it does not support, is
+    provided for a shape then that property and its value will simply be ignored.
 
 .. _linearIndex:
 
@@ -104,6 +110,8 @@ Linear Shapes
 Arc
 ~~~
 `↑ <shapeIndex_>`_
+
+An arc is curved line.
 
 Example 1.
 ++++++++++
@@ -119,7 +127,7 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - origin is at x-position 1cm and at y-position 1cm
+      - origin is at x-position `1` cm and at y-position `1` cm
 ===== ======
 
 
@@ -145,14 +153,16 @@ Example 2.
 
       The Arc has the following properties:
 
-      - origin is at x-position 1cm and at y-position 1cm
-      - the secondary x-position and y-position are at 3cm and 2cm
+      - origin is at x-position `1` cm and at y-position `1` cm
+      - the secondary x-position and y-position are at `3` cm and `2` cm
 ===== ======
 
 
 Bezier
 ~~~~~~
 `↑ <shapeIndex_>`_
+
+A Bezier is a curve that has inflection points, allowing it to "bend".
 
 Example 1.
 ++++++++++
@@ -168,7 +178,7 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - starts at x-position 1cm and at y-position 1cm
+      - starts at x-position `1` cm and at y-position `1` cm
 ===== ======
 
 Example 2.
@@ -194,6 +204,8 @@ Chord
 ~~~~~
 `↑ <shapeIndex_>`_
 
+A chord is a straight line joining two points on a circle's diameter.
+
 Example 1.
 ++++++++++
 
@@ -214,7 +226,7 @@ Example 1.
       It has the following properties based on these values:
 
       - the circle that helps defines the start and end of the chord line is
-        located with its "corner" at x-position 1cm and at y-position 1cm
+        located with its "corner" at x-position `1` cm and at y-position `1` cm
       - the start of chord is at the intersection of the radius of the circle
         at 135 |deg| with the circle's circumference
       - the end of chord is at the intersection of the radius of the circle
@@ -226,6 +238,8 @@ Example 1.
 Dot
 ~~~
 `↑ <shapeIndex_>`_
+
+A dot is a small, filled `Circle`_.
 
 Example 1.
 ++++++++++
@@ -241,9 +255,9 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - centre at x-position 1cm and at y-position 1cm
+      - centre at x-position `1` cm and at y-position `1` cm
       - diameter of 3 points; there are 72 points in an inch, so this is 1/24th
-        of an inch, or approximately 1mm (0.1cm), in size
+        of an inch, or approximately 1mm (`0.1` cm), in size
       - fill color for a Dot is the same as the stroke - default is black
 ===== ======
 
@@ -266,8 +280,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - starts at x-position 1cm and at y-position 1cm
-      - length of 1cm
+      - starts at x-position `1` cm and at y-position `1` cm
+      - length of `1` cm
       - heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east")
 ===== ======
 
@@ -322,6 +336,8 @@ Polyline
 ~~~~~~~~
 `↑ <shapeIndex_>`_
 
+A polyline is a series of lines joining points.
+
 Example 1.
 ++++++++++
 
@@ -342,8 +358,8 @@ Example 1.
       It has the following properties based on these values:
 
       - starts at x-position 0cm and at y-position 0cm
-      - second point is at x-position 1cm and at y-position 1cm
-      - third point is at x-position 2cm and at y-position 0cm
+      - second point is at x-position `1` cm and at y-position `1` cm
+      - third point is at x-position `2` cm and at y-position 0cm
 ===== ======
 
 
@@ -371,7 +387,7 @@ Example 1.
 
       It otherwise has the following properties based on the defaults:
 
-      - centred at x-position 1cm and at y-position 1cm
+      - centred at x-position `1` cm and at y-position `1` cm
       - default font size is 12 points
       - default font face is Arial
 ===== ======
@@ -415,8 +431,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position 1cm and at y-position 1cm
-      - diameter of 1cm
+      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
+      - diameter of `1` cm
 ===== ======
 
 
@@ -425,8 +441,8 @@ Compass
 `↑ <shapeIndex_>`_
 
 A Compass is often thought of a specific device used for navigation. Here,
-its abstracted somewhat to indicate directional lines drawn within an
-enclosing shape; by default, circle.
+its abstracted somewhat to indicate directional lines - specified by traditional
+compass directions - drawn within an enclosing shape; by default, circle.
 
 Example 1.
 ++++++++++
@@ -442,8 +458,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position 1cm and at y-position 1cm
-      - diameter of 1cm
+      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
+      - diameter of `1` cm
       - lines in all 8 directions, extending from the centre outwards; these
         represent the primary - North, South, East and West - and secondary -
         North-East, South-East, North-West and South-West directions.
@@ -463,7 +479,7 @@ Example 2.
 
       The Compass shape has the following properties:
 
-      - centred at x-position 1cm and at y-position 5cm
+      - centred at x-position `1` cm and at y-position `5` cm
       - *directions* define where the radial lines extend; in this case to the
         North-East, North-West and South
 
@@ -475,7 +491,7 @@ Example 2.
 
       The Compass shape has the following properties:
 
-      - centred at x-position 2cm and at y-position 3cm
+      - centred at x-position `2` cm and at y-position `3` cm
       - *perimeter* defines the shape of 'rectangle' that is used to define
         where the radial lines of the compass extend; in this case its in a
         rectangle with a height of `2` cm and width of `3` cm.
@@ -489,10 +505,10 @@ Example 2.
 
       The Compass shape has the following properties:
 
-      - centred at x-position 3cm and at y-position 1cm
+      - centred at x-position `3` cm and at y-position `1` cm
       - *perimeter* - defines the shape of 'hexagon' that is used to defined where
         the radial lines of the compass extend; in this case its in a
-        hexagon with a default diameter of 1cm, so lines extend in 6 directions
+        hexagon with a default diameter of `1` cm, so lines extend in 6 directions
         i.e. no North or South
       - *radii_stroke_width* - set to `2` points; a much thicker line
 ===== ======
@@ -516,9 +532,9 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position 1cm and at y-position 1cm
-      - height of 1cm
-      - width of 1cm
+      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
+      - height of `1` cm
+      - width of `1` cm
 
       Because the *height* and *width* default to the same value, it appears
       as a `Circle`_.
@@ -540,8 +556,8 @@ Example 2.
       It has the following properties set for it:
 
       - centre at x-position `2` cm and at y-position `3` cm
-      - *height* of 4cm
-      - *width* of 3cm
+      - *height* of `4` cm
+      - *width* of `3` cm
 
       Because the *height* is greater than the *width* it has more an egg-shape.
 ===== ======
@@ -565,8 +581,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position 1cm and at y-position 1cm
-      - side of 1cm; all sides are equal
+      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
+      - side of `1` cm; all sides are equal
 ===== ======
 
 Example 2.
@@ -590,8 +606,8 @@ Example 2.
 
       These have the following properties:
 
-      - starting position at x-position 2cm and at y-position 1cm
-      - default side of 1cm; all sides are equal
+      - starting position at x-position `2` cm and at y-position `1` cm
+      - default side of `1` cm; all sides are equal
       - *flip* - this can be `north` or `south` and will cause the triangle to
         either point up or down relative to the starting position
       - *hand*  - this can be `west` or `east` and will cause the triangle to
@@ -605,8 +621,8 @@ Example 2.
             title='Title', heading='Head'
         )
 
-      - starting position at *x*-position 2cm and at *y*-position 3cm
-      - *side* of 1.5cm; all sides are equal
+      - starting position at *x*-position `2` cm and at *y*-position `3` cm
+      - *side* of `1.5` cm; all sides are equal
       - *hatch* of 5 - this means there will be 5 equally spaced lines drawn
         between opposing sides which run parallel to the third side
       - *hatch_stroke* - customise the hatch lines to show them as `red`
@@ -617,7 +633,7 @@ Example 2.
             x=1, y=4, stroke_width=1, rotation=45, dot=.05
         )
 
-      - starting position at x-position 1cm and at y-position 4cm
+      - starting position at x-position `1` cm and at y-position `4` cm
       - *dot* - in the centre
       - *rotation* - of 45 |deg| (from the baseline, anti-clockwise) about
         the centre
@@ -634,7 +650,6 @@ Hexagon
    There is more detail about the properties that can be defined for a
    Hexagon in the `customised shapes' Hexagon <customised_shapes.rst#hexagon>`_ section.
 
-
 Example 1.
 ++++++++++
 
@@ -649,8 +664,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position 1cm and at y-position 1cm
-      - flat-to-flat height of 1cm
+      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
+      - flat-to-flat height of `1` cm
       - "flat" top
 ===== ======
 
@@ -668,8 +683,8 @@ Example 2.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position 1cm and at y-position 1cm
-      - flat-to-flat height of 1cm
+      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
+      - flat-to-flat height of `1` cm
       - "pointy" top set via the *orientation*
 ===== ======
 
@@ -678,9 +693,11 @@ Polygon
 ~~~~~~~
 `↑ <shapeIndex_>`_
 
-A polygon is a shape of constructed of any number of sides of equal length.
-A hexagon is just a polygon with 6 sides and an octagon is just a polygon with
-8 sides.
+A polygon is a shape constructed of any number of sides of equal length.
+For example, a hexagon is a polygon with 6 sides and an octagon is a polygon
+with 8 sides.
+
+    **HINT** Unlike the `Hexagon`_ shape, a Polygon can be rotated!
 
 Example 1.
 ++++++++++
@@ -696,7 +713,7 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - centre at x-position 1cm and at y-position 1cm
+      - centre at x-position `1` cm and at y-position `1` cm
       - has 6 sides
 ===== ======
 
@@ -717,7 +734,7 @@ Example 2.
       It can be seen that each shape is constructed as follows:
 
       - *centre* - using `cx` and `cy` values
-      - *radius* - 1cm in each case
+      - *radius* - `1` cm in each case
       - *sides* - varying from 7 down to 5
 
       Even-sided polygons have a "flat" top, whereas odd-sided ones are
@@ -740,9 +757,9 @@ Example 3.
 
       It has the following properties:
 
-      - *centre* at x-position 2cm and at y-position 4cm, with a *radius*
-        size of 1cm
-      - *sides* - 8
+      - *centre* at x-position `2` cm and at y-position `4` cm, with a *radius*
+        size of `1` cm
+      - *sides* - 8 sides
       - *radii* - set to `True` to force lines to be drawn from each of the
         vertices of the polygon to its centre
 
@@ -757,15 +774,15 @@ Example 3.
 
       It has the following properties:
 
-      - *centre* at x-position 2cm and at y-position 1cm, with a *radius*
-        size of 1cm
+      - *centre* at x-position `2` cm and at y-position `1` cm, with a *radius*
+        size of `1` cm
       - *sides* - 10
       - *radii* - set to `True` to force lines to be drawn from the centre of
         the polygon to each of its vertices; the radii properties are then set:
 
-        - *radii_offset* - set to 0.5cm; the distance away from the centre that
-          the radii will start to be drawn
-        - *radii_length*  - set to 0.75cm; the length is shorter than that of
+        - *radii_offset* - set to `0.5` cm; the distance away from the centre
+          that the radii will start to be drawn
+        - *radii_length*  - set to `0.75` cm; the length is shorter than that of
           the complete distance from vertex to centre, so the line goes in the
           same direction but never touches the vertex or the centre
         - *radii_stroke_width* - set to `1` point; a slightly thicker line
@@ -790,7 +807,7 @@ Example 4.
       The examples have the following properties:
 
       - *centre* - using `cx` and `cy` values
-      - *radius* - 1cm in each case
+      - *radius* - `1` cm in each case
       - *sides* - the default of 6 in each case ("hexagon" shape)
       - *rotation* - varies from 0 |deg| to 60 |deg| (anti-clockwise from the
         horizontal); the fact that the angle of the sides of the polygon is
@@ -825,8 +842,8 @@ Example 1.
 
       It has the following properties set for it:
 
-      - lower-left corner at x-position 1cm and at y-position 1cm
-      - *width* and *height* - default to 1cm
+      - lower-left corner at x-position `1` cm and at y-position `1` cm
+      - *width* and *height* - default to `1` cm
 
       Because all sides of the Rectangle are equal, it appears as though it
       is a `Square`_.
@@ -847,8 +864,8 @@ Example 2.
       It has the following properties set for it:
 
       - centre at x-position `2` cm and at y-position `3` cm
-      - *height* of 4cm
-      - *width* of 3cm
+      - *height* of `4` cm
+      - *width* of `3` cm
 
       Because the *height* is greater than the *width* it has a card-like
       appearance.
@@ -878,9 +895,9 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner"at x-position 1cm and at y-position 1cm
-      - sector is then drawn inside a circle of diameter 1cm, with an
-        *angle_width* of 90 |deg|
+      - lower-left "corner"at x-position `1` cm and at y-position `1` cm
+      - sector is then drawn inside a circle of diameter `1` cm, with a
+        default *angle_width* of 90 |deg|
 ===== ======
 
 Example 2.
@@ -890,25 +907,26 @@ Example 2.
    :width: 330
 
 ===== ======
-|sc1| This example shows examples of the shape constructed using the command
-      the following properties::
+|sc1| This example shows examples of the Sector constructed using commands
+      with the following properties::
 
-        sctm = Common(cx=2, cy=3, radius=2, fill=black, angle_width=43)
+        sctm = Common(
+            cx=2, cy=3, radius=2, fill=black, angle_width=43)
         Sector(common=sctm, angle=40)
         Sector(common=sctm, angle=160)
         Sector(common=sctm, angle=280)
 
       These all have the following Common properties:
 
-      - centred at x-position 2cm and at y-position 3cm
-      - *radius* of 2cm for the enclosing "virtual" circle
+      - centred at x-position `2` cm and at y-position `3` cm
+      - *radius* of `2` cm for the enclosing "virtual" circle
       - *fill* color of black
-      - *angle_width* - determines the coverage (width of the sector); in these
-        cases it is 43 |deg|
+      - *angle_width* - determines the coverage (i.e. the "width" of the
+        Sector); in all these cases it is 43 |deg|
 
       Each sector in this example is drawn at a different *angle*; with the
-      this being the "virtual" centre-line  extending through the sector from
-      the middle of the  enclosing "virtual" circle.
+      this being the "virtual" centre-line  extending through the sector,
+      outwards from the middle of the  enclosing "virtual" circle.
 ===== ======
 
 
@@ -930,8 +948,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left corner at x-position 1cm and at y-position 1cm
-      - side of 1cm
+      - lower-left corner at x-position `1` cm and at y-position `1` cm
+      - side of `1` cm
 ===== ======
 
 Example 2.
@@ -957,7 +975,7 @@ Stadium
 ~~~~~~~
 `↑ <shapeIndex_>`_
 
-A Stadium is a shape constructed with a rectangle as a base, and then rounded
+A Stadium is a shape constructed with a rectangle as a base, and then curved
 projections extending from one or more of the sides.
 
 Example 1.
@@ -974,8 +992,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - straight edge start at x-position 1cm and at y-position 1cm
-      - height and width of 1cm each
+      - straight edge start at x-position `1` cm and at y-position `1` cm
+      - height and width of `1` cm each
       - curved ends at the east (right) and west (left) sides
 ===== ======
 
@@ -996,7 +1014,7 @@ Example 2.
 
       These have the following properties set:
 
-      - *height* and *width* - of 1cm and 1cm respectively
+      - *height* and *width* - of `1` cm and `1` cm respectively
       - *edges* - the display of the rounded projection(s) are set by using
         a letter representing the direction, where 'n' is north ("up"),
         's' is south ("down"), 'e' is east ("right") and 'w' is west ("left"");
@@ -1023,8 +1041,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - centre at x-position 1cm and at y-position 1cm
-      - "height" of 1cm
+      - centre at x-position `1` cm and at y-position `1` cm
+      - "height" of `1` cm
       - 5 points
 ===== ======
 
@@ -1032,6 +1050,12 @@ Example 1.
 Starfield
 ~~~~~~~~~
 `↑ <shapeIndex_>`_
+
+A Starfield is a shape in which a number of small dots are scattered at random
+to simulate what might be seen looking at a portion of the night sky.
+
+The number of dots drawn depends on the "density", which is the product of the
+actual area of the shape multiplied by the density value.
 
 Example 1.
 ++++++++++
@@ -1048,7 +1072,7 @@ Example 1.
       It has the following properties based on the defaults:
 
       - lower left-corner at x-position 0cm and at y-position 0cm
-      - an enclosing area with *height* and *width* of 1cm
+      - an enclosing area with *height* and *width* of `1` cm
       - 10 randomly placed white *color* 'dots' (the starfield *density*)
 
       Because the default fill color is white, this example adds an extra
@@ -1077,13 +1101,13 @@ Example 2.
 
       - lower left-corner at x-position 0cm and at y-position 0cm
       - *enclosure* - the rectangle size determines the boundaries of the area
-        (*height* and *width* each of 3cm) inside of which the stars (dots) are
+        (*height* and *width* each of `3` cm) inside of which the stars (dots) are
         randomly drawn
       - *density* - there will be a total of "80 multiplied by the enclosure
         area" dots drawn
-      - *colors* - are a list of colors, one of which will be randomly chosen
+      - *colors* - is a list of colors, one of which will be randomly chosen
         each time before drawing a dot
-      - *sizes* - are a list of randomly chosen dot sizes; in this case there is
+      - *sizes* - is a list of randomly chosen dot sizes; in this case there is
         just one value and so all dots will be same size
 
       Because the default fill color is white, this example adds an extra
@@ -1110,12 +1134,12 @@ Example 3.
       It has the following properties set:
 
       - lower left "corner" at x-position 0cm and at y-position 0cm
-      - *enclosure* - the circle radius (1.5cm) determines the boundaries of
+      - *enclosure* - the `circle` radius (`1.5` cm) determines the boundaries of
         the area inside of which the stars (dots) are randomly drawn
       - *density* - there will be a total of "30 multiplied by the enclosure
         area" dots drawn
-      - *sizes* - are a list of available dot sizes, one of which is randomly
-        chosen each time before drawing a dot
+      - *sizes* - is a list of available dot sizes, one of which is randomly
+        chosen from the list each time before drawing a dot
 
       Because the default fill color is white, this example adds an extra
       `Circle()` shape, with a fill color of black, which is drawn first and is
@@ -1141,15 +1165,15 @@ Example 4.
 
       It has the following properties set:
 
-      - lower left "corner" at x-position 1.5cm and at y-position 1.4cm
-      - *enclosure* - the polygon radius (1.5cm) determines the boundaries of
+      - lower left "corner" at x-position `1.5` cm and at y-position `1.4` cm
+      - *enclosure* - the polygon radius (`1.5` cm) determines the boundaries of
         the area inside of which the stars (dots) are randomly drawn
       - *density* - there will be a total of "50 multiplied by the enclosure
         area" dots drawn
       - *colors* - a list of available dot colors, one of which is randomly
-        chosen each time before drawing a dot
-      - *sizes* - are a list of available dot sizes, one of which is randomly
-        chosen each time before drawing a dot
+        chosen from the list each time before drawing a dot
+      - *sizes* - a list of available dot sizes, one of which is randomly
+        chosen from the list each time before drawing a dot
 
       Because the default fill color is white, this example adds an extra
       `Polygon()` shape, with a fill color of black, which is drawn first and
@@ -1175,7 +1199,7 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - starts at x-position 1cm and at y-position 1cm
+      - starts at x-position `1` cm and at y-position `1` cm
       - *width* of `1` cm
       - *height* of `1` cm
       - the "top" edge of the shape (*width2*) defaults to half the *width*
@@ -1256,7 +1280,7 @@ Example 1.
       - starts at the lower-left corner, as defined by the page margins
       - has vertical and horizontal lines filling the page from the lower left
         corner up to the right and top margins
-      - has spacing between lines of 1cm
+      - has spacing between lines of `1` cm
       - default line color is a shade of blue (`#2F85AC`)
       - the x- and y-axis are numbered from the lower left corner
 ===== ======
@@ -1305,7 +1329,7 @@ Example 1.
 
       - lower left at the absolute page x-position 0cm and at y-position 0cm
         i.e. the margins are ignore
-      - a set, spaced 1cm apart, extending to the right- and top- margins
+      - a set, spaced `1` cm apart, extending to the right- and top- margins
 ===== ======
 
 Example 2.
@@ -1360,7 +1384,7 @@ Example 1.
       It has the following properties based on the defaults:
 
       - starts at lower-left corner of page defined by the margin
-      - has a default grid interval of `1cm` in both the x- and y-direction
+      - has a default grid interval of ``1` cm` in both the x- and y-direction
 ===== ======
 
 Example 2.
@@ -1444,8 +1468,8 @@ Example 1.
 
       It has the following other properties based on the defaults:
 
-      - lower-left corner at x-position 1cm and at y-position 1cm
-      - *width* and *height* - default to 1cm; this may distort the image if it
+      - lower-left corner at x-position `1` cm and at y-position `1` cm
+      - *width* and *height* - default to `1` cm; this may distort the image if it
         is not square in shape
 ===== ======
 
@@ -1525,8 +1549,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position 1cm and at y-position 1cm
-      - flat-to-flat hexagon *height* of 1cm
+      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
+      - flat-to-flat hexagon *height* of `1` cm
       - "flat" top hexagons
       - size of two *rows* by two *cols* ("columns")
       - the "odd" columns - which includes the first one - are offset one-half
@@ -1556,10 +1580,10 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - starts at x-position 1cm and at y-position 1cm
+      - starts at x-position `1` cm and at y-position `1` cm
       - heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east")
       - has a default number of lines of 1
-      - line length of 1cm
+      - line length of `1` cm
 ===== ======
 
 Example 2.
@@ -1606,13 +1630,15 @@ Shapes' Common Properties
 -------------------------
 `↑ <pageIndex_>`_
 
-The following are properties common to many shapes:
+The following are properties common to many shapes that can be set to create
+the desired output:
 
 - `x and y`_
 - `cx and cy`_
 - `Fill and Stroke`_
 - `Dot and Cross`_
 - `Rotation`_
+- `Text Descriptions`_
 - `Transparency`_
 
 
@@ -1673,8 +1699,8 @@ of the shape which they are part of; see the `Stadium` example below.
       - *cx* and *cy* set the centre point of the shape
       - *dot* - sets the size of dot at the centre
       - *dot_stroke*  - sets the color of the dot (note that the dot is "filled
-        in" with that same color); defaults to the stroke of the shape that it
-        is part of
+        in" with that same color); defaults to match the *stroke* of the shape
+        that it is part of
       - *cross* - sets the length of each of the two lines that cross at the centre
       - *cross_stroke*  - sets the color of the cross lines; defaults to the
         stroke of the shape that it is part of
@@ -1709,7 +1735,7 @@ corresponding to the color used for the area inside it.
 
       It can be seen that very thick lines "straddle" a centre line running
       through the defined location; so in this case the Rectangle is both
-      larger in outer dimensions than the expected 1x1cm and smaller in the
+      larger in outer dimensions than the expected 1x1 cm and smaller in the
       inner dimensions than the expected 1x1cm.
 ===== ======
 
@@ -1733,7 +1759,7 @@ Rotation
 ~~~~~~~~
 `↑ <commonIndex_>`_
 
-Every shape that has a calculated centre will suport a *rotation* property.
+Every shape that has a calculated centre will support a *rotation* property.
 Rotation takes place in anti-clockwise direction, from the horizontal, around
 the centre of the shape.
 
@@ -1787,7 +1813,7 @@ Example 2. Polygon
       The examples have the following properties:
 
       - *centre* - using `cx` and `cy` values
-      - *radius* - 1cm in each case
+      - *radius* - `1` cm in each case
       - *sides* - the default of 6 in each case ("hexagon" shape)
       - *rotation* - varies from 0 |deg| to 60 |deg| (anti-clockwise from the
         horizontal); the fact that the angle of the sides of the polygon is
@@ -1797,6 +1823,96 @@ Example 2. Polygon
         happened.
 ===== ======
 
+
+Text Descriptions
+~~~~~~~~~~~~~~~~~
+`↑ <commonIndex_>`_
+
+Being able to associate a description, or identifier, with a shape can be
+useful.
+
+There are three kinds of text that can be added to a shape, without having to
+specify their location - in addition, obviously, a `Text`_ shape can also be
+placed anywhere, including superimposed on another shape, in order to handle
+more complex text needs.
+
+The three "simple" text types that can be added to a shape are:
+
+- *heading* - this appears above the shape  (slightly offset)
+- *label* - this appears in the middle of the shape
+- *title* - this appears below the shape (slightly offset)
+
+All types are, by default, centred horizontally. Each type can be customised
+in terms of its color, size and face by appending *_stroke*, *_size* and
+*_font_face* respectively to the type's name.
+
+The *label* text can, in addition, be **moved** relative to the shape's centre
+by using *mx* and *my* properties; positive values will move the text to
+the right and up; and negative values will move the text to the left and down.
+
+Example 1. Descriptions
++++++++++++++++++++++++
+
+.. |tx1| image:: images/customised/descriptions.png
+   :width: 330
+
+===== ======
+|tx1| This example shows two shapes constructed using these commands to change
+      default properties::
+
+        Hexagon(
+            cx=2, cy=1.5, height=1.5,
+            title="Title", label="Label", heading="Heading")
+        Rectangle(
+            x=0.5, y=3, width=3, height=2,
+            label="red; size=14", label_stroke=red, label_size=14)
+
+      The Hexagon shows where the *heading*, *label* and *title* appear.
+
+      The Rectangle shows how the *label* can be customised in terms of its
+      *stroke* (`red`) and font *size* (`14` points).
+===== ======
+
+Example 2. Text Offsets
++++++++++++++++++++++++
+
+.. |tx2| image:: images/customised/label_offset.png
+   :width: 330
+
+===== ======
+|tx2| This example shows five Rectangles constructed using the command with
+      additional properties::
+
+        rct = Common(height=1.0, width=1.75, stroke_width=.5, label_size=7)
+        Rectangle(
+          common=rct, x=0, y=0.0, label="offset -x, -y",
+          label_mx=-0.2, label_my=-0.2)
+        Rectangle(
+          common=rct, x=0, y=1.5, label="offset -x",
+          label_mx=-0.3)
+        Rectangle(
+          common=rct, x=0, y=3.0, label="offset -x, +y",
+          label_mx=-0.2, label_my=0.2)
+        Rectangle(
+          common=rct, x=2, y=0.0, label="offset +x, -y",
+          label_mx=0.2, label_my=-0.2)
+        Rectangle(
+          common=rct, x=2, y=1.5, label="offset +x",
+          label_mx=0.3)
+        Rectangle(
+          common=rct, x=2, y=3.0, label="offset +x, +y",
+          label_mx=0.2, label_my=0.2)
+        Rectangle(
+          common=rct, x=0, y=4.5, label="offset -y",
+          label_my=-0.2)
+        Rectangle(
+          common=rct, x=2, y=4.5, label="offset +y",
+          label_my=0.2)
+
+      It can be seen that setting different values for each of *label_my* and
+      *label_mx* cause the label, normally at the centre, to be shifted away
+      from it.
+===== ======
 
 Transparency
 ~~~~~~~~~~~~

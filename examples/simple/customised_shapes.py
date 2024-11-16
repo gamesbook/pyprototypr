@@ -368,6 +368,31 @@ Text(common=txt, text="Image: default")
 Image("sholes_typewriter.png")
 PageBreak()
 
+# ---- text for shapes
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Shape text: default and custom")
+Hexagon(
+    cx=2, cy=1.5, height=1.5,
+    title="Title", label="Label", heading="Heading")
+Rectangle(
+    x=0.5, y=3, width=3, height=2,
+    label="red; size=14", label_stroke=red, label_size=14)
+PageBreak()
+
+# ---- label offsets
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Shape label: offsets")
+rct = Common(height=1.0, width=1.75, stroke_width=.5, label_size=7)
+Rectangle(common=rct, x=0, y=0.0, label="offset -x, -y", label_mx=-0.2, label_my=-0.2)
+Rectangle(common=rct, x=0, y=1.5, label="offset -x", label_mx=-0.3)
+Rectangle(common=rct, x=0, y=3.0, label="offset -x, +y", label_mx=-0.2, label_my=0.2)
+Rectangle(common=rct, x=0, y=4.5, label="offset +y", label_my=0.2)
+Rectangle(common=rct, x=2, y=0.0, label="offset +x, -y", label_mx=0.2, label_my=-0.2)
+Rectangle(common=rct, x=2, y=1.5, label="offset +x", label_mx=0.3)
+Rectangle(common=rct, x=2, y=3.0, label="offset +x, +y", label_mx=0.2, label_my=0.2)
+Rectangle(common=rct, x=2, y=4.5, label="offset -y", label_my=-0.2)
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Shapes END...")
 PageBreak(footer=True)
@@ -390,4 +415,5 @@ Save(
         "polygon_rotation_pointy", "polygon_sizes", "grid_3x4",
         "line_custom", "bezier_custom", "ellipse_custom", "rectangle_custom",
         "square_custom", "trapezoid_custom", "image_default",
+        "descriptions", "label_offset",
         None])

@@ -31,7 +31,7 @@ Other Tools
     which lists tools specifically for working with hexagonal layouts.
 
 boardgamegeek
--------------
+=============
 
 The `Board Game Geek <https://boardgamegeek.com>`_ website has many communities
 and lists of resources to help support aspiring game designers!

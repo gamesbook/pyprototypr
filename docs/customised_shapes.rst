@@ -36,6 +36,8 @@ refers to as a `Blueprint`_ shape) added to the page - a small A8 "business card
 size - for cross-reference. In addition, the default line width (aka *stroke_width*)
 has been made thicker for easier viewing of the small PNG images.
 
+A number of examples also used the `Common` command - this allows shared
+properties to be defined once and then used by any number of shapes.
 
 .. _rectIndex:
 
@@ -67,7 +69,7 @@ Centred
 ===== ======
 |rcn| This example shows a Rectangle constructed using the command::
 
-          Rectangle(cx=2, cy=3)
+        Rectangle(cx=2, cy=3)
 
       It has the following properties that differ from the defaults:
 
@@ -89,7 +91,7 @@ A cross or a dot are symbols that mark the centre of the Rectangle.
 ===== ======
 |rdc| This example shows a Rectangle constructed using the command::
 
-          Rectangle(height=3, width=2, cross=0.75, dot=0.15)
+        Rectangle(height=3, width=2, cross=0.75, dot=0.15)
 
       It has the following properties that differ from the defaults:
 
@@ -177,14 +179,15 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
         Rectangle(common=htch, x=1.5, y=4, hatch_directions='o', label="O")
         Rectangle(common=htch, x=3, y=4, hatch_directions='d', label="D")
 
-      These Rectangles all share the following Common properties that differ from the
-      defaults:
+      These Rectangles all share the following Common properties that differ
+      from the defaults:
 
       - *height* and *width* - set the basic configuration
-      - *hatch* - sets the **number** of lines to be drawn; the spacing between them is
-        equal and depends on the direction
+      - *hatch* - sets the **number** of lines to be drawn; the spacing between
+        them is equal and depends on the direction
       - *hatch_width* - set to `0.1` point; a fairly thin line
-      - *hatch_stroke* - set to the color `red` to make it stand out from the sides
+      - *hatch_stroke* - set to the color `red` to make it stand out from the
+        rectangle sides
 
       Each Rectangle has its own setting for:
 
@@ -195,8 +198,8 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
 
         - `n` (North) or `s` (South) draws vertical lines;
         - `w` (West) or `e` (East) draws horizontal lines;
-        - `nw` (North-West) or `se` (South-East) draws diagonal lines from top-left to
-          bottom-right;
+        - `nw` (North-West) or `se` (South-East) draws diagonal lines from
+           top-left to bottom-right;
         - `ne` (North-East) or `sw` (South-West) draws diagonal lines from
           bottom-left to top-right;
         - `o` (orthogonal) draws vertical **and** horizontal lines;
@@ -347,10 +350,18 @@ the centre of the Rectangle.
             cx=2, cy=3, width=1.5, height=3, fill=None,
             stroke=red, stroke_width=.3, rotation=45, dot=0.04)
 
-      It has the following properties:
+      The first, upright, Rectangle is a normal one, with a black outline, and
+      centred at x-location 2cm and y-location 3cm.  It has a small black
+      *dot* in the centre.
 
-      - ...
-      - ...
+      The second Rectangle is similar to the first, except:
+
+      - *fill* - set to `None` so that is efectively fully transparent, allowing
+        the first Rectangle to be seen
+      - *stroke* - set to `red` to show
+      - *dot* - has the same color as the *stroke* (by default) and is smaller
+        than the *dot* of the  first Rectangle
+      - *rotation* - of 45 |deg|; counter-clockwise from the horizontal
 ===== ======
 
 .. _rectRounding:
@@ -359,21 +370,50 @@ Rounding
 --------
 `^ <rectIndex_>`_
 
+Rounding changes the corners of a Rectangle from a sharp, right-angled, join
+into the arc of a quarter-circle.
+
 .. |rnd| image:: images/custom/rectangle/rounding.png
    :width: 330
 
 ===== ======
-|rnd| This example shows a Rectangle constructed using the command::
+|rnd| This example shows Rectangles constructed using the commands::
 
-          Rectangle()
+        rct = Common(
+            x=0.5, height=1.5, width=3.0, stroke_width=.5,
+            hatch_stroke=red, hatch_directions='o')
+        Rectangle(
+            common=rct, y=2.0, rounding=0.5,  hatch=3)
+        Rectangle(
+            common=rct, y=0.0, rounding=0.1, hatch=10)
 
-      It has the following properties:
+      Both Rectangles share the Common properties of *x* (left side location),
+      *height* and *width*, *hatch_stroke* of `red` and *hatch_directions* of
+      (o)rthogonal; setting the color and directions of the lines crossing
+      the Rectangles.
 
-      - ...
-      - ...
+      The first Rectangle has these properties:
+
+      - *rounding* - set to `0.5`; the radius of the circle used for the corner
+      - *hatch* - set to  `3`; the number of lines crossing the Rectangle in
+        both vertical and horizontal directions.
+
+      The second Rectangle has these properties:
+
+      - *rounding* - set to `0.1`; the radius of the circle used for the corner
+      - *hatch* - set to  `10`; the number of lines crossing the Rectangle in
+        both vertical and horizontal directions.
+
+      It should be noted that if the rounding is too large in comparison with
+      the number of hatch lines, the program will issue an error::
+
+        Rectangle(common=rct, y=2.0, rounding=0.5, hatch=10)
+
+      causes::
+
+        FEEDBACK:: No hatching permissible with this size rounding in the rectangle
+
 ===== ======
-
-
 
 .. _hexIndex:
 
@@ -385,6 +425,14 @@ A key property for a hexagon is its *orientation*; this can either be *flat*,
 which is the default, or *pointy*. The examples below show how commands can be
 applied to each.
 
+- `Centre <hexCentre_>`_
+- `Dot and Cross <hexCross_>`_
+- `Hatch: Flat <hexHatchFlat_>`_
+- `Hatch: Pointy <hexHatchPointy_>`_
+- `Radii: Flat <hexRadiiFlat_>`_
+- `Radii: Pointy <hexRadiiPointy_>`_
+- `Text: Flat <hexTextFlat_>`_
+- `Text: Pointy <hexTextPointy_>`_
 
 .. _hexCentre:
 
@@ -401,10 +449,12 @@ Centre
           Hexagon(cx=2, cy=1)
           Hexagon(cx=2, cy=3, orientation='pointy')
 
-      These have the following properties:
+      Both Hexagons are located via their centres - *cx* and *cy*
 
-      - ...
-      - ...
+      The upper Hexagon also has the following *orientation* property set to
+      `pointy`, ensuring there is a "peak" at the top of it.
+
+      The lower Hexagon has the default *orientation* property of `flat`.
 ===== ======
 
 .. _hexCross:
@@ -431,17 +481,28 @@ Dot & Cross
                 cross=0.25, cross_stroke=red, cross_stroke_width=1,
                 orientation='pointy')
 
-      It has the following properties:
+      These Hexagons have properties set as follows:
 
-      - ...
-      - ...
+      - *x* and *y* - set the lower-left position of the Hexagon
+      - *height* - sets the distance from flat-edge to flat-edge
+      - *dot* - sets the size of dot at the centre
+      - *dot_stroke*  - sets the color of the dot (note that the dot is "filled
+        in" with that same color)
+      - *cross* - sets the length of each of the two lines that cross at the centre
+      - *cross_stroke*  - sets the color of the cross lines
+      - *cross_stroke_width* - sets the thickness of the cross lines
+      - *orientation* - if set to `pointy`, there will be a "peak" at the top
 ===== ======
 
-.. _hexHachFlat:
+.. _hexHatchFlat:
 
 Hatch: Flat
 -----------
 `^ <hexIndex_>`_
+
+Hatches are a set of parallel lines that are drawn, in a specified direction, across
+the Hexagon from one opposing side to another in a vertical, horizontal or
+diagonal direction.
 
 .. |hhf| image:: images/custom/hexagon/hatch_flat.png
    :width: 330
@@ -449,15 +510,34 @@ Hatch: Flat
 ===== ======
 |hhf| This example shows Hexagons constructed using these commands::
 
-        hxgn = Common(height=1.5, hatch=5, hatch_stroke=red, orientation='flat')
-        Hexagon(common=hxgn, x=2, y=0, hatch_directions='e', label="e/w")
-        Hexagon(common=hxgn, x=2, y=2, hatch_directions='ne', label="ne/sw")
-        Hexagon(common=hxgn, x=2, y=4, hatch_directions='nw', label="nw/se")
+        hxgn = Common(
+            x=1, height=1.5, orientation='flat', hatch=5, hatch_stroke=red)
+        Hexagon(common=hxgn, y=0, hatch_directions='e', label="e/w")
+        Hexagon(common=hxgn, y=2, hatch_directions='ne', label="ne/sw")
+        Hexagon(common=hxgn, y=4, hatch_directions='nw', label="nw/se")
 
-      These have the following properties:
+      These Hexagons all share the following Common properties that differ
+      from the defaults:
 
-      - ...
-      - ...
+      - *x* and *height* - set the basic configuration
+      - *orientation* - set to `flat`, so there will be no "peak" at the top
+      - *hatch* - sets the **number** of lines to be drawn; the spacing between
+        them is equal and depends on the direction
+      - *hatch_stroke* - set to the color `red` to make it stand out from the
+        hexagon sides
+
+      Each Hexagon has its own setting for:
+
+      - *y* - different positions on the page for the lower corner
+      - *label* - text to help identify it
+      - *hatch_directions* - if not specified, hatches will be drawn in all directions -
+        otherwise:
+
+        - `w` (West) or `e` (East) draws horizontal lines;
+        - `ne` (North-East) or `sw` (South-West) draws diagonal lines from
+          bottom-left to top-right;
+        - `nw` (North-West) or `se` (South-East) draws diagonal lines from
+          top-left to bottom-right;
 ===== ======
 
 .. _hexHatchPointy:
@@ -466,35 +546,54 @@ Hatch: Pointy
 -------------
 `^ <hexIndex_>`_
 
+Hatches are a set of parallel lines that are drawn, in a specified direction,
+across the Hexagon from one opposing side to another in a vertical, horizontal
+or diagonal direction.
+
 .. |hhp| image:: images/custom/hexagon/hatch_pointy.png
    :width: 330
 
 ===== ======
-|hhp| This example shows a Hexagon constructed using the command::
+|hhp| This example shows Hexagons constructed using the command::
 
-        hxgn = Common(height=1.5, hatch=5, hatch_stroke=red, orientation='pointy')
-        Hexagon(common=hxgn, x=2, y=0, hatch_directions='n', label="n/s")
-        Hexagon(common=hxgn, x=2, y=2, hatch_directions='ne', label="ne/sw")
-        Hexagon(common=hxgn, x=2, y=4, hatch_directions='nw', label="nw/se")
+        hxgn = Common(
+            x=1, height=1.5, orientation='pointy', hatch=5, hatch_stroke=red)
+        Hexagon(common=hxgn, y=0, hatch_directions='n', label="n/s")
+        Hexagon(common=hxgn, y=2, hatch_directions='ne', label="ne/sw")
+        Hexagon(common=hxgn, y=4, hatch_directions='nw', label="nw/se")
 
-      These have the following properties:
+      These Hexagons all share the following Common properties that differ
+      from the defaults:
 
-      - ...
-      - ...
+      - *x* and *height* - set the basic configuration
+      - *orientation* - set to `pointy`, so there will be a "peak" at the top
+      - *hatch* - sets the **number** of lines to be drawn; the spacing between
+        them is equal and depends on the direction
+      - *hatch_stroke* - set to the color `red` to make it stand out from the
+        hexagon sides
+
+      Each Hexagon has its own setting for:
+
+      - *y* - different positions on the page for the lower corner
+      - *label* - text to help identify it
+      - *hatch_directions* - if not specified, hatches will be drawn in all directions -
+        otherwise:
+
+        - `n` (West) or `s` (East) draws vertical lines;
+        - `ne` (North-East) or `sw` (South-West) draws diagonal lines from
+          bottom-left to top-right;
+        - `nw` (North-West) or `se` (South-East) draws diagonal lines from
+          top-left to bottom-right;
 ===== ======
 
-.. _hexRadii:
-
-Radii
------
-`^ <hexIndex_>`_
-
-Radii are like spokes of a bicyle wheel; they are drawn from the vertices
-towards the centre of a shape.
+.. _hexRadiiFlat:
 
 Radii: Flat
 -----------
 `^ <hexIndex_>`_
+
+Radii are like spokes of a bicyle wheel; they are drawn from the vertices
+of a Hexagon towards its centre.
 
 .. |hrf| image:: images/custom/hexagon/radii_flat.png
    :width: 330
@@ -521,13 +620,17 @@ Radii: Flat
       - *x* and *y* to set the lower-left position
       - *radii* - a compass direction in which the radius is drawn
         (centre to vertex)
-      - *label* - the text displayed in the centre
+      - *label* - the text displayed in the centre shows the compass direction
 ===== ======
 
+.. _hexRadiiPointy:
 
 Radii: Pointy
 -------------
 `^ <hexIndex_>`_
+
+Radii are like spokes of a bicyle wheel; they are drawn from the vertices
+of a Hexagon towards its centre.
 
 .. |hrp| image:: images/custom/hexagon/radii_pointy.png
    :width: 330
@@ -556,7 +659,7 @@ Radii: Pointy
       - *label* - the text displayed in the centre
 ===== ======
 
-.. _hexText:
+.. _hexTextFlat:
 
 Text: Flat
 ----------
@@ -581,6 +684,7 @@ Text: Flat
       - ...
 ===== ======
 
+.. _hexTextPointy:
 
 Text: Pointy
 ------------

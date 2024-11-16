@@ -75,10 +75,11 @@ PageBreak()
 # ---- rounding + hatch
 Blueprint()
 Text(common=txt, text="Rectangle: rounding; hatch")
-rct = Common(x=0.5, height=1.5, width=3.0, stroke_width=.5, hatch_stroke=red)
-Rectangle(common=rct, y=0.0, rounding=0.1, hatch=10, hatch_directions='o')
-Rectangle(common=rct, y=2.0, rounding=0.5, hatch=3, hatch_directions='o')
-# Rectangle(common=rct, y=2.0, rounding=0.5, hatch=10, hatch_directions='o')  # FAILS!
+rct = Common(x=0.5, height=1.5, width=3.0, stroke_width=.5,
+             hatch_stroke=red, hatch_directions='o')
+Rectangle(common=rct, y=0.0, rounding=0.1, hatch=10)
+Rectangle(common=rct, y=2.0, rounding=0.5, hatch=3)
+# Rectangle(common=rct, y=4.0, rounding=0.75, hatch=15)  # FAILS!
 PageBreak()
 
 # ---- chevron
@@ -133,19 +134,6 @@ Rectangle(x=1, y=1, width=2, height=1, peaks=[("*",0.2)], font_size=6, label="pe
 Rectangle(x=1, y=4, width=2, height=1.5, peaks=[("s",1), ("e",0.25)], font_size=6, label="points = s")
 PageBreak()
 
-# ---- label offsets
-Blueprint(stroke_width=0.5)
-Text(common=txt, text="Shape label: default and offsets")
-rct = Common(height=1.0, width=1.75, stroke_width=.5, label_size=7)
-Rectangle(common=rct, x=0, y=0.0, label="offset -x, -y", label_mx=-0.2, label_my=-0.2)
-Rectangle(common=rct, x=0, y=1.5, label="offset -x", label_mx=-0.3)
-Rectangle(common=rct, x=0, y=3.0, label="offset -x, +y", label_mx=-0.2, label_my=0.2)
-Rectangle(common=rct, x=2, y=0.0, label="offset +x, -y", label_mx=0.2, label_my=-0.2)
-Rectangle(common=rct, x=2, y=1.5, label="offset +x", label_mx=0.3)
-Rectangle(common=rct, x=2, y=3.0, label="offset +x, +y", label_mx=0.2, label_my=0.2)
-Rectangle(common=rct, x=1, y=4.5, label="no offset")
-PageBreak()
-
 # ---- rotation
 Blueprint()
 Text(common=txt, text="Rectangle: red => rotation 45\u00B0")
@@ -176,5 +164,5 @@ Save(
      names=[
         None,
         "centre", "notch", "dot_cross", "hatch", "rounding", "chevron",
-        "peak", "label_offset", "rotation", "notch_style",
+        "peak", "rotation", "notch_style",
         None])

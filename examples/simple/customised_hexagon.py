@@ -46,19 +46,19 @@ PageBreak()
 # ---- hatch - flat
 Blueprint()
 Text(common=txt, text="Hexagon: flat; hatch")
-hxgn = Common(height=1.5, hatch=5, hatch_stroke=red, orientation='flat')
-Hexagon(common=hxgn, x=2, y=0, hatch_directions='e', label="e/w")
-Hexagon(common=hxgn, x=2, y=2, hatch_directions='ne', label="ne/sw")
-Hexagon(common=hxgn, x=2, y=4, hatch_directions='nw', label="nw/se")
+hxgn = Common(x=1, height=1.5, hatch=5, hatch_stroke=red, orientation='flat')
+Hexagon(common=hxgn, y=0, hatch_directions='e', label="e/w")
+Hexagon(common=hxgn, y=2, hatch_directions='ne', label="ne/sw")
+Hexagon(common=hxgn, y=4, hatch_directions='nw', label="nw/se")
 PageBreak()
 
 # ---- hatch - pointy
 Blueprint()
 Text(common=txt, text="Hexagon: pointy; hatch")
-hxgn = Common(height=1.5, hatch=5, hatch_stroke=red, orientation='pointy')
-Hexagon(common=hxgn, x=2, y=0, hatch_directions='n', label="n/s")
-Hexagon(common=hxgn, x=2, y=2, hatch_directions='ne', label="ne/sw")
-Hexagon(common=hxgn, x=2, y=4, hatch_directions='nw', label="nw/se")
+hxgn = Common(x=1, height=1.5, hatch=5, hatch_stroke=red, orientation='pointy')
+Hexagon(common=hxgn, y=0, hatch_directions='n', label="n/s")
+Hexagon(common=hxgn, y=2, hatch_directions='ne', label="ne/sw")
+Hexagon(common=hxgn, y=4, hatch_directions='nw', label="nw/se")
 PageBreak()
 
 # ---- text - flat
