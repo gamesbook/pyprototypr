@@ -393,6 +393,12 @@ Rectangle(common=rct, x=2, y=3.0, label="offset +x, +y", label_mx=0.2, label_my=
 Rectangle(common=rct, x=2, y=4.5, label="offset -y", label_my=-0.2)
 PageBreak()
 
+# ---- star shape
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Shape label: offsets")
+Star(cx=2, cy=3, radius=2, fill=yellow, stroke=red, rotation=45)
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Shapes END...")
 PageBreak(footer=True)
@@ -415,5 +421,5 @@ Save(
         "polygon_rotation_pointy", "polygon_sizes", "grid_3x4",
         "line_custom", "bezier_custom", "ellipse_custom", "rectangle_custom",
         "square_custom", "trapezoid_custom", "image_default",
-        "descriptions", "label_offset",
+        "descriptions", "label_offset", "star_custom",
         None])

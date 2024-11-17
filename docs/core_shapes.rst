@@ -1044,6 +1044,12 @@ Star
 ~~~~
 `↑ <shapeIndex_>`_
 
+A Star is five-pointed shape; essentially made by extending the sides for a
+pentagram outwards to meet at a point.
+
+To create more varied kinds of stars, see the triangle petal shapes that can
+be created via a `customised Circle <customised_shapes.rst#circlepetalstriangle>`_
+
 Example 1.
 ++++++++++
 
@@ -1060,8 +1066,33 @@ Example 1.
 
       - centre at x-position ``1`` cm and at y-position ``1`` cm
       - "height" of ``1`` cm
-      - ``5`` points
 ===== ======
+
+Example 2.
+++++++++++
+
+.. |st2| image:: images/customised/star_custom.png
+   :width: 330
+
+===== ======
+|st2| This example shows the shape constructed using the command with these
+      properties::
+
+          Star(
+            cx=2, cy=3, radius=2, fill=yellow, stroke=red, rotation=45)
+
+      It has the following properties that differ from the defaults:
+
+      - centre at x-position ``2`` cm and at y-position ``3`` cm
+      - *radius* of ``2`` cm
+      - *fill* color of ``yellow`` (corresponds to hexadecimal value ``#FFFF00``)
+        that defines the color of the interior of the Star
+      - *stroke* color of ``red`` (corresponds to hexadecimal value ``#FF0000``)
+        that defines the color of the border of the Star
+      - *rotation* -  of 45 |deg| (from the baseline, anti-clockwise) about
+        the centre
+===== ======
+
 
 
 Starfield

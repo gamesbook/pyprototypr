@@ -866,7 +866,7 @@ of a Circle towards its centre.
       - *radii_dotted* - if set to True, will make the radii lines dotted
       - *radii_stroke* - if set, will determine the color of the radii
       - *radii_length* - if set, will change the length of the radii lines
-        from the default (centre to circumference) to another length
+        from the default (centre to circumference)
       - *radii_offset* - if set, will move the endpoint of the radii line
         **away** from the centre
 ===== ======
@@ -887,14 +887,6 @@ effect.
 ===== ======
 |cpp| This example shows Circles constructed using the commands::
 
-        Circle(cx=2, cy=1.5, radius=1,
-                petals=11,
-                petals_style="petal",
-                petals_offset=0.25,
-                petals_stroke_width=1,
-                petals_dotted=1,
-                petals_height=0.25,
-                petals_fill=grey)
         Circle(cx=2, cy=4.5, radius=1,
                stroke=None,
                fill=None,
@@ -904,20 +896,30 @@ effect.
                petals_height=0.25,
                petals_stroke=red,
                petals_fill=yellow)
+        Circle(cx=2, cy=1.5, radius=1,
+               petals=11,
+               petals_style="petal",
+               petals_offset=0.25,
+               petals_stroke_width=1,
+               petals_dotted=1,
+               petals_height=0.25,
+               petals_fill=grey)
 
       These Circles have the following properties:
 
       - *cx*, *cy*, *radius*, *stroke* and *fill* - set the properties of the
-        `Circle`_
+        `Circle`_; if these are set to ``None`` then the *petal_fill*
+        setting will be used for the whole area
       - *petals* - sets the number of petals to drawn
-      - *petals_style* - a style of `p` or `petal` affects the way petals are
-        drawn
+      - *petals_style* - a style of ``p`` or ``petal`` affects the way petals
+        are drawn
       - *petals_offset* - sets the distance of the lowest point of the petal
         line away from the circle's circumference
       - *petals_stroke_width* - sets the thickness of the line used to draw
         the petals
-      - *petals_fill* - sets the color of the area between the line used to
-        draw the petals, and the circle itself
+      - *petals_fill* - sets the color of the area inside the line used to
+        draw the petals (any *fill* or *stroke* settings for the circle itself
+        may appear superimposed on this area)
       - *petals_dotted* - if True, sets the line style to `dotted`
       - *petals_height* - sets the distance between the highest and the lowest
         points of the petal line
@@ -940,14 +942,6 @@ effect.
 ===== ======
 |cpc| This example shows Circles constructed using the commands::
 
-        Circle(cx=2, cy=1.5, radius=1,
-               petals=11,
-               petals_style="curve",
-               petals_offset=0.25,
-               petals_stroke_width=1,
-               petals_dotted=1,
-               petals_height=0.5,
-               petals_fill=grey)
         Circle(cx=2, cy=4.5, radius=1,
                stroke=None,  fill=None,
                petals=8,
@@ -956,20 +950,30 @@ effect.
                petals_height=0.5,
                petals_stroke=red,
                petals_fill=yellow)
+        Circle(cx=2, cy=1.5, radius=1,
+               petals=11,
+               petals_style="curve",
+               petals_offset=0.25,
+               petals_stroke_width=1,
+               petals_dotted=1,
+               petals_height=0.5,
+               petals_fill=grey)
 
       These Circles have the following properties:
 
       - *cx*, *cy*, *radius*, *stroke* and *fill* - set the properties of the
-        `Circle`_
+        `Circle`_; if these are set to ``None`` then the *petal_fill*
+        setting will be used for the whole area
       - *petals* - sets the number of petals to drawn
-      - *petals_style* - a style of `c` or `curve` affects the way petals are
-        drawn
+      - *petals_style* - a style of ``c`` or ``curve`` affects the way petals
+        are drawn
       - *petals_offset* - sets the distance of the lowest point of the petal
         line away from the circle's circumference
       - *petals_stroke_width* - sets the thickness of the line used to draw
         the petals
-      - *petals_fill* - sets the color of the area between the line used to
-        draw the petals, and the circle itself
+      - *petals_fill* - sets the color of the area inside the line used to
+        draw the petals  (any *fill* or *stroke* settings for the circle itself
+        may appear superimposed on this area)
       - *petals_dotted* - if True, sets the line style to `dotted`
       - *petals_height* - sets the distance between the highest and the lowest
         points of the petal line
@@ -992,13 +996,6 @@ effect.
 ===== ======
 |cpt| This example shows Circles constructed using the commands::
 
-        Circle(cx=2, cy=1.5, radius=1,
-                petals=11,
-                petals_offset=0.25,
-                petals_stroke_width=1,
-                petals_dotted=True,
-                petals_height=0.25,
-                petals_fill=grey)
         Circle(cx=2, cy=4.5, radius=1,
                stroke=None, fill=None,
                petals=8,
@@ -1006,23 +1003,33 @@ effect.
                petals_height=0.25,
                petals_stroke=red,
                petals_fill=yellow)
+        Circle(cx=2, cy=1.5, radius=1,
+               petals=11,
+               petals_offset=0.25,
+               petals_stroke_width=1,
+               petals_dotted=True,
+               petals_height=0.25,
+               petals_fill=grey)
 
       These Circles have the following properties:
 
       - *cx*, *cy*, *radius*, *stroke* and *fill* - set the properties of the
-        `Circle`_
+        `Circle`_; if these are set to ``None`` then the *petal_fill*
+        setting will be used for the whole area
       - *petals* - sets the number of petals to drawn
       - *petals_offset* - sets the distance of the lowest point of the petal
         line away from the circle's circumference
       - *petals_stroke_width* - sets the thickness of the line used to draw
         the petals
-      - *petals_fill* - sets the color of the area between the line used to
-        draw the petals, and the circle itself
+      - *petals_fill* - sets the color of the area inside the line used to
+        draw the petals (any *fill* or *stroke* settings for the circle itself
+        may appear superimposed on this area)
       - *petals_dotted* - if True, sets the line style to `dotted`
       - *petals_height* - sets the distance between the highest and the lowest
         points of the petal line
 
-      Note that these petals have a default *petals_style* of `t` or `triangle`.
+      Note that these petals have a default *petals_style* of
+      ``t`` or ``triangle``.
 ===== ======
 
 
