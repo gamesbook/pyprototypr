@@ -399,6 +399,26 @@ Text(common=txt, text="Shape label: offsets")
 Star(cx=2, cy=3, radius=2, fill=yellow, stroke=red, rotation=45)
 PageBreak()
 
+# ---- shapeshape
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Polyshape: default")
+Polyshape(points=[(0, 0), (0, 1), (1,  2), (2, 1), (2, 0)])
+PageBreak()
+
+# ---- shapeshape - custom
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Polyshape: custom")
+Polyshape(
+      points=[(0, 0), (0, 1), (1,  2), (2, 1), (2, 0)],
+      cx=1, cy=1,
+      label='A House',
+      label_stroke=olive,
+      cross=0.25,
+      fill=sandybrown,
+      stroke=peru,
+)
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Shapes END...")
 PageBreak(footer=True)
@@ -422,4 +442,5 @@ Save(
         "line_custom", "bezier_custom", "ellipse_custom", "rectangle_custom",
         "square_custom", "trapezoid_custom", "image_default",
         "descriptions", "label_offset", "star_custom",
+        "polyshape_default", "polyshape_custom",
         None])

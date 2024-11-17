@@ -1991,7 +1991,7 @@ class PolylineShape(BaseShape):
         if not points:
             points = self.points
         if not points or len(points) == 0:
-            tools.feedback("No Polyline points to draw - or points are incorrect!", True)
+            tools.feedback("There are no points to draw the Polyline", False, True)
         return points
 
     def get_vertices(self):
@@ -2011,16 +2011,17 @@ class PolylineShape(BaseShape):
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- draw polyline
-        pth = cnv.beginPath()
-        for key, vertex in enumerate(points):
-            x, y = vertex
-            # convert to using units
-            x = self.unit(x) + self._o.delta_x
-            y = self.unit(y) + self._o.delta_y
-            if key == 0:
-                pth.moveTo(x, y)
-            pth.lineTo(x, y)
-        cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=0)
+        if points:
+            pth = cnv.beginPath()
+            for key, vertex in enumerate(points):
+                x, y = vertex
+                # convert to using units
+                x = self.unit(x) + self._o.delta_x
+                y = self.unit(y) + self._o.delta_y
+                if key == 0:
+                    pth.moveTo(x, y)
+                pth.lineTo(x, y)
+            cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=0)
 
 
 class RectangleShape(BaseShape):
@@ -2829,6 +2830,18 @@ class ShapeShape(BaseShape):
                 pth.lineTo(x, y)
             pth.close()
             cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
+            # ---- centre?
+            if self.cx and self.cy:
+                x = self._u.cx + self._o.delta_x
+                y = self._u.cy + self._o.delta_y
+                # ---- * dot
+                self.draw_dot(cnv, x, y)
+                # ---- * cross
+                self.draw_cross(cnv, x, y)
+                # ---- * text
+                self.draw_label(cnv, ID, x, y, **kwargs)
+        else:
+            tools.feedback('There are no points to draw the Polyshape', False, True)
 
 
 class SquareShape(RectangleShape):

@@ -167,9 +167,9 @@ points = [
     (9, 2),
     (7, 2),
 ]
-Shape(points=points, stroke=indianred, fill=red)
+Polyshape(points=points, stroke=indianred, fill=red)
 pointstr = "0,0 0,1 2,0 2,1 0,0"
-Shape(x=9, y=4, points=pointstr, stroke=blue)
+Polyshape(x=9, y=4, points=pointstr, stroke=blue)
 PageBreak()
 
 # ---- pentangle star

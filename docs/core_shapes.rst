@@ -43,6 +43,7 @@ Index of Shapes
 -  `Lines`_
 -  `Polygon`_
 -  `Polyline`_
+-  `Polyshape`_
 -  `Rectangle`_
 -  `Sector`_
 -  `Square`_
@@ -348,10 +349,13 @@ Example 1.
    :width: 330
 
 ===== ======
-|ply| If the shape was constructed using only default properties, there will be
-      nothing to see::
+|ply| The shape cannot be constructed using only default properties::
 
           Polyline()
+
+      Nothing will be visible; instead you will see a warning::
+
+        WARNING:: There are no points to draw the Polyline
 
       This example then shows the shape constructed using the command with these
       properties::
@@ -827,6 +831,92 @@ Example 4.
 ===== ======
 
 
+Polyshape
+~~~~~~~~~
+`↑ <shapeIndex_>`_
+
+A Polyshape is an irregular `polygon`_, constructed using a series of points.
+
+Example 1.
+++++++++++
+
+.. |shp| image:: images/customised/polyshape_default.png
+   :width: 330
+
+===== ======
+|shp| If the shape is constructed using the command with only defaults::
+
+        Polyshape()
+
+      Then nothing will be visible; instead you will see a warning::
+
+        WARNING:: There are no points to draw the Polyshape
+
+      Like `polyline`_, the Polyshape requires a list of points to be constructed.
+      This example shows how to do this using the command with these properties::
+
+        Polyshape(points=[(0, 0), (0, 1), (1,  2), (2, 1), (2, 0)])
+
+      It has the following properties, that differ from the defaults. based on
+      these values:
+
+      - starts at x-position ``0`` cm and at y-position ``0`` cm
+      - second point is at x-position ``0`` cm and at y-position ``1`` cm
+      - third point is at x-position ``1`` cm and at y-position ``2`` cm
+      - etc.
+
+      The *points* for a Polyshape, which represent its vertices are given in a
+      list, as shown by the square brackets from `[` to `]`, and then each *x*
+      and *y* are provided as a pair of values in round brackets.  The *x* and
+      *y* are separated by a comma. Each pair of values in the list is also
+      separated by a comma.
+
+      Lines are drawn between each successive point in the list; including a
+      line from the last to the first.
+
+      The default *stroke* and *fill* apply to this example of a Polyshape.
+===== ======
+
+Example 2.
+++++++++++
+
+While the Polyshape does not have the ability to be constructed using a
+*cx* and *cy* pair like other symmetric shapes, it is possible to provide
+these values to the shape command, and they can then be used for label, plus
+dot & cross, similar to other shapes.  **Note** that the program has no way
+of knowing or "checking" the values you supply to it!
+
+.. |sh2| image:: images/customised/polyshape_custom.png
+   :width: 330
+
+===== ======
+|sh2| If the shape is constructed using the command with only defaults::
+
+        Polyshape(
+              points=[(0, 0), (0, 1), (1,  2), (2, 1), (2, 0)],
+              cx=1, cy=1,
+              label='A House',
+              label_stroke=olive,
+              cross=0.25,
+              fill=sandybrown,
+              stroke=peru,
+        )
+
+      As in Example 1, the *points* are used to construct the outline of the
+      shape. Other properties:
+
+      - the centre is defined to be at x-position ``1`` cm and y-position
+        ``1`` cm; this will affect the drawing of the cross and the label
+      - *cross* - sets the length of each of the two lines that cross at the
+        centre to be ``0.25`` cm
+      - *label* - sets the text appearing at the centre position
+      - *fill* color of ``sandybrown`` (corresponds to hexadecimal value ``#F4A460``)
+        that defines the color of the interior of the shape
+      - *stroke* color of ``peru`` (corresponds to hexadecimal value ``#CD853F``)
+
+===== ======
+
+
 Rectangle
 ~~~~~~~~~
 `↑ <shapeIndex_>`_
@@ -939,7 +1029,6 @@ Example 2.
       this being the "virtual" centre-line  extending through the sector,
       outwards from the middle of the  enclosing "virtual" circle.
 ===== ======
-
 
 Square
 ~~~~~~
@@ -1754,7 +1843,8 @@ of the shape which they are part of; see the `Stadium` example below.
       - *dot_stroke*  - sets the color of the dot (note that the dot is "filled
         in" with that same color); defaults to match the *stroke* of the shape
         that it is part of
-      - *cross* - sets the length of each of the two lines that cross at the centre
+      - *cross* - sets the length of each of the two lines that cross at the
+         centre
       - *cross_stroke*  - sets the color of the cross lines; defaults to the
         stroke of the shape that it is part of
       - *cross_stroke_width* - sets the thickness of the cross lines

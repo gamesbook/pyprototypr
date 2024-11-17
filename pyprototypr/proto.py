@@ -919,16 +919,16 @@ def rectangle(row=None, col=None, **kwargs):
     return RectangleShape(canvas=cnv, **kwargs)
 
 
-def Shape(row=None, col=None, **kwargs):
+def Polyshape(row=None, col=None, **kwargs):
     global cnv
     global deck
     kwargs = margins(**kwargs)
-    shapeshape = shape(row=row, col=col, **kwargs)
+    shapeshape = polyshape(row=row, col=col, **kwargs)
     shapeshape.draw()
     return shapeshape
 
 
-def shape(row=None, col=None, **kwargs):
+def polyshape(row=None, col=None, **kwargs):
     global cnv
     global deck
     kwargs = margins(**kwargs)

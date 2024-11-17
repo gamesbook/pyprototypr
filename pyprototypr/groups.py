@@ -274,11 +274,15 @@ class DeckShape(BaseShape):
         max_rows = self.card_rows
         max_cols = self.card_cols
         # ---- calculate rows/cols based on page size and margins
+        margin_left = self.margin_left if self.margin_left is not None else self.margin
+        margin_bottom = self.margin_bottom if self.margin_bottom is not None else self.margin
+        margin_right = self.margin_right if self.margin_right is not None else self.margin
+        margin_top = self.margin_top if self.margin_top is not None else self.margin
         if not max_rows:
-            row_space = float(self.page_height) - self.margin_bottom - self.margin_top
+            row_space = float(self.page_height) - margin_bottom - margin_top
             max_rows = int(row_space / float(self.height))
         if not max_cols:
-            col_space = float(self.page_width) - self.margin_left - self.margin_right
+            col_space = float(self.page_width) - margin_left - margin_right
             max_cols = int(col_space / float(self.width))
         log.debug("w:%s cs:%s mc:%s", self.page_width, col_space, max_cols)
         log.debug("h:%s rs:%s mr:%s", self.page_height, row_space, max_rows)
