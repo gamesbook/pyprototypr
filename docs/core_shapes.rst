@@ -58,7 +58,7 @@ Overview
 
 These descriptions of the available shapes assume you are familiar with
 the concepts, terms and ideas for **pyprototypr** as presented in `Basic
-Concepts <basic_concepts.md>`_ - especially *units*, *properties* and
+Concepts <basic_concepts.rst>`_ - especially *units*, *properties* and
 *defaults*. It will also help to at least browse through the section on
 `Additional Concepts <additional_concepts.rst>`_.
 
@@ -127,7 +127,7 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - origin is at x-position `1` cm and at y-position `1` cm
+      - origin is at x-position ``1`` cm and at y-position ``1`` cm
 ===== ======
 
 
@@ -153,8 +153,8 @@ Example 2.
 
       The Arc has the following properties:
 
-      - origin is at x-position `1` cm and at y-position `1` cm
-      - the secondary x-position and y-position are at `3` cm and `2` cm
+      - origin is at x-position ``1`` cm and at y-position ``1`` cm
+      - the secondary x-position and y-position are at ``3`` cm and ``2`` cm
 ===== ======
 
 
@@ -178,7 +178,7 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - starts at x-position `1` cm and at y-position `1` cm
+      - starts at x-position ``1`` cm and at y-position ``1`` cm
 ===== ======
 
 Example 2.
@@ -195,9 +195,9 @@ Example 2.
 
       It has the following properties based on the defaults:
 
-      - starts at x-position `0` cm and at y-position `1` cm
+      - starts at x-position ``0`` cm and at y-position ``1`` cm
       - has the inflection points set by *x1* and *y1* and then *x2* and *y2*
-      - ends at position *x3* of `4` cm and at *y3* of `6` cm
+      - ends at position *x3* of ``4`` cm and at *y3* of ``6`` cm
 ===== ======
 
 Chord
@@ -226,7 +226,7 @@ Example 1.
       It has the following properties based on these values:
 
       - the circle that helps defines the start and end of the chord line is
-        located with its "corner" at x-position `1` cm and at y-position `1` cm
+        located with its "corner" at x-position ``1`` cm and at y-position ``1`` cm
       - the start of chord is at the intersection of the radius of the circle
         at 135 |deg| with the circle's circumference
       - the end of chord is at the intersection of the radius of the circle
@@ -255,9 +255,9 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - centre at x-position `1` cm and at y-position `1` cm
-      - diameter of 3 points; there are 72 points in an inch, so this is 1/24th
-        of an inch, or approximately 1mm (`0.1` cm), in size
+      - centre at x-position ``1`` cm and at y-position ``1`` cm
+      - diameter of ``3`` points; there are 72 points in an inch, so this is 1/24th
+        of an inch, or approximately 1mm (``0.1`` cm), in size
       - fill color for a Dot is the same as the stroke - default is black
 ===== ======
 
@@ -280,8 +280,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - starts at x-position `1` cm and at y-position `1` cm
-      - length of `1` cm
+      - starts at x-position ``1`` cm and at y-position ``1`` cm
+      - length of ``1`` cm
       - heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east")
 ===== ======
 
@@ -297,9 +297,12 @@ Example 2.
 
         Line(x=0, y=1, length=4, stroke=lime, stroke_width=2)
         Line(x=0, y=2, length=4, angle=15, stroke=red)
-        Line(x=0, y=3, x1=4, y1=4, stroke=blue, stroke_width=1,
-             dashed=[0.2, 0.2, 0.2, 0.2, 1.0, 0.0])
-        Line(x=0, y=4, x1=4, y1=5, dotted=True, stroke=gold, stroke_width=1)
+        Line(
+          x=0, y=3, x1=4, y1=4, stroke=blue, stroke_width=1,
+         dashed=[0.2, 0.2, 0.2, 0.2, 1.0, 0.0])
+        Line(
+          x=0, y=4, x1=4, y1=5,
+          dotted=True, stroke=gold, stroke_width=1)
 
       The medium red line and the medium yellow line both have:
 
@@ -322,7 +325,7 @@ Example 2.
       The medium red line and the medium yellow line have their styles set so
       that they are not normal solid lines:
 
-      - *dotted* - has a value of `True`, which then generates a series of
+      - *dotted* - has a value of ``True``, which then generates a series of
         alternating small lines and gaps
       - *dashed* - has a list, shown by the square brackets from `[` to `]`,
         which provides a set of "on"/"off" values; the line is drawn for a
@@ -357,9 +360,14 @@ Example 1.
 
       It has the following properties based on these values:
 
-      - starts at x-position 0cm and at y-position 0cm
-      - second point is at x-position `1` cm and at y-position `1` cm
-      - third point is at x-position `2` cm and at y-position 0cm
+      - starts at x-position ``0`` cm and at y-position ``0`` cm
+      - second point is at x-position ``1`` cm and at y-position ``1`` cm
+      - third point is at x-position ``2`` cm and at y-position ``0`` cm
+
+      The *points* for a Polyline are in a list, as shown by the square brackets
+      from `[` to `]`, and then each *x* and *y* are provided as a pair of
+      values in round brackets.  The *x* and *y* are separated by a comma.
+      Each pair of values in the list is also separated by a comma.
 ===== ======
 
 
@@ -387,9 +395,9 @@ Example 1.
 
       It otherwise has the following properties based on the defaults:
 
-      - centred at x-position `1` cm and at y-position `1` cm
-      - default font size is 12 points
-      - default font face is Arial
+      - centred at x-position ``1`` cm and at y-position ``1`` cm
+      - default font size is ``12`` points
+      - default font face is ``Arial``
 ===== ======
 
 
@@ -431,8 +439,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
-      - diameter of `1` cm
+      - lower-left "corner" at x-position ``1`` cm and at y-position ``1`` cm
+      - diameter of ``1`` cm
 ===== ======
 
 
@@ -458,8 +466,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
-      - diameter of `1` cm
+      - lower-left "corner" at x-position ``1`` cm and at y-position ``1`` cm
+      - diameter of ``1`` cm
       - lines in all 8 directions, extending from the centre outwards; these
         represent the primary - North, South, East and West - and secondary -
         North-East, South-East, North-West and South-West directions.
@@ -477,9 +485,9 @@ Example 2.
 
           Compass(cx=1, cy=5, perimeter='circle', directions="ne nw s")
 
-      The Compass shape has the following properties:
+      This Compass shape has the following properties:
 
-      - centred at x-position `1` cm and at y-position `5` cm
+      - centred at x-position ``1`` cm and at y-position ``5`` cm
       - *directions* define where the radial lines extend; in this case to the
         North-East, North-West and South
 
@@ -489,28 +497,28 @@ Example 2.
               cx=2, cy=3, perimeter='rectangle', height=2, width=3,
               radii_stroke=red)
 
-      The Compass shape has the following properties:
+      This Compass shape has the following properties:
 
-      - centred at x-position `2` cm and at y-position `3` cm
-      - *perimeter* defines the shape of 'rectangle' that is used to define
-        where the radial lines of the compass extend; in this case its in a
-        rectangle with a height of `2` cm and width of `3` cm.
+      - centred at x-position ``2`` cm and at y-position ``3`` cm
+      - *perimeter* defines the shape of the ``rectangle`` that is used to define
+        where the radial lines of the compass extend; in this case it is a
+        rectangle with a height of ``2`` cm and width of ``3`` cm.
       - radial lines extend, by default, in all 8 directions - to the centre of
-        the rectangle's bounding lines and to its corners
+        the ``rectangle``'s bounding lines and to its corners
       - *radii_stroke* defines the line colors used
 
       The lower right::
 
           Compass(cx=3, cy=1, perimeter='hexagon', radii_stroke_width=2)
 
-      The Compass shape has the following properties:
+      This Compass shape has the following properties:
 
-      - centred at x-position `3` cm and at y-position `1` cm
-      - *perimeter* - defines the shape of 'hexagon' that is used to defined where
-        the radial lines of the compass extend; in this case its in a
-        hexagon with a default diameter of `1` cm, so lines extend in 6 directions
-        i.e. no North or South
-      - *radii_stroke_width* - set to `2` points; a much thicker line
+      - centred at x-position ``3`` cm and at y-position ``1`` cm
+      - *perimeter* - defines the shape of ``hexagon`` that is used to defined
+        where the radial lines of the compass extend; in this case its in a
+        hexagon with a default diameter of ``1`` cm, so lines extend in all
+        ``6`` directions i.e. there is no North or South
+      - *radii_stroke_width* - set to ``2`` points; a much thicker line
 ===== ======
 
 
@@ -532,9 +540,9 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
-      - height of `1` cm
-      - width of `1` cm
+      - lower-left "corner" at x-position ``1`` cm and at y-position ``1`` cm
+      - height of ``1`` cm
+      - width of ``1`` cm
 
       Because the *height* and *width* default to the same value, it appears
       as a `Circle`_.
@@ -555,9 +563,9 @@ Example 2.
 
       It has the following properties set for it:
 
-      - centre at x-position `2` cm and at y-position `3` cm
-      - *height* of `4` cm
-      - *width* of `3` cm
+      - centre at x-position ``2`` cm and at y-position ``3`` cm
+      - *height* of ``4`` cm
+      - *width* of ``3`` cm
 
       Because the *height* is greater than the *width* it has more an egg-shape.
 ===== ======
@@ -581,8 +589,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
-      - side of `1` cm; all sides are equal
+      - lower-left "corner" at x-position ``1`` cm and at y-position ``1`` cm
+      - side of ``1`` cm; all sides are equal
 ===== ======
 
 Example 2.
@@ -606,12 +614,12 @@ Example 2.
 
       These have the following properties:
 
-      - starting position at x-position `2` cm and at y-position `1` cm
-      - default side of `1` cm; all sides are equal
-      - *flip* - this can be `north` or `south` and will cause the triangle to
-        either point up or down relative to the starting position
-      - *hand*  - this can be `west` or `east` and will cause the triangle to
-        be drawn to the left or the right relative to the starting position
+      - starting position at x-position ``2`` cm and at y-position ``1`` cm
+      - default side of ``1`` cm; all sides are equal
+      - *flip* - this can be ``north`` or ``south`` and will cause the triangle
+        to either point up or down relative to the starting position
+      - *hand*  - this can be ``west`` or ``east`` and will cause the triangle
+        to be drawn to the left or the right relative to the starting position
 
       The middle section shows::
 
@@ -621,11 +629,11 @@ Example 2.
             title='Title', heading='Head'
         )
 
-      - starting position at *x*-position `2` cm and at *y*-position `3` cm
-      - *side* of `1.5` cm; all sides are equal
-      - *hatch* of 5 - this means there will be 5 equally spaced lines drawn
+      - starting position at *x*-position ``2`` cm and at *y*-position ``3`` cm
+      - *side* of ``1.5`` cm; all sides are equal
+      - *hatch* of ``5`` - this means there will be 5 equally spaced lines drawn
         between opposing sides which run parallel to the third side
-      - *hatch_stroke* - customise the hatch lines to show them as `red`
+      - *hatch_stroke* - customise the hatch lines to show them as ``red``
 
       The top section shows::
 
@@ -633,7 +641,7 @@ Example 2.
             x=1, y=4, stroke_width=1, rotation=45, dot=.05
         )
 
-      - starting position at x-position `1` cm and at y-position `4` cm
+      - starting position at x-position ``1`` cm and at y-position ``4`` cm
       - *dot* - in the centre
       - *rotation* - of 45 |deg| (from the baseline, anti-clockwise) about
         the centre
@@ -664,8 +672,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
-      - flat-to-flat height of `1` cm
+      - lower-left "corner" at x-position ``1`` cm and at y-position ``1`` cm
+      - flat-to-flat height of ``1`` cm
       - "flat" top
 ===== ======
 
@@ -683,9 +691,9 @@ Example 2.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
-      - flat-to-flat height of `1` cm
-      - "pointy" top set via the *orientation*
+      - lower-left "corner" at x-position ``1`` cm and at y-position ``1`` cm
+      - flat-to-flat height of ``1`` cm
+      - a ``pointy`` top set via the *orientation*
 ===== ======
 
 
@@ -713,8 +721,9 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - centre at x-position `1` cm and at y-position `1` cm
-      - has 6 sides
+      - centre at x-position ``1`` cm and at y-position ``1`` cm
+      - ``6`` sides
+      - a *side* length of  ``1`` cm
 ===== ======
 
 Example 2.
@@ -733,12 +742,12 @@ Example 2.
 
       It can be seen that each shape is constructed as follows:
 
-      - *centre* - using `cx` and `cy` values
-      - *radius* - `1` cm in each case
-      - *sides* - varying from 7 down to 5
+      - *centre* - using *cx* and *cy* values
+      - *radius* - ``1`` cm in each case
+      - *sides* - varying from ``7`` down to ``5``
 
       Even-sided polygons have a "flat" top, whereas odd-sided ones are
-      asymmetrical.
+      asymmetrical; this can be adjusted through `rotation`_.
 ===== ======
 
 Example 3.
@@ -757,10 +766,10 @@ Example 3.
 
       It has the following properties:
 
-      - *centre* at x-position `2` cm and at y-position `4` cm, with a *radius*
-        size of `1` cm
-      - *sides* - 8 sides
-      - *radii* - set to `True` to force lines to be drawn from each of the
+      - *centre* at x-position ``2`` cm and at y-position ``4`` cm, with a *radius*
+        size of ``1`` cm
+      - *sides* - ``8`` sides
+      - *radii* - set to ``True`` to force lines to be drawn from each of the
         vertices of the polygon to its centre
 
       The lower example::
@@ -774,18 +783,18 @@ Example 3.
 
       It has the following properties:
 
-      - *centre* at x-position `2` cm and at y-position `1` cm, with a *radius*
-        size of `1` cm
-      - *sides* - 10
-      - *radii* - set to `True` to force lines to be drawn from the centre of
+      - *centre* at x-position ``2`` cm and at y-position ``1`` cm, with a *radius*
+        size of ``1`` cm
+      - *sides* - ``10``
+      - *radii* - set to ``True`` to force lines to be drawn from the centre of
         the polygon to each of its vertices; the radii properties are then set:
 
-        - *radii_offset* - set to `0.5` cm; the distance away from the centre
+        - *radii_offset* - set to ``0.5`` cm; the distance away from the centre
           that the radii will start to be drawn
-        - *radii_length*  - set to `0.75` cm; the length is shorter than that of
+        - *radii_length*  - set to ``0.75`` cm; the length is shorter than that of
           the complete distance from vertex to centre, so the line goes in the
           same direction but never touches the vertex or the centre
-        - *radii_stroke_width* - set to `1` point; a slightly thicker line
+        - *radii_stroke_width* - set to ``1`` point; a slightly thicker line
 ===== ======
 
 Example 4.
@@ -806,9 +815,9 @@ Example 4.
 
       The examples have the following properties:
 
-      - *centre* - using `cx` and `cy` values
-      - *radius* - `1` cm in each case
-      - *sides* - the default of 6 in each case ("hexagon" shape)
+      - *x* and *y* - set the lower-left location
+      - *radius* - ``1`` cm in each case
+      - *sides* - the default of ``6`` in each case (a `hexagon`_ shape)
       - *rotation* - varies from 0 |deg| to 60 |deg| (anti-clockwise from the
         horizontal); the fact that the angle of the sides of the polygon is
         30 |deg| creates a type of regularity, so that the polygon with the
@@ -842,8 +851,8 @@ Example 1.
 
       It has the following properties set for it:
 
-      - lower-left corner at x-position `1` cm and at y-position `1` cm
-      - *width* and *height* - default to `1` cm
+      - lower-left corner at x-position ``1`` cm and at y-position ``1`` cm
+      - *width* and *height* - default to ``1`` cm
 
       Because all sides of the Rectangle are equal, it appears as though it
       is a `Square`_.
@@ -863,12 +872,14 @@ Example 2.
 
       It has the following properties set for it:
 
-      - centre at x-position `2` cm and at y-position `3` cm
-      - *height* of `4` cm
-      - *width* of `3` cm
+      - *cx* and *cy* - set the centre at x-position ``2`` cm and
+        y-position ``3`` cm
+      - *height* of ``4`` cm
+      - *width* of ``3`` cm
+      - *dot* - a small, filled circle placed at the centre
 
-      Because the *height* is greater than the *width* it has a card-like
-      appearance.
+      Because the *height* is greater than the *width* the Rectangle has a
+      card-like appearance.
 ===== ======
 
 
@@ -895,8 +906,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner"at x-position `1` cm and at y-position `1` cm
-      - sector is then drawn inside a circle of diameter `1` cm, with a
+      - lower-left "corner"at x-position ``1`` cm and at y-position ``1`` cm
+      - sector is then drawn inside a circle of diameter ``1`` cm, with a
         default *angle_width* of 90 |deg|
 ===== ======
 
@@ -918,8 +929,8 @@ Example 2.
 
       These all have the following Common properties:
 
-      - centred at x-position `2` cm and at y-position `3` cm
-      - *radius* of `2` cm for the enclosing "virtual" circle
+      - centred at x-position ``2`` cm and at y-position ``3`` cm
+      - *radius* of ``2`` cm for the enclosing "virtual" circle
       - *fill* color of black
       - *angle_width* - determines the coverage (i.e. the "width" of the
         Sector); in all these cases it is 43 |deg|
@@ -948,8 +959,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left corner at x-position `1` cm and at y-position `1` cm
-      - side of `1` cm
+      - lower-left corner at x-position ``1`` cm and at y-position ``1`` cm
+      - side of ``1`` cm
 ===== ======
 
 Example 2.
@@ -966,8 +977,9 @@ Example 2.
 
       It has the following properties set for it:
 
-      - centre at x-position `2` cm and at y-position `3` cm
-      - *side* of `3` cm; both *width* and *height* match this
+      - centre at x-position ``2`` cm and at y-position ``3`` cm
+      - *side* of ``3`` cm; both *width* and *height* match this
+      - *dot* - a small, filled circle placed at the centre
 ===== ======
 
 
@@ -992,8 +1004,8 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - straight edge start at x-position `1` cm and at y-position `1` cm
-      - height and width of `1` cm each
+      - straight edge start at x-position ``1`` cm and at y-position ``1`` cm
+      - height and width of ``1`` cm each
       - curved ends at the east (right) and west (left) sides
 ===== ======
 
@@ -1007,19 +1019,24 @@ Example 2.
 |st1| This example shows example of the shape constructed using the command
       with the following properties::
 
-        Stadium(x=0, y=0, height=1, width=1, edges='n', fill=tan, label="north")
-        Stadium(x=3, y=1, height=1, width=1, edges='s', fill=tan, label="south")
-        Stadium(x=0, y=4, height=1, width=1, edges='e', fill=tan, label="east")
-        Stadium(x=3, y=5, height=1, width=1, edges='w', fill=tan, label="west")
+        Stadium(
+          x=0, y=0, height=1, width=1, edges='n', fill=tan, label="north")
+        Stadium(
+          x=3, y=1, height=1, width=1, edges='s', fill=tan, label="south")
+        Stadium(
+          x=0, y=4, height=1, width=1, edges='e', fill=tan, label="east")
+        Stadium(
+          x=3, y=5, height=1, width=1, edges='w', fill=tan, label="west")
 
       These have the following properties set:
 
-      - *height* and *width* - of `1` cm and `1` cm respectively
-      - *edges* - the display of the rounded projection(s) are set by using
-        a letter representing the direction, where 'n' is north ("up"),
-        's' is south ("down"), 'e' is east ("right") and 'w' is west ("left"");
-        one or more can be used together with spaces between them e.g. 'n e'
-        for north **and** east.
+      - *height* and *width* - of ``1`` cm and ``1`` cm respectively
+      - *edges* - the display of the rounded projection(s) can also be set using
+        a letter to represent the direction, where ``n`` is ``north`` ("up"),
+        ``s`` is ``south`` ("down"), ``e`` is ``east`` ("right") and
+        ``w`` is ``west`` ("left"");
+        one or more edge values can be used together with spaces between them
+        e.g. ``n e`` to draw both north **and** east.
 ===== ======
 
 
@@ -1041,9 +1058,9 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - centre at x-position `1` cm and at y-position `1` cm
-      - "height" of `1` cm
-      - 5 points
+      - centre at x-position ``1`` cm and at y-position ``1`` cm
+      - "height" of ``1`` cm
+      - ``5`` points
 ===== ======
 
 
@@ -1071,9 +1088,9 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower left-corner at x-position 0cm and at y-position 0cm
-      - an enclosing area with *height* and *width* of `1` cm
-      - 10 randomly placed white *color* 'dots' (the starfield *density*)
+      - lower left-corner at x-position ``0`` cm and at y-position ``0`` cm
+      - an enclosing area with *height* and *width* of ``1`` cm
+      - 10 randomly placed ``white`` *color* 'dots' (the starfield *density*)
 
       Because the default fill color is white, this example adds an extra
       `Rectangle()` shape, with a fill of black, which is drawn first and is
@@ -1099,9 +1116,9 @@ Example 2.
 
       It has the following properties set:
 
-      - lower left-corner at x-position 0cm and at y-position 0cm
+      - lower left-corner at x-position ``0`` cm and at y-position ``0`` cm
       - *enclosure* - the rectangle size determines the boundaries of the area
-        (*height* and *width* each of `3` cm) inside of which the stars (dots) are
+        (*height* and *width* each of ``3`` cm) inside of which the stars (dots) are
         randomly drawn
       - *density* - there will be a total of "80 multiplied by the enclosure
         area" dots drawn
@@ -1133,9 +1150,9 @@ Example 3.
 
       It has the following properties set:
 
-      - lower left "corner" at x-position 0cm and at y-position 0cm
-      - *enclosure* - the `circle` radius (`1.5` cm) determines the boundaries of
-        the area inside of which the stars (dots) are randomly drawn
+      - lower left "corner" at x-position ``0`` cm and at y-position ``0`` cm
+      - *enclosure* - the `circle` radius (``1.5`` cm) determines the boundaries
+        of the area inside of which the stars (dots) are randomly drawn
       - *density* - there will be a total of "30 multiplied by the enclosure
         area" dots drawn
       - *sizes* - is a list of available dot sizes, one of which is randomly
@@ -1165,9 +1182,9 @@ Example 4.
 
       It has the following properties set:
 
-      - lower left "corner" at x-position `1.5` cm and at y-position `1.4` cm
-      - *enclosure* - the polygon radius (`1.5` cm) determines the boundaries of
-        the area inside of which the stars (dots) are randomly drawn
+      - lower left "corner" at x-position ``1.5`` cm and y-position ``1.4`` cm
+      - *enclosure* - the polygon radius (``1.5`` cm) determines the boundaries
+        of the area inside of which the stars (dots) are randomly drawn
       - *density* - there will be a total of "50 multiplied by the enclosure
         area" dots drawn
       - *colors* - a list of available dot colors, one of which is randomly
@@ -1199,9 +1216,9 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - starts at x-position `1` cm and at y-position `1` cm
-      - *width* of `1` cm
-      - *height* of `1` cm
+      - starts at x-position ``1`` cm and at y-position ``1`` cm
+      - *width* of ``1`` cm
+      - *height* of ``1`` cm
       - the "top" edge of the shape (*width2*) defaults to half the *width*
 ===== ======
 
@@ -1219,11 +1236,11 @@ Example 2.
 
       It has the following properties set for it:
 
-      - centre at x-position `2` cm and at y-position `3` cm
-      - *width* of `3` cm
-      - *height* of `4` cm
-      - *width2* ("top" edge) of `2` cm
-      - *flip* of `s` (for `South`) means the "top" is drawn below the base
+      - centre at x-position ``2`` cm and at y-position ``3`` cm
+      - *width* of ``3`` cm
+      - *height* of ``4`` cm
+      - *width2* ("top" edge) of ``2`` cm
+      - *flip* of ``s`` (for ``south``) means the "top" is drawn below the base
 ===== ======
 
 
@@ -1280,8 +1297,8 @@ Example 1.
       - starts at the lower-left corner, as defined by the page margins
       - has vertical and horizontal lines filling the page from the lower left
         corner up to the right and top margins
-      - has spacing between lines of `1` cm
-      - default line color is a shade of blue (`#2F85AC`)
+      - has spacing between lines of ``1`` cm
+      - default line color is a shade of ``blue`` (``#2F85AC``)
       - the x- and y-axis are numbered from the lower left corner
 ===== ======
 
@@ -1299,13 +1316,13 @@ Example 2.
 
       It has the following properties set:
 
-      - *subdivisions* - set to `5`; these are the number of thinner lines that
+      - *subdivisions* - set to ``5``; these are the number of thinner lines that
         are drawn between each pair of primary lines - they do not have any
         numbering and are *dotted*
-      - *stroke_width* - set to `0.5`; this slightly thicker primary line makes
+      - *stroke_width* - set to ``0.5``; this slightly thicker primary line makes
         the grid more visible
-      - *style* - set to `invert` so that the lines and number colors are white
-        and the fill color is now blue
+      - *style* - set to ``invert`` so that the lines and number colors are white
+        and the fill color is now ``#2F85AC``
 ===== ======
 
 
@@ -1327,9 +1344,10 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower left at the absolute page x-position 0cm and at y-position 0cm
-        i.e. the margins are ignore
-      - a set, spaced `1` cm apart, extending to the right- and top- margins
+      - lower left at absolute page x-position ``0`` cm and y-position ``0`` cm
+        i.e. the margins are ignored
+      - a set of lines, spaced ``1`` cm apart, are created extending to the
+        right- and top- margins
 ===== ======
 
 Example 2.
@@ -1350,13 +1368,13 @@ Example 2.
       it has the following properties set:
 
       - *width* and *height* are the spacing in x and y directions respectively
-      - *dot_point* is set to be smaller than the default of 3
-      - *stroke* color of `darkgrey` is a lighter color than default of black
+      - *dot_point* is set to be smaller than the default of ``3``
+      - *stroke* color of ``darkgrey`` is a lighter shade than the default black
       - *offset_y* moves the start of the grid slightly downwards by 1/4 of a cm
 
       **NOTE** If you wanted to create a notebook page that for actual use,
-      you could consider setting the page color to something like `cornsilk` to
-      provide a suitable backdrop for the light grey of the grid; do this by
+      you could consider setting the page color to something like ``cornsilk``
+      to provide a suitable backdrop for the light grey of the grid; do this by
       setting the *fill* property of the `Create()` command.
 ===== ======
 
@@ -1384,7 +1402,7 @@ Example 1.
       It has the following properties based on the defaults:
 
       - starts at lower-left corner of page defined by the margin
-      - has a default grid interval of `1` cm in both the x- and y-direction
+      - has a default grid interval of ``1`` cm in both the x- and y-direction
 ===== ======
 
 Example 2.
@@ -1401,9 +1419,12 @@ Example 2.
 
       It has the following properties based on the defaults:
 
-      - *side* - the value of `0.85` cm equates to about 1/3 of an inch
-      - *stroke_width* - set to `1` point; this thicker line makes the grid more visible
-      - *stroke* color - set to `gray` i.e. a lighter color than default of black
+      - *side* - the value of ``0.85`` cm equates to about 1/3 of an inch
+        and sets the size of each square in the grid
+      - *stroke_width* - set to ``1`` point; this thicker line makes the grid
+        more visible
+      - *stroke* color - set to ``gray`` i.e. a lighter color shade than the
+        default of black
 ===== ======
 
 Example 3.
@@ -1425,14 +1446,14 @@ Example 3.
 
       It has the following properties set for it:
 
-      - *x* and *y* - each set to `0.5` cm; this offsets the lower-left corner
+      - *x* and *y* - each set to ``0.5`` cm; this offsets the lower-left corner
         of the grid from the page margin
-      - *height* - value of `1.25` cm set for the row height
-      - *width* - value of `1` cm set for the column width
-      - *cols* and *rows* - the grid now has a fixed size  - 3 columns wide by
-        4 rows high - rather than being automatically calculated to fill up
-        the page
-      - *stroke_width* - set to `1` point; this much thicker line makes
+      - *height* - value of ``1.25`` cm set for the row height
+      - *width* - value of ``1`` cm set for the column width
+      - *cols* and *rows* - the grid now has a fixed size of ``3`` columns wide
+        and ``4`` rows high - rather than being automatically calculated to
+        fill up the page
+      - *stroke_width* - set to ``1`` point; this much thicker line makes
         the grid clearly visible
       - *stroke* color of `gray` is a lighter color than default of black
 ===== ======
@@ -1468,8 +1489,8 @@ Example 1.
 
       It has the following other properties based on the defaults:
 
-      - lower-left corner at x-position `1` cm and at y-position `1` cm
-      - *width* and *height* - default to `1` cm; this may distort the image if it
+      - lower-left corner at x-position ``1`` cm and at y-position ``1`` cm
+      - *width* and *height* - default to ``1`` cm; this may distort the image if it
         is not square in shape
 ===== ======
 
@@ -1505,19 +1526,19 @@ Example 2.
 
       The PNG images also have the following properties set for them:
 
-      - *height* - set to `1.5` cm; this value may cause some distortion
-      - *width* - set to `1.5` cm; this value may cause some distortion
+      - *height* - set to ``1.5`` cm; this value may cause some distortion
+      - *width* - set to ``1.5`` cm; this value may cause some distortion
 
       The SVG images also have the following properties set for them:
 
-      - *scaling* - set to a fraction of `0.15` i.e. 15% of its actual size;
-        because SVG is a vector format, there will be no distortion.
+      - *scaling* - set to the fraction ``0.15`` or 15% of its actual size;
+        but because SVG is a vector format, there will be no distortion.
 
       Two of the images - ones on the right - are rotated about a centre point
       (calculated based on the image's height and width)
 
-      The `Blueprint`_ background is set to `grey`; just to highlight that both
-      images have transparent sections and that anything "behind" them will
+      The `Blueprint`_ background is set to ``grey``; just to highlight that both
+      images have transparent sections and how anything "behind" them will
       show through.
 ===== ======
 
@@ -1549,10 +1570,10 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left "corner" at x-position `1` cm and at y-position `1` cm
-      - flat-to-flat hexagon *height* of `1` cm
+      - lower-left "corner" at x-position ``1`` cm and at y-position ``1`` cm
+      - flat-to-flat hexagon *height* of ``1`` cm
       - "flat" top hexagons
-      - size of two *rows* by two *cols* ("columns")
+      - size of ``2`` *rows* by ``2`` *cols* ("columns")
       - the "odd" columns - which includes the first one - are offset one-half
         of a hexagon "downwards"
 ===== ======
@@ -1580,10 +1601,10 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - starts at x-position `1` cm and at y-position `1` cm
+      - starts at x-position ``1`` cm and at y-position ``1`` cm
       - heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east")
-      - has a default number of lines of 1
-      - line length of `1` cm
+      - has a default number of lines of ``1``
+      - line length of ``1`` cm
 ===== ======
 
 Example 2.
@@ -1607,20 +1628,20 @@ Example 2.
 
       The first command has the following properties:
 
-      - *x* and *y* - both set at `1` cm
-      - *rows* - set to 2 to create 2 parallel horizontal lines
-      - *height* - value of `1` cm set for the row height; this is the
+      - *x* and *y* - both set at ``1`` cm
+      - *rows* - set to ``2`` to create two parallel horizontal lines
+      - *height* - value of ``1`` cm set for the row height; this is the
         separation between each line
 
       The second command has the following properties:
 
-      - *x* and *y* - both set at `1` cm
-      - *cols* - set to 2 to create 2 parallel vertical lines
-      - *width* - value of `1.5` cm set for the column width; this is the
+      - *x* and *y* - both set at ``1`` cm
+      - *cols* - set to ``2`` to create two parallel vertical lines
+      - *width* - value of ``1.5`` cm set for the column width; this sets the
         separation between each line
 
 
-      Note that the *label* that has been set applies to each line that is
+      Note that the *label* that has been set applies to **every** line that is
       drawn.
 ===== ======
 
@@ -1684,7 +1705,8 @@ of the shape which they are part of; see the `Stadium` example below.
            cx=3, cy=5, side=2,
            cross=0.25, cross_stroke=red, cross_stroke_width=1)
 
-        Polygon(cx=1, cy=3, sides=8, radius=1, dot=0.1, dot_stroke=orange)
+        Polygon(
+          cx=1, cy=3, sides=8, radius=1, dot=0.1, dot_stroke=orange)
         Polygon(
            cx=3, cy=3, sides=8, diameter=2,
            cross=0.25, cross_stroke=orange, cross_stroke_width=1)
@@ -1727,16 +1749,16 @@ corresponding to the color used for the area inside it.
 
       The shape has the following properties that differ from the defaults:
 
-      - *fill* color of yellow (this corresponds to hexadecimal value `#FFFF00`)  that
-        defines what color the interior of the shape is
-      - *stroke* color of red (this corresponds to hexadecimal value `#FF0000`) that
-        defines what color the border of the shape is
-      - *stroke_width* - set to `6` points (this corresponds to about 2mm or 0.2cm)
+      - *fill* color of ``yellow`` (corresponds to hexadecimal value ``#FFFF00``)
+        that defines the color of the interior of the shape
+      - *stroke* color of ``red`` (corresponds to hexadecimal value ``#FF0000``)
+        that defines the color of the border of the shape
+      - *stroke_width* - set to ``6`` points (corresponds to about 2mm or 0.2cm)
 
       It can be seen that very thick lines "straddle" a centre line running
       through the defined location; so in this case the Rectangle is both
       larger in outer dimensions than the expected 1x1 cm and smaller in the
-      inner dimensions than the expected 1x1cm.
+      inner dimensions than the expected 1x1 cm.
 ===== ======
 
 .. |fst| image:: images/defaults/fill-and-stroke.png
@@ -1749,9 +1771,10 @@ corresponding to the color used for the area inside it.
 
       The shape has the following properties that differ from the defaults:
 
-      - *fill_stroke* color of aqua (this corresponds to hexadecimal value `#00FFFF`)
-        is a shortcut which sets **both** the *fill* and *stroke* at same time, so that
-        the line used to draw the circumference is the same as the interior.
+      - *fill_stroke* color of ``aqua`` (this corresponds to hexadecimal value
+        of ``#00FFFF``), and is a ""shortcut"" which sets **both** the *fill*
+        and *stroke* at same time,  so that the line used to draw the
+        circumference is the same as the fill of the interior.
 ===== ======
 
 
@@ -1786,7 +1809,7 @@ Example 1. Rhombus
 
       - *fill* color is `None` so no fill is used; this makes it completely
         transparent.
-      - *stroke* of 60 is the number of degrees, anti-clockwise, that
+      - *rotation* of ``60`` is the number of degrees, anti-clockwise, that
         it has been rotated
 
       Because the second shape is completely transparent, its possible to see
@@ -1804,6 +1827,9 @@ Example 2. Polygon
 |rt2| This example shows five shapes constructed using the command with
       additional properties::
 
+        poly6 = Common(
+          fill=None, sides=6, diameter=1, stroke_width=1, orientation='flat')
+
         Polygon(common=poly6, y=1, x=1.0, label="0")
         Polygon(common=poly6, y=2, x=1.5, rotation=15, label="15")
         Polygon(common=poly6, y=3, x=2.0, rotation=30, label="30")
@@ -1813,14 +1839,15 @@ Example 2. Polygon
       The examples have the following properties:
 
       - *centre* - using `cx` and `cy` values
-      - *radius* - `1` cm in each case
+      - *radius* - ``1`` cm in each case
       - *sides* - the default of 6 in each case ("hexagon" shape)
       - *rotation* - varies from 0 |deg| to 60 |deg| (anti-clockwise from the
-        horizontal); the fact that the angle of the sides of the polygon is
-        30 |deg| creates a type of regularity, so that the polygon with the
-        rotation of 60 |deg| appears to match the first polygon - but the slope
-        of the label inside that polygon clearly shows that rotation has
-        happened.
+        horizontal)
+
+      Note that the fact that the angle of the sides of the polygon is 30 |deg|
+      creates a type of regularity, so that the last polygon with the rotation
+      of 60 |deg| appears to match the first polygon - but the slope of the
+      label inside that last polygon clearly shows that rotation has happened.
 ===== ======
 
 
@@ -1870,7 +1897,7 @@ Example 1. Descriptions
       The Hexagon shows where the *heading*, *label* and *title* appear.
 
       The Rectangle shows how the *label* can be customised in terms of its
-      *stroke* (`red`) and font *size* (`14` points).
+      *stroke* (``red``) and font *size* (``14`` points).
 ===== ======
 
 Example 2. Text Offsets
@@ -1922,7 +1949,7 @@ All `Enclosed Shapes`_, that have a *fill*, can have a transparency value set
 that will affect the fill color used for the area inside them.
 
 If a shape should be completely transparent - i.e. no color at all being
-visible - then set the *fill* value to `None`.
+visible - then set the *fill* value to ``None``.
 
 .. |trn| image:: images/defaults/transparency.png
    :width: 330
@@ -1931,23 +1958,24 @@ visible - then set the *fill* value to `None`.
 |trn| This example shows a number of Rectangles constructed as follows::
 
         Rectangle(
-            x=1, y=3, height=1, width=2,
-            fill="#008000", stroke=silver, transparency=25, label="25%"
+            x=1, y=3, height=1, width=2, fill="#008000", stroke=silver,
+            transparency=25, label="25%"
         )
         Rectangle(
-            x=1, y=4, height=1, width=2,
-            fill="#008000", stroke=silver, transparency=50, label="50%"
+            x=1, y=4, height=1, width=2, fill="#008000", stroke=silver,
+            transparency=50, label="50%"
         )
         Rectangle(
-            x=1, y=5, height=1, width=2, fill="#008000",
-            stroke=silver, transparency=75, label="75%"
+            x=1, y=5, height=1, width=2, fill="#008000", stroke=silver,
+            transparency=75, label="75%"
         )
 
         Rectangle(
             x=0, y=0, height=2, width=2, fill=yellow, stroke=yellow
         )
         Rectangle(
-            x=1, y=1, height=2, width=2, fill=red, stroke=red, transparency=50
+            x=1, y=1, height=2, width=2, fill=red, stroke=red,
+            transparency=50
         )
 
       The first three Rectangles shapes have the following property set:

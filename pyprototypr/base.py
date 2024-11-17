@@ -1546,13 +1546,14 @@ class BaseShape:
         ttext = self.textify(index=ID, text=self.heading)
         _rotation = rotation or self.heading_rotation
         if ttext:
+            _ttext = str(ttext)
             y_off = y_offset or self.title_size / 2.0
             y = y + self.unit(self.heading_my)
             x = x + self.unit(self.heading_mx)
             canvas.setFont(self.font_face, self.heading_size)
             canvas.setFillColor(self.heading_stroke)
             self.draw_multi_string(
-                canvas, x, y + y_off, ttext, align=align, rotation=_rotation, **kwargs)
+                canvas, x, y + y_off, _ttext, align=align, rotation=_rotation, **kwargs)
 
     def draw_label(self, canvas, ID, x, y, align=None, rotation=0, centred=True, **kwargs):
         """Draw the label for a shape (usually at the centre).
@@ -1562,13 +1563,14 @@ class BaseShape:
         ttext = self.textify(index=ID, text=self.label)
         _rotation = rotation or self.label_rotation
         if ttext:
+            _ttext = str(ttext)
             y = y - (self.label_size / 3.0) if centred else y
             y = y + self.unit(self.label_my)
             x = x + self.unit(self.label_mx)
             canvas.setFont(self.font_face, self.label_size)
             canvas.setFillColor(self.label_stroke)
             self.draw_multi_string(
-                canvas, x, y, ttext, align=align, rotation=_rotation, **kwargs)
+                canvas, x, y, _ttext, align=align, rotation=_rotation, **kwargs)
 
     def draw_title(self, canvas, ID, x, y, y_offset=0, align=None, rotation=0, **kwargs):
         """Draw the title for a shape (normally below the shape).
@@ -1578,13 +1580,14 @@ class BaseShape:
         ttext = self.textify(index=ID, text=self.title)
         _rotation = rotation or self.title_rotation
         if ttext:
+            _ttext = str(ttext)
             y_off = y_offset or self.title_size
             y = y + self.unit(self.title_my)
             x = x + self.unit(self.title_mx)
             canvas.setFont(self.font_face, self.title_size)
             canvas.setFillColor(self.title_stroke)
             self.draw_multi_string(
-                canvas, x, y - y_off, ttext, align=align, rotation=_rotation, **kwargs)
+                canvas, x, y - y_off, _ttext, align=align, rotation=_rotation, **kwargs)
 
     def draw_dot(self, canvas, x, y):
         """Draw a small dot on a shape (normally the centre).

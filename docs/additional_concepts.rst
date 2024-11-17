@@ -2,6 +2,13 @@
 Additional Concepts
 ===================
 
+This section assumes you are familiar with the concepts, terms and ideas
+for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_,
+have looked through the `Core Shapes <core_shapes.rst>`_,
+and that you have created one or two basic scripts on your own.
+
+.. _pageIndex:
+
 Table of Contents
 =================
 
@@ -14,17 +21,17 @@ Table of Contents
 -  `Lists`_
 -  `Errors`_
 
-Names and Naming 
+Names and Naming
 ================
+`↑ <pageIndex_>`_
 
-Naming of things is supposed to be one of the harder aspects of
-programming.
+Naming of things is supposed to be one of the harder aspects of programming!
 
 If you work with the built-in commands and and their properties, the set
 of names to use is already chosen for you. However, if you want to start
-using some additional options, such as giving `Assigned names`_ to reuse 
-items in multiple places, then you need to be aware of the wider set of 
-so-called “reserved” names that are available as part of Python. 
+using some additional options, such as giving `Assigned names`_ to reuse
+items in multiple places, then you need to be aware of the wider set of
+so-called “reserved” names that are available as part of Python.
 
 .. WARNING::
    If your assigned name is the same as a reserved name, then you’ll
@@ -52,30 +59,34 @@ readable guide presented at:
 https://www.mattlayman.com/blog/2024/layman-guide-python-built-in-functions/
 
 
-Strings (words and letters), Numbers and Booleans 
+Strings (words and letters), Numbers and Booleans
 =================================================
+`↑ <pageIndex_>`_
 
 **To Be Done**
 
 
 Assigned Names
 ==============
+`↑ <pageIndex_>`_
 
 **To Be Done**
 
 
-Calculations 
+Calculations
 ============
+`↑ <pageIndex_>`_
 
 **To Be Done**
 
 
-Case-sensitivity 
+Case-sensitivity
 ================
+`↑ <pageIndex_>`_
 
-**pyprototypr**, like Python, is case-sensitive - unlike some computer 
+**pyprototypr**, like Python, is case-sensitive - unlike some computer
 languages (or, for example, file names that are used in Windows); so a
-lowercase name is *NOT* the same as an uppercase version of it.
+lowercase name is **NOT** the same as an uppercase version of it.
 
 For example::
 
@@ -86,11 +97,12 @@ will create and draw a ``Rectangle`` shape on the page; but::
     area = rectangle()
 
 will create a ``Rectangle`` shape, and store a reference to it in the
-variable called ``area`` (for use later on in the script) but will **not** 
-draw it on the page.
+property called ``area`` (for use later on in the script) but will **not**
+draw the Rectangle on the page.
 
-Quotes in Text 
+Quotes in Text
 ==============
+`↑ <pageIndex_>`_
 
 Using quotes inside a string of letters can be tricky.
 
@@ -117,14 +129,16 @@ Here the “" in front of the”’t” shows that the single quote is not the
 end of the string, but simply a symbol that must be displayed.
 
 
-Properties and Short-cuts 
+Properties and Short-cuts
 =========================
+`↑ <pageIndex_>`_
 
 **To Be Done**
 
 
-Lists 
+Lists
 =====
+`↑ <pageIndex_>`_
 
 Lists are a particularly useful way to collate, or group, related items
 so that they can be processed together.
@@ -169,10 +183,11 @@ shorthand reference name (in this case “groceries”). There are various
 examples of the use of lists of elsewhere in these documents and also in
 the script examples.
 
-Errors 
+Errors
 ======
+`↑ <pageIndex_>`_
 
-A situation that you will often encounter, especially as your script gets 
+A situation that you will often encounter, especially as your script gets
 longer and more complex, is the appearance of errors.
 
 While **pyprototypr** will attempt to check many details of the script,
@@ -190,8 +205,8 @@ will cause this error when the script is run::
 
 because the ``height`` is meant to be a number, not a string.
 
-In some cases, instructions will not cause an error, but will simply be ignored,
-for example::
+In some cases, instructions will **not** cause an error, but they will simply
+be ignored, for example::
 
     Rectangle(corner="a")
 
@@ -210,9 +225,9 @@ Python-specific Errors
 
 Python attempts to identify the type and location of the error - a
 ``SyntaxError`` is just a grammar error of some type - as well as what
-the cause *might* be. Here, its found you have used the word ``x`` twice,
-so in this case you’d need to change the second one to ``x1`` which is probably 
-the intended property::
+the cause *might* be. Here, it found that you have used the property ``x``
+twice, so in this case you might need to change the second one to ``x1`` --
+which  is probably the intended one::
 
    Arc(x=1, y=1, x1=2, y1=3)
 
@@ -238,7 +253,7 @@ Another example::
 
 Another ``SyntaxError`` where Python tries to assess what the cause
 might be. Here, you’d need to add a “,” (comma) at the end of defining the
-``paper=A8`` property as each property in the list must be comma-separated 
+``paper=A8`` property as each property in the list must be comma-separated
 (a space is not sufficient) as follows::
 
    paper=A8, cards=9

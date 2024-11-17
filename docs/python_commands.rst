@@ -2,11 +2,29 @@
 Using Python Commands
 =====================
 
+This section assumes you are very familiar with the concepts, terms and ideas
+for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ ,
+that you understand all of the `Additional Concepts <additional_concepts.rst>`_
+and that you've created some basic scripts of your own.
+
+.. NOTE::
+   Note that if you already know the Python programming language, you can skip
+   this section, unless you have any uncertainty about any of these topics!
+
+.. _pageIndex:
+
+Table of Contents
+=================
+
+-  `Background`_
+-  `Introduction`_
+-  `Loops`_
+-  `If Statements`_
+-  `Functions`_
+
 Background
 ==========
-
-   **NOTE** If you already know the Python programming language, you can skip
-   this section!
+`↑ <pageIndex_>`_
 
 Working with an actual programming language, if you’re not a programmer,
 can be a little intimidating. Hopefully though, by the time you’ve
@@ -22,22 +40,26 @@ too much complexity. These are *not* essential but *may* be very useful.
 
 Introduction
 ============
+`↑ <pageIndex_>`_
 
 As you may already have worked out; the normal operation of the script
-is to start with the first statement and then go on to the next one and
+is to start with the first command and then go on to the next one and
 so on until the last one has been carried out - this is the normal or
-“default” behaviour of a program.
+“default” behaviour of any program.
 
 However, most programming languages have the concept of **loops** and
 **if** statements. These commands are used to change the default
-behaviour of the program in some way.
+behaviour of the program in some way.  Similarly, **functions** are
+used in many languages to create a set of items that must all carried out
+together, and which need to be used/activated a number of times.
 
-Any statement or option that is part of the Python programming language
-can be used in a script if you want to. The ones below are just to show
+Any statement or functionality that is part of the Python programming language
+can be used in a script if you want to. The ones below are just to give
 you some idea of the “basics”.
 
 Loops
 =====
+`↑ <pageIndex_>`_
 
 A loop represents a section of your script that you want to repeat a
 certain number of times.
@@ -53,9 +75,7 @@ times the loop happens, and the second part is the action, or set of
 actions, that need to be repeated.
 
 In a Python, or **pyprototypr**, script, a loop can be set-up by using
-the following kind of statement:
-
-::
+the following kind of statement::
 
    for count in range(1, 4):
        add_egg()
@@ -64,16 +84,16 @@ the following kind of statement:
 
 In this case the first line is the loop set-up:
 
--  the “for” indicates that we want to set-up a loop;
--  the “range” part limits how many times the loop will happen by using
+-  the *for* indicates that we want to set-up a loop;
+-  the *range* part limits how many times the loop will happen by using
    a start and end value inside a pair of brackets (the 1 and 4
    respectively);
--  “count” stores what the current number of times that the loop has
-   happened (for the very first time the value of count will be set to
-   the start value of 1).
+-  *count* stores how many times the loop has happened so far (for the very
+   first time the value of count will be set to the start value of 1).
 
-The line ends with ``:`` to show that it is expected that more lines
-will follow.
+The first line ends with ``:`` to show that it is expected that more lines
+will follow that describe what must happen each time the program goes through
+the loop.
 
 The lines immediately following this set-up line are all the actions
 that must happen each time. **These lines must all be indented 4 spaces
@@ -91,9 +111,7 @@ again.
    action(s) again.
 
 In the case of **pyprototypr**, a loop can be used to draw an item a
-number of times; for example:
-
-::
+number of times; for example::
 
    for count in range(1, 4):
        Circle(x=1, y=count)
@@ -107,9 +125,7 @@ different ``y`` locations on the page.
 
 You can combine the value of the count with other information to do more
 complex kinds of operations. In this next example, the values for ``y``
-will be 0.5, 1.0 and 1.5 over the three iterations of the loop.
-
-::
+will be 0.5, 1.0 and 1.5 over the three iterations of the loop::
 
    for y_location in range(1, 4):
        Circle(x=1, y=y_location*0.5)
@@ -145,7 +161,7 @@ The outer loop happens twice, and for each time it happens, the inner
 loop happens twice. So there are actually four times (2 times 2) that
 the actions - in this case, drawing a Circle - are carried out.
 
-Python has a shortcut for handling multiple loops that you can use at your 
+Python has a shortcut for handling multiple loops that you can use at your
 discretion called ``zip``.
 
 If you wanted to draw a ``Circle`` at three locations, in three different
@@ -162,6 +178,7 @@ For example::
 
 If Statements
 =============
+`↑ <pageIndex_>`_
 
 An ``if`` statement is a way to allow the computer to make decisions
 based on the information available to it.
@@ -181,7 +198,7 @@ So an ``if`` statement will look something like this::
    else:
        stop_driving()
 
-You’ll see that there are really **two** parts to the if. The first part
+You’ll see that there are really **two** parts to the ``if``. The first part
 is the condition that we are trying to evaluate - in this case what the
 value of the color is - and the second part is the alternative which is
 contained in the ``else``.
@@ -213,17 +230,39 @@ An ``if`` statement can be used inside a loop, for example::
        else:
            Rectangle(x=1, y=count)
 
-Here, the script will either draw a ``Circle`` or a ``Rectangle`` depending 
+Here, the script will either draw a ``Circle`` or a ``Rectangle`` depending
 on the value of ``count``: if its less than than 3 (the ``<`` comparison is
-a “less than” check), then draw a ``Circle``, otherwise if its 3 or more, then 
+a “less than” check), then draw a ``Circle``, otherwise if its 3 or more, then
 draw a ``Rectangle``.
+
+This example is shown below.
+
+.. |lpi| image:: images/custom/commands/loop.png
+   :width: 330
+
+===== ======
+|lpi| An example of a *loop* and an *if* used together::
+
+        Blueprint()
+        Text(common=txt, text="Loop and If")
+        for count in range(1, 5):
+            if count < 3:
+                Circle(x=1, y=count, label=count)
+            else:
+                Rectangle(x=1, y=count, label=count)
+        PageBreak()
+
+      The value of ``count`` can easily be seen as it is used to create the
+      text for the shape's label.
+===== ======
+
 
 Multi-part If Statements
 ------------------------
 
 An ``if`` statement can deal with multiple choices as well.  To continue with
 the driving example, we know there are three colors and so the program must
-handle all of them.  Any options after the first one are handled with a 
+handle all of them.  Any options after the first one are handled with a
 ``elif`` prefix - short for "else if"::
 
    if color == green:
@@ -235,5 +274,63 @@ handle all of them.  Any options after the first one are handled with a
    else:
        pull_over()
 
-In this example, the driver might be unsure what to do if the light has 
+In this example, the driver might be unsure what to do if the light has
 malfunctioned!
+
+
+Functions
+=========
+`↑ <pageIndex_>`_
+
+A function is the workhorse of a langauge.  It allows you to define your
+"recipe" and then use that recipe multiple times with differing properties.
+
+Effectively, it allows you to create a mini  **pyprototypr** script inside your
+main script. As with `loops`_, functions embed a set of steps to be carried when
+they are activated, but functions are more powerful because they can allow
+control of the behaviour of **any** of the properties or commands that are part
+of them.
+
+A function is simply created by using a ``def`` command, followed by the name you
+want to give the function (**remember** - no spaces allowed!) followed by the
+set of property names and default values.  These properties are only available
+as part of the function, and represent aspects that you need to be able to
+change every time the function is used.
+
+The ``def`` line is followed by one or more lines that are all indented below
+each other; these represent the actions that are to be carried out in that
+functions; this can include drawing of shapes, but could also involve use of
+`loops`_ and `if statements`_.
+
+When a function is defined, it is **not** activated; its only when you issue a
+command for it - ``name()`` - that it will perform the actions defined as part
+of it,
+
+.. |fn1| image:: images/custom/commands/function.png
+   :width: 330
+
+===== ======
+|fn1| An example of a *function*::
+
+        def capitol(a=0, b=0, c=red):
+            Circle(cx=a+1, cy=b+1, radius=0.5, fill_stroke=c)
+            Rectangle(
+                x=a, y=b, height=1, width=2, fill_stroke=c,
+                notch_y=0.1, notch_x=0.5, notch_corners="nw ne",)
+            EquilateralTriangle(
+                cx=a+1, cy=b+1.5, side=0.25, fill_stroke=c)
+
+        Blueprint()
+        Text(common=txt, text="Function")
+        capitol()
+        capitol(a=1, b=2, c=gold)
+        capitol(a=2, b=4, c=lime)
+        PageBreak()
+
+      The function named *capitol* has three properties that can be set; *a*,
+      *b* and *c*.  The values have defaults - ``0``, ``0`` and ``red`` - which
+      are used if no values are provided; this can be seen by the first example
+      in the lower left.  If values are provided to *a* and *b*, these will
+      change where the shapes are drawn; if a value is provided to *c* it will
+      change the shapes' color.
+===== ======
