@@ -367,6 +367,8 @@ def Card(sequence, *elements):
     global deck
     global dataset
 
+    if not deck:
+        tools.feedback('The Deck() has not been defined or is incorrect.', True)
     _cards = []
     # int - single card
     try:

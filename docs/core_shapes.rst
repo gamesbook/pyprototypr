@@ -906,7 +906,8 @@ of knowing or "checking" the values you supply to it!
       shape. Other properties:
 
       - the centre is defined to be at x-position ``1`` cm and y-position
-        ``1`` cm; this will affect the drawing of the cross and the label
+        ``1`` cm; this will affect the drawing of the cross and the label but
+        does **not** affect the drawing on the shape itself
       - *cross* - sets the length of each of the two lines that cross at the
         centre to be ``0.25`` cm
       - *label* - sets the text appearing at the centre position
@@ -1381,6 +1382,7 @@ The following are all such shapes:
 - `Hexagons`_
 - `Image`_
 - `Lines`_
+- `Rectangles`_
 
 
 Blueprint
@@ -1764,6 +1766,16 @@ Example 2.
       Note that the *label* that has been set applies to **every** line that is
       drawn.
 ===== ======
+
+
+Rectangles
+~~~~~~~~~~
+`↑ <shapeIndex_>`_
+
+Rectangles can be drawn in a row-by-column layout to form a grid - for games
+this is often used to delineate a track or other spaces in which playing pieces
+can be placed.
+
 
 .. _commonIndex:
 

@@ -3,6 +3,9 @@ Show customised shapes - and useful overides - for pyprototypr
 
 Written by: Derek Hohls
 Created on: 29 March 2024
+
+Sources and Credit:
+    * SVG from https://thenounproject.com/icon/typewriter-3933515/
 """
 
 from pyprototypr import *

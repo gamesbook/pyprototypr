@@ -5,12 +5,13 @@ Useful Resources
    *NOTE* Inclusion of these links does not constitute a recommendation
    of them or their use!
 
-Free Icons and Images
-=====================
+Icons and Images
+================
 
 -  https://openclipart.org/
 -  https://www.svgrepo.com/
 -  https://game-icons.net/
+-  https://thenounproject.com/ (some free, provided they are attributed)
 
 Card Images
 ===========
@@ -27,7 +28,7 @@ Other Tools
 -  https://www.ttgda.org/software-tools - lists a number of tools that
    can be used for game design.
 
-    Please also see the section on `hexagonal grids <hexagonal_grids.rst>`_ 
+    Please also see the section on `hexagonal grids <hexagonal_grids.rst>`_
     which lists tools specifically for working with hexagonal layouts.
 
 boardgamegeek

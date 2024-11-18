@@ -3,9 +3,9 @@
 Written by: Derek Hohls
 Created on: 29 February 2016
 
-Source:
+Sources and Credit:
     * pattern from http://elemisfreebies.com/11/07/20-abstract-patterns/
-    * SVG from
+    * SVG from https://thenounproject.com/icon/typewriter-3933515/
 """
 
 from pyprototypr import *
@@ -120,7 +120,6 @@ Dot(x=9.5, y=1, dot_point=6, title="dot:1-9.5")
 PageBreak()
 
 # ---- rotation all shapes + label
-
 Blueprint()
 Text(common=header, text="Rotated shapes with labels")
 Polygon(x=4, y=24.5, radius=2, rotation=45, stroke_width=2, label="polygon6")
@@ -135,99 +134,47 @@ Star(x=10, y=9, vertices=5, radius=2, rotation=45, stroke_width=2, label="star")
 Circle(cx=16, cy=9, radius=2, rotation=45, stroke_width=2, label="circle")
 Ellipse(cx=4, cy=9, width=5, height=3, rotation=45, stroke_width=2, label="ellipse")
 Rhombus(x=8.5, y=1, width=3, height=5, rotation=45, stroke_width=2, label="rhombus")
-
 Square(x=14, y=1, side=4, rotation=45, stroke_width=2, label="square")
 PageBreak()
 
-# ---- simple shapes
+# ---- filled shapes
+Blueprint()
 Text(common=header, text="Filled shapes")
-Line(x=11, y=17, x1=11, y1=20, stroke=yellow, stroke_width=2)
-Line(x=11, y=17, x1=15, y1=17, stroke=red, stroke_width=2)
-Line(x=11, y=20, length=5, angle=-36.86, stroke=blue, stroke_width=2, dot=0.1, dot_stroke=blue)
-
-Rectangle(x=6, y=8, width=5, height=3, stroke_width=2, dot=0.1)
-Rhombus(x=1, y=7, width=3, height=5, stroke_width=1, ill=lightyellow, dot=0.1)
-Circle(cx=15.5, cy=10, radius=2.5, fill=green, stroke=red, stroke_width=1, dot=0.1)
-Ellipse(x=3, y=16, x1=9, y1=20, fill=tan, stroke=green, dot=0.1)
-# different-sided polygons
-Polygon(x=3, y=24, radius=2, fill=gold, dot=0.1, angle=30)  # sides=6
-Polygon(x=8, y=24, sides=8, radius=2, fill=saddlebrown, dot=0.1, angle=22.5)
-Polygon(x=13, y=24, sides=3, radius=2, fill=olive, dot=0.1, angle=30)
-Rectangle(x=16, y=23, width=3, height=3, pattern="13.png", dot=0.1)
-# house
-points = [
-    (7, 2),
-    (7, 5),
-    (10, 6),
-    (13, 5),
-    (13, 2),
-    (11, 2),
-    (11, 3.5),
-    (9, 3.5),
-    (9, 2),
-    (7, 2),
-]
-Polyshape(points=points, stroke=indianred, fill=red)
-pointstr = "0,0 0,1 2,0 2,1 0,0"
-Polyshape(x=9, y=4, points=pointstr, stroke=blue)
+Rectangle(cx=3, cy=23, width=5, height=3,
+          title="rectangle:3-23", title_stroke=black, fill_stroke=tomato)
+EquilateralTriangle(
+    x=7, y=21, side=4,
+    title="triangle:9-22", title_stroke=black, fill_stroke=tomato)
+Stadium(cx=15, cy=23, width=3, height=2,
+        title="stadium:15-23", title_stroke=black, fill_stroke=tomato)
+Hexagon(cx=3, cy=17, side=2, orientation="flat",
+        title="hexagon:3-17", title_stroke=black, fill_stroke=gold)
+Ellipse(cx=9, cy=17, width=5, height=3,
+        title="ellipse:9-17", title_stroke=black, fill_stroke=gold)
+Trapezoid(cx=16, cy=17, width=4, width2=2, height=3,
+          title="trapezoid:16-17", title_stroke=black, fill_stroke=gold)
+Hexagon(cx=3, cy=11, side=2, orientation="pointy",
+        title="hexagon:3-11", title_stroke=black, fill_stroke=lime)
+Compass(cx=9, cy=11, radius=2,
+        title="compass:9-11", title_stroke=black, fill_stroke=lime)
+Circle(cx=16, cy=11, radius=2,
+       title="circle:16-11", title_stroke=black, fill_stroke=lime)
+Star(cx=3, cy=5, vertices=5, radius=2,
+     title="star:3-5", title_stroke=black, fill_stroke=aqua)
+Rhombus(cx=16, cy=5, width=3, height=5,
+        title="rhombus:16-5", title_stroke=black, fill_stroke=aqua)
+Square(cx=9, cy=5, side=3,
+       title="square:9-5", title_stroke=black, fill_stroke=aqua)
+Dot(x=9.5, y=1, dot_point=6, title="dot:1-9.5")
 PageBreak()
 
-# ---- pentangle star
-Star(
-    x=9.5,
-    y=13.8,
-    vertices=5,
-    radius=3,
-    fill=gold,
-    stroke=red,
-    label="Radius:5",
-    label_stroke=red,
-    heading="Star!",
-    title="Fig 1: Five-pointed star",
-)
-PageBreak()
-
-# ---- set of stickers
-Text(common=header, text="Rectangles (6x13)")
-Rectangles(
-    rows=13,
-    cols=6,
-    width=3,
-    height=2,
-    rounding=0.4,
-    margin=1,
-    fill=yellow,
-    stroke=green,
-)
-PageBreak()
-
-# ~2cm hex grid - numbered "wargame" style
-Hexagons(
-    rows=11,
-    cols=9,
-    side=1.69,
-    margin_left=-1.69,
-    margin_bottom=-2.529,
-    dot=0.05,
-    dot_stroke=black,
-    coord_position="top",
-    coord_font_size=9,
-    coord_stroke=darkslategrey,
-    fill=white,
-    stroke=darkslategrey,
-    caltrops="medium",
-)
-Text(common=header, text="Hexagons (dot; coords; caltrops)")
-PageBreak()
-
-# ---- lines and polylines
-Text(common=header, text="Polylines and lines")
+# ---- lines and polyshapes & polylines
+Text(common=header, text="Polyshapes, Polylines and lines")
 Polyline(
     points=[(0, 13), (2, 15), (4, 13), (6, 15), (8, 13), (10, 15), (12, 13)],
-    stroke=grey,
-)
+    stroke=grey)
 Polyline(points="0,11 2,13 4,11 6,13 8,11 10,13 12,11", stroke=grey)
-Line(x=0, y=0, length=33, angle=55.3, stroke=red, stroke_width=3)  # thick diagonal
+Line(x=1, y=1, length=30, angle=55.3, stroke=tomato, stroke_width=3)  # thick diagonal
 Line(x=0, y=3, x1=19, y1=3, stroke=black, stroke_width=2)
 Line(
     x=0,
@@ -235,18 +182,34 @@ Line(
     x1=19,
     y1=9,
     dashed=[0.2, 0.2, 0.2, 0.2, 1.0, 0.0],
-    stroke=green,
+    stroke=lime,
     stroke_width=2,
     label="dashed=[0.2, 0.2, 0.2, 0.2, 1, 0]",
 )
 Line(x=0, y=5, x1=19, y1=5, dotted=True, stroke=blue, stroke_width=2, label="dotted")
+# house
+points = [
+    (2, 17),
+    (2, 20),
+    (5, 21),
+    (8, 20),
+    (8, 17),
+    (6, 17),
+    (6, 18.5),
+    (4, 18.5),
+    (4, 17),
+    (1, 17),
+]
+Polyshape(cx=5, cy=19.5, points=points, stroke=bisque, fill=tomato,
+          label="Store", label_size=24)
+Polyshape(x=25, y=4, points="0,0 0,1 2,0 2,1 0,0", fill_stroke=gold)
 PageBreak()
 
 # ---- bezier / arc
 Blueprint()
 Text(common=header, text="Bezier line and arc")
 Bezier(x=2, y=7, x1=12, y1=9, x2=12, y2=16, x3=17, y3=20, stroke=blue, stroke_width=2)
-Arc(x=1, y=7, x1=4, y1=4, stroke=red, stroke_width=4)
+Arc(x=1, y=7, x1=4, y1=4, stroke=tomato, stroke_width=4)
 PageBreak()
 
 # ---- common, with angled lines
@@ -281,9 +244,18 @@ Lines(x=0, x1=0, y=0, y1=28.5, cols=20, width=1.0, stroke=lightsteelblue)
 Line(x=0, x1=19, y=2, y1=2, stroke=orangered)
 PageBreak()
 
-# ---- Grid: business cards
-Text(common=header, text="Grid (2x6)")
-Grid(cols=2, rows=6, width=8.5, height=4.5, stroke=grey, fill=azure)
+# ---- set of stickers
+Text(common=header, text="Rectangles (6x13)")
+Rectangles(
+    rows=13,
+    cols=6,
+    width=3,
+    height=2,
+    rounding=0.4,
+    margin=1,
+    fill=gold,
+    stroke=lime,
+)
 PageBreak()
 
 # ---- Grid: graph paper
@@ -292,44 +264,58 @@ Grid(cols=95, rows=135, size=0.2, stroke=mediumseagreen, stroke_width=0.9)
 Grid(cols=19, rows=27, size=1.0, stroke=mediumseagreen, stroke_width=1.5)
 PageBreak()
 
-# ---- .png image and various text positions
-Text(common=header, text="Rectangle and .png image (with transparency)")
-Rectangle(x=5.9, y=10.9, width=7.2, height=6.2, stroke=silver, fill=khaki)
+# ---- Hexagons ~2cm grid - numbered "wargame" style
+Hexagons(
+    rows=11,
+    cols=9,
+    side=1.69,
+    margin_left=-1.69,
+    margin_bottom=-2.529,
+    dot=0.05,
+    dot_stroke=black,
+    coord_position="top",
+    coord_font_size=9,
+    coord_stroke=darkslategrey,
+    fill=white,
+    stroke=darkslategrey,
+    caltrops="medium",
+)
+Text(common=header, text="Hexagons (dot; coords; caltrops)")
+PageBreak()
+
+# ---- images and various text positions
+Text(common=header, text="Rectangles and images (with transparency)")
+Rectangle(x=5.9, y=15.9, width=7.2, height=6.2, stroke=silver, fill=gold)
 Image(
     "sholes_typewriter.png",  # has transparent background
     x=6,
-    y=11,
+    y=16,
     width=7,
     height=6,
-    font_size=15,
+    font_size=18,
     label="sholes typewriter",
-    label_stroke=red,
-    heading="Sholes Typewriter",
-    heading_stroke=blue,
+    label_stroke=tomato,
+    heading="Sholes Typewriter (PNG)",
+    heading_stroke=turquoise,
     title="Fig 2. The Sholes Typewriter",
-    title_stroke=green,
+    title_stroke=lime,
 )
-PageBreak()
 
-# ---- SVG image
-# Typewriter by ZakaUddin from
-# <a href="https://thenounproject.com/browse/icons/term/typewriter/" target="_blank" title="Typewriter Icons">Noun Project</a> (CC BY 3.0)
-Text(common=header, text="Rectangle and scaled .svg image")
-Rectangle(x=6, y=11, width=7, height=6.25, stroke=silver, fill=khaki)
+Rectangle(x=6, y=6, width=7, height=6.25, stroke=silver, fill=gold)
 Image(
     # "Typewriter_Vector.svg",
     "noun-typewriter-3933515.svg",
     x=6,
-    y=11,
+    y=6,
     width=7,
     height=6,
-    font_size=15,
+    font_size=18,
     label="noun typewriter",
-    label_stroke=red,
-    heading="Noun Project Typewriter",
-    heading_stroke=blue,
+    label_stroke=tomato,
+    heading="Noun Project Typewriter (SVG)",
+    heading_stroke=turquoise,
     title="Fig 3. A nounproject.com Typewriter (AlekZakaUddin, CC BY 3.0)",
-    title_stroke=green,
+    title_stroke=lime,
     scaling=0.6,
 )
 PageBreak()
@@ -362,7 +348,7 @@ header = Common(x=1, font_size=18, align="left", width=2.5, height=2, wrap=True)
 
 Rectangle(x=4.5, y=1, width=10, height=5.5, stroke_width=1, stroke=grey)
 Text(
-    x=4.5, y=6.5, width=10, height=5, wrap=True, align="left", text=IMAGE, stroke=blue
+    x=4.5, y=6.5, width=10, height=5, wrap=True, align="left", text=IMAGE, stroke=aqua
 )
 Text(common=header, y=4, text="Align: Left")
 
@@ -378,15 +364,25 @@ Rectangle(x=4.5, y=18, width=10, height=5, stroke_width=1, stroke=grey)
 Text(x=4.5, y=23, width=10, height=5, wrap=True, align="justify", text=LATIN)
 Text(common=header, y=21, text="Align: Justify")
 
+PageBreak()
+
 # ---- cards
-Deck(cards=9)
-Card("1-3", circle(cx=3, cy=4.2))
-Card("4", image("sholes_typewriter.png", x=3, y=5, width=3, height=3))
-Card("5", image("sholes_typewriter.png", x=3, y=5, width=3, height=3, rotation=30))
-Card("6", image("sholes_typewriter.png", x=3, y=5, width=3, height=3, rotation=60))
-Card("7", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3))
-Card("8", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3, rotation=30))
-Card("9", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3, rotation=60))
+# Deck(cards=9)
+# Card("1-3", circle(cx=3, cy=4.2))
+# Card("4", image("sholes_typewriter.png", x=3, y=5, width=3, height=3))
+# Card("5", image("sholes_typewriter.png", x=3, y=5, width=3, height=3, rotation=30))
+# Card("6", image("sholes_typewriter.png", x=3, y=5, width=3, height=3, rotation=60))
+# Card("7", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3))
+# Card("8", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3, rotation=30))
+# Card("9", image("noun-typewriter-3933515.svg", x=3, y=5, width=3, height=3, scaling=0.3, rotation=60))
+# PageBreak()
+
+# one BIG hex
+Hexagon(
+    x=2, y=8,
+    side=8,
+    label="THIS IS THE END...\nof the basic pyprototypr demo!",
+    label_size=16)
 
 PageBreak()
 # Save(output='png', dpi=300)
