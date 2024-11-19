@@ -15,7 +15,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.pagesizes import (
     A8, A7, A6, A5, A4, A3, A2, A1, A0, LETTER, LEGAL, ELEVENSEVENTEEN,
     letter, legal, elevenSeventeen, B6, B5, B4, B3, B2, B0, landscape)
-from reportlab.lib.colors import red, green
+from reportlab.lib.colors import red, green, black
 # local
 from pyprototypr.utils.geoms import Point, Link, Location  # named tuples
 from pyprototypr.utils import geoms, tools, support
@@ -2259,6 +2259,9 @@ class RectangleShape(BaseShape):
         is_notched = True if (self.notch or self.notch_x or self.notch_y) else False
         is_chevron = True if (self.chevron or self.chevron_height) else False
         is_peaks = True if self.peaks else False
+        is_borders = True if self.borders else False
+        if (self.rounding or self.rounded) and is_borders:
+            tools.feedback("Cannot use rounding or rounded with borders.", True)
         if (self.rounding or self.rounded) and is_notched:
             tools.feedback("Cannot use rounding or rounded with notch.", True)
         if (self.rounding or self.rounded) and is_chevron:
@@ -2277,6 +2280,9 @@ class RectangleShape(BaseShape):
             tools.feedback("Cannot use chevron and peaks together.", True)
         if self.hatch and is_peaks:
             tools.feedback("Cannot use hatch and peaks together.", True)
+        if is_borders and (is_chevron or is_peaks or is_notched):
+            tools.feedback("Cannot use borders with any of: hatch, peaks or chevron.",
+                           True)
         # ---- calculate properties
         x, y = self.calculate_xy()
         # ---- overrides for grid layout
@@ -2306,6 +2312,8 @@ class RectangleShape(BaseShape):
         # ---- * notch vertices
         if is_notched:
             _notch_style = self.notch_style.lower()
+            if _notch_style in ['b', 'bite']:
+                tools.feedback('The "bite" setting is not implemented yet', False)
             if self.notch_corners:
                 _ntches = self.notch_corners.split()
                 _notches = [str(ntc).upper() for ntc in _ntches]
@@ -2329,7 +2337,8 @@ class RectangleShape(BaseShape):
                     case 'step' | 't':
                         pass
                     case 'bite' | 'b':
-                        tools.feedback('notch style bite NOT YET IMPLEMENTED')  # TODO
+                        # TODO - write code ...
+                        pass
             else:
                 self.vertices.append(Point(x, y))
             if 'NW' in _notches:
@@ -2351,7 +2360,8 @@ class RectangleShape(BaseShape):
                         self.vertices.append(Point(x + n_x, y + self._u.height - n_y))
                         self.vertices.append(Point(x + n_x, y + self._u.height))
                     case 'bite' | 'b':
-                        pass  # TODO
+                        # TODO - write code ...
+                        pass
             else:
                 self.vertices.append(Point(x, y + self._u.height))
             if 'NE' in _notches:
@@ -2373,7 +2383,8 @@ class RectangleShape(BaseShape):
                         self.vertices.append(Point(x + self._u.width - n_x, y + self._u.height - n_y))
                         self.vertices.append(Point(x + self._u.width, y + self._u.height - n_y))
                     case 'bite' | 'b':
-                        pass  # TODO
+                        # TODO - write code ...
+                        pass
             else:
                 self.vertices.append(Point(x + self._u.width, y + self._u.height))
             if 'SE' in _notches:
@@ -2395,7 +2406,8 @@ class RectangleShape(BaseShape):
                         self.vertices.append(Point(x + self._u.width - n_x, y + n_y))
                         self.vertices.append(Point(x + self._u.width - n_x, y))
                     case 'bite' | 'b':
-                        pass  # TODO
+                        # TODO - write code ...
+                        pass
             else:
                 self.vertices.append(Point(x + self._u.width, y))
             if 'SW' in _notches:
@@ -2411,7 +2423,9 @@ class RectangleShape(BaseShape):
                         self.vertices.append(Point(x + n_x, y + n_y))
                         self.vertices.append(Point(x, y + n_y))
                     case 'bite' | 'b':
-                        pass  # TODO
+                        # TODO - write code ...
+                        tools.feedback('The "bite" setting is not implemented yet',
+                                       False)
             else:
                 self.vertices.append(Point(x, y))
         # ---- * peaks vertices
@@ -2534,6 +2548,77 @@ class RectangleShape(BaseShape):
                 stroke=1 if self.stroke else 0,
                 fill=1 if self.fill else 0,
             )
+            # ---- * borders (override)
+            if self.borders:
+                # breakpoint()
+                if isinstance(self.borders, tuple):
+                    self.borders = [self.borders,]
+                if not isinstance(self.borders, list):
+                    tools.feedback(
+                        f'The "borders" property must be a list of sets or a set')
+                for border in self.borders:
+                    if not isinstance(border, tuple):
+                        tools.feedback(
+                            'The "borders" property must contain '
+                            f'a list of one or more sets - not "{border}"', True)
+                    bdirection, bwidth, bcolor, bstyle, dotted, dashed  =  \
+                        None, None, black, None, False, None
+                    if len(border) == 2:
+                        bdirection = border[0]
+                        bwidth = border[1]
+                    elif len(border) == 3:
+                        bdirection = border[0]
+                        bwidth = border[1]
+                        bcolor = border[2]
+                    elif len(border) == 4:
+                        bdirection = border[0]
+                        bwidth = border[1]
+                        bcolor = border[2]
+                        bstyle = border[3]
+                    else:
+                        tools.feedback(
+                            'A "borders" set must contain: direction, width, color'
+                            f' and an optional style - not "{border}"', True)
+                    # validate
+                    if str(bdirection).lower() not in [
+                            'north', 'south', 'east', 'west', 'n', 'e', 'w', 's', '*']:
+                        tools.feedback(
+                            f'"{bdirection}" is an invalid direction in "{border}"!')
+                    bwidth = tools.as_float(bwidth, "")
+                    if bstyle is True:
+                        dotted = True
+                    else:
+                        dashed = bstyle
+                    # draw
+                    match bdirection.lower():
+                        case 'n' | 'north' | '*':
+                            x, y = self.vertices[1][0], self.vertices[1][1]
+                            x_1, y_1 = self.vertices[2][0], self.vertices[2][1]
+                        case 'e' | 'east' | '*':
+                            x, y = self.vertices[2][0], self.vertices[2][1]
+                            x_1, y_1 = self.vertices[3][0], self.vertices[3][1]
+                        case 's' | 'south' | '*':
+                            x, y = self.vertices[3][0], self.vertices[3][1]
+                            x_1, y_1 = self.vertices[0][0], self.vertices[0][1]
+                        case 'w' | 'west' | '*':
+                            x, y = self.vertices[0][0], self.vertices[0][1]
+                            x_1, y_1 = self.vertices[1][0], self.vertices[1][1]
+                        case _:
+                            raise ValueError('Invalid direction for border')
+                    # ---- set canvas
+                    self.set_canvas_props(
+                        index=ID,
+                        stroke=bcolor,
+                        stroke_width=bwidth,
+                        dotted=dotted,
+                        dashed=dashed,
+                    )
+                    # ---- draw line
+                    pth = cnv.beginPath()
+                    pth.moveTo(x, y)
+                    pth.lineTo(x_1, y_1)
+                    cnv.drawPath(pth, stroke=1 if bcolor else 0, fill=1)
+
         # ---- draw hatch
         if self.hatch:
             vertices = self.get_vertices(rotation=rotation, **kwargs)

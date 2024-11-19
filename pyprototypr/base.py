@@ -514,7 +514,7 @@ class BaseCanvas:
         self.y_2 = self.defaults.get('y2', 1)
         self.x_3 = self.defaults.get('x3', 1)
         self.y_3 = self.defaults.get('y3', 1)
-        # ---- rect / card
+        # ---- rectangle / card
         self.rounding = self.defaults.get('rounding', 0)
         self.rounded = self.defaults.get('rounded', False)
         self.notch = self.defaults.get('notch', 0)
@@ -526,6 +526,7 @@ class BaseCanvas:
         self.chevron_height = kwargs.get('chevron_height', 0)
         self.peaks = kwargs.get('peaks', [])
         self.peaks_dict = {}
+        self.borders = kwargs.get('borders', [])
         # ---- stadium
         self.edges = self.defaults.get('edges', 'east west')
         # ---- grid / card layout
@@ -843,6 +844,7 @@ class BaseShape:
         self.chevron_height = self.kw_float(kwargs.get('chevron_height', cnv.chevron_height))
         self.peaks = kwargs.get('peaks', cnv.peaks)
         self.peaks_dict = {}
+        self.borders = kwargs.get('borders', cnv.borders)
         # ---- stadium
         self.edges = kwargs.get('edges', cnv.edges)
         # ---- grid / card layout

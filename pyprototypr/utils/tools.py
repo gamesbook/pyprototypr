@@ -206,7 +206,7 @@ def as_float(value, label, maximum=None, minimum=None) -> int:
                 True)
         return the_value
     except (ValueError, Exception):
-        feedback(f'The "{value}"{label} is not a valid float number!', True)
+        feedback(f'The value "{value}"{label} is not a valid float number!', True)
 
 
 def tuple_split(string):
