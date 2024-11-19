@@ -1350,8 +1350,11 @@ def Rectangles(rows=1, cols=1, **kwargs):
     kwargs = kwargs
     locations = []
 
+    counter = 0
     for row in range(rows):
         for col in range(cols):
+            counter += 1
+            kwargs["text_sequence"] = f'{counter}'
             if kwargs.get('hidden') and [row + 1, col + 1] in kwargs.get('hidden'):
                 pass
             else:

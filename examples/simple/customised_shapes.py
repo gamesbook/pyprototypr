@@ -416,10 +416,36 @@ Polyshape(
       cx=1, cy=1,
       label='A House',
       label_stroke=olive,
-      cross=0.25,
+      cross=0.5,
       fill=sandybrown,
       stroke=peru,
 )
+PageBreak()
+
+# ---- shapeshape - offset + string
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Polyshape: offset")
+Polyshape(
+    points="0,0 0,1 2,0 2,1 0,0",
+    cx=1, cy=0.5,
+    fill=lime, label="Left ....... Right")
+Polyshape(
+    points="0,0 0,1 2,0 2,1 0,0",
+    cx=1, cy=0.5,
+    fill=gold, label="Left ....... Right",
+    x=1, y=2)
+PageBreak()
+
+# ---- rectangles - basic
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Rectangles: rows & cols")
+Rectangles(rows=3, cols=2)
+PageBreak()
+
+# ---- rectangles - basic
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Rectangles: custom")
+Rectangles(rows=4, cols=2, width=1.5, height=1.25, dotted=True, fill=lime)
 PageBreak()
 
 # ---- END
@@ -445,5 +471,6 @@ Save(
         "line_custom", "bezier_custom", "ellipse_custom", "rectangle_custom",
         "square_custom", "trapezoid_custom", "image_default",
         "descriptions", "label_offset", "star_custom",
-        "polyshape_default", "polyshape_custom",
+        "polyshape_default", "polyshape_custom", "polyshape_offset",
+        "rectangles_rowcol", "rectangles_custom",
         None])

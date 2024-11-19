@@ -45,6 +45,7 @@ Index of Shapes
 -  `Polyline`_
 -  `Polyshape`_
 -  `Rectangle`_
+-  `Rectangles`_
 -  `Sector`_
 -  `Square`_
 -  `Stadium`_
@@ -857,8 +858,7 @@ Example 1.
 
         Polyshape(points=[(0, 0), (0, 1), (1,  2), (2, 1), (2, 0)])
 
-      It has the following properties, that differ from the defaults. based on
-      these values:
+      It has the following properties:
 
       - starts at x-position ``0`` cm and at y-position ``0`` cm
       - second point is at x-position ``0`` cm and at y-position ``1`` cm
@@ -871,8 +871,8 @@ Example 1.
       *y* are separated by a comma. Each pair of values in the list is also
       separated by a comma.
 
-      Lines are drawn between each successive point in the list; including a
-      line from the last to the first.
+      Lines are drawn between each successive point in the list; **including a
+      line from the last to the first**.
 
       The default *stroke* and *fill* apply to this example of a Polyshape.
 ===== ======
@@ -883,21 +883,21 @@ Example 2.
 While the Polyshape does not have the ability to be constructed using a
 *cx* and *cy* pair like other symmetric shapes, it is possible to provide
 these values to the shape command, and they can then be used for label, plus
-dot & cross, similar to other shapes.  **Note** that the program has no way
-of knowing or "checking" the values you supply to it!
+the `dot and cross`_, similar to other shapes.  **Note** that the program has
+no way of knowing or "checking" the values that you supply to it!
 
 .. |sh2| image:: images/customised/polyshape_custom.png
    :width: 330
 
 ===== ======
-|sh2| If the shape is constructed using the command with only defaults::
+|sh2| The shape is constructed using the command with these properties::
 
         Polyshape(
               points=[(0, 0), (0, 1), (1,  2), (2, 1), (2, 0)],
               cx=1, cy=1,
               label='A House',
               label_stroke=olive,
-              cross=0.25,
+              cross=0.5,
               fill=sandybrown,
               stroke=peru,
         )
@@ -907,14 +907,57 @@ of knowing or "checking" the values you supply to it!
 
       - the centre is defined to be at x-position ``1`` cm and y-position
         ``1`` cm; this will affect the drawing of the cross and the label but
-        does **not** affect the drawing on the shape itself
+        does **not** affect the drawing of the shape itself
       - *cross* - sets the length of each of the two lines that cross at the
-        centre to be ``0.25`` cm
-      - *label* - sets the text appearing at the centre position
+        centre to be ``0.5`` cm
+      - *label* - sets the text appearing at the defined centre position
       - *fill* color of ``sandybrown`` (corresponds to hexadecimal value ``#F4A460``)
         that defines the color of the interior of the shape
       - *stroke* color of ``peru`` (corresponds to hexadecimal value ``#CD853F``)
 
+===== ======
+
+Example 3.
+++++++++++
+
+There are two other options available.
+
+In addition to the *cx* and *cy* pair, an *x* and *y* pair can also be provided;
+these values will be used to offset ("move") the Polyshape from the position it
+would normally occupy.
+
+It is also possible to provide the *points* as a string of space-separated
+pairs of values; so instead of ``[(0,0), (1,1)]`` just use ``"0,0 1,1"``.
+
+.. |sh3| image:: images/customised/polyshape_offset.png
+   :width: 330
+
+===== ======
+|sh3| The shapes are constructed using the command with these properties::
+
+        Polyshape(
+            points="0,0 0,1 2,0 2,1 0,0",
+            cx=1, cy=0.5,
+            fill=lime, label="Left ....... Right")
+        Polyshape(
+            points="0,0 0,1 2,0 2,1 0,0",
+            cx=1, cy=0.5,
+            fill=gold, label="Left ....... Right",
+            x=1, y=2)
+
+      As in Example 2, the *points* are used to construct the outline of the
+      shape. In this case, they are a string of space-separated pairs of values.
+
+      Other properties:
+
+      - the centre is defined to be at x-position ``1`` cm and y-position
+        ``0.5`` cm; this will affect the drawing of the label
+        but does **not** affect the drawing of the shape itself
+      - *label* - sets the text appearing at the defined centre position
+      - *fill* color defines the color of the interior of the shape
+
+      In the ``gold``-filled Polyshape, the *x* and *y* values have been set,
+      causing the whole shape to move up and to the right.
 ===== ======
 
 
@@ -1708,7 +1751,6 @@ Lines
 Lines are simply a series of parallel lines drawn over repeating rows - for
 horizontal lines - or columns - for vertical lines.
 
-
 Example 1.
 ++++++++++
 
@@ -1775,6 +1817,47 @@ Rectangles
 Rectangles can be drawn in a row-by-column layout to form a grid - for games
 this is often used to delineate a track or other spaces in which playing pieces
 can be placed.
+
+Example 1.
+++++++++++
+
+.. |rc0| image:: images/customised/rectangles_rowcol.png
+   :width: 330
+
+===== ======
+|rc0| This example shows the shape constructed using the command with these
+      properties::
+
+          Rectangles(rows=3, cols=2)
+
+      It has the following properties based on the defaults:
+
+      - starts at x-position ``1`` cm and at y-position ``1`` cm
+      - *height* and *width* of ``1`` cm each
+===== ======
+
+Example 2.
+++++++++++
+
+.. |rn1| image:: images/customised/rectangles_custom.png
+   :width: 330
+
+===== ======
+|rn1| This example shows the shape constructed using the command with these
+      properties::
+
+          Rectangles(
+             rows=4, cols=2, width=1.5, height=1.25, dotted=True, fill=lime)
+
+      It has the following properties based on the defaults:
+
+      - starts at x-position ``1`` cm and at y-position ``1`` cm
+      - *height* and *width* of ``1`` cm each
+      - *fill* color of ``lime``
+      - *dotted* lines
+      - *height* of ``1.25`` cm
+      - *width* of ``1.5`` cm
+===== ======
 
 
 .. _commonIndex:
@@ -2073,6 +2156,7 @@ Example 2. Text Offsets
       *label_mx* cause the label, normally at the centre, to be shifted away
       from it.
 ===== ======
+
 
 Transparency
 ~~~~~~~~~~~~

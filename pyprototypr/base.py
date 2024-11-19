@@ -1503,7 +1503,16 @@ class BaseShape:
             return
         # ---- replace {PLACEHOLDER} with a value
         _sequence = kwargs.get('text_sequence', '')
-        string = string.format(SEQUENCE=_sequence)
+        try:
+            string = string.format(SEQUENCE=_sequence)
+        except ValueError as err:
+            if "expected '}'" in err:
+                tools.feedback('Please check use of {} brackets; both are needed',
+                               True)
+            else:
+                tools.feedback(f'Unable to do that - {err}', True)
+        except KeyError as err:
+            tools.feedback(f'Unable to use {err}', True)
         # align
         align = align or self.align
         mvy = copy.copy(y)

@@ -2819,12 +2819,13 @@ class ShapeShape(BaseShape):
         else:
             points = self.points
         if points and len(points) > 0:
+            x_offset, y_offset = self.unit(self.x or 0), self.unit(self.y or 0)
             pth = cnv.beginPath()
             for key, vertex in enumerate(points):
                 _x0, _y0 = float(vertex[0]), float(vertex[1])
                 # convert to using units
-                x = self.unit(_x0) + self._o.delta_x
-                y = self.unit(_y0) + self._o.delta_y
+                x = self.unit(_x0) + self._o.delta_x + x_offset
+                y = self.unit(_y0) + self._o.delta_y + y_offset
                 if key == 0:
                     pth.moveTo(x, y)
                 pth.lineTo(x, y)
@@ -2832,8 +2833,8 @@ class ShapeShape(BaseShape):
             cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
             # ---- centre?
             if self.cx and self.cy:
-                x = self._u.cx + self._o.delta_x
-                y = self._u.cy + self._o.delta_y
+                x = self._u.cx + self._o.delta_x + x_offset
+                y = self._u.cy + self._o.delta_y + y_offset
                 # ---- * dot
                 self.draw_dot(cnv, x, y)
                 # ---- * cross
