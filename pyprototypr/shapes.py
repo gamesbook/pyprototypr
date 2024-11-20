@@ -2555,69 +2555,9 @@ class RectangleShape(BaseShape):
                     self.borders = [self.borders,]
                 if not isinstance(self.borders, list):
                     tools.feedback(
-                        f'The "borders" property must be a list of sets or a set')
+                        'The "borders" property must be a list of sets or a set')
                 for border in self.borders:
-                    if not isinstance(border, tuple):
-                        tools.feedback(
-                            'The "borders" property must contain '
-                            f'a list of one or more sets - not "{border}"', True)
-                    bdirection, bwidth, bcolor, bstyle, dotted, dashed  =  \
-                        None, None, black, None, False, None
-                    if len(border) == 2:
-                        bdirection = border[0]
-                        bwidth = border[1]
-                    elif len(border) == 3:
-                        bdirection = border[0]
-                        bwidth = border[1]
-                        bcolor = border[2]
-                    elif len(border) == 4:
-                        bdirection = border[0]
-                        bwidth = border[1]
-                        bcolor = border[2]
-                        bstyle = border[3]
-                    else:
-                        tools.feedback(
-                            'A "borders" set must contain: direction, width, color'
-                            f' and an optional style - not "{border}"', True)
-                    # validate
-                    if str(bdirection).lower() not in [
-                            'north', 'south', 'east', 'west', 'n', 'e', 'w', 's', '*']:
-                        tools.feedback(
-                            f'"{bdirection}" is an invalid direction in "{border}"!')
-                    bwidth = tools.as_float(bwidth, "")
-                    if bstyle is True:
-                        dotted = True
-                    else:
-                        dashed = bstyle
-                    # draw
-                    match bdirection.lower():
-                        case 'n' | 'north' | '*':
-                            x, y = self.vertices[1][0], self.vertices[1][1]
-                            x_1, y_1 = self.vertices[2][0], self.vertices[2][1]
-                        case 'e' | 'east' | '*':
-                            x, y = self.vertices[2][0], self.vertices[2][1]
-                            x_1, y_1 = self.vertices[3][0], self.vertices[3][1]
-                        case 's' | 'south' | '*':
-                            x, y = self.vertices[3][0], self.vertices[3][1]
-                            x_1, y_1 = self.vertices[0][0], self.vertices[0][1]
-                        case 'w' | 'west' | '*':
-                            x, y = self.vertices[0][0], self.vertices[0][1]
-                            x_1, y_1 = self.vertices[1][0], self.vertices[1][1]
-                        case _:
-                            raise ValueError('Invalid direction for border')
-                    # ---- set canvas
-                    self.set_canvas_props(
-                        index=ID,
-                        stroke=bcolor,
-                        stroke_width=bwidth,
-                        dotted=dotted,
-                        dashed=dashed,
-                    )
-                    # ---- draw line
-                    pth = cnv.beginPath()
-                    pth.moveTo(x, y)
-                    pth.lineTo(x_1, y_1)
-                    cnv.drawPath(pth, stroke=1 if bcolor else 0, fill=1)
+                    self.draw_border(cnv, border, ID)
 
         # ---- draw hatch
         if self.hatch:

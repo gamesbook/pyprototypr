@@ -1734,6 +1734,79 @@ class BaseShape:
             return new_element
         return the_element  # no changes needed or made
 
+    def draw_border(self, cnv, border: tuple, ID: int = None):
+        """Draw a border line based its settings."""
+        if not isinstance(border, tuple):
+            tools.feedback(
+                'The "borders" property must contain a list of one or more sets'
+                f' - not "{border}"', True)
+        # ---- assign tuple values
+        bdirection, bwidth, bcolor, bstyle, dotted, dashed = \
+            None, None, black, None, False, None
+        if len(border) >= 4:
+            bstyle = border[3]
+        if len(border) >= 3:
+            bcolor = border[2]
+        if len(border) >= 2:
+            bdirection = border[0]
+            bwidth = border[1]
+        if len(border) <= 1:
+            tools.feedback(
+                'A "borders" set must contain: direction, width, color'
+                f' and an optional style - not "{border}"', True)
+        # ---- validate
+        if str(bdirection).lower() not in [
+                'north', 'south', 'east', 'west', 'n', 'e', 'w', 's', '*']:
+            tools.feedback(
+                f'"{bdirection}" is an invalid direction in "{border}"!')
+        bwidth = tools.as_float(bwidth, "")
+        if bstyle is True:
+            dotted = True
+        else:
+            dashed = bstyle
+        # ---- line start & end
+        shape_name = self.__class__.__name__.replace('Shape', '')
+        match self.__class__.__name__:
+            case 'RectangleShape' | 'SquareShape':
+                match bdirection.lower():
+                    case 'n' | 'north' | '*':
+                        x, y = self.vertices[1][0], self.vertices[1][1]
+                        x_1, y_1 = self.vertices[2][0], self.vertices[2][1]
+                    case 'e' | 'east' | '*':
+                        x, y = self.vertices[2][0], self.vertices[2][1]
+                        x_1, y_1 = self.vertices[3][0], self.vertices[3][1]
+                    case 's' | 'south' | '*':
+                        x, y = self.vertices[3][0], self.vertices[3][1]
+                        x_1, y_1 = self.vertices[0][0], self.vertices[0][1]
+                    case 'w' | 'west' | '*':
+                        x, y = self.vertices[0][0], self.vertices[0][1]
+                        x_1, y_1 = self.vertices[1][0], self.vertices[1][1]
+                    case _:
+                        raise ValueError('Invalid direction for border')
+
+            case 'HexagonShape':
+                match bdirection.lower():
+                    case _:
+                        raise NotImplementedError('Cannot draw Hex border')
+
+            case _:
+                match bdirection.lower():
+                    case _:
+                        tools.feedback(f'Cannot draw a border for a {shape_name}')
+
+        # ---- set canvas
+        self.set_canvas_props(
+            index=ID,
+            stroke=bcolor,
+            stroke_width=bwidth,
+            dotted=dotted,
+            dashed=dashed,
+        )
+        # ---- draw line
+        pth = cnv.beginPath()
+        pth.moveTo(x, y)
+        pth.lineTo(x_1, y_1)
+        cnv.drawPath(pth, stroke=1 if bcolor else 0, fill=1)
 
 
 class GroupBase(list):

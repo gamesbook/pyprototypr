@@ -442,10 +442,30 @@ Text(common=txt, text="Rectangles: rows & cols")
 Rectangles(rows=3, cols=2)
 PageBreak()
 
-# ---- rectangles - basic
+# ---- rectangles - custom
 Blueprint(stroke_width=0.5)
 Text(common=txt, text="Rectangles: custom")
 Rectangles(rows=4, cols=2, width=1.5, height=1.25, dotted=True, fill=lime)
+PageBreak()
+
+# ---- rectangle - borders
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Rectangle: borders")
+Rectangle(
+    y=3, height=2, width=2, stroke=None, fill=gold,
+    borders=[
+        ("n", 2, black, True),
+        ("s", 2, black),
+    ]
+)
+Rectangle(
+    y=0, height=2, width=2, stroke_width=1.9,
+    borders=[
+        ("w", 2, gold),
+        ("n", 2, lime, True),
+        ("e", 2, tomato, [0.1,0.2,0.1,0]),
+    ]
+)
 PageBreak()
 
 # ---- END
@@ -472,5 +492,5 @@ Save(
         "square_custom", "trapezoid_custom", "image_default",
         "descriptions", "label_offset", "star_custom",
         "polyshape_default", "polyshape_custom", "polyshape_offset",
-        "rectangles_rowcol", "rectangles_custom",
+        "rectangles_rowcol", "rectangles_custom", "rectangle_borders",
         None])
