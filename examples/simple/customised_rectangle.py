@@ -153,6 +153,26 @@ Rectangle(common=styles, y=4.5, notch_style='flap', label='Notch: flap (l)')
 # Rectangle(common=styles, y=5, label='Notch: bite (NOT WORKING)')
 PageBreak()
 
+# ---- rectangle - borders
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Rectangle: borders")
+Rectangle(
+    y=3, height=2, width=2, stroke=None, fill=gold,
+    borders=[
+        ("n", 2, black, True),
+        ("s", 2, black),
+    ]
+)
+Rectangle(
+    y=0, height=2, width=2, stroke_width=1.9,
+    borders=[
+        ("w", 2, gold),
+        ("n", 2, lime, True),
+        ("e", 2, tomato, [0.1,0.2,0.1,0]),
+    ]
+)
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Rectangle END...")
 PageBreak(footer=True)
@@ -164,5 +184,5 @@ Save(
      names=[
         None,
         "centre", "notch", "dot_cross", "hatch", "rounding", "chevron",
-        "peak", "rotation", "notch_style",
+        "peak", "rotation", "notch_style", "borders",
         None])

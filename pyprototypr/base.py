@@ -1756,7 +1756,9 @@ class BaseShape:
                 f' and an optional style - not "{border}"', True)
         # ---- validate
         if str(bdirection).lower() not in [
-                'north', 'south', 'east', 'west', 'n', 'e', 'w', 's', '*']:
+                'north', 'south', 'east', 'west', 'n', 'e', 'w', 's',
+                'northwest', 'southwest', 'southeast', 'northeast', 'ne', 'se', 'nw', 'sw',
+                '*']:
             tools.feedback(
                 f'"{bdirection}" is an invalid direction in "{border}"!')
         bwidth = tools.as_float(bwidth, "")
@@ -1782,17 +1784,61 @@ class BaseShape:
                         x, y = self.vertices[0][0], self.vertices[0][1]
                         x_1, y_1 = self.vertices[1][0], self.vertices[1][1]
                     case _:
-                        raise ValueError('Invalid direction for border')
+                        raise ValueError(f'Invalid direction for {shape_name} border')
 
-            case 'HexagonShape':
-                match bdirection.lower():
-                    case _:
-                        raise NotImplementedError('Cannot draw Hex border')
+            case 'HexShape':
+                if self.orientation == 'pointy':
+                    match bdirection.lower():
+                        case 'ne' | 'northeast' | '*':
+                            x, y = self.vertices[2][0], self.vertices[2][1]
+                            x_1, y_1 = self.vertices[3][0], self.vertices[3][1]
+                        case 'e' | 'east' | '*':
+                            x, y = self.vertices[3][0], self.vertices[3][1]
+                            x_1, y_1 = self.vertices[4][0], self.vertices[4][1]
+                        case 'se' | 'southeast' | '*':
+                            x, y = self.vertices[4][0], self.vertices[4][1]
+                            x_1, y_1 = self.vertices[5][0], self.vertices[5][1]
+                        case 'sw' | 'southwest' | '*':
+                            x, y = self.vertices[5][0], self.vertices[5][1]
+                            x_1, y_1 = self.vertices[0][0], self.vertices[0][1]
+                        case 'w' | 'west' | '*':
+                            x, y = self.vertices[0][0], self.vertices[0][1]
+                            x_1, y_1 = self.vertices[1][0], self.vertices[1][1]
+                        case 'nw' | 'northwest' | '*':
+                            x, y = self.vertices[1][0], self.vertices[1][1]
+                            x_1, y_1 = self.vertices[2][0], self.vertices[2][1]
+                        case _:
+                            raise ValueError(f'Invalid direction for {shape_name} border')
+                elif self.orientation == 'flat':
+                    match bdirection.lower():
+                        case 'n' | 'north' | '*':
+                            x, y = self.vertices[1][0], self.vertices[1][1]
+                            x_1, y_1 = self.vertices[2][0], self.vertices[2][1]
+                        case 'ne' | 'northeast' | '*':
+                            x, y = self.vertices[2][0], self.vertices[2][1]
+                            x_1, y_1 = self.vertices[3][0], self.vertices[3][1]
+                        case 'se' | 'southeast' | '*':
+                            x, y = self.vertices[3][0], self.vertices[3][1]
+                            x_1, y_1 = self.vertices[4][0], self.vertices[4][1]
+                        case 's' | 'south' | '*':
+                            x, y = self.vertices[4][0], self.vertices[4][1]
+                            x_1, y_1 = self.vertices[5][0], self.vertices[5][1]
+                        case 'sw' | 'southwest' | '*':
+                            x, y = self.vertices[5][0], self.vertices[5][1]
+                            x_1, y_1 = self.vertices[0][0], self.vertices[0][1]
+                        case 'nw' | 'northwest' | '*':
+                            x, y = self.vertices[0][0], self.vertices[0][1]
+                            x_1, y_1 = self.vertices[1][0], self.vertices[1][1]
+                        case _:
+                            raise ValueError(f'Invalid direction for {shape_name} border')
+                else:
+                    raise ValueError(
+                        'Invalid orientation "{self.orientation}" for border')
 
             case _:
                 match bdirection.lower():
                     case _:
-                        tools.feedback(f'Cannot draw a border for a {shape_name}')
+                        tools.feedback(f'Cannot draw borders for a {shape_name}')
 
         # ---- set canvas
         self.set_canvas_props(

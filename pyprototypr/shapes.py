@@ -1665,6 +1665,17 @@ class HexShape(BaseShape):
             pth.lineTo(*vertex)
         pth.close()
         cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
+
+        # ---- * borders (override)
+        if self.borders:
+            if isinstance(self.borders, tuple):
+                self.borders = [self.borders,]
+            if not isinstance(self.borders, list):
+                tools.feedback(
+                    'The "borders" property must be a list of sets or a set')
+            for border in self.borders:
+                self.draw_border(cnv, border, ID)
+
         # ---- debug
         # self._debug(cnv, Point(x, y), 'start')
         # self._debug(cnv, Point(x_d, y_d), 'centre')

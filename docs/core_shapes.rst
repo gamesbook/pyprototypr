@@ -1718,8 +1718,8 @@ and their movement regulated.
 
 .. NOTE::
 
-    Very detailed information about using hexagons in grids can be found in the
-    section on `Hexagonal Grids <hexagonal_grids.rst>`_.
+   Very detailed information about using hexagons in grids can be found in the
+   section on `Hexagonal Grids <hexagonal_grids.rst>`_.
 
 Example 1.
 ++++++++++
@@ -1884,9 +1884,8 @@ x and y
 
 Almost every shape will need to have its position set.  The common way to do
 this is by setting a value for **x** - the distance from the left margin of the
-page (or card) to the left edge of the shape; and **y** - the distance from the
-bottom margin of the page (or card) to the bottom edge of the shape.
-
+page (or card) to the left edge of the shape; and/or **y** - the distance from
+the bottom margin of the page (or card) to the bottom edge of the shape.
 
 cx and cy
 ~~~~~~~~~
@@ -1894,7 +1893,7 @@ cx and cy
 
 Almost every shape will need to have its position set.  For shapes that allow it,
 a common way to do this is by setting a value for **cx** - the distance from the
-left margin of the page (or card) to the centre position of the shape and
+left margin of the page (or card) to the centre position of the shape and/or
 **cy** - the distance from the bottom margin of the page (or card) to the centre
 position of the shape.
 
@@ -1952,8 +1951,20 @@ Fill and Stroke
 
 Almost every single shape will have a *stroke*, corresponding to the color of
 the line used to draw it, and a *stroke_width* which is the thickness in
-points (72 points per inch).  All `Enclosed Shapes`_ will have a *fill*
-corresponding to the color used for the area inside it.
+points (72 points per inch); the default line color is black.
+
+All `Enclosed Shapes`_ will have a *fill* corresponding to the color used for
+the area inside it; the default fill color is white.
+
+A "shortcut" to setting both fill and stroke to be the same for a shape,
+is to use the property *fill_stroke* (see Example 2 below).
+
+If the fill is set to the keyword ``None`` (note the uppercase "N"), the area
+will have no fill color, and effectively become transparent.
+
+If the stroke is set to the keyword ``None`` (note the uppercase "N"), the line
+will have no color, and effectively become transparent.
+
 
 .. |fsb| image:: images/defaults/fill-stroke.png
    :width: 330
@@ -2075,9 +2086,12 @@ Being able to associate a description, or identifier, with a shape can be
 useful.
 
 There are three kinds of text that can be added to a shape, without having to
-specify their location - in addition, obviously, a `Text`_ shape can also be
-placed anywhere, including superimposed on another shape, in order to handle
-more complex text needs.
+specify their location or other details.
+
+.. NOTE::
+
+   Obviously, a `Text`_ shape can also be placed anywhere, including being
+   superimposed on another shape, in order to handle more complex text needs.
 
 The three "simple" text types that can be added to a shape are:
 

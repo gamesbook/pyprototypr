@@ -108,6 +108,30 @@ Hexagon(common=hxg, x=2.25, y=0.25, radii='s', label="S")
 Hexagon(common=hxg, x=2.25, y=2.15, radii='se', label="SE")
 PageBreak()
 
+# ---- borders - flat
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Hexagon: flat; borders")
+hxg = Common(height=1.5, dot_size=0.05, dot_stroke=red, orientation="flat", font_size=8)
+Hexagon(common=hxg, x=0.25, y=0.25, borders=('sw', 2, gold), label="SW")
+Hexagon(common=hxg, x=0.25, y=2.15, borders=('nw', 2, gold), label="NW")
+Hexagon(common=hxg, x=0.25, y=4.00, borders=('n', 2, gold), label="N")
+Hexagon(common=hxg, x=2.25, y=4.00, borders=('s', 2, gold), label="S")
+Hexagon(common=hxg, x=2.25, y=0.25, borders=('ne', 2, gold), label="NE")
+Hexagon(common=hxg, x=2.25, y=2.15, borders=('se', 2, gold), label="SE")
+PageBreak()
+
+# ---- borders - pointy
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Hexagon: pointy; borders")
+hxg = Common(height=1.5, dot_size=0.05, dot_stroke=red, orientation="pointy", font_size=8)
+Hexagon(common=hxg, x=0.25, y=0.25, borders=('sw', 2, gold), label="SW")
+Hexagon(common=hxg, x=0.25, y=2.15, borders=('nw', 2, gold), label="NW")
+Hexagon(common=hxg, x=0.25, y=4.00, borders=('w', 2, gold), label="W")
+Hexagon(common=hxg, x=2.25, y=4.00, borders=('e', 2, gold), label="E")
+Hexagon(common=hxg, x=2.25, y=0.25, borders=('ne', 2, gold), label="NE")
+Hexagon(common=hxg, x=2.25, y=2.15, borders=('se', 2, gold), label="SE")
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Hexagon END...")
 PageBreak(footer=True)
@@ -122,4 +146,5 @@ Save(
         "hatch_flat", "hatch_pointy",
         "hatch_text_flat", "hatch_text_pointy",
         "radii_flat", "radii_pointy",
+        "borders_flat", "borders_pointy",
         None])
