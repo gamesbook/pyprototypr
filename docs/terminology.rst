@@ -222,16 +222,17 @@ Properties that use direction include:
    *pointy*
 -  **start** - can be any secondary compass direction; for example, it is
    used to show in which corner of a ``RectangularLayout`` that shapes
-   should first placed when creating a track.
+   should first placed when creating a track
 
 Styling-orientated Terms
 ========================
 
 -  **dotted** - allows a line to be broken into a series of dots of
-   fixed size (3 points in length; with a gap of 3 points between each)
+   length equal to the width of the line being drawn (with gaps between
+   each dot of that same length)
 -  **dashed** - allows a line to be broken into a series of short lines
    of specific lengths, separated by spaces of specific lengths; there
-   can any number of these length/space pairs in a list.
+   can any number of these length/space pairs in a list
 
 Display-orientated Terms
 ========================

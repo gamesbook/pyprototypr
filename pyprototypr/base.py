@@ -1159,7 +1159,8 @@ class BaseShape:
         _dotted = ext(dotted) or ext(self.dotted)
         _dashed = ext(dashed) or ext(self.dashed)
         if _dotted:
-            _dots = self.values_to_points([0.03, 0.03])
+            #_dots = self.values_to_points([0.03, 0.03])
+            _dots = [the_stwd, the_stwd]
             canvas.setDash(array=_dots)
         elif _dashed:
             dash_points = self.values_to_points(_dashed)

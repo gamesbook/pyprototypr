@@ -1769,7 +1769,8 @@ class LineShape(BaseShape):
         self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
         # ---- text
         self.draw_label(
-            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotation=rotation, centred=False, **kwargs)
+            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0 + self.font_size / 4.0,
+            rotation=rotation, centred=False, **kwargs)
 
 
 class PolygonShape(BaseShape):

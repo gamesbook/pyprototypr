@@ -69,28 +69,26 @@ on a page when **only** the default properties are used. This means that,
 for most cases, that *lines* are drawn in **black** and shapes that have an
 enclosed area are *filled* with a **white** color. The default length, width
 or height in most cases is **1cm**. The only change from default, for these
-examples,  has been to make the default line width (*stroke_width*) thicker
+examples, has been to make the default line width (*stroke_width*) thicker
 for easier viewing of the small PNG images.
 
-Most shapes can be styled by setting one or more of the `Shapes' Common Properties`_.
-
-Some shapes have additional properties available that allow even further styling.
+Most shapes can be styled by setting one or more of the
+`Shapes' Common Properties`_. Other shapes have additional properties available
+that allow even further styling.
 
 To make it easier to see where and how a shape has been drawn, most of these
 examples have been created with a background grid (which **pyprototypr**
-refers to as a `Blueprint`_ shape) added to the page  - which is a small A8
-"business card" size - for cross-reference: the values of **x** appear across
-the lower edge of the grid (increasing from left to right); those for **y**
-along the left side (increasing from bottom to top). The grid respects the
-margins that have been set - so the lower-left grid corner shown as "0" is
-actually offset from the physical page corner... but you will observe that
-the Blueprint numbering itself is located inside the margin area!
+refers to as a `Blueprint`_ shape) added to the page  - a small A8
+"business card" size - for cross-reference. In addition, the default line width
+(aka *stroke_width*) has been made thicker for easier viewing of the small
+PNG images that were generated from the original PDF output.
 
    The graphics for these examples were generated from either of two of the
    scripts saved in the ``examples`` directory - look at the
    `default_shapes <../examples/simple/default_shapes.py>`_ and
    `customised_shapes <../examples/simple/customised_shapes.py>`_
-   scripts.
+   scripts.  The program first creates a PDF, then generates a PNG file for
+   each page in the PDF.
 
 Commonalities
 --------------
@@ -294,22 +292,30 @@ Example 2.
    :width: 330
 
 ===== ======
-|ln1| This example shows the shape constructed using commands with the
+|ln1| This example shows Lines constructed using commands with the
       following properties::
 
-        Line(x=0, y=1, length=4, stroke=lime, stroke_width=2)
-        Line(x=0, y=2, length=4, angle=15, stroke=red)
-        Line(
-          x=0, y=3, x1=4, y1=4, stroke=blue, stroke_width=1,
-         dashed=[0.2, 0.2, 0.2, 0.2, 1.0, 0.0])
-        Line(
-          x=0, y=4, x1=4, y1=5,
-          dotted=True, stroke=gold, stroke_width=1)
+        Line(x=0, y=4, x1=4, y1=5, stroke=blue, stroke_width=1,
+             dashed=[0.2, 0.2, 0.2, 0.2, 1.0, 0.0], label="dashed", font_size=6)
 
-      The medium red line and the medium yellow line both have:
+        Line(x=0, y=3, length=4.1, angle=15, stroke=red, label="15", font_size=6)
+
+        Line(x=0, y=2, length=4, stroke=lime, stroke_width=2)
+
+        Line(x=0, y=0.5, stroke_width=0.2, dotted=True, label="0.2", font_size=6)
+        Line(x=1, y=0.5, stroke_width=0.4, dotted=True, label="0.4", font_size=6)
+        Line(x=2, y=0.5, stroke_width=0.8, dotted=True, label="0.8", font_size=6)
+        Line(x=3, y=0.5, stroke_width=1.6, dotted=True, label="1.6", font_size=6)
+
+      The various black lines have:
 
       - *x* and *y* set as their starting point
-      - *x1* and *y1* set as their ending point
+      - a default length of ``1`` cm
+
+      The thin red line has:
+
+      - *x* and *y* set as a starting point
+      - *x1* and *y1* set as an ending point
 
       and the line length is calculated based on these points.
 
@@ -324,16 +330,21 @@ Example 2.
         the direction in which the line is drawn; if not given (as in the case
         of the thick green line) this will be 0 |deg|
 
-      The medium red line and the medium yellow line have their styles set so
-      that they are not normal solid lines:
+      The medium blue line has a style set so that it is not a normal solid
+      line:
 
-      - *dotted* - has a value of ``True``, which then generates a series of
-        alternating small lines and gaps
-      - *dashed* - has a list, shown by the square brackets from `[` to `]`,
-        which provides a set of "on"/"off" values; the line is drawn for a
+      - *dashed* - a list, shown by the square brackets from `[` to `]`,
+        which provides a number of "on"/"off" pairs; the line is drawn for a
         distance matching an "on" value followed by a gap matching an "off"
         value; when the end of the list is reached it starts again until the
         full length of the line is drawn
+
+      The various black lines have these properties:
+
+      - *stroke_width* - set as value in points (and labelled accordingly)
+      - *dotted* - has a value of ``True``, which then generates a series of
+        small lines, followed by gaps, of sizes equal to the line's
+        *stroke_width*
 ===== ======
 
 
@@ -1433,12 +1444,19 @@ Blueprint
 `↑ <shapeIndex_>`_
 
 This shape is primarily intended to support drawing while it is "in progress".
-It provides a quick and convenient way to orientate and place other shapes
-that *are* required for the final product.  Typically one would just comment
-out the command when its purpose has been served.
+It provides a quick and convenient underlying grid that can help to orientate
+and place other shapes that *are* required for the final product.  Typically,
+one would just comment out this command when its purpose has been served.
 
-However, different styling options are provided that can make it more useful
-for different contexts.
+On the grid, the values of **x** appear across the lower edge (increasing
+from left to right); those for **y** along the left side (increasing from
+bottom to top). The grid respects the margins that have been set - so the
+lower-left grid corner shown as "0" is actually offset from the physical
+page corner... but you will observe that the Blueprint numbering itself is
+located inside the margin area!
+
+Different styling options are provided that can make the Blueprint more
+useful in different contexts.
 
 .. NOTE::
 
@@ -1487,7 +1505,7 @@ Example 2.
       - *stroke_width* - set to ``0.5``; this slightly thicker primary line makes
         the grid more visible
       - *style* - set to ``invert`` so that the lines and number colors are white
-        and the fill color is now ``#2F85AC``
+        and the fill color is now a shade of ``blue`` (``#2F85AC``)
 ===== ======
 
 
@@ -1843,8 +1861,8 @@ Example 2.
    :width: 330
 
 ===== ======
-|rn1| This example shows the shape constructed using the command with these
-      properties::
+|rn1| This example shows the Rectangles constructed using the command with
+      these properties::
 
           Rectangles(
              rows=4, cols=2, width=1.5, height=1.25, dotted=True, fill=lime)
@@ -1852,11 +1870,10 @@ Example 2.
       It has the following properties based on the defaults:
 
       - starts at x-position ``1`` cm and at y-position ``1`` cm
-      - *height* and *width* of ``1`` cm each
       - *fill* color of ``lime``
       - *dotted* lines
-      - *height* of ``1.25`` cm
-      - *width* of ``1.5`` cm
+      - *height* of ``1.25`` cm set for each Rectangle's height
+      - *width* of ``1.5`` cm set for each Rectangle's width
 ===== ======
 
 

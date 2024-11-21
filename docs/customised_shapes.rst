@@ -24,20 +24,20 @@ Overview
 `↑ <pageIndex_>`_
 
 These descriptions assume you are familiar with the concepts, terms and ideas
-for **pyprototypr** as presented in `Basic Concepts <basic_concepts.md>`_ -
+for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ -
 especially *units*, *properties* and *defaults*.
 
 You should have already seen how these shapes were created, with defaults,
-in `Core Shapes <core_shapes.md>`_.
+in `Core Shapes <core_shapes.rst>`_.
 
 To make it easier to see where and how a shape has been drawn, most of these
 examples have been created with a background grid (which **pyprototypr**
-refers to as a `Blueprint`_ shape) added to the page - which is a small A8
+refers to as a `Blueprint`_ shape) added to the page - a small A8
 "business card" size - for cross-reference. In addition, the default line width
 (aka *stroke_width*) has been made thicker for easier viewing of the small
-PNG images.
+PNG images that were generated from the original PDF output.
 
-A number of examples also used the `Common` command - this allows shared
+A number of examples also used the ``Common`` command - this allows shared
 properties to be defined once and then used by any number of shapes.
 
 .. _rectIndex:
@@ -57,6 +57,7 @@ that it can be customised.
 - `Peak <rectPeak_>`_
 - `Rotation <rectRotation_>`_
 - `Rounding <rectRounding_>`_
+- `Borders <rectBorders_>`_
 
 .. _rectCentred:
 
@@ -322,13 +323,14 @@ a specified direction
 
       - *x* and *y*, *width* and *height* - set the basic configuration
       - *label*, *font_size* - for the text to describe the shape's peak setting
-      - *peaks* - the value(s) used to create the peak; this is a list, shown by the
-        square brackets from `[` to `]`, of one or more sets, each enclosed by the round
-        brackets, consisting of a *directions* and a peak *size*.  Directions are the
-        primary compass directions - (n)orth, (s)outh, (e)ast and (w)est, and sizes are
-        the distances of the centre of the peak from the edge of the Rectangle.
-        As a short-cut the direction value of `*` means that peaks are drawn in all
-        four directions.
+      - *peaks* - the value(s) used to create the peak; this is a list, shown
+        by the square brackets (``[`` to ``]``), of one or more sets, each
+        enclosed by the round brackets, consisting of a *directions* and a peak
+        *size*.  Directions are the primary compass directions - (n)orth,
+        (s)outh, (e)ast and (w)est, and sizes are the distances of the centre
+        of the peak from the edge of the Rectangle.  If the value ``*``` is used
+        for a direction, its short-cut meaning that peaks myst drawn in all four
+        directions.
 ===== ======
 
 .. _rectRotation:
@@ -415,6 +417,70 @@ into the arc of a quarter-circle.
         FEEDBACK:: No hatching permissible with this size rounding in the rectangle
 
 ===== ======
+
+.. _rectBorders:
+
+Borders
+-------
+`^ <rectBorders_>`_
+
+The ``Borders`` property allows for the normal line that is drawn around the
+Rectangle to be overwritten on specific sides by another type of line.
+
+The ``Borders`` property is specified by providing a set of values, which are
+comma-separated inside of round brackets, in the following order:
+
+- direction - one of (n)orth, (s)outh, (e)ast or (w)est
+- width - the line thickness
+- color - either a named color or a hexadecimal value
+- style - ``True`` makes it dotted; or a list of values creates dashes
+
+Direction and width are required, but color and style are optional.
+
+.. |rb1| image:: images/custom/rectangle/borders.png
+   :width: 330
+
+===== ======
+|rb1| This example shows Rectangles constructed using these commands::
+
+        Rectangle(
+            y=3, height=2, width=2, stroke=None, fill=gold,
+            borders=[
+                ("n", 2, silver, True),
+                ("s", 2),
+            ]
+        )
+        Rectangle(
+            y=0, height=2, width=2, stroke_width=1.9,
+            borders=[
+                ("w", 2, gold),
+                ("n", 2, lime, True),
+                ("e", 2, tomato, [0.1,0.2,0.1,0]),
+            ]
+        )
+
+      The top rectangle has a *fill* but no *stroke* i.e. no lines are drawn
+      around it. There are two *borders* that are set in the list (shown in
+      the square brackets going from ``[`` to ``]``):
+
+      - first border sets a thick grey dotted line for the top (north) edge
+      - second border sets a thick line for the bottom (south) edge; no color
+        is given so it defaults to black
+
+      The lower rectangle has a thick *stroke_width* as its outline, with a
+      default *fill* of white and default *stroke* of black. There are three
+      *borders* that are set in the list (the square brackets going from ``[``
+      to ``]``):
+
+      - first border sets a thick yellow line for the left (west) edge
+      - second border sets a thick green dotted line for the top (north) edge;
+        in this case the underlying black line of the rectangle shows in the
+        gaps
+      - third border sets a thick red dashed line for the left (west) edge;
+        in this case the underlying black line of the rectangle shows in the
+        gaps
+===== ======
+
 
 .. _hexIndex:
 

@@ -4,15 +4,15 @@ Worked Examples for a Deck of Cards
 
 These examples assumes that you have set-up your computer with Python and
 have tested to check that you can create a test file which generates a
-PDF. If not, please first see the `Setting Up <setting_up.md>`_
-document. It will also be helpful if you have read the 
+PDF. If not, please first see the `Setting Up <setting_up.rst>`_
+document. It will also be helpful if you have read the
 `Basic Concepts <basic_concepts.rst>`_ section.
 
    **Remember** when you create and edit your files, do **not** use a
    word processor such as “Word”, “Pages” or “LibreOffice” - but a text
    file editor instead e.g. on Windows, use *NotePad* or
    `NotePad++ <https://notepad-plus-plus.org/>`_; and on OS X, use
-   *TextEdit* or `CotEditor <https://coteditor.com/>`_!  A useful editor 
+   *TextEdit* or `CotEditor <https://coteditor.com/>`_!  A useful editor
    should be able to color-code your text to make it easier to work with.
 
 A simple card deck example: Take 1
@@ -40,15 +40,15 @@ As can be seen there are four lines in the file:
    script you write *must* have this line before any further **pyprototypr**
    instructions/commands are supplied.
 -  *Line 3* - ``Deck()`` means that **pyprototypr** is defining a deck.
-   Because there is no other information given, it will create the default 
-   number cards - *9* cards - with each card having the same default size 
-   (i.e. a “Poker” card size).
+   Because there is no other information given, it will create the default
+   number cards - *9* cards - with each card having the same default size
+   (i.e. a “Poker” card size).
 -  *Line 4* - ``Save()`` gives the go-ahead to create the output file on
    disc. Usually, every script you write will have this as the last
    line.  If you don't have it, no file will be created.
 
 Now save the text file, for example, as ``cards1.py``. Then open a
-command-line window (as described in `Setting Up <setting_up.md>`__ )
+command-line window (as described in `Setting Up <setting_up.rst>`__ )
 and change to the directory where the file is saved.
 
 Type the following::
@@ -58,7 +58,7 @@ Type the following::
 An output PDF file should now have been created, in the same directory
 as your ``cards1.py`` file, called ``cards1.pdf``. If you open this in a
 PDF reader program, you should see that it contains a set of 9 blank,
-poker-card sized, rectangular outlines (which we are calling “cards”) 
+poker-card sized, rectangular outlines (which we are calling “cards”)
 laid out in a grid on an A4-sized page.
 
 A simple card deck example: Take 2
@@ -171,7 +171,7 @@ This example will only show the text in the file you create, and then
 discuss the new kinds of details added to it, as well as what the
 resulting output should be.
 
-Here we are providing information to actually display 
+Here we are providing information to actually display
 
 Create this text in a file called ``cards4.py``:
 

@@ -159,8 +159,8 @@ Text(common=txt, text="Rectangle: borders")
 Rectangle(
     y=3, height=2, width=2, stroke=None, fill=gold,
     borders=[
-        ("n", 2, black, True),
-        ("s", 2, black),
+        ("n", 3, silver, True),
+        ("s", 2),
     ]
 )
 Rectangle(
