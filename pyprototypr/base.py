@@ -78,7 +78,7 @@ UnitProperties = namedtuple(
         'cy',
         'height',
         'width',
-        'width2',
+        'top',
         'radius',
         'diameter',
         'side',
@@ -369,7 +369,7 @@ class BaseCanvas:
         self.side = self.defaults.get('side', 1)  # equal length sides
         self.height = self.defaults.get('height', self.side)
         self.width = self.defaults.get('width', self.side)
-        self.width2 = self.defaults.get('width', self.width * 0.5)
+        self.top = self.defaults.get('width', self.width * 0.5)
         self.depth = self.defaults.get('depth', self.side)  # diamond
         self.x = self.defaults.get('x', self.defaults.get('left', 1))
         self.y = self.defaults.get('y', self.defaults.get('bottom', 1))
@@ -617,6 +617,7 @@ class BaseCanvas:
         self.sizes = [self.defaults.get('stroke_width', WIDTH)]
         self.density = self.defaults.get('density', 10)
         self.star_pattern = 'random'
+        self.seeding = self.defaults.get('seeding', None)
         # ---- mesh
         self.mesh = self.defaults.get('mesh', None)
         # ---- hatches
@@ -704,7 +705,7 @@ class BaseShape:
         self.side = self.kw_float(kwargs.get('side', cnv.side))  # equal length sides
         self.height = self.kw_float(kwargs.get('height', self.side))
         self.width = self.kw_float(kwargs.get('width', self.side))
-        self.width2 = self.kw_float(kwargs.get('width2', cnv.width2))
+        self.top = self.kw_float(kwargs.get('top', cnv.top))
         self.depth = self.kw_float(kwargs.get('depth', self.side))  # diamond
         self.x = self.kw_float(kwargs.get('x', kwargs.get('left', cnv.x)))
         self.y = self.kw_float(kwargs.get('y', kwargs.get('bottom', cnv.y)))
@@ -936,6 +937,7 @@ class BaseShape:
         self.sizes = kwargs.get('sizes', cnv.sizes)
         self.density = self.kw_int(kwargs.get('density', cnv.density))
         self.star_pattern = kwargs.get('star_pattern', cnv.star_pattern)
+        self.seeding = kwargs.get('seeding', cnv.seeding)
         # ---- mesh
         self.mesh = kwargs.get('mesh', cnv.mesh)
         # ---- hatches
@@ -1022,8 +1024,8 @@ class BaseShape:
             self.height = self.side  # square
         if self.diameter and not self.radius:
             self.radius = self.diameter / 2.0
-        if self.width and not self.width2:
-            self.width2 = 0.5 * self.width
+        if self.width and not self.top:
+            self.top = 0.5 * self.width
 
         self._u = UnitProperties(
             self.paper[0],  # width, in points
@@ -1038,7 +1040,7 @@ class BaseShape:
             self.unit(self.cy) if self.cy is not None else None,
             self.unit(self.height) if self.height is not None else None,
             self.unit(self.width) if self.width is not None else None,
-            self.unit(self.width2) if self.width2 is not None else None,
+            self.unit(self.top) if self.top is not None else None,
             self.unit(self.radius) if self.radius is not None else None,
             self.unit(self.diameter) if self.diameter is not None else None,
             self.unit(self.side) if self.side is not None else None,

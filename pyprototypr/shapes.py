@@ -3132,11 +3132,13 @@ class StarFieldShape(BaseShape):
     StarField pattern on a given canvas.
 
     A StarField is specified by the following properties:
+
      * density (average number of stars per square unit; default is 10)
      * colors (list of individual star colors; default is [white])
      * enclosure (regular shape inside which its drawn; default is a rectangle)
      * sizes (list of individual star sizes; default is [0.1])
      * star_pattern (random | cluster) - NOT YET IMPLEMENTED
+     * seeding (float, that if set, predetermines the randomisation sequence)
 
     Ref:
         https://codeboje.de/starfields-and-galaxies-python/
@@ -3144,6 +3146,14 @@ class StarFieldShape(BaseShape):
     TODO:
         Implement : createElipticStarfield()
     """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(StarFieldShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        # override to set the randomisation sequence
+        if self.seeding:
+            self.seed = tools.as_float(self.seeding, 'seeding')
+        else:
+            self.seed = None
 
     def draw_star(self, cnv, position: Point):
         """Draw a single star at a Point (x,y)."""
@@ -3166,6 +3176,8 @@ class StarFieldShape(BaseShape):
         if isinstance(self.enclosure, PolygonShape):
             x_c, y_c, radius, vertices = self.enclosure.get_geometry()
         stars = 0
+        if self.seed:
+            random.seed(self.seed)
         while stars < self.star_count:
             if isinstance(self.enclosure, RectangleShape):
                 x_y = Point(
@@ -3303,10 +3315,10 @@ class TrapezoidShape(BaseShape):
     def __init__(self, _object=None, canvas=None, **kwargs):
         """."""
         super(TrapezoidShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        if self.width2 >= self.width:
+        if self.top >= self.width:
             tools.feedback(
-                "The secondary width cannot be longer than the primary!", True)
-        self.delta_width = self._u.width - self._u.width2
+                "The top cannot be longer than the width!", True)
+        self.delta_width = self._u.width - self._u.top
         # overrides to centre shape
         if self.cx is not None and self.cy is not None:
             self.x = self.cx - self.width / 2.0
@@ -3315,12 +3327,12 @@ class TrapezoidShape(BaseShape):
 
     def calculate_area(self):
         """Calculate area of trapezoid."""
-        return self._u.width2 * self._u.height + 2.0 * self.delta_width * self._u.height
+        return self._u.top * self._u.height + 2.0 * self.delta_width * self._u.height
 
     def calculate_perimeter(self, units: bool = False) -> float:
         """Total length of bounding perimeter."""
         length = 2.0 * math.sqrt(self.delta_width + self._u.height) + \
-            self._u.width2 + self._u.width
+            self._u.top + self._u.width
         if units:
             return self.points_to_value(length)
         else:
@@ -3360,14 +3372,14 @@ class TrapezoidShape(BaseShape):
         y = kwargs.get('y', _y)
         # build array
         sign = -1 if self.flip.lower() in ['s', 'south'] else 1
-        self.delta_width = self._u.width - self._u.width2
+        self.delta_width = self._u.width - self._u.top
         vertices = []
         vertices.append(Point(x, y))
         vertices.append(Point(
             x + 0.5 * self.delta_width,
             y + sign * self._u.height))
         vertices.append(Point(
-            x + 0.5 * self.delta_width + self._u.width2,
+            x + 0.5 * self.delta_width + self._u.top,
             y + sign * self._u.height))
         vertices.append(Point(x + self._u.width, y))
         return vertices

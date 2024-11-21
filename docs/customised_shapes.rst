@@ -49,6 +49,7 @@ Rectangle
 A Rectangle is a very common shape in many designs; there are a number of ways
 that it can be customised.
 
+- `Borders <rectBorders_>`_
 - `Centred <rectCentred_>`_
 - `Cross and Dot <rectCross_>`_
 - `Chevron <rectChevron_>`_
@@ -57,7 +58,6 @@ that it can be customised.
 - `Peak <rectPeak_>`_
 - `Rotation <rectRotation_>`_
 - `Rounding <rectRounding_>`_
-- `Borders <rectBorders_>`_
 
 .. _rectCentred:
 
@@ -408,13 +408,13 @@ into the arc of a quarter-circle.
         both vertical and horizontal directions.
 
       It should be noted that if the rounding is too large in comparison with
-      the number of hatch lines, the program will issue an error::
+      the number of hatch lines, as in this example::
 
         Rectangle(common=rct, y=2.0, rounding=0.5, hatch=10)
 
-      causes::
+      then the program will issue an error::
 
-        FEEDBACK:: No hatching permissible with this size rounding in the rectangle
+        No hatching permissible with this size rounding in the rectangle
 
 ===== ======
 
@@ -422,7 +422,7 @@ into the arc of a quarter-circle.
 
 Borders
 -------
-`^ <rectBorders_>`_
+`^ <rectIndex_>`_
 
 The ``Borders`` property allows for the normal line that is drawn around the
 Rectangle to be overwritten on specific sides by another type of line.
@@ -492,6 +492,7 @@ A key property for a hexagon is its *orientation*; this can either be *flat*,
 which is the default, or *pointy*. The examples below show how commands can be
 applied to each.
 
+- `Borders <hexBorders_>`_
 - `Centre <hexCentre_>`_
 - `Dot and Cross <hexCross_>`_
 - `Hatch: Flat <hexHatchFlat_>`_
@@ -788,6 +789,68 @@ Text: Pointy
       customised in terms of its color, size and font face by appending
       *_stroke*, *_size* and *_face* respectively to the text type's name.
 
+===== ======
+
+.. _hexBorders:
+
+Borders
+-------
+`^ <hexIndex_>`_
+
+The ``Borders`` property allows for the normal line, that is drawn around a
+Hexagon, to be overwritten on specific sides by another type of line.
+
+The ``Borders`` property is specified by providing a set of values, which are
+comma-separated inside of round brackets, in the following order:
+
+- direction - one of (n)orth, (s)outh, (e)ast, (w)est, ne(northeast),
+  se(southeast), nw(northwest), or sw(southwest)
+- width - the line thickness
+- color - either a named color or a hexadecimal value
+- style - ``True`` makes it dotted; or a list of values creates dashes
+
+Direction and width are required, but color and style are optional.
+
+.. |hb1| image:: images/custom/hexagon/borders_flat.png
+   :width: 330
+
+===== ======
+|hb1| This example shows ``flat`` Hexagons constructed using these commands::
+
+        hxg = Common(
+          height=1.5, orientation="flat", font_size=8)
+        Hexagon(common=hxg, x=0.25, y=0.25, borders=('sw', 2, gold), label="SW")
+        Hexagon(common=hxg, x=0.25, y=2.15, borders=('nw', 2, gold), label="NW")
+        Hexagon(common=hxg, x=0.25, y=4.00, borders=('n', 2, gold), label="N")
+        Hexagon(common=hxg, x=2.25, y=4.00, borders=('s', 2, gold), label="S")
+        Hexagon(common=hxg, x=2.25, y=0.25, borders=('ne', 2, gold), label="NE")
+        Hexagon(common=hxg, x=2.25, y=2.15, borders=('se', 2, gold), label="SE")
+
+      Each Hexagon has a normal *stroke_width* as its outline, with a
+      default *fill* of white and default *stroke* color of black. For each,
+      there is a single thick yellow line site via the *borders* that appears
+      on one of the sides, as defined by the first value in the *borders* set.
+===== ======
+
+.. |hb2| image:: images/custom/hexagon/borders_pointy.png
+   :width: 330
+
+===== ======
+|hb2| This example shows ``pointy`` Hexagons constructed using these commands::
+
+        hxg = Common(
+          height=1.5, orientation="pointy", font_size=8)
+        Hexagon(common=hxg, x=0.25, y=0.25, borders=('sw', 2, gold), label="SW")
+        Hexagon(common=hxg, x=0.25, y=2.15, borders=('nw', 2, gold), label="NW")
+        Hexagon(common=hxg, x=0.25, y=4.00, borders=('w', 2, gold), label="W")
+        Hexagon(common=hxg, x=2.25, y=4.00, borders=('e', 2, gold), label="E")
+        Hexagon(common=hxg, x=2.25, y=0.25, borders=('ne', 2, gold), label="NE")
+        Hexagon(common=hxg, x=2.25, y=2.15, borders=('se', 2, gold), label="SE")
+
+      Each Hexagon has a normal *stroke_width* as its outline, with a
+      default *fill* of white and default *stroke* color of black. For each,
+      there is a single thick yellow line site via the *borders* that appears
+      on one of the sides, as defined by the first value in the *borders* set.
 ===== ======
 
 

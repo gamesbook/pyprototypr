@@ -85,7 +85,8 @@ StarField(
     enclosure=rectangle(x=0, y=0, height=3, width=3),
     density=80,
     colors=[white, white, red, green, blue],
-    sizes=[0.4])
+    sizes=[0.4],
+    seeding=42.3)
 PageBreak()
 
 Blueprint()
@@ -94,7 +95,8 @@ Circle(x=0, y=0, radius=1.5, fill=black)
 StarField(
     enclosure=circle(x=0, y=0, radius=1.5),
     density=30,
-    sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.5])
+    sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.5],
+    seeding=42.3)
 PageBreak()
 
 Blueprint()
@@ -105,7 +107,8 @@ StarField(
     enclosure=polygon(x=1.5, y=1.4, sides=10, radius=1.5),
     density=50,
     colors=[white, white, white, red, green, blue],
-    sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45])
+    sizes=[0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.45],
+    seeding=42.3)
 PageBreak()
 
 # ---- equilateral triangle: hatch
@@ -179,7 +182,7 @@ Blueprint()
 Text(common=txt, text="Trapezoid: flip")
 Trapezoid(
     x=1, y=2,
-    width=3, width2=2,
+    width=3, top=2,
     flip="south",
     label="flip",
     hand="east", fill="yellow")
@@ -365,7 +368,7 @@ PageBreak()
 # ---- trapezoid - custom
 Blueprint()
 Text(common=txt, text="Trapezoid - centre; dot")
-Trapezoid(cx=2, cy=3, width=3, width2=2, height=4, flip='s', dot=0.1)
+Trapezoid(cx=2, cy=3, width=3, top=2, height=4, flip='s', dot=0.1)
 PageBreak()
 
 # ---- image - base

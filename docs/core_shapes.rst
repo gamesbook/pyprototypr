@@ -1249,6 +1249,15 @@ to simulate what might be seen looking at a portion of the night sky.
 The number of dots drawn depends on the "density", which is the product of the
 actual area of the shape multiplied by the density value.
 
+    If you want repeatable randomness - that is to say, the same sequence of
+    random numbers being generated every time the program is run - then assign
+    a value to the *seeding* property; for example::
+
+              Starfield(seeding=42)
+
+    The images used for this document are created with such a setting; but only
+    to avoid the code repository detecting a "change" each time the script runs.
+
 Example 1.
 ++++++++++
 
@@ -1394,7 +1403,7 @@ Example 1.
       - starts at x-position ``1`` cm and at y-position ``1`` cm
       - *width* of ``1`` cm
       - *height* of ``1`` cm
-      - the "top" edge of the shape (*width2*) defaults to half the *width*
+      - *top* - the upper edge of the shape defaults to half the *width*
 ===== ======
 
 Example 2.
@@ -1407,14 +1416,14 @@ Example 2.
 |tr1| This example shows the shape constructed using the command with these
       properties::
 
-          Trapezoid(cx=2, cy=3, width=3, width2=2, height=4, flip='s', dot=0.1)
+          Trapezoid(cx=2, cy=3, width=3, top=2, height=4, flip='s', dot=0.1)
 
       It has the following properties set for it:
 
       - centre at x-position ``2`` cm and at y-position ``3`` cm
       - *width* of ``3`` cm
       - *height* of ``4`` cm
-      - *width2* ("top" edge) of ``2`` cm
+      - *top* of ``2`` cm
       - *flip* of ``s`` (for ``south``) means the "top" is drawn below the base
 ===== ======
 
