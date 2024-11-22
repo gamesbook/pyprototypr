@@ -274,17 +274,18 @@ class RepeatShape(BaseShape):
                 pass
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        log.debug("oc:%s od:%s", self.offset_across, self.offset_down)
-        log.debug("ga:%s gd:%s", self.gap_x, self.gap_y)
+        # print("o:%s oc:%s od:%s" % (self.offset, self.offset_across, self.offset_down))
+        # print("m:%s ml:%s mr:%s", (self.margin, self.margin_left, self.margin_right))
+        # print("ga:%s gd:%s", self.gap_x, self.gap_y)
 
         for col in range(self.cols):
             for row in range(self.rows):
                 if ((col + 1) in self.across) and ((row + 1) in self.down):
                     off_x = col * self.width + col * (
-                        self.offset_across - self.margin_left
+                        self.offset_across - (self.margin_left or self.margin)
                     )
                     off_y = row * self.height + row * (
-                        self.offset_down - self.margin_bottom
+                        self.offset_down - (self.margin_bottom or self.margin)
                     )
                     flat_elements = tools.flatten(self._object)
                     log.debug("flat_eles:%s", flat_elements)

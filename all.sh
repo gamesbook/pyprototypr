@@ -1,13 +1,13 @@
 echo "Creating PDFs for all examples (except those in examples/manual)"
 echo ""
 mkdir -p /tmp/demo
-# -- examples: simple
+# ---- examples: simple
 echo "Creating simple examples..."
 python examples/simple/demo.py -d /tmp/demo
 python examples/simple/diagram.py -d /tmp/demo
 python examples/simple/default_shapes.py -d /tmp/demo
 python examples/simple/hexagons.py -d /tmp/demo
-# --  examples: customised
+# ----  examples: customised
 echo "Creating customised examples..."
 python examples/simple/customised_blueprint.py -d /tmp/demo
 python examples/simple/customised_circle.py -d /tmp/demo
@@ -15,13 +15,13 @@ python examples/simple/customised_hexagon.py -d /tmp/demo
 python examples/simple/customised_rectangle.py -d /tmp/demo
 python examples/simple/customised_shapes.py -d /tmp/demo
 python examples/simple/customised_tracks.py -d /tmp/demo
-# -- examples: simple: layouts
+# ---- examples: simple: layouts
 echo "Creating customised layouts..."
 python examples/simple/layouts/layouts_basic.py -d /tmp/demo
 python examples/simple/layouts/layouts_basic_rectangular.py -d /tmp/demo
 python examples/simple/layouts/layouts_basic_triangular.py -d /tmp/demo
 python examples/simple/layouts/layouts_shapes_outer.py -d /tmp/demo
-# -- boards: abstract
+# ---- boards: abstract
 echo "Creating abstract boards..."
 python examples/boards/abstract/chessboard.py -d /tmp/demo
 python examples/boards/abstract/chessboard_brown.py -d /tmp/demo
@@ -31,8 +31,7 @@ python examples/boards/abstract/hexhex_circles.py -d /tmp/demo
 python examples/boards/abstract/hexhex_dots.py -d /tmp/demo
 python examples/boards/abstract/hexhex_hexagons.py -d /tmp/demo
 python examples/boards/abstract/hexhex_rectangles.py -d /tmp/demo
-# python examples/boards/abstract/
-# -- boards: commercial
+# ---- boards: commercial
 echo "Creating commercial boards..."
 python examples/boards/commercial/ack_map.py -d /tmp/demo
 python examples/boards/commercial/orion_game_board.py -d /tmp/demo
@@ -41,13 +40,13 @@ python examples/boards/commercial/traveller_draft.py -d /tmp/demo
 python examples/boards/commercial/traveller_black.py -d /tmp/demo
 python examples/boards/commercial/underwater_cities.py -d /tmp/demo
 python examples/boards/commercial/warpwar.py -d /tmp/demo
-# -- counters
+# ---- counters
 echo "Creating counters..."
 python examples/counters/counters.py -d /tmp/demo
 python examples/counters/counters_excel.py -d /tmp/demo
 python examples/counters/counters_csv.py -d /tmp/demo
 python examples/counters/blocks_csv.py -d /tmp/demo
-# -- cards
+# ---- cards
 echo "Creating cards..."
 python examples/cards/cards_design.py -d /tmp/demo
 python examples/cards/cards_images.py -d /tmp/demo

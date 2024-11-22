@@ -33,6 +33,14 @@ def polygon_vertices(
         * radius: distance from centre
         * centre: Point
         * starting_angle:  effectively the "rotation"
+
+    Doc test:
+    >>> P = polygon_vertices(6, 1.0, Point(2,2))
+    >>> assert P == [Point(x=3.0, y=2.0), Point(x=2.5, y=2.8660254037844384), \
+                     Point(x=1.5000000000000002, y=2.866025403784439), \
+                     Point(x=1.0, y=2.0), \
+                     Point(x=1.4999999999999996, y=1.1339745962155616), \
+                     Point(x=2.5, y=1.1339745962155614)]
     """
     try:
         sides = int(sides)
@@ -92,6 +100,13 @@ def degrees_to_xy(degrees: float, radius: float, origin: Point) -> Point:
 
 def point_in_polygon(point: Point, vertices: List[Point], valid_border=False) -> bool:
     """Wrapper for is_inside_polygon() function.
+
+    Doc Test:
+
+    >>> point_in_polygon(Point(1,1), [ Point(1, 1), Point(2, 2), Point(3, 3)])
+    False
+    >>> point_in_polygon(Point(1,1), [ Point(0, 0), Point(1, 2), Point(2, 0)])
+    True
     """
     _point = (point.x, point.y)
     _vertices = [(pnt.x, pnt.y) for pnt in vertices]
@@ -104,6 +119,13 @@ def is_inside_polygon(point: tuple, vertices: list, valid_border=False) -> bool:
     Ref:
         https://www.linkedin.com/pulse/~
         short-formula-check-given-point-lies-inside-outside-polygon-ziemecki/
+
+    Doc Test:
+
+    >>> is_inside_polygon(Point(1,1), [ Point(1, 1), Point(2, 2), Point(3, 3)])
+    False
+    >>> is_inside_polygon(Point(1,1), [ Point(0, 0), Point(1, 2), Point(2, 0)])
+    True
     """
 
     def _is_point_in_segment(point, point_0, point_1):
@@ -129,7 +151,15 @@ def is_inside_polygon(point: tuple, vertices: list, valid_border=False) -> bool:
 
 
 def length_of_line(start: Point, end: Point) -> float:
-    """Calculate length of line between two Points."""
+    """Calculate length of line between two Points.
+
+    Doc Test:
+
+    >>> length_of_line(Point(0, 0), Point(0, 1))
+    1.0
+    >>> length_of_line(Point(0, 0), Point(3, 4))
+    5.0
+    """
     # √[(x₂ - x₁)² + (y₂ - y₁)²]
     return math.sqrt((end.x - start.x) ** 2 + (end.y - start.y) ** 2)
 
@@ -309,6 +339,13 @@ def lines_intersect(A: Point, B: Point, C: Point, D: Point) -> bool:
 
     Ref:
         https://stackoverflow.com/questions/3838329
+
+    Doc Test:
+
+    >>> lines_intersect(Point(0, 0), Point(1, 1), Point(2, 2), Point(3, 3))
+    False
+    >>> lines_intersect(Point(0, 0), Point(2, 2), Point(2, 0), Point(0, 2))
+    True
     """
 
     def ccw(A: Point, B: Point, C: Point):
