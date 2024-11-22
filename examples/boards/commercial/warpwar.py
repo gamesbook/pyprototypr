@@ -123,9 +123,50 @@ Location(
      #group(dwarf_outer, dwarf_inner, dx=0.1, dy=-0.8), # NOT YET WORKING
     ])
 
+# borders - appear in multiple locations
+Locations(
+    ww_grid,
+    ["8P", "9Q", "10R" ],
+    [hexagon(fill=cloud_dark, stroke=grid_line, height=2.22, dx=0, dy=0,
+             borders=[
+                 ("n nw", 4, cloud_edge), ("se ne", 4, cloud_edge)])
+    ]
+)
+Locations(
+    ww_grid,
+    ["8O", "10Q", ],
+    [hexagon(fill=cloud_dark, stroke=grid_line, height=2.22, dx=0, dy=0,
+             borders=[
+                 ("nw sw s", 4, cloud_edge), ("n ne se", 4, cloud_edge, True)])
+    ]
+)
+Locations(
+    ww_grid,
+    ["8L", ],
+    [hexagon(fill=None, stroke=grid_line, height=2.22, dx=0, dy=0,
+             borders=[
+                 ("nw sw", 4, cloud_edge), ("n s", 4, cloud_edge, True)])
+    ]
+)
+Locations(
+    ww_grid,
+    ["8M", ],
+    [hexagon(fill=cloud_dark, stroke=grid_line, height=2.22, dx=0, dy=0,
+             borders=[
+                 ("n se nw sw", 4, cloud_edge, True)])
+    ]
+)
+Locations(
+    ww_grid,
+    ["8N", ],
+    [hexagon(fill=cloud_dark, stroke=grid_line, height=2.22, dx=0, dy=0,
+             borders=[
+                 ("n se nw sw", 4, cloud_edge), ("ne s", 4, cloud_edge, True)])
+    ]
+)
+
 # warp lines
 warp_line = Common(stroke=warp, stroke_width=3)
-
 LinkLine(ww_grid, [("2B", -0.5, -0.7), ("4E", 0.05, 0.9)], common=warp_line)
 LinkLine(ww_grid, [("2B", 0.15, 0.85), ("4B", -0.75, -0.8)], common=warp_line)
 LinkLine(ww_grid, [("4E", 0.25, 1.05), ("4B", -0.6, -0.9)], common=warp_line)

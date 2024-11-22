@@ -39,6 +39,7 @@ python examples/boards/commercial/orion_game_board.py -d /tmp/demo
 python examples/boards/commercial/squadleader.py -d /tmp/demo
 python examples/boards/commercial/traveller_draft.py -d /tmp/demo
 python examples/boards/commercial/traveller_black.py -d /tmp/demo
+python examples/boards/commercial/underwater_cities.py -d /tmp/demo
 python examples/boards/commercial/warpwar.py -d /tmp/demo
 # -- counters
 echo "Creating counters..."

@@ -46,6 +46,7 @@ Index of Shapes
 -  `Polyshape`_
 -  `Rectangle`_
 -  `Rectangles`_
+-  `Rhombus`_
 -  `Sector`_
 -  `Square`_
 -  `Stadium`_
@@ -1028,6 +1029,91 @@ Example 2.
 ===== ======
 
 
+Rhombus
+~~~~~~~
+`↑ <shapeIndex_>`_
+
+Example 1.
+++++++++++
+
+.. |rh0| image:: images/defaults/rhombus.png
+   :width: 330
+
+===== ======
+|rh0| This example shows the shape constructed using the command with only
+      defaults::
+
+          Rhombus()
+
+      It has the following properties based on the defaults:
+
+      - starts at x-position ``1`` cm and at y-position ``1`` cm
+      - *width* of ``1`` cm
+      - *height* of ``1`` cm
+
+      Because the sides are of equal length, the Rhombus appears to be a
+      rotated Square.
+===== ======
+
+Example 2.
+++++++++++
+
+.. |rh1| image:: images/customised/rhombus_custom.png
+   :width: 330
+
+===== ======
+|rh1| This example shows the shape constructed using the command with these
+      properties::
+
+          Rhombus(cx=2, cy=3, width=2, height=3, dot=0.1)
+
+      It has the following properties set for it:
+
+      - centre at x-position ``2`` cm and at y-position ``3`` cm
+      - *width* of ``2`` cm
+      - *height* of ``3`` cm
+      - *dot* of size ``0.1``
+===== ======
+
+Example 3.
+++++++++++
+
+.. |rh2| image:: images/customised/rhombus_borders.png
+   :width: 330
+
+===== ======
+|rh2| This example shows the shape constructed using the command with these
+      properties::
+
+          Rhombus(
+            cx=2, cy=3, width=2, height=3,
+            borders=[
+                ("nw", 2, gold),
+                ("ne", 2, lime, True),
+                ("se", 2, tomato, [0.1,0.2,0.1,0]),
+                ("sw", 2)
+            ]
+          )
+
+      It has the following properties set for it:
+
+      - centre at x-position ``2`` cm and at y-position ``3`` cm
+      - *width* of ``2`` cm
+      - *height* of ``3`` cm
+      - *borders* - a list of sets of custom settings for each side; each set
+        can contain""
+
+        - `direction` - one of ne(northeast), se(southeast), nw(northwest),
+          or sw(southwest)
+        - `width` - the line thickness
+        - `color` - either a named color or a hexadecimal value
+        - `style` - ``True`` makes it dotted; or a list of values creates dashes
+
+        Direction and width are required, but color and style are optional
+
+===== ======
+
+
 Sector
 ~~~~~~
 `↑ <shapeIndex_>`_
@@ -1084,6 +1170,7 @@ Example 2.
       this being the "virtual" centre-line  extending through the sector,
       outwards from the middle of the  enclosing "virtual" circle.
 ===== ======
+
 
 Square
 ~~~~~~
@@ -1236,7 +1323,6 @@ Example 2.
       - *rotation* -  of 45 |deg| (from the baseline, anti-clockwise) about
         the centre
 ===== ======
-
 
 
 Starfield

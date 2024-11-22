@@ -2653,6 +2653,16 @@ class RhombusShape(BaseShape):
     Rhombus on a given canvas.
     """
 
+    def get_vertices(self, **kwargs):
+        """Calculate vertices of rhombus."""
+        x_s, y_s = kwargs.get('x'), kwargs.get('y') + self._u.height / 2.0
+        vertices = []
+        vertices.append(Point(x_s, y_s))
+        vertices.append(Point(x_s + self._u.width / 2.0, y_s + self._u.height / 2.0))
+        vertices.append(Point(x_s + self._u.width, y_s))
+        vertices.append(Point(x_s + self._u.width / 2.0, y_s - self._u.height / 2.0))
+        return vertices
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a rhombus (diamond) on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
@@ -2682,7 +2692,7 @@ class RhombusShape(BaseShape):
             cnv.saveState()
             # move the canvas origin
             if ID is not None:
-                #cnv.translate(cx + self._u.margin_left, cy + self._u.margin_bottom)
+                # cnv.translate(cx + self._u.margin_left, cy + self._u.margin_bottom)
                 cnv.translate(cx, cy)
             else:
                 cnv.translate(cx, cy)
@@ -2692,15 +2702,22 @@ class RhombusShape(BaseShape):
             x = -self._u.width / 2.0
             y = -self._u.height / 2.0
         # ---- draw rhombus
-        x_s, y_s = x, y + self._u.height / 2.0
+        self.vertices = self.get_vertices(cx=cx, cy=cy, x=x, y=y)
         pth = cnv.beginPath()
-        pth.moveTo(x_s, y_s)
-        pth.lineTo(x_s + self._u.width / 2.0, y_s + self._u.height / 2.0)
-        pth.lineTo(x_s + self._u.width, y_s)
-        pth.lineTo(x_s + self._u.width / 2.0, y_s - self._u.height / 2.0)
-        pth.lineTo(x_s, y_s)
+        pth.moveTo(*self.vertices[0])
+        for vertex in self.vertices:
+            pth.lineTo(*vertex)
         pth.close()
         cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
+        # ---- borders (override)
+        if self.borders:
+            if isinstance(self.borders, tuple):
+                self.borders = [self.borders,]
+            if not isinstance(self.borders, list):
+                tools.feedback(
+                    'The "borders" property must be a list of sets or a set')
+            for border in self.borders:
+                self.draw_border(cnv, border, ID)
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + self._u.height / 2.0)
         # ---- cross
@@ -3408,7 +3425,7 @@ class TrapezoidShape(BaseShape):
                 cnv.translate(cx, cy)
             cnv.rotate(rotation)
         # ---- draw trapezoid
-        self.vertices = self.get_vertices(cx=cx, cy=cy, x=x, y=y)  # self.get_vertices()  #
+        self.vertices = self.get_vertices(cx=cx, cy=cy, x=x, y=y)
         pth = cnv.beginPath()
         pth.moveTo(*self.vertices[0])
         for vertex in self.vertices:

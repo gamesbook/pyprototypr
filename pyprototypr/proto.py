@@ -608,6 +608,15 @@ def Set(_object, **kwargs):
 # ---- shapes ====
 
 
+def base_shape(source=None, **kwargs):
+    global cnv
+    global deck
+    kwargs = margins(**kwargs)
+    kwargs['source'] = source
+    bshape = BaseShape(canvas=cnv, **kwargs)
+    return bshape
+
+
 def Common(source=None, **kwargs):
     global cnv
     global deck
@@ -1475,7 +1484,7 @@ def LinkLine(grid: list, locations: list, **kwargs):
         tools.feedback(f"'{locations} is not a list - please check!", True)
     if len(locations) < 2:
         tools.feedback(f"There should be at least 2 locations to create links!", True)
-    dummy = shape()
+    dummy = base_shape()  # a BaseShape - not drawable!
     for index, location in enumerate(locations):
         # precheck
         if not isinstance(location, tuple) or len(location) != 3:

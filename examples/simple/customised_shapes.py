@@ -454,6 +454,25 @@ Text(common=txt, text="Rectangles: custom")
 Rectangles(rows=4, cols=2, width=1.5, height=1.25, dotted=True, fill=lime)
 PageBreak()
 
+# ---- rhombus - custom
+Blueprint()
+Text(common=txt, text="Rhombus - centre; dot")
+Rhombus(cx=2, cy=3, width=2, height=3, dot=0.1)
+PageBreak()
+
+# ---- rhombus - borders
+Blueprint()
+Text(common=txt, text="Rhombus - borders")
+Rhombus(cx=2, cy=3, width=2, height=3, stroke_width=1.9,
+    borders=[
+        ("nw", 2, gold),
+        ("ne", 2, lime, True),
+        ("se", 2, tomato, [0.1,0.2,0.1,0]),
+        ("sw", 2)
+    ]
+)
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Shapes END...")
 PageBreak(footer=True)
@@ -478,5 +497,6 @@ Save(
         "square_custom", "trapezoid_custom", "image_default",
         "descriptions", "label_offset", "star_custom",
         "polyshape_default", "polyshape_custom", "polyshape_offset",
-        "rectangles_rowcol", "rectangles_custom",
+        "rectangles_rowcol", "rectangles_custom", "rhombus_custom",
+        "rhombus_borders",
         None])
