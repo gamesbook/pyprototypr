@@ -435,7 +435,9 @@ comma-separated inside of round brackets, in the following order:
 - color - either a named color or a hexadecimal value
 - style - ``True`` makes it dotted; or a list of values creates dashes
 
-Direction and width are required, but color and style are optional.
+Direction and width are required, but color and style are optional.  One
+or more border values can be used together with spaces between them
+e.g. ``n s`` to draw both lines on both north **and** south sides.
 
 .. |rb1| image:: images/custom/rectangle/borders.png
    :width: 330
@@ -809,7 +811,9 @@ comma-separated inside of round brackets, in the following order:
 - color - either a named color or a hexadecimal value
 - style - ``True`` makes it dotted; or a list of values creates dashes
 
-Direction and width are required, but color and style are optional.
+Direction and width are required, but color and style are optional.  One
+or more border values can be used together with spaces between them
+e.g. ``ne se`` to draw lines on both northeast **and** southeast.
 
 .. |hb1| image:: images/custom/hexagon/borders_flat.png
    :width: 330

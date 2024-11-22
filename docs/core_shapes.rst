@@ -1109,7 +1109,9 @@ Example 3.
         - `color` - either a named color or a hexadecimal value
         - `style` - ``True`` makes it dotted; or a list of values creates dashes
 
-        Direction and width are required, but color and style are optional
+        Direction and width are required, but color and style are optional. One
+        or more border values can be used together with spaces between them
+        e.g. ``ne se`` to draw lines on both northeast **and** southeast sides.
 
 ===== ======
 
