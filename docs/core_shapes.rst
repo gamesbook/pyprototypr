@@ -1515,6 +1515,46 @@ Example 2.
       - *flip* of ``s`` (for ``south``) means the "top" is drawn below the base
 ===== ======
 
+Example 3.
+++++++++++
+
+.. |tr3| image:: images/customised/trapezoid_borders.png
+   :width: 330
+
+===== ======
+|tr3| This example shows the shape constructed using the command with these
+      properties::
+
+        Trapezoid(
+            cx=2, cy=3, width=2, height=2, top=1.5, stroke_width=2,
+            borders=[
+                ("w", 2, gold),
+                ("e", 2, lime, True),
+                ("n", 2, tomato, [0.1,0.2,0.1,0]),
+                ("s", 2)
+            ]
+        )
+
+      It has the following properties set for it:
+
+      - centre at x-position ``2`` cm and at y-position ``3`` cm
+      - *width* of ``2`` cm
+      - *height* of ``3`` cm
+      - *top* of ``1.5`` cm
+      - *borders* - a list of sets of custom settings for each side; each set
+        can contain""
+
+        - `direction` - one of n(orth), s(outh), e(ast) or w(est)
+        - `width` - the line thickness
+        - `color` - either a named color or a hexadecimal value
+        - `style` - ``True`` makes it dotted; or a list of values creates dashes
+
+        Direction and width are required, but color and style are optional. One
+        or more border values can be used together with spaces between them
+        e.g. ``n s`` to draw lines on both north **and** south sides.
+
+===== ======
+
 
 .. _compoundIndex:
 

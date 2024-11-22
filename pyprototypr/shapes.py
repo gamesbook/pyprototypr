@@ -3433,9 +3433,18 @@ class TrapezoidShape(BaseShape):
         pth.close()
         cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
         sign = -1 if self.flip.lower() in ['s', 'south'] else 1
+        # ---- borders (override)
+        if self.borders:
+            if isinstance(self.borders, tuple):
+                self.borders = [self.borders,]
+            if not isinstance(self.borders, list):
+                tools.feedback(
+                    'The "borders" property must be a list of sets or a set')
+            for border in self.borders:
+                self.draw_border(cnv, border, ID)
         # ---- dot
         self.draw_dot(cnv, x + self._u.width / 2.0, y + sign * self._u.height / 2.0)
-        # ---- dot
+        # ---- cross
         self.draw_cross(cnv, x + self._u.width / 2.0, y + sign * self._u.height / 2.0)
         # ---- text
         self.draw_heading(cnv, ID, x + self._u.width / 2.0, y + sign * self._u.height, **kwargs)

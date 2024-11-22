@@ -1780,7 +1780,7 @@ class BaseShape:
             shape_name = self.__class__.__name__.replace('Shape', '')
             match self.__class__.__name__:
 
-                case 'RectangleShape' | 'SquareShape':
+                case 'RectangleShape' | 'SquareShape'| 'TrapezoidShape':
                     match bdirection.lower():
                         case 'n' | 'north' | '*':
                             x, y = self.vertices[1][0], self.vertices[1][1]

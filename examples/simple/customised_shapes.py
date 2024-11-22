@@ -473,6 +473,20 @@ Rhombus(cx=2, cy=3, width=2, height=3, stroke_width=1.9,
 )
 PageBreak()
 
+# ---- trapezoid - borders
+Blueprint()
+Text(common=txt, text="Trapezoid - borders")
+Trapezoid(
+    cx=2, cy=3, width=2, height=2, top=1.5, stroke_width=2,
+    borders=[
+        ("w", 2, gold),
+        ("e", 2, lime, True),
+        ("n", 2, tomato, [0.1,0.2,0.1,0]),
+        ("s", 2)
+    ]
+)
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Shapes END...")
 PageBreak(footer=True)
@@ -498,5 +512,5 @@ Save(
         "descriptions", "label_offset", "star_custom",
         "polyshape_default", "polyshape_custom", "polyshape_offset",
         "rectangles_rowcol", "rectangles_custom", "rhombus_custom",
-        "rhombus_borders",
+        "rhombus_borders", "trapezoid_borders",
         None])
