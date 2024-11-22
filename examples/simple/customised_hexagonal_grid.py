@@ -1,23 +1,26 @@
 """
-Show customisation options for hexagons pyprototypr
+Show customised Hexagons grid for pyprototypr
 
 Written by: Derek Hohls
-Created on: 9 April 2024
+Created on: 22 November 2024
 """
 
 from pyprototypr import *
 
-Create(filename="customised_hexagons.pdf",
+Create(filename="customised_hexagonal_grid.pdf",
        paper=A8,
        margin=0.75,
        margin_right=0.2, margin_top=0.2,
        font_size=8,
        stroke_width=0.5)
 
+Footer(draw=False)
+
 header = Common(x=0, y=6, font_size=8, align="left")
 
+# ---- rectangular - flat
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: flat (F)")
+Text(common=header, text="Hexagons: flat")
 Hexagons(
     side=0.5,
     x=0, y=0,
@@ -25,8 +28,9 @@ Hexagons(
 )
 PageBreak()
 
+# ---- rectangular - pointy
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: pointy (P)")
+Text(common=header, text="Hexagons: pointy")
 Hexagons(
     side=0.5,
     x=0, y=0,
@@ -35,8 +39,9 @@ Hexagons(
 )
 PageBreak()
 
+# ---- rectangular - flat - coords
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: coordinates (flat)")
+Text(common=header, text="Hexagons: flat; coordinates")
 Hexagons(
     side=0.6,
     x=0, y=0,
@@ -53,8 +58,9 @@ Hexagons(
 )
 PageBreak()
 
+# ---- rectangular - pointy - coords
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: coordinates (pointy)")
+Text(common=header, text="Hexagons: pointy; coordinates")
 Hexagons(
     side=0.6,
     x=0, y=0,
@@ -73,51 +79,34 @@ Hexagons(
 )
 PageBreak()
 
+# ---- rectangular - flat - caltrops
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: caltrops&dots (flat)")
+Text(common=header, text="Hexagons: flat; caltrops&dots")
 Hexagons(
     side=0.6,
     rows=3, cols=3,
     x=0, y=0,
-    dot_size=0.04,
+    dot=0.04,
     caltrops="medium",
 )
 PageBreak()
 
+# ---- rectangular - pointy - caltrops
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: caltrops&dots (pointy)")
+Text(common=header, text="Hexagons: pointy; caltrops&dots")
 Hexagons(
     side=0.6,
     rows=3,cols=3,
     orientation='pointy',
     x=0, y=0,
-    dot_size=0.04,
+    dot=0.04,
     caltrops="large",
 )
 PageBreak()
 
+# ---- rectangular - offset
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: rows & cols // even")
-Hexagons(
-    side=0.5,
-    x=0, y=0,
-    rows=3, cols=3,
-    coord_position="middle", coord_font_size=5,
-    coord_separator=' r', coord_prefix='c',
-)
-Hexagons(
-    side=0.5,
-    x=1, y=3,
-    rows=3, cols=3,
-    orientation='pointy',
-    coord_position="middle", coord_font_size=5,
-    coord_separator=' r', coord_prefix='c',
-)
-PageBreak()
-
-
-Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: rows & cols // odd")
+Text(common=header, text="Hexagons: offset // odd")
 Hexagons(
     side=0.5,
     x=0, y=0,
@@ -137,6 +126,7 @@ Hexagons(
 )
 PageBreak()
 
+# ---- rectangular - hidden
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: hidden")
 Hexagons(
@@ -144,16 +134,18 @@ Hexagons(
     x=1, y=3,
     rows=3, cols=3,
     orientation='pointy',
-    hidden=[[1, 2,], [3, 3]]
+    hidden=[[1, 2], [1, 3,], [3, 2], [3, 3]]
 )
 Hexagons(
     side=0.5,
     x=0, y=0,
     rows=3, cols=3,
-    hidden=[[2, 1,], [2, 3]]
+    hidden=[[2, 1], [2, 3]]
+    #hidden="2,1 2,3"
 )
 PageBreak()
 
+# ---- rectangular - radii
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: radii")
 Hexagons(
@@ -174,5 +166,51 @@ Hexagons(
 )
 PageBreak()
 
+# ---- circular
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Hexagons: circular")
+Hexagons(
+    x=0, y=0,
+    sides=3,
+    height=.75,
+    hex_layout="circle",
+)
+PageBreak()
 
-Save()
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Hexagons: circular; nested")
+Hexagons(
+    x=0, y=0,
+    sides=3,
+    stroke=None, fill=None,
+    height=.75,
+    hex_layout="circle",
+    centre_shape=hexagon(stroke=black, fill=silver, height=0.6, stroke_width=2),
+)
+PageBreak()
+
+# ---- diamond
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Hexagons: diamond")
+Hexagons(
+    x=0, y=0,
+    # margin_left=0,
+    rows=3,
+    height=0.75,
+    hex_layout="diamond",
+)
+PageBreak()
+
+
+Save(
+    output='png',
+    dpi=600,
+    directory="docs/images/custom/hexagonal_grid",
+    names=[
+        "rect_basic_flat", "rect_basic-pointy",
+        "rect_coords_flat", "rect_coords_pointy",
+        "rect_coords_caltrops", "rect_coords_caltrops",
+        "rect_offset", "rect_hidden", "rect_radii",
+        "circular", "circular_nested",
+        "diamond",
+      ])

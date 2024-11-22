@@ -1,8 +1,84 @@
-pyprototypr: Hexagonal Grids
-============================
+===============
+Hexagonal Grids
+===============
 
-Introduction
-------------
+.. |copy| unicode:: U+000A9 .. COPYRIGHT SIGN
+   :trim:
+.. |deg|  unicode:: U+00B0 .. DEGREE SIGN
+   :ltrim:
+
+Hexagonal grids are now widely used in the table top gaming industry.
+
+They are particularly suitable in providing an overlay for maps and have been
+used for decades in war games and role playing games, but can also act as grids
+or tiles in regular board games.
+
+.. _pageIndex:
+
+Table of Contents
+=================
+
+- `Overview`_
+- `Rectangular Hexagonal Grid`_
+- `Circular Hexagonal Grid`_
+- `Footnotes`_
+
+
+Overview
+========
+`↑ <pageIndex_>`_
+
+These descriptions assume you are familiar with the concepts, terms and ideas
+for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ -
+especially *units*, *properties* and *defaults*.
+
+You should have already seen how a single Hexagon and a basic grid of Hexagons
+are created using defaults, in `Core Shapes <core_shapes.rst#hexagon>`_. You
+should also have seen how a single Hexagon can be further enhanced in
+`Customised Shapes <customised_shapes.rst#hexagon>`_.
+
+.. _rectIndex:
+
+Rectangular Hexagonal Grid
+==========================
+`↑ <pageIndex_>`_
+
+The basic hexagonal grid is laid out in a rectangular fashion. It can be
+customised in a number of ways.
+
+- `Rows & Columns <rectRowsCols_>`_
+
+.. _rectRowsCols:
+
+Rows and Columns
+----------------
+`^ <rectIndex_>`_
+
+.. |rr1| image:: images/custom/hexagonal_grid/rect_basic_flat.png
+   :width: 330
+
+===== ======
+|rr1| This example shows a grid constructed using the command::
+
+        Hex
+
+      It has the following properties that differ from the defaults:
+
+      - *cx* and *cy* are used to set
+===== ======
+
+
+
+Circular Hexagonal Grid
+=======================
+`↑ <pageIndex_>`_
+
+
+
+Footnotes
+=========
+`↑ <pageIndex_>`_
+
 
 Hexagonal grids are now widely used in the gaming industry. They are
 particularly suitable in providing an overlay for maps. As such they
@@ -19,8 +95,8 @@ game-specific, are listed below:
    grid generator which interactively creates a display, downloadable as
    a PNG image.
 -  *mkhexgrid* (https://www.nomic.net/~uckelman/mkhexgrid/) - a
-   command-line program which generates hexagonal grids used for
-   strategy games as PNG or SVG.
+   command-line program which generates hexagonal grids, used for
+   strategy games, as PNG or SVG images.
 -  *Hex Map Extension*
    (https://github.com/lifelike/hexmapextension/tree/master) - an
    extension for creating hex grids in *Inkscape* that can also be used
@@ -44,16 +120,10 @@ these other tools would be of better use.
    grids are designed and calculated the single most useful reference is
    https://www.redblobgames.com/grids/hexagons/
 
-A Small Footnote 
-~~~~~~~~~~~~~~~~
+A Sub Footnote
+--------------
 
-The 18xx train games hex maps are often criticised for their poor aesthetic. 
-A fascinating article that engages with this topic - and is perhaps relevant 
+The 18xx train games hex maps are often criticised for their poor aesthetic.
+A fascinating article that engages with this topic - and is perhaps relevant
 even at the prototyping stage being supported by this program - is available at
 https://medium.com/grandtrunkgames/mawgd4-18xx-tiles-and-18xx-maps-8a409bba4230
-
-
-A Basic Hexagonal Grid
-----------------------
-
-**To Be Done**
