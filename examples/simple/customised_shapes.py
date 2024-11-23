@@ -487,9 +487,25 @@ Trapezoid(
 )
 PageBreak()
 
+# ---- arrow - sizes
+Blueprint()
+Text(common=txt, text="Arrow: sizes")
+Arrow(x=1, y=1, height=1, width=0.5, head_height=0.5, head_width=0.75)
+Arrow(x=2, y=1, height=1, width=0.5, head_height=0.5, head_width=0.75,
+      stroke=tomato, fill=silver, stroke_width=2)
+Arrow(x=3, y=1, height=1, width=0.5, head_height=0.5, head_width=0.75, tail_width=0.01,
+      fill_stroke=gold)
+Arrow(x=1, y=3, height=1, width=0.25, head_height=0.5, head_width=1, points_offset=-0.25,
+      fill=lime)
+Arrow(x=2, y=3, height=1, width=0.25, head_height=1, head_width=0.75, points_offset=0.25,
+      fill=tomato)
+Arrow(x=3, y=3, height=1, width=0.5, head_height=0.5, head_width=0.5, tail_notch=0.25,
+      stroke=black, fill=aqua, stroke_width=1)
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Shapes END...")
-PageBreak(footer=True)
+#PageBreak(footer=True)
 
 #Save()
 Save(
@@ -512,5 +528,5 @@ Save(
         "descriptions", "label_offset", "star_custom",
         "polyshape_default", "polyshape_custom", "polyshape_offset",
         "rectangles_rowcol", "rectangles_custom", "rhombus_custom",
-        "rhombus_borders", "trapezoid_borders",
+        "rhombus_borders", "trapezoid_borders", "arrow_sizes",
         None])

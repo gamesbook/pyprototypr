@@ -454,9 +454,53 @@ Example 1.
       - centre-bottom point at x-position ``1`` cm and at y-position ``1`` cm
       - *height* of the tail portion of ``1`` cm
       - *head_height* of the head portion of ``1`` cm
-      - *head_width* of the head portion of ``2`` cm
+      - *head_width* of the head portion of ``2`` cm (maximum dsistance between
+        the outer arrowhead "tips")
 ===== ======
 
+Example 2.
+++++++++++
+
+.. |ar2| image:: images/customised/arrow_sizes.png
+   :width: 330
+
+===== ======
+|ar2| This example shows the shape constructed using the commands as follows::
+
+        Arrow(
+            x=1, y=1, height=1, width=0.5,
+            head_height=0.5, head_width=0.75)
+        Arrow(
+            x=2, y=1, height=1, width=0.5,
+            head_height=0.5, head_width=0.75,
+            stroke=tomato, fill=silver, stroke_width=2)
+        Arrow(
+            x=3, y=1, height=1, width=0.5,
+            head_height=0.5, head_width=0.75, tail_width=0.01,
+            fill_stroke=gold)
+        Arrow(
+            x=1, y=3, height=1, width=0.25,
+            head_height=0.5, head_width=1, points_offset=-0.25,
+            fill=lime)
+        Arrow(
+            x=2, y=3, height=1, width=0.25,
+            head_height=1, head_width=0.75, points_offset=0.25,
+            fill=tomato)
+        Arrow(
+            x=3, y=3, height=1, width=0.5,
+            head_height=0.5, head_width=0.5, tail_notch=0.25,
+            stroke=black, fill=aqua, stroke_width=1)
+
+      The shapes all set the following properties:
+
+      - centre-bottom point at *x* and *y*
+      - *height* of the tail portion (``1`` cm for all)
+      - *width* of the tail portion
+      - *head_height* sets height of the head portion
+      - *head_width* sets width of the head portion (maximum dsistance between
+        the outer arrowhead "tips")
+
+===== ======
 
 
 Circle

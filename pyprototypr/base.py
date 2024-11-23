@@ -491,9 +491,10 @@ class BaseCanvas:
         self.angle_1 = self.defaults.get('angle1', 0)
         # ---- arrow shape: head and tail
         self.points_offset = self.defaults.get('points_offset', 0)
-        self.head_height = self.defaults.get('head_height', 1)
+        self.head_height = self.defaults.get('head_height', self.height)
         self.head_width = self.defaults.get('head_width', 2 * self.width)
-        self.tail_width = self.defaults.get('tail_width', 1)
+        self.tail_width = self.defaults.get('tail_width', 0)  # adjusted in ArrowShape
+        self.tail_notch = self.defaults.get('tail_notch', 0)
         # TODO arrow-on-a-line
         self.arrow_style = self.defaults.get('arrow_style', 'triangle')
         self.arrow_tail_style = self.defaults.get('arrow_tail_style', None)
@@ -821,6 +822,7 @@ class BaseShape:
         self.head_height = self.kw_float(kwargs.get('head_height', cnv.head_height))
         self.head_width = self.kw_float(kwargs.get('head_width', cnv.head_width))
         self.tail_width = self.kw_float(kwargs.get('tail_width', cnv.tail_width))
+        self.tail_notch = self.kw_float(kwargs.get('tail_notch', cnv.tail_notch))
         # TODO arrow-on-a-line
         self.arrow_style = kwargs.get('arrow_style', cnv.arrow_style)
         self.arrow_tail_style = kwargs.get('arrow_tail_style', cnv.arrow_tail_style)

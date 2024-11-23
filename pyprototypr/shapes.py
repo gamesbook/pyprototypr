@@ -164,9 +164,11 @@ class ArrowShape(BaseShape):
         super(ArrowShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # ---- unit calcs
         self.points_offset_u = self.unit(self.points_offset) if self.points_offset else 0
-        self.head_height_u = self.unit(self.head_height) if self.head_height else self._u.height / 2.0
+        self.head_height_u = self.unit(self.head_height) if self.head_height else self._u.height
         self.head_width_u = self.unit(self.head_width) if self.head_width else self._u.width * 2.0
+        # print(f"***1 {self._u.width=} {self.tail_width=}")
         self.tail_width_u = self.unit(self.tail_width) if self.tail_width else self._u.width
+        self.tail_notch_u = self.unit(self.tail_notch) if self.tail_notch else 0
 
     def get_vertices(self, **kwargs):
         """Calculate vertices of arrow."""
@@ -177,6 +179,8 @@ class ArrowShape(BaseShape):
         if tail_height <= 0:
             tools.feedback(
                 'The Arrow head height must be less than overall height', True)
+        # print(f"***2 {self._u.width=} {self.tail_width_u=}  {self.head_width_u=} {self.fill=} ")
+        # print(f"{=} ")
         vertices = []
         vertices.append(Point(x_s, y_s))  # lower-left corner
         vertices.append(Point(x_c - self._u.width / 2.0, y_s + tail_height))
@@ -187,9 +191,9 @@ class ArrowShape(BaseShape):
                               y_s + tail_height + self.points_offset_u))
         vertices.append(Point(x_c + self._u.width / 2.0,
                               y_s + tail_height))
-        # if self.tail_notch_height > 0:
-        #     pass  # extra vertex
         vertices.append(Point(x_c + self.tail_width_u / 2.0, y_s)) # bottom corner
+        if self.tail_notch_u > 0:
+            vertices.append(Point(x_c, y_s + self.tail_notch_u)) # centre notch
         return vertices
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
