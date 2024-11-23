@@ -12,7 +12,10 @@ Create(filename="objects.pdf", margin=1, margin_top=0.25)
 header = Common(x=0, y=27, font_size=24, align="left")
 header_font = Common(font_size=16, align="left")
 
+# ---- PAGE 1 ===>
+
 Text(common=header, text="Miscellaneous Objects #1")
+#Blueprint()
 
 Text(common=header_font, x=6, y=23, text="Coin: circle with step-created radii + an inner circle")
 # circles 24 radii - i.e. one every 15 degrees
@@ -62,7 +65,10 @@ Rectangle(x=1.7, y=0.9, height=3, width=2.6,
           stroke=sienna, stroke_width=5, fill=skyblue)
 PageBreak()
 
+# ---- PAGE 2 ===>
+
 Text(common=header, text="Miscellaneous Objects #2")
+#Blueprint()
 
 Text(common=header_font, x=5, y=25, text="Wormhole: rotation, nested hexagons")
 poly6 = Common(x=2, y=25, fill=None, sides=6, stroke_width=1)
@@ -76,7 +82,8 @@ Polygon(common=poly6, radius=0.75, rotation=30)
 Polygon(common=poly6, radius=0.60, rotation=45)
 Polygon(x=2, y=25, fill=black, radius=0.60, rotation=60)
 
-Text(common=header_font, x=5, y=22, text="XOK Fish: nested circles with 2 offset radii")
+Text(common=header_font, x=5, y=22,
+     text="XOK Fish: nested circles with 2 thick offset radii")
 Circle(cx=2, cy=22, radius=1,
        fill="#63B1BB", stroke="#63B1BB",
        radii=[135,225],
@@ -107,5 +114,19 @@ Rectangle(
     notch=0.7, notch_style='step')
 Rectangle(
     height=2.8, width=2.8, x=0.5, y=11, fill=None, stroke=white, stroke_width=3)
+
+Text(common=header_font, x=5, y=9,
+     text="Mars Base: rectangle borders; circles with offset radii")
+Circle(cx=1, cy=9, radius=0.8, fill=lightcoral, stroke=firebrick, stroke_width=6)
+Circle(cx=3.5, cy=9, radius=0.8, fill=lightcoral, stroke=firebrick, stroke_width=6)
+Rectangle(
+    x=1.55, y=8.5, height=1, width=1.4, fill=lightcoral, stroke=None,
+    borders=("n s", 6, firebrick))
+Circle(cx=1, cy=9, radius=0.35, fill=None, stroke=firebrick, stroke_width=1,
+       radii=[33, 90, 150, 210, 270, 327], radii_offset=0.7,
+       radii_stroke_width=1, radii_stroke=firebrick)
+Circle(cx=3.5, cy=9, radius=0.35, fill=None, stroke=firebrick, stroke_width=1,
+       radii=[30, 90, 147, 213, 270, 330], radii_offset=0.7,
+       radii_stroke_width=1, radii_stroke=firebrick)
 
 Save(output='png')

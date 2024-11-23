@@ -1,6 +1,6 @@
 include requirements.txt
 include CHANGES.txt
-include contributors.txt
+include CONTRIBUTORS.txt
 include LICENSE
 include setup.py
-include README.rst
+include README.md
