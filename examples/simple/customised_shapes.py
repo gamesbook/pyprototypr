@@ -491,8 +491,8 @@ PageBreak()
 Blueprint()
 Text(common=txt, text="Arrow: sizes")
 Arrow(x=1, y=1, height=1, width=0.5, head_height=0.5, head_width=0.75)
-Arrow(x=2, y=1, height=1, width=0.5, head_height=0.5, head_width=0.75,
-      stroke=tomato, fill=silver, stroke_width=2)
+Arrow(x=2, y=1, height=1, width=0.5, head_height=0.5, head_width=0.75, tail_width=0.75,
+      stroke=tomato, fill=silver, stroke_width=2, transparency=50)
 Arrow(x=3, y=1, height=1, width=0.5, head_height=0.5, head_width=0.75, tail_width=0.01,
       fill_stroke=gold)
 Arrow(x=1, y=3, height=1, width=0.25, head_height=0.5, head_width=1, points_offset=-0.25,
