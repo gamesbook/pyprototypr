@@ -26,6 +26,7 @@ Index of Shapes
 ---------------
 
 -  `Arc`_
+-  `Arrow`_
 -  `Blueprint`_
 -  `Bezier`_
 -  `Circle`_
@@ -130,7 +131,6 @@ Example 1.
 
       - origin is at x-position ``1`` cm and at y-position ``1`` cm
 ===== ======
-
 
 Example 2.
 ++++++++++
@@ -432,6 +432,32 @@ There is an overview on how color is used in the
 
     *Reminder:* **pyprototypr** comes with a predefined set of named colors, shown in the
     `colors <../examples/colorset.pdf>`_ PDF file.
+
+Arrow
+~~~~~~
+`↑ <shapeIndex_>`_
+
+Example 1.
+++++++++++
+
+.. |arl| image:: images/defaults/arrow.png
+   :width: 330
+
+===== ======
+|arl| This example shows the shape constructed using the command with only
+      defaults::
+
+          Arrow()
+
+      It has the following properties based on the defaults:
+
+      - centre-bottom point at x-position ``1`` cm and at y-position ``1`` cm
+      - *height* of the tail portion of ``1`` cm
+      - *head_height* of the head portion of ``1`` cm
+      - *head_width* of the head portion of ``2`` cm
+===== ======
+
+
 
 Circle
 ~~~~~~

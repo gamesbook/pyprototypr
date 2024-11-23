@@ -160,14 +160,40 @@ class ArrowShape(BaseShape):
     Arrow on a given canvas.
     """
 
-    def arrow_head(self):
-        """Draw head of arrow."""
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(ArrowShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        # ---- unit calcs
+        self.points_offset_u = self.unit(self.points_offset) if self.points_offset else 0
+        self.head_height_u = self.unit(self.head_height) if self.head_height else self._u.height / 2.0
+        self.head_width_u = self.unit(self.head_width) if self.head_width else self._u.width * 2.0
+        self.tail_width_u = self.unit(self.tail_width) if self.tail_width else self._u.width
 
-    def arrow_tail(self):
-        """Draw head of arrow."""
+    def get_vertices(self, **kwargs):
+        """Calculate vertices of arrow."""
+        x_c = kwargs.get('x')
+        x_s, y_s = x_c - self.tail_width_u / 2.0, kwargs.get('y')
+        tail_height = self._u.height
+        total_height = self._u.height + self.head_height_u
+        if tail_height <= 0:
+            tools.feedback(
+                'The Arrow head height must be less than overall height', True)
+        vertices = []
+        vertices.append(Point(x_s, y_s))  # lower-left corner
+        vertices.append(Point(x_c - self._u.width / 2.0, y_s + tail_height))
+        vertices.append(Point(x_c - self.head_width_u / 2.0,
+                              y_s + tail_height + self.points_offset_u))
+        vertices.append(Point(x_c, y_s + total_height))  # tip
+        vertices.append(Point(x_c + self.head_width_u / 2.0,
+                              y_s + tail_height + self.points_offset_u))
+        vertices.append(Point(x_c + self._u.width / 2.0,
+                              y_s + tail_height))
+        # if self.tail_notch_height > 0:
+        #     pass  # extra vertex
+        vertices.append(Point(x_c + self.tail_width_u / 2.0, y_s)) # bottom corner
+        return vertices
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        """Draw an arrow on a given canvas."""
+        """Draw an arrow shape on a given canvas."""
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         cnv = cnv.canvas if cnv else self.canvas.canvas
         if self.use_abs:
@@ -176,47 +202,25 @@ class ArrowShape(BaseShape):
         else:
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
-        if self.use_abs_1:
-            x_1 = self._abs_x1
-            y_1 = self._abs_y1
-        elif self.x_1 or self.y_1:
-            x_1 = self.unit(self.x_1) + self._o.delta_x
-            y_1 = self.unit(self.y_1) + self._o.delta_y
-        else:
-            if self.angle > 0:
-                angle = math.radians(self.angle)
-                x_1 = x + (self._u.length * math.cos(angle))
-                y_1 = y + (self._u.length * math.sin(angle))
-            else:
-                x_1 = x + self._u.length
-                y_1 = y
-        if self.row is not None and self.row >= 0:
-            y = y + self.row * self._u.height
-            y_1 = y_1 + self.row * self._u.height - self._u.margin_bottom
-        if self.col is not None and self.col >= 0:
-            x = x + self.col * self._u.width
-            x_1 = x_1 + self.col * self._u.width - self._u.margin_left
-        log.debug("x:%s x1:%s y:%s y1:%s", x, x_1, y, y_1)
+        cx = x
+        cy = y + self._u.height - self.head_height_u
         # ---- set canvas
         self.set_canvas_props(index=ID)
         # ---- draw arrow
-        log.debug("angle:%s length:%s x:%s y:%s x_1:%s y_1:%s",
-                  self.angle, self._u.length, x, y, x_1, y_1)
+        self.vertices = self.get_vertices(cx=cx, cy=cy, x=x, y=y)
         pth = cnv.beginPath()
-        pth.moveTo(x, y)
-        pth.lineTo(x_1, y_1)
+        pth.moveTo(*self.vertices[0])
+        for vertex in self.vertices:
+            pth.lineTo(*vertex)
+        pth.close()
         cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
-        # ---- head
-        self.arrow_head()
-        # ---- tail
-        self.arrow_tail()
-        # ---- calculate line rotation
-        compass, rotation = geoms.angles_from_points(x, y, x_1, y_1)
         # ---- dot
-        self.draw_dot(cnv, (x_1 + x) / 2.0, (y_1 + y) / 2.0)
+        self.draw_dot(cnv, cx, cy)
+        # ---- cross
+        self.draw_cross(cnv, cx, cy)
         # ---- text
-        self.draw_label(
-            cnv, ID, (x_1 + x) / 2.0, (y_1 + y) / 2.0, rotation=rotation, centred=False, **kwargs)
+        self.draw_heading(cnv, ID, x, y + self._u.height, **kwargs)
+        self.draw_title(cnv, ID, x, y, **kwargs)
 
 
 class BezierShape(BaseShape):

@@ -489,23 +489,28 @@ class BaseCanvas:
         self.angle_width = self.defaults.get('angle_width', 90)
         # ---- chord
         self.angle_1 = self.defaults.get('angle1', 0)
-        # ---- arrow: head and tail
-        self.head_style = self.defaults.get('head_style', 'triangle')
-        self.tail_style = self.defaults.get('tail_style', None)
-        self.head_fraction = self.defaults.get('head_fraction', 0.1)
-        self.tail_fraction = self.defaults.get('tail_fraction', 0.1)
-        self.head_height = self.defaults.get('head_height', None)
-        self.tail_height = self.defaults.get('tail_height', None)
-        self.head_width = self.defaults.get('head_width', None)
-        self.tail_width = self.defaults.get('tail_width', None)
-        self.tail_fill = self.defaults.get('tail_fill', self.fill)
-        self.head_fill = self.defaults.get('head_fill', self.fill)
-        self.head_stroke = self.defaults.get('head_stroke', self.stroke)
-        self.tail_stroke = self.defaults.get('tail_stroke', self.stroke)
-        self.head_stroke_width = self.defaults.get(
-            'head_stroke_width', self.stroke_width)
-        self.tail_stroke_width = self.defaults.get(
-            'tail_stroke_width', self.stroke_width)
+        # ---- arrow shape: head and tail
+        self.points_offset = self.defaults.get('points_offset', 0)
+        self.head_height = self.defaults.get('head_height', 1)
+        self.head_width = self.defaults.get('head_width', 2 * self.width)
+        self.tail_width = self.defaults.get('tail_width', 1)
+        # TODO arrow-on-a-line
+        self.arrow_style = self.defaults.get('arrow_style', 'triangle')
+        self.arrow_tail_style = self.defaults.get('arrow_tail_style', None)
+        self.arrow_head_fraction = self.defaults.get('arrow_head_fraction', 0.1)
+        self.arrow_tail_fraction = self.defaults.get('arrow_tail_fraction', 0.1)
+        self.arrow_head_height = self.defaults.get('arrow_head_height', None)
+        self.arrow_tail_height = self.defaults.get('tail_height', None)
+        self.arrow_head_width = self.defaults.get('head_width', None)
+        self.arrow_tail_width = self.defaults.get('tail_width', None)
+        self.arrow_tail_fill = self.defaults.get('tail_fill', self.fill)
+        self.arrow_head_fill = self.defaults.get('head_fill', self.fill)
+        self.arrow_head_stroke = self.defaults.get('head_stroke', self.stroke)
+        self.arrow_tail_stroke = self.defaults.get('tail_stroke', self.stroke)
+        self.arrow_head_stroke_width = self.defaults.get(
+            'arrow_head_stroke_width', self.stroke_width)
+        self.arrow_tail_stroke_width = self.defaults.get(
+            'arrow_tail_stroke_width', self.stroke_width)
         # ---- line / bezier
         self.x_1 = self.defaults.get('x1', 0)
         self.y_1 = self.defaults.get('y1', 0)
@@ -811,21 +816,14 @@ class BaseShape:
         # ---- chord
         self.angle_1 = self.kw_float(kwargs.get('angle1', cnv.angle_1))  # anti-clock from flat
         self._angle_1_theta = math.radians(self.angle_1)
-        # ---- arrow: head and tail
-        self.head_style = kwargs.get('head_style', cnv.head_style)
-        self.tail_style = kwargs.get('tail_style', cnv.tail_style)
-        self.head_fraction = self.kw_float(kwargs.get('head_fraction', cnv.head_fraction))
-        self.tail_fraction = self.kw_float(kwargs.get('tail_fraction', cnv.tail_fraction))
+        # ---- arrow shape: head, points and tail
+        self.points_offset = self.kw_float(kwargs.get('points_offset', cnv.points_offset))
         self.head_height = self.kw_float(kwargs.get('head_height', cnv.head_height))
-        self.tail_height = self.kw_float(kwargs.get('tail_height', cnv.tail_width))
         self.head_width = self.kw_float(kwargs.get('head_width', cnv.head_width))
         self.tail_width = self.kw_float(kwargs.get('tail_width', cnv.tail_width))
-        self.tail_fill = kwargs.get('tail_fill', cnv.tail_fill)
-        self.head_fill = kwargs.get('head_fill', cnv.head_fill)
-        self.head_stroke = kwargs.get('head_stroke', cnv.stroke)
-        self.tail_stroke = kwargs.get('tail_stroke', cnv.stroke)
-        self.head_stroke_width = self.kw_float(kwargs.get('head_stroke_width', cnv.stroke_width))
-        self.tail_stroke_width = self.kw_float(kwargs.get('tail_stroke_width', cnv.stroke_width))
+        # TODO arrow-on-a-line
+        self.arrow_style = kwargs.get('arrow_style', cnv.arrow_style)
+        self.arrow_tail_style = kwargs.get('arrow_tail_style', cnv.arrow_tail_style)
         # ---- line / bezier / sector
         self.x_1 = self.kw_float(kwargs.get('x1', cnv.x_1))
         self.y_1 = self.kw_float(kwargs.get('y1', cnv.y_1))
@@ -1261,18 +1259,18 @@ class BaseShape:
                      'linear', 'diagonal', 'l', 'd']:
                 issue.append(f'"{self.coord_style}" is an invalid coord style!')
                 correct = False
-        # ---- arrows
-        if self.head_style:
-            if str(self.head_style).lower() not in [
+        # ---- line arrows
+        if self.arrow_style:
+            if str(self.arrow_style).lower() not in [
                     'line', 'l', 'line2', 'l2', 'line3', 'l3', 'triangle', 't',
                     'diamond', 'd', 'notch', 'n', 'spear', 's', 'circle', 'c']:
-                issue.append(f'"{self.head_style}" is an invalid arrow head_style!')
+                issue.append(f'"{self.arrow_style}" is an invalid arrow style!')
                 correct = False
-        if self.tail_style:
-            if str(self.tail_style).lower() not in [
+        if self.arrow_tail_style:
+            if str(self.arrow_tail_style).lower() not in [
                     'line', 'l', 'line2', 'l2', 'line3', 'l3', 'feather', 'f',
                     'circle', 'c']:
-                issue.append(f'"{self.tail_style}" is an invalid arrow tail_style!')
+                issue.append(f'"{self.arrow_tail_style}" is an invalid arrow tail style!')
                 correct = False
         # ---- starfield
         if self.star_pattern:
