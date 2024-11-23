@@ -609,6 +609,7 @@ class BaseCanvas:
         self.coord_padding = self.defaults.get('coord_padding', 2)
         self.coord_separator = self.defaults.get('coord_separator', '')
         self.coord_prefix = self.defaults.get('coord_prefix', '')
+        self.coord_suffix = self.defaults.get('coord_suffix', '')
         self.coord_style = self.defaults.get('coord_style', '')
         self.hidden = self.defaults.get('hidden', [])
         # ---- starfield
@@ -929,6 +930,7 @@ class BaseShape:
         self.coord_padding = self.kw_int(kwargs.get('coord_padding', cnv.coord_padding))
         self.coord_separator = kwargs.get('coord_separator', cnv.coord_separator)
         self.coord_prefix = kwargs.get('coord_prefix', cnv.coord_prefix)
+        self.coord_suffix = kwargs.get('coord_suffix', cnv.coord_suffix)
         self.coord_style = kwargs.get('coord_style', '') # linear|diagonal
         self.hidden = kwargs.get('hidden', cnv.hidden)
         # ---- starfield

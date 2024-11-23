@@ -1270,6 +1270,10 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
     global deck
     kwargs = kwargs
     locations = []
+    if kwargs.get('hidden'):
+        hidden = tools.integer_pairs(kwargs.get('hidden'), 'hidden')
+    else:
+        hidden = None
 
     def draw_hexagons(rows: int, cols: int, stop: int, the_cols: list, odd_mid: bool = True):
         """Draw rows of hexagons for each column in `the_cols`"""
@@ -1285,7 +1289,7 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
             for row in range(top_row - 1, end_row + 1):
                 _row = row + 1
                 # tools.feedback(f'{ccol=}, {_row=}')
-                if kwargs.get('hidden') and [_row, ccol] in kwargs.get('hidden'):
+                if  hidden and (_row, ccol) in hidden:
                     pass
                 else:
                     hxgn = Hexagon(
@@ -1342,7 +1346,7 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
     else:  # default to rectangular layout
         for row in range(rows):
             for col in range(cols):
-                if kwargs.get('hidden') and [row + 1, col + 1] in kwargs.get('hidden'):
+                if hidden and (row + 1, col + 1) in hidden:
                     pass
                 else:
                     hxgn = Hexagon(
@@ -1358,13 +1362,17 @@ def Rectangles(rows=1, cols=1, **kwargs):
     global deck
     kwargs = kwargs
     locations = []
+    if kwargs.get('hidden'):
+        hidden = tools.integer_pairs(kwargs.get('hidden'), 'hidden')
+    else:
+        hidden = None
 
     counter = 0
     for row in range(rows):
         for col in range(cols):
             counter += 1
             kwargs["text_sequence"] = f'{counter}'
-            if kwargs.get('hidden') and [row + 1, col + 1] in kwargs.get('hidden'):
+            if hidden and (row + 1, col + 1) in hidden:
                 pass
             else:
                 rect = Rectangle(row=row, col=col, **kwargs)
@@ -1379,10 +1387,14 @@ def Squares(rows=1, cols=1, **kwargs):
     global deck
     kwargs = kwargs
     locations = []
+    if kwargs.get('hidden'):
+        hidden = tools.integer_pairs(kwargs.get('hidden'), 'hidden')
+    else:
+        hidden = None
 
     for row in range(rows):
         for col in range(cols):
-            if kwargs.get('hidden') and [row + 1, col + 1] in kwargs.get('hidden'):
+            if hidden and (row + 1, col + 1) in hidden:
                 pass
             else:
                 square = Square(row=row, col=col, **kwargs)
@@ -1540,10 +1552,16 @@ def Layout(grid, **kwargs):
     kwargs = kwargs
     shapes = kwargs.get('shapes', [])  # shapes or Places
     locations = kwargs.get('locations', [])
-    hidden = kwargs.get('hidden', [])
-    shown = kwargs.get('shown', [])
     corners = kwargs.get('corners', [])  # shapes or Places for corners only!
     rotations = kwargs.get('rotations', [])  # rotations for an edge
+    if kwargs.get('masked') and isinstance(kwargs.get('masked'), str):
+        masked = tools.sequence_split(kwargs.get('masked'), 'masked')
+    else:
+        masked = kwargs.get('masked', [])
+    if kwargs.get('visible') and isinstance(kwargs.get('visible'), str):
+        visible = tools.integer_pairs(kwargs.get('visible'), 'visible')
+    else:
+        visible = kwargs.get('visible', [])
 
     # ---- validate inputs
     if not shapes:
@@ -1552,22 +1570,6 @@ def Layout(grid, **kwargs):
         tools.feedback("The values for 'shapes' must be in a list!", True)
     if not isinstance(grid, VirtualLayout):
         tools.feedback(f"The grid value '{grid}' is not valid!", True)
-    if hidden:
-        if not isinstance(hidden, list):
-            tools.feedback(f"The hidden value '{hidden}' is not valid list!", True)
-        for item in hidden:
-            if not isinstance(item, int):
-                tools.feedback(
-                    f'hidden must only contain a list of integers (not "{item}")!',
-                    True)
-    if shown:
-        if not isinstance(shown, list):
-            tools.feedback(f"The shown value '{shown}' is not valid list!", True)
-        for item in shown:
-            if not isinstance(item, int):
-                tools.feedback(
-                    f'shown must only contain a list of integers (not "{item}")!',
-                    True)
     corners_dict = {}
     if corners:
         if not isinstance(corners, list):
@@ -1623,9 +1625,9 @@ def Layout(grid, **kwargs):
     # print(f"{rotation_sequence=}")
     # ---- iterate through locations & draw shape(s)
     for count, loc in _locations:
-        if hidden and count + 1 in hidden:  # ignore if IN hidden
+        if masked and count + 1 in masked:  # ignore if IN masked
             continue
-        if shown and count + 1 not in shown:  # ignore if NOT in shown
+        if visible and count + 1 not in visible:  # ignore if NOT in visible
             continue
         if grid.stop and count + 1 >= grid.stop:
             break
@@ -1831,7 +1833,7 @@ def Track(track=None, **kwargs):
 def BGG(ids=None, user=None, progress=False, short=500):
     gamelist = BGGGameList()
     if user:
-        tools.feedback("Sorry - BGG user collection function is not available yet!")
+        tools.feedback("Sorry - the BGG user collection function is not available yet!")
     if ids:
         for game_id in ids:
             if progress:

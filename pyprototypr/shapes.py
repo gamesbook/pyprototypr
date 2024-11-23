@@ -1315,13 +1315,13 @@ class HexShape(BaseShape):
         else:
             _y = str(_row).zfill(self.coord_padding)  # numeric
         # ---- set coord label
-        self.coord_text = str(self.coord_prefix) + _x + str(self.coord_separator) + _y
+        self.coord_text = str(self.coord_prefix) + _x + str(self.coord_separator) + \
+            _y + str(self.coord_suffix)
         # ---- draw coord (optional)
         if self.coord_position:
             # ---- * set coord props
             cnv.setFont(self.coord_font_face, self.coord_font_size)
             cnv.setFillColor(self.coord_stroke)
-
             coord_offset = self.unit(self.coord_offset)
             if self.coord_position in ['t', 'top']:
                 self.draw_multi_string(
@@ -2122,7 +2122,8 @@ class RectangleShape(BaseShape):
         else:
             _y = str(_row).zfill(self.coord_padding)  # numeric
         # ---- set coord label
-        self.coord_text = str(self.coord_prefix) + _x + str(self.coord_separator) + _y
+        self.coord_text = str(self.coord_prefix) + _x + str(self.coord_separator) + \
+            _y + str(self.coord_suffix)
         # ---- draw coord (optional)
         if self.coord_position:
             # ---- * set coord props

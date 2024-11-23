@@ -237,16 +237,20 @@ Styling-orientated Terms
 Display-orientated Terms
 ========================
 
--  **hidden** - a list of locations, indicated either by their sequence
-   number (i.e. their position in the drawing order) or their row and
-   column identifier which should **not** be used for display - the rest
+-  **hidden** - a list of locations, indicated by their row and
+   column identifier, which should **not** be used for display - the rest
    are displayed as normal
+-  **masked** - a list of locations, indicated by their sequence
+   number (i.e. their position in the drawing order) which should **not**
+   be used for display - the rest are displayed as normal
 -  **radii** - if given a value of `True` will cause the radii of a polygon
    to be shown
--  **shown** - a list of locations, indicated either by their sequence
-   number (i.e. their position in the drawing order) or their row and
+-  **shown** - a list of locations, indicated by their row and
    column identifier which are the only ones that **must** be used for
    display - the rest are ignored
+-  **visible** - a list of locations, indicated by their sequence
+   number (i.e. their position in the drawing order)  that **must** be used
+   for display - the rest are ignored
 
 Miscellaneous Terms
 ===================

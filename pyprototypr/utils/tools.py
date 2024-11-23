@@ -181,7 +181,7 @@ def as_float(value, label, maximum=None, minimum=None) -> int:
     """Set a value to an float; or stop if an invalid value
 
     >>> as_float(value='3', label='N')
-    3
+    3.0
 
     # below cannot be tested because of sys.exit() in feedback()
     # >>> as_float(value='3', label='N', minimum=4)
@@ -209,9 +209,15 @@ def as_float(value, label, maximum=None, minimum=None) -> int:
         feedback(f'The value "{value}"{label} is not a valid float number!', True)
 
 
-def tuple_split(string):
+def tuple_split(
+        string: str,
+        label: str = 'list',
+        pairs_list: bool = False,
+        all_ints: bool = False) -> list:
     """
-    Split a string into a list of tuple values
+    Split a string into a list of tuple numbers
+
+    Doc tests:
 
     >>> print(tuple_split(''))
     []
@@ -221,6 +227,14 @@ def tuple_split(string):
     [(3.0, 4.0)]
     >>> print(tuple_split('3,5 6,1 4,2'))
     [(3.0, 5.0), (6.0, 1.0), (4.0, 2.0)]
+    >>> print(tuple_split('3,5 6,1 4,2', all_ints=True))
+    [(3, 5), (6, 1), (4, 2)]
+
+    # below cannot be tested because of sys.exit() in feedback()
+    # print(tuple_split('a,5 6,1 4,2', all_ints=True))
+    # FEEDBACK:: Cannot convert list into a list of integer sets!
+    # print(tuple_split('3,5 6,1 4', pairs_list=True))
+    # Values of list must be pairs of integers!
     """
     values = []
     if string:
@@ -228,9 +242,28 @@ def tuple_split(string):
             _string_list = string.strip(" ").replace(";", ",").split(" ")
             for _str in _string_list:
                 items = _str.split(",")
-                _items = [float(itm) for itm in items]
+                if all_ints:
+                    _items = [int(itm) for itm in items]
+                else:
+                    _items = [float(itm) for itm in items]
                 values.append(tuple(_items))
+            if pairs_list:
+                for value in values:
+                    if len(value) != 2:
+                        feedback(
+                            f"Values of {label} must be pairs of integers!",
+                            f' Check if all values in "{string}" are integer pairs.',
+                            True)
             return values
+        except ValueError:
+            if all_ints:
+                feedback(
+                    f'Cannot convert {label} into a list of integer sets!'
+                    f' Check if all values in "{string}" are integers.', True)
+            else:
+                feedback(f"Cannot convert {label} into a list of numeric sets!", True)
+            return values
+
         except Exception:
             return values
     else:
@@ -278,6 +311,33 @@ def sequence_split(string):
                 values.append(int(item))
     return list(set(values))  # unique
 
+
+def integer_pairs(pairs, label: str = 'list') -> list:
+    """Convert a list or string into a list of tuples; each with a pair of integers."""
+
+    if pairs:
+        if isinstance(pairs, str):
+            pairs = tuple_split(
+                pairs, label=label, all_ints=True, pairs_list=True)
+        if not isinstance(pairs, list):
+            feedback(f"The {label} value '{pairs}' is not valid list!", True)
+        for item in pairs:
+            if not isinstance(item, tuple):
+                feedback(
+                    f'{label} must only contain a list of integers pairs (not "{pairs}")!',
+                    True)
+            if len(item) != 2:
+                feedback(
+                    f'{label} must only contain a list of paired integers (not "{pairs}")!',
+                    True)
+            for val in item:
+                if not isinstance(val, int):
+                    feedback(
+                        f'{label} must only contain integers '
+                        f' ("{val}" in "{pairs}" is not an integer)!',
+                        True)
+        return pairs
+    return []
 
 def splitq(seq, sep=None, pairs=("()", "[]", "{}"), quote="\"'"):
     """Split seq by sep but considering parts inside pairs or quoted as

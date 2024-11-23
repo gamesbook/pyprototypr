@@ -46,7 +46,7 @@ Hexagons(
     side=0.6,
     x=0, y=0,
     rows=2, cols=2,
-    coord_position="middle", coord_prefix='z',
+    coord_position="middle", coord_prefix='z', coord_suffix='!',
 )
 Hexagons(
     side=0.6,
@@ -66,7 +66,7 @@ Hexagons(
     x=0, y=0,
     rows=2, cols=2,
     orientation='pointy',
-    coord_position="middle", coord_prefix='z',
+    coord_position="middle", coord_prefix='z', coord_suffix='!',
 )
 Hexagons(
     side=0.6,
@@ -84,8 +84,8 @@ Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: flat; caltrops&dots")
 Hexagons(
     side=0.6,
-    rows=3, cols=3,
     x=0, y=0,
+    rows=3, cols=3,
     dot=0.04,
     caltrops="medium",
 )
@@ -96,9 +96,9 @@ Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: pointy; caltrops&dots")
 Hexagons(
     side=0.6,
-    rows=3,cols=3,
-    orientation='pointy',
     x=0, y=0,
+    rows=3, cols=3,
+    orientation='pointy',
     dot=0.04,
     caltrops="large",
 )
@@ -106,7 +106,7 @@ PageBreak()
 
 # ---- rectangular - offset
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Hexagons: offset // odd")
+Text(common=header, text="Hexagons: offset")
 Hexagons(
     side=0.5,
     x=0, y=0,
@@ -121,6 +121,7 @@ Hexagons(
     rows=3, cols=3,
     hex_offset="odd",
     orientation='pointy',
+    fill=darkseagreen,
     coord_position="middle", coord_font_size=5,
     coord_separator=' r', coord_prefix='c',
 )
@@ -134,14 +135,14 @@ Hexagons(
     x=1, y=3,
     rows=3, cols=3,
     orientation='pointy',
-    hidden=[[1, 2], [1, 3,], [3, 2], [3, 3]]
+    fill=darkseagreen,
+    hidden=[(1, 2), (1, 3), (3, 2), (3, 3)]
 )
 Hexagons(
     side=0.5,
     x=0, y=0,
     rows=3, cols=3,
-    hidden=[[2, 1], [2, 3]]
-    #hidden="2,1 2,3"
+    hidden="2,1 2,3"
 )
 PageBreak()
 
@@ -177,6 +178,7 @@ Hexagons(
 )
 PageBreak()
 
+# ---- circular - nested
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: circular; nested")
 Hexagons(
@@ -194,7 +196,6 @@ Blueprint(stroke_width=0.5)
 Text(common=header, text="Hexagons: diamond")
 Hexagons(
     x=0, y=0,
-    # margin_left=0,
     rows=3,
     height=0.75,
     hex_layout="diamond",
@@ -207,9 +208,9 @@ Save(
     dpi=600,
     directory="docs/images/custom/hexagonal_grid",
     names=[
-        "rect_basic_flat", "rect_basic-pointy",
+        "rect_basic_flat", "rect_basic_pointy",
         "rect_coords_flat", "rect_coords_pointy",
-        "rect_coords_caltrops", "rect_coords_caltrops",
+        "rect_caltrops_flat", "rect_caltrops_pointy",
         "rect_offset", "rect_hidden", "rect_radii",
         "circular", "circular_nested",
         "diamond",

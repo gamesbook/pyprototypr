@@ -282,11 +282,9 @@ class RepeatShape(BaseShape):
             for row in range(self.rows):
                 if ((col + 1) in self.across) and ((row + 1) in self.down):
                     off_x = col * self.width + col * (
-                        self.offset_across - (self.margin_left or self.margin)
-                    )
+                        self.offset_across - (self.margin_left or self.margin))
                     off_y = row * self.height + row * (
-                        self.offset_down - (self.margin_bottom or self.margin)
-                    )
+                        self.offset_down - (self.margin_bottom or self.margin))
                     flat_elements = tools.flatten(self._object)
                     log.debug("flat_eles:%s", flat_elements)
                     for flat_ele in flat_elements:
