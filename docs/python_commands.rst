@@ -74,7 +74,7 @@ represents what happens in a loop. The first part indicates how many
 times the loop happens, and the second part is the action, or set of
 actions, that need to be repeated.
 
-In a Python, or **pyprototypr**, script, a loop can be set-up by using
+In a Python, or _pyprototypr_, script, a loop can be set-up by using
 the following kind of statement:
 
   .. code:: python
@@ -115,10 +115,10 @@ again.
 In the case of **pyprototypr**, a loop can be used to draw an item a
 number of times; for example:
 
-   .. code:: python
+  .. code:: python
 
-   for count in range(1, 4):
-       Circle(x=1, y=count)
+    for count in range(1, 4):
+        Circle(x=1, y=count)
 
 Here the value of ``y`` for the Circle will be set to a different number
 every time the loop operates. For the first time it will have a value of
@@ -133,8 +133,8 @@ will be 0.5, 1.0 and 1.5 over the three iterations of the loop:
 
   .. code:: python
 
-   for y_location in range(1, 4):
-       Circle(x=1, y=y_location*0.5)
+    for y_location in range(1, 4):
+        Circle(x=1, y=y_location*0.5)
 
 Note that we have used a different word in place of the usual ``count``.
 It does not matter too much which word you use; so pick one that makes
@@ -146,8 +146,8 @@ different increment number. For example:
 
   .. code:: python
 
-   for count in range(1, 7, 2):
-       Circle(x=1, y=count)
+    for count in range(1, 7, 2):
+        Circle(x=1, y=count)
 
 Here count takes on the values 1, 3 and 5; because the third value of 2
 is added to the count value each time the loop operates. When count
@@ -160,9 +160,9 @@ Multiple loops can be used to control different values. For example:
 
   .. code:: python
 
-   for y_location in range(1, 3):
+    for y_location in range(1, 3):
        for x_location in range(1, 3):
-           Circle(x=x_location, y=y_location)
+            Circle(x=x_location, y=y_location)
 
 Here the outer loop runs twice, setting values for both ``x`` and ``y``.
 The outer loop happens twice, and for each time it happens, the inner
@@ -179,11 +179,11 @@ For example:
 
   .. code:: python
 
-    x_pos = [1, 2, 3]
-    y_pos = [3, 2, 1]
-    fills = [red, green, yellow]
-    for x, y, fill in zip(x_pos, y_pos, fills):
-        Circle(cx=x, cy=y, fill=fill)
+     x_pos = [1, 2, 3]
+     y_pos = [3, 2, 1]
+     fills = [red, green, yellow]
+     for x, y, fill in zip(x_pos, y_pos, fills):
+         Circle(cx=x, cy=y, fill=fill)
 
 
 If Statements
@@ -205,10 +205,10 @@ So an ``if`` statement will look something like this:
 
   .. code:: python
 
-   if color == green:
-       keep_driving()
-   else:
-       stop_driving()
+    if color == green:
+        keep_driving()
+    else:
+        stop_driving()
 
 You’ll see that there are really **two** parts to the ``if``. The first part
 is the condition that we are trying to evaluate - in this case what the
@@ -238,11 +238,11 @@ An ``if`` statement can be used inside a loop, for example:
 
   .. code:: python
 
-   for count in range(1, 5):
-       if count < 3:
-           Circle(x=1, y=count)
-       else:
-           Rectangle(x=1, y=count)
+    for count in range(1, 5):
+        if count < 3:
+            Circle(x=1, y=count)
+        else:
+            Rectangle(x=1, y=count)
 
 Here, the script will either draw a ``Circle`` or a ``Rectangle`` depending
 on the value of ``count``: if its less than than 3 (the ``<`` comparison is

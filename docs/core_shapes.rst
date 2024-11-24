@@ -7,7 +7,7 @@ Core Shapes
 .. |deg|  unicode:: U+00B0 .. DEGREE SIGN
    :ltrim:
 
-.. _pageIndex:
+.. _table-of-contents:
 
 Table of Contents
 -----------------
@@ -20,7 +20,7 @@ Table of Contents
 -  `Compound Shapes`_
 -  `Shapes' Common Properties`_
 
-.. _shapeIndex:
+.. _shape-index:
 
 Shape Index
 -----------
@@ -58,7 +58,7 @@ Shape Index
 
 Overview
 ---------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 These descriptions of the available shapes assume you are familiar with
 the concepts, terms and ideas for **pyprototypr** as presented in `Basic
@@ -94,7 +94,7 @@ PNG images that were generated from the original PDF output.
 
 Commonalities
 --------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 There are some properties that can be set for almost all of the shapes;
 examples of these are presented in the section on `Shapes' Common Properties`_
@@ -107,11 +107,11 @@ at the end, rather than being described in detail for every single shape.
 
 Linear Shapes
 --------------
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 Arc
 ~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 An arc is curved line.
 
@@ -161,7 +161,7 @@ Example 2.
 
 Bezier
 ~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 A Bezier is a curve that has inflection points, allowing it to "bend".
 
@@ -203,7 +203,7 @@ Example 2.
 
 Chord
 ~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 A chord is a straight line joining two points on a circle's diameter.
 
@@ -238,7 +238,7 @@ Example 1.
 
 Dot
 ~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 A dot is a small, filled `Circle`_.
 
@@ -265,7 +265,7 @@ Example 1.
 
 Line
 ~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 Example 1.
 ++++++++++
@@ -351,7 +351,7 @@ Example 2.
 
 Polyline
 ~~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 A polyline is a series of lines joining points.
 
@@ -390,7 +390,7 @@ Example 1.
 
 Text
 ~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 It may seem strange to view text as a "shape"; but from a drawing point of
 view, its really just a series of complex lines drawn in a particular pattern!
@@ -420,7 +420,7 @@ Example 1.
 
 Enclosed Shapes
 ---------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 These shapes are created by enclosing an area; the most basic being a simple rectangle.
 They effectively have two dimensions: *height* and *width*.
@@ -435,7 +435,7 @@ There is an overview on how color is used in the
 
 Arrow
 ~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 An Arrow consists of two main parts; the tail (or body) and the head.  In terms
 of **pyprototypr** conventions, the tail is the part that takes on the common
@@ -592,7 +592,7 @@ Example 3.
 
 Circle
 ~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 .. NOTE::
 
@@ -620,7 +620,7 @@ Example 1.
 
 Compass
 ~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 A Compass is often thought of a specific device used for navigation. Here,
 its abstracted somewhat to indicate directional lines - specified by traditional
@@ -698,7 +698,7 @@ Example 2.
 
 Ellipse
 ~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 Example 1.
 ++++++++++
@@ -747,7 +747,7 @@ Example 2.
 
 EquilateralTriangle
 ~~~~~~~~~~~~~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 Example 1.
 ++++++++++
@@ -825,7 +825,7 @@ Example 2.
 
 Hexagon
 ~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 .. NOTE::
 
@@ -873,7 +873,7 @@ Example 2.
 
 Polygon
 ~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 A polygon is a shape constructed of any number of sides of equal length.
 For example, a hexagon is a polygon with 6 sides and an octagon is a polygon
@@ -1003,7 +1003,7 @@ Example 4.
 
 Polyshape
 ~~~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 A Polyshape is an irregular `polygon`_, constructed using a series of points.
 
@@ -1132,7 +1132,7 @@ pairs of values; so instead of ``[(0,0), (1,1)]`` just use ``"0,0 1,1"``.
 
 Rectangle
 ~~~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 .. NOTE::
 
@@ -1188,7 +1188,7 @@ Example 2.
 
 Rhombus
 ~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 Example 1.
 ++++++++++
@@ -1275,7 +1275,7 @@ Example 3.
 
 Sector
 ~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 A Sector is like the triangular-shaped wedge that is often cut from a pizza
 or cake. It extends from the centre of a "virtual" circle outwards to its
@@ -1333,7 +1333,7 @@ Example 2.
 
 Square
 ~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 Example 1.
 ++++++++++
@@ -1375,7 +1375,7 @@ Example 2.
 
 Stadium
 ~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 A Stadium is a shape constructed with a rectangle as a base, and then curved
 projections extending from one or more of the sides.
@@ -1432,7 +1432,7 @@ Example 2.
 
 Star
 ~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 A Star is five-pointed shape; essentially made by extending the sides for a
 pentagram outwards to meet at a point.
@@ -1486,7 +1486,7 @@ Example 2.
 
 Starfield
 ~~~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 A Starfield is a shape in which a number of small dots are scattered at random
 to simulate what might be seen looking at a portion of the night sky.
@@ -1629,7 +1629,7 @@ Example 4.
 
 Trapezoid
 ~~~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 Example 1.
 ++++++++++
@@ -1717,7 +1717,7 @@ Example 3.
 
 Compound Shapes
 ---------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 Compound shapes are ones composed of multiple elements; but the program takes
 care of drawing all of them based on the properties supplied.
@@ -1735,7 +1735,7 @@ The following are all such shapes:
 
 Blueprint
 ~~~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 This shape is primarily intended to support drawing while it is "in progress".
 It provides a quick and convenient underlying grid that can help to orientate
@@ -1805,7 +1805,7 @@ Example 2.
 
 DotGrid
 ~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 Example 1.
 ++++++++++
@@ -1858,7 +1858,7 @@ Example 2.
 
 Grid
 ~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 A Grid is a series of crossed lines - both in the vertical and horizontal
 directions - which will, by default, fill the page, as far as possible,
@@ -1938,7 +1938,7 @@ Example 3.
 
 Image
 ~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 Pedantically speaking, an image is not like the other shapes in the sense that
 it does not consist of lines and areas drawn by **pyprototypr**  itself.  It is
@@ -2022,7 +2022,7 @@ Example 2.
 
 Hexagons
 ~~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 Hexagons are often drawn in a "honeycomb" arrangement to form a grid - for games
 this is often used to delineate the spaces in which playing pieces can be placed
@@ -2058,7 +2058,7 @@ Example 1.
 
 Lines
 ~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 Lines are simply a series of parallel lines drawn over repeating rows - for
 horizontal lines - or columns - for vertical lines.
@@ -2124,7 +2124,7 @@ Example 2.
 
 Rectangles
 ~~~~~~~~~~
-`↑ <shapeIndex_>`_
+`↑ <shape-index_>`_
 
 Rectangles can be drawn in a row-by-column layout to form a grid - for games
 this is often used to delineate a track or other spaces in which playing pieces
@@ -2175,7 +2175,7 @@ Example 2.
 
 Shapes' Common Properties
 -------------------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 The following are properties common to many shapes that can be set to create
 the desired output:

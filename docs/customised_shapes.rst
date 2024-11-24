@@ -7,7 +7,7 @@ Customised Shapes
 .. |deg|  unicode:: U+00B0 .. DEGREE SIGN
    :ltrim:
 
-.. _pageIndex:
+.. _table-of-contents:
 
 Table of Contents
 =================
@@ -21,7 +21,7 @@ Table of Contents
 
 Overview
 ========
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 These descriptions assume you are familiar with the concepts, terms and ideas
 for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ -
@@ -44,7 +44,7 @@ properties to be defined once and then used by any number of shapes.
 
 Rectangle
 =========
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 A Rectangle is a very common shape in many designs; there are a number of ways
 that it can be customised.
@@ -488,7 +488,7 @@ e.g. ``n s`` to draw both lines on both north **and** south sides.
 
 Hexagon
 =======
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 A key property for a hexagon is its *orientation*; this can either be *flat*,
 which is the default, or *pointy*. The examples below show how commands can be
@@ -862,7 +862,7 @@ e.g. ``ne se`` to draw lines on both northeast **and** southeast.
 
 Circle
 ======
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 A Circle is a very common shape in many designs; it provides a number of
 ways that it can be customised.
@@ -1170,7 +1170,7 @@ effect.
 
 Blueprint
 =========
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 This shape is primarily intended to support drawing while it is "in progress".
 It can take on the appearance of typical "cutting board".
