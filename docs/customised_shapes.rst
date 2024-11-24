@@ -123,7 +123,7 @@ point in a specified direction.  This creates an arrow-like effect.
 .. |rcv| image:: images/custom/rectangle/chevron.png
    :width: 330
 
-.. table:: table for rectangle chevron
+.. table::
    :widths: 30,70
 
    ===== ======
@@ -172,8 +172,8 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
 .. |rht| image:: images/custom/rectangle/hatch.png
    :width: 330
 
-.. table:: table for rectangle hatch
-   :widths: 30,70
+.. table::
+   :widths: 30, 70
 
    ===== ======
    |rht| This example shows Rectangles constructed using these commands::
@@ -181,43 +181,53 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
            htch = Common(
              height=1.5, width=1, hatch=5, hatch_width=0.1, hatch_stroke=red)
 
-           Rectangle(common=htch, x=0, y=0,  hatch_directions='w', label="W")
-           Rectangle(common=htch, x=1.5, y=0, hatch_directions='e', label="E")
-           Rectangle(common=htch, x=3, y=0, hatch_directions='ne', label="NE\nSW")
+           Rectangle(
+             common=htch, x=0, y=0,  hatch_directions='w', label="W")
+           Rectangle(
+             common=htch, x=1.5, y=0, hatch_directions='e', label="E")
+           Rectangle(
+             common=htch, x=3, y=0, hatch_directions='ne', label="NE\nSW")
 
-           Rectangle(common=htch, x=1.5, y=2, hatch_directions='n', label="N")
-           Rectangle(common=htch, x=0, y=2,  hatch_directions='s', label="S")
-           Rectangle(common=htch, x=3, y=2, hatch_directions='nw', label="NW\nSE")
+           Rectangle(
+             common=htch, x=1.5, y=2, hatch_directions='n', label="N")
+           Rectangle(
+             common=htch, x=0, y=2,  hatch_directions='s', label="S")
+           Rectangle(
+             common=htch, x=3, y=2, hatch_directions='nw', label="NW\nSE")
 
-           Rectangle(common=htch, x=0, y=4, label="all")
-           Rectangle(common=htch, x=1.5, y=4, hatch_directions='o', label="O")
-           Rectangle(common=htch, x=3, y=4, hatch_directions='d', label="D")
+           Rectangle(
+             common=htch, x=0, y=4, label="all")
+           Rectangle(
+             common=htch, x=1.5, y=4, hatch_directions='o', label="O")
+           Rectangle(
+             common=htch, x=3, y=4, hatch_directions='d', label="D")
 
-         These Rectangles all share the following Common properties that differ
-         from the defaults:
+         These Rectangles all share the following Common properties that
+         differ from the defaults:
 
          - *height* and *width* - set the basic configuration
-         - *hatch* - sets the **number** of lines to be drawn; the spacing between
-           them is equal and depends on the direction
+         - *hatch* - sets the **number** of lines to be drawn; the spacing
+           between them is equal and depends on the direction
          - *hatch_width* - set to `0.1` point; a fairly thin line
-         - *hatch_stroke* - set to the color `red` to make it stand out from the
-           rectangle sides
+         - *hatch_stroke* - set to the color `red` to make it stand out
+           from the rectangle sides
 
          Each Rectangle has its own setting for:
 
-         - *x* and *y* - different positions on the page for the lower-left corner
+         - *x* and *y* - different positions on the page for the lower-left
+           corner
          - *label* - text to help identify it
-         - *hatch_directions* - if not specified, hatches will be drawn in all directions -
-           otherwise:
+         - *hatch_directions* - if not specified, hatches will be drawn
+           in all directions - otherwise:
 
-           - `n` (North) or `s` (South) draws vertical lines;
-           - `w` (West) or `e` (East) draws horizontal lines;
-           - `nw` (North-West) or `se` (South-East) draws diagonal lines from
-              top-left to bottom-right;
-           - `ne` (North-East) or `sw` (South-West) draws diagonal lines from
-              bottom-left to top-right;
-           - `o` (orthogonal) draws vertical **and** horizontal lines;
-           - `d` (diagonal) draws diagonal lines between all corners
+           - ``n`` (North) or ``s`` (South) draws vertical lines;
+           - ``w`` (West) or ``e`` (East) draws horizontal lines;
+           - ``nw`` (North-West) or ``se`` (South-East) draws diagonal lines
+             from top-left to bottom-right;
+           - ``ne`` (North-East) or ``sw`` (South-West) draws diagonal lines
+             from bottom-left to top-right;
+           - ``o`` (orthogonal) draws vertical **and** horizontal lines;
+           - ``d`` (diagonal) draws diagonal lines between all corners
    ===== ======
 
 .. _rectNotch:
