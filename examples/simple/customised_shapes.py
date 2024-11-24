@@ -503,6 +503,15 @@ Arrow(x=3, y=3, height=1, width=0.5, head_height=0.5, head_width=0.5, tail_notch
       stroke=black, fill=aqua, stroke_width=1)
 PageBreak()
 
+# ---- arrow - rotate, text
+Blueprint()
+Text(common=txt, text="Arrow: dot, cross, text & rotation")
+Arrow(x=1, y=0.5, title="The Arrow", heading="An arrow", dot=0.1, cross=0.5)
+Arrow(x=2.5, y=3, title="0\u00B0", dot=0.15, dotted=True)
+Arrow(x=2.5, y=3, title="45\u00B0", dot=0.1,
+      fill=None, stroke=red, dot_stroke=red, rotation=45)
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Shapes END...")
 #PageBreak(footer=True)
@@ -528,5 +537,5 @@ Save(
         "descriptions", "label_offset", "star_custom",
         "polyshape_default", "polyshape_custom", "polyshape_offset",
         "rectangles_rowcol", "rectangles_custom", "rhombus_custom",
-        "rhombus_borders", "trapezoid_borders", "arrow_sizes",
+        "rhombus_borders", "trapezoid_borders", "arrow_sizes", "arrow_rotate",
         None])

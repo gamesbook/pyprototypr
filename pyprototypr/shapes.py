@@ -207,9 +207,25 @@ class ArrowShape(BaseShape):
             x = self._u.x + self._o.delta_x
             y = self._u.y + self._o.delta_y
         cx = x
-        cy = y + self._u.height - self.head_height_u
+        cy = y + self._u.height
         # ---- set canvas
         self.set_canvas_props(index=ID)
+        # ---- handle rotation: START
+        rotation = kwargs.get('rotation', self.rotation)
+        if rotation:
+            # tools.feedback(f'*** IMAGE {ID=} {rotation=} {self._u.x=}, {self._u.y=}')
+            cnv.saveState()
+            # move the canvas origin
+            if ID is not None:
+                # cnv.translate(cx + self._u.margin_left, cy + self._u.margin_bottom)
+                cnv.translate(cx, cy)
+            else:
+                cnv.translate(cx, cy)
+            cnv.rotate(rotation)
+            # reset centre and "bottom centre"
+            cx, cy = 0, 0
+            x = 0
+            y = -self._u.height
         # ---- draw arrow
         self.vertices = self.get_vertices(cx=cx, cy=cy, x=x, y=y)
         pth = cnv.beginPath()
@@ -223,8 +239,11 @@ class ArrowShape(BaseShape):
         # ---- cross
         self.draw_cross(cnv, cx, cy)
         # ---- text
-        self.draw_heading(cnv, ID, x, y + self._u.height, **kwargs)
+        self.draw_heading(cnv, ID, x, y + self._u.height + self.head_height_u, **kwargs)
         self.draw_title(cnv, ID, x, y, **kwargs)
+        # ---- handle rotation: END
+        if rotation:
+            cnv.restoreState()
 
 
 class BezierShape(BaseShape):

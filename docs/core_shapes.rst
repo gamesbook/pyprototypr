@@ -2,7 +2,7 @@
 Core Shapes
 ===========
 
-.. |copy| unicode:: U+000A9 .. COPYRIGHT SIGN
+.. |copy| unicode:: U+00A9 .. COPYRIGHT SIGN
    :trim:
 .. |deg|  unicode:: U+00B0 .. DEGREE SIGN
    :ltrim:
@@ -437,14 +437,19 @@ Arrow
 ~~~~~~
 `↑ <shapeIndex_>`_
 
+An Arrow consists of two main parts; the tail (or body) and the head.  In terms
+of **pyprototypr** conventions, the tail is the part that takes on the common
+properties of *height* and *width*; while the dimensions for the head, if not
+provided, are calculated from those.
+
 Example 1.
 ++++++++++
 
-.. |arl| image:: images/defaults/arrow.png
+.. |ar0| image:: images/defaults/arrow.png
    :width: 330
 
 ===== ======
-|arl| This example shows the shape constructed using the command with only
+|ar0| This example shows the shape constructed using the command with only
       defaults::
 
           Arrow()
@@ -453,12 +458,61 @@ Example 1.
 
       - centre-bottom point at x-position ``1`` cm and at y-position ``1`` cm
       - *height* of the tail portion of ``1`` cm
-      - *head_height* of the head portion of ``1`` cm
-      - *head_width* of the head portion of ``2`` cm (maximum dsistance between
-        the outer arrowhead "tips")
+      - *head_height* of the head portion of ``1`` cm (based on the *height())
+      - *head_width* of the head portion of ``2`` cm; the maximum distance
+        between the two arrowhead "wingtips" - for which the default value is
+        calculated as equal to twice the *width*
 ===== ======
 
 Example 2.
+++++++++++
+
+.. |ar1| image:: images/customised/arrow_rotate.png
+   :width: 330
+
+===== ======
+|ar1| This example shows the shape constructed using the commands as follows::
+
+        Arrow(
+            x=1, y=0.5,
+            title="The Arrow", heading="An arrow",
+            dot=0.1, cross=0.5)
+
+        Arrow(
+            x=2.5, y=3, title="0\u00B0", dot=0.15, dotted=True)
+        Arrow(
+            x=2.5, y=3, title="45\u00B0", dot=0.1,
+            fill=None, stroke=red, dot_stroke=red, rotation=45)
+
+      The shapes all set the following properties:
+
+      - centre-bottom point at *x* and *y*
+      - *title* appears below the shape
+      - *dot* - small, filled circle; this also marks the **centre** of the
+        Arrow
+
+      The lower-left Arrow also sets the following properties:
+
+      - *heading* appears above the shape
+      - *cross* small pair of lines superimposed on the dot (also at the
+        Arrow's centre)
+
+      The two arrows in the top-right are superimposed; the red outline Arrow
+      shares the same centre as the black dotted Arrow below it.  The red
+      arrow is rotated 45 |deg| to the left about the centre.
+
+      .. NOTE::
+
+         The degrees sign is a Unicode character i.e. a "\\u" followed by four
+         numbers and/or letters. For access to full Unicode lists as well as
+         the option to search for characters by name, see:
+         https://www.compart.com/en/unicode/plane/U+0000
+
+===== ======
+
+
+
+Example 3.
 ++++++++++
 
 .. |ar2| image:: images/customised/arrow_sizes.png
@@ -468,28 +522,27 @@ Example 2.
 |ar2| This example shows the shape constructed using the commands as follows::
 
         Arrow(
-            x=1, y=1, height=1, width=0.5,
-            head_height=0.5, head_width=0.75)
-        Arrow(
-            x=2, y=1, height=1, width=0.5,
-            head_height=0.5, head_width=0.75,
-            stroke=tomato, fill=silver, stroke_width=2)
-        Arrow(
-            x=3, y=1, height=1, width=0.5,
-            head_height=0.5, head_width=0.75, tail_width=0.01,
-            fill_stroke=gold)
-        Arrow(
-            x=1, y=3, height=1, width=0.25,
-            head_height=0.5, head_width=1, points_offset=-0.25,
+            x=1, y=3, height=1, width=0.25, head_height=0.5, head_width=1,
+            points_offset=-0.25,
             fill=lime)
         Arrow(
-            x=2, y=3, height=1, width=0.25,
-            head_height=1, head_width=0.75, points_offset=0.25,
+            x=2, y=3, height=1, width=0.25, head_height=1, head_width=0.75,
+            points_offset=0.25,
             fill=tomato)
         Arrow(
-            x=3, y=3, height=1, width=0.5,
-            head_height=0.5, head_width=0.5, tail_notch=0.25,
-            stroke=black, fill=aqua, stroke_width=1)
+            x=3, y=3, height=1, width=0.5, head_height=0.5, head_width=0.5,
+            tail_notch=0.25,
+            fill=aqua, stroke=black, stroke_width=1)
+        Arrow(
+            x=1, y=1, height=1, width=0.5, head_height=0.5, head_width=0.75)
+        Arrow(
+            x=2, y=1, height=1, width=0.5, head_height=0.5, head_width=0.75,
+            tail_width=0.75, transparency=50,
+            fill=silver, stroke=tomato, stroke_width=2)
+        Arrow(
+            x=3, y=1, height=1, width=0.5, head_height=0.5, head_width=0.75,
+            tail_width=0.01,
+            fill_stroke=gold)
 
       The shapes all set the following properties:
 
@@ -498,7 +551,39 @@ Example 2.
       - *width* of the tail portion
       - *head_height* sets height of the head portion
       - *head_width* sets width of the head portion (maximum dsistance between
-        the outer arrowhead "tips")
+        the outer arrowhead "wingtips")
+
+      The **silver** arrow has these properties:
+
+      - *tail_width* of ``0.75`` cm; this means the base of the arrow is wider
+        than the body (the width at the top of the tail section)
+      - *transparency* - set to ``50`` %; the grid is partly visible through it
+
+      The **gold** arrow has these properties:
+
+      - *tail_width* of ``0.01`` cm; this means the base of the arrow is much
+        narrow than the body (the width at the top of the tail section)
+
+      The **green** (``lime`` fill) arrow has these properties:
+
+      - *points_offset* of ``-0.25`` cm; this means that the two "wingtips" of
+        the arrowhead are not in line with the top of the tail portion but are
+        moved backwards towards the tail
+
+      The **red** (``tomato`` fill)  arrow has these properties:
+
+      - *points_offset* of ``0.25`` cm; this means that the two "wingtips" of
+        the arrowhead are not in line with the top of the tail portion but
+        are moved forwards, away from the tail; and the head has been been
+        made narrower and longer
+
+      The **blue** (``aqua`` fill) arrow has these properties:
+
+      - *tail_notch* of ``0.25`` cm; this means the base has a small inwards
+        facing triangle "cut" out of it
+
+      The blue arrow also has matching *width* and *head_width* (of ``0.5`` cm)
+      which means that there are no visible arrowhead "wingtips".
 
 ===== ======
 

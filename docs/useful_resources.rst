@@ -2,7 +2,9 @@
 Useful Resources
 ================
 
-   *NOTE* Inclusion of these links does not constitute a recommendation
+.. NOTE::
+
+   Inclusion of these links does **not** constitute a recommendation
    of them or their use!
 
 Icons and Images
@@ -23,6 +25,17 @@ Card Images
    https://en.wikipedia.org/wiki/Playing_card#Modern_formats
 
 -  New Suit Icons - https://boardgamegeek.com/image/7928106/bmorayta1
+
+Unicode Characters
+==================
+
+There are thousands of symbols that are potentially of use in a design.
+For game design, the character sets from U+2000 (General Punctuation) to
+U+2BFF (Miscellaneous Symbols and Arrows) are likely to be of interest.
+Not all Unicode characters can be displayed in all fonts!
+
+- https://www.compart.com/en/unicode/plane/U+0000
+- https://www.w3schools.com/charsets/ref_html_utf8.asp
 
 Other Tools
 ===========
