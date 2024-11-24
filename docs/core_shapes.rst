@@ -21,7 +21,7 @@ Table of Contents
 -  `Linear Shapes`_
 -  `Enclosed Shapes`_
 -  `Compound Shapes`_
--  `Shapes' Common Properties`_
+-  `Shapes Common Properties`_
 
 .. _shape-index:
 
@@ -2174,10 +2174,10 @@ Example 2.
 ===== ======
 
 
-.. _commonIndex:
+.. _shapes-common-properties:
 
-Shapes' Common Properties
--------------------------
+Shapes Common Properties
+------------------------
 `↑ <table-of-contents_>`_
 
 The following are properties common to many shapes that can be set to create
@@ -2194,7 +2194,7 @@ the desired output:
 
 x and y
 ~~~~~~~
-`↑ <commonIndex_>`_
+`^ <shapes-common-properties_>`_
 
 Almost every shape will need to have its position set.  The common way to do
 this is by setting a value for **x** - the distance from the left margin of the
@@ -2203,7 +2203,7 @@ the bottom margin of the page (or card) to the bottom edge of the shape.
 
 cx and cy
 ~~~~~~~~~
-`↑ <commonIndex_>`_
+`^ <shapes-common-properties_>`_
 
 Almost every shape will need to have its position set.  For shapes that allow it,
 a common way to do this is by setting a value for **cx** - the distance from the
@@ -2214,7 +2214,7 @@ position of the shape.
 
 Dot and Cross
 ~~~~~~~~~~~~~
-`↑ <commonIndex_>`_
+`^ <shapes-common-properties_>`_
 
 For shapes that have a definable centre - such as a `Circle`_, a `Square`_
 or a `Hexagon`_ - it is possible to place a dot, a cross - or both - at this
@@ -2261,7 +2261,7 @@ of the shape which they are part of; see the `Stadium` example below.
 
 Fill and Stroke
 ~~~~~~~~~~~~~~~
-`↑ <commonIndex_>`_
+`^ <shapes-common-properties_>`_
 
 Almost every single shape will have a *stroke*, corresponding to the color of
 the line used to draw it, and a *stroke_width* which is the thickness in
@@ -2321,7 +2321,7 @@ will have no color, and effectively become transparent.
 
 Rotation
 ~~~~~~~~
-`↑ <commonIndex_>`_
+`^ <shapes-common-properties_>`_
 
 Every shape that has a calculated centre will support a *rotation* property.
 Rotation takes place in anti-clockwise direction, from the horizontal, around
@@ -2394,7 +2394,7 @@ Example 2. Polygon
 
 Text Descriptions
 ~~~~~~~~~~~~~~~~~
-`↑ <commonIndex_>`_
+`^ <shapes-common-properties_>`_
 
 Being able to associate a description, or identifier, with a shape can be
 useful.
@@ -2488,12 +2488,12 @@ Example 2. Text Offsets
 
 Transparency
 ~~~~~~~~~~~~
-`↑ <commonIndex_>`_
+`^ <shapes-common-properties_>`_
 
 All `Enclosed Shapes`_, that have a *fill*, can have a transparency value set
 that will affect the fill color used for the area inside them.
 
-If a shape should be completely transparent - i.e. no color at all being
+If a shape needs to be completely transparent - i.e. no color at all being
 visible - then set the *fill* value to ``None``.
 
 .. |trn| image:: images/defaults/transparency.png

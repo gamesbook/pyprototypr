@@ -234,7 +234,7 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
 
 Notch
 -----
-`^ <rectIndex_>`_
+`^ <rectangle_>`_
 
 Notches are small indents - or outdents - that are drawn in the corners of the
 Rectangle.
@@ -319,7 +319,7 @@ Rectangle.
 
 Peak
 ----
-`^ <rectIndex_>`_
+`^ <rectangle_>`_
 
 A peak is small triangular shape that juts out from the side of a Rectangle in
 a specified direction
@@ -359,7 +359,7 @@ a specified direction
 
 Rotation
 --------
-`^ <rectIndex_>`_
+`^ <rectangle_>`_
 
 .. |rrt| image:: images/custom/rectangle/rotation.png
    :width: 330
@@ -393,7 +393,7 @@ the centre of the Rectangle.
 
 Rounding
 --------
-`^ <rectIndex_>`_
+`^ <rectangle_>`_
 
 Rounding changes the corners of a Rectangle from a sharp, right-angled, join
 into the arc of a quarter-circle.
@@ -444,7 +444,7 @@ into the arc of a quarter-circle.
 
 Borders
 -------
-`^ <rectIndex_>`_
+`^ <rectangle_>`_
 
 The ``Borders`` property allows for the normal line that is drawn around the
 Rectangle to be overwritten on specific sides by another type of line.
@@ -530,7 +530,7 @@ applied to each.
 
 Centre
 ------
-`^ <hexIndex_>`_
+`^ <hexagon_>`_
 
 .. |hcn| image:: images/custom/hexagon/centre.png
    :width: 330
@@ -553,7 +553,7 @@ Centre
 
 Dot & Cross
 -----------
-`^ <hexIndex_>`_
+`^ <hexagon_>`_
 
 .. |hcd| image:: images/custom/hexagon/dot_cross.png
    :width: 330
@@ -590,7 +590,7 @@ Dot & Cross
 
 Hatch: Flat
 -----------
-`^ <hexIndex_>`_
+`^ <hexagon_>`_
 
 Hatches are a set of parallel lines that are drawn, in a specified direction, across
 the Hexagon from one opposing side to another in a vertical, horizontal or
@@ -636,7 +636,7 @@ diagonal direction.
 
 Hatch: Pointy
 -------------
-`^ <hexIndex_>`_
+`^ <hexagon_>`_
 
 Hatches are a set of parallel lines that are drawn, in a specified direction,
 across the Hexagon from one opposing side to another in a vertical, horizontal
@@ -682,7 +682,7 @@ or diagonal direction.
 
 Radii: Flat
 -----------
-`^ <hexIndex_>`_
+`^ <hexagon_>`_
 
 Radii are like spokes of a bicycle wheel; they are drawn from the vertices
 of a Hexagon towards its centre.
@@ -719,7 +719,7 @@ of a Hexagon towards its centre.
 
 Radii: Pointy
 -------------
-`^ <hexIndex_>`_
+`^ <hexagon_>`__
 
 Radii are like spokes of a bicycle wheel; they are drawn from the vertices
 of a Hexagon towards its centre.
@@ -755,7 +755,7 @@ of a Hexagon towards its centre.
 
 Text: Flat
 ----------
-`^ <hexIndex_>`_
+`^ <hexagon_>`_
 
 .. |htf| image:: images/custom/hexagon/hatch_text_flat.png
    :width: 330
@@ -786,7 +786,7 @@ Text: Flat
 
 Text: Pointy
 ------------
-`^ <hexIndex_>`_
+`^ <hexagon_>`_
 
 .. |htp| image:: images/custom/hexagon/hatch_text_pointy.png
    :width: 330
@@ -819,7 +819,7 @@ Text: Pointy
 
 Borders
 -------
-`^ <hexIndex_>`_
+`^ <hexagon_>`_
 
 The ``Borders`` property allows for the normal line, that is drawn around a
 Hexagon, to be overwritten on specific sides by another type of line.
@@ -900,7 +900,7 @@ ways that it can be customised.
 
 Dot & Cross
 -----------
-`^ <circleIndex_>`_
+`^ <circle_>`_
 
 .. |ccd| image:: images/custom/circle/dot_cross.png
    :width: 330
@@ -929,7 +929,7 @@ Dot & Cross
 
 Hatch
 -----
-`^ <circleIndex_>`_
+`^ <circle_>`_
 
 Hatches are a set of parallel lines that are drawn, in a specified direction,
 across the Circle from one opposing side to another in a vertical, horizontal
@@ -980,7 +980,7 @@ or diagonal direction.
 
 Radii
 -----
-`^ <circleIndex_>`_
+`^ <circle_>`_
 
 Radii are like spokes of a bicycle wheel; they are drawn from the circumference
 of a Circle towards its centre.
@@ -1030,7 +1030,7 @@ of a Circle towards its centre.
 
 Petals - petal
 --------------
-`^ <circleIndex_>`_
+`^ <circle_>`_
 
 Petals are projecting shapes drawn from the circumference of a Circle outwards
 at regular intervals.  They are typically used to create a "flower" or "sun"
@@ -1085,7 +1085,7 @@ effect.
 
 Petals - curve
 --------------
-`^ <circleIndex_>`_
+`^ <circle_>`_
 
 Petals are projecting shapes drawn from the circumference of a Circle outwards
 at regular intervals.  They are typically used to create a "flower" or "sun"
@@ -1139,7 +1139,7 @@ effect.
 
 Petals - triangle
 -----------------
-`^ <circleIndex_>`_
+`^ <circle_>`_
 
 Petals are projecting shapes drawn from the circumference of a Circle outwards
 at regular intervals.  They are typically used to create a "flower" or "sun"
@@ -1212,7 +1212,7 @@ out the command when its purpose has been served.
 
 Subdivisions
 ------------
-`↑ <blueprintIndex_>`_
+`↑ <blueprint_>`_
 
 .. |bl1| image:: images/custom/blueprint/subdivisions.png
    :width: 330
@@ -1236,7 +1236,7 @@ Subdivisions
 
 Style - Blue
 ------------
-`↑ <blueprintIndex_>`_
+`↑ <blueprint_>`_
 
 .. |bl2| image:: images/custom/blueprint/style_blue.png
    :width: 330
@@ -1257,7 +1257,7 @@ Style - Blue
 
 Style - Green
 -------------
-`↑ <blueprintIndex_>`_
+`↑ <blueprint_>`_
 
 .. |bl3| image:: images/custom/blueprint/style_green.png
    :width: 330
@@ -1278,7 +1278,7 @@ Style - Green
 
 Style - Grey
 ------------
-`↑ <blueprintIndex_>`_
+`↑ <blueprint_>`_
 
 .. |bl4| image:: images/custom/blueprint/style_grey.png
    :width: 330
@@ -1299,7 +1299,7 @@ Style - Grey
 
 Stroke
 ------
-`↑ <blueprintIndex_>`_
+`↑ <blueprint_>`_
 
 .. |bl5| image:: images/custom/blueprint/stroke_width_red.png
    :width: 330
@@ -1321,7 +1321,7 @@ Stroke
 
 Fill
 ----
-`↑ <blueprintIndex_>`_
+`↑ <blueprint_>`_
 
 .. |bl6| image:: images/custom/blueprint/style_stroke.png
    :width: 330
@@ -1343,7 +1343,7 @@ Fill
 
 Decimals
 --------
-`↑ <blueprintIndex_>`_
+`↑ <blueprint_>`_
 
 .. |bl7| image:: images/custom/blueprint/decimals.png
    :width: 330
