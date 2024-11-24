@@ -24,7 +24,7 @@ Table of Contents
 
 Background
 ==========
-`↑ <tableOfContents_>`_
+`↑ <TableOfContents_>`_
 
 Working with an actual programming language, if you’re not a programmer,
 can be a little intimidating. Hopefully though, by the time you’ve
@@ -40,7 +40,7 @@ too much complexity. These are *not* essential but *may* be very useful.
 
 Introduction
 ============
-`↑ <tableOfContents_>`_
+`↑ <TableOfContents_>`_
 
 As you may already have worked out; the normal operation of the script
 is to start with the first command and then go on to the next one and
@@ -59,7 +59,7 @@ you some idea of the “basics”.
 
 Loops
 =====
-`↑ <tableOfContents_>`_
+`↑ <TableOfContents_>`_
 
 A loop represents a section of your script that you want to repeat a
 certain number of times.
@@ -190,7 +190,7 @@ For example:
 
 If Statements
 =============
-`↑ <tableOfContents_>`_
+`↑ <TableOfContents_>`_
 
 An ``if`` statement is a way to allow the computer to make decisions
 based on the information available to it.
@@ -300,7 +300,7 @@ malfunctioned!
 
 Functions
 =========
-`↑ <tableOfContents_>`_
+`↑ <TableOfContents_>`_
 
 A function is the workhorse of a langauge.  It allows you to define your
 "recipe" and then use that recipe multiple times with differing properties.
@@ -350,10 +350,11 @@ of it,
         capitol(a=2, b=4, c=lime)
         PageBreak()
 
-      The function named *capitol* has three properties that can be set; *a*,
-      *b* and *c*.  The values have defaults - ``0``, ``0`` and ``red`` - which
-      are used if no values are provided; this can be seen by the first example
-      in the lower left.  If values are provided to *a* and *b*, these will
-      change where the shapes are drawn; if a value is provided to *c* it will
-      change the shapes' color.
+      The function named *capitol* has three properties that
+      can be set; *a*, *b* and *c*.  The values have defaults -
+      ``0``, ``0`` and ``red`` - which are used if no values
+      are provided; this can be seen by the first example
+      in the lower left.  If values are provided to *a* and *b*,
+      these will change where the shapes are drawn; if a value
+      is provided to *c* it will change the shapes' color.
 ===== ======
