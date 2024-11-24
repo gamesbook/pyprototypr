@@ -2,8 +2,8 @@
 Development
 ===========
 
-These notes are aimed at those who might be developing further, who want to
-use as part of other Python projects.
+These notes are aimed at those who might be developing the code further,
+or who want to use **pyprototypr** as part of other Python projects.
 
 
 Coding
@@ -18,11 +18,13 @@ Note, however, that this project "breaks" a few normal conventions:
 - Extensive use of ``**kwargs**`` for the various shapes which means that a user
   could pass in a key+value setting that simply gets ignored without raising an
   error; this could be improved by creating numerous subclasses with a more
-  extensive inheritance framework, but...
+  extensive inheritance framework, but these soon start getting tricky to
+  juggle...
 - Use of ``from pyprototypr import *`` for running scripts; you could force a
-  user to import only what they need but that makes it really tedious for them;
-  if you are using it as part of another project, then of course you should
-  follow the normal approach of only importing what you need!
+  user to import only what they need but that makes it really tedious for them,
+  and much harder to do if you're not a programmer;  if you are using it as
+  part of another project, then of course you should follow the normal approach
+  of only importing exactly what you need!
 
 
 Documentation

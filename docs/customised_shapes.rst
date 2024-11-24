@@ -68,6 +68,9 @@ Centred
 .. |rcn| image:: images/custom/rectangle/centre.png
    :width: 330
 
+.. table:: table for rectangle centred
+   :widths: 30,70
+
 ===== ======
 |rcn| This example shows a Rectangle constructed using the command::
 
@@ -89,6 +92,9 @@ A cross or a dot are symbols that mark the centre of the Rectangle.
 
 .. |rdc| image:: images/custom/rectangle/dot_cross.png
    :width: 330
+
+.. table:: table for rectangle cross
+   :widths: 30,70
 
 ===== ======
 |rdc| This example shows a Rectangle constructed using the command::
@@ -116,6 +122,9 @@ point in a specified direction.  This creates an arrow-like effect.
 
 .. |rcv| image:: images/custom/rectangle/chevron.png
    :width: 330
+
+.. table:: table for rectangle chevron
+   :widths: 30,70
 
 ===== ======
 |rcv| This example shows Rectangles constructed using these commands::
@@ -162,6 +171,9 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
 
 .. |rht| image:: images/custom/rectangle/hatch.png
    :width: 330
+
+.. table:: table for rectangle hatch
+   :widths: 30,70
 
 ===== ======
 |rht| This example shows Rectangles constructed using these commands::

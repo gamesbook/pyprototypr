@@ -7,7 +7,7 @@ terms and concepts that act as “short-cuts” to help in discussions. Some
 of these are likely to be common to other graphics editing or
 programming tools.
 
-.. _pageIndex:
+.. _table-of-contents:
 
 Table of Contents
 -----------------
@@ -26,7 +26,7 @@ Table of Contents
 
 How you’ll use *pyprototypr*
 ----------------------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 You will be using **pyprototypr** to write what is termed a *script*
 i.e. a recipe or list of instructions that are stored in a file. These
@@ -45,7 +45,7 @@ again to create an updated PDF file.
 
 The “script” concept
 --------------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 Creating a *script* is similar to the process of building a house; in
 the sense that the instructions which come first create underlying parts
@@ -74,7 +74,7 @@ will affect what you see at the end!
 
 The “position” concept
 ----------------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 When using **pyprototypr** what you are doing is defining *where* and
 *how* various things should appear on a *page*. A script can create multiple
@@ -103,7 +103,7 @@ the supplied values for the position.
 
 The “command” concept
 ---------------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 Instructions in **pyprototypr** are termed *commands*.  These usually are
 written with an initial capital letter. They are effectively "imperative"
@@ -115,7 +115,7 @@ in nature, causing something to happen; for example:
 
 The “element” concept
 ---------------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 Rather than use the slightly clumsy term “thing”, **pyprototypr** uses
 the term *element*.
@@ -143,7 +143,7 @@ are provided in the section on `Core Shapes <core_shapes.rst>`__.
 
 Element properties
 ------------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 *Elements* can have other settings apart from their `position <position_>`_
 
@@ -165,7 +165,7 @@ common properties are described in the `Terminology <terminology.rst>`__.
 
 Working with color
 ------------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 Everything we see has color.
 
@@ -187,7 +187,7 @@ set the color of an area, and *“stroke”* to set the color of a line.
 
 Working with units
 ------------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 All positions, heights, widths, distances, line thicknesses and other
 kinds of lengths or sizes all need to be measured in a particular set of
@@ -214,7 +214,7 @@ are converted to points.
 
 The “stroke” concept
 --------------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 While the majority of size-based `properties <properties_>`_ in **pyprototypr**
 work with the “normal” units you have chosen - inches or centimetres - some use
@@ -224,7 +224,7 @@ maintain consistency with existing tools.)
 
 The “default” concept
 ----------------------
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 A “default”, in terms of **pyprototypr**, is a value or setting for
 something (usually a `property <properties_>`_) which is used unless you

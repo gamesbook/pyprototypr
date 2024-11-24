@@ -7,7 +7,7 @@ for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_,
 have looked through the `Core Shapes <core_shapes.rst>`_,
 and that you have created one or two basic scripts on your own.
 
-.. _pageIndex:
+.. _table-of-contents:
 
 Table of Contents
 =================
@@ -23,7 +23,7 @@ Table of Contents
 
 Names and Naming
 ================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 Naming of things is supposed to be one of the harder aspects of programming!
 
@@ -61,28 +61,28 @@ https://www.mattlayman.com/blog/2024/layman-guide-python-built-in-functions/
 
 Strings (words and letters), Numbers and Booleans
 =================================================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 **To Be Done**
 
 
 Assigned Names
 ==============
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 **To Be Done**
 
 
 Calculations
 ============
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 **To Be Done**
 
 
 Case-sensitivity
 ================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 **pyprototypr**, like Python, is case-sensitive - unlike some computer
 languages (or, for example, file names that are used in Windows); so a
@@ -102,7 +102,7 @@ draw the Rectangle on the page.
 
 Quotes in Text
 ==============
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 Using quotes inside a string of letters can be tricky.
 
@@ -131,14 +131,14 @@ end of the string, but simply a symbol that must be displayed.
 
 Properties and Short-cuts
 =========================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 **To Be Done**
 
 
 Lists
 =====
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 Lists are a particularly useful way to collate, or group, related items
 so that they can be processed together.
@@ -153,7 +153,7 @@ be written vertically in the form of a number of bullets:
 -  third.
 
 A column in a spreadsheet can be thought of as such a vertical list (but
-you would not usually use an “and”!)
+you would not usually use an “and” in it!)
 
 Lists in **pyprototypr** are written in a similar way but they need to
 be identified by wrapping them at their start and end by the use of
@@ -162,16 +162,16 @@ be identified by wrapping them at their start and end by the use of
 The brackets that are used are so-called **square brackets** - ``[`` and
 ``]``. Items in the list are separated by commas.
 
--  If they are numbers then that’s all you need: for example, *[1, 3, 5,
+-  If they are numbers, then that’s all you need: for example, *[1, 3, 5,
    7]* - this list is a series of odd numbers.
 -  If they are words, or strings of text then each item must be wrapped
-   in quotes: for example, *[‘apples’, ‘oranges’, ‘bananas’, ‘plums’]*
-   or *[“apples”, “oranges”, “bananas”, “plums”]* (remember that quotes
-   can be single or double)
+   in quotes: for example, *['apples', 'oranges', 'bananas', 'plums']*
+   or *["apples", "oranges", "bananas", "plums"]* (remember that quotes
+   can be single or double but not a mix of both!)
 
 ..
 
-   Note that there is **no** usage of the word “and” in these lists!
+   Note that there is **no** use of the word “and” in these lists!
 
 A list is normally given an assignment to store it in memory for use by
 the script; for example::
@@ -179,13 +179,13 @@ the script; for example::
    groceries = ['apples', 'oranges', 'bananas', 'plums']
 
 This is so that the list can be referred to in the script by using the
-shorthand reference name (in this case “groceries”). There are various
+shorthand reference name (in this case ``groceries``). There are various
 examples of the use of lists of elsewhere in these documents and also in
 the script examples.
 
 Errors
 ======
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 A situation that you will often encounter, especially as your script gets
 longer and more complex, is the appearance of errors.
@@ -238,7 +238,7 @@ Another example::
    NameError: name 'bred' is not defined
 
 In this case, the script uses the name of something - ``bred`` - which
-is unknown. It could be a simple spelling mistake e.g. here it should be
+is unknown. It could be a simple spelling mistake e.g. here it should be
 ``red`` *or* possibly you’d meant to assign the word ``bred`` to a particular
 color before using it for the ``Rectangle``::
 
