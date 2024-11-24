@@ -68,19 +68,19 @@ Centred
 .. |rcn| image:: images/custom/rectangle/centre.png
    :width: 330
 
-.. table:: table for rectangle centred
+.. table::
    :widths: 30,70
 
-    ===== ======
-    |rcn| This example shows a Rectangle constructed using the command::
+   ===== ======
+   |rcn| This example shows a Rectangle constructed using the command::
 
             Rectangle(cx=2, cy=3)
 
-          It has the following properties that differ from the defaults:
+         It has the following properties that differ from the defaults:
 
-          - *cx* and *cy* are used to set the centre of the Rectangle at `2` and `3`
-            centimetres respectively
-    ===== ======
+         - *cx* and *cy* are used to set the centre of the Rectangle at `2` and `3`
+           centimetres respectively
+   ===== ======
 
 .. _rectCross:
 
@@ -93,23 +93,23 @@ A cross or a dot are symbols that mark the centre of the Rectangle.
 .. |rdc| image:: images/custom/rectangle/dot_cross.png
    :width: 330
 
-.. table:: table for rectangle cross
+.. table::
    :widths: 30,70
 
-    ===== ======
-    |rdc| This example shows a Rectangle constructed using the command::
+   ===== ======
+   |rdc| This example shows a Rectangle constructed using the command::
 
-            Rectangle(height=3, width=2, cross=0.75, dot=0.15)
+           Rectangle(height=3, width=2, cross=0.75, dot=0.15)
 
-          It has the following properties that differ from the defaults:
+         It has the following properties that differ from the defaults:
 
-          - *height* and *width* are used to set the size of the Rectangle at `3`
-            and `2` centimetres respectively
-          - *cross* - the length of each of the two lines that cross at the centre
-            is set to `0.75` cm (7.5mm)
-          - *dot* - a circle with a diameter of `0.15` cm (1.5mm); the fill color
-            for the dot is the same as the stroke (default is black)
-    ===== ======
+         - *height* and *width* are used to set the size of the Rectangle at `3`
+           and `2` centimetres respectively
+         - *cross* - the length of each of the two lines that cross at the centre
+           is set to `0.75` cm (7.5mm)
+         - *dot* - a circle with a diameter of `0.15` cm (1.5mm); the fill color
+           for the dot is the same as the stroke (default is black)
+   ===== ======
 
 .. _rectChevron:
 
@@ -126,39 +126,39 @@ point in a specified direction.  This creates an arrow-like effect.
 .. table:: table for rectangle chevron
    :widths: 30,70
 
-    ===== ======
-    |rcv| This example shows Rectangles constructed using these commands::
+   ===== ======
+   |rcv| This example shows Rectangles constructed using these commands::
 
-            Rectangle(
-                x=3, y=2, height=2, width=1, font_size=4,
-                label="chevron:N:0.5", title="title-N", heading="head-N",
-                chevron='N', chevron_height=0.5
-            )
-            Rectangle(
-                x=0, y=2, height=2, width=1, font_size=4,
-                label="chevron:S:0.5", title="title-S", heading="head-S",
-                chevron='S', chevron_height=0.5
-            )
-            Rectangle(
-                x=1, y=4.5, height=1, width=2, font_size=4,
-                label="chevron:W:0.5", title="title-W", heading="head-W",
-                chevron='W', chevron_height=0.5
-            )
-            Rectangle(
-                x=1, y=0.5, height=1, width=2, font_size=4,
-                label="chevron:E:0.5", title="title-E", heading="head-E",
-                chevron='E', chevron_height=0.5
-            )
+           Rectangle(
+               x=3, y=2, height=2, width=1, font_size=4,
+               label="chevron:N:0.5", title="title-N", heading="head-N",
+               chevron='N', chevron_height=0.5
+           )
+           Rectangle(
+               x=0, y=2, height=2, width=1, font_size=4,
+               label="chevron:S:0.5", title="title-S", heading="head-S",
+               chevron='S', chevron_height=0.5
+           )
+           Rectangle(
+               x=1, y=4.5, height=1, width=2, font_size=4,
+               label="chevron:W:0.5", title="title-W", heading="head-W",
+               chevron='W', chevron_height=0.5
+           )
+           Rectangle(
+               x=1, y=0.5, height=1, width=2, font_size=4,
+               label="chevron:E:0.5", title="title-E", heading="head-E",
+               chevron='E', chevron_height=0.5
+           )
 
-          The Rectangles all have the following properties that differ from the defaults:
+         The Rectangles all have the following properties that differ from the defaults:
 
-          - *x* and *y*, *height* and *width* - set the basic configuration
-          - *label*, *title* and *heading* - text to describe the shape's setting
-          - *chevron* - the primary compass direction in which the chevron is
-            pointing; N(orth), S(outh), E(ast) or W(est)
-          - *chevron_height* - the distance of the chevron peak from the side of
-            the rectangle
-    ===== ======
+         - *x* and *y*, *height* and *width* - set the basic configuration
+         - *label*, *title* and *heading* - text to describe the shape's setting
+         - *chevron* - the primary compass direction in which the chevron is
+           pointing; N(orth), S(outh), E(ast) or W(est)
+         - *chevron_height* - the distance of the chevron peak from the side of
+           the rectangle
+   ===== ======
 
 .. _rectHatch:
 
@@ -175,50 +175,50 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
 .. table:: table for rectangle hatch
    :widths: 30,70
 
-    ===== ======
-    |rht| This example shows Rectangles constructed using these commands::
+   ===== ======
+   |rht| This example shows Rectangles constructed using these commands::
 
-            htch = Common(
-              height=1.5, width=1, hatch=5, hatch_width=0.1, hatch_stroke=red)
+           htch = Common(
+             height=1.5, width=1, hatch=5, hatch_width=0.1, hatch_stroke=red)
 
-            Rectangle(common=htch, x=0, y=0,  hatch_directions='w', label="W")
-            Rectangle(common=htch, x=1.5, y=0, hatch_directions='e', label="E")
-            Rectangle(common=htch, x=3, y=0, hatch_directions='ne', label="NE\nSW")
+           Rectangle(common=htch, x=0, y=0,  hatch_directions='w', label="W")
+           Rectangle(common=htch, x=1.5, y=0, hatch_directions='e', label="E")
+           Rectangle(common=htch, x=3, y=0, hatch_directions='ne', label="NE\nSW")
 
-            Rectangle(common=htch, x=1.5, y=2, hatch_directions='n', label="N")
-            Rectangle(common=htch, x=0, y=2,  hatch_directions='s', label="S")
-            Rectangle(common=htch, x=3, y=2, hatch_directions='nw', label="NW\nSE")
+           Rectangle(common=htch, x=1.5, y=2, hatch_directions='n', label="N")
+           Rectangle(common=htch, x=0, y=2,  hatch_directions='s', label="S")
+           Rectangle(common=htch, x=3, y=2, hatch_directions='nw', label="NW\nSE")
 
-            Rectangle(common=htch, x=0, y=4, label="all")
-            Rectangle(common=htch, x=1.5, y=4, hatch_directions='o', label="O")
-            Rectangle(common=htch, x=3, y=4, hatch_directions='d', label="D")
+           Rectangle(common=htch, x=0, y=4, label="all")
+           Rectangle(common=htch, x=1.5, y=4, hatch_directions='o', label="O")
+           Rectangle(common=htch, x=3, y=4, hatch_directions='d', label="D")
 
-          These Rectangles all share the following Common properties that differ
-          from the defaults:
+         These Rectangles all share the following Common properties that differ
+         from the defaults:
 
-          - *height* and *width* - set the basic configuration
-          - *hatch* - sets the **number** of lines to be drawn; the spacing between
-            them is equal and depends on the direction
-          - *hatch_width* - set to `0.1` point; a fairly thin line
-          - *hatch_stroke* - set to the color `red` to make it stand out from the
-            rectangle sides
+         - *height* and *width* - set the basic configuration
+         - *hatch* - sets the **number** of lines to be drawn; the spacing between
+           them is equal and depends on the direction
+         - *hatch_width* - set to `0.1` point; a fairly thin line
+         - *hatch_stroke* - set to the color `red` to make it stand out from the
+           rectangle sides
 
-          Each Rectangle has its own setting for:
+         Each Rectangle has its own setting for:
 
-          - *x* and *y* - different positions on the page for the lower-left corner
-          - *label* - text to help identify it
-          - *hatch_directions* - if not specified, hatches will be drawn in all directions -
-            otherwise:
+         - *x* and *y* - different positions on the page for the lower-left corner
+         - *label* - text to help identify it
+         - *hatch_directions* - if not specified, hatches will be drawn in all directions -
+           otherwise:
 
-            - `n` (North) or `s` (South) draws vertical lines;
-            - `w` (West) or `e` (East) draws horizontal lines;
-            - `nw` (North-West) or `se` (South-East) draws diagonal lines from
-               top-left to bottom-right;
-            - `ne` (North-East) or `sw` (South-West) draws diagonal lines from
+           - `n` (North) or `s` (South) draws vertical lines;
+           - `w` (West) or `e` (East) draws horizontal lines;
+           - `nw` (North-West) or `se` (South-East) draws diagonal lines from
+              top-left to bottom-right;
+           - `ne` (North-East) or `sw` (South-West) draws diagonal lines from
               bottom-left to top-right;
-            - `o` (orthogonal) draws vertical **and** horizontal lines;
-            - `d` (diagonal) draws diagonal lines between all corners
-    ===== ======
+           - `o` (orthogonal) draws vertical **and** horizontal lines;
+           - `d` (diagonal) draws diagonal lines between all corners
+   ===== ======
 
 .. _rectNotch:
 
@@ -249,7 +249,7 @@ Rectangle.
             notch_y=0.25,  notch_x=0.5, notch_corners="NW SE",
         )
 
-      These shares the following properties:
+      These share the following properties:
 
       - *x* and *y*, *height* and *width* - set the basic configuration
       - *label*, *label_size* - text to describe the shape's setting
@@ -265,8 +265,8 @@ Rectangle.
         notch will start
       - *notch_Y* - the distance from the corner in the Y-direction where the
         notch will start
-      - *notch_corners* - the specific corners of the rectangle where the notchj will be
-        applied
+      - *notch_corners* - the specific corners of the rectangle where the notch
+        will be applied
 ===== ======
 
 ===== ======
