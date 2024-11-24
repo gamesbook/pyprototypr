@@ -24,7 +24,7 @@ Table of Contents
 
 Background
 ==========
-`↑ <pageIndex_>`_
+`↑ <tableOfContents_>`_
 
 Working with an actual programming language, if you’re not a programmer,
 can be a little intimidating. Hopefully though, by the time you’ve
@@ -40,7 +40,7 @@ too much complexity. These are *not* essential but *may* be very useful.
 
 Introduction
 ============
-`↑ <pageIndex_>`_
+`↑ <tableOfContents_>`_
 
 As you may already have worked out; the normal operation of the script
 is to start with the first command and then go on to the next one and
@@ -59,7 +59,7 @@ you some idea of the “basics”.
 
 Loops
 =====
-`↑ <pageIndex_>`_
+`↑ <tableOfContents_>`_
 
 A loop represents a section of your script that you want to repeat a
 certain number of times.
@@ -75,7 +75,9 @@ times the loop happens, and the second part is the action, or set of
 actions, that need to be repeated.
 
 In a Python, or **pyprototypr**, script, a loop can be set-up by using
-the following kind of statement::
+the following kind of statement:
+
+  .. code:: python
 
    for count in range(1, 4):
        add_egg()
@@ -111,7 +113,9 @@ again.
    action(s) again.
 
 In the case of **pyprototypr**, a loop can be used to draw an item a
-number of times; for example::
+number of times; for example:
+
+   .. code:: python
 
    for count in range(1, 4):
        Circle(x=1, y=count)
@@ -125,7 +129,9 @@ different ``y`` locations on the page.
 
 You can combine the value of the count with other information to do more
 complex kinds of operations. In this next example, the values for ``y``
-will be 0.5, 1.0 and 1.5 over the three iterations of the loop::
+will be 0.5, 1.0 and 1.5 over the three iterations of the loop:
+
+  .. code:: python
 
    for y_location in range(1, 4):
        Circle(x=1, y=y_location*0.5)
@@ -138,7 +144,9 @@ The value of the loop count normally goes up by 1 each time; but you can
 set a third value, inside the brackets, for the ``range`` that is a
 different increment number. For example:
 
-::
+:
+
+  .. code:: python
 
    for count in range(1, 7, 2):
        Circle(x=1, y=count)
@@ -150,7 +158,9 @@ reaches 7, the loop ends right away.
 Multiple Loops
 --------------
 
-Multiple loops can be used to control different values. For example::
+Multiple loops can be used to control different values. For example:
+
+  .. code:: python
 
    for y_location in range(1, 3):
        for x_location in range(1, 3):
@@ -167,7 +177,9 @@ discretion called ``zip``.
 If you wanted to draw a ``Circle`` at three locations, in three different
 colors, you can store all of these in lists and then do the drawing in a loop.
 
-For example::
+For example:
+
+  .. code:: python
 
     x_pos = [1, 2, 3]
     y_pos = [3, 2, 1]
@@ -178,7 +190,7 @@ For example::
 
 If Statements
 =============
-`↑ <pageIndex_>`_
+`↑ <tableOfContents_>`_
 
 An ``if`` statement is a way to allow the computer to make decisions
 based on the information available to it.
@@ -191,7 +203,9 @@ driving, but if the light is red we come to a stop.
 In a similar way we can set up a statement to allow the script to behave
 differently according to information that it has.
 
-So an ``if`` statement will look something like this::
+So an ``if`` statement will look something like this:
+
+  .. code:: python
 
    if color == green:
        keep_driving()
@@ -222,7 +236,9 @@ should the comparison be false, for example because the value stored in
 ``color`` is red or orange, then the second part of the if statement
 will be carried out - in this case the ``stop driving`` action.
 
-An ``if`` statement can be used inside a loop, for example::
+An ``if`` statement can be used inside a loop, for example:
+
+  .. code:: python
 
    for count in range(1, 5):
        if count < 3:
@@ -241,7 +257,9 @@ This example is shown below.
    :width: 330
 
 ===== ======
-|lpi| An example of a *loop* and an *if* used together::
+|lpi| An example of a *loop* and an *if* used together:
+
+      .. code:: python
 
         Blueprint()
         Text(common=txt, text="Loop and If")
@@ -252,8 +270,8 @@ This example is shown below.
                 Rectangle(x=1, y=count, label=count)
         PageBreak()
 
-      The value of ``count`` can easily be seen as it is used to create the
-      text for the shape's label.
+      The value of ``count`` can easily be seen as it is used to
+      create the text for the shape's label.
 ===== ======
 
 
@@ -263,7 +281,9 @@ Multi-part If Statements
 An ``if`` statement can deal with multiple choices as well.  To continue with
 the driving example, we know there are three colors and so the program must
 handle all of them.  Any options after the first one are handled with a
-``elif`` prefix - short for "else if"::
+``elif`` prefix - short for "else if":
+
+  .. code:: python
 
    if color == green:
        keep_driving()
@@ -280,7 +300,7 @@ malfunctioned!
 
 Functions
 =========
-`↑ <pageIndex_>`_
+`↑ <tableOfContents_>`_
 
 A function is the workhorse of a langauge.  It allows you to define your
 "recipe" and then use that recipe multiple times with differing properties.
@@ -310,13 +330,16 @@ of it,
    :width: 330
 
 ===== ======
-|fn1| An example of a *function*::
+|fn1| An example of a *function*:
+
+      .. code:: python
 
         def capitol(a=0, b=0, c=red):
             Circle(cx=a+1, cy=b+1, radius=0.5, fill_stroke=c)
             Rectangle(
                 x=a, y=b, height=1, width=2, fill_stroke=c,
-                notch_y=0.1, notch_x=0.5, notch_corners="nw ne",)
+                notch_y=0.1, notch_x=0.5,
+                notch_corners="nw ne",)
             EquilateralTriangle(
                 cx=a+1, cy=b+1.5, side=0.25, fill_stroke=c)
 

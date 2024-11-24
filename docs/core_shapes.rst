@@ -12,7 +12,7 @@ Core Shapes
 Table of Contents
 -----------------
 
--  `Index of Shapes`_
+-  `Shape Index`_
 -  `Overview`_
 -  `Commonalities`_
 -  `Linear Shapes`_
@@ -22,8 +22,8 @@ Table of Contents
 
 .. _shapeIndex:
 
-Index of Shapes
----------------
+Shape Index
+-----------
 
 -  `Arc`_
 -  `Arrow`_
