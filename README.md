@@ -100,9 +100,8 @@ current / potential areas of work or development that have been identified.
     * [ ] Domino (dots inside rectangle outline)
     * [ ] Die (6-sided with dots)
     * [ ] Picture Frame (trapezoid composite)
-* [ ] Arrow: basic styling; angled
+* [x] Arrow: basic styling; rotation
 * [x] Circle, Rectangle, Hexagon: centre cross
-* [x] Rectangle: with notches
 * [x] Hexagons: "pointy" layout
 * [ ] Hexagons: 18xx tile example (requires `Arcs` below!)
 * [ ] Line:
@@ -130,7 +129,7 @@ current / potential areas of work or development that have been identified.
 * [ ] Cards:
     * [ ] allow for copies of a card
     * [ ] 'wrapper' for counters (default 1" squares)
-* [_] Color:
+* [ ] Color:
     * [ ] add support for CMYK
 
 ## Planned/Potential Board Examples
@@ -154,7 +153,8 @@ capabilities.
 Additional libraries in use include:
 
 * `svglib` https://pypi.org/project/svglib/ - support for drawing SVG images
-* `bgg-api` https://pypi.org/project/bgg-api/ - support for access to the BoardGameGeek API
+* `bgg-api` https://pypi.org/project/bgg-api/ - support for access to the
+  [BoardGameGeek](https://boardgamegeek.com) API
 * `xlrd` https://pypi.org/project/xlrd/ - support for access to Excel `.xls` files
 * `openpyxl` https://pypi.org/project/openpyxl/ - support for access to Excel `.xlsx` files
 * `pymupdf` https://pymupdf.io/ - support for export from PDF to PNG images
