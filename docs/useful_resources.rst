@@ -36,6 +36,7 @@ Not all Unicode characters can be displayed in all fonts!
 
 - https://www.compart.com/en/unicode/plane/U+0000
 - https://www.w3schools.com/charsets/ref_html_utf8.asp
+- https://www.codetable.net/groups
 
 Other Tools
 ===========

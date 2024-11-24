@@ -458,7 +458,7 @@ Example 1.
 
       - centre-bottom point at x-position ``1`` cm and at y-position ``1`` cm
       - *height* of the tail portion of ``1`` cm
-      - *head_height* of the head portion of ``1`` cm (based on the *height())
+      - *head_height* of the head portion of ``1`` cm (based on the *height*)
       - *head_width* of the head portion of ``2`` cm; the maximum distance
         between the two arrowhead "wingtips" - for which the default value is
         calculated as equal to twice the *width*
@@ -471,7 +471,9 @@ Example 2.
    :width: 330
 
 ===== ======
-|ar1| This example shows the shape constructed using the commands as follows::
+|ar1| This example shows the shape constructed using the commands as follows:
+
+      .. code:: python
 
         Arrow(
             x=1, y=0.5,
@@ -510,8 +512,6 @@ Example 2.
 
 ===== ======
 
-
-
 Example 3.
 ++++++++++
 
@@ -519,7 +519,9 @@ Example 3.
    :width: 330
 
 ===== ======
-|ar2| This example shows the shape constructed using the commands as follows::
+|ar2| This example shows the shape constructed using the commands as follows:
+
+      .. code:: python
 
         Arrow(
             x=1, y=3, height=1, width=0.25, head_height=0.5, head_width=1,
