@@ -11,7 +11,7 @@ and that you've created some basic scripts of your own.
    Note that if you already know the Python programming language, you can skip
    this section, unless you have any uncertainty about any of these topics!
 
-.. _pageIndex:
+.. _TableOfContents:
 
 Table of Contents
 =================
@@ -143,8 +143,6 @@ sense in terms of what you’re trying to achieve by using it.
 The value of the loop count normally goes up by 1 each time; but you can
 set a third value, inside the brackets, for the ``range`` that is a
 different increment number. For example:
-
-:
 
   .. code:: python
 
@@ -351,10 +349,14 @@ of it,
         PageBreak()
 
       The function named *capitol* has three properties that
-      can be set; *a*, *b* and *c*.  The values have defaults -
+      can be set; *a*, *b* and *c*.
+
+      The values have defaults -
       ``0``, ``0`` and ``red`` - which are used if no values
       are provided; this can be seen by the first example
-      in the lower left.  If values are provided to *a* and *b*,
+      in the lower left.
+
+      If values are provided to *a* and *b*,
       these will change where the shapes are drawn; if a value
       is provided to *c* it will change the shapes' color.
 ===== ======
