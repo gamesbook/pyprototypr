@@ -6,6 +6,9 @@ Core Shapes
    :trim:
 .. |deg|  unicode:: U+00B0 .. DEGREE SIGN
    :ltrim:
+.. |br| raw:: html
+
+   <br/>
 
 .. _table-of-contents:
 
@@ -2008,8 +2011,8 @@ Example 2.
 
       The SVG images also have the following properties set for them:
 
-      - *scaling* - set to the fraction ``0.15`` or 15% of its actual size;
-        but because SVG is a vector format, there will be no distortion.
+      - *scaling* - set to the fraction ``0.15`` or 15% of its actual size; |br|
+        because SVG is a vector format, there will be no distortion.
 
       Two of the images - ones on the right - are rotated about a centre point
       (calculated based on the image's height and width)
