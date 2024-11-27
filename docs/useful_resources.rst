@@ -37,6 +37,7 @@ Not all Unicode characters can be displayed in all fonts!
 - https://www.compart.com/en/unicode/plane/U+0000
 - https://www.w3schools.com/charsets/ref_html_utf8.asp
 - https://www.codetable.net/groups
+- https://shapecatcher.com/unicodefonts.html (free fonts supporting Unicode)
 
 Other Tools
 ===========
@@ -47,7 +48,7 @@ Other Tools
     Please also see the section on `hexagonal grids <hexagonal_grids.rst>`_
     which lists tools specifically for working with hexagonal layouts.
 
-boardgamegeek
+BoardGameGeek
 =============
 
 The `Board Game Geek <https://boardgamegeek.com>`_ website has many communities
