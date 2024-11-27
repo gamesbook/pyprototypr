@@ -13,6 +13,8 @@ Note that some shapes, such as the ``Hexagon``, have extensive
 customisation properties available; rather refer to their specific
 descriptions to understand exactly how these can used.
 
+.. _table-of-contents:
+
 Table of Contents
 =================
 
@@ -28,6 +30,7 @@ Table of Contents
 
 pyprototypr Jargon
 ==================
+`↑ <table-of-contents_>`_
 
 **pyprototypr** uses a number of 'generic' terms which you'll see in many places
 in the documentation:
@@ -49,6 +52,7 @@ in the documentation:
 
 Color-orientated Terms
 ======================
+`↑ <table-of-contents_>`_
 
 Color is defined in the same way as it is in pages that appear on the
 web i.e. in RGB (red-green-blue) *hexadecimal* format - for example,
@@ -82,6 +86,7 @@ In general, color can be set for the lines (**stroke**) and areas
 
 Location- and position-orientated Terms
 =======================================
+`↑ <table-of-contents_>`_
 
 Everything in **pyprototypr** that needs to be displayed or drawn or
 positioned must be placed somewhere on the page; each thing must have
@@ -111,6 +116,7 @@ left- and bottom-edge of a page.
 
 Size- and length-orientated Terms
 =================================
+`↑ <table-of-contents_>`_
 
 The majority of length - and width, height, diameter etc. - properties
 will be numeric values, corresponding to the **unit** in use (unless
@@ -166,6 +172,7 @@ to set.
 
 Amount- and count-orientated Terms
 ==================================
+`↑ <table-of-contents_>`_
 
 -  **sides** - the number of sides of a ``Polygon`` shape
 
@@ -226,6 +233,7 @@ Properties that use direction include:
 
 Styling-orientated Terms
 ========================
+`↑ <table-of-contents_>`_
 
 -  **dotted** - allows a line to be broken into a series of dots of
    length equal to the width of the line being drawn (with gaps between
@@ -236,6 +244,7 @@ Styling-orientated Terms
 
 Display-orientated Terms
 ========================
+`↑ <table-of-contents_>`_
 
 -  **hidden** - a list of locations, indicated by their row and
    column identifier, which should **not** be used for display - the rest
@@ -254,6 +263,7 @@ Display-orientated Terms
 
 Miscellaneous Terms
 ===================
+`↑ <table-of-contents_>`_
 
 -  **debug** - a value can be set for this that will cause underlying
    values or locations to be displayed e.g. using ``debug="n"`` for a

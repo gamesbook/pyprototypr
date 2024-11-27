@@ -13,7 +13,7 @@ They are particularly suitable in providing an overlay for maps and have been
 used for decades in war games and role playing games, but can also act as grids
 or tiles in regular board games.
 
-.. _pageIndex:
+.. _table-of-contents:
 
 Table of Contents
 =================
@@ -27,7 +27,7 @@ Table of Contents
 
 Overview
 ========
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 These descriptions assume you are familiar with the concepts, terms and ideas
 for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ -
@@ -43,12 +43,12 @@ should also have seen how a single Hexagon can be further enhanced in
 
 Rectangular Hexagonal Grid
 ==========================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 The basic hexagonal grid is laid out in a rectangular fashion. It can be
 customised in a number of ways.
 
-- `Rows & Columns <rectRowsCols_>`_
+- `Rows and Columns <rectRowsCols_>`_
 - `Coordinates <rectCoords_>`_
 - `Caltrops <rectCaltrops_>`_
 - `Hidden <rectHidden_>`_
@@ -125,7 +125,7 @@ location; and a *y* to a row location.
    :width: 330
 
 ===== ======
-|rc1| This example shows grids constructed using the command::
+|rc1| This example shows grids constructed using the commands::
 
         Hexagons(
             side=0.6,
@@ -176,7 +176,7 @@ location; and a *y* to a row location.
    :width: 330
 
 ===== ======
-|rc2| This example shows grids constructed using the command::
+|rc2| This example shows grids constructed using the commands::
 
         Hexagons(
             side=0.6,
@@ -304,7 +304,7 @@ when a grid is designed for a scenario where not all hexagons are needed.
    :width: 330
 
 ===== ======
-|rdd| This example shows grids constructed using the command::
+|rdd| This example shows grids constructed using the commands::
 
         Hexagons(
             side=0.5,
@@ -354,7 +354,7 @@ Offset
    :width: 330
 
 ===== ======
-|rof| This example shows grids constructed using the command::
+|rof| This example shows grids constructed using the commands::
 
         Hexagons(
             side=0.5,
@@ -402,7 +402,7 @@ Radii
    :width: 330
 
 ===== ======
-|rdi| This example shows grids constructed using the command::
+|rdi| This example shows grids constructed using the commands::
 
         Hexagons(
             side=0.5,
@@ -439,7 +439,7 @@ Radii
 
 Circular Hexagonal Grid
 =======================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 An alternative to the basic hexagonal grid, is a circular, or circle, layout.
 
@@ -519,7 +519,7 @@ Nested Shapes
 
 Diamond Hexagonal Grid
 ======================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 An alternative to the basic hexagonal grid, is a diamond layout.
 
@@ -556,7 +556,7 @@ Basic
 
 Other Hexagonal Grid Resources
 ==============================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 There are already a number of software tools available for creating
 hexagonal grids of various kinds. A few of them, some of which are

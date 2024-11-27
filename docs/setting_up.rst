@@ -2,7 +2,7 @@
 Setting Up
 ==========
 
-.. _pageIndex:
+.. _table-of-contents:
 
 Table of Contents
 =================
@@ -15,9 +15,10 @@ Table of Contents
 - `Checking if pyprototypr works`_
 - `Python in the cloud`_
 
+
 Outline
 =======
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 There are four parts to being able to use **pyprototypr** on your own
 machine:
@@ -25,13 +26,14 @@ machine:
 1. Install the correct version of `Python <http://www.python.org>`_
 2. Install and set-up **pyprototypr**
 3. Install a text editing program
-4. Install a PDF viewer (e.g. *Adobe Acrobat*)
+4. Install a PDF viewer (e.g. *Adobe Acrobat*)
 
 Its possible that you may already have one or more of these programs installed.
 
+
 Python in 1 minute
 ==================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 Why do you need Python before starting?
 
@@ -41,20 +43,21 @@ itself is loaded and then it "runs" your Python file/script (the `.py` ones)
 on your behalf.  So, running any Python scripts requires that you first install
 Python itself.
 
-Python is composed of many built-in libaries, or "packages", each of which
+Python is composed of many built-in libaries, or *packages*, each of which
 handles some aspect of a program. Python is designed to be extended by adding
-on third-party packages written by other programmers; `ReportLab`, for example,
-is one of those, as is **pyprototypr**. Python does not come with those packages
-built-in - you need to install then after Python itself has been installed.
+on additional packages written by other programmers; ``ReportLab``, for example,
+is one of those, as is **pyprototypr**.  Python does not come with those packages
+built-in - you need to install them after Python itself has been installed.
 
-Installing Python packages is handled by a tool called "pip", which is typically
+Installing Python packages is handled by a tool called ``pip``, which is typically
 installed at the same time as Python itself.
+
 
 Installing Python
 =================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
-**pyprototypr** requires a device e.g. laptop or desktop (but probably
+**pyprototypr** requires a device e.g. laptop or desktop (but probably
 not a smart phone) that already has the correct version of Python
 (version 3.11 or higher) installed.
 
@@ -80,12 +83,15 @@ Windows and mac Users
 ---------------------
 
 If you have no experience of working with Python, then "miniconda" is a fairly
-simple way of using Python; see
+simple way of using Python; follow
 https://docs.anaconda.com/miniconda/miniconda-install/ for instructions on
 downloading and running the installer. Make sure you choose a version that will
-install Python 3.11 or higher (3.11, 3.12, 3.13 etc.)
+install Python 3.11 or higher (3.11, 3.12, 3.13 etc.).  Again, follow the
+documentation there to ensure that Python is working after the installation
+is complete.
 
-Once it is installed, you can install new packages using `pip`.
+Once Python is installed and working, you can install new packages for it using
+``pip``.
 
 Alternative Options
 ~~~~~~~~~~~~~~~~~~~
@@ -126,18 +132,22 @@ The exact number after the “11” does not matter.
 
 You can now close the command-line window.
 
+
 Installing **pyprototypr**
 ==========================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
-The simplest way to install **pyprototypr** itself is via `pip`::
+The simplest way to install **pyprototypr** itself is via ``pip``::
 
    pip install pyprototypr
+
+Once this has been done, you can use the various test scripts to check if it is
+working properly; for example, the one in the `<../README.md>`_.
 
 
 Other Software Installs
 =======================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 PDF Viewer
 ----------
@@ -156,14 +166,16 @@ install these via::
 
    sudo apt-get install ttf-mscorefonts-installer
 
+
 Checking if **pyprototypr** works
 =================================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 To now check that ``pyprototypr`` works, you should create a small test
 file.
 
-Open your text editor and type - or copy and paste - the following (but do not start any line with spaces!)::
+Open your text editor and type - or copy and paste - the following (
+but do not start any line with spaces!)::
 
    from pyprototypr import *
    Create()
@@ -198,7 +210,7 @@ bottom-left.
 
 Python in the cloud
 ===================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 If you do not want to install Python, you can try a cloud-based version.
 

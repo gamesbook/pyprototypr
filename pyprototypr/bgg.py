@@ -112,6 +112,9 @@ from __future__ import division
 # lib
 # third party
 from boardgamegeek import BGGClient
+from boardgamegeek.exceptions import BGGApiError
+# local
+from pyprototypr.utils import tools
 
 
 class BGGGameList(object):
@@ -216,15 +219,22 @@ class BGGGame(object):
         self._game = None
         self.short = int(short) or 500
         self.bgg = BGGClient()
-        if isinstance(game_id, int):
-            self._game = self.bgg.game(game_id=game_id)
-        elif isinstance(game_id, ""):
-            self._game = self.bgg.game(name=game_id)
-        else:
-            pass
-        self.set_properties()
-        #except Exception as err:
-        #    log.error('Unable to create game:%s (%s)', game_id, err)
+        try:
+            if isinstance(game_id, int):
+                self._game = self.bgg.game(game_id=game_id)
+            elif isinstance(game_id, ""):
+                self._game = self.bgg.game(name=game_id)
+            else:
+                pass
+            self.set_properties()
+        except BGGApiError as err:
+            if "Failed to resolve 'boardgamegeek.com'" in str(err):
+                msg = 'Test if your internet connection reaches boardgamegeek.com'
+            else:
+                msg = err
+            tools.feedback(f'Unable to access boardgamegeek API ({msg})', True)
+        except Exception as err:
+            tools.feedback(f'Unable to create game: {game_id} ({err})', True)
 
     def get_description_short(self):
         """Create an abbreviated description for a game."""

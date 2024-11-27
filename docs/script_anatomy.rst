@@ -2,13 +2,14 @@
 Script Anatomy
 ==============
 
-A "script" is the short-cut name for a file containing list of instructions
-that will be read and processed by Python.  The script is usually given an
-extension of ".py".
+A "script" is the short-cut name for a file containing a list of instructions
+that will be read and processed by Python.  The script filename is usually given
+an extension of ".py".
 
     *NOTE* This document assumes that **pyprototypr** is working on your
     computer, and that you have read the `Basic Concepts <basic_concepts.rst>`_
 
+.. _table-of-contents:
 
 Table of Contents
 =================
@@ -26,6 +27,7 @@ Table of Contents
 
 Start, Middle and End
 =====================
+`↑ <table-of-contents_>`_
 
 A script will normally start with a `Create command`_, then contain a series
 of `other commands`_ with the instructions for your particular needs (each
@@ -43,9 +45,16 @@ creation of the output; by default a PDF file.
 
 Commands
 ========
+`↑ <table-of-contents_>`_
+
+- `Create Command`_
+- `PageBreak Command`_
+- `Save Command`_
+- `Other Commands`_
 
 Create Command
 --------------
+`^ <commands_>`_
 
 The ``Create()`` command is the first, essential command that should appear
 in a script. It sets up the basic document framework for the inclusion of all
@@ -72,7 +81,9 @@ To customise the command, set its properties as follows:
 - **margin_left** - set left margin
 - **margin_right** - set right margin
 
-Here is an example of a customised ``Create`` command::
+Here is an example of a customised ``Create`` command:
+
+.. code:: python
 
     Create(
         paper=landscape(A3),
@@ -84,14 +95,17 @@ Here is an example of a customised ``Create`` command::
 
 PageBreak Command
 -----------------
+`^ <commands_>`_
 
-The ``PageBreak()`` command is only needed if you need to start a new page.
+The ``PageBreak()`` command is only needed when you need to start a new page.
 
 When generating cards for a `deck <card_decks.rst>`_ the program will
-automatically insert ``PageBreak()`` commands as needed.
+automatically insert ``PageBreak()`` commands as needed if the cards occupy
+multiple pages.
 
 Save Command
 ------------
+`^ <commands_>`_
 
 The ``Save()`` is usually the last to appear.  By default it simply results in
 the outcome of all the commands used being written out to a PDF file.
@@ -105,9 +119,12 @@ To customise the command, set its properties as follows:
   this is *300*
 - **names** - this can be used to provide a list of names (without an extension)
   for the image files that will be created from the PDF; the first name
-  corresponds to the first page, the second name to the second and so on.
+  corresponds to the first page, the second name to the second and so on.  each
+  will automatically get the ``.png`` extension added to it.
 
-Here is an example of a customised ``Save`` command::
+Here is an example of a customised ``Save`` command:
+
+.. code:: python
 
     Save(
         output='png',
@@ -117,6 +134,7 @@ Here is an example of a customised ``Save`` command::
 
 Other Commands
 --------------
+`^ <commands_>`_
 
 There are numerous other commands which are either used to draw shapes, or
 sets of shapes, or to control how and where shapes appear. See:
@@ -130,6 +148,7 @@ sets of shapes, or to control how and where shapes appear. See:
 
 Comments
 ========
+`↑ <table-of-contents_>`_
 
 It can be useful to "annotate" a script with other details that can remind
 you, as a reader, about what and/or why aspects of the script.
@@ -139,7 +158,9 @@ These comments are effectively ignored by Python and **pyprototypr**.
 Single Line Comments
 --------------------
 
-Simply insert a ``#``, followed by space, at the start of the comment line::
+Simply insert a ``#``, followed by space, at the start of the comment line:
+
+.. code:: python
 
     # this is the rim of the clock
     Circle(stroke_width=5)
@@ -147,7 +168,7 @@ Simply insert a ``#``, followed by space, at the start of the comment line::
 Multiple Line Comments
 ----------------------
 
-Use a pair of triple-quotes to surround the lines of comments::
+Use a pair of triple-quotes to surround all the lines of comments::
 
     """
     This is a useful script.
@@ -156,22 +177,27 @@ Use a pair of triple-quotes to surround the lines of comments::
     """
     Create()
 
-Make sure the quotes appear at the start of the line.
+Make sure the quotes appear at the **start** of the line.
 
 
 Drawing vs Assigning
 ====================
+`↑ <table-of-contents_>`_
 
 All of the `shape <core_shapes.rst>`_ commands can either be called with a
 capital letter or a lowercase letter.
 
 The use of a capital is the more common case, and it effectively tells
-**p** to "draw this shape now"::
+**p** to "draw this shape now":
+
+.. code:: python
 
     Circle(stroke_width=5)
 
 The use of a lowercase is normally when you assign a shape to a name, so that
-it can be used (or drawn) later on in the script::
+it can be used (or drawn) later on in the script:
+
+.. code:: python
 
     # this circle is not drawn at this point
     clock = circle(stroke_width=5)
@@ -182,6 +208,7 @@ it can be used (or drawn) later on in the script::
 
 Basic Shapes
 ============
+`↑ <table-of-contents_>`_
 
 **pyprototypr**  allows for the creation of many shapes, with a command for
 each one.
@@ -195,6 +222,7 @@ on `Customised Shapes <customised_shapes.rst>`_
 
 Card Decks
 ==========
+`↑ <table-of-contents_>`_
 
 A common element in many games is a deck - or multiple decks - of cards.
 **pyprototypr** also considers items such tiles or counters to be "cards";
@@ -212,6 +240,7 @@ deck of cards.
 
 Layouts, Repeats, Tracks and Grids
 ==================================
+`↑ <table-of-contents_>`_
 
 A basic layout is that of a simple **sequence**, with shapes placed
 at regular positions in a linear direction.
@@ -233,22 +262,23 @@ for adding shapes to them.
 
 The FEEDBACK Message
 ====================
+`↑ <table-of-contents_>`_
 
 Normally, a script will run without you seeing anything. However, there are
 some occasions when you will see feedback or warning message of some kind.
 
-1. **An error happens** - this is described further in the section on 
+1. **An error happens** - this is described further in the section on
    `making mistakes`_
 2. **Generating Images from Save()** - this will show a message like::
 
         FEEDBACK:: Saving page(s) from "/tmp/test.pdf" as PNG image file(s)...
-3. **Accessing BGG** - if you enable progress when accessing BoardGameGeek to
-   retrieve game data as follows::
+3. **Accessing BGG** - you can enable progress when accessing BoardGameGeek to
+   retrieve boardgame data as follows::
 
-        # progress is True shows games retrieval
+        # progress is True - games retrieval is shown
         BGG(ids=[1,2,4], progress=True)
 
-   then you will see a message like::
+   In this case you will see a message like::
 
         FEEDBACK:: Retrieving game '1' from BoardGameGeek...
 4. **An empty Layout** - this is just a warning issued because the
@@ -261,9 +291,13 @@ some occasions when you will see feedback or warning message of some kind.
 
         WARNING:: There is no list of shapes to draw!
 
+   This is not an error, but does act as a reminder about what might still
+   be needed.
+
 
 Making Mistakes
 ===============
+`↑ <table-of-contents_>`_
 
 It is, unfortunately, all too easy to make mistakes while writing
 scripts.
@@ -291,7 +325,9 @@ This kind of mistake is much harder to spot; often because the default value
 will then be used instead and it will seem as though the script is drawing
 something incorrectly.
 
-Supplying the script with a **duplicate property**, for example::
+Supplying the script with a **duplicate property**, for example:
+
+.. code:: python
 
    display = hexagon(stroke=black, fill=white, height=2, stroke=2)
                                                          ^^^^^^^^

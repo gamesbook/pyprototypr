@@ -10,7 +10,7 @@ important that you are familiar with all of the
 the various examples, and are therefore comfortable with creating and using
 scripts.
 
-.. _pageIndex:
+.. _table-of-contents:
 
 Table of Contents
 =================
@@ -23,31 +23,31 @@ Table of Contents
 
 Data Lists
 ==========
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 **To Be Done**
 
 Data from a File
 ================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 **To Be Done**
 
 Repeats
 =======
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 **To Be Done**
 
 Permutations and Combinations
 =============================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 **To Be Done**
 
 Grid-based Layouts
 ==================
-`↑ <pageIndex_>`_
+`↑ <table-of-contents_>`_
 
 **pyprototypr** allows you to place elements that make up your design
 anywhere within a page, or over a series of pages within a deck, but it

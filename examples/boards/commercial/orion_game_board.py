@@ -25,7 +25,7 @@ Hexagons(
     height=1.5,
     margin_bottom=5.5,
     margin_left=2.2,
-    hidden=[[4, 1], [9, 1], [1, 6], [11, 6], [4, 11], [9, 11]]
+    hidden=[(4, 1), (9, 1), (1, 6), (11, 6), (4, 11), (9, 11)]
 )
 
 Save()
