@@ -33,28 +33,28 @@ shp = circle(cx=1, cy=1, radius=0.5, fill=None)
 Track(rectangle(), shapes=[shp]*4)
 PageBreak()
 
-# ---- default track + shape
+# ---- default track + cirlce
 Blueprint()
 Text(common=txt, text="Track: default + count")
 shp = circle(cx=1, cy=1, radius=0.5, label='{count}')
 Track(rectangle(), shapes=[shp]*4)
 PageBreak()
 
-# ---- square track + shape
+# ---- square track + star
 Blueprint()
-Text(common=txt, text="Track: square")
+Text(common=txt, text="Track: square: star")
 shp = star(cx=1, cy=1, vertices=5, radius=0.5, label='{count}')
 Track(square(side=1.5), shapes=[shp]*4)
 PageBreak()
 
-# # ---- polygon track + shape
+# ---- polygon track + hex
 Blueprint()
 Text(common=txt, text="Track: polygon: 8-sides")
 shp = hexagon(cx=1, cy=1, height=0.5, label='{count}')
 Track(polygon(cx=2, cy=3, radius=1.5, sides=8), shapes=[shp]*8)
 PageBreak()
 
-# # ---- polygon track + shape
+# ---- polygon track + hex
 Blueprint()
 Text(common=txt, text="Track: polygon with stop")
 shp = hexagon(cx=1, cy=1, height=0.5, label='{count}')
@@ -157,5 +157,22 @@ PageBreak()
 Text(common=txt, text="Tracks END...")
 PageBreak(footer=True)
 
-Save()
-# Save(output='png', dpi=600)
+# Save()
+Save(
+     output='png',
+     dpi=600,
+     directory="docs/images/tracks",
+     names=[
+        None,
+        "track_default", "track_default_circle", "track_default_count",
+        "track_square_star",
+        "track_polygon_hex",  "track_polygon_hex_stop",
+        "track_polyline",
+        "track_circle",
+        "track_polygon_six",  "track_polygon_anti",
+        "track_polygon_rotate_i", "track_polygon_rotate_o",
+        "track_circle_rotate_o",
+        "track_square_rotate_i", "track_square_rotate_o",
+        None,
+     ]
+)

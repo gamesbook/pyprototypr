@@ -11,10 +11,10 @@ Create(filename="layouts_basic.pdf",
        paper=A8,
        margin=0.75,
        margin_right=0.2, margin_top=0.2,
-       font_size=8,
+       font_size=10,
        stroke_width=0.5)
 
-header = Common(x=0, y=6, font_size=6, align="left")
+header = Common(x=0, y=6, font_size=7, align="left")
 circles = Common(x=0, y=0, diameter=1.0, label="{count}/{col}-{row}", label_size=6)
 a_circle = circle(common=circles)
 
@@ -72,4 +72,15 @@ rect = RectangularLayout(cols=3, rows=4, start="NW", direction="east", pattern="
 Layout(rect, shapes=[a_circle], visible=[1,3,6,8])
 PageBreak()
 
-Save()
+# Save()
+Save(
+     output='png',
+     dpi=600,
+     directory="docs/images/layouts",
+     names=[
+        "rect_basic_debug", "rect_basic_debug_count",
+        "rect_basic_east", "rect_basic_east_even",  "rect_basic_east_odd",
+        "rect_basic_snake",
+        "rect_basic_outer", "rect_basic_outer_mask", "rect_basic_outer_visible",
+     ]
+)

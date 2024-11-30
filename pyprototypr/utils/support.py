@@ -356,7 +356,7 @@ def pdf_to_png(filename: str, dpi: int = 300, names: list = None, directory: str
     dirname = directory or os.path.dirname(filename)
     # validate directory
     if not os.path.exists(dirname):
-        feedback(f'Cannot find the directory "{dirname}" - please create this.',
+        feedback(f'Cannot find the directory "{dirname}" - please create this first.',
                  True)
     # validate names list
     if names is not None:

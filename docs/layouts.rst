@@ -82,7 +82,7 @@ Grid-based layouts, where elements appear in two-dimensional space:
    y-values will correspond to the centre of the element being placed.
 -  **IrregularLayout()** - allows elements to be placed at a series of
    x- and y-points that are completely defined by the script - they
-   could even be random!
+   could even be completely random!
 
 
 Sequence Command
@@ -285,6 +285,45 @@ Track Command
 `↑ <table-of-contents_>`_
 
 
+
+
+
 RectangularLayout Command
 =========================
 `↑ <table-of-contents_>`_
+
+The ``RectangularLayout`` allows elements to be placed at a series of
+row and column locations to create rectangular spacing.  The x- and
+y-values of these rows and columns will be used to set the centre of
+the element being placed there by the ``Layout``.
+
+
+Basic Examples
+--------------
+
+NOTE that all examples below make use of common ```Circle`` shape of:
+
+  .. code:: python
+
+    circles = Common(
+        x=0, y=0, diameter=1.0,
+        label="{count}/{col}-{row}", label_size=6)
+    a_circle = circle(common=circles)
+
+Example 1.
+~~~~~~~~~~
+
+.. |rl0| image:: images/layouts/rect_basic_east.png
+   :width: 330
+
+===== ======
+|rl0| This example shows the element constructed using differing values for the
+      its properties.
+
+      .. code:: python
+
+          rect = RectangularLayout(
+              cols=3, rows=4,
+              start="NW", direction="east")
+          Layout(rect, shapes=[a_circle,])
+===== ======
