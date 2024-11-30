@@ -188,59 +188,6 @@ Trapezoid(
     hand="east", fill="yellow")
 PageBreak()
 
-# ---- sequence_values
-Blueprint()
-Text(common=txt, text="Sequence: text; values")
-Sequence(
-    text(x=1, y=5.5),
-    setting=(10, 0, -2, 'number'),
-    gap_x=0.5,
-    )
-Sequence(
-    text(x=1, y=3.5),
-    setting=('h','b',-2,'letter'),
-    gap_y=0.5,
-    gap_x=0.5,
-    )
-Sequence(
-    text(x=1, y=3),
-    setting=('B','H',2,'letter'),
-    gap_y=-0.5,
-    gap_x=0.5,
-    )
-Sequence(
-    text(x=0.5, y=1),
-    setting=(5, 11, 1, 'roman'),
-    gap_x=0.5,
-    )
-Sequence(
-    text(x=0.5, y=0.25),
-    setting=(27, 57, 5, 'excel'),
-    gap_x=0.5,
-    )
-PageBreak()
-
-# ---- sequence_shapes
-Blueprint()
-Text(common=txt, text="Sequence: shapes, label")
-Sequence(
-    circle(cx=3.5, cy=5, radius=0.3, label="{SEQUENCE}"),
-    setting=[4, 'B?', 2, 'C!', 'VI'],
-    gap_y=-0.7,
-    )
-Sequence(
-    rectangle(x=0.25, y=0.25, height=0.75, width=1, label_size=8, label="${SEQUENCE}"),
-    setting=(1, 3, 1, 'number'),
-    gap_x=1.2,
-    )
-Sequence(
-    hexagon(x=0.5, y=1.5, radius=0.5, title_size=8, title="Fig. {SEQUENCE}"),
-    setting=('C', 'A', -1),
-    gap_y=1.5,
-    gap_x=0.5,
-    )
-PageBreak()
-
 # ---- chord
 Blueprint()
 Text(common=txt, text="Chord: 135 to 45 degrees")
@@ -527,8 +474,8 @@ Save(
         "compass", "lines", "starfield_rectangle", "starfield_circle",
         "starfield_poly", "equilateral_triangle", "right_angled_triangle_flip",
         "sectors", "grid_gray", "dotgrid_moleskine", "arc",
-        "stadium_edges", "trapezoid_flip", "sequence_values",
-        "sequence_shapes", "chord", "polygon_radii", "dates_formats",
+        "stadium_edges", "trapezoid_flip", "chord", "polygon_radii",
+        "dates_formats",
         "images_normal_rotation", "rhombus_red_rotation",
         "stadium_red_rotation", "polygon_rotation_flat",
         "polygon_rotation_pointy", "polygon_sizes", "grid_3x4",

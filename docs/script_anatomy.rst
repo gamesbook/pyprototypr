@@ -7,7 +7,8 @@ that will be read and processed by Python.  The script filename is usually given
 an extension of ".py".
 
     *NOTE* This document assumes that **pyprototypr** is working on your
-    computer, and that you have read the `Basic Concepts <basic_concepts.rst>`_
+    computer after successfully `Setting Up <setting_up.rst>`_., and that you
+    have read the `Basic Concepts <basic_concepts.rst>`_
 
 .. _table-of-contents:
 

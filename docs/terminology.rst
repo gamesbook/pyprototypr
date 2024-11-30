@@ -20,9 +20,9 @@ Table of Contents
 
 - `pyprototypr Jargon`_
 - `Color-orientated Terms`_
-- `Location- and position-orientated Terms`_
-- `Size- and length-orientated Terms`_
-- `Amount- and count-orientated Terms`_
+- `Location- and Position-orientated Terms`_
+- `Size- and Length-orientated Terms`_
+- `Amount- and Count-orientated Terms`_
 - `Direction-orientated Terms`_
 - `Styling-orientated Terms`_
 - `Display-orientated Terms`_
@@ -32,17 +32,18 @@ pyprototypr Jargon
 ==================
 `↑ <table-of-contents_>`_
 
-**pyprototypr** uses a number of 'generic' terms which you'll see in many places
-in the documentation:
+**pyprototypr** uses a number of 'generic' terms which you'll see in many
+places in the documentation:
 
-- **script** - a file containing all **pyprototypr** instructions
-- **command** - an instruction that is specified in a **pyprototypr** file
-- **element** - a
-- **shape** - a geometric element e.g. circle or square, or text or a line
-  or a grid; something that can be drawn
+- **command** - an instruction that is specified in a **pyprototypr** script
+- **default**  - a value set by **pyprototypr** if no other is given;
+  for example, line length defaults to being 1 centimetre long
 - **property** - an aspect of a command or shape that helps define how it works
   or looks; for example, a circle might have its size defined by using a radius
-  property of 2 centimetres.
+  property of 2 centimetres - in a script this would be shown as ``radius=2``
+- **shape** - a geometric element, for example, a circle or square, or text or
+  line; something that can be drawn
+- **script** - a file containing all **pyprototypr** instructions
 - **run** - to cause Python to act on the script so that all instructions are
   carried out; this should usually cause an output file to be created (or
   recreated)
@@ -180,8 +181,8 @@ Direction-orientated Terms
 ==========================
 
 In general, there are two primary ways of determining direction of
-something; either by compass direction or by angle. Other, more descriptive
-directions are also used.
+something; either by a **compass direction** or by an **angle**.
+Other, more descriptive directions are also used.
 
 The *angle* is the amount of rotation, in degrees, starting from a value
 of zero (0)) which is assumed to be the line parallel to the bottom of
@@ -204,6 +205,8 @@ Secondary compass directions (with abbreviations shown in brackets):
 -  south-east (se) - normally corresponds to an angle of 315 degrees
 -  north-west (nw) - normally corresponds to an angle of 135 degrees
 -  south-west (sw) - normally corresponds to an angle of 225 degrees
+
+.. NOTE::
 
    *NOTE* - if a compass direction is used in the context of a
    **hexagon**, the angle is “reinterpreted” to match its context
@@ -235,30 +238,30 @@ Styling-orientated Terms
 ========================
 `↑ <table-of-contents_>`_
 
--  **dotted** - allows a line to be broken into a series of dots of
-   length equal to the width of the line being drawn (with gaps between
-   each dot of that same length)
+-  **dotted** - allows a line to be broken into a series of "dots" (very short
+   lines) of length equal to the width of the line being drawn (with gaps
+   inbetween each dot of that same length)
 -  **dashed** - allows a line to be broken into a series of short lines
-   of specific lengths, separated by spaces of specific lengths; there
-   can any number of these length/space pairs in a list
+   of specific lengths, separated by spaces of specified lengths; there
+   can any number of these length/space pairs
 
 Display-orientated Terms
 ========================
 `↑ <table-of-contents_>`_
 
--  **hidden** - a list of locations, indicated by their row and
-   column identifier, which should **not** be used for display - the rest
+-  **hidden** - a list of locations, indicated by their *row and
+   column* identifier, which should **not** be used for display - the rest
    are displayed as normal
--  **masked** - a list of locations, indicated by their sequence
-   number (i.e. their position in the drawing order) which should **not**
+-  **masked** - a list of locations, indicated by their *sequence
+   number* (i.e. their position in the drawing order) which should **not**
    be used for display - the rest are displayed as normal
--  **radii** - if given a value of `True` will cause the radii of a polygon
+-  **radii** - if given a value of ``True`` will cause the radii of a polygon
    to be shown
--  **shown** - a list of locations, indicated by their row and
-   column identifier which are the only ones that **must** be used for
+-  **shown** - a list of locations, indicated by their *row and
+   column* identifier which are the only ones that **must** be used for
    display - the rest are ignored
--  **visible** - a list of locations, indicated by their sequence
-   number (i.e. their position in the drawing order)  that **must** be used
+-  **visible** - a list of locations, indicated by their *sequence
+   number* (i.e. their position in the drawing order)  that **must** be used
    for display - the rest are ignored
 
 Miscellaneous Terms
@@ -278,4 +281,4 @@ Miscellaneous Terms
    be stored; its useful because its supports transparent backgrounds
 -  **SVG** - Scaleable Vector Graphics - a file format in which an image can
    be stored; its a vector-format unlike the bitmap- or raster-format of PNG
-   and JPEG files
+   and JPEG files, so its size can be changed without loss of quality

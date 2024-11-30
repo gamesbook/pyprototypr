@@ -21,6 +21,7 @@ python examples/simple/layouts/layouts_basic.py -d /tmp/demo
 python examples/simple/layouts/layouts_basic_rectangular.py -d /tmp/demo
 python examples/simple/layouts/layouts_basic_triangular.py -d /tmp/demo
 python examples/simple/layouts/layouts_shapes_outer.py -d /tmp/demo
+python examples/simple/layouts/layouts_sequence.py -d /tmp/demo
 # ---- boards: abstract
 echo "Creating abstract boards..."
 python examples/boards/abstract/chessboard.py -d /tmp/demo

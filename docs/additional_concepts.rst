@@ -5,7 +5,8 @@ Additional Concepts
 This section assumes you are familiar with the concepts, terms and ideas
 for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_,
 have looked through the `Core Shapes <core_shapes.rst>`_,
-and that perhaps you have created one or two basic scripts on your own.
+and that perhaps you have created one or two basic scripts on your own,
+along the lines described in the `Script Anatomy <script_anatomy.rst>`_.
 
 .. _table-of-contents:
 
@@ -93,7 +94,7 @@ cases,  **pyprototypr** will handle these differences for you.
    rather than the calculated result. So seven-sixteenth could shown as
    ``7/16`` rather than ``0.4375``.
 
-Booleans are commonly referrred to a "true or false" values. In Python, the
+Booleans are commonly referred to a "true or false" values. In Python, the
 reserved names ``True`` and ``False`` can be used whenever such values are
 required.  Some of the properties for some commands require a ``True`` value
 to be activated.
@@ -117,7 +118,7 @@ referred to and used elsewhere.  For example:
    Rectangle(common=green_dots)
 
 Both the ``Circle`` and ``Rectangle`` share common properties (``fill`` and
-``dot``) which are assigned bto each of their ``common`` property value.
+``dot``) which are assigned to each of their ``common`` property value.
 This value - ``green_dots`` - is in turn created when is assigned to the
 ``Common`` command.
 
@@ -196,6 +197,13 @@ matching those shown on a compass, and though you can write these names out
 in full, it can be tedious to type ``southeast`` and so ``se`` can be used
 instead.  Other settings can be abbreviated to use their first letter; so
 ``d`` for ``diamond`` layout of a ``Hexagons`` grid.
+
+The other exceptions are the location names.  Instead of "across" and "up",
+ **pyprototypr** uses ``x`` and ``y`` (because of their common usage in
+ geometry).  Similarly, ``cx`` and ``cy`` are used instead of "centre from left"
+ or "centre from bottom"; and ``mx`` and ``my`` are used instead "move
+ horizontally" or "move vertically".  Hopefully, these short-cut names will be
+ memorable after working with the program for a while.
 
 
 Lists
