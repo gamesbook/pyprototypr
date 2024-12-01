@@ -349,8 +349,12 @@ def excels(start, end, step=1, REAL=True):
 
 
 def pdf_to_png(filename: str, dpi: int = 300, names: list = None, directory: str = None):
-    """Extract pages from PDF as PNG image(s)."""
-    feedback(f'Saving page(s) from "{filename}" as PNG image file(s)...')
+    """Extract pages from PDF as PNG image(s).
+
+    Uses:
+        https://pymupdf.io/
+    """
+    feedback(f'Saving page(s) from "{filename}" as PNG image file(s)...', False)
     _filename = os.path.basename(filename)
     basename = os.path.splitext(_filename)[0]
     dirname = directory or os.path.dirname(filename)

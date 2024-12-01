@@ -160,7 +160,7 @@ PageBreak(footer=True)
 # Save()
 Save(
      output='png',
-     dpi=600,
+     dpi=300,
      directory="docs/images/tracks",
      names=[
         None,

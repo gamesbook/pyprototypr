@@ -72,7 +72,7 @@ PageBreak()
 #Save()
 Save(
      output='png',
-     dpi=600,
+     dpi=300,
      directory="docs/images/layouts",
      names=[
         "sequence_values", "sequence_shapes",

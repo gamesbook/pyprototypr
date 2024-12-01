@@ -37,37 +37,37 @@ Layout(rect, shapes=[a_circle,])
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Locations: NW->east: even col shift")
+Text(common=header, text="Rect.Locations: NW/east: even col shift")
 rect = RectangularLocations(cols=3, rows=4, start="NW", direction="east", col_even=0.5)
 Layout(rect, shapes=[a_circle,])
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Locations: NW->east: odd row shift")
+Text(common=header, text="Rect.Locations: NW/east: odd row shift")
 rect = RectangularLocations(cols=3, rows=4, start="NW", direction="east", row_odd=-0.5)
 Layout(rect, shapes=[a_circle,])
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Locations: NW->east: snake")
+Text(common=header, text="Rect.Locations: NW/east: snake")
 rect = RectangularLocations(cols=3, rows=4, start="NW", direction="east", pattern="snake")
 Layout(rect, shapes=[a_circle,])
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Locations: NW->east: Outer")
+Text(common=header, text="Rect.Locations: NW/east: Outer")
 rect = RectangularLocations(cols=3, rows=4, start="NW", direction="east", pattern="outer")
 Layout(rect, shapes=[a_circle,])
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Locations: NW->east: Outer+Masked")
+Text(common=header, text="Rect.Locations: NW/east: Outer+Masked")
 rect = RectangularLocations(cols=3, rows=4, start="NW", direction="east", pattern="outer")
 Layout(rect, shapes=[a_circle], masked=[2,7])
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Locations: NW->east: Outer+Visible")
+Text(common=header, text="Rect.Locations: NW/east: Outer+Visible")
 rect = RectangularLocations(cols=3, rows=4, start="NW", direction="east", pattern="outer")
 Layout(rect, shapes=[a_circle], visible=[1,3,6,8])
 PageBreak()
@@ -75,7 +75,7 @@ PageBreak()
 # Save()
 Save(
      output='png',
-     dpi=600,
+     dpi=300,
      directory="docs/images/layouts",
      names=[
         "rect_basic_debug", "rect_basic_debug_count",

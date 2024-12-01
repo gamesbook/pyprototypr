@@ -14,14 +14,14 @@ python examples/core/customised_hexagon.py -d /tmp/demo
 python examples/core/customised_hexagonal_grid.py -d /tmp/demo
 python examples/core/customised_rectangle.py -d /tmp/demo
 python examples/core/customised_shapes.py -d /tmp/demo
-python examples/core/customised_tracks.py -d /tmp/demo
 # ---- examples: simple: layouts
 echo "Creating customised layouts..."
 python examples/core/layouts/layouts_basic.py -d /tmp/demo
-python examples/core/layouts/layouts_basic_rectangular.py -d /tmp/demo
-python examples/core/layouts/layouts_basic_triangular.py -d /tmp/demo
+python examples/core/layouts/layouts_rectangular.py -d /tmp/demo
+python examples/core/layouts/layouts_triangular.py -d /tmp/demo
 python examples/core/layouts/layouts_shapes_outer.py -d /tmp/demo
 python examples/core/layouts/layouts_sequence.py -d /tmp/demo
+python examples/core/layouts/layouts_tracks.py -d /tmp/demo
 # ---- boards: abstract
 echo "Creating abstract boards..."
 python examples/boards/abstract/chessboard.py -d /tmp/demo

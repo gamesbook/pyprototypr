@@ -107,5 +107,12 @@ tri = TriangularLocations(side=1.0, cols=3, x=2, y=2, facing="south")
 Locations(tri, shapes=[a_circle,])
 PageBreak()
 
-#Save(directory="/tmp/dtest", output='png', names=[None]*10 + ['a','b','c'])
 Save()
+# Save(
+#      output='png',
+#      dpi=300,
+#      directory="docs/images/layouts",
+#      names=[
+#         "layout_tri_..",
+#      ]
+# )

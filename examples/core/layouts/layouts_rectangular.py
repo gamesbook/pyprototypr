@@ -92,6 +92,7 @@ Blueprint(stroke_width=0.5)
 Text(common=header, text="Rect.Locations: NE->west: Snake")
 rect = RectangularLocations(cols=3, rows=4, start="NE", direction="west", pattern="snake")
 Layout(rect, shapes=[a_circle,])
+PageBreak()
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Rect.Locations: SE->north: Snake")
@@ -169,23 +170,23 @@ PageBreak()
 
 # Save()
 Save(
-     output='png',
-     dpi=600,
-     directory="docs/images/layouts",
-     names=[
+    output='png',
+    dpi=300,
+    directory="docs/images/layouts",
+    names=[
         "rect_locs_reg_nw_S", "rect_locs_reg_nw_E",
         "rect_locs_reg_ne_W", "rect_locs_reg_ne_S",
         "rect_locs_reg_se_N", "rect_locs_reg_se_W",
         "rect_locs_reg_sw_N", "rect_locs_reg_sw_E",
 
         "rect_locs_snake_nw_S", "rect_locs_snake_nw_E",
-        "rect_locs_snake_ne_W", "rect_locs_snake_ne_S",
+        "rect_locs_snake_ne_S", "rect_locs_snake_ne_W",
         "rect_locs_snake_se_N", "rect_locs_snake_se_W",
         "rect_locs_snake_sw_N", "rect_locs_snake_sw_E",
 
-        "rect_locs_outer_nw_S", "rect_locs_outer_nw_E",
+        "rect_locs_outer_nw_E", "rect_locs_outer_nw_S",
         "rect_locs_outer_ne_W", "rect_locs_outer_ne_S",
         "rect_locs_outer_se_N", "rect_locs_outer_se_W",
-        "rect_locs_outer_sw_N", "rect_locs_outer_sw_E",
-     ]
+        "rect_locs_outer_sw_E", "rect_locs_outer_sw_N",
+    ]
 )
