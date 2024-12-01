@@ -341,7 +341,7 @@ nonumy deterruisset ne sed, cum cu quet reque <b>signiferumque</b>.<br/>
 Id vis viris antiopam gloriatur, muscipit ex has, an ius mazim.
 """
 # path for img assumes this file is called from the project root ...
-IMAGE = LATIN + '<img src="examples/simple/13.png" height="10" valign="bottom"/>' +\
+IMAGE = LATIN + '<img src="examples/core/13.png" height="10" valign="bottom"/>' +\
     ' per at ullum iracundia intellegam.'
 
 header = Common(x=1, font_size=18, align="left", width=2.5, height=2, wrap=True)

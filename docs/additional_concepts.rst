@@ -327,3 +327,10 @@ might be. Here, you’d need to add a ``,`` (comma) at the end of setting the
 (a space is not sufficient) as follows::
 
    paper=A8, cards=9
+
+.. NOTE::
+
+  Needless to say, many articles and book chapters have been devoted to how
+  one goes about finding problems or errors - one example is:
+  http://greenteapress.com/thinkpython/html/thinkpython002.html#toc6 (and there
+  are other chapters in this same book that may also be of help).

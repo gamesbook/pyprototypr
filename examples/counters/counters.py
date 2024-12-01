@@ -18,7 +18,7 @@ russian_marker = 'russianeagle_small.png'  # http://www.free-vectors.com/vector-
 grey = "#B8BAB1"
 brown = "#B6A378"
 
-# simple shapes
+# basic shapes
 german = rectangle(x=0, y=0, width=2.6, height=2.6, stroke_width=1, fill=grey)
 russian = rectangle(x=0, y=0, width=2.6, height=2.6, stroke_width=1, fill=brown)
 

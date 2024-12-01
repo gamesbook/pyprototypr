@@ -2,26 +2,26 @@ echo "Creating PDFs for all examples (except those in examples/manual)"
 echo ""
 mkdir -p /tmp/demo
 # ---- examples: simple
-echo "Creating simple examples..."
-python examples/simple/demo.py -d /tmp/demo
-python examples/simple/diagram.py -d /tmp/demo
-python examples/simple/default_shapes.py -d /tmp/demo
+echo "Creating basic examples..."
+python examples/core/demo.py -d /tmp/demo
+python examples/core/diagram.py -d /tmp/demo
+python examples/core/default_shapes.py -d /tmp/demo
 # ----  examples: customised
 echo "Creating customised examples..."
-python examples/simple/customised_blueprint.py -d /tmp/demo
-python examples/simple/customised_circle.py -d /tmp/demo
-python examples/simple/customised_hexagon.py -d /tmp/demo
-python examples/simple/customised_hexagonal_grid.py -d /tmp/demo
-python examples/simple/customised_rectangle.py -d /tmp/demo
-python examples/simple/customised_shapes.py -d /tmp/demo
-python examples/simple/customised_tracks.py -d /tmp/demo
+python examples/core/customised_blueprint.py -d /tmp/demo
+python examples/core/customised_circle.py -d /tmp/demo
+python examples/core/customised_hexagon.py -d /tmp/demo
+python examples/core/customised_hexagonal_grid.py -d /tmp/demo
+python examples/core/customised_rectangle.py -d /tmp/demo
+python examples/core/customised_shapes.py -d /tmp/demo
+python examples/core/customised_tracks.py -d /tmp/demo
 # ---- examples: simple: layouts
 echo "Creating customised layouts..."
-python examples/simple/layouts/layouts_basic.py -d /tmp/demo
-python examples/simple/layouts/layouts_basic_rectangular.py -d /tmp/demo
-python examples/simple/layouts/layouts_basic_triangular.py -d /tmp/demo
-python examples/simple/layouts/layouts_shapes_outer.py -d /tmp/demo
-python examples/simple/layouts/layouts_sequence.py -d /tmp/demo
+python examples/core/layouts/layouts_basic.py -d /tmp/demo
+python examples/core/layouts/layouts_basic_rectangular.py -d /tmp/demo
+python examples/core/layouts/layouts_basic_triangular.py -d /tmp/demo
+python examples/core/layouts/layouts_shapes_outer.py -d /tmp/demo
+python examples/core/layouts/layouts_sequence.py -d /tmp/demo
 # ---- boards: abstract
 echo "Creating abstract boards..."
 python examples/boards/abstract/chessboard.py -d /tmp/demo
