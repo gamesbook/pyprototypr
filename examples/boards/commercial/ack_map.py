@@ -34,7 +34,7 @@ Hexagons(
     height=1.66,  # approx. two-thirds of an inch
     margin_bottom=0.25,
     margin_left=2,
-    coord_position="top",
+    coord_elevation="top",
     coord_offset=-0.1,
     coord_font_size=8,
     coord_stroke=deepgrey,

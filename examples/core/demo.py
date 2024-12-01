@@ -258,13 +258,13 @@ Rectangles(
 )
 PageBreak()
 
-# ---- Grid: graph paper
+# ---- grid: graph paper
 Text(common=header, text='"Graph Paper" -> Grid (95x135) and Grid (19x27)')
 Grid(cols=95, rows=135, size=0.2, stroke=mediumseagreen, stroke_width=0.9)
 Grid(cols=19, rows=27, size=1.0, stroke=mediumseagreen, stroke_width=1.5)
 PageBreak()
 
-# ---- Hexagons ~2cm grid - numbered "wargame" style
+# ---- hexagons ~2cm grid - numbered "wargame" style
 Hexagons(
     rows=11,
     cols=9,
@@ -273,7 +273,7 @@ Hexagons(
     margin_bottom=-2.529,
     dot=0.05,
     dot_stroke=black,
-    coord_position="top",
+    coord_elevation="top",
     coord_font_size=9,
     coord_stroke=darkslategrey,
     fill=white,
@@ -283,7 +283,7 @@ Hexagons(
 Text(common=header, text="Hexagons (dot; coords; caltrops)")
 PageBreak()
 
-# ---- images and various text positions
+# ---- images and various text descriptors
 Text(common=header, text="Rectangles and images (with transparency)")
 Rectangle(x=5.9, y=15.9, width=7.2, height=6.2, stroke=silver, fill=gold)
 Image(

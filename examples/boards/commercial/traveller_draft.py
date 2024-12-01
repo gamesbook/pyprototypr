@@ -25,7 +25,7 @@ Hexagons(
     y=0.0,
     x=0.0,
     hex_offset="odd",
-    coord_position="t",
+    coord_elevation="t",
     coord_offset=0,
     coord_font_size=11,
     coord_stroke=hex_lines,

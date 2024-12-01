@@ -5,9 +5,8 @@ Terminology
 **pyprototypr** uses many terms; most of which should - hopefully - be fairly
 obvious by their name, or by the context in which they are used.
 
-However, in order to help with clarity, below is a reasonably
-comprehensive list of terms used in different places, grouped by what
-they affect.
+However, in order to help with clarity, below is a reasonably comprehensive
+list of terms used in different places, grouped by what they affect.
 
 Note that some shapes, such as the ``Hexagon``, have extensive
 customisation properties available; rather refer to their specific
@@ -20,7 +19,7 @@ Table of Contents
 
 - `pyprototypr Jargon`_
 - `Color-orientated Terms`_
-- `Location- and Position-orientated Terms`_
+- `Position- and Location-orientated Terms`_
 - `Size- and Length-orientated Terms`_
 - `Amount- and Count-orientated Terms`_
 - `Direction-orientated Terms`_
@@ -37,7 +36,7 @@ places in the documentation:
 
 - **command** - an instruction that is specified in a **pyprototypr** script
 - **default**  - a value set by **pyprototypr** if no other is given;
-  for example, line length defaults to being 1 centimetre long
+  for example, the line length defaults to being 1 centimetre long
 - **property** - an aspect of a command or shape that helps define how it works
   or looks; for example, a circle might have its size defined by using a radius
   property of 2 centimetres - in a script this would be shown as ``radius=2``
@@ -48,8 +47,8 @@ places in the documentation:
   carried out; this should usually cause an output file to be created (or
   recreated)
 - **vertex** / **vertices** - the sharp "points" at the intersection of the
-  lines used to construct a shape; for example,  a triangle has 3 vertices and
-  a square has 4.
+  lines used to construct a shape; for example, a triangle has 3 vertices and
+  a square has 4 vertices.
 
 Color-orientated Terms
 ======================
@@ -85,33 +84,39 @@ In general, color can be set for the lines (**stroke**) and areas
 -  **stroke_fill** - sets both the line (“stroke”) and area (“fill”) to
    be the same color
 
-Location- and position-orientated Terms
+Position- and Location-orientated Terms
 =======================================
 `↑ <table-of-contents_>`_
 
 Everything in **pyprototypr** that needs to be displayed or drawn or
-positioned must be placed somewhere on the page; each thing must have
-both a horizontal position - its **x** value - and a vertical position -
-its **y** value. These respectively represent the distances from the
-left- and bottom-edge of a page.
+positioned must be placed at a **position** on the page; i.e. each thing
+must have both a horizontal position - its **x** value - and a vertical
+position - its **y** value. These respectively represent the distances
+from the left- and bottom-edge of a page or a card.
 
--  **align** - used to position text relative to its starting location;
-   can be one of: *justify*, *left*, *right*, or *centre*
--  **cx** - the centre location of a shape, going in the horizontal
+**Location** is a more general term; it can be a combination of the **x**
+and **y** positions; it could be a row and/or column identifier; it
+could be a sequence identifier; or just a indicator of where something
+is relative to something else, for example, a coordinate being drawn
+at the *top* of a Hexagon.
+
+-  **align** - used to move text horizontally, relative to its starting
+   location; can be one of: *justify*, *left*, *right*, or *centre*
+-  **cx** - the centre position of a shape, going in the horizontal
    direction; its usually the case that the distance is not absolute, but
    relative to some other value e.g. distance from a margin; or the edge
    of a ``Card``
--  **cy** - the centre location of a shape, going in the vertical
+-  **cy** - the centre position of a shape, going in the vertical
    direction; its usually the case that the distance is not absolute, but
    relative to some other value e.g. distance from a margin; or the edge
    of a ``Card``
--  **position** - the relative location with a shape; can be one of:
-   *top*, *middle*, *center*, or *bottom*
--  **x** - the location of a point in the horizontal direction; its
+-  **elevation** - a relative vertical location within a shape; can be one
+   of: *top*, *middle*, or *bottom*
+-  **x** - the position of a point in the horizontal direction; its
    usually the case that the distance is not absolute, but relative to
    some other value e.g. distance from a margin; or the edge of a
    ``Card``
--  **y** - the location of a point in the vertical direction; its usually
+-  **y** - the position of a point in the vertical direction; its usually
    the case that the distance is not absolute, but relative to some
    other value e.g. distance from a margin; or the edge of a ``Card``
 
@@ -269,8 +274,8 @@ Miscellaneous Terms
 `↑ <table-of-contents_>`_
 
 -  **debug** - a value can be set for this that will cause underlying
-   values or locations to be displayed e.g. using ``debug="n"`` for a
-   layout will show small dots where each point in that layout exists
+   values or locations or positions to be displayed e.g. using ``debug="n"``
+   for a layout will show small dots where each point in that layout exists
 -  **perimeter** - used to demarcate the boundary of a ``StarField``;
    one of *circle*, *rectangle* or *polygon*
 -  **peaks** - a series of sets, each containing a primary compass

@@ -606,7 +606,7 @@ class BaseCanvas:
         self.coord_type_y = self.defaults.get('coord_type_y', 'number')  # number|letter
         self.coord_start_x = self.defaults.get('coord_start_x', 0)
         self.coord_start_y = self.defaults.get('coord_start_y', 0)
-        self.coord_position = self.defaults.get('coord_position', None)  # top|middle|bottom
+        self.coord_elevation = self.defaults.get('coord_elevation', None)  # top|middle|bottom
         self.coord_offset = self.defaults.get('coord_offset', 0)
         self.coord_font_face = self.defaults.get('coord_font_face', 'Helvetica')
         self.coord_font_size = self.defaults.get('coord_font_size',
@@ -922,7 +922,7 @@ class BaseShape:
         self.coord_type_y = kwargs.get('coord_type_y', cnv.coord_type_y)  # number|letter
         self.coord_start_x = self.kw_int(kwargs.get('coord_start_x', cnv.coord_start_x))
         self.coord_start_y = self.kw_int(kwargs.get('coord_start_y', cnv.coord_start_y))
-        self.coord_position = kwargs.get('coord_position', cnv.coord_position)  # top|middle|bottom
+        self.coord_elevation = kwargs.get('coord_elevation', cnv.coord_elevation)  # top|middle|bottom
         self.coord_offset = self.kw_float(kwargs.get('coord_offset', cnv.coord_offset))
         self.coord_font_face = kwargs.get('coord_font_face', cnv.coord_font_face)
         self.coord_font_size = self.kw_float(kwargs.get('coord_font_size', cnv.coord_font_size))

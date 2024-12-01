@@ -1,7 +1,7 @@
 pyprototypr: Table of Contents
 ==============================
 
-The **pyprototypr** documentation consists of all the sections listed
+The **pyprototypr** documentation consists of the primary sections listed
 below.
 
 Although its great to be able to “jump in” and just start using a
@@ -16,7 +16,7 @@ other.
 3.  `Basic Concepts <basic_concepts.rst>`_ - core aspects of
     **pyprototypr** that you **must** know
 4.  `A First Example <worked_example.rst>`_ - step-by-step
-    example of setting up and running scripts to generate a deck of cards
+    example of setting up and running a script to generate a deck of cards
 5.  `Script Anatomy <script_anatomy.rst>`_ - how a script is constructed
 6.  `Additional Concepts <additional_concepts.rst>`_ - additional
     aspects of **pyprototypr** that can also help with script creation
@@ -29,14 +29,14 @@ other.
 10. `Customised Shapes <customised_shapes.rst>`_ - how to refine the
     appearance of certain shapes; circles, hexagons and rectangles
 11. `Layouts <layouts.rst>`_ - how to work with different kinds of
-    layouts
+    layouts (sequences, tracks and rectangular grids)
 12. `Hexagonal Grids <hexagonal_grids.rst>`_ - how to create designs or
     layouts on a hexagonal grid
 13. `Terminology <terminology.rst>`_ - summary of common jargon and descriptions
     of many of the elements' properties
 
 The following are supplementary sections that you're likely to need when
-doing more advanced scipts:
+doing more advanced scipts or needing further resources:
 
 14. `Using Python Commands <python_commands.rst>`_ - how to work with
     loops and if statements for more flexibility

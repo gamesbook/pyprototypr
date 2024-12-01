@@ -8,13 +8,13 @@ from pyprototypr import *
 
 Create(filename='diagram.pdf', margin=1)
 
-# create positions
+# create people "boxes"
 ceo = Rectangle(x=7, y=24, width=5, height=3, label="CEO")
 vp_sales = Rectangle(x=1, y=20, width=5, height=3, label="VP Sales")
 vp_rsrch = Rectangle(x=7, y=20, width=5, height=3, label="VP Research")
 vp_prods = Rectangle(x=13, y=20, width=5, height=3, label="VP Products")
 
-# link the positions
+# link the "boxes"
 Connect(ceo, vp_sales, style='direct')
 Connect(ceo, vp_rsrch, style='direct')
 Connect(ceo, vp_prods, style='direct')
