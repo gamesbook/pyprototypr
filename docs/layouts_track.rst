@@ -5,7 +5,8 @@ Track Command
 **pyprototypr** allows you to directly define where elements, that make up
 your design, should be placed within a page, or over a series of pages
 within a ``Deck``, but it also includes commands that let you place, or
-"layout", elements in a more repetitive or regular way within a page.
+"`layout <layouts.rst>`_", elements in a more repetitive or regular way
+within a page.
 
 
 Overview
@@ -16,8 +17,9 @@ numbers, or shapes - at the vertices of another shape.
 
 Apart from the ``Track()`` command described here, there are also:
 
-- `Sequences <layouts_sequences.rst>`
-- `RectangularLayout <layouts_rectangular.rst>`
+- `Sequences <layouts_sequence.rst>`_
+- `RectangularLocations <layouts_rectangular.rst>`_
+- `TriangularLocations <layouts_triangular.rst>`_
 
 
 Usage

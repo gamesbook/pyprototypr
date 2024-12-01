@@ -167,12 +167,25 @@ rect = RectangularLocations(cols=3, rows=4, start="SW", direction="north", patte
 Layout(rect, shapes=[a_circle,])
 PageBreak()
 
-# ---- triangular spacing
+# Save()
+Save(
+     output='png',
+     dpi=600,
+     directory="docs/images/layouts",
+     names=[
+        "rect_locs_reg_nw_S", "rect_locs_reg_nw_E",
+        "rect_locs_reg_ne_W", "rect_locs_reg_ne_S",
+        "rect_locs_reg_se_N", "rect_locs_reg_se_W",
+        "rect_locs_reg_sw_N", "rect_locs_reg_sw_E",
 
-Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Locations: NW->south; triangular")
-rect = RectangularLocations(cols=3, rows=3, side=1.0, start="NW", direction="south", row_even=-0.5)
-Layout(rect, shapes=[a_circle,])
-PageBreak()
+        "rect_locs_snake_nw_S", "rect_locs_snake_nw_E",
+        "rect_locs_snake_ne_W", "rect_locs_snake_ne_S",
+        "rect_locs_snake_se_N", "rect_locs_snake_se_W",
+        "rect_locs_snake_sw_N", "rect_locs_snake_sw_E",
 
-Save()
+        "rect_locs_outer_nw_S", "rect_locs_outer_nw_E",
+        "rect_locs_outer_ne_W", "rect_locs_outer_ne_S",
+        "rect_locs_outer_se_N", "rect_locs_outer_se_W",
+        "rect_locs_outer_sw_N", "rect_locs_outer_sw_E",
+     ]
+)

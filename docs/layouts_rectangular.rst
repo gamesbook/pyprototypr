@@ -1,11 +1,12 @@
-=========================
+============================
 RectangularLocations Command
-=========================
+============================
 
 **pyprototypr** allows you to directly define where elements, that make up
 your design, should be placed within a page, or over a series of pages
 within a ``Deck``, but it also includes commands that let you place, or
-"layout", elements in a more repetitive or regular way within a page.
+"`layout <layouts.rst>`_", elements in a more repetitive or regular way
+within a page.
 
 Overview
 ========
@@ -20,7 +21,7 @@ also other ways to place elements on a page:
 
 - `Sequences <layouts_sequence.rst>`_
 - `Tracks <layouts_track.rst>`_
-- `TriangularLocationss <layouts_triangular.rst>`_
+- `TriangularLocations <layouts_triangular.rst>`_
 
 
 Usage
@@ -45,7 +46,8 @@ The ``Layout()`` command accepts the following properties:
 Basic Examples
 --------------
 
-NOTE that all examples below make use of common ```Circle`` shape of:
+All examples below make use of common ```Circle`` shape (called *a_circle*)
+defined as:
 
   .. code:: python
 

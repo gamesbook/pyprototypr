@@ -5,17 +5,18 @@ TriangularLocations Command
 **pyprototypr** allows you to directly define where elements, that make up
 your design, should be placed within a page, or over a series of pages
 within a ``Deck``, but it also includes commands that let you place, or
-"layout", elements in a more repetitive or regular way within a page.
+"`layout <layouts.rst>`_", elements in a more repetitive or regular way
+within a page.
 
 Overview
 ========
 
-The ``TriangularLocation()`` command defines an ordered series
+The ``TriangularLocations()`` command defines an ordered series
 of row and column locations that create a triangular spacing.  The x- and
 y-values of these rows and columns are then used to set the centres of
 the elements that can be placed there using the ``Layout()`` command.
 
-Apart from the ``TriangularLocation()`` command described here, there are
+Apart from the ``TriangularLocations()`` command described here, there are
 also other ways to place elements on a page:
 
 - `Sequences <layouts_sequence.rst>`_
@@ -45,7 +46,8 @@ The ``Layout()`` command accepts the following properties:
 Basic Examples
 --------------
 
-NOTE that all examples below make use of common ```Circle`` shape of:
+All examples below make use of common ```Circle`` shape (called *a_circle*)
+defined as:
 
   .. code:: python
 
@@ -65,5 +67,7 @@ Example 1.
       its properties.
 
       .. code:: python
+
+          TriangularLocations()
 
 ===== ======
