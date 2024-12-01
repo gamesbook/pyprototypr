@@ -19,15 +19,27 @@ circles = Common(x=0, y=0, diameter=1.0, label="{count}/{col}-{row}", label_size
 a_circle = circle(common=circles)
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Locations: debug + no label")
+Text(common=header, text="Rect.Locations: debug > no label")
 rect = RectangularLocations(cols=3, rows=4)
-Layout(rect, debug='n')
+Layout(rect, debug='none')
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rec.Locations: debug + count")
+Text(common=header, text="Rec.Locations: debug > count")
 rect = RectangularLocations(cols=3, rows=4)
-Layout(rect, debug='c')
+Layout(rect, debug='count')
+PageBreak()
+
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Rec.Locations: debug > xy")
+rect = RectangularLocations(cols=3, rows=4)
+Layout(rect, debug='xy')
+PageBreak()
+
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Rect.Locations: default")
+rect = RectangularLocations(cols=3, rows=4)
+Layout(rect, shapes=[a_circle,])
 PageBreak()
 
 Blueprint(stroke_width=0.5)
@@ -78,7 +90,8 @@ Save(
      dpi=300,
      directory="docs/images/layouts",
      names=[
-        "rect_basic_debug", "rect_basic_debug_count",
+        "rect_basic_debug", "rect_basic_debug_count", "rect_basic_debug_xy",
+        "rect_basic_default",
         "rect_basic_east", "rect_basic_east_even",  "rect_basic_east_odd",
         "rect_basic_snake",
         "rect_basic_outer", "rect_basic_outer_mask", "rect_basic_outer_visible",

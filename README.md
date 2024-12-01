@@ -16,7 +16,9 @@ The online documentation for __pyprototypr__ starts with the
 [Table of Contents](https://github.com/gamesbook/pyprototypr/blob/master/docs/index.rst)
 
 If you're not familiar with any kind of programming or scripting, you should
-probably read some of the introductory sections before proceeding...
+probably read some of the introductory sections, and especially the
+[installation](https://github.com/gamesbook/pyprototypr/blob/master/docs/setting_up.rst)
+before proceeding...
 
 ## Requirements
 
@@ -72,8 +74,9 @@ If this works, then download and try out other scripts from any of the `examples
 sub-directories (**note** some examples may require additional files such as
 images, CSV files, or spreadsheets).
 
-The examples are also described further in the
-[documents](https://github.com/gamesbook/pyprototypr/blob/master/docs/index.rst)
+If it does not work, you may want to look in more detail at the
+[installation](https://github.com/gamesbook/pyprototypr/blob/master/docs/setting_up.rst)
+guide.
 
 ## Contributions
 
@@ -161,3 +164,7 @@ Additional libraries in use include:
 * `pymupdf` https://pymupdf.io/ - support for export from PDF to PNG images
 * `imageio` https://pypi.org/project/imageio/- support for compiling PNGs to a GIF
 * `jinja` https://jinja.palletsprojects.com - template logic with variables (for cards)
+
+## License
+
+__pyprototypr__ is licensed under the GNU General Public License.

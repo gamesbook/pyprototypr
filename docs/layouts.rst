@@ -101,4 +101,4 @@ The commands are described in detail, with examples, in these sections:
 - `Sequences <layouts_sequence.rst>`_
 - `Tracks <layouts_track.rst>`_
 - `RectangularLocations <layouts_rectangular.rst>`_
-- `TriangularLayouts <layouts_triangular.rst>`_
+- `TriangularLocations <layouts_triangular.rst>`_
