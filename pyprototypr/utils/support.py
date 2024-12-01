@@ -11,6 +11,7 @@ import sys
 import string
 from typing import Any
 # third-party
+import imageio
 import pymupdf
 
 LookupType = namedtuple("LookupType", ["column", "lookups"])
@@ -348,13 +349,20 @@ def excels(start, end, step=1, REAL=True):
     return result
 
 
-def pdf_to_png(filename: str, dpi: int = 300, names: list = None, directory: str = None):
-    """Extract pages from PDF as PNG image(s).
+def pdf_to_png(
+        filename: str,
+        fformat: str = 'png',
+        dpi: int = 300,
+        names: list = None,
+        directory: str = None,
+        frames: float = 1.0):
+    """Extract pages from PDF as PNG image(s).  Optionally, assemble into a GIF.
 
     Uses:
-        https://pymupdf.io/
+        * https://pymupdf.io/
+        * https://pypi.org/project/imageio/
     """
-    feedback(f'Saving page(s) from "{filename}" as PNG image file(s)...', False)
+    feedback(f'Saving page(s) from "{filename}" as image file(s)...', False)
     _filename = os.path.basename(filename)
     basename = os.path.splitext(_filename)[0]
     dirname = directory or os.path.dirname(filename)
@@ -377,22 +385,38 @@ def pdf_to_png(filename: str, dpi: int = 300, names: list = None, directory: str
         if len(_names) != len(list(set(_names))):
             feedback(f'The names setting "{names}" does not contain a unique list of names.',
                      False, True)
-    # save pages as .png files
     try:
         doc = pymupdf.open(filename)
         pages = doc.page_count
+        all_pngs = []  # track full and final name of each saved .png
+        # save pages as .png files
         for pg_number, page in enumerate(doc):
             pix = page.get_pixmap(dpi=dpi)
             if names and pg_number < len(names):
                 if names[pg_number] is not None:
                     iname = os.path.join(dirname, f"{names[pg_number]}.png")
                     pix.save(iname)
+                    all_pngs.append(iname)  # track for GIF creation
             else:
                 if pages > 1:
                     iname = os.path.join(dirname, f"{basename}-{page.number + 1}.png")
+                    all_pngs.append(iname)  # track for GIF creation
                 else:
                     iname = os.path.join(dirname, f"{basename}.png")
+                    all_pngs.append(iname)  # track for GIF creation
                 pix.save(iname)
+        # assemble .png files into a .gif
+        if fformat == 'gif' and frames > 0:
+            feedback(f'Converting PNG image file(s) from "{filename}" into a GIF...',
+                     False)
+            images = []
+            gif_name = os.path.join(dirname, f"{basename}.gif")
+            for filename in all_pngs:
+                images.append(imageio.imread(filename))
+                imageio.mimsave(gif_name, images, duration=frames*1000)  # ms -> sec
+            for filename in all_pngs:
+                if os.path.isfile(filename):
+                    os.remove(filename)
     except Exception as err:
         feedback(f'Unable to extract images for {filename} - {err}!')
 

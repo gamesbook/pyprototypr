@@ -1,7 +1,7 @@
 # pyprototypr
 
 __pyprototypr__ is a utility written in Python for designing and creating
-simple, regular, graphical outputs in PDF (or PNG) format via a script.
+simple, regular, graphical outputs in PDF (or PNG/GIF) format via a script.
 
 __pyprototypr__  has been created to handle prototyping of cards, counters,
 tiles and boards for board games, but can be also used for creation of any
@@ -90,11 +90,11 @@ current / potential areas of work or development that have been identified.
     * [x] Equilateral Triangle shape
     * [x] Sector shape (wedge of a circle)
     * [x] Trapezoid shape
+    * [ ] Diamond shape
     * [ ] Parallelogram shape
     * [ ] Wave shape
     * [ ] Cross shape
     * [ ] Pod shape
-    * [ ] Diamond shape
 * [ ] Common objects:
     * [ ] Cube (rhombus composite)
     * [ ] Domino (dots inside rectangle outline)
@@ -112,6 +112,7 @@ current / potential areas of work or development that have been identified.
 * [ ] Shortcut notation for styling of: area, line, text, etc.
 * [ ] Track: layout shapes along a rectangle, circle or polygon (**in progress**)
 * [x] Notches: different styles for a Rectangle
+* [ ] Srripes: interior "lines" for a Rectangle
 * [x] Interior hatching:
     * [x] rectangle
     * [x] hexagon
@@ -136,7 +137,7 @@ current / potential areas of work or development that have been identified.
 
 * [ ] Abstract boards: Go, Ludo, 9 Mens Morris, Wari, Queens Guard, Backgammon
 * [ ] Wargame board: Squad Leader with terrain features (vector and bitmap)
-* [ ] Traveller board: showing a fully styled Star system (demo a custom Shape?)
+* [ ] Traveller board: showing a fully styled Star system (to demo a custom Shape?)
 * [x] WarpWar board: showing a fully-styled sector
 * [ ] 18xx board: show a basic map with tracks, towns, cities and off-map areas
 
@@ -158,4 +159,5 @@ Additional libraries in use include:
 * `xlrd` https://pypi.org/project/xlrd/ - support for access to Excel `.xls` files
 * `openpyxl` https://pypi.org/project/openpyxl/ - support for access to Excel `.xlsx` files
 * `pymupdf` https://pymupdf.io/ - support for export from PDF to PNG images
+* `imageio` https://pypi.org/project/imageio/- support for compiling PNGs to a GIF
 * `jinja` https://jinja.palletsprojects.com - template logic with variables (for cards)

@@ -59,6 +59,7 @@ echo "Creating various..."
 python examples/various/chords.py -d /tmp/demo
 python examples/various/clock.py -d /tmp/demo
 python examples/various/objects.py -d /tmp/demo
+python examples/various/rolling.py -d /tmp/demo
 python examples/various/unicode.py -d /tmp/demo
 python examples/various/world_clocks.py -d /tmp/demo
 # -- Board Game Geek
