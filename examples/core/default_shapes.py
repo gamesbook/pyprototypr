@@ -192,13 +192,13 @@ Chord(shape=Circle(), angle=135, angle1=45)
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text='RectangularLayout: "invisible"')
-Layout(RectangularLayout())
+Text(common=header, text='RectangularLocations: "invisible"')
+Layout(RectangularLocations())
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text='RectangularLayout: "debug"')
-Layout(RectangularLayout(), debug='normal')
+Text(common=header, text='RectangularLocations: "debug"')
+Layout(RectangularLocations(), debug='normal')
 PageBreak()
 
 Blueprint(stroke_width=0.5)

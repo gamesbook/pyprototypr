@@ -337,14 +337,14 @@ class VirtualShape():
             _label = f" for {label}" if label else ''
             tools.feedback(f'"{value}"{_label} is not a valid floating number!', True)
 
-# ---- virtual layouts
+# ---- virtual Locations
 
 
-class VirtualLayout(VirtualShape):
+class VirtualLocations(VirtualShape):
     """
-    Common properties and methods to define a virtual layout.
+    Common properties and methods to define virtual Locations.
 
-    A virtual layout is not drawn on the canvas; rather it provides the
+    Virtual Locations are not drawn on the canvas; they provide the
     locations/points where user-defined shapes will be drawn.
     """
     global cnv
@@ -352,8 +352,8 @@ class VirtualLayout(VirtualShape):
 
     def __init__(self, rows, cols, **kwargs):
         kwargs = kwargs
-        self.x = self.to_float(kwargs.get('x', 1.0), 'x')  # left(lower) corner of layout
-        self.y = self.to_float(kwargs.get('y', 1.0), 'y')  # left(lower) corner of layout
+        self.x = self.to_float(kwargs.get('x', 1.0), 'x')  # left(lower) corner
+        self.y = self.to_float(kwargs.get('y', 1.0), 'y')  # left(lower) corner
         self.rows = self.to_int(rows, 'rows')
         self.cols = self.to_int(cols, 'cols')
         self.side = self.to_float(kwargs.get('side', 0), 'side')
@@ -446,7 +446,7 @@ class VirtualLayout(VirtualShape):
         pass
 
 
-class RectangularLayout(VirtualLayout):
+class RectangularLocations(VirtualLocations):
     """
     Common properties and methods to define a virtual rectangular layout.
     """
@@ -454,7 +454,7 @@ class RectangularLayout(VirtualLayout):
     global deck
 
     def __init__(self, rows=2, cols=2, **kwargs):
-        super(RectangularLayout, self).__init__(rows, cols, **kwargs)
+        super(RectangularLocations, self).__init__(rows, cols, **kwargs)
         self.start = kwargs.get('start', 'sw')
         if self.cols < 2 or self.rows < 2:
             tools.feedback(
@@ -699,15 +699,15 @@ class RectangularLayout(VirtualLayout):
                                         return  # end
 
 
-class TriangularLayout(VirtualLayout):
+class TriangularLocations(VirtualLocations):
     """
-    Common properties and methods to define a virtual triangular layout.
+    Common properties and methods to define  virtual triangular locations.
     """
     global cnv
     global deck
 
     def __init__(self, rows=2, cols=2, **kwargs):
-        super(TriangularLayout, self).__init__(rows, cols, **kwargs)
+        super(TriangularLocations, self).__init__(rows, cols, **kwargs)
         self.start = kwargs.get('start', 'north')
         self.facing = kwargs.get('facing', 'north')
         if (self.cols < 2 and self.rows < 1) or (self.cols < 1 and self.rows < 2):
@@ -819,33 +819,19 @@ class TriangularLayout(VirtualLayout):
         return
 
 
-class DiamondLayout(VirtualLayout):
+class DiamondLocations(VirtualLocations):
     """
-    Common properties and methods to define a virtual diamo layout.
+    Common properties and methods to define virtual diamond locations.
     """
     global cnv
     global deck
 
     def __init__(self, rows=1, cols=2, **kwargs):
-        super(DiamondLayout, self).__init__(rows, cols, **kwargs)
+        super(DiamondLocations, self).__init__(rows, cols, **kwargs)
         if (self.cols < 2 and self.rows < 1) or (self.cols < 1 and self.rows < 2):
             tools.feedback(
                 f"Minimum layout size is 2x1 or 1x2 (cannot use {self.cols }x{self.rows})!",
                 True)
-
-    def next_location(self) -> Location:
-        """Yield next Location for each call."""
-
-
-class IrregularLayout(VirtualLayout):
-    """
-    Common properties and methods to define a virtual irregular layout.
-    """
-    global cnv
-    global deck
-
-    def __init__(self, rows, cols, **kwargs):
-        super(IrregularLayout, self).__init__(rows=0, cols=0, **kwargs)
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""

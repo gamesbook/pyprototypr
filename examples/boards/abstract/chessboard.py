@@ -20,10 +20,12 @@ Repeat(rect, cols=8, rows=8, offset=2.25)
 PageBreak()
 
 sqr = Common(side=2.25, stroke=None)
-chess = RectangularLayout(
+sqr_locations = RectangularLocations(
     cols=8, rows=8, x=1.25, y=5, x_interval=2.25, y_interval=2.25,
     start="NW", direction="east", pattern="snake")
-Layout(chess, shapes=[square(common=sqr, fill=grey), square(common=sqr, fill=white)])
+Layout(
+   sqr_locations,
+   shapes=[square(common=sqr, fill=grey), square(common=sqr, fill=white)])
 Rectangle(x=0.18, y=3.85, width=18, height=18, stroke_width=3, fill=None)
 
 Save()

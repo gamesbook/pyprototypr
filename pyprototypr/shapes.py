@@ -1345,23 +1345,23 @@ class HexShape(BaseShape):
         self.coord_text = str(self.coord_prefix) + _x + str(self.coord_separator) + \
             _y + str(self.coord_suffix)
         # ---- draw coord (optional)
-        if self.coord_position:
+        if self.coord_elevation:
             # ---- * set coord props
             cnv.setFont(self.coord_font_face, self.coord_font_size)
             cnv.setFillColor(self.coord_stroke)
             coord_offset = self.unit(self.coord_offset)
-            if self.coord_position in ['t', 'top']:
+            if self.coord_elevation in ['t', 'top']:
                 self.draw_multi_string(
                     cnv, x_d, y_d + half_flat * 0.7 + coord_offset, self.coord_text)
-            elif self.coord_position in ['m', 'middle', 'mid']:
+            elif self.coord_elevation in ['m', 'middle', 'mid']:
                 self.draw_multi_string(
                     cnv, x_d, y_d + coord_offset - self.coord_font_size / 2.0, self.coord_text)
-            elif self.coord_position in ['b', 'bottom', 'bot']:
+            elif self.coord_elevation in ['b', 'bottom', 'bot']:
                 self.draw_multi_string(
                     cnv, x_d, y_d - half_flat * 0.9 + coord_offset, self.coord_text)
             else:
                 tools.feedback(
-                    f'Cannot handle a coord_position of "{self.coord_position}"')
+                    f'Cannot handle a coord_elevation of "{self.coord_elevation}"')
 
     def calculate_area(self):
         if self.side:
@@ -2152,23 +2152,23 @@ class RectangleShape(BaseShape):
         self.coord_text = str(self.coord_prefix) + _x + str(self.coord_separator) + \
             _y + str(self.coord_suffix)
         # ---- draw coord (optional)
-        if self.coord_position:
+        if self.coord_elevation:
             # ---- * set coord props
             cnv.setFont(self.coord_font_face, self.coord_font_size)
             cnv.setFillColor(self.coord_stroke)
             coord_offset = self.unit(self.coord_offset)
-            if self.coord_position in ['t', 'top']:
+            if self.coord_elevation in ['t', 'top']:
                 self.draw_multi_string(
                     cnv, x_d, y_d + coord_offset, self.coord_text)
-            elif self.coord_position in ['m', 'middle', 'mid']:
+            elif self.coord_elevation in ['m', 'middle', 'mid']:
                 self.draw_multi_string(
                     cnv, x_d, y_d + coord_offset - self.coord_font_size / 2.0, self.coord_text)
-            elif self.coord_position in ['b', 'bottom', 'bot']:
+            elif self.coord_elevation in ['b', 'bottom', 'bot']:
                 self.draw_multi_string(
                     cnv, x_d, y_d + coord_offset, self.coord_text)
             else:
                 tools.feedback(
-                    f'Cannot handle a coord_position of "{self.coord_position}"')
+                    f'Cannot handle a coord_elevation of "{self.coord_elevation}"')
 
     def calculate_xy(self, **kwargs):
         # ---- adjust start

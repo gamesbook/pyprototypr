@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Examples of multiple shapes on outer edge of RectangularLayout for pyprototypr
+Examples of multiple shapes on outer edge of RectangularLocations for pyprototypr
 
 Written by: Derek Hohls
 Created on: 15 September 2024
@@ -24,8 +24,8 @@ sqr = square(common=is_common, side=0.9, label_size=6)
 sqr5 = square(common=is_common, side=1.0, label_size=8, fill=yellow)
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Layout: SW->north/outer + count")
-rect = RectangularLayout(
+Text(common=header, text="Rect.Locations: SW->north/outer + count")
+rect = RectangularLocations(
     x=0.5, y=0.5, cols=4, rows=5, interval=1,
     start="SW", direction="north", pattern="outer")
 Layout(rect, shapes=[sqr]*4 + [sqr5] )
@@ -39,8 +39,8 @@ rct5 = square(common=rct_small, fill_stroke=lightgreen)
 rct10 = square(common=rct_small, fill_stroke=mediumseagreen)
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Layout: NW->east/outer + stop")
-rect = RectangularLayout(
+Text(common=header, text="Rect.Locations: NW->east/outer + stop")
+rect = RectangularLocations(
     x=0.25, y=0.25, cols=8, rows=11, interval=0.5, stop=26,
     start="NW", direction="east", pattern="outer")
 Layout(rect, shapes=[rct1]*4 + [rct5] + [rct1]*4 + [rct10])
@@ -55,8 +55,8 @@ rct3 = rectangle(
     common=rct_common, label="{count_zero}", fill=maroon, stroke=white)
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Layout: SW/outer + rotate + corner")
-rrect = RectangularLayout(
+Text(common=header, text="Rect.Locations: SW/outer + rotate + corner")
+rrect = RectangularLocations(
     x=0.5, y=0.75, cols=7, rows=10, interval=0.5,
     start="SW", direction="north", pattern="outer")
 Layout(
@@ -70,4 +70,14 @@ Layout(
 corners=[('*',circ)])
 PageBreak()
 
-Save()
+#Save()
+Save(
+     output='png',
+     dpi=300,
+     directory="docs/images/layouts",
+     names=[
+        "layout_rect_outer_multi",
+        "layout_rect_outer_multi_stop",
+        "layout_rect_outer_rotation",
+     ]
+)

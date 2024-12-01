@@ -81,10 +81,10 @@ Linear layouts, where elements appear in one-dimensional space:
 
 Grid-based layouts, where elements appear in two-dimensional space:
 
--  **RectangularLayout()** - define a series of differing x- and y-points
+-  **RectangularLocations()** - defines a series of differing x- and y-points
    with rectangular spacing; the x- and y-values will correspond to the
    centre of the element being placed.
--  **TriangularLayout()** - defines a series of differing x- and y-points
+-  **TriangularLocations()** - defines a series of differing x- and y-points
    with triangular spacing; the x- and y-values will correspond to the
    centre of the element being placed.
 
@@ -100,5 +100,5 @@ The commands are described in detail, with examples, in these sections:
 
 - `Sequences <layouts_sequence.rst>`_
 - `Tracks <layouts_track.rst>`_
-- `RectangularLayouts <layouts_rectangular.rst>`_
+- `RectangularLocations <layouts_rectangular.rst>`_
 - `TriangularLayouts <layouts_triangular.rst>`_

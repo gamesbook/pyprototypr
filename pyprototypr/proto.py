@@ -67,7 +67,7 @@ from .shapes import (
     GRID_SHAPES_WITH_CENTRE, GRID_SHAPES_NO_CENTRE, SHAPES_FOR_TRACK)
 from .layouts import (
     GridShape, DotGridShape,
-    VirtualLayout, RectangularLayout, TriangularLayout,
+    VirtualLocations, RectangularLocations, TriangularLocations,
     ConnectShape, RepeatShape, SequenceShape)
 from .groups import DeckShape, Switch, Lookup, LookupType
 from ._version import __version__
@@ -1568,7 +1568,7 @@ def Layout(grid, **kwargs):
         tools.feedback("There is no list of shapes to draw!", False, True)
     if shapes and not isinstance(shapes, list):
         tools.feedback("The values for 'shapes' must be in a list!", True)
-    if not isinstance(grid, VirtualLayout):
+    if not isinstance(grid, VirtualLocations):
         tools.feedback(f"The grid value '{grid}' is not valid!", True)
     corners_dict = {}
     if corners:
