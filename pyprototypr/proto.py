@@ -1603,7 +1603,15 @@ def Layout(grid, **kwargs):
     if not locations:
         _locations = default_locations
     else:
-        raise NotImplementedError('Cannot handle user-input locations')
+        _locations = []
+        user_locations = tools.integer_pairs(locations, label='locations')
+        # restructure and pick locations according to user input
+        for user_loc in user_locations:
+            for loc in default_locations:
+                if user_loc[0] == loc[1].col and user_loc[1] == loc[1].row:
+                    _locations.append(loc)
+            default_locations = enumerate(grid.next_location())  # regenerate !
+
     # ---- generate rotations - keyed per sequence number
     rotation_sequence = {}
     if rotations:
