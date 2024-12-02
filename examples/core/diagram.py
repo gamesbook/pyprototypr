@@ -71,4 +71,12 @@ Connect(centralD, bottom_D, style='path')
 
 PageBreak()
 
-Save()
+# Save()
+Save(
+    output='png',
+    dpi=300,
+    directory="docs/images/customised",
+    names=[
+        "diagram_basic", "diagram_a", "diagram_b", "diagram_c", "diagram_d",
+    ]
+)

@@ -212,7 +212,7 @@ Circle(fill_stroke=aqua)
 PageBreak()
 
 Save(output='png',
-     dpi=600,
+     dpi=300,
      directory="docs/images/defaults",
      names=[
         'blueprint', 'blueprint-sub', 'text', 'line', 'rectangle',

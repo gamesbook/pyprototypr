@@ -205,7 +205,7 @@ PageBreak()
 
 Save(
     output='png',
-    dpi=600,
+    dpi=300,
     directory="docs/images/custom/hexagonal_grid",
     names=[
         "rect_basic_flat", "rect_basic_pointy",

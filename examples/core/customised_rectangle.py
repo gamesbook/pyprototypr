@@ -179,7 +179,7 @@ PageBreak(footer=True)
 
 Save(
      output='png',
-     dpi=600,
+     dpi=300,
      directory="docs/images/custom/rectangle",
      names=[
         None,

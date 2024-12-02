@@ -55,7 +55,7 @@ PageBreak()
 
 Save(
      output='png',
-     dpi=600,
+     dpi=300,
      directory="docs/images/custom/blueprint",
      names=[
         "defaults", "stroke_width_red",
