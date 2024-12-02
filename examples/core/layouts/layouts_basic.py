@@ -20,20 +20,26 @@ a_circle = circle(common=circles)
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Rect.Locations: debug > no label")
-rect = RectangularLocations(cols=3, rows=4)
+rect = RectangularLocations(cols=3, rows=4, x=0.5, y=0.5)
 Layout(rect, debug='none')
 PageBreak()
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Rec.Locations: debug > count")
-rect = RectangularLocations(cols=3, rows=4)
+rect = RectangularLocations(cols=3, rows=4, x=0.5, y=0.5)
 Layout(rect, debug='count')
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rec.Locations: debug > xy")
-rect = RectangularLocations(cols=3, rows=4)
+Text(common=header, text="Rec.Locations: debug > x;y")
+rect = RectangularLocations(cols=3, rows=4, x=0.5, y=0.5)
 Layout(rect, debug='xy')
+PageBreak()
+
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Rec.Locations: debug > col;row")
+rect = RectangularLocations(cols=3, rows=4, x=0.5, y=0.5)
+Layout(rect, debug='colrow')
 PageBreak()
 
 Blueprint(stroke_width=0.5)
@@ -87,6 +93,13 @@ PageBreak()
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Rect.Locations: NW->east: spacing")
 rect = RectangularLocations(cols=3, rows=4, start="NW", direction="east",
+                            spacing=1.25)
+Layout(rect, shapes=[a_circle,])
+PageBreak()
+
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Rect.Locations: NW->east: spacing")
+rect = RectangularLocations(cols=3, rows=4, start="NW", direction="east",
                             x=1.5, y=1.5,
                             row_spacing=1.25, col_spacing=0.75)
 Layout(rect, shapes=[a_circle,])
@@ -99,10 +112,11 @@ Save(
      directory="docs/images/layouts",
      names=[
         "rect_basic_debug", "rect_basic_debug_count", "rect_basic_debug_xy",
+        "rect_basic_debug_colrow",
         "rect_basic_default",
         "rect_basic_east", "rect_basic_east_even",  "rect_basic_east_odd",
         "rect_basic_snake",
         "rect_basic_outer", "rect_basic_outer_mask", "rect_basic_outer_visible",
-        "rect_basic_spacing",
+        "rect_basic_spacing", "rect_basic_spacing_row_col",
      ]
 )
