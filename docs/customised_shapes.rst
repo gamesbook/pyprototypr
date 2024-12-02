@@ -40,7 +40,7 @@ PNG images that were generated from the original PDF output.
 A number of examples also used the ``Common`` command - this allows shared
 properties to be defined once and then used by any number of shapes.
 
-.. _rectIndex:
+.. _rectangle:
 
 Rectangle
 =========

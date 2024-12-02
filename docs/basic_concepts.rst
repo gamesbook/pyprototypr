@@ -180,7 +180,8 @@ likely term “brown”.
 Colors in **pyprototypr** can also make use of names from a pre-defined
 list - for example ``#A0522D`` is defined as the color *sienna*. A PDF
 file is supplied at `colorset.pdf <../examples/colorset.pdf>`__ - that
-shows all the names and colors available.
+shows all the names and colors available.  This is an alternate version
+of the list that can be found at https://en.wikipedia.org/wiki/X11_color_names
 
 Color properties in **pyprototypr** are typically used via *“fill”* to
 set the color of an area, and *“stroke”* to set the color of a line.

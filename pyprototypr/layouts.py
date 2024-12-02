@@ -455,6 +455,16 @@ class RectangularLocations(VirtualLocations):
 
     def __init__(self, rows=2, cols=2, **kwargs):
         super(RectangularLocations, self).__init__(rows, cols, **kwargs)
+        _spacing = kwargs.get('spacing', 1)
+        self.spacing = tools.as_float(_spacing, 'spacing')
+        if kwargs.get('col_spacing'):
+            self.col_spacing = tools.as_float(kwargs.get('col_spacing'), 'col_spacing')
+        else:
+            self.col_spacing = self.spacing
+        if kwargs.get('row_spacing'):
+            self.row_spacing = tools.as_float(kwargs.get('row_spacing'), 'row_spacing')
+        else:
+            self.row_spacing = self.spacing
         self.start = kwargs.get('start', 'sw')
         if self.cols < 2 or self.rows < 2:
             tools.feedback(
@@ -464,10 +474,12 @@ class RectangularLocations(VirtualLocations):
             tools.feedback(
                 f"{self.start} is not a valid start - "
                 "use: 'sw', 'se', 'nw', or 'ne'", True)
-        if self.side and self.col_spacing:
-            tools.feedback('Using side will override spacing and offset values!', False)
-        if self.side and self.row_spacing:
-            tools.feedback('Using side will override spacing and offset values!', False)
+        if self.side and kwargs.get('col_spacing'):
+            tools.feedback(
+                'Using side will override col_spacing and offset values!', False)
+        if self.side and  kwargs.get('row_spacing'):
+            tools.feedback(
+                'Using side will override row_spacing and offset values!', False)
 
     def next_location(self) -> Location:
         """Yield next Location for each call."""
@@ -530,9 +542,9 @@ class RectangularLocations(VirtualLocations):
                 if self.row_even and not row & 1:
                     x = x + self.row_even
             # print(f'*** {count=} {row=},{col=} // {x=},{y=}')
-            # set next grid location
+            # ---- set next grid location
             match self.pattern.lower():
-                # ---- snake
+                # ---- * snake
                 case 'snake' | 'snaking' | 's':
                     # tools.feedback(f'*** {count=} {self.layout_size=} {self.stop=}')
                     if count > self.layout_size or (self.stop and count > self.stop):
@@ -580,7 +592,10 @@ class RectangularLocations(VirtualLocations):
                                     col = col + 1
                                 self.direction = 'n'
 
-                # ---- outer
+                    x = self.x + (col - 1) * self.col_spacing
+                    y = self.y + (row - 1) * self.row_spacing
+
+                # ---- * outer
                 case 'outer' | 'o':
                     if count > max_outer:
                         return
@@ -644,7 +659,10 @@ class RectangularLocations(VirtualLocations):
                             case 's' | 'south':
                                 row = row - 1
 
-                # ---- regular
+                    x = self.x + (col - 1) * self.col_spacing
+                    y = self.y + (row - 1) * self.row_spacing
+
+                # ---- * regular
                 case _:  # default pattern
                     yield Location(col, row, x, y, self.set_id(col, row), count, corner)
                     # next grid location
@@ -697,6 +715,10 @@ class RectangularLocations(VirtualLocations):
                                     col = col + 1
                                     if col > self.cols:
                                         return  # end
+
+                    x = self.x + (col - 1) * self.col_spacing
+                    y = self.y + (row - 1) * self.row_spacing
+                    # tools.feedback(f"{x=}, {y=}, {col=}, {row=}, ")
 
 
 class TriangularLocations(VirtualLocations):

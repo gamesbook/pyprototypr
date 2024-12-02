@@ -62,7 +62,8 @@ web i.e. in RGB (red-green-blue) *hexadecimal* format - for example,
 Colors can also be chosen from a pre-defined list of names - for example
 ``#A0522D`` is pre-defined as the color *sienna*. A PDF file is supplied
 at `colorset.pdf <../examples/colorset.pdf>`_ - that shows all the
-names and colors that are available.
+names and colors that are available. This is an alternate version
+of the list that can be found at https://en.wikipedia.org/wiki/X11_color_names
 
 In general, color can be set for the lines (**stroke**) and areas
 (**fill**) that are being drawn on a page.
