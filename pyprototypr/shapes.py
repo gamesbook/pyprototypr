@@ -1588,24 +1588,24 @@ class HexShape(BaseShape):
                     else:  # even row
                         x = self.col * height_flat + half_flat + self._u.x + self._o.delta_x
             # ----  ^ set hex centre relative to x,y
-            x_d = x + half_flat
-            y_d = y + side
+            self.x_d = x + half_flat
+            self.y_d = y + side
             # ---- ^ recalculate hex centre
             if self.use_abs_c:
                 # create x_d, y_d as the unit-formatted hex centre
-                x_d = self._abs_cx
-                y_d = self._abs_cy
+                self.x_d = self._abs_cx
+                self.y_d = self._abs_cy
                 # recalculate start x,y
-                x = x_d - half_flat
-                y = y_d - half_side - side / 2.0
+                x = self.x_d - half_flat
+                y = self.y_d - half_side - side / 2.0
             elif self.cx is not None and self.cy is not None:
                 # cx,cy are centre; create x_d, y_d as the unit-formatted hex centre
-                x_d = self._u.cx + self._o.delta_y
-                y_d = self._u.cy + self._o.delta_x
+                self.x_d = self._u.cx + self._o.delta_y
+                self.y_d = self._u.cy + self._o.delta_x
                 # recalculate start x,y
-                x = x_d - half_flat
-                y = y_d - half_side - side / 2.0
-            # tools.feedback(f"*** P^: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
+                x = self.x_d - half_flat
+                y = self.y_d - half_side - side / 2.0
+            # tools.feedback(f"*** P^: {x=} {y=} {self.x_d=} {self.y_d=} {half_flat=} {side=}")
 
         # ---- FLAT~
         else:
@@ -1635,24 +1635,24 @@ class HexShape(BaseShape):
                     else:
                         y = y + half_flat
             # ----  ~ set hex centre relative to x,y
-            x_d = x + side
-            y_d = y + half_flat
+            self.x_d = x + side
+            self.y_d = y + half_flat
             # ----  ~ recalculate centre if preset
             if self.use_abs_c:
                 # create x_d, y_d as the unit-formatted hex centre
-                x_d = self._abs_cx
-                y_d = self._abs_cy
+                self.x_d = self._abs_cx
+                self.y_d = self._abs_cy
                 # recalculate start x,y
-                x = x_d - half_side - side / 2.0
-                y = y_d - half_flat
+                x = self.x_d - half_side - side / 2.0
+                y = self.y_d - half_flat
             elif self.cx is not None and self.cy is not None:
                 # cx,cy are centre; create x_d, y_d as the unit-formatted hex centre
-                x_d = self._u.cx + self._o.delta_x
-                y_d = self._u.cy + self._o.delta_y
+                self.x_d = self._u.cx + self._o.delta_x
+                self.y_d = self._u.cy + self._o.delta_y
                 # recalculate start x,y
-                x = x_d - half_side - side / 2.0
-                y = y_d - half_flat
-            # tools.feedback(f"*** F~: {x=} {y=} {x_d=} {y_d=} {half_flat=} {side=}")
+                x = self.x_d - half_side - side / 2.0
+                y = self.y_d - half_flat
+            # tools.feedback(f"*** F~: {x=} {y=} {self.x_d=} {self.y_d=} {half_flat=} {side=}")
 
         # ---- calculate area
         self.area = self.calculate_area()
@@ -1705,7 +1705,7 @@ class HexShape(BaseShape):
 
         # ---- debug
         # self._debug(cnv, Point(x, y), 'start')
-        # self._debug(cnv, Point(x_d, y_d), 'centre')
+        # self._debug(cnv, Point(self.x_d, self.y_d), 'centre')
         self._debug(cnv, vertices=self.vertices)
         # ---- draw hatch
         if self.hatch:
@@ -1717,34 +1717,34 @@ class HexShape(BaseShape):
             self.draw_links(cnv, ID, side, self.vertices, self.links)
         # ---- draw radii
         if self.radii:
-            self.draw_radii(cnv, ID, Point(x_d, y_d), self.vertices)
+            self.draw_radii(cnv, ID, Point(self.x_d, self.y_d), self.vertices)
         # ---- centred shape (with offset)
         if self.centre_shape:
             cshape_name = self.centre_shape.__class__.__name__
             if cshape_name in GRID_SHAPES_WITH_CENTRE:
-                # tools.feedback(f'*** IN-HEX {cshape_name} at ({x_d=},{y_d=}, '
+                # tools.feedback(f'*** IN-HEX {cshape_name} at ({self.x_d=},{self.y_d=}, '
                 #               f'{self.centre_shape_x}, {self.centre_shape_y})')
                 self.centre_shape.draw(
-                    _abs_cx=x_d + self.unit(self.centre_shape_x),
-                    _abs_cy=y_d + self.unit(self.centre_shape_y))
+                    _abs_cx=self.x_d + self.unit(self.centre_shape_x),
+                    _abs_cy=self.y_d + self.unit(self.centre_shape_y))
             elif cshape_name not in GRID_SHAPES_WITH_CENTRE:
                 tools.feedback(f'Cannot draw a centered {cshape_name}!')
         # ---- cross
-        self.draw_cross(cnv, x_d, y_d)
+        self.draw_cross(cnv, self.x_d, self.y_d)
         # ---- dot
-        self.draw_dot(cnv, x_d, y_d)
+        self.draw_dot(cnv, self.x_d, self.y_d)
         # ---- text
         if self.orientation.lower() in ['p', 'pointy']:
             offset = side  # == radius
         else:
             offset = half_flat
-        self.draw_heading(cnv, ID, x_d, y_d + offset, **kwargs)
-        self.draw_label(cnv, ID, x_d, y_d, **kwargs)
-        self.draw_title(cnv, ID, x_d, y_d - offset, **kwargs)
+        self.draw_heading(cnv, ID, self.x_d, self.y_d + offset, **kwargs)
+        self.draw_label(cnv, ID, self.x_d, self.y_d, **kwargs)
+        self.draw_title(cnv, ID, self.x_d, self.y_d - offset, **kwargs)
         # ----  numbering
-        self.set_coord(cnv, x_d, y_d, half_flat)
+        self.set_coord(cnv, self.x_d, self.y_d, half_flat)
         # ---- set grid property
-        self.grid = GridShape(label=self.coord_text, x=x_d, y=y_d, shape=self)
+        self.grid = GridShape(label=self.coord_text, x=self.x_d, y=self.y_d, shape=self)
 
 
 class LineShape(BaseShape):

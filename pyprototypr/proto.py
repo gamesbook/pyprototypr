@@ -77,73 +77,53 @@ from pyprototypr.utils.tools import base_fonts
 from pyprototypr.utils import geoms, tools, support
 from pyprototypr.utils.geoms import Locale, Point, Place  # namedtuples
 
+from pyprototypr import globals
+
 log = logging.getLogger(__name__)
 
-cnv = None  # will become a reportlab.canvas object
-deck = None  # will become a shapes.DeckShape object
-filename = None
-dataset = None  # will become a dictionary of data loaded from a file
-# default margins
-margin = 1
-margin_left = margin
-margin_top = margin
-margin_bottom = margin
-margin_right = margin
-footer = None
-page_count = 0
-pargs = None
 
 # ---- page-related ====
-
 
 def Create(**kwargs):
     """Initialisation of page and canvas.
 
     Allows shortcut creation of cards.
     """
-    global cnv
-    global filename
-    global deck
-    global margin
-    global margin_left
-    global margin_top
-    global margin_bottom
-    global margin_right
-    global paper
-    global font_size
-    global pargs
-    global footer
-    global footer_draw
-    global units
-    # ---- margin
-    margin = kwargs.get('margin', margin)
-    margin_left = kwargs.get('margin_left', margin)
-    margin_top = kwargs.get('margin_top', margin)
-    margin_bottom = kwargs.get('margin_bottom', margin)
-    margin_right = kwargs.get('margin_right', margin)
+    globals.initialize()
+
+    # ---- margins
+    globals.margin = kwargs.get('margin', globals.margin)
+    globals.margin_left = kwargs.get('margin_left', globals.margin)
+    globals.margin_top = kwargs.get('margin_top', globals.margin)
+    globals.margin_bottom = kwargs.get('margin_bottom', globals.margin)
+    globals.margin_right = kwargs.get('margin_right', globals.margin)
+
     # ---- cards and page
     _cards = kwargs.get('cards', 0)
     fonts = kwargs.get('fonts', [])
     landscape = kwargs.get('landscape', False)
     kwargs = margins(**kwargs)
-    paper = kwargs.get('paper', A4)
+    globals.paper = kwargs.get('paper', globals.paper)
     defaults = kwargs.get('defaults', None)
-    units = kwargs.get('units', cm)
-    footer = None
-    footer_draw = False
+    globals.units = kwargs.get('units', globals.units)
+
     # ---- fonts
     base_fonts()
     for _font in fonts:
         pdfmetrics.registerFont(TTFont(_font[0], _font[1]))
-    font_size = kwargs.get('font_size', 12)
+    globals.font_size = kwargs.get('font_size', 12)
+
     # ---- command-line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--directory", help="Specify output directory", default='')
-    parser.add_argument("-p", "--pages", help="Specify which pages to process", default='')
-    pargs = parser.parse_args()
+    parser.add_argument(
+        "-d", "--directory", help="Specify output directory", default='')
+    parser.add_argument(
+        "-p", "--pages", help="Specify which pages to process", default='')
+    globals.pargs = parser.parse_args()
     # NB - pages does not work - see notes in PageBreak()
-    if pargs.pages:
+    if globals.pargs.pages:
         tools.feedback('Pages is not an implemented feature - sorry!')
+
     # ---- filename and fallback
     _filename = kwargs.get('filename', '')
     if not _filename:
@@ -155,77 +135,56 @@ def Create(**kwargs):
             if _cards:
                 basename = 'cards'
         _filename = f'{basename}.pdf'
-    filename = os.path.join(pargs.directory, _filename)
+    globals.filename = os.path.join(globals.pargs.directory, _filename)
     # tools.feedback(f"output: {filename}", False)
+
     # ---- canvas and deck
-    cnv = BaseCanvas(filename, paper=paper, defaults=defaults, kwargs=kwargs)
+    globals.cnv = BaseCanvas(
+        globals.filename, paper=globals.paper, defaults=defaults, kwargs=kwargs)
     if landscape:
-        cnv.canvas.setPageSize(landscape(cnv.paper))
-        page_width = cnv.paper[1]  # point units (1/72 of an inch)
-        page_height = cnv.paper[0]  # point units (1/72 of an inch)
+        globals.cnv.canvas.setPageSize(landscape(globals.cnv.paper))
+        page_width = globals.cnv.paper[1]  # point units (1/72 of an inch)
+        page_height = globals.cnv.paper[0]  # point units (1/72 of an inch)
     else:
-        page_width = cnv.paper[0]  # point units (1/72 of an inch)
-        page_height = cnv.paper[1]  # point units (1/72 of an inch)
+        page_width = globals.cnv.paper[0]  # point units (1/72 of an inch)
+        page_height = globals.cnv.paper[1]  # point units (1/72 of an inch)
     if kwargs.get('page_fill'):
-        cnv.canvas.setFillColor(kwargs.get('page_fill'))
-        cnv.canvas.rect(
+        globals.cnv.canvas.setFillColor(kwargs.get('page_fill'))
+        globals.cnv.canvas.rect(
             0, 0, page_width, page_height, stroke=0, fill=1)
     if _cards:
-        Deck(canvas=cnv, sequence=range(1, _cards + 1), **kwargs)  # deck variable
+        Deck(canvas=globals.cnv, sequence=range(1, _cards + 1), **kwargs)  # deck var
 
 
 def create(**kwargs):
-    global cnv
-    global deck
     Create(**kwargs)
 
 
 def Footer(**kwargs):
-    global cnv
-    global margin
-    global margin_left
-    global margin_bottom
-    global margin_right
-    global paper
-    global font_size
-    global footer
-    global footer_draw  # always draw
-    global page_count
 
-    kwargs['paper'] = paper
+    kwargs['paper'] = globals.paper
     if not kwargs.get('font_size'):
-        kwargs['font_size'] = font_size
-    footer_draw = kwargs.get('draw', False)
-    footer = FooterShape(_object=None, canvas=cnv, **kwargs)
+        kwargs['font_size'] = globals.font_size
+    globals.footer_draw = kwargs.get('draw', False)
+    globals.footer = FooterShape(_object=None, canvas=globals.cnv, **kwargs)
     # footer.draw() - this is called via PageBreak()
 
 
 def Header(**kwargs):
-    global cnv
-    global margin
-    global margin_left
-    global margin_bottom
-    global margin_right
+    pass
 
 
 def PageBreak(**kwargs):
-    global cnv
-    global deck
-    global page_count
-    global paper
-    global font_size
-    global footer
-    global footer_draw
-    global pargs
 
-    page_count += 1
+    globals.page_count += 1
     kwargs = margins(**kwargs)
-    if kwargs.get("footer", footer_draw):
-        if footer is None:
-            kwargs['paper'] = paper
-            kwargs['font_size'] = font_size
-            footer = FooterShape(_object=None, canvas=cnv, **kwargs)
-        footer.draw(cnv=cnv, ID=page_count, text=None, **kwargs)
+    if kwargs.get("footer", globals.footer_draw):
+        if globals.footer is None:
+            kwargs['paper'] = globals.paper
+            kwargs['font_size'] = globals.font_size
+            globals.footer = FooterShape(_object=None, canvas=globals.cnv, **kwargs)
+        globals.footer.draw(cnv=globals.cnv, ID=globals.page_count, text=None, **kwargs)
+
     # If count not in the required pargs.pages then do NOT display!
     # Note: this code does not work; seems there is no way to clear or hide the canvas
     #       in ReportLab that would support this operation
@@ -239,7 +198,7 @@ def PageBreak(**kwargs):
     #     pass
     # else:
     #     cnv.canvas.showPage()
-    cnv.canvas.showPage()
+    globals.cnv.canvas.showPage()
 
 
 def page_break():
@@ -247,15 +206,12 @@ def page_break():
 
 
 def Save(**kwargs):
-    global cnv
-    global filename
-    global deck
 
-    if deck and len(deck.deck) > 1:
-        deck.draw(cnv, cards=deck.cards, image_list=deck.image_list)
+    if globals.deck and len(globals.deck.deck) > 1:
+        globals.deck.draw(globals.cnv, cards=deck.cards, image_list=deck.image_list)
         cnv.canvas.showPage()
     try:
-        cnv.canvas.save()
+        globals.cnv.canvas.save()
     except RuntimeError as err:
         tools.feedback(f'Unable to save "{filename}" - {err}', True)
     except FileNotFoundError as err:
@@ -267,7 +223,8 @@ def Save(**kwargs):
     names = kwargs.get('names', None)
     directory = kwargs.get('directory', None)
     if output:
-        support.pdf_to_png(filename, output, dpi, names, directory, frames=frames)
+        support.pdf_to_png(
+            globals.filename, output, dpi, names, directory, frames=frames)
 
 
 def save(**kwargs):
@@ -276,37 +233,33 @@ def save(**kwargs):
 
 def margins(**kwargs):
     """Add margins to a set of kwargs, if not present."""
-    global margin
-    global margin_left
-    global margin_top
-    global margin_bottom
-    global margin_right
-    kwargs['margin'] = kwargs.get('margin', margin)
-    kwargs['margin_left'] = kwargs.get('margin_left', margin_left or margin)
-    kwargs['margin_top'] = kwargs.get('margin_top', margin_top or margin)
-    kwargs['margin_bottom'] = kwargs.get('margin_bottom', margin_bottom or margin)
-    kwargs['margin_right'] = kwargs.get('margin_right', margin_right or margin)
+    kwargs['margin'] = kwargs.get('margin', globals.margin)
+    kwargs['margin_left'] = kwargs.get(
+        'margin_left', globals.margin_left or globals.margin)
+    kwargs['margin_top'] = kwargs.get(
+        'margin_top', globals.margin_top or globals.margin)
+    kwargs['margin_bottom'] = kwargs.get(
+        'margin_bottom', globals.margin_bottom or globals.margin)
+    kwargs['margin_right'] = kwargs.get(
+        'margin_right', globals.margin_right or globals.margin)
     # breakpoint()
     return kwargs
 
 
 def Font(face=None, **kwargs):
-    global cnv
 
-    cnv.font_face = face or 'Helvetica'
-    cnv.font_size = kwargs.get('size', 12)
-    cnv.stroke = COLORS.get(kwargs.get('color', 'black'))
+    globals.cnv.font_face = face or 'Helvetica'
+    globals.cnv.font_size = kwargs.get('size', 12)
+    globals.cnv.stroke = COLORS.get(kwargs.get('color', 'black'))
 
 # ---- Various ====
 
 
 def Version():
-    global cnv
     tools.feedback(f'Running pyprototypr version {__version__}.')
 
 
 def Feedback(msg):
-    global cnv
     tools.feedback(msg)
 
 
@@ -317,9 +270,9 @@ def Today(details: str = 'datetime', style: str = 'iso'):
     if details == 'date' and style == 'usa':
         return current.strftime('%B %d %Y')  # USA
     if details == 'date' and style == 'eur':
-        return current.strftime('%Y-%m-%d')  # Eur
+        return current.strftime('%Y-%m-%d')  # Europe
     if details == 'datetime' and style == 'eur':
-        return current.strftime('%Y-%m-%d %H:%m')  # Eur
+        return current.strftime('%Y-%m-%d %H:%m')  # Europe
     if details == 'datetime' and style == 'usa':
         return current.strftime('%B %d %Y %I:%m%p')  # USA
     return current.isoformat(timespec='seconds')  # ISO
@@ -364,11 +317,7 @@ def Card(sequence, *elements):
 
     NOTE: A Card receives its `draw()` command via Save()!
     """
-    global cnv
-    global deck
-    global dataset
-
-    if not deck:
+    if not globals.deck:
         tools.feedback('The Deck() has not been defined or is incorrect.', True)
     _cards = []
     # int - single card
@@ -380,7 +329,8 @@ def Card(sequence, *elements):
     # string - either 'all'/'*' .OR. a range: '1', '1-2', '1-3,5-6'
     if not _cards:
         try:
-            card_count = len(dataset) if dataset else len(deck.image_list)
+            card_count = len(globals.dataset) if globals.dataset \
+                else len(globals.deck.image_list)
             if isinstance(sequence, list) and not isinstance(sequence, str):
                 _cards = sequence
             elif sequence.lower() == 'all' or sequence.lower() == '*':
@@ -389,11 +339,11 @@ def Card(sequence, *elements):
                 _cards = tools.sequence_split(sequence)
         except Exception as err:
             log.error('Handling sequence:%s with dataset:%s & images:%s - %s',
-                      sequence, dataset, deck.image_list, err)
+                      sequence, globals.dataset, globals.deck.image_list, err)
             tools.feedback(
-                f'Unable to convert "{sequence}" into a card or range or cards {deck}.')
+                f'Unable to convert "{sequence}" into a card or range or cards {globals.deck}.')
     for index, _card in enumerate(_cards):
-        card = deck.get(_card - 1)  # cards internally number from ZERO
+        card = globals.deck.get(_card - 1)  # cards internally number from ZERO
         if card:
             for element in elements:
                 element.members = _cards  # track all related cards
@@ -417,19 +367,13 @@ def Deck(**kwargs):
 
     NOTE: A Deck receives its `draw()` command from Save()!
     """
-    global cnv
-    global deck
-    global margin
-    global margin_left
-    global margin_top
-    global margin_bottom
-    global margin_right
-    margin = kwargs.get('margin', margin)
-    margin_left = kwargs.get('margin_left', margin)
-    margin_top = kwargs.get('margin_top', margin)
-    margin_bottom = kwargs.get('margin_bottom', margin)
-    margin_right = kwargs.get('margin_right', margin)
-    deck = DeckShape(**kwargs)
+
+    globals.margin = kwargs.get('margin', globals.margin)
+    globals.margin_left = kwargs.get('margin_left', globals.margin)
+    globals.margin_top = kwargs.get('margin_top', globals.margin)
+    globals.margin_bottom = kwargs.get('margin_bottom', globals.margin)
+    globals.margin_right = kwargs.get('margin_right', globals.margin)
+    globals.deck = DeckShape(**kwargs)
 
 
 def CounterSheet(**kwargs):
@@ -437,25 +381,18 @@ def CounterSheet(**kwargs):
 
     NOTE: A CounterSheet (aka Deck) receives its `draw()` command from Save()!
     """
-    global cnv
-    global deck
-    global margin
-    global margin_left
-    global margin_top
-    global margin_bottom
-    global margin_right
-    margin = kwargs.get('margin', margin)
-    margin_left = kwargs.get('margin_left', margin)
-    margin_top = kwargs.get('margin_top', margin)
-    margin_bottom = kwargs.get('margin_bottom', margin)
-    margin_right = kwargs.get('margin_right', margin)
+    globals.margin = kwargs.get('margin', globals.margin)
+    globals.margin_left = kwargs.get('margin_left', globals.margin)
+    globals.margin_top = kwargs.get('margin_top', globals.margin)
+    globals.margin_bottom = kwargs.get('margin_bottom', globals.margin)
+    globals.margin_right = kwargs.get('margin_right', globals.margin)
+
     kwargs['_is_countersheet'] = True
-    deck = DeckShape(**kwargs)
+    globals.deck = DeckShape(**kwargs)
 
 
 def group(*args, **kwargs):
-    global cnv
-    global deck
+
     gb = GroupBase(kwargs)
     for arg in args:
         gb.append(arg)
@@ -466,9 +403,6 @@ def group(*args, **kwargs):
 
 def Data(**kwargs):
     """Load data from file, dictionary, or directory for access by a Deck."""
-    global cnv
-    global deck
-    global dataset
 
     filename = kwargs.get('filename', None)
     matrix = kwargs.get('matrix', None)
@@ -477,25 +411,25 @@ def Data(**kwargs):
     _extra = kwargs.get('extra', 0)  # extra cards (not part of normal dataset)
     try:
         extra = int(_extra)
-    except:
+    except Exception:
         tools.feedback(f'Extra must be a whole number, not "{_extra}"!', True)
 
     if filename:  # handle excel and CSV
-        dataset = tools.load_data(filename, **kwargs)
-        log.debug("dataset loaded: %s", dataset)
-        if len(dataset) == 0:
+        globals.dataset = tools.load_data(filename, **kwargs)
+        log.debug("globals.dataset loaded: %s", globals.dataset)
+        if len(globals.dataset) == 0:
             tools.feedback("Dataset is empty or cannot be loaded!", True)
         else:
-            deck.create(len(dataset) + extra)
-            deck.dataset = dataset
+            globals.deck.create(len(globals.dataset) + extra)
+            globals.deck.dataset = globals.dataset
     elif matrix:  # handle pre-built dict
-        dataset = matrix
-        log.debug("dataset loaded: %s", dataset)
-        if len(dataset) == 0:
+        globals.dataset = matrix
+        log.debug("globals.dataset loaded: %s", globals.dataset)
+        if len(globals.dataset) == 0:
             tools.feedback("Matrix data is empty or cannot be loaded!", True)
         else:
-            deck.create(len(dataset) + extra)
-            deck.dataset = dataset
+            globals.deck.create(len(globals.dataset) + extra)
+            globals.deck.dataset = globals.dataset
     elif images:  # handle images
         src = pathlib.Path(images)
         if not src.is_dir():
@@ -509,24 +443,25 @@ def Data(**kwargs):
         if filters:
             src = src.glob(filters)  # glob('*.[tx][xl][ts]')
         for child in src.iterdir():
-            deck.image_list.append(child)
-        if len(deck.image_list) == 0:
+            globals.deck.image_list.append(child)
+        if len(globals.deck.image_list) == 0:
             tools.feedback(
                 f'Directory "{src}" has no relevant files or cannot be loaded!', True)
-        deck.cards = len(deck.image_list)  + extra  # OVERWRITE total number of cards
-        deck.create(deck.cards)  # resize deck based on images
+        # OVERWRITE total number of cards
+        globals.deck.cards = len(globals.deck.image_list) + extra
+        # resize deck based on images
+        globals.deck.create(globals.deck.cards)
 
     else:
         tools.feedback("You must provide a source of data for Data!", True)
-    return dataset
+    return globals.dataset
 
 
 # def V(*args):
 #     """Expect args[0] to be the name (string) of a column in the dataset."""
-#     global dataset
 #     log.debug("V %s %s %s", args, type(dataset), len(dataset))
-#     if dataset and isinstance(dataset, list):
-#         return [item.get(args[0], '') for item in dataset]
+#     if globals.dataset and isinstance(dataset, list):
+#         return [item.get(args[0], '') for item in globals.dataset]
 #     return []
 
 
@@ -535,7 +470,7 @@ def S(test='', result=None, alternate=None):
     Enable selection of data from a dataset list
 
         test: str
-            boolean-type Jinja expression which can be evaluated to return True/False
+            boolean-type Jinja2 expression which can be evaluated to return True/False
             e.g. {{ NAME == 'fred' }} gets the column "NAME" value from the dataset
             and tests its equivalence to the value "fred"
         result: str or element
@@ -543,13 +478,12 @@ def S(test='', result=None, alternate=None):
         alternate: str or element
             OPTIONAL; returned if `test` evaluates to False; if not supplied, then None
     """
-    global dataset
 
-    if dataset and isinstance(dataset, list):
+    if globals.dataset and isinstance(globals.dataset, list):
         environment = jinja2.Environment()
         template = environment.from_string(str(test))
         return Switch(
-            template=template, result=result, alternate=alternate, dataset=dataset)
+            template=template, result=result, alternate=alternate, dataset=globals.dataset)
     return None
 
 
@@ -570,15 +504,14 @@ def L(lookup: str, target: str, result: str, default: Any = '') -> LookupType:
         the data in the 'result' column of that record is stored as an
         `lookup: result` entry in the returned lookups dictionary of the LookupType
     """
-    global dataset
     print(f"L {lookup=} {target=} {result=}")
 
     lookups = {}
-    if dataset and isinstance(dataset, list):
+    if globals.dataset and isinstance(globals.dataset, list):
         # validate the lookup column
-        if lookup not in dataset[0].keys():
+        if lookup not in globals.dataset[0].keys():
             tools.feedback(f'The "{lookup}" column is not available.', True)
-        for key, record in enumerate(dataset):
+        for key, record in enumerate(globals.dataset):
             if target in record.keys():
                 if result in record.keys():
                     lookups[record[target]] = record[result]
@@ -591,8 +524,7 @@ def L(lookup: str, target: str, result: str, default: Any = '') -> LookupType:
 
 
 def T(source: str, data: dict = None):
-    """Use source to create a jinja template."""
-    global dataset
+    """Use source to create a Jinja2 template."""
 
     environment = jinja2.Environment()
     template = environment.from_string(str(source))
@@ -610,69 +542,53 @@ def Set(_object, **kwargs):
 
 
 def base_shape(source=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['source'] = source
-    bshape = BaseShape(canvas=cnv, **kwargs)
+    bshape = BaseShape(canvas=globals.cnv, **kwargs)
     return bshape
 
 
 def Common(source=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['source'] = source
-    cshape = CommonShape(canvas=cnv, **kwargs)
+    cshape = CommonShape(canvas=globals.cnv, **kwargs)
     return cshape
 
 
 def common(source=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['source'] = source
-    cshape = CommonShape(canvas=cnv, **kwargs)
+    cshape = CommonShape(canvas=globals.cnv, **kwargs)
     return cshape
 
 
 def Image(source=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['source'] = source
-    image = ImageShape(canvas=cnv, **kwargs)
+    image = ImageShape(canvas=globals.cnv, **kwargs)
     image.draw()
     return image
 
 
 def image(source=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['source'] = source
-    return ImageShape(canvas=cnv, **kwargs)
+    return ImageShape(canvas=globals.cnv, **kwargs)
 
 
 def Arc(**kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    arc = ArcShape(canvas=cnv, **kwargs)
+    arc = ArcShape(canvas=globals.cnv, **kwargs)
     arc.draw()
     return arc
 
 
 def arc(**kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    return ArcShape(canvas=cnv, **kwargs)
+    return ArcShape(canvas=globals.cnv, **kwargs)
 
 
 def Arrow(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     arr = arrow(row=row, col=col, **kwargs)
     arr.draw()
@@ -680,34 +596,25 @@ def Arrow(row=None, col=None, **kwargs):
 
 
 def arrow(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return ArrowShape(canvas=cnv, **kwargs)
+    return ArrowShape(canvas=globals.cnv, **kwargs)
 
 
 def Bezier(**kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    bezier = BezierShape(canvas=cnv, **kwargs)
+    bezier = BezierShape(canvas=globals.cnv, **kwargs)
     bezier.draw()
     return bezier
 
 
 def bezier(**kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    return BezierShape(canvas=cnv, **kwargs)
-
+    return BezierShape(canvas=globals.cnv, **kwargs)
 
 
 def Chord(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     chd = chord(row=row, col=col, **kwargs)
     chd.draw()
@@ -715,33 +622,25 @@ def Chord(row=None, col=None, **kwargs):
 
 
 def chord(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return ChordShape(canvas=cnv, **kwargs)
+    return ChordShape(canvas=globals.cnv, **kwargs)
 
 
 def Circle(**kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    circle = CircleShape(canvas=cnv, **kwargs)
+    circle = CircleShape(canvas=globals.cnv, **kwargs)
     circle.draw()
     return circle
 
 
 def circle(**kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    return CircleShape(canvas=cnv, **kwargs)
+    return CircleShape(canvas=globals.cnv, **kwargs)
 
 
 def Compass(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     cmpss = compass(row=row, col=col, **kwargs)
     cmpss.draw()
@@ -749,15 +648,11 @@ def Compass(row=None, col=None, **kwargs):
 
 
 def compass(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    return CompassShape(canvas=cnv, **kwargs)
+    return CompassShape(canvas=globals.cnv, **kwargs)
 
 
 def Dot(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     dtt = dot(row=row, col=col, **kwargs)
     dtt.draw()
@@ -765,70 +660,54 @@ def Dot(row=None, col=None, **kwargs):
 
 
 def dot(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    return DotShape(canvas=cnv, **kwargs)
+    return DotShape(canvas=globals.cnv, **kwargs)
 
 
 def Ellipse(**kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    ellipse = EllipseShape(canvas=cnv, **kwargs)
+    ellipse = EllipseShape(canvas=globals.cnv, **kwargs)
     ellipse.draw()
     return ellipse
 
 
 def ellipse(**kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    return EllipseShape(canvas=cnv, **kwargs)
+    return EllipseShape(canvas=globals.cnv, **kwargs)
 
 
 def EquilateralTriangle(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    eqt = EquilateralTriangleShape(canvas=cnv, **kwargs)
+    eqt = EquilateralTriangleShape(canvas=globals.cnv, **kwargs)
     eqt.draw()
     return eqt
 
 
 def equilateraltriangle(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    return EquilateralTriangleShape(canvas=cnv, **kwargs)
+    return EquilateralTriangleShape(canvas=globals.cnv, **kwargs)
 
 
 def Hexagon(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     # print(f'Will draw HexShape: {kwargs}')
     kwargs['row'] = row
     kwargs['col'] = col
-    hexagon = HexShape(canvas=cnv, **kwargs)
+    hexagon = HexShape(canvas=globals.cnv, **kwargs)
     hexagon.draw()
     return hexagon
 
 
 def hexagon(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return HexShape(canvas=cnv, **kwargs)
+    return HexShape(canvas=globals.cnv, **kwargs)
 
 
 def Line(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     lin = line(row=row, col=col, **kwargs)
     lin.draw()
@@ -836,17 +715,13 @@ def Line(row=None, col=None, **kwargs):
 
 
 def line(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return LineShape(canvas=cnv, **kwargs)
+    return LineShape(canvas=globals.cnv, **kwargs)
 
 
 def Polygon(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     poly = polygon(row=row, col=col, **kwargs)
     poly.draw()
@@ -854,17 +729,13 @@ def Polygon(row=None, col=None, **kwargs):
 
 
 def polygon(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return PolygonShape(canvas=cnv, **kwargs)
+    return PolygonShape(canvas=globals.cnv, **kwargs)
 
 
 def Polyline(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     polylin = polyline(row=row, col=col, **kwargs)
     polylin.draw()
@@ -872,50 +743,39 @@ def Polyline(row=None, col=None, **kwargs):
 
 
 def polyline(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return PolylineShape(canvas=cnv, **kwargs)
+    return PolylineShape(canvas=globals.cnv, **kwargs)
 
 
 def RightAngledTriangle(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    rat = RightAngledTriangleShape(canvas=cnv, **kwargs)
+    rat = RightAngledTriangleShape(canvas=globals.cnv, **kwargs)
     rat.draw()
     return rat
 
 
 def rightangledtriangle(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    return RightAngledTriangleShape(canvas=cnv, **kwargs)
+    return RightAngledTriangleShape(canvas=globals.cnv, **kwargs)
 
 
 def Rhombus(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     rhomb = rhombus(row=row, col=col, **kwargs)
     rhomb.draw()
     return rhomb
 
+
 def rhombus(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    return RhombusShape(canvas=cnv, **kwargs)
+    return RhombusShape(canvas=globals.cnv, **kwargs)
 
 
 def Rectangle(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     rect = rectangle(row=row, col=col, **kwargs)
     rect.draw()
@@ -923,17 +783,13 @@ def Rectangle(row=None, col=None, **kwargs):
 
 
 def rectangle(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return RectangleShape(canvas=cnv, **kwargs)
+    return RectangleShape(canvas=globals.cnv, **kwargs)
 
 
 def Polyshape(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     shapeshape = polyshape(row=row, col=col, **kwargs)
     shapeshape.draw()
@@ -941,17 +797,13 @@ def Polyshape(row=None, col=None, **kwargs):
 
 
 def polyshape(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return ShapeShape(canvas=cnv, **kwargs)
+    return ShapeShape(canvas=globals.cnv, **kwargs)
 
 
 def Sector(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     sct = sector(row=row, col=col, **kwargs)
     sct.draw()
@@ -959,17 +811,13 @@ def Sector(row=None, col=None, **kwargs):
 
 
 def sector(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return SectorShape(canvas=cnv, **kwargs)
+    return SectorShape(canvas=globals.cnv, **kwargs)
 
 
 def Square(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     sqr = square(row=row, col=col, **kwargs)
     sqr.draw()
@@ -977,90 +825,70 @@ def Square(row=None, col=None, **kwargs):
 
 
 def square(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return SquareShape(canvas=cnv, **kwargs)
+    return SquareShape(canvas=globals.cnv, **kwargs)
 
 
 def Stadium(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    std = StadiumShape(canvas=cnv, **kwargs)
+    std = StadiumShape(canvas=globals.cnv, **kwargs)
     std.draw()
     return std
 
 
 def stadium(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return StadiumShape(canvas=cnv, **kwargs)
+    return StadiumShape(canvas=globals.cnv, **kwargs)
 
 
 def Star(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    star = StarShape(canvas=cnv, **kwargs)
+    star = StarShape(canvas=globals.cnv, **kwargs)
     star.draw()
     return star
 
 
 def star(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return StarShape(canvas=cnv, **kwargs)
+    return StarShape(canvas=globals.cnv, **kwargs)
 
 
 def StarField(**kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    starfield = StarFieldShape(canvas=cnv, **kwargs)
+    starfield = StarFieldShape(canvas=globals.cnv, **kwargs)
     starfield.draw()
     return starfield
 
 
 def starfield(**kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    return StarFieldShape(canvas=cnv, **kwargs)
+    return StarFieldShape(canvas=globals.cnv, **kwargs)
 
 
 def Text(**kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
-    text = TextShape(canvas=cnv, **kwargs)
+    text = TextShape(canvas=globals.cnv, **kwargs)
     text.draw()
     return text
 
 
 def text(*args, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     _obj = args[0] if args else None
-    return TextShape(_object=_obj, canvas=cnv, **kwargs)
+    return TextShape(_object=_obj, canvas=globals.cnv, **kwargs)
 
 
 def Trapezoid(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     trp = trapezoid(row=row, col=col, **kwargs)
     trp.draw()
@@ -1068,47 +896,35 @@ def Trapezoid(row=None, col=None, **kwargs):
 
 
 def trapezoid(row=None, col=None, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['row'] = row
     kwargs['col'] = col
-    return TrapezoidShape(canvas=cnv, **kwargs)
+    return TrapezoidShape(canvas=globals.cnv, **kwargs)
 
 # ---- grids ====
 
+
 def DotGrid(**kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     # override defaults ... otherwise grid not "next" to margins
     kwargs['x'] = kwargs.get('x', 0)
     kwargs['y'] = kwargs.get('y', 0)
-    dgrd = DotGridShape(canvas=cnv, **kwargs)
+    dgrd = DotGridShape(canvas=globals.cnv, **kwargs)
     dgrd.draw()
     return dgrd
 
 
 def Grid(**kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     # override defaults ... otherwise grid not "next" to margins
     kwargs['x'] = kwargs.get('x', 0)
     kwargs['y'] = kwargs.get('y', 0)
-    grid = GridShape(canvas=cnv, **kwargs)
+    grid = GridShape(canvas=globals.cnv, **kwargs)
     grid.draw()
     return grid
 
 
 def Blueprint(**kwargs):
-    global cnv
-    global deck
-    global paper
-    global margin_left
-    global margin_top
-    global margin_bottom
-    global margin_right
 
     def set_style(style_name):
         """Set Blueprint color and fill."""
@@ -1139,16 +955,16 @@ def Blueprint(**kwargs):
     kwargs['side'] = kwargs.get('side', side)
     kwargs['x'] = kwargs.get('x', 0)
     kwargs['y'] = kwargs.get('y', 0)
-    m_x = kwargs['units'] * (margin_left + margin_right)
-    m_y = kwargs['units'] * (margin_top + margin_bottom)
-    _cols = (paper[0] - m_x) / (kwargs['units'] * float(kwargs['side']))
-    _rows = (paper[1] - m_y) / (kwargs['units'] * float(kwargs['side']))
+    m_x = kwargs['units'] * (globals.margin_left + globals.margin_right)
+    m_y = kwargs['units'] * (globals.margin_top + globals.margin_bottom)
+    _cols = (globals.paper[0] - m_x) / (kwargs['units'] * float(kwargs['side']))
+    _rows = (globals.paper[1] - m_y) / (kwargs['units'] * float(kwargs['side']))
     rows = int(_rows)
     cols = int(_cols)
     kwargs['rows'] = kwargs.get('rows', rows)
     kwargs['cols'] = kwargs.get('cols', cols)
     kwargs['stroke_width'] = kwargs.get('stroke_width', 0.2)  # fine line
-    default_font_size = 10 * math.sqrt(paper[0]) / math.sqrt(A4[0])
+    default_font_size = 10 * math.sqrt(globals.paper[0]) / math.sqrt(A4[0])
     dotted = kwargs.get('dotted', False)
     kwargs['font_size'] = kwargs.get('font_size', default_font_size)
     line_stroke, page_fill = set_style(kwargs.get('style', None))
@@ -1157,7 +973,7 @@ def Blueprint(**kwargs):
     # ---- page color (optional)
     if kwargs['fill'] is not None:
         cnv.canvas.setFillColor(kwargs['fill'])
-        cnv.canvas.rect(0, 0, paper[0], paper[1], stroke=0, fill=1)
+        cnv.canvas.rect(0, 0, globals.paper[0], globals.paper[1], stroke=0, fill=1)
     # ---- numbering
     if numbering:
         _common = Common(
@@ -1175,7 +991,8 @@ def Blueprint(**kwargs):
                  text=f'{y*side:{1}.{decimals}f}',
                  common=_common)
         # draw "zero" number
-        z_x, z_y = kwargs['units'] * margin_left, kwargs['units'] * margin_bottom
+        z_x = kwargs['units'] * globals.margin_left
+        z_y = kwargs['units'] * globals.margin_bottom
         corner_dist = geoms.length_of_line(Point(0, 0), Point(z_x, z_y))
         corner_frac = corner_dist * 0.66 / kwargs['units']
         # tools.feedback(f'*** {z_x=} {z_y=} {corner_dist=}')
@@ -1197,49 +1014,41 @@ def Blueprint(**kwargs):
         local_kwargs['dotted'] = kwargs.get('subdivisions_dotted', True)
         if local_kwargs['dashed']:
             local_kwargs['dotted'] = False
-        subgrid = GridShape(canvas=cnv, **local_kwargs)
-        subgrid.draw(cnv=cnv)
+        subgrid = GridShape(canvas=globals.cnv, **local_kwargs)
+        subgrid.draw(cnv=globals.cnv)
     # ---- draw Blueprint grid
-    grid = GridShape(canvas=cnv, dotted=dotted, **kwargs)  # don't add canvas as arg here!
-    grid.draw(cnv=cnv)
+    grid = GridShape(canvas=globals.cnv, dotted=dotted, **kwargs)  # don't add canvas as arg here!
+    grid.draw(cnv=globals.cnv)
     return grid
 
 # ---- connect ====
 
 
 def Connect(shape_from, shape_to, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['shape_from'] = shape_from
     kwargs['shape_to'] = shape_to
-    connect = ConnectShape(canvas=cnv, **kwargs)
-    connect.draw(cnv=cnv)
+    connect = ConnectShape(canvas=globals.cnv, **kwargs)
+    connect.draw(cnv=globals.cnv)
     return connect
 
 
 def connect(shape_from, shape_to, **kwargs):
-    global cnv
-    global deck
     kwargs = margins(**kwargs)
     kwargs['shape_from'] = shape_from
     kwargs['shape_to'] = shape_to
-    return ConnectShape(canvas=cnv, **kwargs)
+    return ConnectShape(canvas=globals.cnv, **kwargs)
 
 # ---- repeats ====
 
 
 def Repeat(_object, **kwargs):
     """Initialise a deck with all its settings, including source of data."""
-    global cnv
-    global deck
     repeat = RepeatShape(_object=_object, **kwargs)
     repeat.draw()
 
 
 def Lines(rows=1, cols=1, **kwargs):
-    global cnv
-    global deck
     kwargs = kwargs
     for row in range(rows):
         for col in range(cols):
@@ -1250,16 +1059,12 @@ def Lines(rows=1, cols=1, **kwargs):
 
 def Sequence(_object=None, **kwargs):
     """Draw a set of objects in a line."""
-    global cnv
-    global deck
     sequence = SequenceShape(_object=_object, **kwargs)
     sequence.draw()
 
 
 def sequence(_object=None, **kwargs):
     """Draw a set of objects in a line."""
-    global cnv
-    global deck
     return SequenceShape(_object=_object, **kwargs)
 
 # ---- patterns (grid) ====
@@ -1267,8 +1072,6 @@ def sequence(_object=None, **kwargs):
 
 def Hexagons(rows=1, cols=1, sides=None, **kwargs):
     """Draw a set of hexagons in a pattern."""
-    global cnv
-    global deck
     kwargs = kwargs
     locations = []
     if kwargs.get('hidden'):
@@ -1276,7 +1079,8 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
     else:
         hidden = None
 
-    def draw_hexagons(rows: int, cols: int, stop: int, the_cols: list, odd_mid: bool = True):
+    def draw_hexagons(
+            rows: int, cols: int, stop: int, the_cols: list, odd_mid: bool = True):
         """Draw rows of hexagons for each column in `the_cols`"""
         top_row = 0
         end_row = rows - 1
@@ -1290,7 +1094,7 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
             for row in range(top_row - 1, end_row + 1):
                 _row = row + 1
                 # tools.feedback(f'{ccol=}, {_row=}')
-                if  hidden and (_row, ccol) in hidden:
+                if hidden and (_row, ccol) in hidden:
                     pass
                 else:
                     hxgn = Hexagon(
@@ -1359,8 +1163,6 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
 
 def Rectangles(rows=1, cols=1, **kwargs):
     """Draw a set of rectangles in a pattern."""
-    global cnv
-    global deck
     kwargs = kwargs
     locations = []
     if kwargs.get('hidden'):
@@ -1384,8 +1186,6 @@ def Rectangles(rows=1, cols=1, **kwargs):
 
 def Squares(rows=1, cols=1, **kwargs):
     """Draw a set of squares in a pattern."""
-    global cnv
-    global deck
     kwargs = kwargs
     locations = []
     if kwargs.get('hidden'):
@@ -1405,7 +1205,6 @@ def Squares(rows=1, cols=1, **kwargs):
 
 
 def Location(grid: list, label: str, shapes: list, **kwargs):
-    global cnv
     kwargs = kwargs
 
     def draw_shape(shape: BaseShape, loc: Point):
@@ -1454,7 +1253,6 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
 
 
 def Locations(grid: list, labels: Union[str, list], shapes: list, **kwargs):
-    global cnv
     kwargs = kwargs
 
     if grid is None or not isinstance(grid, list):
@@ -1466,14 +1264,15 @@ def Locations(grid: list, labels: Union[str, list], shapes: list, **kwargs):
     if isinstance(labels, str):
         _labels = labels.split(',')
         if labels.lower() == 'all':
-           _labels = []
-           for loc in grid:
-               if isinstance(loc, GridLocation):
-                   _labels.append(loc.label)
+            _labels = []
+            for loc in grid:
+                if isinstance(loc, GridLocation):
+                    _labels.append(loc.label)
     elif isinstance(labels, list):
         _labels = labels
     else:
-        tools.feedback("Grid location labels must a list or a comma-delimited string!", True)
+        tools.feedback(
+            "Grid location labels must a list or a comma-delimited string!", True)
 
     if not isinstance(shapes, list):
         tools.feedback("Shapes must contain a list of shapes!", True)
@@ -1485,23 +1284,19 @@ def Locations(grid: list, labels: Union[str, list], shapes: list, **kwargs):
 
 def LinkLine(grid: list, locations: list, **kwargs):
     """Enable a line link between one or more locations in a grid."""
-    global cnv
-    global margin
-    global margin_left
-    global margin_top
-    global margin_bottom
-    global margin_right
     kwargs = kwargs
 
     if not isinstance(locations, list):
         tools.feedback(f"'{locations} is not a list - please check!", True)
     if len(locations) < 2:
-        tools.feedback(f"There should be at least 2 locations to create links!", True)
+        tools.feedback("There should be at least 2 locations to create links!", True)
     dummy = base_shape()  # a BaseShape - not drawable!
     for index, location in enumerate(locations):
         # precheck
         if not isinstance(location, tuple) or len(location) != 3:
-            tools.feedback(f"The location '{location} is not valid - please check its syntax!", True)
+            tools.feedback(
+                f"The location '{location} is not valid - please check its syntax!",
+                True)
         # get location centre from grid via the label
         loc = None
         for position in grid:
@@ -1523,9 +1318,10 @@ def LinkLine(grid: list, locations: list, **kwargs):
                     loc_2 = Point(position.x, position.y)
                     break
             if loc_2 is None:
-                tools.feedback(f"The location '{location_2[0]}' is not in the grid!", True)
+                tools.feedback(
+                    f"The location '{location_2[0]}' is not in the grid!", True)
             if location[0] == location_2[0]:
-                tools.feedback(f"Locations must differ!", True)
+                tools.feedback("Locations must all differ!", True)
             # line start/end
             x = dummy.points_to_value(loc.x) + location[1]
             y = dummy.points_to_value(loc.y) + location[2]
@@ -1534,7 +1330,7 @@ def LinkLine(grid: list, locations: list, **kwargs):
 
             _line = line(x=x, y=y, x1=x1, y1=y1, **kwargs)
             # tools.feedback(f"{x=}, {y=}, {x1=}, {y1=}")
-            delta_x = margin_left
+            delta_x = globals.margin_left
             delta_y = margin_bottom
             # tools.feedback(f"{delta_x=}, {delta_y=}")
             _line.draw(
@@ -1548,7 +1344,6 @@ def LinkLine(grid: list, locations: list, **kwargs):
 def Layout(grid, **kwargs):
     """Determine locations for cols&rows in a virtual layout and draw shape(s)
     """
-    global cnv
 
     kwargs = kwargs
     shapes = kwargs.get('shapes', [])  # shapes or Places
@@ -1623,14 +1418,17 @@ def Layout(grid, **kwargs):
             if not isinstance(rotation, tuple):
                 tools.feedback("The 'rotations' must each contain a set!", True)
             if len(rotation) != 2:
-                tools.feedback("The 'rotations' must each contain a set of two items!", True)
+                tools.feedback(
+                    "The 'rotations' must each contain a set of two items!", True)
             _key = rotation[0]
             if not isinstance(_key, str):
-                tools.feedback("The first value for rreach 'rotations' entry must be a string!", True)
+                tools.feedback(
+                    "The first value for rreach 'rotations' entry must be a string!",
+                    True)
             rotate = tools.as_float(rotation[1], " second value for the 'rotations' entry")
             try:
                 _keys = list(tools.sequence_split(_key))
-            except Exception as err:
+            except Exception:
                 tools.feedback(
                     f'Unable to convert "{_key}" into a range of values.')
             for the_key in _keys:
@@ -1726,7 +1524,6 @@ def Layout(grid, **kwargs):
 
 
 def Track(track=None, **kwargs):
-    global cnv
 
     def format_label(shape, data):
         # ---- supply data to text fields
@@ -1835,7 +1632,7 @@ def Track(track=None, **kwargs):
             shape_rotation = 0
         shape.set_unit_properties()
         # tools.feedback(f'Track*** {shape._u}')
-        shape.draw(cnv, rotation=shape_rotation)
+        shape.draw(cnv=globals.cnv, rotation=shape_rotation)
         shape_id += 1
         if shape_id > len(shapes) - 1:
             shape_id = 0  # reset and start again
@@ -1844,6 +1641,7 @@ def Track(track=None, **kwargs):
 
 
 def BGG(ids=None, user=None, progress=False, short=500):
+    """Access BGG API for game data"""
     gamelist = BGGGameList()
     if user:
         tools.feedback("Sorry - the BGG user collection function is not available yet!")
