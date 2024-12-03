@@ -10,8 +10,8 @@ Table of Contents
 - `Outline`_
 - `Python in 1 minute`_
 - `Installing Python`_
-- `Installing pyprototypr`_
 - `Other Software Installs`_
+- `Installing pyprototypr`_
 - `Checking if pyprototypr works`_
 - `Python in the cloud`_
 
@@ -133,18 +133,6 @@ The exact number after the “11” does not matter.
 You can now close the command-line window.
 
 
-Installing **pyprototypr**
-==========================
-`↑ <table-of-contents_>`_
-
-The simplest way to install **pyprototypr** itself is via ``pip``::
-
-   pip install pyprototypr
-
-Once this has been done, you can use the various test scripts to check if it is
-working properly; for example, the one in the `<../README.md>`_.
-
-
 Other Software Installs
 =======================
 `↑ <table-of-contents_>`_
@@ -165,6 +153,18 @@ Fonts - see http://mscorefonts2.sourceforge.net/ - Ubuntu users can
 install these via::
 
    sudo apt-get install ttf-mscorefonts-installer
+
+
+Installing **pyprototypr**
+==========================
+`↑ <table-of-contents_>`_
+
+The simplest way to install **pyprototypr** itself is via ``pip``.
+
+Open a command-line window (see the section `Test that Python is installed`_)
+and::
+
+   pip install pyprototypr
 
 
 Checking if **pyprototypr** works

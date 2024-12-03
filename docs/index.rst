@@ -4,9 +4,9 @@ pyprototypr: Table of Contents
 The **pyprototypr** documentation consists of the primary sections listed
 below.
 
-Although its great to be able to “jump in” and just start using a
+Although its great to be able to "jump in" and just start using a
 program, the sections below are designed to be read in order - apart from
-the examples, they all contain useful information and build on each
+the terminology - as they all contain useful information and build on each
 other.
 
 1.  `Overview <overview.rst>`_ - a brief introduction of the purpose and
@@ -36,7 +36,7 @@ other.
     of many of the elements' properties
 
 The following are supplementary sections that you're likely to need when
-doing more advanced scipts or needing further resources:
+doing more advanced scripts or needing further resources:
 
 14. `Using Python Commands <python_commands.rst>`_ - how to work with
     loops and if statements for more flexibility

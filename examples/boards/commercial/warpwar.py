@@ -2,7 +2,8 @@
 A WarpWar map example for pyprototypr
 
 The original map was created by Rick Smith and posted to https://groups.io/g/warpwar/
-forum on 3 June 2024.
+forum on 3 June 2024.  This is not a complete copy - but serves to illustrate
+how elements of such a map could be created.
 
 Code by: Derek Hohls
 Created on: 30 July 2024
@@ -68,7 +69,7 @@ mask = rectangle(height=0.6, width=1.2, fill=map_fill, stroke=map_fill, dx=0, dy
 dwarf_outer = circle(fill=d_brown, stroke=d_brown, radius=0.2),
 dwarf_inner = rectangle(height=0.1, width=0.1, fill=map_fill, stroke=map_fill),
 
-# system details at map locations
+# system details at map Locations
 Location(
     ww_grid,
     "2B",
@@ -140,40 +141,46 @@ Location(
 nebul = Common(fill=cloud_dark, stroke=grid_line, height=2.22, dx=0, dy=0, transparency=50)
 Locations(
     ww_grid,
-    ["8P", "9Q", "10R" ],
-    [hexagon(common=nebul,
-             borders=[("n nw", 4, cloud_edge), ("se ne", 4, cloud_edge)])
+    ["8P", "9Q", "10R" ], [hexagon(
+        common=nebul,
+        borders=[("n nw", 4, cloud_edge),
+                 ("se ne", 4, cloud_edge)])
     ]
 )
 Locations(
     ww_grid, ["8O", "10Q", ], [hexagon(
         common=nebul,
-        borders=[("nw sw s", 4, cloud_edge), ("n ne se", 4, cloud_edge, True)])])
+        borders=[("nw sw s", 4, cloud_edge),
+                 ("n ne se", 4, cloud_edge, True)])])
 Locations(
     ww_grid, ["8L", ], [hexagon(
         fill=None, stroke=grid_line, height=2.22, dx=0, dy=0, transparency=50,
-        borders=[("nw sw", 4, cloud_edge), ("n s", 4, cloud_edge, True)])])
+        borders=[("nw sw", 4, cloud_edge),
+                 ("n s", 4, cloud_edge, True)])])
 Locations(
     ww_grid, ["8M", ], [hexagon(
         common=nebul,
         borders=[("n se nw sw", 4, cloud_edge, True)])])
 Locations(
-    ww_grid, ["8N", ],  [hexagon(
+    ww_grid, ["8N", ], [hexagon(
         common=nebul,
-        borders=[("n se nw sw", 4, cloud_edge), ("ne s", 4, cloud_edge, True)])])
+        borders=[("n se nw sw", 4, cloud_edge),
+                 ("ne s", 4, cloud_edge, True)])])
 Locations(
     ww_grid, ["8K", ], [hexagon(
         common=nebul,
-        borders=[("ne nw s", 4, cloud_edge, True), ("sw", 4, cloud_edge)])])
+        borders=[("ne nw s", 4, cloud_edge, True),
+                 ("sw", 4, cloud_edge)])])
 Locations(
     ww_grid, ["7K", ], [hexagon(
         common=nebul,
-        borders=[("s", 4, cloud_edge, True), ("sw ne", 4, cloud_edge)])])
+        borders=[("s", 4, cloud_edge, True),
+                 ("sw ne", 4, cloud_edge)])])
 Locations(
     ww_grid, ["6J", ], [hexagon(
         common=nebul,
-        borders=[("nw", 4, cloud_edge, True), ("s", 4, cloud_edge)])])
-
+        borders=[("nw", 4, cloud_edge, True),
+                 ("s", 4, cloud_edge)])])
 
 # warp lines
 warp_line = Common(stroke=warp, stroke_width=3)

@@ -8,7 +8,7 @@ import logging
 import math
 # third party
 # local
-from pyprototypr.utils.geoms import Point, Location, Place  # named tuples
+from pyprototypr.utils.geoms import Point, Locale, Place  # named tuples
 from pyprototypr.utils import geoms, tools, support
 from pyprototypr.base import BaseShape, BaseCanvas
 from pyprototypr.shapes import (
@@ -441,8 +441,8 @@ class VirtualLocations(VirtualShape):
                 raise ValueError(
                     f'"{compass}" is an invalid primary compass direction!')
 
-    def next_location(self) -> Location:
-        """Yield next Location for each call."""
+    def next_locale(self) -> Locale:
+        """Yield next Locale for each call."""
         pass
 
 
@@ -481,7 +481,7 @@ class RectangularLocations(VirtualLocations):
             tools.feedback(
                 'Using side will override row_spacing and offset values!', False)
 
-    def next_location(self) -> Location:
+    def next_locale(self) -> Locale:
         """Yield next Location for each call."""
         _start = self.start.lower()
         _dir = self.direction.lower()
@@ -549,7 +549,7 @@ class RectangularLocations(VirtualLocations):
                     # tools.feedback(f'*** {count=} {self.layout_size=} {self.stop=}')
                     if count > self.layout_size or (self.stop and count > self.stop):
                         return
-                    yield Location(col, row, x, y, self.set_id(col, row), count, corner)
+                    yield Locale(col, row, x, y, self.set_id(col, row), count, corner)
                     # next grid location
                     match self.direction.lower():
                         case 'e' | 'east':
@@ -608,7 +608,7 @@ class RectangularLocations(VirtualLocations):
                         corner = 'ne'
                     if row == 1 and col == self.cols:
                         corner = 'se'
-                    yield Location(col, row, x, y, self.set_id(col, row), count, corner)
+                    yield Locale(col, row, x, y, self.set_id(col, row), count, corner)
                     # next grid location
                     # print(f'*** {count=} {current_dir=} {row=},{col=} // {row_start=},{col_start=}')
 
@@ -664,7 +664,7 @@ class RectangularLocations(VirtualLocations):
 
                 # ---- * regular
                 case _:  # default pattern
-                    yield Location(col, row, x, y, self.set_id(col, row), count, corner)
+                    yield Locale(col, row, x, y, self.set_id(col, row), count, corner)
                     # next grid location
                     match self.direction.lower():
                         case 'e' | 'east':
@@ -742,7 +742,7 @@ class TriangularLocations(VirtualLocations):
                 f"{self.start} is not a valid start - "
                 "use: 'n', 's', 'e', or 'w'", True)
 
-    def next_location(self) -> Location:
+    def next_locale(self) -> Locale:
         """Yield next Location for each call."""
         _start = self.set_compass(self.start.lower())
         _dir = self.set_compass(self.direction.lower())
@@ -809,7 +809,7 @@ class TriangularLocations(VirtualLocations):
                     for val, loc in enumerate(entry):
                         count = count + 1
                         x = self.x + dx + val * self.col_spacing
-                        yield Location(
+                        yield Locale(
                             loc, key + 1, x, y, self.set_id(loc, key + 1), count, corner)
                 case 'south':  # layout is row-oriented
                     y = self.y + key * self.row_spacing
@@ -818,7 +818,7 @@ class TriangularLocations(VirtualLocations):
                     for val, loc in enumerate(entry):
                         count = count + 1
                         x = self.x + dx + val * self.col_spacing
-                        yield Location(
+                        yield Locale(
                             loc, key + 1, x, y, self.set_id(loc, key + 1), count, corner)
                 case 'east':  # layout is col-oriented
                     x = self.x + self.cols * self.col_spacing - (key + 2) * self.col_spacing
@@ -827,7 +827,7 @@ class TriangularLocations(VirtualLocations):
                     for val, loc in enumerate(entry):
                         count = count + 1
                         y = self.y + dy + val * self.row_spacing
-                        yield Location(
+                        yield Locale(
                             key + 1, loc, x, y, self.set_id(key + 1, loc), count, corner)
                 case 'west':  # layout is col-oriented
                     x = self.x + key * self.col_spacing
@@ -836,7 +836,7 @@ class TriangularLocations(VirtualLocations):
                     for val, loc in enumerate(entry):
                         count = count + 1
                         y = self.y + dy + val * self.row_spacing
-                        yield Location(
+                        yield Locale(
                             key + 1, loc, x, y, self.set_id(key + 1, loc), count, corner)
         return
 
@@ -855,7 +855,7 @@ class DiamondLocations(VirtualLocations):
                 f"Minimum layout size is 2x1 or 1x2 (cannot use {self.cols }x{self.rows})!",
                 True)
 
-    def next_location(self) -> Location:
+    def next_locale(self) -> Locale:
         """Yield next Location for each call."""
 
 # ---- tracks

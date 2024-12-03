@@ -28,7 +28,7 @@ y-values of these rows and columns are then used to set the centres of
 the elements that can be placed there using the ``Layout()`` command.
 
 The rows and columns themselves are not drawn - if needed you can use the
-*debug* property to display them (see `Example 9. Debug`_  below).
+*debug* property to display them (see `Example 10. Debug`_  below).
 
 Apart from the ``RectangularLocations()`` command described here, there are
 also other ways to place elements on a page:
@@ -44,8 +44,10 @@ Usage
 
 The ``RectangularLocations()`` command accepts the following properties:
 
-- **cols** - this is the number of locations in the horizontal direction
-- **rows** - this is the number of locations in the vertical direction
+- **cols** - this is the number of locations in the horizontal direction; this
+  defaults to *2*
+- **rows** - this is the number of locations in the vertical direction; this
+  defaults to *2*
 - **spacing** - this is horizontal distance between columns, as well as the
   vertical distance between rows, in the grid; defaults to ``1`` cm
 - **col_spacing** - this is horizontal distance between columns in the grid;
@@ -53,31 +55,40 @@ The ``RectangularLocations()`` command accepts the following properties:
 - **row_spacing** - this is vertical distance between rows in the grid;
   defaults to **spacing**
 - **direction** - this is compass direction of the line of travel when
-  creating the row and column layout
-- **start** - this is initial corner, defined a ecomdary compass direction,
-  from where the grid is drawn
-- **pattern** - this is the way in which the grid is draw; default is to draw
-  each row, and then move across all columns in a regular line; but the setting
-  can also be:
+  creating the row and column layout; the default is e(ast).
+- **start** - this is the initial corner, defined a secondary compass direction,
+  from where the grid is initially drawn; values can be *ne*, *nw*, *se*, and
+  *sw* (the default i.e. the lower-left corner)
+- **pattern** - this is the way in which the grid is drawn; the default
+  behaviour is to draw each row, and then move across all columns in a regular
+  line; but the setting can also be:
 
   - *snaking* - which means the direction is reversed across each row
   - *outer* - which means only the locations in the outer-most edge of the grid
     are created
+
+The ``RectangularLocations()`` creates a "virtual" grid that always has the
+first row and first column in the lower-left corner and the last row and last
+column in the upper-right corner.
 
 The ``Layout()`` command accepts the following properties:
 
 - **grid** - this *must* be the first property used for the command; it will
   refer to, in this case, a row & column grid created by ``RectangularLocations()``
 - **shapes** - this is a list of one or more of the core shapes available,
-  for example, a circle or rectangle
-- **masked** - a list of sequence numbers of any shapes that should **not**
-  be displayed
-- **visible** - a list of sequence numbers of the **only** shapes that should
-  be displayed
+  for example, a circle or rectangle; if no shapes are provided, the program
+  will issue a ``WARNING``
+- **masked** - a list of sequence numbers for the locations in which shapes
+  should **not** be displayed
+- **visible** - a list of sequence numbers for the **only** locations in
+  which shapes that should displayed
+- **locations** - a list of sets of ``(col, row)`` pairs; these are locations
+  that will be used for drawing, in the order that they appear
 - **debug** - this will display the centre points of the grid, along with any
   extra information specified.  Allowed settings for debug include:
 
-  - *none* - only the locations are shown
+  - *none* - only the locations are shown (as small dots, matching the color
+    of the `Blueprint <core_shapes.rst#blueprint>`_)
   - *count* - shows the sequence number (i.e. the order of drawing)
   - *xy* - shows x- and y-values
   - *yx* - shows y- and x-values
@@ -99,9 +110,10 @@ Key Properties
 - `Example 6. Outer Edge`_
 - `Example 7. Masked`_
 - `Example 8. Visible`_
-- `Example 9. Debug`_
+- `Example 9. Locations Setting`_
+- `Example 10. Debug`_
 
-All examples below make use of a common ```Circle`` shape (called *a_circle*)
+All examples below make use of a common ``Circle`` shape (called *a_circle*)
 defined as:
 
   .. code:: python
@@ -124,14 +136,14 @@ Example 1. Rows and Columns
    :width: 330
 
 ===== ======
-|r00| This example shows the element constructed using the following values
-      for its properties.
+|r00| This example shows the design constructed using the following values
+      for the shapes' properties.
 
       .. code:: python
 
         rect = RectangularLocations(
             cols=3, rows=4)
-        Layout(rect, shapes=[a_circle,])
+        Layout(rect, shapes=[a_circle])
 
 ===== ======
 
@@ -143,15 +155,15 @@ Example 2. Start and Direction
    :width: 330
 
 ===== ======
-|r01| This example shows the element constructed using the following values
-      for its properties.
+|r01| This example shows the design constructed using the following values
+      for the shapes' properties.
 
       .. code:: python
 
         rect = RectangularLocations(
             cols=3, rows=4,
             start="NW", direction="east")
-        Layout(rect, shapes=[a_circle,])
+        Layout(rect, shapes=[a_circle])
 
 ===== ======
 
@@ -163,15 +175,15 @@ Example 3. Row and Column Spacing
    :width: 330
 
 ===== ======
-|02a| This example shows the element constructed using the following values
-      for its properties.
+|02a| This example shows the design constructed using the following values
+      for the shapes' properties.
 
       .. code:: python
 
         rect = RectangularLocations(
             cols=3, rows=4, start="NW", direction="east",
             spacing=1.25)
-        Layout(rect, shapes=[a_circle,])
+        Layout(rect, shapes=[a_circle])
 
 ===== ======
 
@@ -179,8 +191,8 @@ Example 3. Row and Column Spacing
    :width: 330
 
 ===== ======
-|02b| This example shows the element constructed using the following values
-      for its properties.
+|02b| This example shows the design constructed using the following values
+      for the shapes' properties.
 
       .. code:: python
 
@@ -188,7 +200,7 @@ Example 3. Row and Column Spacing
             cols=3, rows=4, start="NW", direction="east",
             x=1.5, y=1.5,
             row_spacing=1.25, col_spacing=0.75)
-        Layout(rect, shapes=[a_circle,])
+        Layout(rect, shapes=[a_circle])
 
 ===== ======
 
@@ -201,15 +213,15 @@ Example 4. Row and Column Offset
    :width: 330
 
 ===== ======
-|03a| This example shows the element constructed using the following values
-      for its properties.
+|03a| This example shows the design constructed using the following values
+      for the shapes' properties.
 
       .. code:: python
 
         rect = RectangularLocations(
             cols=3, rows=4, start="NW", direction="east",
             col_even=0.5)
-        Layout(rect, shapes=[a_circle,])
+        Layout(rect, shapes=[a_circle])
 
 ===== ======
 
@@ -217,15 +229,15 @@ Example 4. Row and Column Offset
    :width: 330
 
 ===== ======
-|03b| This example shows the element constructed using the following values
-      for its properties.
+|03b| This example shows the design constructed using the following values
+      for the shapes' properties.
 
       .. code:: python
 
         rect = RectangularLocations(
             cols=3, rows=4, start="NW", direction="east",
             row_odd=0.5)
-        Layout(rect, shapes=[a_circle,])
+        Layout(rect, shapes=[a_circle])
 
 ===== ======
 
@@ -237,15 +249,15 @@ Example 5. Snaking
    :width: 330
 
 ===== ======
-|r03| This example shows the element constructed using the following values
-      for its properties.
+|r03| This example shows the design constructed using the following values
+      for the shapes' properties.
 
       .. code:: python
 
         rect = RectangularLocations(
             cols=3, rows=4, start="NW", direction="east",
             pattern="snake")
-        Layout(rect, shapes=[a_circle,])
+        Layout(rect, shapes=[a_circle])
 
 ===== ======
 
@@ -257,15 +269,15 @@ Example 6. Outer Edge
    :width: 330
 
 ===== ======
-|r04| This example shows the element constructed using the following values
-      for its properties.
+|r04| This example shows the design constructed using the following values
+      for the shapes' properties.
 
       .. code:: python
 
         rect = RectangularLocations(
             cols=3, rows=4, start="NW", direction="east",
             pattern="outer")
-        Layout(rect, shapes=[a_circle,])
+        Layout(rect, shapes=[a_circle])
 
 ===== ======
 
@@ -277,15 +289,15 @@ Example 7. Masked
    :width: 330
 
 ===== ======
-|r05| This example shows the element constructed using the following values
-      for its properties.
+|r05| This example shows the design constructed using the following values
+      for the shapes' properties.
 
       .. code:: python
 
         rect = RectangularLocations(
             cols=3, rows=4, start="NW", direction="east",
             pattern="outer")
-        Layout(rect, shapes=[a_circle,], masked=[2,7])
+        Layout(rect, shapes=[a_circle], masked=[2,7])
 
 ===== ======
 
@@ -297,28 +309,50 @@ Example 8. Visible
    :width: 330
 
 ===== ======
-|r06| This example shows the element constructed using the following values
-      for its properties.
+|r06| This example shows the design constructed using the following values
+      for the shapes' properties.
 
       .. code:: python
 
         rect = RectangularLocations(
             cols=3, rows=4, start="NW", direction="east",
             pattern="outer")
-        Layout(rect, shapes=[a_circle,], visible=[1,3,6,8])
+        Layout(rect, shapes=[a_circle], visible=[1,3,6,8])
 
 ===== ======
 
-Example 9. Debug
-----------------
+Example 9. Locations Setting
+----------------------------
 `^ <key-properties_>`_
 
-.. |07a| image:: images/layouts/rect_basic_debug.png
+.. |r07| image:: images/layouts/rect_basic_locations.png
    :width: 330
 
 ===== ======
-|07a| This example shows the element constructed using the following values
-      for its properties.
+|r07| This example shows the design constructed using the following values
+      for the shapes' properties.
+
+      .. code:: python
+
+        rect = RectangularLocations(cols=3, rows=4)
+        Layout(
+          rect,
+          shapes=[a_circle, rectangle(label="{count}/{col}-{row}", label_size=6)],
+          locations=[(1,2), (2,3), (3,1), (1,1), (3,4)])
+
+===== ======
+
+
+Example 10. Debug
+-----------------
+`^ <key-properties_>`_
+
+.. |10a| image:: images/layouts/rect_basic_debug.png
+   :width: 330
+
+===== ======
+|10a| This example shows the design constructed using the following values
+      for the shapes' properties.
 
       .. code:: python
 
@@ -328,12 +362,12 @@ Example 9. Debug
 
 ===== ======
 
-.. |07b| image:: images/layouts/rect_basic_debug_count.png
+.. |10b| image:: images/layouts/rect_basic_debug_count.png
    :width: 330
 
 ===== ======
-|07b| This example shows the element constructed using the following values
-      for its properties.
+|10b| This example shows the design constructed using the following values
+      for the shapes' properties.
 
       .. code:: python
 
@@ -347,8 +381,8 @@ Example 9. Debug
    :width: 330
 
 ===== ======
-|07c| This example shows the element constructed using the following values
-      for its properties.
+|07c| This example shows the design constructed using the following values
+      for the shapes' properties.
 
       .. code:: python
 

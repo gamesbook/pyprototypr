@@ -105,6 +105,15 @@ rect = RectangularLocations(cols=3, rows=4, start="NW", direction="east",
 Layout(rect, shapes=[a_circle,])
 PageBreak()
 
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Rect.Locations: shapes & locations")
+rect = RectangularLocations(
+    cols=3, rows=4)
+Layout(
+  rect,
+  shapes=[a_circle, rectangle(label="{count}/{col}-{row}", label_size=6)],
+  locations=[(1,2), (2,3), (3,1), (1,1), (3,4)])
+
 # Save()
 Save(
      output='png',
@@ -118,5 +127,6 @@ Save(
         "rect_basic_snake",
         "rect_basic_outer", "rect_basic_outer_mask", "rect_basic_outer_visible",
         "rect_basic_spacing", "rect_basic_spacing_row_col",
+        "rect_basic_locations",
      ]
 )

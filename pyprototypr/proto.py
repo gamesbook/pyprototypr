@@ -75,7 +75,7 @@ from pyprototypr.utils.support import (
     steps, excels, excel_column, equilateral_height, numbers, letters)
 from pyprototypr.utils.tools import base_fonts
 from pyprototypr.utils import geoms, tools, support
-from pyprototypr.utils.geoms import Point, Place  # namedtuples
+from pyprototypr.utils.geoms import Locale, Point, Place  # namedtuples
 
 log = logging.getLogger(__name__)
 
@@ -1599,18 +1599,22 @@ def Layout(grid, **kwargs):
 
     # ---- setup locations; automatically or via user-specification
     shape_id = 0
-    default_locations = enumerate(grid.next_location())
+    default_locations = enumerate(grid.next_locale())
     if not locations:
         _locations = default_locations
     else:
         _locations = []
         user_locations = tools.integer_pairs(locations, label='locations')
         # restructure and pick locations according to user input
-        for user_loc in user_locations:
+        for key, user_loc in enumerate(user_locations):
             for loc in default_locations:
                 if user_loc[0] == loc[1].col and user_loc[1] == loc[1].row:
-                    _locations.append(loc)
-            default_locations = enumerate(grid.next_location())  # regenerate !
+                    new_loc = (
+                        key, Locale(
+                            col=loc[1].col, row=loc[1].row, x=loc[1].x, y=loc[1].y,
+                            id=loc[1].id, sequence=key, corner=loc[1].corner))
+                    _locations.append(new_loc)
+            default_locations = enumerate(grid.next_locale())  # regenerate !
 
     # ---- generate rotations - keyed per sequence number
     rotation_sequence = {}

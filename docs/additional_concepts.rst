@@ -86,14 +86,6 @@ Numbers are either *integers* - "whole" or "counting" numbers, such as ``21``
 or ``100``, or *floats* which are numbers with fractions - ``3.141``.  In most
 cases,  **pyprototypr** will handle these differences for you.
 
-.. HINT::
-
-   It can be useful to sometimes provide a `calculation <calculations_>`_,
-   rather than an actual number, as this makes it easier to read and understand.
-   For example, when working in fractions of an inch, use the fraction itself
-   rather than the calculated result. So seven-sixteenth could shown as
-   ``7/16`` rather than ``0.4375``.
-
 Booleans are commonly referred to a "true or false" values. In Python, the
 reserved names ``True`` and ``False`` can be used whenever such values are
 required.  Some of the properties for some commands require a ``True`` value
@@ -103,8 +95,6 @@ to be activated.
 Assigned Names
 ==============
 `↑ <table-of-contents_>`_
-
-**To Be Done**
 
 A very likely usage for assigned names, is when the ``Common`` command is in
 use.  This command stores a number of properties that need to be used across
@@ -128,11 +118,17 @@ Calculations
 `↑ <table-of-contents_>`_
 
 Because **pyprototypr** is able to use any of Python's built-in functionality,
-your script can make of tools such as the ability to perform calculations.
+your script can make use of tools such as the ability to perform calculations.
 
-Basic arithmetic, includes *addition* (``1+1``), *subtraction* (``1-1``),
+Basic arithmetic includes *addition* (``1+1``), *subtraction* (``1-1``),
 *multiplication* (``1*1``), and *division* (``1/1``).  The ability to raise
 a number to a given power is included (``2**3``).
+
+Even though its not essential to use them, adding calculations can make a
+script easier to read. For example, if working with inches as units, then a
+fractional value can be set like this: ``x=5/16`` - while this is numerically
+the same as ``x=0.3125`` its easier to understand the purpose of the
+calculation.
 
 
 Case-sensitivity

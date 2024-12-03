@@ -17,7 +17,7 @@ from reportlab.lib.pagesizes import (
     letter, legal, elevenSeventeen, B6, B5, B4, B3, B2, B0, landscape)
 from reportlab.lib.colors import red, green, black
 # local
-from pyprototypr.utils.geoms import Point, Link, Location  # named tuples
+from pyprototypr.utils.geoms import Point, Link, Locale  # named tuples
 from pyprototypr.utils import geoms, tools, support
 from pyprototypr.base import (
     BaseShape, BaseCanvas, GridShape, UNITS, COLORS, PAGES, DEBUG_COLOR)

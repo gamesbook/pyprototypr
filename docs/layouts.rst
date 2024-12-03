@@ -88,7 +88,7 @@ Grid-based layouts, where elements appear in two-dimensional space:
    with triangular spacing; the x- and y-values will correspond to the
    centre of the element being placed.
 
-These Location-types are paired with the ``Layout()`` command, which
+These Location-types are paired with the **Layout()** command, which
 links them with the shapes that are to be drawn at their locations.
 
 

@@ -6,9 +6,11 @@ A "script" is the short-cut name for a file containing a list of instructions
 that will be read and processed by Python.  The script filename is usually given
 an extension of ".py".
 
+.. HINT::
+
     *NOTE* This document assumes that **pyprototypr** is working on your
-    computer after successfully `Setting Up <setting_up.rst>`_., and that you
-    have read the `Basic Concepts <basic_concepts.rst>`_
+    computer after successfully `Setting Up <setting_up.rst>`_, and that you
+    have read and understood the `Basic Concepts <basic_concepts.rst>`_
 
 .. _table-of-contents:
 
@@ -17,11 +19,15 @@ Table of Contents
 
 - `Start, Middle and End`_
 - `Commands`_
+
+  - `Create Command`_
+  - `PageBreak Command`_
+  - `Save Command`_
 - `Comments`_
 - `Drawing vs Assigning`_
 - `Basic Shapes`_
 - `Card Decks`_
-- `Layouts, Repeats, Tracks and Grids`_
+- `Layouts, Sequences, Tracks and Grids`_
 - `The FEEDBACK Message`_
 - `Making Mistakes`_
 
@@ -34,14 +40,18 @@ A script will normally start with a `Create command`_, then contain a series
 of `other commands`_ with the instructions for your particular needs (each
 command can run over multiple lines).
 
-    If your needs are more complex, you may be embedding "pure" Python commands,
-    or even using tools provided by other Python libraries.
+
+.. HINT::
+
+    If your needs are more complex, you have the options of embedding "pure"
+    Python commands or even using tools provided by other Python libraries.
 
 If the design you are working on needs multiple pages, then a `PageBreak command`_
 can be inserted, followed again by the specific commands you need.
 
 The final command in the script will be the `Save command`_, which triggers the
-creation of the output; by default a PDF file.
+creation of the output; by default a PDF file - with optional PNG or GIF output
+as well.
 
 
 Commands
@@ -68,19 +78,19 @@ but with a '.pdf' extension.
 
 To customise the command, set its properties as follows:
 
-- **paper**: use a paper size from either of the ISO series - A0 down to A8;
+- **paper** - use a paper size from either of the ISO series - A0 down to A8;
   or B6 down to B0 - or a USA type - letter, legal or elevenSeventeen; note
-  that the name does *not* have quotes around it!
-- **filename**: name of the output PDF file
-- **units**: these can be ``cm`` (centimetres), ``in`` (inches), ``mm``
-  (millimetres), or ``points``
-- **landscape**: "wrap" the paper size with ``landscape()`` to change the page
-  orientation
-- **margin**: set the margin value (uses the defined `units`)
-- **margin_top** - set top margin
-- **margin_bottom** - set bottom margin
-- **margin_left** - set left margin
-- **margin_right** - set right margin
+  that the name does **not** have quotes around it!
+- **filename** - name of the output PDF file
+- **units** - these can be ``cm`` (centimetres), ``in`` (inches), ``mm``
+  (millimetres), or ``points``; the default is ``cm``
+- **landscape** - "wrap" the paper size with ``landscape()`` to change the page
+  orientation; so ``landscape(A4)`` produces a "rotated" A4-sized page
+- **margin** - set the value for *all* margins (using the defined *units*)
+- **margin_top** - set the top margin
+- **margin_bottom** - set the bottom margin
+- **margin_left** - set the left margin
+- **margin_right** - set the the right margin
 
 Here is an example of a customised ``Create`` command:
 
@@ -109,19 +119,25 @@ Save Command
 `^ <commands_>`_
 
 The ``Save()`` is usually the last to appear.  By default it simply results in
-the outcome of all the commands used being written out to a PDF file.
+the outcome of all the commands used being written out to the PDF file as named
+in the `Create Command`_
 
 To customise the command, set its properties as follows:
 
-- **output** - this can be set to *'PNG'* to create one image file per page of
-  the PDF; by default the name of the PNG file is derived from the PDF filename,
-  with a *-* followed by the page number
-- **dpi** - this can be set to a dots-per-inch resolution required; by default
-  this is *300*
+- **output** - this can be set to ``png`` to create one image file per page of
+  the PDF; by default the name of the PNG files are derived using the PDF filename,
+  with a ``-`` followed by the page number; if set to ``gif`` will create a GIF
+  file composed of all the PNG pages that would have been created
+- **dpi** - can be set to the dots-per-inch resolution required; by default
+  this is ``300``
 - **names** - this can be used to provide a list of names (without an extension)
   for the image files that will be created from the PDF; the first name
-  corresponds to the first page, the second name to the second and so on.  each
-  will automatically get the ``.png`` extension added to it.
+  corresponds to the first page, the second name to the second and so on.  Each
+  will automatically get the ``.png`` extension added to it.  If the term
+  ``None`` is used in place of a name, that page will **not** have a PNG file
+  created for it.
+- **frames** - the delay in seconds between each "page" of a GIF image; by
+  default this is ``1`` second
 
 Here is an example of a customised ``Save`` command:
 
@@ -129,16 +145,30 @@ Here is an example of a customised ``Save`` command:
 
     Save(
         output='png',
-        dpi=150,
-        names=['pageOne', 'pageTwo']
+        dpi=600,
+        names=['pageOne', None, 'pageThree']
     )
+
+In this example, no PNG file will be created from the second page.
+
+Here is another example of a customised ``Save`` command:
+
+.. code:: python
+
+    Save(
+        output='gif',
+        dpi=300,
+        frames=0.5
+    )
+
 
 Other Commands
 --------------
 `^ <commands_>`_
 
 There are numerous other commands which are either used to draw shapes, or
-sets of shapes, or to control how and where shapes appear. See:
+sets of shapes, or to control how and where sets of shapes appear on a page.
+See:
 
 - `Core shapes <core_shapes.rst>`_
 - `Card and Deck commands <card_decks.rst>`_
@@ -152,9 +182,10 @@ Comments
 `↑ <table-of-contents_>`_
 
 It can be useful to "annotate" a script with other details that can remind
-you, as a reader, about what and/or why aspects of the script.
+you, as a reader, about any of the "what" or "why" aspects of the script.
 
-These comments are effectively ignored by Python and **pyprototypr**.
+These comments are effectively ignored by Python and **pyprototypr** and
+have no effect on the output.
 
 Single Line Comments
 --------------------
@@ -169,16 +200,18 @@ Simply insert a ``#``, followed by space, at the start of the comment line:
 Multiple Line Comments
 ----------------------
 
-Use a pair of triple-quotes to surround all the lines of comments::
+Use a pair of triple-quotes to surround all the lines of comments:
+
+.. code:: python
 
     """
     This is a useful script.
-    It was created to remind me about grids.
+    It was created to remind me about Circles.
     It should not be used for normal designs.
     """
-    Create()
+    Circle(stroke_width=5)
 
-Make sure the quotes appear at the **start** of the line.
+Make sure the quotes appear at the **start** of the lines they are used in.
 
 
 Drawing vs Assigning
@@ -186,10 +219,10 @@ Drawing vs Assigning
 `↑ <table-of-contents_>`_
 
 All of the `shape <core_shapes.rst>`_ commands can either be called with a
-capital letter or a lowercase letter.
+**capital** letter or a **lowercase** letter.
 
 The use of a capital is the more common case, and it effectively tells
-**p** to "draw this shape now":
+**pyprototypr** to "draw this shape now":
 
 .. code:: python
 
@@ -200,11 +233,11 @@ it can be used (or drawn) later on in the script:
 
 .. code:: python
 
-    # this circle is not drawn at this point
+    # this circle is not drawn at this point of the script
     clock = circle(stroke_width=5)
 
-    # circle (aka "clock") will be drawn when the card(s) are drawn
-    Card("*", clock)
+    # the circle (aka "clock") will be drawn when the cards are drawn
+    Card("1-9", clock)
 
 
 Basic Shapes
@@ -217,7 +250,7 @@ each one.
 These are described in the `Core Shapes <core_shapes.rst>`_ section, which also
 covers common customisation options.
 
-Further customisation of some of the shapes is also possible; see the section
+Extensive customisation of some shapes is also possible; see the section
 on `Customised Shapes <customised_shapes.rst>`_
 
 
@@ -234,13 +267,13 @@ the ``Deck()``.  These are discussed in detail in the
 `card decks <card_decks.rst>`_ section.
 
 A useful "getting started" approach is to look through the section with
-`basic worked examples <worked_example.rst>`_ which show an increasingly
+`worked examples <worked_example.rst>`_ which shows an increasingly
 complex set of examples for setting up and running scripts to generate a
 deck of cards.
 
 
-Layouts, Repeats, Tracks and Grids
-==================================
+Layouts, Sequences, Tracks and Grids
+====================================
 `↑ <table-of-contents_>`_
 
 A basic layout is that of a simple **sequence**, with shapes placed
@@ -300,10 +333,9 @@ Making Mistakes
 ===============
 `↑ <table-of-contents_>`_
 
-It is, unfortunately, all too easy to make mistakes while writing
-scripts.
-
-These are some common kinds of mistakes:
+It is, unfortunately, all too easy to make mistakes while writing scripts.
+Some common kinds of mistakes are listed below - these are in no way
+meant to be comprehensive!
 
 Supplying the script an **incorrect value**, for example, giving the
 location a value of ``3.0`` when you meant to give it ``0.3``; this kind
@@ -339,4 +371,4 @@ case, are part of the same command and the error message that you see also
 highlights the repetition with the ``^^^^^^^^`` characters.
 
 Errors are discussed further in the `Additional Concepts
-<additional_concepts.rst>`_ section.
+<additional_concepts.rst#errors>`_ section.
