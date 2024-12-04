@@ -78,7 +78,7 @@ examples, has been to make the default line width (*stroke_width*) thicker
 for easier viewing of the small PNG images.
 
 Most shapes can be styled by setting one or more of the
-`Shapes' Common Properties`_. Other shapes have additional properties available
+`Shapes Common Properties`_. Other shapes have additional properties available
 that allow even further styling.
 
 To make it easier to see where and how a shape has been drawn, most of these
@@ -100,7 +100,7 @@ Commonalities
 `↑ <table-of-contents_>`_
 
 There are some properties that can be set for almost all of the shapes;
-examples of these are presented in the section on `Shapes' Common Properties`_
+examples of these are presented in the section on `Shapes Common Properties`_
 at the end, rather than being described in detail for every single shape.
 
     **HINT** Bear in mind that if a property, that it does not support, is
@@ -2190,6 +2190,7 @@ the desired output:
 - `Rotation`_
 - `Text Descriptions`_
 - `Transparency`_
+- `Centre Shape`_
 
 
 x and y
@@ -2531,4 +2532,80 @@ visible - then set the *fill* value to ``None``.
       partially over the Rectangle on the lower-left.  This means there is an
       apparent color change in the overlapping section, because some of the
       underlying color is partially visible.
+===== ======
+
+Centre Shape
+~~~~~~~~~~~~
+`^ <shapes-common-properties_>`_
+
+Any shape that can be defined using its centre, may have another shape -
+called a "centre shape" - placed inside of it.
+
+Only a dot, cross or label (if any are defined) will be drawn superimposed
+on the centre-shape.
+
+The centre-shape can be shifted from the centre by setting values for
+*centre_shape_mx* and *centre_shape_my*.
+
+.. |cs0| image:: images/customised/shape_centred.png
+   :width: 330
+
+===== ======
+|cs0| This example shows a number of shapes constructed as follows::
+
+        small_star = star(radius=0.25)
+        Polygon(
+            cx=1, cy=5, radius=0.5, sides=8, centre_shape=small_star)
+        EquilateralTriangle(
+            x=2.35, y=4.5, side=1.25, centre_shape=small_star)
+        Rectangle(
+            x=0.5, y=2.5, height=1, width=1.25, centre_shape=small_star)
+        Circle(
+            cx=3, cy=3, radius=0.5, centre_shape=small_star)
+        Hexagon(
+            x=0.5, y=0.5, height=1, centre_shape=small_star)
+        Square(
+            x=2.5, y=0.5, height=1, centre_shape=small_star)
+
+      At the start, a Star shape is defined by the lowercase ``star()`` command
+      which means the shape is not drawn at this time but rather assigned to
+      a named value - ``small_star`` so that it can be referred to further on.
+
+      Each of the other shapes in the script can now use this named shape as
+      their ``centre_shape``.
+
+      Note that regardless of whether the primary shape's position is defined
+      using ``x`` and ``y``, or  ``cx`` and ``cy``, the star is still drawn
+      in the centre of that shape.
+
+===== ======
+
+.. |cs1| image:: images/customised/shape_centred_move.png
+   :width: 330
+
+===== ======
+|cs1| This example shows Hexagon shapes constructed as follows::
+
+        small_star = star(radius=0.25)
+        small_circle = circle(
+            radius=0.33, fill=grey, centre_shape=small_star)
+        Hexagon(x=1, y=3, height=2,
+            centre_shape=small_circle,
+            centre_shape_mx=0.3, centre_shape_my=0.6)
+        Hexagon(
+            x=1, y=0.5, height=2, hatch=5, hatch_stroke=red, dot=0.1,
+            centre_shape=small_circle)
+
+      As in the first example, the ``small_star`` is defined but not drawn.
+      Then the ``small_star`` is assigned as the ``centre_shape``  to
+      ``small_circle``; a shape that is also not drawn.  This circle is used
+      as the ``centre_shape``  for both of the Hexagons.
+
+      The top Hexagon shows how the centre-shape can be moved with the ``*_mx``
+      and ``*_my`` values.  Positive values move it up and to the right;
+      negative values move it down and to the left.
+
+      The lower Hexagon shows how the centre-shape is drawn super-imposed
+      over other features in the Hexagon, except for the ``dot``.
+
 ===== ======

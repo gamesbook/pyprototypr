@@ -459,6 +459,28 @@ Arrow(x=2.5, y=3, title="45\u00B0", dot=0.1,
       fill=None, stroke=red, dot_stroke=red, rotation=45)
 PageBreak()
 
+# ---- Centred Shapes
+Blueprint()
+Text(common=txt, text="Centred Shapes")
+small_star = star(radius=0.25)
+Hexagon(x=0.5, y=0.5, height=1, centre_shape=small_star)
+Square(x=2.5, y=0.5, height=1, centre_shape=small_star)
+Rectangle(x=0.5, y=2.5, height=1, width=1.25, centre_shape=small_star)
+Circle(cx=3, cy=3, radius=0.5, centre_shape=small_star)
+Polygon(cx=1, cy=5, radius=0.5, sides=8, centre_shape=small_star)
+EquilateralTriangle(x=2.35, y=4.5, side=1.25, centre_shape=small_star)
+PageBreak()
+
+Blueprint()
+Text(common=txt, text="Centred Shape: move + double")
+small_star = star(radius=0.25)
+small_circle = circle(radius=0.33, fill=grey, centre_shape=small_star)
+Hexagon(x=1, y=0.5, height=2, hatch=5, hatch_stroke=red, dot=0.1,
+        centre_shape=small_circle)
+Hexagon(x=1, y=3, height=2,
+        centre_shape=small_circle, centre_shape_mx=0.3, centre_shape_my=0.6)
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Shapes END...")
 #PageBreak(footer=True)
@@ -485,4 +507,5 @@ Save(
         "polyshape_default", "polyshape_custom", "polyshape_offset",
         "rectangles_rowcol", "rectangles_custom", "rhombus_custom",
         "rhombus_borders", "trapezoid_borders", "arrow_sizes", "arrow_rotate",
+        "shape_centred", "shape_centred_move",
         None])

@@ -28,9 +28,9 @@ DEBUG = False
 GRID_SHAPES_WITH_CENTRE = [
     'CircleShape', 'CompassShape', 'DotShape', 'HexShape', 'PolygonShape',
     'RectangleShape', 'RhombusShape', 'SquareShape', 'StadiumShape',
-    'EllipseShape', ]
+    'EllipseShape', 'StarShape', ]
 GRID_SHAPES_NO_CENTRE = [
-     'TextShape', 'StarShape', ]
+     'TextShape',  ]
 # NOT GRID:  ArcShape, BezierShape, PolylineShape, ChordShape
 
 # following shapes must have vertices accessible WITHOUT calling draw()
@@ -666,6 +666,15 @@ class CircleShape(BaseShape):
                 cnv.restoreState()
             else:
                 self.draw_radii(cnv, ID, self.x_c, self.y_c)
+        # ---- centred shape (with offset)
+        if self.centre_shape:
+            cshape_name = self.centre_shape.__class__.__name__
+            if cshape_name in GRID_SHAPES_WITH_CENTRE:
+                self.centre_shape.draw(
+                    _abs_cx=x + self.unit(self.centre_shape_mx),
+                    _abs_cy=y + self.unit(self.centre_shape_my))
+            elif cshape_name not in GRID_SHAPES_WITH_CENTRE:
+                tools.feedback(f'Cannot draw a centered {cshape_name}!')
         # ---- cross
         self.draw_cross(cnv, self.x_c, self.y_c)
         # ---- dot
@@ -1126,6 +1135,9 @@ class EllipseShape(BaseShape):
 
 
 class EquilateralTriangleShape(BaseShape):
+    """
+    Equilateral Triangle on a given canvas.
+    """
 
     def draw_hatch(self, cnv, ID, side: float, vertices: list, num: int):
         self.set_canvas_props(
@@ -1241,6 +1253,15 @@ class EquilateralTriangleShape(BaseShape):
         # ---- draw hatch
         if self.hatch:
             self.draw_hatch(cnv, ID, side, self.vertices, self.hatch)
+        # ---- centred shape (with offset)
+        if self.centre_shape:
+            cshape_name = self.centre_shape.__class__.__name__
+            if cshape_name in GRID_SHAPES_WITH_CENTRE:
+                self.centre_shape.draw(
+                    _abs_cx=self.centroid.x + self.unit(self.centre_shape_mx),
+                    _abs_cy=self.centroid.y + self.unit(self.centre_shape_my))
+            elif cshape_name not in GRID_SHAPES_WITH_CENTRE:
+                tools.feedback(f'Cannot draw a centered {cshape_name}!')
         # ---- dot
         self.draw_dot(cnv, self.centroid.x, self.centroid.y)
         # ---- text
@@ -1723,10 +1744,10 @@ class HexShape(BaseShape):
             cshape_name = self.centre_shape.__class__.__name__
             if cshape_name in GRID_SHAPES_WITH_CENTRE:
                 # tools.feedback(f'*** IN-HEX {cshape_name} at ({x_d=},{y_d=}, '
-                #               f'{self.centre_shape_x}, {self.centre_shape_y})')
+                #               f'{self.centre_shape_mx}, {self.centre_shape_my})')
                 self.centre_shape.draw(
-                    _abs_cx=x_d + self.unit(self.centre_shape_x),
-                    _abs_cy=y_d + self.unit(self.centre_shape_y))
+                    _abs_cx=x_d + self.unit(self.centre_shape_mx),
+                    _abs_cy=y_d + self.unit(self.centre_shape_my))
             elif cshape_name not in GRID_SHAPES_WITH_CENTRE:
                 tools.feedback(f'Cannot draw a centered {cshape_name}!')
         # ---- cross
@@ -2005,6 +2026,15 @@ class PolygonShape(BaseShape):
         # ---- draw mesh
         if self.mesh:
             self.draw_mesh(cnv, ID, vertices)
+        # ---- centred shape (with offset)
+        if self.centre_shape:
+            cshape_name = self.centre_shape.__class__.__name__
+            if cshape_name in GRID_SHAPES_WITH_CENTRE:
+                self.centre_shape.draw(
+                    _abs_cx=x + self.unit(self.centre_shape_mx),
+                    _abs_cy=y + self.unit(self.centre_shape_my))
+            elif cshape_name not in GRID_SHAPES_WITH_CENTRE:
+                tools.feedback(f'Cannot draw a centered {cshape_name}!')
         # ---- debug
         self._debug(cnv, vertices=vertices)  # needs: self.run_debug = True
         # ---- dot
@@ -2657,6 +2687,15 @@ class RectangleShape(BaseShape):
                         height=self._u.height,
                         mask="auto",
                     )
+        # ---- centred shape (with offset)
+        if self.centre_shape:
+            cshape_name = self.centre_shape.__class__.__name__
+            if cshape_name in GRID_SHAPES_WITH_CENTRE:
+                self.centre_shape.draw(
+                    _abs_cx=x_d + self.unit(self.centre_shape_mx),
+                    _abs_cy=y_d + self.unit(self.centre_shape_my))
+            elif cshape_name not in GRID_SHAPES_WITH_CENTRE:
+                tools.feedback(f'Cannot draw a centered {cshape_name}!')
         # ---- cross
         self.draw_cross(cnv, x_d, y_d)
         # ---- dot
@@ -2820,8 +2859,9 @@ class SectorShape(BaseShape):
     Sector on a given canvas. Aka "wedge". Aka "slice" or "pie slice".
 
     Note:
-        * User supplies a "compass" angle i.e. degrees clockwise from North - but this
-          must be converted to a "reportlab" angle i.e. degrees anti-clockwise from East
+        * User supplies a "compass" angle i.e. degrees clockwise from North -
+          but this must be converted to a "ReportLab" angle i.e. degrees
+          anti-clockwise from East
     """
 
     def __init__(self, _object=None, canvas=None, **kwargs):

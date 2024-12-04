@@ -577,8 +577,8 @@ class BaseCanvas:
         self.hand = self.defaults.get('hand', 'east')
         # ---- hexagon / circle
         self.centre_shape = self.defaults.get('centre_shape', '')
-        self.centre_shape_x = self.defaults.get('centre_shape_x', 0)
-        self.centre_shape_y = self.defaults.get('centre_shape_y', 0)
+        self.centre_shape_mx = self.defaults.get('centre_shape_mx', 0)
+        self.centre_shape_my = self.defaults.get('centre_shape_my', 0)
         self.dot = self.defaults.get('dot', 0)
         self.dot_stroke = self.get_color(self.defaults.get('dot_stroke'), self.stroke)
         self.dot_stroke_width = self.defaults.get('dot_stroke_width', self.stroke_width)
@@ -893,8 +893,8 @@ class BaseShape:
         self.hand = kwargs.get('hand', 'east')
         # ---- hexagon / circle / polygon
         self.centre_shape = kwargs.get('centre_shape', '')
-        self.centre_shape_x = self.kw_float(kwargs.get('centre_shape_x', cnv.centre_shape_x))
-        self.centre_shape_y = self.kw_float(kwargs.get('centre_shape_y', cnv.centre_shape_y))
+        self.centre_shape_mx = self.kw_float(kwargs.get('centre_shape_mx', cnv.centre_shape_mx))
+        self.centre_shape_my = self.kw_float(kwargs.get('centre_shape_my', cnv.centre_shape_my))
         self.dot_stroke = kwargs.get('dot_stroke', self.stroke)
         self.dot_stroke_width = self.kw_float(kwargs.get('dot_stroke_width', cnv.dot_stroke_width))
         self.dot_fill = kwargs.get('dot_fill', self.stroke)
