@@ -1,24 +1,26 @@
-=======================
-Walkthrough of Examples
-=======================
+======================
+Discussion of Examples
+======================
 
 The examples supplied with **pyprototypr** attempt to highlight or
 demonstrate how different functions or features can be used. They are
-do **not** attempt to be comprehensive and cover every feature, but they
+do **not** attempt to be comprehensive and cover all features, but they
 do give some ideas as to what can be done - and how.
+
+In most cases, you need to look at the source code to understand how the
+output has been created.
 
 1. `Demo <demo.rst>`_ - a quick, somewhat random, tour of various
    elements in **pyprototypr**
-2. `Simple <simple.rst>`__ - concrete examples of elements in both basic
+2. `Simple <simple.rst>`_ - concrete examples of elements in both basic
    and customised form
-3. `Cards <cards.rst>`__ - different kinds of decks that can be
+3. `Cards <cards.rst>`_ - different kinds of decks that can be
    constructed
-4. `Counters <counters.rst>`__ - counters are really just “tiny square
-   cards”!
-5. *Boards*: `abstract <abstract.rst>`__ and
-   `commercial <commercial.rst>`__ - how to construct boards for both
-   abstract and “modern” (commercial) games
-6. `BGG <bgg.rst>`__ - how to retrieve and display data that can be
+4. `Counters <counters.rst>`_ - counters are really just "tiny square
+   cards"!
+5. `Abstract Boards <abstract.rst>`_ and
+   `Commercial Boards <commercial.rst>`_ - construction examples for games
+6. `BGG <bgg.rst>`_ - how to retrieve and display data that can be
    accessed from the BoardGameGeek API
-7. `Various <various.rst>`__ - examples of “real world” objects built up
-   using different elements in **pyprototypr**
+7. `Various <various.rst>`__ - examples of miscellaneous "real world" objects;
+   usually constructed using multiple different elements from **pyprototypr**

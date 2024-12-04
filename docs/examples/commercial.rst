@@ -2,18 +2,207 @@
 Commercial Board Examples
 =========================
 
-These examples are part of the set of `supplied examples <index.rst>`_
-with **pyprototypr**.
+These examples are part of **pyprototypr** `supplied examples <index.rst>`_.
 
-Example 1
-=========
+.. _table-of-contents:
 
-   The script for this example can be found in
-   `???.py <../../examples/boards/commercial/???.py>`__
+Table of Contents
+=================
 
-**Overview To Be Done**
+- `Squad Leader`_
+- `Orion`_
+- `Adventurer Conqueror King`_
+- `Traveller: Draft`_
+- `Traveller: Black`_
+- `Warp War`_
+- `Underwater Cities`_
 
-Details
--------
 
-**To Be Done**
+Squad Leader
+============
+`↑ <table-of-contents_>`_
+
+=========== ==================================================================
+Title       Squad Leader Modular Board
+----------- ------------------------------------------------------------------
+Source Code `<../../examples/boards/commercial/squad_leader.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct a board for a wargame - in
+            this Avalon Hill's "Squad Leader" using a hexagonal grid.
+
+            The grid's properties, such as alphanumeric coordinates and hex
+            column offsets are used for overall appearance; the use of a blank
+            white rectangle enables the  "half-hex" effect at the lower edge
+            of the board.
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/boards/commercial/squadleader_blank.png
+               :width: 80%
+=========== ==================================================================
+
+
+Orion
+=====
+`↑ <table-of-contents_>`_
+
+=========== ==================================================================
+Title       Orion Game Board
+----------- ------------------------------------------------------------------
+Source Code `<../../examples/boards/commercial/orion_game_board.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct a board for the commercial
+            board game "Orion".  It is a fairly simple script, as the board
+            is similar to many abstract boards; a so-called "hexhex" shape.
+
+            The background is just stacked ``Circle`` s of differing fill colors
+            and the main board is a ``HexagonalGrid`` of ``circular`` shape.
+            Of interest is that the "corner" hexagons are not displayed because
+            they are listed as *masked*.
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/boards/commercial/orion_game_board.png
+               :width: 80%
+=========== ==================================================================
+
+
+Adventurer Conqueror King
+=========================
+`↑ <table-of-contents_>`_
+
+=========== ==================================================================
+Title       Adventurer Conqueror King RPG Blank Map
+----------- ------------------------------------------------------------------
+Source Code `<../../examples/boards/commercial/ack_map.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct a blank map for the
+            "Adventurer Conqueror King" roleplaying game.
+
+            The map is constructed of two hexagonal grids; the larger hexes
+            have fill set to ``None`` so that the small hexes are visible
+            through it. The use of white rectangles enables the  "half-hex"
+            effect at the lower edge of the board.
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/boards/commercial/ack_map.png
+               :width: 90%
+=========== ==================================================================
+
+
+Traveller: Draft
+================
+`↑ <table-of-contents_>`_
+
+=========== ==================================================================
+Title       Traveller RPG Map
+----------- ------------------------------------------------------------------
+Source Code `<../../examples/boards/commercial/traveller_draft.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct a blank sector map for the
+            "Traveller" roleplaying game.
+
+            Its a simple hexagonal grid, with a numeric coordinate system.
+            The "edges" are just drawn with lines.
+
+            It might be possible, in future, to expand this to show how star
+            systems could be depicted on it; something along the lines of the
+            Warp War`_ example.
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/boards/commercial/traveller_draft.png
+               :width: 80%
+=========== ==================================================================
+
+
+Traveller: Black
+================
+`↑ <table-of-contents_>`_
+
+=========== ==================================================================
+Title       Traveller RPG Map
+----------- ------------------------------------------------------------------
+Source Code `<../../examples/boards/commercial/traveller_black.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct a blank sector map for the
+            "Traveller" roleplaying game.
+
+            Its a simple hexagonal grid, with a numeric coordinate system.
+            The "edges" are just drawn with lines. The styling is black because
+            of the fill used for the hexagons; when testing, however, it could
+            be better to use a lighter color as this much black is not very
+            "print friendly".
+
+            It might be possible, in future, to expand this to show how star
+            systems could be depicted on it; something along the lines of the
+            `Warp War`_ example.
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/boards/commercial/traveller_black.png
+               :width: 80%
+=========== ==================================================================
+
+
+Warp War
+========
+`↑ <table-of-contents_>`_
+
+=========== ==================================================================
+Title       Warp War Map
+----------- ------------------------------------------------------------------
+Source Code `<../../examples/boards/commercial/warpwar.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct a map for the "Warp War" game.
+            Its based off an image created by Rick Smith and posted to the
+            https://groups.io/g/warpwar/ forum on 3 June 2024.  This is *not*
+            a complete copy of that map - it just serves to illustrate how
+            elements of such a map could be created.
+
+            This is a fairly complex layout as most items need to be placed
+            with millimetre accuracy at very specific locations.
+
+            The use of hexagon ``borders`` enables the drawing of purple lines
+            which represent the edges of a nebula; its quite tedious to define
+            these!
+
+            The hex numbering for this game, which  **pyprototypr** terms
+            ``diagonal`` is fairly unusual.
+
+            The hex identifers across the top and side are created with a
+            ``x()`` command; they are not "built-in" to the grid.  Not many
+            games seem to use these, or use them in quite different ways, so
+            there is currently no automated way of doing this.
+
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/boards/commercial/warpwar.png
+               :width: 90%
+=========== ==================================================================
+
+
+Underwater Cities
+=================
+`↑ <table-of-contents_>`_
+
+=========== ==================================================================
+Title       Underwater Cities Game Board
+----------- ------------------------------------------------------------------
+Source Code `<../../examples/boards/commercial/underwater_cities.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct the board for the commercial
+            board game "Underwater Cities". This is *not* a complete copy of
+            that board - it just serves to illustrate how elements of it could
+            be created during the prototyping stage.
+
+            The script for this example is the longest but it is not really
+            complex, as most shapes are simple rectangles stacked in the
+            correct order, with the right fill and line color ^ styling.
+
+            Some items of interest:
+
+            - Extensive use of the ``Common()`` command to avoid duplication
+              between similar items
+            - Use of an SVG world map to create the background layer
+            - Mix of custom images, free icons and **pyprototypr** to create
+              the smaller graphic elements
+            - Use of the ``RectangularLocation()`` command to layout the
+              scoring track; the ``Layout()`` command makes use of multiple
+              repeating shapes for the color changes at different intervals
+            - Use of ``Sequence()`` command to create the player order track,
+              as well as the different rounds
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/boards/commercial/underwater_cities.png
+               :width: 90%
+=========== ==================================================================

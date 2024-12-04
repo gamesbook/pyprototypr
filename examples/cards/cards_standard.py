@@ -56,16 +56,19 @@ Card("27-52", value_red, value_low_red, marker_red, marker_low_red)
 
 # royalty
 royals = Common(x=1.5, y=3, width=3.5, height=5)
+# royalty - SPADES
 Card( "1", image("images/king_s.png", common=royals))
 Card( "2", image("images/queen_s.png", common=royals))
 Card( "3", image("images/jack_s.png", common=royals))
-Card("29", image("images/jack_h.png", common=royals))
+# royalty - CLUBS
 Card("14", image("images/king_c.png", common=royals))
 Card("15", image("images/queen_c.png", common=royals))
 Card("16", image("images/jack_c.png", common=royals))
+# royalty - HEARTS
 Card("27", image("images/king_h.png", common=royals))
 Card("28", image("images/queen_h.png", common=royals))
 Card("29", image("images/jack_h.png", common=royals))
+# royalty - DIAMONDS
 Card("40", image("images/king_d.png", common=royals))
 Card("41", image("images/queen_d.png", common=royals))
 Card("42", image("images/jack_d.png", common=royals))

@@ -134,7 +134,7 @@ score_5 = circle(
 score_10 = circle(
     common=score_common, stroke="#EEE544", fill="#B5CDB0", label="{count}")
 score_track = RectangularLocations(
-    x=7.5, y=7.75, cols=32, rows=19, interval=1.54,
+    x=7.5, y=7.75, cols=32, rows=19, spacing=1.54,
     start="SE", direction="west", pattern="outer")
 Layout(score_track,
        shapes=[score_base]*4 + [score_5] + [score_base]*4 + [score_10])
