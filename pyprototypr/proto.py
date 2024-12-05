@@ -208,18 +208,21 @@ def page_break():
 def Save(**kwargs):
 
     if globals.deck and len(globals.deck.deck) > 1:
-        globals.deck.draw(globals.cnv, cards=deck.cards, image_list=deck.image_list)
-        cnv.canvas.showPage()
+        globals.deck.draw(
+            globals.cnv,
+            cards=globals.deck.cards,
+            image_list=globals.deck.image_list)
+        globals.cnv.canvas.showPage()
     try:
         globals.cnv.canvas.save()
     except RuntimeError as err:
-        tools.feedback(f'Unable to save "{filename}" - {err}', True)
+        tools.feedback(f'Unable to save "{globals.filename}" - {err}', True)
     except FileNotFoundError as err:
-        tools.feedback(f'Unable to save "{filename}" - {err}', True)
+        tools.feedback(f'Unable to save "{globals.filename}" - {err}', True)
 
     output = kwargs.get('output', None)
     dpi = support.to_int(kwargs.get('dpi', 300), 'dpi')
-    frames = support.to_float(kwargs.get('frames', 1), 1)
+    frames = support.to_float(kwargs.get('frames', 1), 'frames')
     names = kwargs.get('names', None)
     directory = kwargs.get('directory', None)
     if output:
@@ -945,7 +948,7 @@ def Blueprint(**kwargs):
     kwargs = margins(**kwargs)
     if kwargs.get('common'):
         tools.feedback('The "common" property cannot be used with a Blueprint.', True)
-    kwargs['units'] = kwargs.get('units', cm)
+    kwargs['units'] = kwargs.get('units', globals.units)
     side = 1.0
     if kwargs['units'] == inch:
         side = 0.5
@@ -972,8 +975,9 @@ def Blueprint(**kwargs):
     kwargs['fill'] = kwargs.get('fill', page_fill)
     # ---- page color (optional)
     if kwargs['fill'] is not None:
-        cnv.canvas.setFillColor(kwargs['fill'])
-        cnv.canvas.rect(0, 0, globals.paper[0], globals.paper[1], stroke=0, fill=1)
+        globals.cnv.canvas.setFillColor(kwargs['fill'])
+        globals.cnv.canvas.rect(
+            0, 0, globals.paper[0], globals.paper[1], stroke=0, fill=1)
     # ---- numbering
     if numbering:
         _common = Common(
@@ -1331,7 +1335,7 @@ def LinkLine(grid: list, locations: list, **kwargs):
             _line = line(x=x, y=y, x1=x1, y1=y1, **kwargs)
             # tools.feedback(f"{x=}, {y=}, {x1=}, {y1=}")
             delta_x = globals.margin_left
-            delta_y = margin_bottom
+            delta_y = globals.margin_bottom
             # tools.feedback(f"{delta_x=}, {delta_y=}")
             _line.draw(
                 off_x=-delta_x,
