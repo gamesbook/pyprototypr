@@ -93,10 +93,27 @@ Title       *HexHex Board - Circular Spaces*
 Source Code `<../../examples/boards/abstract/hexhex_circles.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a HexHex board, but with
-            circles replacing the usual hexagons in the layout.
+            circles replacing the usual hexagons in the layout; these are
+            placed at the centre of where that hexagon would be drawn.
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/abstract/hexhex_circles.png
+               :width: 66%
+=========== ==================================================================
+
+=========== ==================================================================
+Title       *HexHex Board - Hexagonal Spaces*
+----------- ------------------------------------------------------------------
+Source Code `<../../examples/boards/abstract/hexhex_hexagons.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct a HexHex board, but with
+            smaller hexagons replacing the usual hexagons in the layout; these
+            are placed at the centre of where that hexagon would be drawn.
+
+            In addition, the centre space is masked.
+
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/boards/abstract/hexhex_hexagons.png
                :width: 66%
 =========== ==================================================================
 

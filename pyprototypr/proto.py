@@ -159,6 +159,7 @@ def Create(**kwargs):
     # tools.feedback(f"output: {filename}", False)
     # ---- canvas and deck
     cnv = BaseCanvas(filename, paper=paper, defaults=defaults, kwargs=kwargs)
+    print(f" +++ {cnv.units=}")
     if landscape:
         cnv.canvas.setPageSize(landscape(cnv.paper))
         page_width = cnv.paper[1]  # point units (1/72 of an inch)

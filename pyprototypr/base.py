@@ -334,6 +334,7 @@ class BaseCanvas:
             _kwargs = kwargs['kwargs']
             for kwarg in _kwargs:
                 self.defaults[kwarg] = _kwargs[kwarg]
+            print(f" *** {self.defaults=}")
         # ---- paper, pagesize & canvas
         _paper = paper or self.defaults.get('paper', A4)
         # **NOTE** ReportLab uses 'pagesize' to track the page dimensions;
@@ -354,6 +355,7 @@ class BaseCanvas:
         self.kwargs = kwargs
         self.run_debug = False
         self.units = self.get_units(self.defaults.get('units'), cm)
+        print(f" *** {self.units=} \n {self.defaults=}")
         # ---- paper & margins
         self.paper = _paper
         self.page_width = self.paper[0] / self.units  # user-units e.g. cm
@@ -657,8 +659,10 @@ class BaseCanvas:
 
     def get_units(self, name=None, default=cm):
         """Get units by name from a pre-defined dictionary."""
-        if name:
+        if name and isinstance(name, str):
             return UNITS.get(name, default)
+        if name and isinstance(name, float):
+            return name
         return default
 
     def get_page(self, name=None, default=A4):
@@ -673,11 +677,12 @@ class BaseShape:
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         self.kwargs = kwargs
-        # tools.feedback(f'*** BaseShape {kwargs=}')
+        tools.feedback(f'*** BaseShape {kwargs=}')
         # ---- constants
         self.default_length = 1
         self.show_id = False  # True
         # ---- KEY
+        print(f" *** {canvas=}")
         self.canvas = canvas or BaseCanvas()  # BaseCanvas object
         cnv = self.canvas  # shortcut for use in getting defaults
         # log.debug("Base types %s %s %s",type(self.canvas), type(canvas), type(cnv))
@@ -692,6 +697,7 @@ class BaseShape:
         self.shape = kwargs.get('shape', cnv.shape)
         self.run_debug = kwargs.get("debug", cnv.run_debug)
         self.units = kwargs.get('units', cnv.units)
+        print(f" *** {self.units=}")
         # ---- paper & margins
         self.paper = kwargs.get('paper') or cnv.paper
         self.margin = self.kw_float(kwargs.get('margin', cnv.margin))
