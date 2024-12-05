@@ -334,7 +334,7 @@ class BaseCanvas:
             _kwargs = kwargs['kwargs']
             for kwarg in _kwargs:
                 self.defaults[kwarg] = _kwargs[kwarg]
-            print(f" *** {self.defaults=}")
+            # print(f" *** {self.defaults=}")
         # ---- paper, pagesize & canvas
         _paper = paper or self.defaults.get('paper', A4)
         # **NOTE** ReportLab uses 'pagesize' to track the page dimensions;
@@ -355,7 +355,7 @@ class BaseCanvas:
         self.kwargs = kwargs
         self.run_debug = False
         self.units = self.get_units(self.defaults.get('units'), cm)
-        print(f" *** {self.units=} \n {self.defaults=}")
+        # print(f" *** {self.units=} \n {self.defaults=}")
         # ---- paper & margins
         self.paper = _paper
         self.page_width = self.paper[0] / self.units  # user-units e.g. cm
@@ -677,12 +677,12 @@ class BaseShape:
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         self.kwargs = kwargs
-        tools.feedback(f'*** BaseShape {kwargs=}')
+        # tools.feedback(f'*** BaseShape {kwargs=}')
         # ---- constants
         self.default_length = 1
         self.show_id = False  # True
         # ---- KEY
-        print(f" *** {canvas=}")
+        # print(f" *** {canvas=}")
         self.canvas = canvas or BaseCanvas()  # BaseCanvas object
         cnv = self.canvas  # shortcut for use in getting defaults
         # log.debug("Base types %s %s %s",type(self.canvas), type(canvas), type(cnv))
@@ -697,7 +697,7 @@ class BaseShape:
         self.shape = kwargs.get('shape', cnv.shape)
         self.run_debug = kwargs.get("debug", cnv.run_debug)
         self.units = kwargs.get('units', cnv.units)
-        print(f" *** {self.units=}")
+        # print(f" *** {self.units=}")
         # ---- paper & margins
         self.paper = kwargs.get('paper') or cnv.paper
         self.margin = self.kw_float(kwargs.get('margin', cnv.margin))
@@ -1501,7 +1501,7 @@ class BaseShape:
             log.exception(err)
             tools.feedback(f'Unable to convert "{items}" to points!', True)
 
-    def draw_multi_string(self, canvas, x, y, string, align=None, rotation=0, **kwargs):
+    def draw_multi_string(self, canvas, xm, ym, string, align=None, rotation=0, **kwargs):
         """Low-level text drawing, split string (\n) if needed, with align and rotation.
 
         Args:
@@ -1528,7 +1528,7 @@ class BaseShape:
             tools.feedback(f'Unable to use {err}', True)
         # align
         align = align or self.align
-        mvy = copy.copy(y)
+        mvy = copy.copy(ym)
         # tools.feedback(f"*** {string=} {rotation=}")
         if kwargs.get('font_size'):
             fsize = float(kwargs.get('font_size'))
@@ -1536,7 +1536,7 @@ class BaseShape:
         for ln in string.split('\n'):
             if rotation:
                 canvas.saveState()
-                canvas.translate(x, mvy)
+                canvas.translate(xm, mvy)
                 canvas.rotate(rotation)
                 if align == 'centre':
                     canvas.drawCentredString(0, 0, ln)
@@ -1547,20 +1547,20 @@ class BaseShape:
                 canvas.restoreState()
             else:
                 if align == 'centre':
-                    canvas.drawCentredString(x, mvy, ln)
+                    canvas.drawCentredString(xm, mvy, ln)
                 elif align == 'right':
-                    canvas.drawRightString(x, mvy, ln)
+                    canvas.drawRightString(xm, mvy, ln)
                 else:
-                    canvas.drawString(x, mvy, ln)
+                    canvas.drawString(xm, mvy, ln)
             mvy -= canvas._leading
 
-    def draw_string(self, canvas, x, y, string, align=None, rotation=0, **kwargs):
+    def draw_string(self, canvas, xs, ys, string, align=None, rotation=0, **kwargs):
         """Draw a multi-string on the canvas.
         """
         self.draw_multi_string(
-            canvas=canvas, x=x, y=y, string=string, align=align, rotation=rotation, **kwargs)
+            canvas=canvas, x=xs, y=ys, string=string, align=align, rotation=rotation, **kwargs)
 
-    def draw_heading(self, canvas, ID, x, y, y_offset=0, align=None, rotation=0, **kwargs):
+    def draw_heading(self, canvas, ID, xh, yh, y_offset=0, align=None, rotation=0, **kwargs):
         """Draw the heading for a shape (normally above the shape).
 
         Requires native units (i.e. points)!
@@ -1570,14 +1570,14 @@ class BaseShape:
         if ttext:
             _ttext = str(ttext)
             y_off = y_offset or self.title_size / 2.0
-            y = y + self.unit(self.heading_my)
-            x = x + self.unit(self.heading_mx)
+            y = yh + self.unit(self.heading_my)
+            x = xh + self.unit(self.heading_mx)
             canvas.setFont(self.font_face, self.heading_size)
             canvas.setFillColor(self.heading_stroke)
             self.draw_multi_string(
                 canvas, x, y + y_off, _ttext, align=align, rotation=_rotation, **kwargs)
 
-    def draw_label(self, canvas, ID, x, y, align=None, rotation=0, centred=True, **kwargs):
+    def draw_label(self, canvas, ID, xl, yl, align=None, rotation=0, centred=True, **kwargs):
         """Draw the label for a shape (usually at the centre).
 
         Requires native units (i.e. points)!
@@ -1586,15 +1586,15 @@ class BaseShape:
         _rotation = rotation or self.label_rotation
         if ttext:
             _ttext = str(ttext)
-            y = y - (self.label_size / 3.0) if centred else y
-            y = y + self.unit(self.label_my)
-            x = x + self.unit(self.label_mx)
+            yl = yl - (self.label_size / 3.0) if centred else yl
+            y = yl + self.unit(self.label_my)
+            x = xl + self.unit(self.label_mx)
             canvas.setFont(self.font_face, self.label_size)
             canvas.setFillColor(self.label_stroke)
             self.draw_multi_string(
                 canvas, x, y, _ttext, align=align, rotation=_rotation, **kwargs)
 
-    def draw_title(self, canvas, ID, x, y, y_offset=0, align=None, rotation=0, **kwargs):
+    def draw_title(self, canvas, ID, xt, yt, y_offset=0, align=None, rotation=0, **kwargs):
         """Draw the title for a shape (normally below the shape).
 
         Requires native units (i.e. points)!
@@ -1604,8 +1604,8 @@ class BaseShape:
         if ttext:
             _ttext = str(ttext)
             y_off = y_offset or self.title_size
-            y = y + self.unit(self.title_my)
-            x = x + self.unit(self.title_mx)
+            y = yt + self.unit(self.title_my)
+            x = xt + self.unit(self.title_mx)
             canvas.setFont(self.font_face, self.title_size)
             canvas.setFillColor(self.title_stroke)
             self.draw_multi_string(
@@ -1620,7 +1620,7 @@ class BaseShape:
             canvas.setStrokeColor(self.dot_stroke)
             canvas.circle(x, y, dot_size, stroke=1, fill=1)
 
-    def draw_cross(self, canvas, x, y):
+    def draw_cross(self, canvas, xd, yd):
         """Draw a cross on a shape (normally the centre).
         """
         if self.cross:
@@ -1629,12 +1629,12 @@ class BaseShape:
             canvas.setStrokeColor(self.cross_stroke)
             canvas.setLineWidth(self.cross_stroke_width)
             # horizontal
-            pt1 = geoms.Point(x - cross_size / 2.0, y)
-            pt2 = geoms.Point(x + cross_size / 2.0, y)
+            pt1 = geoms.Point(xd - cross_size / 2.0, yd)
+            pt2 = geoms.Point(xd + cross_size / 2.0, yd)
             self.draw_line_between_points(canvas, pt1, pt2)
             # vertical
-            pt1 = geoms.Point(x, y - cross_size / 2.0)
-            pt2 = geoms.Point(x, y + cross_size / 2.0)
+            pt1 = geoms.Point(xd, yd - cross_size / 2.0)
+            pt2 = geoms.Point(xd, yd + cross_size / 2.0)
             self.draw_line_between_points(canvas, pt1, pt2)
 
     def draw_line_between_points(self, cnv, p1: geoms.Point, p2: geoms.Point):
