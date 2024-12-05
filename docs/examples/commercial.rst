@@ -4,6 +4,10 @@ Commercial Board Examples
 
 These examples are part of **pyprototypr** `supplied examples <index.rst>`_.
 
+Bear in mind that the images shown in these examples are lower-resolution
+screenshots; the original PDF that can be generated from the source scripts
+will demonstrate the full scalability.
+
 .. _table-of-contents:
 
 Table of Contents
@@ -23,12 +27,12 @@ Squad Leader
 `↑ <table-of-contents_>`_
 
 =========== ==================================================================
-Title       Squad Leader Modular Board
+Title       *Squad Leader Modular Board Section*
 ----------- ------------------------------------------------------------------
 Source Code `<../../examples/boards/commercial/squad_leader.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a board for a wargame - in
-            this Avalon Hill's "Squad Leader" using a hexagonal grid.
+            this Avalon Hill's "Squad Leader" - using a hexagonal grid.
 
             The grid's properties, such as alphanumeric coordinates and hex
             column offsets are used for overall appearance; the use of a blank
@@ -36,7 +40,7 @@ Discussion  This example shows how to construct a board for a wargame - in
             of the board.
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/commercial/squadleader_blank.png
-               :width: 80%
+               :width: 90%
 =========== ==================================================================
 
 
@@ -45,7 +49,7 @@ Orion
 `↑ <table-of-contents_>`_
 
 =========== ==================================================================
-Title       Orion Game Board
+Title       *Orion Game Board*
 ----------- ------------------------------------------------------------------
 Source Code `<../../examples/boards/commercial/orion_game_board.py>`_
 ----------- ------------------------------------------------------------------
@@ -68,7 +72,7 @@ Adventurer Conqueror King
 `↑ <table-of-contents_>`_
 
 =========== ==================================================================
-Title       Adventurer Conqueror King RPG Blank Map
+Title       *Adventurer Conqueror King RPG Blank Map*
 ----------- ------------------------------------------------------------------
 Source Code `<../../examples/boards/commercial/ack_map.py>`_
 ----------- ------------------------------------------------------------------
@@ -90,7 +94,7 @@ Traveller: Draft
 `↑ <table-of-contents_>`_
 
 =========== ==================================================================
-Title       Traveller RPG Map
+Title       *Traveller RPG Map*
 ----------- ------------------------------------------------------------------
 Source Code `<../../examples/boards/commercial/traveller_draft.py>`_
 ----------- ------------------------------------------------------------------
@@ -114,7 +118,7 @@ Traveller: Black
 `↑ <table-of-contents_>`_
 
 =========== ==================================================================
-Title       Traveller RPG Map
+Title       *Traveller RPG Map*
 ----------- ------------------------------------------------------------------
 Source Code `<../../examples/boards/commercial/traveller_black.py>`_
 ----------- ------------------------------------------------------------------
@@ -141,7 +145,7 @@ Warp War
 `↑ <table-of-contents_>`_
 
 =========== ==================================================================
-Title       Warp War Map
+Title       *Warp War Map*
 ----------- ------------------------------------------------------------------
 Source Code `<../../examples/boards/commercial/warpwar.py>`_
 ----------- ------------------------------------------------------------------
@@ -152,19 +156,26 @@ Discussion  This example shows how to construct a map for the "Warp War" game.
             elements of such a map could be created.
 
             This is a fairly complex layout as most items need to be placed
-            with millimetre accuracy at very specific locations.
+            with millimetre accuracy using the ``Location()`` command to detail
+            which shapes go into which hexagon grid location.
+
+            The green lines joining hexagons are created with the ``LinkLine()``
+            command; by default this joins the centres of two locations in the
+            hexagon grid; but use of the optional "move x" and "move y"
+            settings allows the line endpoints to be adjusted within their
+            respective hexagons.
 
             The use of hexagon ``borders`` enables the drawing of purple lines
-            which represent the edges of a nebula; its quite tedious to define
-            these!
+            which represent the edges of a nebula; unfortunately, its quite
+            tedious to define all of these one-by-one!
 
-            The hex numbering for this game, which  **pyprototypr** terms
+            The hexagon numbering for this game, which  **pyprototypr** terms
             ``diagonal`` is fairly unusual.
 
-            The hex identifers across the top and side are created with a
-            ``x()`` command; they are not "built-in" to the grid.  Not many
-            games seem to use these, or use them in quite different ways, so
-            there is currently no automated way of doing this.
+            The hexagon identifers across the top and side are created with a
+            ``Sequence(`` command; they are not "built-in" to the grid.  Not
+            many games seem to use these, or use them in quite different ways,
+            so there is currently no automated way of doing this.
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/commercial/warpwar.png
@@ -177,7 +188,7 @@ Underwater Cities
 `↑ <table-of-contents_>`_
 
 =========== ==================================================================
-Title       Underwater Cities Game Board
+Title       *Underwater Cities Game Board*
 ----------- ------------------------------------------------------------------
 Source Code `<../../examples/boards/commercial/underwater_cities.py>`_
 ----------- ------------------------------------------------------------------
@@ -186,9 +197,9 @@ Discussion  This example shows how to construct the board for the commercial
             that board - it just serves to illustrate how elements of it could
             be created during the prototyping stage.
 
-            The script for this example is the longest but it is not really
-            complex, as most shapes are simple rectangles stacked in the
-            correct order, with the right fill and line color ^ styling.
+            The script for this example is one of the longest but it is not
+            really that complex, as most shapes are simple rectangles stacked
+            in the correct order, with the right fill and line color & styling.
 
             Some items of interest:
 

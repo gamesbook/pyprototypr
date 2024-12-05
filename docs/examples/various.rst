@@ -4,6 +4,10 @@ Various Examples
 
 The examples are part of the **pyprototypr** `supplied examples <index.rst>`_.
 
+Bear in mind that the images shown in these examples are lower-resolution
+screenshots; the original PDF that can be generated from the source scripts
+will demonstrate the full scalability.
+
 .. _table-of-contents:
 
 Table of Contents

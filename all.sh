@@ -32,6 +32,7 @@ python examples/boards/abstract/hexhex_circles.py -d /tmp/demo
 python examples/boards/abstract/hexhex_dots.py -d /tmp/demo
 python examples/boards/abstract/hexhex_hexagons.py -d /tmp/demo
 python examples/boards/abstract/hexhex_rectangles.py -d /tmp/demo
+python examples/boards/abstract/tictactoe -d /tmp/demo
 # ---- boards: commercial
 echo "Creating commercial boards..."
 python examples/boards/commercial/ack_map.py -d /tmp/demo
