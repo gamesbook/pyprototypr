@@ -245,7 +245,6 @@ def margins(**kwargs):
         'margin_bottom', globals.margin_bottom or globals.margin)
     kwargs['margin_right'] = kwargs.get(
         'margin_right', globals.margin_right or globals.margin)
-    # breakpoint()
     return kwargs
 
 

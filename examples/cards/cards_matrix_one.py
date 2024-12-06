@@ -31,7 +31,7 @@ Data(matrix=combos)  # (re)set no. of cards based on length
 
 # card layout elements
 outline = rectangle(
-    x=0.75, y=1.5,
+    x=0.6, y=0.5,
     height=7.8, width=5.1,
     rounded=0.5,
     stroke=T('{{SUIT}}'),
@@ -39,38 +39,38 @@ outline = rectangle(
     )
 
 icon_top = hexagon(
-    x=1.1, y=7.5,
+    x=1., y=6.4,
     side=0.8,
     stroke=white)
 value_top = text(
-    x=1.9, y=7.8,
+    x=1.8, y=6.8,
     font_size=28,
     text=T('{{VALUE}}'),
     align="centre",
     stroke=darkslategrey)
 icon_btm = hexagon(
-    x=3.9, y=1.8,
+    x=3.8, y=0.9,
     side=0.8,
     stroke=white)
 value_btm = text(
-    x=4.7, y=2.8,
+    x=4.6, y=1.9,
     font_size=28,
     align="centre",
     text=T('{{VALUE}}'),
     stroke=darkslategrey,
     rotation=180)
 picture = text(
-    x=3.15, y=4.4,
+    x=3.0, y=3.3,
     stroke=white,
     font_size=76,
     text=T('{{IMAGE}}'))
 deco_top = hexagon(
-    x=1.2, y=7.6,
+    x=1.1, y=6.5,
     side=0.7,
     fill=None,
     stroke=T('{{SUIT}}'))
 deco_btm = hexagon(
-    x=4, y=1.9,
+    x=3.9, y=1.0,
     side=0.7,
     fill=None,
     stroke=T('{{SUIT}}'))

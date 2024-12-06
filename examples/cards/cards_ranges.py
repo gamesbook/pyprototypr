@@ -6,7 +6,7 @@ Created on: 19 February 2016
 """
 from pyprototypr import *
 
-Create(filename='cards_design.pdf')
+Create(filename='cards_ranges.pdf')
 
 # design deck
 Deck(
@@ -19,8 +19,8 @@ Deck(
      fill=ivory)
 
 # basic shapes
-l1 = line(x=0.8, x1=5.7, y=7.6, y1=8.9, stroke=gold, stroke_width=2)
-r1 = rectangle(x=0.7, y=7.5, width=5, height=1.5, stroke_width=1, rounding=0.2)
+l1 = line(x=0.8, x1=5.6, y=6.9, y1=8.2, stroke=gold, stroke_width=2)
+r1 = rectangle(x=0.7, y=6.8, width=5, height=1.5, stroke_width=1, rounding=0.2)
 low = group(r1, l1)
 
 # add shapes to cards

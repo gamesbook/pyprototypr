@@ -16,7 +16,7 @@ from pyprototypr import *
 
 # create deck
 Create(filename='cards_standard.pdf')
-Deck(cards=27,
+Deck(cards=54,
      margin=0.85,
      margin_bottom=1.9,
      height=8.8,
@@ -31,22 +31,22 @@ combos = Matrix(
         ['\u2660', '\u2663', '\u2665', '\u2666'],  # spade, club, heart, diamond
         ['K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2', 'A'],
     ])
-Data(matrix=combos, extra=2)  # (re)set no. of cards based on length
+Data(matrix=combos, extra=2)  # will (re)set no. of cards based on length
 
 # card layout elements
-value_top = Common(x=1.0, y=8.4, font_size=40)
+value_top = Common(x=1.0, y=7.4, font_size=40)
 value_black = text(common=value_top, stroke=black, text=T('{{VALUE}}'))
 value_red = text(common=value_top, stroke=red, text=T('{{VALUE}}'))
 
-value_low = Common(x=5.5, y=2.4, font_size=40, rotation=180)
+value_low = Common(x=5.5, y=1.4, font_size=40, rotation=180)
 value_low_black = text(common=value_low, stroke=black, text=T('{{VALUE}}'))
 value_low_red = text(common=value_low, stroke=red, text=T('{{VALUE}}'))
 
-marker_base = Common(x=1.0, y=7.3, font_size=42)
+marker_base = Common(x=1.0, y=6.3, font_size=42)
 marker_black = text(common=marker_base, stroke=black, text=T('{{SUIT}}'))
 marker_red = text(common=marker_base, stroke=red, text=T('{{SUIT}}'))
 
-marker_low = Common(x=5.5, y=3.6, font_size=42, rotation=180)
+marker_low = Common(x=5.5, y=2.6, font_size=42, rotation=180)
 marker_low_black = text(common=marker_low, stroke=black, text=T('{{SUIT}}'))
 marker_low_red = text(common=marker_low, stroke=red, text=T('{{SUIT}}'))
 
@@ -55,7 +55,7 @@ Card("1-26", value_black, value_low_black, marker_black, marker_low_black)
 Card("27-52", value_red, value_low_red, marker_red, marker_low_red)
 
 # royalty
-royals = Common(x=1.5, y=3, width=3.5, height=5)
+royals = Common(x=1.5, y=2, width=3.5, height=5)
 # royalty - SPADES
 Card( "1", image("images/king_s.png", common=royals))
 Card( "2", image("images/queen_s.png", common=royals))
@@ -75,17 +75,17 @@ Card("42", image("images/jack_d.png", common=royals))
 
 # ace
 Card("13",
-     text(x=3.15, y=3.5, font_size=180, stroke=black, text='\u2660'),
-     text(x=3.15, y=4.8, font_size=60, stroke=white, text='\u2660'))
+     text(x=3.15, y=2.5, font_size=180, stroke=black, text='\u2660'),
+     text(x=3.15, y=3.8, font_size=60, stroke=white, text='\u2660'))
 
 # jokers (2 extra cards)
 Card("53",
      text(common=value_top, stroke=black, text='J'),
      text(common=value_low, stroke=black, text='J'),
-     image("images/joker_black.png", x=1, y=3, width=5, height=5))
+     image("images/joker_black.png", x=1, y=2, width=5, height=5))
 Card("54",
      text(common=value_top, stroke=red, text='J'),
      text(common=value_low, stroke=red, text='J'),
-     image("images/joker_red.png", x=1, y=3, width=5, height=5))
+     image("images/joker_red.png", x=1, y=2, width=5, height=5))
 
 Save()

@@ -361,10 +361,10 @@ class BaseCanvas:
         self.page_width = self.paper[0] / self.units  # user-units e.g. cm
         self.page_height = self.paper[1] / self.units  # user-units e.g. cm
         self.margin = self.defaults.get('margin', 1)
-        self.margin_top = self.defaults.get('margin_top', None)
-        self.margin_bottom = self.defaults.get('margin_bottom', None)
-        self.margin_left = self.defaults.get('margin_left', None)
-        self.margin_right = self.defaults.get('margin_right', None)
+        self.margin_top = self.defaults.get('margin_top', self.margin)
+        self.margin_bottom = self.defaults.get('margin_bottom', self.margin)
+        self.margin_left = self.defaults.get('margin_left', self.margin)
+        self.margin_right = self.defaults.get('margin_right', self.margin)
         # ---- sizes and positions
         self.row = self.defaults.get('row', None)
         self.col = self.defaults.get('col', self.defaults.get('column', None))
@@ -701,10 +701,10 @@ class BaseShape:
         # ---- paper & margins
         self.paper = kwargs.get('paper') or cnv.paper
         self.margin = self.kw_float(kwargs.get('margin', cnv.margin))
-        self.margin_top = self.kw_float(kwargs.get('margin_top', cnv.margin_top))
-        self.margin_bottom = self.kw_float(kwargs.get('margin_bottom', cnv.margin_bottom))
-        self.margin_left = self.kw_float(kwargs.get('margin_left', cnv.margin_left))
-        self.margin_right = self.kw_float(kwargs.get('margin_right', cnv.margin_right))
+        self.margin_top = self.kw_float(kwargs.get('margin_top', self.margin))
+        self.margin_bottom = self.kw_float(kwargs.get('margin_bottom', self.margin))
+        self.margin_left = self.kw_float(kwargs.get('margin_left', self.margin))
+        self.margin_right = self.kw_float(kwargs.get('margin_right', self.margin))
         # ---- grid marks
         self.grid_marks = self.kw_float(kwargs.get('grid_marks', cnv.grid_marks))
         self.grid_stroke = kwargs.get('grid_stroke', cnv.grid_stroke)

@@ -31,43 +31,46 @@ Data(matrix=combos, extra=9)  # (re)set no. of cards based on length
 
 # card layout elements
 outline = rectangle(
-    x=0.75, y=1.5,
+    x=0.6, y=0.5,
     height=7.8, width=5.1,
     rounded=0.5,
-    fill=T('{{SUIT}}'), stroke=T('{{SUIT}}'))
+    stroke=T('{{SUIT}}'),
+    fill=T('{{SUIT}}'),
+    )
+
 icon_top = hexagon(
-    x=1.1, y=7.5,
+    x=1., y=6.4,
     side=0.8,
     stroke=white)
 value_top = text(
-    x=1.9, y=7.8,
+    x=1.8, y=6.8,
     font_size=28,
     text=T('{{VALUE}}'),
     align="centre",
     stroke=darkslategrey)
 icon_btm = hexagon(
-    x=3.9, y=1.8,
+    x=3.8, y=0.9,
     side=0.8,
     stroke=white)
 value_btm = text(
-    x=4.7, y=2.8,
+    x=4.6, y=1.9,
     font_size=28,
     align="centre",
     text=T('{{VALUE}}'),
     stroke=darkslategrey,
     rotation=180)
 picture = text(
-    x=3.15, y=4.4,
+    x=3.0, y=3.3,
     stroke=white,
     font_size=76,
     text=T('{{IMAGE}}'))
 deco_top = hexagon(
-    x=1.2, y=7.6,
+    x=1.1, y=6.5,
     side=0.7,
     fill=None,
     stroke=T('{{SUIT}}'))
 deco_btm = hexagon(
-    x=4, y=1.9,
+    x=3.9, y=1.0,
     side=0.7,
     fill=None,
     stroke=T('{{SUIT}}'))
@@ -83,17 +86,17 @@ Card("1-45",
 
 # custom cards
 rectC = rectangle(
-    y=1.5,
+    y=0.5,
     height=7.8,
     width=1.02,
     rounded=1,
     stroke=white)
 Card("46-48",
-     rectangle(common=rectC, x=0.75, fill='#FF0000'),
-     rectangle(common=rectC, x=1.77, fill='#FFD700'),
-     rectangle(common=rectC, x=2.79, fill='#9ACD32'),
-     rectangle(common=rectC, x=3.81, fill='#00BFFF'),
-     rectangle(common=rectC, x=4.83, fill='#FF69B4')
+     rectangle(common=rectC, x=0.6, fill='#FF0000'),
+     rectangle(common=rectC, x=1.62, fill='#FFD700'),
+     rectangle(common=rectC, x=2.64, fill='#9ACD32'),
+     rectangle(common=rectC, x=3.66, fill='#00BFFF'),
+     rectangle(common=rectC, x=4.68, fill='#FF69B4')
 )
 
 hexN = Common(
@@ -102,24 +105,22 @@ hexN = Common(
     font_size=28,
     stroke=black,
     stroke_width=2)
-hexI = Common(
-    side=1.3,
+hex_in = hexagon(
+    side=1.0,
     fill=None,
     stroke=black,
     stroke_width=.5)
 Card("49-51",
-     hexagon(common=hexN, cx=2.0, cy=8.0, label="1"),
-     hexagon(common=hexN, cx=3.3, cy=5.4, label="3"),
-     hexagon(common=hexN, cx=4.6, cy=2.8, label="5"),
-     hexagon(common=hexI, cx=2.0, cy=8.0),
-     hexagon(common=hexI, cx=3.3, cy=5.4),
-     hexagon(common=hexI, cx=4.6, cy=2.8),
+     hexagon(common=hexN, cx=2.0, cy=7.0, centre_shape=hex_in, label="1"),
+     hexagon(common=hexN, cx=3.3, cy=4.4, centre_shape=hex_in, label="3"),
+     hexagon(common=hexN, cx=4.6, cy=1.8, centre_shape=hex_in, label="5"),
 )
 
+circle_icon = Common(fill=black, stroke=white, radius=1.25, font_size=48)
 Card("52-54",
-     circle(fill=black, stroke=white, radius=1.25, cx=2, cy=8, font_size=48, label='\u2707'),
-     circle(fill=black, stroke=white, radius=1.25, cx=3.3, cy=5.4, font_size=48, label='\u2766'),
-     circle(fill=black, stroke=white, radius=1.25, cx=4.6, cy=2.8, font_size=48, label='\u2745'),
+     circle(common=circle_icon, cx=1.8, cy=7.0, label='\u2707'),
+     circle(common=circle_icon, cx=3.1, cy=4.4, label='\u2766'),
+     circle(common=circle_icon, cx=4.4, cy=1.8, label='\u2745'),
 )
 
 Save()
