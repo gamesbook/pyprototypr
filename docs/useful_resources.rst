@@ -42,8 +42,11 @@ Not all Unicode characters can be displayed in all fonts!
 Other Tools
 ===========
 
--  https://www.ttgda.org/software-tools - lists a number of tools that
-   can be used for game design.
+- https://www.ttgda.org/software-tools - lists a number of tools that
+  can be used for game design.
+- https://github.com/christianbachmann/board-game-design-canvas - an outline
+  for a game development process that can help choose *what* you need to
+  prototype
 
     Please also see the section on `hexagonal grids <hexagonal_grids.rst>`_
     which lists tools specifically for working with hexagonal layouts.

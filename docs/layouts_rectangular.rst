@@ -2,6 +2,9 @@
 RectangularLocations Command
 ============================
 
+.. |deg|  unicode:: U+00B0 .. DEGREE SIGN
+   :ltrim:
+
 **pyprototypr** allows you to directly define where elements, that make up
 your design, should be placed within a page, or over a series of pages
 within a ``Deck``, but it also includes commands that let you place, or
@@ -108,6 +111,10 @@ Key Properties
 - `Example 4. Row and Column Offset`_
 - `Example 5. Snaking`_
 - `Example 6. Outer Edge`_
+
+  - `Example 6b. Outer Edge - Stop and Start`_
+  - `Example 6c. Outer Edge - Rotation`_
+
 - `Example 7. Masked`_
 - `Example 8. Visible`_
 - `Example 9. Locations Setting`_
@@ -281,6 +288,99 @@ Example 6. Outer Edge
 
 ===== ======
 
+Example 6b. Outer Edge - Stop and Start
+---------------------------------------
+`^ <key-properties_>`_
+
+.. |r4b| image:: images/layouts/layout_rect_outer_multi_stop.png
+   :width: 330
+
+===== ======
+|r4b| This example shows the design constructed using the following values
+      for the shapes' properties.
+
+      .. code:: python
+
+        rct_small = Common(label_size=5, side=0.48)
+        rct1 = square(common=rct_small, fill_stroke=palegreen)
+        rct5 = square(common=rct_small, fill_stroke=lightgreen)
+        rct10 = square(common=rct_small, fill_stroke=mediumseagreen)
+
+        rect = RectangularLocations(
+            x=0.25, y=0.25, cols=8, rows=11, spacing=0.5
+            start="NW", direction="east", pattern="outer",
+            stop=26)
+        Layout(rect, shapes=[rct1]*4 + [rct5] + [rct1]*4 + [rct10])
+
+      This example shows how by providing a value for *stop* - the locations
+      stop at sequence number ``26``.
+
+      This example shows how to easily provide multiple copies of multiple
+      shapes that will be drawn.  Using the ``[rct1`]*4`` ensures that four
+      copies of the Rectangle are drawn.  Similarly, using ``+`` adds others
+      to the list of *shapes*; thereby creating the pattern shown of different
+      numbers of colors od green.  Note that it does not matter how many
+      locations will be used; when all shapes in the list have been processed
+      the cycle will start again with the first.
+
+===== ======
+
+
+Example 6c. Outer Edge - Rotation
+---------------------------------
+`^ <key-properties_>`_
+
+.. |r4c| image:: images/layouts/layout_rect_outer_rotation.png
+   :width: 330
+
+===== ======
+|r4c| This example shows the design constructed using the following values
+      for the shapes' properties.
+
+      .. code:: python
+
+        rct_common = Common(
+            label_size=5, points=[('s', 0.1)], height=0.5, width=0.5)
+        circ = circle(
+            label="{count_zero}",
+            label_size=5, radius=0.26, fill=rosybrown)
+        rct2 = rectangle(
+            common=rct_common, label="{count_zero}",
+            fill=tan)
+        rct3 = rectangle(
+            common=rct_common, label="{count_zero}",
+            fill=maroon, stroke=white)
+
+        locs = RectangularLocations(
+            x=0.5, y=0.75, cols=7, rows=10, spacing=0.5,
+            start="SW", direction="north", pattern="outer")
+        Layout(
+            locs,
+            shapes=[rct3] + [rct2]*4,
+            rotations=[
+                ("1", 135), ("2-9", 90),
+                ("10", 45),
+                ("16", -45), ("17-24", 270),
+                ("25", 225), ("26-30", 180),],
+            corners=[('*',circ)])
+
+      This example also shows how to provide multiple copies of multiple
+      shapes that will be drawn.
+
+      Labels are created by use of the ``{count_zero}`` placeholder; appending
+      the ``_zero`` to the usual ``count`` means the numbering starts from
+      zero.
+
+      It adds *rotations* settings for specific sequence values in a list of
+      sets of value; for example, ``("17-24", 270)`` rotates the shapes at all
+      the sequence values from 17 to 24 (inclusive) by 270 |deg|.
+
+      The *corners* settings allows the corner elements to be replaced by those
+      appearing in this list - in this case the use of ``*`` means all of them.
+
+===== ======
+
+
 Example 7. Masked
 -----------------
 `^ <key-properties_>`_
@@ -337,7 +437,8 @@ Example 9. Locations Setting
         rect = RectangularLocations(cols=3, rows=4)
         Layout(
           rect,
-          shapes=[a_circle, rectangle(label="{count}/{col}-{row}", label_size=6)],
+          shapes=[
+              a_circle, rectangle(label="{count}/{col}-{row}", label_size=6)],
           locations=[(1,2), (2,3), (3,1), (1,1), (3,4)])
 
 ===== ======

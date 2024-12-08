@@ -12,6 +12,7 @@ python examples/core/customised_blueprint.py -d /tmp/demo
 python examples/core/customised_circle.py -d /tmp/demo
 python examples/core/customised_hexagon.py -d /tmp/demo
 python examples/core/customised_hexagonal_grid.py -d /tmp/demo
+python examples/core/customised_hexagonal_grid_locations.py -d /tmp/demo
 python examples/core/customised_rectangle.py -d /tmp/demo
 python examples/core/customised_shapes.py -d /tmp/demo
 # ---- examples: simple: layouts

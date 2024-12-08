@@ -41,7 +41,7 @@ rct10 = square(common=rct_small, fill_stroke=mediumseagreen)
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Rect.Locations: NW->east/outer + stop")
 rect = RectangularLocations(
-    x=0.25, y=0.25, cols=8, rows=11, interval=0.5, stop=26,
+    x=0.25, y=0.25, cols=8, rows=11, spacing=0.5, stop=26,
     start="NW", direction="east", pattern="outer")
 Layout(rect, shapes=[rct1]*4 + [rct5] + [rct1]*4 + [rct10])
 PageBreak()
@@ -52,12 +52,12 @@ circ = circle(label="{count_zero}", label_size=5, radius=0.26, fill=rosybrown)
 rct2 = rectangle(
     common=rct_common, label="{count_zero}", fill=tan)
 rct3 = rectangle(
-    common=rct_common, label="{count_zero}", fill=maroon, stroke=white)
+    common=rct_common, label="{count_zero}", fill=maroon, stroke=rosybrown)
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Rect.Locations: SW/outer + rotate + corner")
 rrect = RectangularLocations(
-    x=0.5, y=0.75, cols=7, rows=10, interval=0.5,
+    x=0.5, y=0.75, cols=7, rows=10, spacing=0.5,
     start="SW", direction="north", pattern="outer")
 Layout(
     rrect,
@@ -67,7 +67,8 @@ Layout(
         ("10", 45),
         ("16", -45), ("17-24", 270),
         ("25", 225), ("26-30", 180),],
-corners=[('*',circ)])
+    corners=[('*',circ)])
+
 PageBreak()
 
 #Save()

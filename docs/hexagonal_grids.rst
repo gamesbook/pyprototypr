@@ -22,6 +22,7 @@ Table of Contents
 - `Rectangular Hexagonal Grid`_
 - `Circular Hexagonal Grid`_
 - `Diamond Hexagonal Grid`_
+- `Grid Locations and LinkLines`_
 - `Other Hexagonal Grid Resources`_
 
 
@@ -109,17 +110,22 @@ Coordinates
 -----------
 `^ <rectIndex_>`_
 
-Every location in a grid has a row and column number; normally these are not
-displayed; but it might be that they are needed; for example, to support map
-grid references.  The coordinates can be displayed in various positions inside
-the hexagon; using either letters (upper or lowercase) or numbers (the default
-behaviour). A separator may be specified to help keep row and column values
-distinct from each other.
+Every location in a grid has a row and column number - these are not, by
+default, displayed on the grid; but they are needed in some cases; for example,
+to support grid references for a wargame map.
 
-Most coordinate property names are prefixed by ``coord_``.
+The coordinate system starts at the top-left of the grid; the column is, by
+default, the first value (the "x" location) and the row is the second value
+(the "y" location).
 
-In **pyprototypr** grids, an *x* is sometimes used to refer to a column
-location; and a *y* to a row location.
+The coordinates can be displayed using either letters (upper or lowercase) or
+numbers (the default behaviour). A separator may be specified to help
+visualise, or differentiate, the row versus the column value. For numeric
+coordinates, numbers have a "zero padding"; so ``1`` is displayed as ``01``.
+
+The coordinates can also be displayed in various positions within the hexagon.
+
+Most coordinate property names are prefixed with ``coord_``.
 
 .. |rc1| image:: images/custom/hexagonal_grid/rect_coords_flat.png
    :width: 330
@@ -153,7 +159,8 @@ location; and a *y* to a row location.
       - *rows* sets the number of rows  in the grid
       - *cols* sets the number of columns in the grid
       - *coord_position* can be ``top``, ``middle`` or ``bottom`` to set
-        the vertical position of the coordinate text
+        the vertical position of the coordinates text; the horizontal
+        always matches to the hexagon's centre
 
       The green grid also has:
 
@@ -552,6 +559,51 @@ Basic
       - *row* sets the number of hexagons in each row of the grid
       - *hex_layout* is set to ``diamond`` to create the layout pattern
 ===== ======
+
+
+Grid Locations and LinkLines
+============================
+
+In order to layout objects within a hexagonal grid, it is possible to use
+the ``Location()`` or ``Locations()`` command to specify the "what, where and
+how". In addition, the ``LinkLines()`` command allows the creation of lines
+to join one or more hexagons within the grid.
+
+These commands should work with any of the types of hexgonal grid layouts
+described above.
+
+
+Locations
+---------
+
+Example 1.  Basic Location
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. |xl0| image:: images/custom/hexagonal_grid/hexgrid_location_basic.png
+   :width: 330
+
+===== ======
+|xl0| This example shows a location constructed using the command::
+
+        hexgrid = Hexagons(
+            side=0.5,
+            x=0, y=0,
+            rows=6, cols=4,
+        )
+        Locations(
+            hexgrid,
+            "0204, 0101",
+            [circle(common=a_circle)]
+        )
+      It has the following properties:
+
+      The default way to identify a
+
+===== ======
+
+
+
+
 
 
 Other Hexagonal Grid Resources

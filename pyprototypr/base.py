@@ -1511,28 +1511,37 @@ class BaseShape:
             * string (str): the text to draw/write
             * align (str): one of [centre|right|left|None] alignment of text
             * rotation (float): an angle in degrees; anti-clockwise from East
+
+        Kwargs:
+            * locale - dict created from Locale namedtuple
         """
         if not string:
             return
         # ---- replace {PLACEHOLDER} with a value
-        _sequence = kwargs.get('text_sequence', '')
-        try:
-            string = string.format(SEQUENCE=_sequence)
-        except ValueError as err:
-            if "expected '}'" in err:
-                tools.feedback('Please check use of {} brackets; both are needed',
-                               True)
-            else:
-                tools.feedback(f'Unable to do that - {err}', True)
-        except KeyError as err:
-            tools.feedback(f'Unable to use {err}', True)
-        # align
+        _sequence = kwargs.get('text_sequence', None)
+        if _sequence:
+            try:
+                string = string.format(SEQUENCE=_sequence)
+            except ValueError as err:
+                if "expected '}'" in err:
+                    tools.feedback('Please check use of "{}" brackets; both are needed',
+                                   True)
+                else:
+                    tools.feedback(f'Unable to do that - {err}', True)
+            except KeyError as err:
+                tools.feedback(f'Unable to use "{string}" as a placeholder', True)
+        # ---- process locale data (from Locale namedtuple) via jinja2
+        _locale = kwargs.get('locale', None)
+        if _locale:
+            string = self.eval_template(string, _locale)
+        # ---- align and font
         align = align or self.align
         mvy = copy.copy(ym)
         # tools.feedback(f"*** {string=} {rotation=}")
         if kwargs.get('font_size'):
             fsize = float(kwargs.get('font_size'))
             canvas.setFont(self.font_face, fsize)
+        # ---- drawString
         for ln in string.split('\n'):
             if rotation:
                 canvas.saveState()
@@ -1705,6 +1714,21 @@ class BaseShape:
                 self.draw_multi_string(
                     canvas, point.x, point.y, f'{label} {point.x:.2f},{point.y:.2f}')
                 canvas.circle(point.x, point.y, 2, stroke=1, fill=1)
+
+    def eval_template(self, source: str, data: dict = None):
+        """Process data dict via jinja2 template in source."""
+        if data is None or not data:
+            return source
+        if not isinstance(data, dict):
+            tools.feedback('The data must be in the form of a dictionary', True)
+        try:
+            environment = jinja2.Environment()
+            template = environment.from_string(str(source))
+            custom_value = template.render(data)
+            return custom_value
+        except (ValueError, jinja2.exceptions.UndefinedError):
+            tools.feedback(
+                f'Unable to process "{source}" data with this template', True)
 
     def handle_custom_values(self, the_element, ID):
         """Process custom values for a Shape's properties.

@@ -1076,7 +1076,7 @@ def sequence(_object=None, **kwargs):
 def Hexagons(rows=1, cols=1, sides=None, **kwargs):
     """Draw a set of hexagons in a pattern."""
     kwargs = kwargs
-    locations = []
+    locales = []  # list of Locale namedtuples
     if kwargs.get('hidden'):
         hidden = tools.integer_pairs(kwargs.get('hidden'), 'hidden')
     else:
@@ -1085,6 +1085,7 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
     def draw_hexagons(
             rows: int, cols: int, stop: int, the_cols: list, odd_mid: bool = True):
         """Draw rows of hexagons for each column in `the_cols`"""
+        sequence = 0
         top_row = 0
         end_row = rows - 1
         if not odd_mid:
@@ -1102,11 +1103,18 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
                 else:
                     hxgn = Hexagon(
                         row=row, col=ccol - 1, hex_rows=rows, hex_cols=cols, **kwargs)
-                    locations.append(hxgn.grid)
+                    _locale = Locale(
+                        col=col, row=row,
+                        x=hxgn.grid.x, y=hxgn.grid.y,
+                        sequence=sequence, corner=None,
+                        label=hxgn.grid.label)
+                    locales.append(_locale)
+                    sequence += 1
+
             if ccol - 1 == stop:  # reached "leftmost" -> reset counters
                 top_row = 1
                 end_row = rows - 1
-        return locations
+        return locales
 
     if kwargs.get('hex_layout') and kwargs.get('orientation'):
         if kwargs.get('orientation').lower() in ['p', 'pointy'] and \
@@ -1138,12 +1146,12 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
             sides = rows // 2 + 1
         odd_mid = False if sides & 1 == 0 else True
         the_cols = list(range(sides, 0, -1)) + list(range(sides + 1, rows + 1))
-        locations = draw_hexagons(rows, cols, 0, the_cols, odd_mid=odd_mid)
+        locales = draw_hexagons(rows, cols, 0, the_cols, odd_mid=odd_mid)
 
     elif kwargs.get('hex_layout') in ['d', 'dia', 'diamond']:
         cols = rows * 2 - 1
         the_cols = list(range(rows, 0, -1)) + list(range(rows + 1, cols + 1))
-        locations = draw_hexagons(rows, cols, 0, the_cols)
+        locales = draw_hexagons(rows, cols, 0, the_cols)
 
     elif kwargs.get('hex_layout') in ['t', 'tri', 'triangle']:
         tools.feedback(f'Cannot draw triangle-pattern hexagons: {kwargs}', True)
@@ -1152,6 +1160,7 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
         tools.feedback(f'Cannot draw stadium-pattern hexagons: {kwargs}', True)
 
     else:  # default to rectangular layout
+        sequence = 0
         for row in range(rows):
             for col in range(cols):
                 if hidden and (row + 1, col + 1) in hidden:
@@ -1159,21 +1168,28 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
                 else:
                     hxgn = Hexagon(
                         row=row, col=col, hex_rows=rows, hex_cols=cols, **kwargs)
-                    locations.append(hxgn.grid)
+                    _locale = Locale(
+                        col=col, row=row,
+                        x=hxgn.grid.x, y=hxgn.grid.y,
+                        sequence=sequence, corner=None,
+                        label=hxgn.grid.label)
+                    locales.append(_locale)
+                    sequence += 1
 
-    return locations
+    return locales
 
 
 def Rectangles(rows=1, cols=1, **kwargs):
     """Draw a set of rectangles in a pattern."""
     kwargs = kwargs
-    locations = []
+    locales = []  # list of Locale namedtuples
     if kwargs.get('hidden'):
         hidden = tools.integer_pairs(kwargs.get('hidden'), 'hidden')
     else:
         hidden = None
 
     counter = 0
+    sequence = 0
     for row in range(rows):
         for col in range(cols):
             counter += 1
@@ -1182,6 +1198,13 @@ def Rectangles(rows=1, cols=1, **kwargs):
                 pass
             else:
                 rect = Rectangle(row=row, col=col, **kwargs)
+                _locale = Locale(
+                    col=col, row=row,
+                    x=rect.grid.x, y=rect.grid.y,
+                    sequence=sequence, corner=None,
+                    label=rect.grid.label)
+                locales.append(_locale)
+                sequence += 1
                 locations.append(rect.grid)
 
     return locations
@@ -1241,6 +1264,7 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
     # get location centre from grid via the label
     loc = None
     for position in grid:
+        print(f"{position=}")
         if position.label.lower() == str(label).lower():
             loc = Point(position.x, position.y)
             break
@@ -1248,6 +1272,10 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
         tools.feedback(f"The location '{label}' is not in the grid!", True)
 
     if shapes:
+        try:
+            iter(shapes)
+        except TypeError:
+            tools.feedback("The location shapes property must contain a list!", True)
         for shape in shapes:
             if shape.__class__.__name__ == 'GroupBase':
                 tools.feedback(f"Group drawing ({shape}) NOT IMPLEMENTED YET", True)
@@ -1265,7 +1293,7 @@ def Locations(grid: list, labels: Union[str, list], shapes: list, **kwargs):
     if shapes is None:
         tools.feedback("No list of shapes supplied!", True)
     if isinstance(labels, str):
-        _labels = labels.split(',')
+        _labels = [_label.strip() for _label in labels.split(',')]
         if labels.lower() == 'all':
             _labels = []
             for loc in grid:
@@ -1275,7 +1303,7 @@ def Locations(grid: list, labels: Union[str, list], shapes: list, **kwargs):
         _labels = labels
     else:
         tools.feedback(
-            "Grid location labels must a list or a comma-delimited string!", True)
+            "Grid location labels must be a list or a comma-delimited string!", True)
 
     if not isinstance(shapes, list):
         tools.feedback("Shapes must contain a list of shapes!", True)
