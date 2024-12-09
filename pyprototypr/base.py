@@ -1178,7 +1178,6 @@ class BaseShape:
         else:
             canvas.setDash(array=[])
 
-
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an element on a given canvas."""
         self._o = self.set_offset_props(off_x, off_y)
@@ -1533,7 +1532,7 @@ class BaseShape:
         # ---- process locale data (from Locale namedtuple) via jinja2
         _locale = kwargs.get('locale', None)
         if _locale:
-            string = self.eval_template(string, _locale)
+            string = tools.eval_template(string, _locale)
         # ---- align and font
         align = align or self.align
         mvy = copy.copy(ym)
@@ -1714,21 +1713,6 @@ class BaseShape:
                 self.draw_multi_string(
                     canvas, point.x, point.y, f'{label} {point.x:.2f},{point.y:.2f}')
                 canvas.circle(point.x, point.y, 2, stroke=1, fill=1)
-
-    def eval_template(self, source: str, data: dict = None):
-        """Process data dict via jinja2 template in source."""
-        if data is None or not data:
-            return source
-        if not isinstance(data, dict):
-            tools.feedback('The data must be in the form of a dictionary', True)
-        try:
-            environment = jinja2.Environment()
-            template = environment.from_string(str(source))
-            custom_value = template.render(data)
-            return custom_value
-        except (ValueError, jinja2.exceptions.UndefinedError):
-            tools.feedback(
-                f'Unable to process "{source}" data with this template', True)
 
     def handle_custom_values(self, the_element, ID):
         """Process custom values for a Shape's properties.

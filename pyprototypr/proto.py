@@ -1171,6 +1171,7 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
                     _locale = Locale(
                         col=col, row=row,
                         x=hxgn.grid.x, y=hxgn.grid.y,
+                        id=f"{col}:{row}",
                         sequence=sequence, corner=None,
                         label=hxgn.grid.label)
                     locales.append(_locale)
@@ -1233,7 +1234,10 @@ def Squares(rows=1, cols=1, **kwargs):
 def Location(grid: list, label: str, shapes: list, **kwargs):
     kwargs = kwargs
 
-    def draw_shape(shape: BaseShape, loc: Point):
+    def test_foo(x: bool = True, **kwargs):
+        print(kwargs)
+
+    def draw_shape(shape: BaseShape, point: Point, locale: Locale):
         shape_name = shape.__class__.__name__
         shape_abbr = shape_name.replace('Shape', '')
         # shape._debug(cnv.canvas, point=loc)
@@ -1241,8 +1245,9 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
         dy = shape.kwargs.get('dy', 0)  # user-units
         pts = shape.values_to_points([dx, dy])  # absolute units (points)
         try:
-            x = loc.x + pts[0]
-            y = loc.y + pts[1]
+            x = point.x + pts[0]
+            y = point.y + pts[1]
+            kwargs['locale'] = locale
             # tools.feedback(f"{shape=} :: {loc.x=}, {loc.y=} // {dx=}, {dy=}")
             # tools.feedback(f"{kwargs=}")
             # tools.feedback(f"{label} :: {shape_name=}")
@@ -1262,13 +1267,13 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
         tools.feedback("The grid (as a list) must be supplied!", True)
 
     # get location centre from grid via the label
-    loc = None
-    for position in grid:
-        print(f"{position=}")
-        if position.label.lower() == str(label).lower():
-            loc = Point(position.x, position.y)
+    locale = None
+    for _locale in grid:
+        if _locale.label.lower() == str(label).lower():
+            point = Point(_locale.x, _locale.y)
+            locale = _locale
             break
-    if loc is None:
+    if point is None:
         tools.feedback(f"The location '{label}' is not in the grid!", True)
 
     if shapes:
@@ -1280,7 +1285,7 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
             if shape.__class__.__name__ == 'GroupBase':
                 tools.feedback(f"Group drawing ({shape}) NOT IMPLEMENTED YET", True)
             else:
-                draw_shape(shape, loc)
+                draw_shape(shape, point, locale)
 
 
 def Locations(grid: list, labels: Union[str, list], shapes: list, **kwargs):
@@ -1297,7 +1302,7 @@ def Locations(grid: list, labels: Union[str, list], shapes: list, **kwargs):
         if labels.lower() == 'all':
             _labels = []
             for loc in grid:
-                if isinstance(loc, GridLocation):
+                if isinstance(loc, Locale):
                     _labels.append(loc.label)
     elif isinstance(labels, list):
         _labels = labels

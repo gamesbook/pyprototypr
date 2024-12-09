@@ -8,6 +8,7 @@ import cmath
 import csv
 import collections
 from itertools import zip_longest
+import jinja2
 import logging
 import math
 import os
@@ -71,6 +72,8 @@ def grouper(n, iterable, fillvalue=None):
     Use:
         for item1, item2, item3 in grouper(3, 'ABCDEFG', 'x'):
 
+    Doc Test:
+
     >>> list(grouper(3, 'ABCDEFG', 'x'))
     [('A', 'B', 'C'), ('D', 'E', 'F'), ('G', 'x', 'x')]
     """
@@ -81,6 +84,8 @@ def grouper(n, iterable, fillvalue=None):
 
 def boolean_join(items):
     """Create a result from boolean concatenation
+
+    Doc Test:
 
     >>> items = [True, '+', False]
     >>> boolean_join(items)
@@ -136,6 +141,8 @@ def boolean_join(items):
 def as_int(value, label, maximum=None, minimum=None, allow_none=False) -> int:
     """Set a value to an int; or stop if an invalid value
 
+    Doc Test:
+
     >>> as_int(value='3', label='N')
     3
 
@@ -169,6 +176,13 @@ def as_int(value, label, maximum=None, minimum=None, allow_none=False) -> int:
 
 def as_bool(value, label=None, allow_none=True) -> bool:
     """Convert a value to a boolean
+
+    Doc Test:
+
+    >>> as_bool(value='3', label='N')
+    False
+    >>> as_bool(value='Y', label='Y')
+    True
     """
     if value is None and allow_none:
         return value
@@ -179,6 +193,8 @@ def as_bool(value, label=None, allow_none=True) -> bool:
 
 def as_float(value, label, maximum=None, minimum=None) -> int:
     """Set a value to an float; or stop if an invalid value
+
+    Doc Test:
 
     >>> as_float(value='3', label='N')
     3.0
@@ -217,7 +233,7 @@ def tuple_split(
     """
     Split a string into a list of tuple numbers
 
-    Doc tests:
+    Doc Test:
 
     >>> print(tuple_split(''))
     []
@@ -274,6 +290,8 @@ def sequence_split(string):
     """
     Split a string into a list of individual values
 
+    Doc Test:
+
     >>> sequence_split('')
     []
     >>> sequence_split('3')
@@ -313,8 +331,15 @@ def sequence_split(string):
 
 
 def integer_pairs(pairs, label: str = 'list') -> list:
-    """Convert a list or string into a list of tuples; each with a pair of integers."""
+    """Convert a list or string into a list of tuples; each with a pair of integers.
 
+    Doc Test:
+
+    >>> integer_pairs(pairs=[(1,2), (3,4)])
+    [(1, 2), (3, 4)]
+    >>> integer_pairs(pairs="1,2 3,4")
+    [(1, 2), (3, 4)]
+    """
     if pairs:
         if isinstance(pairs, str):
             pairs = tuple_split(
@@ -646,6 +671,13 @@ def sheet_column(num: int, lower: bool = False) -> string:
 
     Ref:
         https://stackoverflow.com/questions/23861680/
+
+    Doc Test:
+
+    >>> sheet_column(num=3, lower=True)
+    'c'
+    >>> sheet_column(num=27, lower=False)
+    'AA'
     """
 
     def converter(num, lower):
@@ -687,6 +719,34 @@ def base_fonts():
             pass
             #log.error('Unable to register %s from %s (%s)',
             #    _font['name'], _font['file'], err)
+
+
+def eval_template(source: str, data: dict = None):
+    """Process data dict via jinja2 template in source.
+
+    Doc Test:
+    >>> eval_template("2+{{x}}", {'x': 2})
+    '2+2'
+    >>> eval_template("2+{{x}}", {'y': 2})
+    '2+'
+    """
+    if data is None or not data:
+        return source
+    if isinstance(data, tuple):
+        try:
+            data = data._asdict()
+        except Exception as err:
+            pass
+    if not isinstance(data, dict):
+        feedback('The data must be in the form of a dictionary', True)
+    try:
+        environment = jinja2.Environment()
+        template = environment.from_string(str(source))
+        custom_value = template.render(data)
+        return custom_value
+    except (ValueError, jinja2.exceptions.UndefinedError):
+        feedback(
+            f'Unable to process "{source}" data with this template', True)
 
 
 if __name__ == "__main__":

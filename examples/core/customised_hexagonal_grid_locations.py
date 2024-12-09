@@ -19,11 +19,11 @@ Create(
 Footer(draw=False)
 
 header = Common(x=0, y=6, font_size=8, align="left")
-a_circle = Common(radius=0.2)
+a_circle = Common(radius=0.4)
 
-# ---- locastion -default coords
+# ---- locations - sequence numbers
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Locations: single")
+Text(common=header, text="Locations: sequence numbers")
 hexgrid = Hexagons(
     side=0.5,
     x=0, y=0,
@@ -31,8 +31,38 @@ hexgrid = Hexagons(
 )
 Locations(
     hexgrid,
-    "0204, 0101",
-    [circle(common=a_circle, label="{row}")]
+    "all",   # "0204, 0101",
+    [circle(common=a_circle, label="s{{sequence}}")]
+)
+PageBreak()
+
+# ---- locations - ID numbers
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Locations: ID numbers")
+hexgrid = Hexagons(
+    side=0.5,
+    x=0, y=0,
+    rows=6, cols=4,
+)
+Locations(
+    hexgrid,
+    "all",   # "0204, 0101",
+    [circle(common=a_circle, label="i{{id}}")]
+)
+PageBreak()
+
+# ---- locations - labels
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Locations: labels")
+hexgrid = Hexagons(
+    side=0.5,
+    x=0, y=0,
+    rows=6, cols=4,
+)
+Locations(
+    hexgrid,
+    "all",   # "0204, 0101",
+    [circle(common=a_circle, label="l{{label}}")]
 )
 PageBreak()
 
@@ -57,6 +87,6 @@ Save(
     dpi=300,
     directory="docs/images/custom/hexagonal_grid",
     names=[
-        "hexgrid_location", "hexgrid_location_coord",
+        "hexgrid_locations_seq", "hexgrid_locations_id", "hexgrid_locations_labels",
     ]
 )
