@@ -1,5 +1,5 @@
 """
-Show customised Hexagons grid locations for pyprototypr
+Show customised Hexagons grid locations and linklines for pyprototypr
 
 Written by: Derek Hohls
 Created on: 7 December 2024
@@ -21,6 +21,52 @@ Footer(draw=False)
 header = Common(x=0, y=6, font_size=8, align="left")
 a_circle = Common(radius=0.4)
 
+
+# ---- location - single shape
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Location: single shape")
+hexgrid = Hexagons(
+    side=0.5,
+    x=0, y=0,
+    rows=6, cols=4,
+)
+Location(
+    hexgrid,
+    "0101",
+    [circle(common=a_circle)]
+)
+PageBreak()
+
+# ---- location - multiple shapes
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Location: multiple shapes")
+hexgrid = Hexagons(
+    side=0.5,
+    x=0, y=0,
+    rows=6, cols=4,
+)
+Location(
+    hexgrid,
+    "0101",
+    [circle(common=a_circle), dot()]
+)
+PageBreak()
+
+# ---- locations - multiple shapes
+Blueprint(stroke_width=0.5)
+Text(common=header, text="Locations: multiple shapes")
+hexgrid = Hexagons(
+    side=0.5,
+    x=0, y=0,
+    rows=6, cols=4,
+)
+Locations(
+    hexgrid,
+    "0204, 0101",
+    [circle(common=a_circle), dot()]
+)
+PageBreak()
+
 # ---- locations - sequence numbers
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Locations: sequence numbers")
@@ -31,14 +77,14 @@ hexgrid = Hexagons(
 )
 Locations(
     hexgrid,
-    "all",   # "0204, 0101",
+    "all",
     [circle(common=a_circle, label="s{{sequence}}")]
 )
 PageBreak()
 
-# ---- locations - ID numbers
+# ---- locations - col & row numbers
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Locations: ID numbers")
+Text(common=header, text="Locations: col&row")
 hexgrid = Hexagons(
     side=0.5,
     x=0, y=0,
@@ -46,8 +92,8 @@ hexgrid = Hexagons(
 )
 Locations(
     hexgrid,
-    "all",   # "0204, 0101",
-    [circle(common=a_circle, label="i{{id}}")]
+    "all",
+    [circle(common=a_circle, label="c{{col}}r{{row}}")]
 )
 PageBreak()
 
@@ -61,32 +107,19 @@ hexgrid = Hexagons(
 )
 Locations(
     hexgrid,
-    "all",   # "0204, 0101",
+    "all",
     [circle(common=a_circle, label="l{{label}}")]
 )
 PageBreak()
 
-# ---- rectangular - flat
-# Blueprint(stroke_width=0.5)
-# Text(common=header, text="Locations: single;coord")
-# hexgrid = Hexagons(
-#     side=0.5,
-#     x=0, y=0,
-#     rows=6, cols=4,
-#     coord_type_x="upper"
-# )
-# Location(
-#     hexgrid,
-#     "B2",
-#     [circle(common=a_circle)]
-# )
-# PageBreak()
 
 Save(
     output='png',
     dpi=300,
     directory="docs/images/custom/hexagonal_grid",
     names=[
-        "hexgrid_locations_seq", "hexgrid_locations_id", "hexgrid_locations_labels",
+        "hexgrid_location_single", "hexgrid_location_multiple",
+        "hexgrid_locations_multi",
+        "hexgrid_locations_seq", "hexgrid_locations_colrow", "hexgrid_locations_labels",
     ]
 )

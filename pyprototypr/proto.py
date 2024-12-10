@@ -1106,7 +1106,8 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
                     _locale = Locale(
                         col=col, row=row,
                         x=hxgn.grid.x, y=hxgn.grid.y,
-                        sequence=sequence, corner=None,
+                        id=f"{col}:{row}",
+                        sequence=sequence,
                         label=hxgn.grid.label)
                     locales.append(_locale)
                     sequence += 1
@@ -1172,7 +1173,7 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
                         col=col, row=row,
                         x=hxgn.grid.x, y=hxgn.grid.y,
                         id=f"{col}:{row}",
-                        sequence=sequence, corner=None,
+                        sequence=sequence,
                         label=hxgn.grid.label)
                     locales.append(_locale)
                     sequence += 1
@@ -1202,7 +1203,8 @@ def Rectangles(rows=1, cols=1, **kwargs):
                 _locale = Locale(
                     col=col, row=row,
                     x=rect.grid.x, y=rect.grid.y,
-                    sequence=sequence, corner=None,
+                    id=f"{col}:{row}",
+                    sequence=sequence,
                     label=rect.grid.label)
                 locales.append(_locale)
                 sequence += 1
@@ -1256,31 +1258,34 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
             elif shape_name in GRID_SHAPES_NO_CENTRE:
                 shape.draw(_abs_x=x, _abs_y=y, **kwargs)
             else:
-                tools.feedback(f"Unable to draw {shape_abbr}s in Locations!", True)
+                tools.feedback(f"Unable to draw {shape_abbr}s in Location!", True)
         except Exception as err:
             tools.feedback(err, False)
             tools.feedback(
-                f"Unable to draw the '{shape_abbr} - please check its settings!", True)
+                f"Unable to draw the '{shape_abbr}' - please check its settings!", True)
 
     # checks
     if grid is None or not isinstance(grid, list):
         tools.feedback("The grid (as a list) must be supplied!", True)
 
     # get location centre from grid via the label
-    locale = None
+    locale, point = None, None
     for _locale in grid:
         if _locale.label.lower() == str(label).lower():
             point = Point(_locale.x, _locale.y)
             locale = _locale
             break
     if point is None:
-        tools.feedback(f"The location '{label}' is not in the grid!", True)
+        msg = ''
+        if label and ',' in label:
+            msg = ' (Did you mean to use Locations?)'
+        tools.feedback(f"The Location '{label}' is not in the grid!{msg}", True)
 
     if shapes:
         try:
             iter(shapes)
         except TypeError:
-            tools.feedback("The location shapes property must contain a list!", True)
+            tools.feedback("The Location shapes property must contain a list!", True)
         for shape in shapes:
             if shape.__class__.__name__ == 'GroupBase':
                 tools.feedback(f"Group drawing ({shape}) NOT IMPLEMENTED YET", True)
@@ -1442,8 +1447,10 @@ def Layout(grid, **kwargs):
                 if user_loc[0] == loc[1].col and user_loc[1] == loc[1].row:
                     new_loc = (
                         key, Locale(
-                            col=loc[1].col, row=loc[1].row, x=loc[1].x, y=loc[1].y,
-                            id=loc[1].id, sequence=key, corner=loc[1].corner))
+                            col=loc[1].col, row=loc[1].row,
+                            x=loc[1].x, y=loc[1].y,
+                            id=f"{col}:{row}",  # ,loc[1].id,
+                            sequence=key, corner=loc[1].corner))
                     _locations.append(new_loc)
             default_locations = enumerate(grid.next_locale())  # regenerate !
 

@@ -212,7 +212,7 @@ Discussion  This example shows how to construct the board for the commercial
               scoring track; the ``Layout()`` command makes use of multiple
               repeating shapes for the color changes at different intervals
             - Use of ``Sequence()`` command to create the player order track,
-              as well as the different rounds
+              (in the middle) as well as the different rounds (on the right)
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/commercial/underwater_cities.png
                :width: 90%

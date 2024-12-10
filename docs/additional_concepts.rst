@@ -98,8 +98,10 @@ Assigned Names
 
 A very likely usage for assigned names, is when the ``Common`` command is in
 use.  This command stores a number of properties that need to be used across
-multiple shapes.  Giving this command as assigned name enables it to be
-referred to and used elsewhere.  For example:
+multiple shapes or commands.
+
+Giving this command an *assigned name* enables its result, or value, to be
+referred to, and used or reused, later in the script.  For example:
 
 .. code:: python
 

@@ -13,6 +13,10 @@ They are particularly suitable in providing an overlay for maps and have been
 used for decades in war games and role playing games, but can also act as grids
 or tiles in regular board games.
 
+Some practical example of these grids are shown in the section containing
+`commercial <examples/commercial.rst>`_ and `abstract <examples/abstract.rst>`_
+boards.
+
 .. _table-of-contents:
 
 Table of Contents
@@ -22,7 +26,8 @@ Table of Contents
 - `Rectangular Hexagonal Grid`_
 - `Circular Hexagonal Grid`_
 - `Diamond Hexagonal Grid`_
-- `Grid Locations and LinkLines`_
+- `Grid Locations`_
+- `Grid LinkLines`_
 - `Other Hexagonal Grid Resources`_
 
 
@@ -66,7 +71,9 @@ Rows and Columns
    :width: 330
 
 ===== ======
-|rr1| This example shows a grid constructed using the command::
+|rr1| This example shows a grid constructed using the command:
+
+      .. code:: python
 
         Hexagons(
             side=0.5,
@@ -87,7 +94,9 @@ Rows and Columns
    :width: 330
 
 ===== ======
-|rr2| This example shows a grid constructed using the command::
+|rr2| This example shows a grid constructed using the command:
+
+      .. code:: python
 
         Hexagons(
             side=0.5,
@@ -131,7 +140,9 @@ Most coordinate property names are prefixed with ``coord_``.
    :width: 330
 
 ===== ======
-|rc1| This example shows grids constructed using the commands::
+|rc1| This example shows grids constructed using the commands:
+
+      .. code:: python
 
         Hexagons(
             side=0.6,
@@ -183,7 +194,9 @@ Most coordinate property names are prefixed with ``coord_``.
    :width: 330
 
 ===== ======
-|rc2| This example shows grids constructed using the commands::
+|rc2| This example shows grids constructed using the commands:
+
+      .. code:: python
 
         Hexagons(
             side=0.6,
@@ -246,7 +259,9 @@ a set of three small lines; these replace the normal edge of the hexagon.
    :width: 330
 
 ===== ======
-|rp1| This example shows a grid constructed using the command::
+|rp1| This example shows a grid constructed using the command:
+
+      .. code:: python
 
         Hexagons(
             side=0.6,
@@ -273,7 +288,9 @@ a set of three small lines; these replace the normal edge of the hexagon.
    :width: 330
 
 ===== ======
-|rp2| This example shows a grid constructed using the command::
+|rp2| This example shows a grid constructed using the command:
+
+      .. code:: python
 
         Hexagons(
             side=0.6,
@@ -311,7 +328,9 @@ when a grid is designed for a scenario where not all hexagons are needed.
    :width: 330
 
 ===== ======
-|rdd| This example shows grids constructed using the commands::
+|rdd| This example shows grids constructed using the commands:
+
+      .. code:: python
 
         Hexagons(
             side=0.5,
@@ -361,7 +380,9 @@ Offset
    :width: 330
 
 ===== ======
-|rof| This example shows grids constructed using the commands::
+|rof| This example shows grids constructed using the commands:
+
+      .. code:: python
 
         Hexagons(
             side=0.5,
@@ -409,7 +430,9 @@ Radii
    :width: 330
 
 ===== ======
-|rdi| This example shows grids constructed using the commands::
+|rdi| This example shows grids constructed using the commands:
+
+      .. code:: python
 
         Hexagons(
             side=0.5,
@@ -466,7 +489,9 @@ Basic
    :width: 330
 
 ===== ======
-|cbs| This example shows a grid constructed using the command::
+|cbs| This example shows a grid constructed using the command:
+
+      .. code:: python
 
         Hexagons(
             x=0, y=0,
@@ -495,7 +520,9 @@ Nested Shapes
    :width: 330
 
 ===== ======
-|cns| This example shows a grid constructed using the command::
+|cns| This example shows a grid constructed using the command:
+
+      .. code:: python
 
         Hexagons(
             x=0, y=0,
@@ -514,10 +541,10 @@ Nested Shapes
       - *sides* sets the number of hexagons running along each "edge" of the
         grid - there are six sides in all
       - *hex_layout* is set to ``circle`` to create the circular pattern
-      - *centre_shape* - defines a shape whose centre location will match
-        that of the hexagon within which it is "nested"; in this case its
-        size is smaller (``0.6`` is less than ``0.75``) so there is a "gap"
-        around each of these shapes.
+      - *centre_shape* - defines a shape that will appear is all hexagons
+        in the grid, and whose centre location will matchthat of the hexagon
+        within which it is "nested"; in this case its size is smaller (``0.6``
+        is less than ``0.75``) so there is a "gap" around each of the shapes.
 
 ===== ======
 
@@ -543,7 +570,9 @@ Basic
    :width: 330
 
 ===== ======
-|dmb| This example shows a grid constructed using the command::
+|dmb| This example shows a grid constructed using the command:
+
+      .. code:: python
 
         Hexagons(
             x=0, y=0,
@@ -561,29 +590,134 @@ Basic
 ===== ======
 
 
-Grid Locations and LinkLines
-============================
+Grid Locations
+==============
+`↑ <table-of-contents_>`_
 
 In order to layout objects within a hexagonal grid, it is possible to use
-the ``Location()`` or ``Locations()`` command to specify the "what, where and
-how". In addition, the ``LinkLines()`` command allows the creation of lines
-to join one or more hexagons within the grid.
+the ``Location()`` or ``Locations()`` command to specify the "what, where
+and how".
 
-These commands should work with any of the types of hexgonal grid layouts
+These commands should work with any of the types of hexagonal grid layouts
 described above.
+
+The following are the key properties required for the ``Location()`` or the
+``Locations()`` command:
+
+- *grid* - a grid, or the name assigned to a grid
+- *coordinates* - these are coordinates assigned when creating the grid; if
+  none have been assigned, the default numbering is used i.e. a label made
+  up of two 2-digit numbers (each padded with zero) which correspond to the
+  row and column - bear in mind the numbering starts at the top-left of the
+  grid
+- *shapes* - a list (using square brackets `[` and `]`) of one of more shapes,
+  appearing in the order that they must be drawn; the centre of the shapes
+  will be set to match the centre of the hexagon in which its drawn.
+
+All examples below make use of a common property (assigned to the
+name *a_circle*) defined as:
+
+  .. code:: python
+
+    a_circle = Common(radius=0.4)
+
+
+Location
+--------
+`^ <grid locations_>`_
+
+Example 1.  Single Shape
+~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <location_>`_
+
+.. |hl0| image:: images/custom/hexagonal_grid/hexgrid_location_single.png
+   :width: 330
+
+===== ======
+|hl0| This example shows a location constructed using the command:
+
+      .. code:: python
+
+        hexgrid = Hexagons(
+            side=0.5,
+            x=0, y=0,
+            rows=6, cols=4,
+        )
+        Location(
+            hexgrid,
+            "0101",
+            [circle(common=a_circle)]
+        )
+
+      The ``Hexagons`` grid is constructed as per the examples described in
+      the `Rectangular Hexagonal Grid`_ section.  The grid is assigned the
+      name *hexgrid* so it's result can be reused.
+
+      The ``Location`` command has the following properties:
+
+      - *hexgrid* refers to the assigned name for the ``Hexagons`` grid
+      - "0101" contains the co-ordinate of the top-left hexagon in the grid
+      - the list contains one shape - a ``Circle`` that will be drawn at the
+        centre of the hexagon matching the co-ordinate that has been set
+
+===== ======
+
+Example 2. Multiple Shapes
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <locations_>`_
+
+.. |hl1| image:: images/custom/hexagonal_grid/hexgrid_location_multiple.png
+   :width: 330
+
+===== ======
+|hl1| This example shows a location constructed using the command:
+
+      .. code:: python
+
+        hexgrid = Hexagons(
+            side=0.5,
+            x=0, y=0,
+            rows=6, cols=4,
+        )
+        Location(
+            hexgrid,
+            "0101",
+            [circle(common=a_circle), dot()]
+        )
+
+      The ``Hexagons`` grid is constructed as per the examples described in
+      the `Rectangular Hexagonal Grid`_ section.  The grid is assigned the
+      name *hexgrid* so it's result can be reused.
+
+      The ``Location`` command has the following properties:
+
+      - *hexgrid* refers to the assigned name for the ``Hexagons`` grid
+      - ``"0101"`` is the co-ordinate of the top-left hexagon in the grid
+      - the list contains two shapes - a ``Circle`` and a ``Dot``;  these
+        will be drawn in that order, each at the centre of the hexagon
+        matching the co-ordinate that has been set
+
+===== ======
 
 
 Locations
 ---------
+`^ <grid locations_>`_
 
-Example 1.  Basic Location
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+It is often the case that the same shape, or set of shapes, needs to be
+displayed at multiple locations within the grid.
 
-.. |xl0| image:: images/custom/hexagonal_grid/hexgrid_location_basic.png
+Example 1.  Locations and Shapes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <locations_>`_
+
+.. |ml0| image:: images/custom/hexagonal_grid/hexgrid_locations_multi.png
    :width: 330
 
 ===== ======
-|xl0| This example shows a location constructed using the command::
+|ml0| This example shows locations constructed using the command:
+
+      .. code:: python
 
         hexgrid = Hexagons(
             side=0.5,
@@ -595,15 +729,180 @@ Example 1.  Basic Location
             "0204, 0101",
             [circle(common=a_circle)]
         )
-      It has the following properties:
 
-      The default way to identify a
+      The ``Hexagons`` grid is constructed as per the examples described in
+      the `Rectangular Hexagonal Grid`_ section.  The grid is assigned the
+      name *hexgrid* so it's result can be reused.
+
+      The ``Locations`` command has the following properties:
+
+      - *hexgrid* refers to the assigned name for the ``Hexagons`` grid
+      - ``"0204, 0101"`` are the co-ordinates of the two hexagons in the grid
+      - the list contains two shapes - a ``Circle`` and a ``Dot``;  these
+        will be drawn in that order, each at the centre of the hexagon
+        matching the co-ordinates that have been set
 
 ===== ======
 
 
+Example 2.  Locations & Sequence
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <locations_>`_
+
+.. |ml1| image:: images/custom/hexagonal_grid/hexgrid_locations_seq.png
+   :width: 330
+
+===== ======
+|ml1| This example shows locations constructed using the command:
+
+      .. code:: python
+
+        hexgrid = Hexagons(
+            side=0.5,
+            x=0, y=0,
+            rows=6, cols=4,
+        )
+        Locations(
+            hexgrid,
+            "all",
+            [circle(common=a_circle, label="s{{sequence}}")]
+        )
+
+      The ``Hexagons`` grid is constructed as per the examples described in
+      the `Rectangular Hexagonal Grid`_ section.  The grid is assigned the
+      name *hexgrid* so it's result can be reused.
+
+      The ``Locations`` command has the following properties:
+
+      - *hexgrid* refers to the assigned name for the ``Hexagons`` grid
+      - ``"all"`` is a short-cut which refers to **all** the co-ordinates of
+        the hexagons in the grid
+      - the list contains a single shape - a ``Circle`` whose label has been
+        set to the reference keyword ``{{sequence}}``; because of the enclosing
+        brackets ``{{...}}`` the keyword will be replaced by the actual value
+        of the sequence number in which the hexagon has been drawn.
+
+===== ======
 
 
+Example 3.  Locations & Labels
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <locations_>`_
+
+.. |ml2| image:: images/custom/hexagonal_grid/hexgrid_locations_labels.png
+   :width: 330
+
+===== ======
+|ml2| This example shows locations constructed using the command:
+
+      .. code:: python
+
+        hexgrid = Hexagons(
+            side=0.5,
+            x=0, y=0,
+            rows=6, cols=4,
+        )
+        Locations(
+            hexgrid,
+            "all",
+            [circle(common=a_circle, label="l{{label}}")]
+        )
+
+      The ``Hexagons`` grid is constructed as per the examples described in
+      the `Rectangular Hexagonal Grid`_ section.  The grid is assigned the
+      name *hexgrid* so it's result can be reused.
+
+      The ``Locations`` command has the following properties:
+
+      - *hexgrid* refers to the assigned name for the ``Hexagons`` grid
+      - ``"all"`` is a short-cut which refers to **all** the co-ordinates of
+        the hexagons in the grid
+      - the list contains a single shape - a ``Circle`` whose label has been
+        set to the reference keyword ``{{label}}``; because of the enclosing
+        brackets ``{{...}}`` the keyword will be replaced by the actual value
+        of the label of the hexagon being drawn.
+
+===== ======
+
+
+Example 4.  Locations & Col/Row
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <locations_>`_
+
+.. |ml3| image:: images/custom/hexagonal_grid/hexgrid_locations_colrow.png
+   :width: 330
+
+===== ======
+|ml3| This example shows locations constructed using the command:
+
+      .. code:: python
+
+        hexgrid = Hexagons(
+            side=0.5,
+            x=0, y=0,
+            rows=6, cols=4,
+        )
+        Locations(
+            hexgrid,
+            "all",
+            [circle(common=a_circle, label="c{{col}}r{{row}}")]
+        )
+
+      The ``Hexagons`` grid is constructed as per the examples described in
+      the `Rectangular Hexagonal Grid`_ section.  The grid is assigned the
+      name *hexgrid* so it's result can be reused.
+
+      The ``Locations`` command has the following properties:
+
+      - *hexgrid* refers to the assigned name for the ``Hexagons`` grid
+      - ``"all"`` is a short-cut which refers to **all** the co-ordinates of
+        the hexagons in the grid
+      - the list contains a single shape - a ``Circle`` whose label has been
+        set to use the reference keywords ``{{col}}`` and ``{{row}}``; because
+        of the enclosing brackets ``{{...}}`` these keywords will be replaced
+        by the actual values of the grid's *column* and *row* for the hexagon
+        being drawn.
+
+===== ======
+
+
+Grid LinkLines
+==============
+`↑ <table-of-contents_>`_
+
+Rhe ``LinkLines()`` command allows the creation of lines to join one or more
+hexagons within a hexagonal grid.
+
+These commands should work with any of the types of hexgonal grid layouts
+described above.
+
+
+Example 1.  Basic LinkLines
+---------------------------
+
+.. |ll0| image:: images/custom/hexagonal_grid/hexgrid_location_basic.png
+   :width: 330
+
+===== ======
+|ll0| This example shows a location constructed using the command:
+
+      .. code:: python
+
+        hexgrid = Hexagons(
+            side=0.5,
+            x=0, y=0,
+            rows=6, cols=4,
+        )
+
+      The ``Hexagons`` grid is constructed as per the examples described in
+      the `Rectangular Hexagonal Grid`_ section.  The grid is assigned the
+      name *hexgrid* so it's result can be reused.
+
+      The ``Locations`` command  has the following properties:
+
+      The default way to identify a
+
+===== ======
 
 
 Other Hexagonal Grid Resources
@@ -612,7 +911,8 @@ Other Hexagonal Grid Resources
 
 There are already a number of software tools available for creating
 hexagonal grids of various kinds. A few of them, some of which are
-game-specific, are listed below:
+game-specific - for example, the so-called
+`18XX <https://en.wikipedia.org/wiki/18XX>`_ series, are listed below:
 
 -  *HEXGRID* (https://hamhambone.github.io/hexgrid/) - an online hex
    grid generator which interactively creates a display, downloadable as
@@ -626,9 +926,9 @@ game-specific, are listed below:
    to make brick patterns of staggered rectangles.
 -  *hexboard* (https://www.ctan.org/pkg/hexboard) - a package for LATEX
    that provides functionality for drawing Hex boards and games.
--  *map18xx* (https://github.com/XeryusTC/map18xx) - a 18xx hex map and
+-  *map18xx* (https://github.com/XeryusTC/map18xx) - a 18XX hex map and
    tile generator that outputs to SVG files, scaled to fit A4 paper.
--  *18xx Maker* (https://www.18xx-maker.com/) - uses 18xx game
+-  *18xx Maker* (https://www.18xx-maker.com/) - uses 18XX game
    definitions written in JSON, displays them, and renders them for
    printing.
 -  *ps18xx* (https://github.com/18xx/ps18xx/tree/master) - software for
@@ -643,10 +943,10 @@ these other tools would be of better use.
    grids are designed and calculated the single most useful reference is
    https://www.redblobgames.com/grids/hexagons/
 
-An 18xx Footnote
+An 18XX Footnote
 ----------------
 
-The "18xx" train games hex maps are often criticised for their poor aesthetic.
+The 18XX game series hex maps are often criticised for their poor aesthetic.
 A fascinating article that deals with this topic - and is perhaps relevant
-even at the prototyping stage being supported by this program - is available at
+even at the prototyping stage being supported by this program - can be found at
 https://medium.com/grandtrunkgames/mawgd4-18xx-tiles-and-18xx-maps-8a409bba4230

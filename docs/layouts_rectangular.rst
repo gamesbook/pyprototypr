@@ -120,8 +120,8 @@ Key Properties
 - `Example 9. Locations Setting`_
 - `Example 10. Debug`_
 
-All examples below make use of a common ``Circle`` shape (called *a_circle*)
-defined as:
+All examples below make use of a common ``Circle`` shape (assigned to
+the name *a_circle*) defined as:
 
   .. code:: python
 
