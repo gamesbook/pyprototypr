@@ -355,7 +355,7 @@ def pdf_to_png(
         dpi: int = 300,
         names: list = None,
         directory: str = None,
-        frames: float = 1.0):
+        framerate: float = 1.0):
     """Extract pages from PDF as PNG image(s).  Optionally, assemble into a GIF.
 
     Uses:
@@ -406,14 +406,14 @@ def pdf_to_png(
                     all_pngs.append(iname)  # track for GIF creation
                 pix.save(iname)
         # assemble .png files into a .gif
-        if fformat == 'gif' and frames > 0:
+        if fformat == 'gif' and framerate > 0:
             feedback(f'Converting PNG image file(s) from "{filename}" into a GIF...',
                      False)
             images = []
             gif_name = os.path.join(dirname, f"{basename}.gif")
             for filename in all_pngs:
                 images.append(imageio.imread(filename))
-                imageio.mimsave(gif_name, images, duration=frames*1000)  # ms -> sec
+                imageio.mimsave(gif_name, images, duration=framerate*1000)  # ms -> sec
             for filename in all_pngs:
                 if os.path.isfile(filename):
                     os.remove(filename)

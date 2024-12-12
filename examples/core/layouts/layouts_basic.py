@@ -15,7 +15,7 @@ Create(filename="layouts_basic.pdf",
        stroke_width=0.5)
 
 header = Common(x=0, y=6, font_size=7, align="left")
-circles = Common(x=0, y=0, diameter=1.0, label="{count}/{col}-{row}", label_size=6)
+circles = Common(x=0, y=0, diameter=1.0, label="{{sequence}}//{{col}}-{{row}}", label_size=6)
 a_circle = circle(common=circles)
 
 Blueprint(stroke_width=0.5)
@@ -111,7 +111,7 @@ rect = RectangularLocations(
     cols=3, rows=4)
 Layout(
   rect,
-  shapes=[a_circle, rectangle(label="{count}/{col}-{row}", label_size=6)],
+  shapes=[a_circle, rectangle(label="{{sequence}}//{{col}}-{{row}}", label_size=6)],
   locations=[(1,2), (2,3), (3,1), (1,1), (3,4)])
 
 # Save()

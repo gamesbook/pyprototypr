@@ -136,7 +136,7 @@ To customise the command, set its properties as follows:
   will automatically get the ``.png`` extension added to it.  If the term
   ``None`` is used in place of a name, that page will **not** have a PNG file
   created for it.
-- **frames** - the delay in seconds between each "page" of a GIF image; by
+- **framerate** - the delay in seconds between each "page" of a GIF image; by
   default this is ``1`` second
 
 Here is an example of a customised ``Save`` command:
@@ -158,8 +158,12 @@ Here is another example of a customised ``Save`` command:
     Save(
         output='gif',
         dpi=300,
-        frames=0.5
+        framerate=0.5
     )
+
+In this example, an animated GIF image will be created, assembled out of the
+PNG images (one per page of the PDF).  There will be delay of half a second
+between showing each image.
 
 
 Other Commands

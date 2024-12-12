@@ -222,12 +222,12 @@ def Save(**kwargs):
 
     output = kwargs.get('output', None)
     dpi = support.to_int(kwargs.get('dpi', 300), 'dpi')
-    frames = support.to_float(kwargs.get('frames', 1), 'frames')
+    framerate = support.to_float(kwargs.get('framerate', 1), 'framerate')
     names = kwargs.get('names', None)
     directory = kwargs.get('directory', None)
     if output:
         support.pdf_to_png(
-            globals.filename, output, dpi, names, directory, frames=frames)
+            globals.filename, output, dpi, names, directory, framerate=framerate)
 
 
 def save(**kwargs):
@@ -1104,9 +1104,9 @@ def Hexagons(rows=1, cols=1, sides=None, **kwargs):
                     hxgn = Hexagon(
                         row=row, col=ccol - 1, hex_rows=rows, hex_cols=cols, **kwargs)
                     _locale = Locale(
-                        col=col, row=row,
+                        col=ccol - 1, row=row,
                         x=hxgn.grid.x, y=hxgn.grid.y,
-                        id=f"{col}:{row}",
+                        id=f"{ccol - 1}:{row}",
                         sequence=sequence,
                         label=hxgn.grid.label)
                     locales.append(_locale)
@@ -1195,22 +1195,22 @@ def Rectangles(rows=1, cols=1, **kwargs):
     for row in range(rows):
         for col in range(cols):
             counter += 1
-            kwargs["text_sequence"] = f'{counter}'
             if hidden and (row + 1, col + 1) in hidden:
                 pass
             else:
-                rect = Rectangle(row=row, col=col, **kwargs)
+                rect = rectangle(row=row, col=col, **kwargs)
                 _locale = Locale(
                     col=col, row=row,
-                    x=rect.grid.x, y=rect.grid.y,
+                    x=rect.x, y=rect.y,
                     id=f"{col}:{row}",
                     sequence=sequence,
-                    label=rect.grid.label)
+                    label=rect.label)
+                kwargs['locale'] = _locale._asdict()
+                Rectangle(row=row, col=col, **kwargs)
                 locales.append(_locale)
                 sequence += 1
-                locations.append(rect.grid)
 
-    return locations
+    return locales
 
 
 def Squares(rows=1, cols=1, **kwargs):
@@ -1458,8 +1458,9 @@ def Layout(grid, **kwargs):
                         key, Locale(
                             col=loc[1].col, row=loc[1].row,
                             x=loc[1].x, y=loc[1].y,
-                            id=f"{col}:{row}",  # ,loc[1].id,
-                            sequence=key, corner=loc[1].corner))
+                            id=f"{loc[1].col}:{loc[1].row}",  # ,loc[1].id,
+                            sequence=key,
+                            corner=loc[1].corner))
                     _locations.append(new_loc)
             default_locations = enumerate(grid.next_locale())  # regenerate !
 
@@ -1543,7 +1544,18 @@ def Layout(grid, **kwargs):
             # ---- * execute shape.draw()
             cx = loc.x * shape.units + shape._o.delta_x
             cy = loc.y * shape.units + shape._o.delta_y
-            shape.draw(_abs_cx=cx, _abs_cy=cy, rotation=rotation, text_sequence=f'{loc.sequence}')
+            shape.draw(
+                _abs_cx=cx,
+                _abs_cy=cy,
+                rotation=rotation,
+                locale=Locale(
+                    sequence=loc.sequence,
+                    col=loc.col,
+                    row=loc.row,
+                    x=loc.x,
+                    y=loc.y
+                )
+            )
             shape_id += 1
         if shape_id > len(shapes) - 1:
             shape_id = 0  # reset and start again

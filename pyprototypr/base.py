@@ -1516,19 +1516,9 @@ class BaseShape:
         """
         if not string:
             return
-        # ---- replace {PLACEHOLDER} with a value
-        _sequence = kwargs.get('text_sequence', None)
-        if _sequence:
-            try:
-                string = string.format(SEQUENCE=_sequence)
-            except ValueError as err:
-                if "expected '}'" in err:
-                    tools.feedback('Please check use of "{}" brackets; both are needed',
-                                   True)
-                else:
-                    tools.feedback(f'Unable to do that - {err}', True)
-            except KeyError as err:
-                tools.feedback(f'Unable to use "{string}" as a placeholder', True)
+        # ---- deprecated
+        if kwargs.get('text_sequence', None):
+            raise NotImplementedError('No text_sequence please!')
         # ---- process locale data (from Locale namedtuple) via jinja2
         _locale = kwargs.get('locale', None)
         if _locale:

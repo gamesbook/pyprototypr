@@ -92,7 +92,7 @@ PageBreak()
 
 # ---- layout with shapes
 
-circles = Common(x=0, y=0, diameter=1.0, label="{count}/{col}-{row}", label_size=6)
+circles = Common(x=0, y=0, diameter=1.0, label="{{sequence}}//{{col}}-{{row}}", label_size=6)
 a_circle = circle(common=circles)
 
 Blueprint(stroke_width=0.5)

@@ -191,7 +191,7 @@ class SequenceShape(BaseShape):
 
         for key, item in enumerate(self.setting_list):
             _ID = ID if ID is not None else self.shape_id
-            kwargs['text_sequence'] = f'{item}'
+            kwargs['locale'] = Locale(sequence=item)
             # tools.feedback(f'*   @Seqnc@ {self.gap_x=}, {self.gap_y=}')
             off_x = _off_x + key * self.gap_x
             off_y = _off_y + key * self.gap_y

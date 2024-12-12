@@ -52,5 +52,5 @@ Save(
      output='gif',
      directory="docs/examples/images/various",
      dpi=300,
-     frames=0.1, # seconds-delay-per-frame
+     framerate=0.1, # seconds-delay-per-frame
 )

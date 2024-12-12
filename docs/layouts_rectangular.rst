@@ -127,13 +127,13 @@ the name *a_circle*) defined as:
 
     circles = Common(
         x=0, y=0, diameter=1.0,
-        label="{count}/{col}-{row}", label_size=6)
+        label="{{sequence}}//{{col}}-{{row}}", label_size=6)
     a_circle = circle(common=circles)
 
-In these examples, the placeholder names ``{count}``, ``{col}`` and ``{row}``
-will be replaced, in the label for the Circle, by the values for the row and
-column in which that circle is placed, as well as by the sequence number
-(order) in which that Circle is drawn.
+In these examples, the placeholder names ``{{sequence}}``, ``{{col}}``
+and ``{{row}}`` will be replaced, in the label for the Circle, by the
+values for the row and column in which that circle is placed, as well as
+by the sequence number (order) in which that Circle is drawn.
 
 Example 1. Rows and Columns
 ---------------------------
@@ -438,7 +438,9 @@ Example 9. Locations Setting
         Layout(
           rect,
           shapes=[
-              a_circle, rectangle(label="{count}/{col}-{row}", label_size=6)],
+              a_circle, rectangle(
+                  label="{{sequence}}//{{col}}-{{row}}",
+                  label_size=6)],
           locations=[(1,2), (2,3), (3,1), (1,1), (3,4)])
 
 ===== ======

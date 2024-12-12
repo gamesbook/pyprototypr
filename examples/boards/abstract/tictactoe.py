@@ -32,4 +32,4 @@ Save(
     output='gif',
     directory="docs/examples/images/boards/abstract/",
     dpi='300',
-    frames=0.5)
+    framerate=0.5)

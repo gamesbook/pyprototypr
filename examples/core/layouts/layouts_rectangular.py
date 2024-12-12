@@ -15,7 +15,7 @@ Create(filename="layouts_basic_rectangular.pdf",
        stroke_width=0.5)
 
 header = Common(x=0, y=6, font_size=6, align="left")
-circles = Common(x=0, y=0, diameter=1.0, label="{count}/{col}-{row}", label_size=6)
+circles = Common(x=0, y=0, diameter=1.0, label="{{sequence}}//{{col}}-{{row}}", label_size=6)
 a_circle = circle(common=circles)
 
 # ---- regular
