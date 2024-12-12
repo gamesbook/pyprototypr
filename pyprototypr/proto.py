@@ -1323,10 +1323,11 @@ def Locations(grid: list, labels: Union[str, list], shapes: list, **kwargs):
         Location(grid, label, shapes)
 
 
-def LinkLine(grid: list, locations: list, **kwargs):
+def LinkLine(grid: list, locations: Union[list, str], **kwargs):
     """Enable a line link between one or more locations in a grid."""
     kwargs = kwargs
-
+    if isinstance(locations, str):   # should be a comma-delimited string
+        locations = tools.sequence_split(locations, False, False)
     if not isinstance(locations, list):
         tools.feedback(f"'{locations} is not a list - please check!", True)
     if len(locations) < 2:
@@ -1334,9 +1335,11 @@ def LinkLine(grid: list, locations: list, **kwargs):
     dummy = base_shape()  # a BaseShape - not drawable!
     for index, location in enumerate(locations):
         # precheck
+        if isinstance(location, str):
+            location = (location, 0, 0)  # reformat into standard notation
         if not isinstance(location, tuple) or len(location) != 3:
             tools.feedback(
-                f"The location '{location} is not valid - please check its syntax!",
+                f"The location '{location}' is not valid -- please check its syntax!",
                 True)
         # get location centre from grid via the label
         loc = None
@@ -1350,9 +1353,12 @@ def LinkLine(grid: list, locations: list, **kwargs):
         if index + 1 < len(locations):
             # location #2
             location_2 = locations[index + 1]
+            if isinstance(location_2, str):
+                location_2 = (location_2, 0, 0)  # reformat into standard notation
             if not isinstance(location_2, tuple) or len(location_2) != 3:
-                tools.feedback(f"The location '{location_2} is not valid -"
-                               " please check its syntax!", True)
+                tools.feedback(
+                    f"The location '{location_2}' is not valid - please check its syntax!",
+                    True)
             loc_2 = None
             for position in grid:
                 if location_2[0] == position.label:
@@ -1361,8 +1367,11 @@ def LinkLine(grid: list, locations: list, **kwargs):
             if loc_2 is None:
                 tools.feedback(
                     f"The location '{location_2[0]}' is not in the grid!", True)
-            if location[0] == location_2[0]:
-                tools.feedback("Locations must all differ!", True)
+            if location == location_2:
+                tools.feedback(
+                    "Locations must differ from each other - "
+                    f"({location} matches {location_2})!",
+                    True)
             # line start/end
             x = dummy.points_to_value(loc.x) + location[1]
             y = dummy.points_to_value(loc.y) + location[2]

@@ -10,11 +10,13 @@ for prototyping the elements or components of a project such as the
 creation of a board game; including the board, the tiles, the cards and
 so on.
 
+.. NOTE::
+
    **pyprototypr** is *NOT* a full-blown graphics editor - like the
    Adobe Photoshop, GIMP, or Inkscape packages - or a desktop publishing
    tool - like Scribus, InDesign, or Xpress - which allow sophisticated
    creation of complex graphics and text layouts - and it does not
-   attempt in **any** way to replicate their functionality!
+   attempt in **any** way to replicate their extensive functionality!
 
 
 Who might want to use **pyprototypr** ?
@@ -25,7 +27,8 @@ an incremental fashion, tweaking and changing as they go along. Doing
 this with a regular graphics package can sometimes be tedious;
 especially when common changes need to be made across many elements.
 
-Simple designs that make use of regular-shaped symbols or fonts are
+Simple designs that make use of regular-shaped objects or fonts,
+including fonts that themselves contain symbols or icons, are
 straightforward to implement in **pyprototypr**; but more complex
 pictures or background images should be made, as usual, in a regular
 graphics design package and then added into your script by a link
@@ -38,10 +41,10 @@ the content - the text and numbers - that appears in the design.
 How do I use it?
 ----------------
 
-In general, what you do is type a set of instructions into a file on
-your computer, save that file, and then use Python to create your output
-- a PDF or PNG file - containing the results of those instructions;
-hopefully the design you intended!
+In general, what you do is type a set of instructions - which **pyprototypr**
+terms a *script* -  into a file, save that file on your computer, and then
+use Python to create your output - a PDF or PNG file - containing the results
+of those instructions; hopefully the design that you intended to make!
 
 As your design changes and evolves, you add or change instructions and
 recreate the output.

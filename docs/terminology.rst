@@ -27,6 +27,7 @@ Table of Contents
 - `Display-orientated Terms`_
 - `Miscellaneous Terms`_
 
+
 pyprototypr Jargon
 ==================
 `↑ <table-of-contents_>`_
@@ -50,6 +51,7 @@ places in the documentation:
   lines used to construct a shape; for example, a triangle has 3 vertices and
   a square has 4 vertices.
 
+
 Color-orientated Terms
 ======================
 `↑ <table-of-contents_>`_
@@ -57,20 +59,22 @@ Color-orientated Terms
 Color is defined in the same way as it is in pages that appear on the
 web i.e. in RGB (red-green-blue) *hexadecimal* format - for example,
 ``#A0522D`` represents a shade of the color that we would likely term
-“brown”.
+"brown".
 
 Colors can also be chosen from a pre-defined list of names - for example
 ``#A0522D`` is pre-defined as the color *sienna*. A PDF file is supplied
 at `colorset.pdf <../examples/colorset.pdf>`_ - that shows all the
-names and colors that are available. This is an alternate version
-of the list that can be found at https://en.wikipedia.org/wiki/X11_color_names
+names and colors that are available.
+
+.. HINT::
+
+   For more details on hexadecimal colors, refer to
+   http://www.w3.org/TR/css3-color; the color names are listed in the
+   section https://www.w3.org/TR/css-color-3/#svg-color (this list can
+   also be found at https://en.wikipedia.org/wiki/X11_color_names)
 
 In general, color can be set for the lines (**stroke**) and areas
 (**fill**) that are being drawn on a page.
-
-   **NOTE:** It is possible to use the term *None* in place of a
-   specific color; this effectively means that nothing will be drawn
-   there - so, an “invisible” line or area!
 
 -  **dot_fill** - the color in which a circle is to be drawn at the
    centre of a shape
@@ -82,8 +86,16 @@ In general, color can be set for the lines (**stroke**) and areas
    this term with the name of the item in question; for example:
    **cross_stroke**; **grid_stroke**; **radii_stroke**;
    **label_stroke**; **petals_stroke** etc.
--  **stroke_fill** - sets both the line (“stroke”) and area (“fill”) to
-   be the same color
+-  **stroke_fill** - sets both the line ("stroke") and area ("fill") to
+   be the *same* color
+
+
+.. NOTE::
+
+   **Note** that it is possible to use the term *None* in place of a
+   specific color; this effectively means that nothing will be drawn
+   there - this results in an "invisible" line or area!
+
 
 Position- and Location-orientated Terms
 =======================================
@@ -116,10 +128,11 @@ at the *top* of a Hexagon.
 -  **x** - the position of a point in the horizontal direction; its
    usually the case that the distance is not absolute, but relative to
    some other value e.g. distance from a margin; or the edge of a
-   ``Card``
+   ``Card``; or the away from the centre of a Hexagon in a grid
 -  **y** - the position of a point in the vertical direction; its usually
    the case that the distance is not absolute, but relative to some
    other value e.g. distance from a margin; or the edge of a ``Card``
+
 
 Size- and length-orientated Terms
 =================================
@@ -140,7 +153,7 @@ A few sizes are given descriptive names; this makes them a little easier
 to set.
 
 -  **caltrops** - a descriptive term for the relative dimensions of a
-   “caltrop” - the small three-pointed shape drawn at the vertex of a
+   "caltrop" - the small three-pointed shape drawn at the vertex of a
    hexagon - which can be set one of: *small*, *medium* or *large*
 -  **diameter** - the diameter of a ``Circle``
 -  **dot_size** - the diameter of a small ``Dot`` in **points**
@@ -151,16 +164,16 @@ to set.
 -  **margin** - used in ``Create`` command to set all margins for a
    page; the default for any margin is 1.25cm / 12.5mm (1/2 of an inch)
 -  **margin_top** - used in ``Create`` command to set top margin for a
-   page
+   page (this overrides the **margin** property, if any)
 -  **margin_bottom** - used in ``Create`` command to set bottom margin
-   for a page
+   for a page  (this override the **margin** property, if any)
 -  **margin_left** - used in ``Create`` command to set left margin for a
-   page
+   page (this overrides the **margin** property, if any)
 -  **margin_right** - used in ``Create`` command to set right margin for
-   a page
+   a page (this overrides the **margin** property, if any)
 -  **paper** - used in ``Create`` command to set the paper format in the
    document; either ISO series (A0 down to A8; or B6 down to B0) or a
-   USA type; the default is A4. (*NOTE:* the value for paper is **not**
+   USA type; the default is A4. (**NOTE:** the value for paper is **not**
    wrapped in quotes!)
 -  **radius** - the radius of a ``Circle``
 -  **scaling** - the amount by which an SVG image should be shrunk or
@@ -177,11 +190,17 @@ to set.
 -  **width** - the horizontal dimension of a shape e.g. a ``Rectangle``
    or a bitmap ``Image``
 
+
 Amount- and count-orientated Terms
 ==================================
 `↑ <table-of-contents_>`_
 
 -  **sides** - the number of sides of a ``Polygon`` shape
+
+The concept of counting is also important when creating a ``Track`` or a
+``Sequence`` - each item being created is assigned a *sequence* number
+which can be used for reference.
+
 
 Direction-orientated Terms
 ==========================
@@ -215,7 +234,7 @@ Secondary compass directions (with abbreviations shown in brackets):
 .. NOTE::
 
    *NOTE* - if a compass direction is used in the context of a
-   **hexagon**, the angle is “reinterpreted” to match its context
+   **hexagon**, the angle is "reinterpreted" to match its context
    e.g. the angle for NorthEast for a ‘pointy’ hexagon is 60, not 45,
    degrees.
 
@@ -240,16 +259,19 @@ Properties that use direction include:
    used to show in which corner of a ``RectangularLayout`` that shapes
    should first placed when creating a track
 
+
 Styling-orientated Terms
 ========================
 `↑ <table-of-contents_>`_
 
 -  **dotted** - allows a line to be broken into a series of "dots" (very short
    lines) of length equal to the width of the line being drawn (with gaps
-   inbetween each dot of that same length)
+   inbetween each dot of that same length); to make a line dashed, simply use
+   ``dashed=True``
 -  **dashed** - allows a line to be broken into a series of short lines
    of specific lengths, separated by spaces of specified lengths; there
    can any number of these length/space pairs
+
 
 Display-orientated Terms
 ========================
@@ -261,14 +283,15 @@ Display-orientated Terms
 -  **masked** - a list of locations, indicated by their *sequence
    number* (i.e. their position in the drawing order) which should **not**
    be used for display - the rest are displayed as normal
--  **radii** - if given a value of ``True`` will cause the radii of a polygon
-   to be shown
+-  **radii** - if given a value of ``True`` will cause the radii of a
+   ``Polygon`` to be shown
 -  **shown** - a list of locations, indicated by their *row and
    column* identifier which are the only ones that **must** be used for
    display - the rest are ignored
 -  **visible** - a list of locations, indicated by their *sequence
    number* (i.e. their position in the drawing order)  that **must** be used
    for display - the rest are ignored
+
 
 Miscellaneous Terms
 ===================
@@ -281,7 +304,7 @@ Miscellaneous Terms
    one of *circle*, *rectangle* or *polygon*
 -  **peaks** - a series of sets, each containing a primary compass
    direction and a value, that designate that the edge of a rectangle
-   should be drawn as a triangular “peak”; e.g. a set of ``('n', 2)``
+   should be drawn as a triangular "peak"; e.g. a set of ``('n', 2)``
    would draw a 2cm high triangle on the upper (north) edge
 -  **PNG** - Portable Network Graphic - a file format in which an image can
    be stored; its useful because its supports transparent backgrounds

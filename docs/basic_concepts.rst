@@ -39,8 +39,8 @@ or any other, similar, regular graphical design of your choice.
 
 You will then use Python to "run" the script. Python will take the file
 you have written, and step through it, line by line, from top to bottom,
-to finally create an output PDF file (or, optionally, PNG image) that
-will show the outcome of this process - hopefully with your desired
+to finally create an output PDF file (or, optionally, PNG or GIF image)
+that will show the outcome of this process - hopefully with your desired
 design!
 
 If you want to make changes to the design, then you add to, delete, or
@@ -70,6 +70,8 @@ later on.
 
 In summary - the *order* of instructions in a script is important as this
 will affect what you see at the end!
+
+.. HINT::
 
    For more detail on what goes into a script, see the section on `Script
    Anatomy <script_anatomy.rst>`_.
@@ -158,15 +160,18 @@ a *stroke width* and a *stroke color* (see below for more about the
 concepts of stroke and width). A circle will have its size defined by a
 value for its *radius* or *diameter*, and so on.
 
-   *NOTE:* Because the word "size" is such a general one, its not really
-   used in **pyprototypr**; more specific terms are used instead.
+.. NOTE::
+
+   Because the word "size" is such a general one, its not really
+   used much in **pyprototypr**; more specific terms are used instead.
 
 Similarly, the settings for the creation of a document can be provided,
-such its color, *paper* size and so on.
+such its color, the *paper* size and so on.
 
 All of these kinds of settings are called **properties**. Most of the
-common properties are described in the section covering
-`terminology <terminology.rst>`_.
+common properties are defined in the section covering
+`terminology <terminology.rst>`_ and their usage is covered in
+the section on `core chapes <core_shapes.rst>`_.
 
 
 Working with color
@@ -180,17 +185,20 @@ that appear on the web i.e. in RGB (red-green-blue) *hexadecimal* format
 - for example, ``#A0522D`` represents a shade of the color that we would
 likely term "brown".
 
-   For more details on hexadecimal colors, refer to
-   http://www.w3.org/TR/css3-color.
-
 Colors in **pyprototypr** can also make use of names from a pre-defined
 list - for example ``#A0522D`` is defined as the color *sienna*. The
 `colorset.pdf <../examples/colorset.pdf>`_ file shows all the names and colors
-that are available.  This is an alternate version of the list that can be
-also be found at https://en.wikipedia.org/wiki/X11_color_names
+that are available.
 
 Color properties in **pyprototypr** are typically used via *"fill"* to
 set the color of an area, and *"stroke"* to set the color of a line.
+
+.. HINT::
+
+   For more details on hexadecimal colors, refer to
+   http://www.w3.org/TR/css3-color; the color names are listed in the
+   section https://www.w3.org/TR/css-color-3/#svg-color (this list can
+   also be found at https://en.wikipedia.org/wiki/X11_color_names)
 
 
 Working with units
@@ -211,6 +219,8 @@ In almost all of the rest of the world, the Metric System is in use. In
 centimetres (referred to in **pyprototypr** as *cm*). Alternatively, you
 can choose to use millimetres (abbreviated in **pyprototypr** as *mm*).
 
+.. HINT::
+
    For conversion purposes, 1 inch equals 2.54 centimetres or 25.4
    millimetres.
 
@@ -227,9 +237,10 @@ The "stroke" concept
 
 While the majority of size-based `properties <properties_>`_ in **pyprototypr**
 work with the "normal" units you have chosen - inches or centimetres - some use
-points. These include font height, that you’re likely familiar with, and
-line thickness - termed "stroke width". (The reason for this is to
-maintain consistency with existing tools.)
+points (see `working with units`_ above). These include font height, that you’re
+likely familiar with from word processing programs, and line thickness - termed
+"stroke width". (The reason for doing this is to maintain consistency with other,
+existing tools.)
 
 
 The "default" concept
@@ -239,7 +250,8 @@ The "default" concept
 A "default", in terms of **pyprototypr**, is a value or setting for
 something (usually a `property <properties_>`_) which is used unless you
 specify otherwise. This is helpful for quickly drawing or testing something
-until you're ready to make decisions about your own setting or value.
+until you're ready to make decisions about your own specific settings or
+values.
 
 Some examples of defaults are:
 
@@ -252,7 +264,7 @@ Some examples of defaults are:
    units that equals 1cm
 -  the default line *length* is ``1`` (one) - with default units that is 1cm
 -  the default line *stroke width* is ``1`` point - that corresponds to
-   1/72" (or 0.353 mm)
+   1/72 inches (or 0.353 mm)
 -  the default line *stroke* color is ``black`` - which has a hexadecimal
    value of ``#000000``
 -  the default area *fill* color is ``white`` - which has a hexadecimal

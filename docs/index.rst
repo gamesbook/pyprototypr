@@ -4,7 +4,7 @@ pyprototypr: Table of Contents
 The **pyprototypr** documentation consists of the primary sections listed
 below.
 
-Although its great to be able to "jump in" and just start using a
+Although its great to be able to just "jump in" and start using a
 program, the sections below are designed to be read in order - apart from
 the terminology - as they all contain useful information and build on each
 other.
@@ -30,8 +30,8 @@ other.
     appearance of certain shapes; circles, hexagons and rectangles
 11. `Layouts <layouts.rst>`_ - how to work with different kinds of
     layouts (sequences, tracks and rectangular grids)
-12. `Hexagonal Grids <hexagonal_grids.rst>`_ - how to create designs or
-    layouts on a hexagonal grid
+12. `Hexagonal Grids <hexagonal_grids.rst>`_ - how to create different types
+    of hexagonal grids and customise or add to them
 13. `Terminology <terminology.rst>`_ - summary of common jargon and descriptions
     of many of the elements' properties
 
@@ -39,7 +39,7 @@ The following are supplementary sections that you're likely to need when
 doing more advanced scripts or needing further resources:
 
 14. `Using Python Commands <python_commands.rst>`_ - how to work with
-    loops and if statements for more flexibility
+    *loops* and *if/then* statements for more flexibility
 15. `Descriptions of Supplied Examples <examples/index.rst>`_ - brief
     walkthoughs of many of the examples provided with **pyprototypr**
 16. `Development Notes <development.rst>`_ - notes for programmers wanting

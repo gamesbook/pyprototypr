@@ -27,7 +27,7 @@ Table of Contents
 - `Circular Hexagonal Grid`_
 - `Diamond Hexagonal Grid`_
 - `Grid Locations`_
-- `Grid LinkLines`_
+- `Grid LinkLine`_
 - `Other Hexagonal Grid Resources`_
 
 
@@ -150,7 +150,7 @@ Most coordinate property names are prefixed with ``coord_``.
             rows=2, cols=2,
             fill=darkseagreen,
             hex_offset="odd",
-            coord_position="top",
+            coord_elevation="top",
             coord_type_x="upper",
             coord_separator='::',
         )
@@ -158,7 +158,7 @@ Most coordinate property names are prefixed with ``coord_``.
             side=0.6,
             x=0, y=0,
             rows=2, cols=2,
-            coord_position="middle",
+            coord_elevation="middle",
             coord_prefix='z',
             coord_suffix='!',
         )
@@ -169,7 +169,7 @@ Most coordinate property names are prefixed with ``coord_``.
       - *x* and *y* are used to set the lower-left corner of the grid
       - *rows* sets the number of rows  in the grid
       - *cols* sets the number of columns in the grid
-      - *coord_position* can be ``top``, ``middle`` or ``bottom`` to set
+      - *coord_elevation* can be ``top``, ``middle`` or ``bottom`` to set
         the vertical position of the coordinates text; the horizontal
         always matches to the hexagon's centre
 
@@ -205,7 +205,7 @@ Most coordinate property names are prefixed with ``coord_``.
             orientation='pointy',
             fill=darkseagreen,
             hex_offset="odd",
-            coord_position="top",
+            coord_elevation="top",
             coord_type_x="upper",
             coord_separator='::',
         )
@@ -214,7 +214,7 @@ Most coordinate property names are prefixed with ``coord_``.
             x=0, y=0,
             rows=2, cols=2,
             orientation='pointy',
-            coord_position="middle",
+            coord_elevation="middle",
             coord_prefix='z',
             coord_suffix='!',
         )
@@ -226,7 +226,7 @@ Most coordinate property names are prefixed with ``coord_``.
       - *rows* sets the number of rows  in the grid
       - *cols* sets the number of columns in the grid
       - *orientation* set to ``pointy`` to have hexagons with pointed tops
-      - *coord_position* can be ``top``, ``middle`` or ``bottom`` to set
+      - *coord_elevation* can be ``top``, ``middle`` or ``bottom`` to set
         the vertical position of the coordinate text
 
       The green grid also has:
@@ -391,7 +391,7 @@ Offset
             hex_offset="odd",
             orientation='pointy',
             fill=darkseagreen,
-            coord_position="middle",
+            coord_elevation="middle",
             coord_font_size=5,
             coord_separator=' r',
             coord_prefix='c',
@@ -401,7 +401,7 @@ Offset
             x=0, y=0,
             rows=3, cols=3,
             hex_offset="odd",
-            coord_position="middle",
+            coord_elevation="middle",
             coord_font_size=5,
             coord_separator=' r',
             coord_prefix='c',
@@ -866,41 +866,163 @@ Example 4.  Locations & Col/Row
 ===== ======
 
 
-Grid LinkLines
-==============
+Grid LinkLine
+=============
 `↑ <table-of-contents_>`_
 
-Rhe ``LinkLines()`` command allows the creation of lines to join one or more
+The ``LinkLine()`` command allows the creation of a line to join one or more
 hexagons within a hexagonal grid.
 
-These commands should work with any of the types of hexgonal grid layouts
+This command should work with any of the types of hexagonal grid layouts
 described above.
 
+All of the examples below make use of the same underlying hexagonal grid:
 
-Example 1.  Basic LinkLines
----------------------------
-
-.. |ll0| image:: images/custom/hexagonal_grid/hexgrid_location_basic.png
-   :width: 330
-
-===== ======
-|ll0| This example shows a location constructed using the command:
-
-      .. code:: python
+    .. code:: python
 
         hexgrid = Hexagons(
             side=0.5,
             x=0, y=0,
             rows=6, cols=4,
+            coord_elevation='top'
         )
 
-      The ``Hexagons`` grid is constructed as per the examples described in
-      the `Rectangular Hexagonal Grid`_ section.  The grid is assigned the
-      name *hexgrid* so it's result can be reused.
+The grid is assigned the name *hexgrid* so it's result can be reused.
 
-      The ``Locations`` command  has the following properties:
 
-      The default way to identify a
+Example 1. A Single LinkLine
+----------------------------
+`^ <Grid LinkLine_>`_
+
+.. |ll0| image:: images/custom/hexagonal_grid/hexgrid_linkline_single.png
+   :width: 330
+
+===== ======
+|ll0| This example shows a ``LinkLine`` constructed using the command:
+
+      .. code:: python
+
+        LinkLine(
+            grid=hexgrid,
+            locations="0101,0403"
+        )
+
+      The ``LinkLine`` command  has the following properties:
+
+      - the *grid* used is *hexgrid* (as defined for all these examples)
+      - the *locations* ``"0101,0403"`` represent the coordinates of the start
+        and end locations in the grid, between which the line is drawn. By
+        default, the line uses the *x* and *y* values of the centre of the
+        hexagon in which it starts or ends, and uses the default styling.
+
+===== ======
+
+
+Example 2. A Double LinkLine
+----------------------------
+`^ <Grid LinkLine_>`_
+
+.. |ll1| image:: images/custom/hexagonal_grid/hexgrid_linkline_double.png
+   :width: 330
+
+===== ======
+|ll1| This example shows a ``LinkLine`` constructed using the command:
+
+      .. code:: python
+
+        LinkLine(
+            hexgrid,
+            "0101,0403,0104"
+        )
+
+      The ``LinkLine`` command  has the following properties:
+
+      - the grid used is *hexgrid* (as defined for all these examples)
+      - ``"0101,0403,0104"`` represent the coordinates of multiple start and
+        end locations in the grid, between which the line is drawn. The first
+        is drawn between the first and second hexagon; the second between the
+        second and third hexagon specified. By default, the lines use
+        the *x* and *y* values of the centre of the hex in which they start
+        or end, and use the default styling.
+
+      **Note** that in this example, the *grid=* and *locations=* are ommitted;
+      the program can just use the values presented, provided they are in the
+      correct order.
+
+===== ======
+
+
+Example 3. A Styled LinkLine
+----------------------------
+`^ <Grid LinkLine_>`_
+
+.. |ll2| image:: images/custom/hexagonal_grid/hexgrid_linkline_multi_style.png
+   :width: 330
+
+===== ======
+|ll2| This example shows a ``LinkLine`` constructed using the command:
+
+      .. code:: python
+
+        LinkLine(
+            hexgrid,
+            ["0101","0403","0104","0406"],
+            common=Common(stroke=tomato, stroke_width=2)
+        )
+        LinkLine(
+            hexgrid,
+            ["0104","0406"],
+            common=Common(stroke=aqua, stroke_width=2)
+        )
+
+      The ``LinkLine`` commands have the following properties:
+
+      - the grid used is *hexgrid* (as defined for all these examples)
+      - ``["0101","0403","0104","0406"]`` and ```["0104","0406"]`` represent
+        the coordinates of multiple start and end locations in the grid,
+        between which the lines are drawn. In this example, the locations are
+        define as individual strings in a list. By default, the lines use the
+        *x* and *y* values of the centre of the hex in which they start or end.
+      - *common* - this third property defines the styling for the line
+
+===== ======
+
+
+Example 4. An Offset LinkLine
+-----------------------------
+`^ <Grid LinkLine_>`_
+
+.. |ll3| image:: images/custom/hexagonal_grid/hexgrid_linkline_offset.png
+   :width: 330
+
+===== ======
+|ll3| This example shows a ``LinkLine`` constructed using the command:
+
+      .. code:: python
+
+        LinkLine(
+            hexgrid,
+            [("0101", 0.25, 0.25),
+             ("0403", -0.25, -0.25),
+             ("0104", 0.0, 0.25),
+             ("0104", 0.25, -0.25)],
+            common=Common(
+                stroke=tomato, stroke_width=1, dotted=True)
+        )
+
+      The ``LinkLine`` command  has the following properties:
+
+      - the grid used is *hexgrid* (as defined for all these examples)
+      - the series of set values - such as ``("0101", 0.25, 0.25)`` - represent
+        both the coordinates of the location in the grid, as well as the
+        **offset** values -  *x* and *y*  - relative to  the centre of the hex
+        in which the line starts (or ends). Positive values for the offset move
+        the *x* and *y*  up and to the right of the centre; negatives move
+        the *x* and *y* down and to the left of the centre
+      - *common* - this third property defines the styling for the line
+
+      Note that its possible to define the start and end as different offsets
+      within the **same** hexagon.
 
 ===== ======
 
@@ -910,8 +1032,8 @@ Other Hexagonal Grid Resources
 `↑ <table-of-contents_>`_
 
 There are already a number of software tools available for creating
-hexagonal grids of various kinds. A few of them, some of which are
-game-specific - for example, the so-called
+hexagonal grids of various kinds and for different purposes. A few of
+them, some of which are game-specific - for example, the so-called
 `18XX <https://en.wikipedia.org/wiki/18XX>`_ series, are listed below:
 
 -  *HEXGRID* (https://hamhambone.github.io/hexgrid/) - an online hex
@@ -933,6 +1055,8 @@ game-specific - for example, the so-called
    printing.
 -  *ps18xx* (https://github.com/18xx/ps18xx/tree/master) - software for
    running 18XX email games, and creating maps and tile sheets.
+-  *LATEX wargame package* (https://wargames_tex.gitlab.io/wargame_www/tools.html) - a
+   package for LaTeX for authoring hex’n’counter wargames.
 
 The options and facilities provided by these tools have been the primary
 inspiration for how hexagonal grids work in **pyprototypr**. So if the

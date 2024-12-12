@@ -285,8 +285,10 @@ def tuple_split(
     else:
         return values
 
+'''
+'''
 
-def sequence_split(string):
+def sequence_split(string: str, as_int: bool = True, unique: bool = True):
     """
     Split a string into a list of individual values
 
@@ -296,8 +298,14 @@ def sequence_split(string):
     []
     >>> sequence_split('3')
     [3]
+    >>> sequence_split('3', False)
+    ['3']
     >>> sequence_split('3,4,5')
     [3, 4, 5]
+    >>> sequence_split('3,4,5', False, False)
+    ['3', '4', '5']
+    >>> x = sequence_split('3,4,5', False)
+    >>> assert '5' in x
     >>> sequence_split('3-5,6,1-4')
     [1, 2, 3, 4, 5, 6]
     """
@@ -314,20 +322,32 @@ def sequence_split(string):
             return values
     else:
         return values
+    # simple single value
     try:
-        values.append(int(_string))
-        return values
+        if as_int:
+            values.append(int(_string))
+            return values
     except Exception:
-        _strings = _string.split(",")
-        # log.debug('strings:%s', _strings)
-        for item in _strings:
-            if "-" in item:
-                _strs = item.split("-")
-                seq_range = list(range(int(_strs[0]), int(_strs[1]) + 1))
-                values = values + seq_range
-            else:
+        pass
+    # multi-values
+    _strings = _string.split(",")
+    # log.debug('strings:%s', _strings)
+    for item in _strings:
+        if "-" in item:
+            _strs = item.split("-")
+            seq_range = list(range(int(_strs[0]), int(_strs[1]) + 1))
+            if not as_int:
+                seq_range = [str(val) for val in seq_range]
+            values = values + seq_range
+        else:
+            if as_int:
                 values.append(int(item))
-    return list(set(values))  # unique
+            else:
+                values.append(item)
+
+    if unique:
+        return list(set(values))  # unique
+    return values
 
 
 def integer_pairs(pairs, label: str = 'list') -> list:
