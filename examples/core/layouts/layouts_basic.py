@@ -15,8 +15,8 @@ Create(filename="layouts_basic.pdf",
        stroke_width=0.5)
 
 header = Common(x=0, y=6, font_size=7, align="left")
-circles = Common(x=0, y=0, diameter=1.0, label="{{sequence}}//{{col}}-{{row}}", label_size=6)
-a_circle = circle(common=circles)
+a_circle = circle(
+    x=0, y=0, diameter=1.0, label="{{sequence}}//{{col}}-{{row}}", label_size=6)
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Rect.Locations: debug > no label")
@@ -25,9 +25,9 @@ Layout(rect, debug='none')
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rec.Locations: debug > count")
+Text(common=header, text="Rec.Locations: debug > sequence")
 rect = RectangularLocations(cols=3, rows=4, x=0.5, y=0.5)
-Layout(rect, debug='count')
+Layout(rect, debug='sequence')
 PageBreak()
 
 Blueprint(stroke_width=0.5)
@@ -120,7 +120,7 @@ Save(
      dpi=300,
      directory="docs/images/layouts",
      names=[
-        "rect_basic_debug", "rect_basic_debug_count", "rect_basic_debug_xy",
+        "rect_basic_debug", "rect_basic_debug_sequence", "rect_basic_debug_xy",
         "rect_basic_debug_colrow",
         "rect_basic_default",
         "rect_basic_east", "rect_basic_east_even",  "rect_basic_east_odd",

@@ -15,7 +15,7 @@ Create(filename="layouts_shapes_outer.pdf",
        stroke_width=0.5)
 
 header = Common(x=0, y=6, font_size=6, align="left")
-is_common = Common(label="{count}")
+is_common = Common(label="{{sequence}}")
 rct_common = Common(label_size=5, points=[('s', 0.1)], height=0.5, width=0.5)
 
 # ---- multi-shapes
@@ -24,7 +24,7 @@ sqr = square(common=is_common, side=0.9, label_size=6)
 sqr5 = square(common=is_common, side=1.0, label_size=8, fill=yellow)
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Locations: SW->north/outer + count")
+Text(common=header, text="Rect.Locations: SW->north/outer + sequence")
 rect = RectangularLocations(
     x=0.5, y=0.5, cols=4, rows=5, interval=1,
     start="SW", direction="north", pattern="outer")
@@ -48,11 +48,11 @@ PageBreak()
 
 # ---- rotations + corners
 
-circ = circle(label="{count_zero}", label_size=5, radius=0.26, fill=rosybrown)
+circ = circle(label="{{sequence - 1}}", label_size=5, radius=0.26, fill=rosybrown)
 rct2 = rectangle(
-    common=rct_common, label="{count_zero}", fill=tan)
+    common=rct_common, label="{{sequence - 1}}", fill=tan)
 rct3 = rectangle(
-    common=rct_common, label="{count_zero}", fill=maroon, stroke=rosybrown)
+    common=rct_common, label="{{sequence - 1}}", fill=maroon, stroke=rosybrown)
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Rect.Locations: SW/outer + rotate + corner")

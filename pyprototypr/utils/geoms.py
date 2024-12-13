@@ -19,7 +19,7 @@ Point = namedtuple("Point", ["x", "y"])
 # point with corresponding angle of a line passing through it
 AngledPoint = namedtuple("AngledPoint", ["x", "y", "angle"])
 Link = namedtuple("Link", ["a", "b", "style"])
-fields = ("col", "row", "x", "y", "id", "count", "corner", "label", "sequence")
+fields = ("col", "row", "x", "y", "id", "sequence", "corner", "label")
 Locale = namedtuple("Locale", fields, defaults=(None,) * len(fields))
 Place = namedtuple("Place", ["shape", "rotation"])
 

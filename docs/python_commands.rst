@@ -79,7 +79,7 @@ the following kind of statement:
 
   .. code:: python
 
-   for count in range(1, 4):
+   for number in range(1, 4):
        add_egg()
        add_flour()
        mix()
@@ -90,8 +90,8 @@ In this case the first line is the loop set-up:
 -  the *range* part limits how many times the loop will happen by using
    a start and end value inside a pair of brackets (the 1 and 4
    respectively);
--  *count* stores how many times the loop has happened so far (for the very
-   first time the value of count will be set to the start value of 1).
+-  *number* stores how many times the loop has happened so far (for the very
+   first time the value of number will be set to the start value of 1).
 
 The first line ends with ``:`` to show that it is expected that more lines
 will follow that describe what must happen each time the program goes through
@@ -105,10 +105,10 @@ concept of actions… more practical examples are shown below!).
 
 Once the action(s) have been carried out, the program goes back to the
 line with the ``for`` line - this is where the “loop” concept comes from
-- to increase the ``count`` value and prepare to carry out the action(s)
+- to increase the ``number`` value and prepare to carry out the action(s)
 again.
 
-   NOTE: When the value stored in ``count`` matches that of the ``end``
+   NOTE: When the value stored in ``number`` matches that of the ``end``
    value, the loop will stop right away and **not** process any of the
    action(s) again.
 
@@ -117,17 +117,17 @@ number of times; for example:
 
   .. code:: python
 
-    for count in range(1, 4):
-        Circle(x=1, y=count)
+    for number in range(1, 4):
+        Circle(x=1, y=number)
 
 Here the value of ``y`` for the Circle will be set to a different number
 every time the loop operates. For the first time it will have a value of
 1 (one); the second time a value of 2 (two); and the third time value of
-3 (three) - as noted above, when count reaches the value of 4, the loop
+3 (three) - as noted above, when number reaches the value of 4, the loop
 ends right away. This loop will cause a Circle to be drawn in three
 different ``y`` locations on the page.
 
-You can combine the value of the count with other information to do more
+You can combine the value of the number with other information to do more
 complex kinds of operations. In this next example, the values for ``y``
 will be 0.5, 1.0 and 1.5 over the three iterations of the loop:
 
@@ -136,21 +136,21 @@ will be 0.5, 1.0 and 1.5 over the three iterations of the loop:
     for y_location in range(1, 4):
         Circle(x=1, y=y_location*0.5)
 
-Note that we have used a different word in place of the usual ``count``.
+Note that we have used a different word in place of the usual ``number``.
 It does not matter too much which word you use; so pick one that makes
 sense in terms of what you’re trying to achieve by using it.
 
-The value of the loop count normally goes up by 1 each time; but you can
+The value of the loop counter normally goes up by 1 each time; but you can
 set a third value, inside the brackets, for the ``range`` that is a
 different increment number. For example:
 
   .. code:: python
 
-    for count in range(1, 7, 2):
-        Circle(x=1, y=count)
+    for number in range(1, 7, 2):
+        Circle(x=1, y=number)
 
-Here count takes on the values 1, 3 and 5; because the third value of 2
-is added to the count value each time the loop operates. When count
+Here number takes on the values 1, 3 and 5; because the third value of 2
+is added to the number value each time the loop operates. When number
 reaches 7, the loop ends right away.
 
 Multiple Loops
@@ -238,14 +238,14 @@ An ``if`` statement can be used inside a loop, for example:
 
   .. code:: python
 
-    for count in range(1, 5):
-        if count < 3:
-            Circle(x=1, y=count)
+    for number in range(1, 5):
+        if number < 3:
+            Circle(x=1, y=number)
         else:
-            Rectangle(x=1, y=count)
+            Rectangle(x=1, y=number)
 
 Here, the script will either draw a ``Circle`` or a ``Rectangle`` depending
-on the value of ``count``: if its less than than 3 (the ``<`` comparison is
+on the value of ``number``: if its less than than 3 (the ``<`` comparison is
 a “less than” check), then draw a ``Circle``, otherwise if its 3 or more, then
 draw a ``Rectangle``.
 
@@ -261,14 +261,14 @@ This example is shown below.
 
         Blueprint()
         Text(common=txt, text="Loop and If")
-        for count in range(1, 5):
-            if count < 3:
-                Circle(x=1, y=count, label=count)
+        for number in range(1, 5):
+            if number < 3:
+                Circle(x=1, y=number, label=number)
             else:
-                Rectangle(x=1, y=count, label=count)
+                Rectangle(x=1, y=number, label=number)
         PageBreak()
 
-      The value of ``count`` can easily be seen as it is used to
+      The value of ``number`` can easily be seen as it is used to
       create the text for the shape's label.
 ===== ======
 

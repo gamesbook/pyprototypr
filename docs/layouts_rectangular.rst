@@ -125,15 +125,14 @@ the name *a_circle*) defined as:
 
   .. code:: python
 
-    circles = Common(
+    a_circle = circle(
         x=0, y=0, diameter=1.0,
         label="{{sequence}}//{{col}}-{{row}}", label_size=6)
-    a_circle = circle(common=circles)
 
 In these examples, the placeholder names ``{{sequence}}``, ``{{col}}``
 and ``{{row}}`` will be replaced, in the label for the Circle, by the
 values for the row and column in which that circle is placed, as well as
-by the sequence number (order) in which that Circle is drawn.
+by the sequence value - or order number - in which that Circle gets drawn.
 
 Example 1. Rows and Columns
 ---------------------------
@@ -342,13 +341,13 @@ Example 6c. Outer Edge - Rotation
         rct_common = Common(
             label_size=5, points=[('s', 0.1)], height=0.5, width=0.5)
         circ = circle(
-            label="{count_zero}",
+            label="{{sequence - 1}}",
             label_size=5, radius=0.26, fill=rosybrown)
         rct2 = rectangle(
-            common=rct_common, label="{count_zero}",
+            common=rct_common, label="{{sequence - 1}}",
             fill=tan)
         rct3 = rectangle(
-            common=rct_common, label="{count_zero}",
+            common=rct_common, label="{{sequence - 1}}",
             fill=maroon, stroke=white)
 
         locs = RectangularLocations(
@@ -367,9 +366,10 @@ Example 6c. Outer Edge - Rotation
       This example also shows how to provide multiple copies of multiple
       shapes that will be drawn.
 
-      Labels are created by use of the ``{count_zero}`` placeholder; appending
-      the ``_zero`` to the usual ``count`` means the numbering starts from
-      zero.
+      Labels are created by use of the ``{{sequence - 1}}`` placeholder; using
+      `` - 1`` after the usual ``sequence`` means that the value of 1 is
+      subtracted from every sequence number, and also means that in this case
+      the numbering will start from zero not one.
 
       It adds *rotations* settings for specific sequence values in a list of
       sets of value; for example, ``("17-24", 270)`` rotates the shapes at all
@@ -465,7 +465,7 @@ Example 10. Debug
 
 ===== ======
 
-.. |10b| image:: images/layouts/rect_basic_debug_count.png
+.. |10b| image:: images/layouts/rect_basic_debug_sequence.png
    :width: 330
 
 ===== ======
@@ -476,7 +476,7 @@ Example 10. Debug
 
         rect = RectangularLocations(
             cols=3, rows=4, x=0.5, y=0.5)
-        Layout(rect, debug='count')
+        Layout(rect, debug='sequence')
 
 ===== ======
 

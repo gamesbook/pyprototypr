@@ -28,6 +28,7 @@ class GridShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(GridShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        self.kwargs = kwargs
         self.use_side = False
         if 'side' in kwargs:
             self.use_side = True
@@ -36,8 +37,9 @@ class GridShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a grid on a given canvas."""
-        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        kwargs = self.kwargs | kwargs
         cnv = cnv.canvas if cnv else self.canvas.canvas
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         # ---- convert to using units
         x = self._u.x + self._o.delta_x
         y = self._u.y + self._o.delta_y
@@ -72,10 +74,15 @@ class DotGridShape(BaseShape):
     Dot Grid on a given canvas.
     """
 
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(DotGridShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        self.kwargs = kwargs
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a dot grid on a given canvas."""
-        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        kwargs = self.kwargs | kwargs
         cnv = cnv.canvas if cnv else self.canvas.canvas
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         # ---- convert to using units
         x = 0 + self.unit(self.offset_x)
         y = 0 + self.unit(self.offset_y)
@@ -114,6 +121,19 @@ class SequenceShape(BaseShape):
     """
     Set of shapes drawn at points
     """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(SequenceShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        self.kwargs = kwargs
+        self._object = _object or TextShape(_object=None, canvas=canvas, **kwargs)
+        self.setting = kwargs.get('setting', (1, 1, 1, 'number'))
+        if isinstance(self.setting, list):
+            self.setting_list = self.setting
+        else:
+            self.calculate_setting_list()
+
+        self.gap_x = self.gap_x or self.gap
+        self.gap_y = self.gap_y or self.gap
 
     def calculate_setting_list(self):
         if not isinstance(self.setting, tuple):
@@ -172,21 +192,10 @@ class SequenceShape(BaseShape):
                 f"Unable to evaluate Sequence setting '{self.setting}';"
                 " - please check and try again!", True)
 
-    def __init__(self, _object=None, canvas=None, **kwargs):
-        super(SequenceShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        self._object = _object or TextShape(_object=None, canvas=canvas, **kwargs)
-        self.setting = kwargs.get('setting', (1, 1, 1, 'number'))
-        if isinstance(self.setting, list):
-            self.setting_list = self.setting
-        else:
-            self.calculate_setting_list()
-
-        self.gap_x = self.gap_x or self.gap
-        self.gap_y = self.gap_y or self.gap
-
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        log.debug("gx:%s gy:%s", self.gap_x, self.gap_y)
-        # tools.feedback(f'* @Seqnc@ {self.label=} // {off_x=}, {off_y=}')
+        kwargs = self.kwargs | kwargs
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         _off_x, _off_y = off_x, off_y
 
         for key, item in enumerate(self.setting_list):
@@ -199,7 +208,6 @@ class SequenceShape(BaseShape):
             log.debug("flat_eles:%s", flat_elements)
             for each_flat_ele in flat_elements:
                 flat_ele = copy.copy(each_flat_ele)  # allow props to be reset
-                # print(f" @@LAY@@ {flat_ele=}")
                 try:  # normal element
                     if self.deck_data:
                         new_ele = self.handle_custom_values(flat_ele, _ID)
@@ -208,7 +216,6 @@ class SequenceShape(BaseShape):
                     new_ele.draw(off_x=off_x, off_y=off_y, ID=_ID, **kwargs)
                 except AttributeError:
                     new_ele = flat_ele(cid=_ID) if flat_ele else None
-                    # print(f"   @@LAY@@ {new_ele=}, type={type(new_ele)}")
                     if new_ele:
                         flat_new_eles = tools.flatten(new_ele)
                         log.debug("%s", flat_new_eles)
@@ -218,7 +225,6 @@ class SequenceShape(BaseShape):
                                 new_flat_new_ele = self.handle_custom_values(flat_new_ele, _ID)
                             else:
                                 new_flat_new_ele = flat_new_ele
-                            # print(f"   @@LAY@@ {new_flat_new_ele=}, type={type(new_flat_new_ele)}")
                             new_flat_new_ele.draw(
                                 off_x=off_x, off_y=off_y, ID=_ID, **kwargs
                             )
@@ -233,6 +239,7 @@ class RepeatShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(RepeatShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        self.kwargs = kwargs
         # UPDATE SELF WITH COMMON
         if self.common:
             attrs = vars(self.common)
@@ -274,9 +281,9 @@ class RepeatShape(BaseShape):
                 pass
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
-        # print("o:%s oc:%s od:%s" % (self.offset, self.offset_across, self.offset_down))
-        # print("m:%s ml:%s mr:%s", (self.margin, self.margin_left, self.margin_right))
-        # print("ga:%s gd:%s", self.gap_x, self.gap_y)
+        kwargs = self.kwargs | kwargs
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
 
         for col in range(self.cols):
             for row in range(self.rows):
@@ -310,7 +317,6 @@ class VirtualShape():
     """
     Common properties and methods for all virtual shapes (layout and track)
     """
-    global cnv
 
     def to_int(self, value, label='', maximum=None, minimum=None) -> int:
         """Set a value to an int; or stop if an invalid value."""
@@ -347,8 +353,6 @@ class VirtualLocations(VirtualShape):
     Virtual Locations are not drawn on the canvas; they provide the
     locations/points where user-defined shapes will be drawn.
     """
-    global cnv
-    global deck
 
     def __init__(self, rows, cols, **kwargs):
         kwargs = kwargs
@@ -450,11 +454,10 @@ class RectangularLocations(VirtualLocations):
     """
     Common properties and methods to define a virtual rectangular layout.
     """
-    global cnv
-    global deck
 
     def __init__(self, rows=2, cols=2, **kwargs):
         super(RectangularLocations, self).__init__(rows, cols, **kwargs)
+        self.kwargs = kwargs
         _spacing = kwargs.get('spacing', 1)
         self.spacing = tools.as_float(_spacing, 'spacing')
         if kwargs.get('col_spacing'):
@@ -725,11 +728,10 @@ class TriangularLocations(VirtualLocations):
     """
     Common properties and methods to define  virtual triangular locations.
     """
-    global cnv
-    global deck
 
     def __init__(self, rows=2, cols=2, **kwargs):
         super(TriangularLocations, self).__init__(rows, cols, **kwargs)
+        self.kwargs = kwargs
         self.start = kwargs.get('start', 'north')
         self.facing = kwargs.get('facing', 'north')
         if (self.cols < 2 and self.rows < 1) or (self.cols < 1 and self.rows < 2):
@@ -845,11 +847,10 @@ class DiamondLocations(VirtualLocations):
     """
     Common properties and methods to define virtual diamond locations.
     """
-    global cnv
-    global deck
 
     def __init__(self, rows=1, cols=2, **kwargs):
         super(DiamondLocations, self).__init__(rows, cols, **kwargs)
+        self.kwargs = kwargs
         if (self.cols < 2 and self.rows < 1) or (self.cols < 1 and self.rows < 2):
             tools.feedback(
                 f"Minimum layout size is 2x1 or 1x2 (cannot use {self.cols }x{self.rows})!",
@@ -877,14 +878,16 @@ class ConnectShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(ConnectShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        self.kwargs = kwargs
         # overrides
         self.shape_from = kwargs.get("shape_from", None)  # could be a GridShape
         self.shape_to = kwargs.get("shape_to", None)  # could be a GridShape
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a connection (line) between two shapes on given canvas."""
-        cnv = cnv
-        ID = ID
+        kwargs = self.kwargs | kwargs
+        cnv = cnv.canvas if cnv else self.canvas.canvas
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         # ---- style
         style = self.style or "direct"
         # ---- shapes and positions

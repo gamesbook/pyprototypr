@@ -21,7 +21,7 @@ header = Common(x=0, y=6, font_size=6, align="left")
 Blueprint(stroke_width=0.5)
 Text(common=header, text="TriangularLocations: debug + no label")
 tri = TriangularLocations()
-Locations(tri, debug='n')
+Locations(tri, [], [], debug='n')
 PageBreak()
 
 # ---- default sizes - all facings

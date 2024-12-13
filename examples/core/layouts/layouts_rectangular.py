@@ -15,15 +15,15 @@ Create(filename="layouts_basic_rectangular.pdf",
        stroke_width=0.5)
 
 header = Common(x=0, y=6, font_size=6, align="left")
-circles = Common(x=0, y=0, diameter=1.0, label="{{sequence}}//{{col}}-{{row}}", label_size=6)
-a_circle = circle(common=circles)
+a_circle = circle(
+    x=0, y=0, diameter=1.0, label="{{sequence}}//{{col}}-{{row}}", label_size=6)
 
 # ---- regular
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Rect.Locations: NW->south")
-rect = RectangularLocations(cols=3, rows=3, start="NW", direction="south")
-Layout(rect, shapes=[a_circle,])
+rect = RectangularLocations(cols=2, rows=2, start="NW", direction="south")
+Layout(rect, shapes=[a_circle,], debug='xy')
 PageBreak()
 
 Blueprint(stroke_width=0.5)
@@ -168,7 +168,6 @@ rect = RectangularLocations(cols=3, rows=4, start="SW", direction="north", patte
 Layout(rect, shapes=[a_circle,])
 PageBreak()
 
-# Save()
 Save(
     output='png',
     dpi=300,

@@ -1296,6 +1296,7 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
 def Locations(grid: list, labels: Union[str, list], shapes: list, **kwargs):
     kwargs = kwargs
 
+    breakpoint()
     if grid is None or not isinstance(grid, list):
         tools.feedback("The grid (as a list) must be supplied!", True)
     if labels is None:
@@ -1304,7 +1305,7 @@ def Locations(grid: list, labels: Union[str, list], shapes: list, **kwargs):
         tools.feedback("No list of shapes supplied!", True)
     if isinstance(labels, str):
         _labels = [_label.strip() for _label in labels.split(',')]
-        if labels.lower() == 'all':
+        if labels.lower() == 'all' or labels.lower() == '*':
             _labels = []
             for loc in grid:
                 if isinstance(loc, Locale):
@@ -1486,7 +1487,7 @@ def Layout(grid, **kwargs):
                     f'Unable to convert "{_key}" into a range of values.')
             for the_key in _keys:
                 rotation_sequence[the_key] = rotate
-    # print(f"{rotation_sequence=}")
+
     # ---- iterate through locations & draw shape(s)
     for count, loc in _locations:
         if masked and count + 1 in masked:  # ignore if IN masked
@@ -1501,7 +1502,6 @@ def Layout(grid, **kwargs):
         if shapes:
             # ---- * extract shape data
             rotation = rotation_sequence.get(count + 1, 0)  # default rotation
-            # print(f"{rotation=} {count=}")
             if isinstance(shapes[shape_id], BaseShape):
                 _shape = shapes[shape_id]
             elif isinstance(shapes[shape_id], tuple):
@@ -1525,37 +1525,38 @@ def Layout(grid, **kwargs):
             if corners_dict:
                 if loc.corner in corners_dict.keys():
                     _shape = corners_dict[loc.corner]
+
+            # ---- * set shape to enable overwrite/change of properties
+            shape = copy(_shape)
+
+            # DEPRECATED - now use jinja2 templates
             # ---- * update shape's text fields
-            shape = copy(_shape)  # enable overwrite/change of properties
-            data = {
-                'col': loc.col, 'row': loc.row, 'x': loc.x, 'y': loc.y,
-                'count': count + 1, 'count_zero': count}
-            # tools.feedback(f'{data=}')
-            # tools.feedback(f'{loc=}')
-            try:
-                shape.label = shapes[shape_id].label.format(**data)  # replace {xyz} entries
-                shape.title = shapes[shape_id].title.format(**data)
-                shape.heading = shapes[shape_id].heading.format(**data)
-            except KeyError as err:
-                text = str(err).split()
-                tools.feedback(
-                    f'You cannot use {text[0]} as a special field; remove the {{ }} brackets',
-                    True)
+            # data = {
+            #     'col': loc.col, 'row': loc.row, 'x': loc.x, 'y': loc.y,
+            #     'count': count + 1, 'count_zero': count}
+            # try:
+            #     shape.label = shapes[shape_id].label.format(**data)  # replace {xyz} entries
+            #     shape.title = shapes[shape_id].title.format(**data)
+            #     shape.heading = shapes[shape_id].heading.format(**data)
+            # except KeyError as err:
+            #     text = str(err).split()
+            #     tools.feedback(
+            #         f'You cannot use {text[0]} as a special field; remove the {{ }} brackets',
+            #         True)
+
             # ---- * execute shape.draw()
             cx = loc.x * shape.units + shape._o.delta_x
             cy = loc.y * shape.units + shape._o.delta_y
-            shape.draw(
-                _abs_cx=cx,
-                _abs_cy=cy,
-                rotation=rotation,
-                locale=Locale(
-                    sequence=loc.sequence,
-                    col=loc.col,
-                    row=loc.row,
-                    x=loc.x,
-                    y=loc.y
-                )
+            locale = Locale(
+                col=loc.col,
+                row=loc.row,
+                x=loc.x,
+                y=loc.y,
+                id=f'{loc.col}:{loc.row}',
+                sequence=loc.sequence,
             )
+            _locale = locale._asdict()
+            shape.draw(_abs_cx=cx, _abs_cy=cy, rotation=rotation, locale=_locale)
             shape_id += 1
         if shape_id > len(shapes) - 1:
             shape_id = 0  # reset and start again
@@ -1568,7 +1569,7 @@ def Layout(grid, **kwargs):
                 case 'id' | 'i':
                     Dot(x=loc.x, y=loc.y, label=loc.id,
                         stroke=DEBUG_COLOR, fill=DEBUG_COLOR)
-                case 'count' | 'c':
+                case 'sequence' | 's':
                     Dot(x=loc.x, y=loc.y, label=f'{loc.sequence}',
                         stroke=DEBUG_COLOR, fill=DEBUG_COLOR)
                 case 'xy' | 'xy':
@@ -1629,7 +1630,7 @@ def Track(track=None, **kwargs):
             tools.feedback(f"The rotation_style '{rotation_style}' is not valid", True)
     else:
         _rotation_style = None
-    shapes = kwargs.get('shapes', [square(label="{count}")])  # shape(s) to draw at the locations
+    shapes = kwargs.get('shapes', [square(label="{{sequence}}")])  # shape(s) to draw at the locations
 
     # ---- create Circle vertices
     if track_name == 'CircleShape':
@@ -1677,7 +1678,7 @@ def Track(track=None, **kwargs):
         shape = copy(shapes[shape_id])
         # ---- * supply data to text fields
         data = {'x': track_point.x, 'y': track_point.y, 'count': index + 1}
-        format_label(shape, data)
+        # format_label(shape, data)
         # ---- supply data to change shape's location
         # TODO - can choose line centre, not vertex, as the cx,cy position
         shape.cx = shape.points_to_value(track_point.x - track._o.delta_x)
@@ -1696,7 +1697,14 @@ def Track(track=None, **kwargs):
             shape_rotation = 0
         shape.set_unit_properties()
         # tools.feedback(f'Track*** {shape._u}')
-        shape.draw(cnv=globals.cnv, rotation=shape_rotation)
+        locale = Locale(
+            x= track_point.x,
+            y= track_point.y,
+            id=index,
+            sequence=index + 1,
+        )
+        _locale = locale._asdict()
+        shape.draw(cnv=globals.cnv, rotation=shape_rotation, locale=_locale)
         shape_id += 1
         if shape_id > len(shapes) - 1:
             shape_id = 0  # reset and start again

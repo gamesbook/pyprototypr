@@ -16,8 +16,9 @@ Table of Contents
 -  `Names and Naming`_
 -  `Values: Text, Numbers and Booleans`_
 -  `Assigned Names`_
--  `Calculations`_
 -  `Case-sensitivity`_
+-  `Calculations`_
+-  `Changeable Values`_
 -  `Quotes in Text`_
 -  `Properties and Short-cuts`_
 -  `Lists`_
@@ -115,24 +116,6 @@ This value - ``green_dots`` - is in turn created when is assigned to the
 ``Common`` command.
 
 
-Calculations
-============
-`↑ <table-of-contents_>`_
-
-Because **pyprototypr** is able to use any of Python's built-in functionality,
-your script can make use of tools such as the ability to perform calculations.
-
-Basic arithmetic includes *addition* (``1+1``), *subtraction* (``1-1``),
-*multiplication* (``1*1``), and *division* (``1/1``).  The ability to raise
-a number to a given power is included (``2**3``).
-
-Even though its not essential to use them, adding calculations can make a
-script easier to read. For example, if working with inches as units, then a
-fractional value can be set like this: ``x=5/16`` - while this is numerically
-the same as ``x=0.3125`` its easier to understand the purpose of the
-calculation.
-
-
 Case-sensitivity
 ================
 `↑ <table-of-contents_>`_
@@ -152,6 +135,51 @@ will create and draw a ``Rectangle`` shape on the page; but::
 will create a ``Rectangle`` shape, and assign a reference to it in the
 property named ``area`` (for use later on in the script) but will **not**
 draw the Rectangle on the page.
+
+
+Calculations
+============
+`↑ <table-of-contents_>`_
+
+Because **pyprototypr** is able to use any of Python's built-in functionality,
+your script can make use of tools such as the ability to perform calculations.
+
+Basic arithmetic includes *addition* (``1+1``), *subtraction* (``1-1``),
+*multiplication* (``1*1``), and *division* (``1/1``).  The ability to raise
+a number to a given power is included (``2**3``).
+
+Even though its not essential to use them, adding calculations can make a
+script easier to read. For example, if working with *inches* as units, then a
+fractional value can be set like this: ``x=5/16`` - while this is numerically
+the same as ``x=0.3125`` its probably easier to understand the intent of the
+calculation.
+
+
+Changeable Values
+=================
+`↑ <table-of-contents_>`_
+
+**pyprototypr** comes with a number of "built-in" names that can be used in
+some circumstances.  There are represented by the name enclosed in a pair of
+quotes *and* a pair of double curly brackets: ``"{{name}}"``
+
+Specifically, when working with grids, the ``row``, ``col`` (column) and
+``sequence`` number are all available as changeable, named values; that is
+to say, the value of that name will replace its appearance in the script.
+For example, if a shape has this property ``label="{{row}}"`` when it is
+drawn as part of a grid, the value of ``{{row}}`` will be replaced by the row
+number in which it appears - say ``2``.  Because the values are numeric, it
+is also possible to perform `calculations`_ with them; so an entry such as
+``{{2 * row}}`` will produce values that are double that of the  row number.
+
+When working with ``Deck()`` commands, the data source will contain named
+columns with multiple values; again the use of a ``{{name}}`` - where *name*
+is replaced by the column name - is possible.
+
+.. NOTE::
+
+    Changeable value names **are** case-sensitive!
+
 
 Quotes in Text
 ==============
