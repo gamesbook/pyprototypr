@@ -5,8 +5,8 @@ Abstract Board Examples
 These examples are part of **pyprototypr** `supplied examples <index.rst>`_.
 
 Bear in mind that the images shown in these examples are lower-resolution
-screenshots; the original PDF that can be generated from the source scripts
-will demonstrate the full scalability.
+screenshots; the original PDFs that can be generated from the source scripts
+will demonstrate full scalability.
 
 .. _table-of-contents:
 

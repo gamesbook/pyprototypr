@@ -21,4 +21,4 @@ output has been created.
 5. `BGG <bgg.rst>`_ - how to retrieve and display data that can be
    accessed from the BoardGameGeek API
 6. `Various <various.rst>`__ - examples of miscellaneous "real world" objects;
-   usually constructed using multiple different elements from **pyprototypr**
+   usually constructed using multiple different elements of **pyprototypr**

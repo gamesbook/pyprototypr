@@ -38,10 +38,10 @@ other.
 The following are supplementary sections that you're likely to need when
 doing more advanced scripts or needing further resources:
 
-14. `Using Python Commands <python_commands.rst>`_ - how to work with
-    *loops* and *if/then* statements for more flexibility
-15. `Descriptions of Supplied Examples <examples/index.rst>`_ - brief
+14. `Descriptions of Supplied Examples <examples/index.rst>`_ - brief
     walkthoughs of many of the examples provided with **pyprototypr**
+15. `Using Python Commands <python_commands.rst>`_ - how to work with
+    *loops* and *if/then* statements for more flexibility
 16. `Development Notes <development.rst>`_ - notes for programmers wanting
     to develop further in or with  **pyprototypr**
 17. `Useful Resources <useful_resources.rst>`_ - links to

@@ -22,19 +22,27 @@ import argparse
 Create(filename="world_clocks.pdf",
         paper=landscape(A5),
         margin_top=0.5,
-        margin_left=0.15,
-        margin_bottom=0.15,
+        margin_left=1,
+        margin_bottom=1,
         margin_right=0.5)
 
 
-def the_clock(x=3, y=3.5, hours=12, minutes=0, gmt=0, label="PROTO", numbers=True):
+def the_clock(
+        x: float = 3,
+        y: float = 3.5,
+        hours: int =12,
+        minutes: int =0,
+        gmt: int = 0,
+        label: str = "PROTO",
+        numbers: bool = True):
     """Draw and label a clock shape for a specific time and time zone (GMT offset)
     """
-    def hour_to_angle(hour):
+    def hour_to_angle(hour: int):
         rot = (12 - hour) * 30 + 90
         if hour < 4:
              return abs(min(360 - rot, rot))
         return rot
+
 
     # get face and hand color (if "daytime")
     detail = is_day(gmt)
@@ -72,7 +80,7 @@ def the_clock(x=3, y=3.5, hours=12, minutes=0, gmt=0, label="PROTO", numbers=Tru
            radii_length=2.3, radii_offset=-.5, radii_stroke=hand, radii_stroke_width=3)
 
 
-def is_day(offset=0):
+def is_day(offset: int = 0):
     """Define "daytime" according to AM/PM and actual hour."""
     gmt_now = datetime.fromtimestamp(mktime(gmtime()))
     current = gmt_now + timedelta(hours=offset)
@@ -85,18 +93,26 @@ def is_day(offset=0):
     return day, period
 
 
-def main(offset=2):
-    """The offset is the hours relative (+/-) to GMT."""
+def main(
+        offset: int = 2,
+        quote: str = '...everybody talk about pop music!'):
+    """Main entry into script.
+
+    Args
+        * offset : hours relative (+/-) to GMT used for the 'Home' city
+        * quote : text at the top of the page
+    """
     now = gmtime()
-    # page header
+    # Set page header
     Text(x=9, y=12.5, font_size=24, align="centre",
-         text=f"...everybody talk about pop music! \n(GMT {now.tm_hour}:{now.tm_min:>02})")
-    # city clocks
+         text=f"{quote} \n(GMT {now.tm_hour}:{now.tm_min:>02})")
+    # Create a clock for each city
     the_clock(x=4, y=9, hours=now.tm_hour, minutes=now.tm_min, gmt=1, label="London")
     the_clock(x=14, y=9, hours=now.tm_hour, minutes=now.tm_min, gmt=2, label="Munich")
     the_clock(x=9, y=5.5, hours=now.tm_hour, minutes=now.tm_min, gmt=offset, label="Home")
     the_clock(x=4, y=2, hours=now.tm_hour, minutes=now.tm_min, gmt=-4, label="New York")
     the_clock(x=14, y=2, hours=now.tm_hour, minutes=now.tm_min, gmt=8, label="Hong Kong")
+    # create PDF and png
     Save(output='png', dpi=300)
 
     # code below displays examples of times across all hours
@@ -114,7 +130,6 @@ def main(offset=2):
         the_clock(x=14, y=y, hours=hr, minutes=40, gmt=0, label=f"{hr}:40")
     Save()
     '''
-
 
 if __name__ == "__main__":
     # wcparser = argparse.ArgumentParser()
