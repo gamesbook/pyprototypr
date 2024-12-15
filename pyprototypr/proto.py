@@ -404,12 +404,13 @@ def group(*args, **kwargs):
 
 
 def Data(**kwargs):
-    """Load data from file, dictionary, or directory for access by a Deck."""
-
+    """Load data from file, dictionary, or directory for access by a Deck.
+    """
     filename = kwargs.get('filename', None)
     matrix = kwargs.get('matrix', None)
     images = kwargs.get('images', None)
-    filters = kwargs.get('image_filters', None)
+    images_filter = kwargs.get('images_filter', '')
+    filters = tools.sequence_split(images_filter, False, True)
     _extra = kwargs.get('extra', 0)  # extra cards (not part of normal dataset)
     try:
         extra = int(_extra)
@@ -432,7 +433,7 @@ def Data(**kwargs):
         else:
             globals.deck.create(len(globals.dataset) + extra)
             globals.deck.dataset = globals.dataset
-    elif images:  # handle images
+    elif images:  # create list of images
         src = pathlib.Path(images)
         if not src.is_dir():
             # look relative to script's location
@@ -442,10 +443,9 @@ def Data(**kwargs):
             if not src.is_dir():
                 tools.feedback(
                     f'Cannot locate or access directory: {images} or {full_path}', True)
-        if filters:
-            src = src.glob(filters)  # glob('*.[tx][xl][ts]')
         for child in src.iterdir():
-            globals.deck.image_list.append(child)
+            if not filters or child.suffix in filters:
+                globals.deck.image_list.append(child)
         if len(globals.deck.image_list) == 0:
             tools.feedback(
                 f'Directory "{src}" has no relevant files or cannot be loaded!', True)

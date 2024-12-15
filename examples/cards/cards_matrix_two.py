@@ -21,8 +21,8 @@ Deck(cards=27,
 combos = Matrix(
     labels=['SUIT', 'VALUE', 'IMAGE'],
     data=[
-        # red, green, skyblue, gold, hotpink
-        ['#FF0000', '#9ACD32','#00BFFF', '#FFD700', '#FF69B4'],
+        # tomato, lime, aqua, gold, hotpink
+        ['#FF6347', '#00FF00','#00FFFF', '#FFD700', '#FF69B4'],
         ['5', '3', '1'],
         # tapedrive, heart, snowflake
         ['\u2707', '\u2766', '\u2745']

@@ -10,8 +10,9 @@ do give some ideas as to what can be done - and how.
 In most cases, you will need to look at the source code to understand how the
 output has been created.
 
-1. `Demo <demo.rst>`_ - a quick, somewhat random, tour of various
-   elements in **pyprototypr**
+1. There is a somewhat random tour of various elements in **pyprototypr**
+   available as a `PDF file <demo.pdf>`_ - it is based on the
+   `demo script <../examples/core/demo.py>`_
 2. `Abstract Boards <abstract.rst>`_ and
    `Commercial Boards <commercial.rst>`_ - construction examples for games
 3. `Counters <counters.rst>`_ - counters are really just "tiny square
