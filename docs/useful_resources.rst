@@ -30,6 +30,7 @@ Unicode Characters
 ==================
 
 There are thousands of symbols that are potentially of use in a design.
+
 For game design, the character sets from U+2000 (General Punctuation) to
 U+2BFF (Miscellaneous Symbols and Arrows) are likely to be of interest.
 **NOTE** that not all Unicode characters can be displayed in all fonts!
