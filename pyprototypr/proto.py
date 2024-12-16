@@ -332,11 +332,13 @@ def Card(sequence, *elements):
     if not _cards:
         try:
             card_count = len(globals.dataset) if globals.dataset \
-                else len(globals.deck.image_list)
+                else len(globals.deck.image_list) if globals.deck.image_list \
+                else tools.as_int(globals.deck.cards, 'cards') if globals.deck.cards \
+                else 0
             if isinstance(sequence, list) and not isinstance(sequence, str):
                 _cards = sequence
             elif sequence.lower() == 'all' or sequence.lower() == '*':
-                _cards = range(1, card_count + 1)
+                _cards = list(range(1, card_count + 1))
             else:
                 _cards = tools.sequence_split(sequence)
         except Exception as err:
@@ -404,14 +406,16 @@ def group(*args, **kwargs):
 
 
 def Data(**kwargs):
-    """Load data from file, dictionary, or directory for access by a Deck.
+    """Load data from file, dictionary, list-of-lists, or directory for access by Deck.
     """
-    filename = kwargs.get('filename', None)
-    matrix = kwargs.get('matrix', None)
-    images = kwargs.get('images', None)
-    images_filter = kwargs.get('images_filter', '')
+    filename = kwargs.get('filename', None)  # CSV or Excel
+    matrix = kwargs.get('matrix', None)  # Matrix()
+    data_list = kwargs.get('data_list', None)  # list-of-lists
+    images = kwargs.get('images', None)  # directory
+    images_filter = kwargs.get('images_filter', '')  # e.g. .png
     filters = tools.sequence_split(images_filter, False, True)
-    _extra = kwargs.get('extra', 0)  # extra cards (not part of normal dataset)
+    source = kwargs.get('source', None)  # dict
+    _extra = tools.as_int(kwargs.get('extra', 0))  # extra cards (not in normal dataset)
     try:
         extra = int(_extra)
     except Exception:
@@ -419,20 +423,22 @@ def Data(**kwargs):
 
     if filename:  # handle excel and CSV
         globals.dataset = tools.load_data(filename, **kwargs)
-        log.debug("globals.dataset loaded: %s", globals.dataset)
-        if len(globals.dataset) == 0:
-            tools.feedback("Dataset is empty or cannot be loaded!", True)
-        else:
-            globals.deck.create(len(globals.dataset) + extra)
-            globals.deck.dataset = globals.dataset
     elif matrix:  # handle pre-built dict
         globals.dataset = matrix
-        log.debug("globals.dataset loaded: %s", globals.dataset)
-        if len(globals.dataset) == 0:
-            tools.feedback("Matrix data is empty or cannot be loaded!", True)
-        else:
-            globals.deck.create(len(globals.dataset) + extra)
-            globals.deck.dataset = globals.dataset
+    elif data_list:  # handle list-of-lists
+        try:
+            keys = data_list[0]  # get keys from first sub-list
+            dict_list = [dict(zip(keys, values)) for values in data_list[1:]]
+            globals.dataset = dict_list
+        except Exception:
+            tools.feedback(
+                'The data_list is not valid - please check', True)
+    elif source:  # handle pre-built dict
+        if not isinstance(source, dict):
+            source_type = type(source)
+            tools.feedback(f'The source must be a dictionary, not {source_type}',
+                           True)
+        globals.dataset = source
     elif images:  # create list of images
         src = pathlib.Path(images)
         if not src.is_dir():
@@ -453,23 +459,22 @@ def Data(**kwargs):
         globals.deck.cards = len(globals.deck.image_list) + extra
         # resize deck based on images
         globals.deck.create(globals.deck.cards)
-
     else:
-        tools.feedback("You must provide a source of data for Data!", True)
+        tools.feedback("You must provide data for the Data command!", True)
+
+    if filename or matrix or source:
+        log.debug("globals.dataset loaded: %s", globals.dataset)
+        if len(globals.dataset) == 0:
+            tools.feedback("The provided data is empty or cannot be loaded!", True)
+        else:
+            globals.deck.create(len(globals.dataset) + extra)
+            globals.deck.dataset = globals.dataset
     return globals.dataset
-
-
-# def V(*args):
-#     """Expect args[0] to be the name (string) of a column in the dataset."""
-#     log.debug("V %s %s %s", args, type(dataset), len(dataset))
-#     if globals.dataset and isinstance(dataset, list):
-#         return [item.get(args[0], '') for item in globals.dataset]
-#     return []
 
 
 def S(test='', result=None, alternate=None):
     """
-    Enable selection of data from a dataset list
+    Enable Selection of data from a dataset list
 
         test: str
             boolean-type Jinja2 expression which can be evaluated to return True/False
@@ -490,7 +495,7 @@ def S(test='', result=None, alternate=None):
 
 
 def L(lookup: str, target: str, result: str, default: Any = '') -> LookupType:
-    """Enable lookup of data in a record of a dataset
+    """Enable Lookup of data in a record of a dataset
 
         lookup: Any
             the lookup column whose value must be used for the match
@@ -526,7 +531,7 @@ def L(lookup: str, target: str, result: str, default: Any = '') -> LookupType:
 
 
 def T(source: str, data: dict = None):
-    """Use source to create a Jinja2 template."""
+    """Use source to create a Jinja2 Template."""
 
     environment = jinja2.Environment()
     template = environment.from_string(str(source))

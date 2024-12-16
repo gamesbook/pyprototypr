@@ -48,6 +48,8 @@ Basic Concepts
 
 A common element in many games is a deck - or multiple decks - of cards.
 
+.. NOTE::
+
     **pyprototypr** also considers items such tiles or counters to be "cards";
     they are really just "shapes containing other shapes"; see the section
     on `Countersheet and Counter Commands`_
@@ -60,12 +62,17 @@ There are two core concepts: the ``Card()`` and the ``Deck()``:
 -  A ``Deck()`` command is used to specify type, size and number of cards
    that  will be used to create all cards in the deck.
 
-In many cases, the ``Data()`` command will be needed, in order to provide the
-settings for the properties of the elements appearing on a card.
+In many cases, the ``Data()`` command will be needed, in order to provide
+settings, for the properties of the elements appearing on a card, from another
+source, for example, and Excel file.
 
 In some cases, the ``Matrix()`` command will be needed; this is an alternate
 method of providing the settings for the properties of the elements appearing
 on a card.
+
+Thse commands, and the ones supporting them, are described in detail below.
+For additional examples that illustrate some of these, see the
+`card and deck examples <examples/cards.rst>`_.
 
 
 The Deck Command
@@ -146,17 +153,111 @@ The Card Command
 `↑ <table-of-contents_>`_
 
 This command is both simple and flexible. It allows for a complex design, with
-many elements, to be added to any of the cards in a deck.
+many elements, to be added to any - or all - of the cards in a deck.
 
+The **key concept** to note about a card is that is essentially a "small page".
+Any x- and y-locations are defined relative to the lower left of the card
+and **not** that of the page.
 
+A Card is defined slightly differently from other shapes in **pyprototypr**
+in that the properties are not named.
+
+The **first value** supplied to the ``Card()`` command must be one or more
+sequence numbers of the relevant cards.  This value can be supplied either
+as a *string*, or a *list* (numbers between square brackets ``[`` and ``]``).
+
+Examples of Card sequence numbers supplied as *strings*:
+
+- ``"10"`` - a single number; card number 10
+- ``"10-20"`` - a range of numbers; in this case the cards numbered 10 through
+   to 20 inclusive
+-  ``"5,10-20,23-27"`` - multiple ranges of numbers; in this card number 5,
+   cards numbered 10 through to 20 and cards numbered 23 through to 27
+- ``"*"`` - any and all cards (the term ``"all"`` can also be used)
+
+Examples of Card sequence numbers supplied as a *list*:
+
+- ``[10]`` -  a single number; card number 10
+- ``[10,11,12,13,14,15]`` - a set of numbers; in this case the cards numbered
+  10 through to 15 inclusive
+
+The **second value**, and all further values, supplied to the ``Card()``
+command must be a shape or a `group <group-command_>`_.
+
+There can be any number of ``Card()`` commands; and the same Card could be
+targeted by multiple ``Card()`` commands.
+
+Card Creation Example #1
+------------------------
+
+This example shows how different shapes can be assigned to cards:
+
+    .. code:: python
+
+        Deck(cards=9)
+
+        line1 = line(x=0.8, x1=5.6, y=7.1, y1=8.4, stroke=red)
+        rect1 = rectangle(x=0.7, y=7.0, width=5, height=1.5)
+        text1 = text(text='proto', x=3.1, y=4.4, font_size=18)
+        line_in_rect = group(rect1, line1)
+
+        Card('*', text1)
+        Card("1-3", rect1)
+        Card([7,8,9], line_in_rect)
+
+Here:
+
+- *all* (the ``*``) cards get assigned the same text (in the card centre)
+- cards 1, 2 and 3 are assigned a rectangle
+- cards 7, 8 and 9 are assigned a group (assigned to ``line_in_rect``); this
+  group contains a rectangle with a superimposed red, diagonal line.
+  (See below for how the `group <group-command_>`_ command works.)
 
 
 The Data Command
 ================
 `↑ <table-of-contents_>`_
 
-This command
+This command allows for a dataset to be used as the source for values or
+properties making up a Card.
 
+There are five possible types of data sources:
+
+1. A CSV file
+2. An Excel file
+3. A ``Matrix`` command
+4. A directory containing images
+5. A "list of lists" included in the script
+
+Apart from the images directory, each data source is essentially a set of rows
+and columns.  Each of the columns must be named so that the data can be
+referenced:
+
+- the names for a CSV file must appear in the first line of the file
+- the names for a Excel file must appear in the columns of the first row of the
+  file
+- the names for a ``Matrix`` command must appear as a list assigned to the
+  *labels* property
+- the names for a "list of lists" must appear as the first list
+
+The ``Data`` command uses different properties to reference these sources:
+
+- **filename** - the full path to the name (including extension) of the
+  CSV or Excel file being used; if no directory is supplied it is assumed to
+  be the same one in which the script is located
+- **matrix** - refers to the name assigned to the ``Matrix`` being used
+- **images** - refers to the directory in which the images are located; if
+  a full path is not given, its assumed to be directly under the one in which
+  the script is located
+- **data_list** refers to the name assigned to the "list of lists" being used
+
+.. HINT::
+
+   If you are a Python programmer, there is a final way to provide data.
+   Internally, all of these data sources are converted to a *dictionary*,
+   so if you have one available through any means, this can be supplied
+   directly to ``Data`` via the **source** property.  The onus is on you
+   to ensure that the dictionary is correctly formatted.
 
 
 The Matrix Command
@@ -181,10 +282,13 @@ Supporting Commands
 The following commands are helpful in terms of increased flexibilty and
 reduced repetition when designing a deck of cards.
 
+.. _group-command:
+
 group command
 -------------
 
 This command
+
 
 T(emplate) command
 ------------------
