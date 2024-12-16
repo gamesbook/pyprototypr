@@ -217,7 +217,7 @@ class DeckShape(BaseShape):
     """
     Placeholder for the deck design; list of CardShapes and Shapes.
 
-    NOTE: draw() is called by the DeckShape
+    NOTE: draw() is called via the Deck function in proto.py
     """
 
     def __init__(self, _object=None, canvas=None, **kwargs):
