@@ -233,8 +233,8 @@ There are five possible types of data sources:
 5. A "list of lists" included in the script
 
 Apart from the images directory, each data source is essentially a set of rows
-and columns.  Each of the columns must be named so that the data can be
-referenced:
+and columns.  Each **row** essentially represents data that must appear on a
+card. Each **column** must be named so that the data can be referenced:
 
 - the names for a CSV file must appear in the first line of the file
 - the names for a Excel file must appear in the columns of the first row of the
@@ -319,8 +319,8 @@ This example shows how data is sourced from a "list of lists":
        lotr = [
            ['ID', 'Name', 'Age', 'Race'],
            [1, "Gimli", 140, "Dwarf"],
-           [2, "Legolas", 656, "Elf"]
-           [3, "Aragorn", 88, "Human"]
+           [2, "Legolas", 656, "Elf"],
+           [3, "Aragorn", 88, "Human"],
        ]
        Data(data_list=lotr)
 
@@ -352,7 +352,6 @@ There are 8 combinations:  A-1-x, A-1-y, A-2-x, A-2-y, B-1-x, B-1-y, B-2-x,
 and B-2-y and therefore eight cards in the deck.
 
 
-
 Countersheet and Counter Commands
 =================================
 `↑ <table-of-contents_>`_
@@ -378,16 +377,20 @@ reduced repetition when designing a deck of cards.
 group command
 -------------
 
-This command
+This command ...
 
 
 T(emplate) command
 ------------------
 
-This command
+This command causes the name of a column to be replaced by its equivalent
+value for that card.
 
+To use this command, simply enclose the name of the data column in curly
+brackets - ``"{{...}}"``.
 
-This example shows :
+This example shows how the text for the standard playing cards is derived
+from the **VALUE** column:
 
     .. code:: python
 
@@ -403,29 +406,64 @@ This example shows :
 
         Card("1-26", value_black, value_low_black)
 
+This example is described in more detail in
+`standard playing cards <examples/cards.rst#standard-playing-cards>_`_
+
 
 S(election) command
 -------------------
 
-This command
+This command causes a shape to be added to a card, or set of cards, for a
+matching condition.
 
+There are two properties required:
 
-This example shows :
+- the first is the condition that must matched, enclosed in curly brackets
+  ``"{{...}}"``
+- the second is the shape that must be drawn if the conditiion is matched
+
+The match condition contains three parts, all separated by spaces:
+
+- the column name being checked - this **is** case-sensitive
+- the test condition; e.g. ``==`` for equal to; ``!=`` for not equal to;
+  ``>`` for greater than; ``<`` for less than; ``in`` to check if text is
+  contained in other text
+- the value being checked - for example, a number or some text
+
+This example shows how to use the command, with reference to the ``Data``
+from `Data Example #5`_:
 
     .. code:: python
 
         back_red = rectangle(
-            x=0.5, y=0.5, width=6, height=8, fill_stroke=tomato)
+            x=0.5, y=0.5, width=5.3, height=7.8, fill_stroke=tomato)
         Card("all", S("{{ Race == 'Human' }}", back_red))
 
         power = text(text="Long-lived", x=3.3, y=0.5)
         Card("all", S("{{ Race != 'Human' }}", power))
 
+In the first case, any/all cards for which the **Race** column contains, or
+is equal to -  the double equals ``==`` check  - the value **Human** a red
+rectangle will be drawn on the card.
+
+In the second case, any/all cards for which the **Race** column does *not*
+contain i.e. is *not* equal to -  the exclamation + equals signs ``!=`` check
+- the value **Human** a text with the value ``Long-lived`` will be drawn on
+the lower edge of card.
+
+A "nonsense" condition is usually ignored; for example:
+
+    .. code:: python
+
+        Card("all", S("{{ nature == 'Orc' }}", power))
+
+will produce no changes in the cards as there is no **nature** column or
+**Orc** value.
 
 
 L(ookup) command
 ----------------
-This command
+This command ...
 
 
 This example shows :

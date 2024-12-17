@@ -415,7 +415,7 @@ def Data(**kwargs):
     images_filter = kwargs.get('images_filter', '')  # e.g. .png
     filters = tools.sequence_split(images_filter, False, True)
     source = kwargs.get('source', None)  # dict
-    _extra = tools.as_int(kwargs.get('extra', 0))  # extra cards (not in normal dataset)
+    _extra = tools.as_int(kwargs.get('extra', 0), 'extra')  # cards added to dataset
     try:
         extra = int(_extra)
     except Exception:
