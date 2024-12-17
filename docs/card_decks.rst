@@ -18,7 +18,8 @@ Table of Contents
 
   - `group command`_
   - `T(emplate) command`_
-  - `V(alue) command`_
+  - `S(election) command`_
+  - `L(ookup) command`_
 
 
 Introduction
@@ -219,7 +220,9 @@ The Data Command
 `↑ <table-of-contents_>`_
 
 This command allows for a dataset to be used as the source for values or
-properties making up a Card.
+properties making up a Card. Because values now have "names" they can be
+accessed and used in the `Supporting Commands`_ - this is usually the primary
+reason to supply a data source this way.
 
 There are five possible types of data sources:
 
@@ -260,11 +263,93 @@ The ``Data`` command uses different properties to reference these sources:
    to ensure that the dictionary is correctly formatted.
 
 
+Data Example #1
+---------------
+
+This example shows how data is sourced from a CSV file:
+
+    .. code:: python
+
+       Data(filename="card_data.csv")
+
+Data Example #2
+---------------
+
+This example shows how data is sourced from an Excel file:
+
+    .. code:: python
+
+       Data(filename="card_data.xls")
+
+Data Example #3
+---------------
+
+This example shows how data is sourced from a Matrix:
+
+    .. code:: python
+
+        combos = Matrix(
+            labels=['SUIT', 'VALUE'],
+            data=[
+                 # Unicode symbols for : spade, club, heart, diamond
+                ['\u2660', '\u2663', '\u2665', '\u2666'],
+                ['K','Q','J','10','9','8','7','6','5','4','3','2','A'],
+            ])
+        Data(matrix=combos)
+
+For more detail on these properties see `The Matrix Command`_.
+
+Data Example #4
+---------------
+
+This example shows how data is sourced from an image directory:
+
+    .. code:: python
+
+       Data(
+           images="pictures", images_filter=".png,.jpg")
+
+Data Example #5
+---------------
+
+This example shows how data is sourced from a "list of lists":
+
+    .. code:: python
+
+       lotr = [
+           ['ID', 'Name', 'Age', 'Race'],
+           [1, "Gimli", 140, "Dwarf"],
+           [2, "Legolas", 656, "Elf"]
+           [3, "Aragorn", 88, "Human"]
+       ]
+       Data(data_list=lotr)
+
+
 The Matrix Command
 ==================
 `↑ <table-of-contents_>`_
 
-This command
+The ``Matrix`` command uses these properties to create data:
+
+- **data** - these are all relevant data that needs to appear on the acards;
+  specified as a "list of lists"; where each nested list contains all data of
+  a given type of value
+- **labels** - there should be one label for each nested list i.e. per each
+  type of value
+
+This command will generate a dataset for the cards, based on all combinations
+of values in a "list of lists"; so for this set of *data*:
+
+    .. code:: python
+
+        data=[
+            ['A', 'B', ],
+            ['1', '2', ],
+            ['x', 'y', ],
+         ])
+
+There are 8 combinations:  A-1-x, A-1-y, A-2-x, A-2-y, B-1-x, B-1-y, B-2-x,
+and B-2-y and therefore eight cards in the deck.
 
 
 
@@ -272,7 +357,13 @@ Countersheet and Counter Commands
 =================================
 `↑ <table-of-contents_>`_
 
-This command
+These commands are effectiively "wrappers" around the Deck and Card commands
+(respectively) so all of the properties and abilities of those commands can
+be used via these instead.  The only real difference is that the default size
+of a Counter is 1" square (2.44 x 2.54 cm).
+
+The aim of having these commands is to allow the script to be more informative
+as to its purpose and use.
 
 
 Supporting Commands
@@ -296,7 +387,49 @@ T(emplate) command
 This command
 
 
-V(alue) command
-------------------
+This example shows :
+
+    .. code:: python
+
+        value_top = Common(
+            x=1.0, y=7.4, font_size=40)
+        value_black = text(
+            common=value_top, stroke=black, text=T('{{VALUE}}'))
+
+        value_low = Common(
+            x=5.5, y=1.4, font_size=40, rotation=180)
+        value_low_black = text(
+            common=value_low, stroke=black, text=T('{{VALUE}}'))
+
+        Card("1-26", value_black, value_low_black)
+
+
+S(election) command
+-------------------
 
 This command
+
+
+This example shows :
+
+    .. code:: python
+
+        back_red = rectangle(
+            x=0.5, y=0.5, width=6, height=8, fill_stroke=tomato)
+        Card("all", S("{{ Race == 'Human' }}", back_red))
+
+        power = text(text="Long-lived", x=3.3, y=0.5)
+        Card("all", S("{{ Race != 'Human' }}", power))
+
+
+
+L(ookup) command
+----------------
+This command
+
+
+This example shows :
+
+    .. code:: python
+
+        x = 1
