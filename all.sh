@@ -23,6 +23,7 @@ python examples/core/layouts/layouts_triangular.py -d /tmp/demo
 python examples/core/layouts/layouts_shapes_outer.py -d /tmp/demo
 python examples/core/layouts/layouts_sequence.py -d /tmp/demo
 python examples/core/layouts/layouts_tracks.py -d /tmp/demo
+python examples/core/layouts/layouts_repeat.py -d /tmp/demo
 # ---- boards: abstract
 echo "Creating abstract boards..."
 python examples/boards/abstract/chessboard.py -d /tmp/demo

@@ -95,7 +95,7 @@ special_grn = "#4A8D86"
 special_grn_rect = rectangle(
     y=9.5, x=34.5, width=5.5, height=8.5, fill_stroke=special_grn, rounding=0.5,
     transparency=80, label="S", label_size=164, label_stroke="#69A8B9")
-Repeat(special_grn_rect, cols=3, rows=2, offset_across=9.5, offset_down=7,)
+Repeat(special_grn_rect, cols=3, rows=2, offset_across=7, offset_down=9,)
 
 # Government Cards
 gov_blue = "#666D8A"
@@ -130,9 +130,9 @@ score_common = Common(
     label_size=21, label_stroke=white)
 score_base = circle(common=score_common, stroke="#11B6E4", fill="#008FCE")
 score_5 = circle(
-    common=score_common, stroke="#7BC9E6", fill="#3FA1BB", label="{count}")
+    common=score_common, stroke="#7BC9E6", fill="#3FA1BB", label="{{sequence}}")
 score_10 = circle(
-    common=score_common, stroke="#EEE544", fill="#B5CDB0", label="{count}")
+    common=score_common, stroke="#EEE544", fill="#B5CDB0", label="{{sequence}}")
 score_track = RectangularLocations(
     x=7.5, y=7.75, cols=32, rows=19, spacing=1.54,
     start="SE", direction="west", pattern="outer")
@@ -170,11 +170,11 @@ Circle(cx=11.5, cy=9.9, radius=0.5, fill_stroke=dimgray)
 Circle(cx=14, cy=9.9, radius=0.5, fill_stroke=darkorchid)
 
 Sequence(
-    text(x=10.4, y=18.4, font_size=32, stroke=orange, text="{SEQUENCE}."),
+    text(x=10.4, y=18.4, font_size=32, stroke=orange, text="{{sequence}}."),
     setting=(1,4,1,'number'),
     gap_y=-2.1)
 Sequence(
-    text(x=12.8, y=18.4, font_size=32, stroke=white, text="{SEQUENCE}."),
+    text(x=12.8, y=18.4, font_size=32, stroke=white, text="{{sequence}}."),
     setting=(1,4,1,'number'),
     gap_y=-2.1)
 

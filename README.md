@@ -121,8 +121,7 @@ current / potential areas of work or development that have been identified.
     * [x] hexagon
     * [x] equilateral triangle
     * [x] conditional for rounded rectangle
-* [x] Layout: virtual grids for putting shapes into locations in different
-      patterns
+* [x] Layout: virtual grids for putting shapes into locations in different patterns
 * [x] Rotation:
     * [x] text along a line
     * [x] shape labels (at centre of shape)
@@ -145,6 +144,9 @@ current / potential areas of work or development that have been identified.
 * [ ] 18xx board: show a basic map with tracks, towns, cities and off-map areas
 
 ## Acknowledgements
+
+> *The world is full of power and energy and a person can go far by just
+> skimming off a tiny bit of it.* "Snow Crash", Neal Stephenson.
 
 As always, with Python, you are building "on the shoulders of giants".
 In this case, the

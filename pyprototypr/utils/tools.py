@@ -741,7 +741,7 @@ def base_fonts():
             #    _font['name'], _font['file'], err)
 
 
-def eval_template(source: str, data: dict = None):
+def eval_template(source: str, data: dict = None, label: str = ''):
     """Process data dict via jinja2 template in source.
 
     Doc Test:
@@ -764,6 +764,10 @@ def eval_template(source: str, data: dict = None):
         template = environment.from_string(str(source))
         custom_value = template.render(data)
         return custom_value
+    except jinja2.exceptions.TemplateSyntaxError:
+        feedback(
+            f'Unable to create the text or value - check the grammar for "{source}"',
+            True)
     except (ValueError, jinja2.exceptions.UndefinedError):
         feedback(
             f'Unable to process "{source}" data with this template', True)

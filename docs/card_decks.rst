@@ -252,6 +252,10 @@ The ``Data`` command uses different properties to reference these sources:
 - **images** - refers to the directory in which the images are located; if
   a full path is not given, its assumed to be directly under the one in which
   the script is located
+- **images_list** - is used in conjunction with *images* to provide a list of
+  file extensions which filter which type of files will be loaded from the
+  directory e.g. ``.png`` or ``.jpg``; this is important to set if the
+  directory contains files of a type that are not, or cannot be, used
 - **data_list** refers to the name assigned to the "list of lists" being used
 
 .. HINT::
@@ -284,7 +288,8 @@ This example shows how data is sourced from an Excel file:
 Data Example #3
 ---------------
 
-This example shows how data is sourced from a Matrix:
+This example shows how data is sourced from a Matrix; in this case the possible
+combinations for a standard deck of playing cards:
 
     .. code:: python
 
@@ -296,6 +301,10 @@ This example shows how data is sourced from a Matrix:
                 ['K','Q','J','10','9','8','7','6','5','4','3','2','A'],
             ])
         Data(matrix=combos)
+
+The dataset will contain a combination of every item in the first list of
+*data* - representing the **SUIT** - with every item in the second list of
+*data* - representing the **VALUE**; so 4 by 13 which is 52 dataset items.
 
 For more detail on these properties see `The Matrix Command`_.
 
@@ -323,6 +332,9 @@ This example shows how data is sourced from a "list of lists":
            [3, "Aragorn", 88, "Human"],
        ]
        Data(data_list=lotr)
+
+See below under the `T(emplate) command`_ for an example how this data could
+be used.
 
 
 The Matrix Command
@@ -356,10 +368,10 @@ Countersheet and Counter Commands
 =================================
 `↑ <table-of-contents_>`_
 
-These commands are effectiively "wrappers" around the Deck and Card commands
+These commands are effectively "wrappers" around the Deck and Card commands
 (respectively) so all of the properties and abilities of those commands can
 be used via these instead.  The only real difference is that the default size
-of a Counter is 1" square (2.44 x 2.54 cm).
+of a Counter is 1" square (2.54 cm x 2.54 cm).
 
 The aim of having these commands is to allow the script to be more informative
 as to its purpose and use.
@@ -377,7 +389,24 @@ reduced repetition when designing a deck of cards.
 group command
 -------------
 
-This command ...
+This command provides a "shortcut" way to reference a stack of shapes that
+all need to be drawn together. Add the shapes to a set - comma-separated
+names wrapped in curved brackets (``(..., ...)``) - and assign the set to a
+name.  The shapes are drawn in the order listed.
+
+For example:
+
+    .. code:: python
+
+      lin1 = line(x=0.8, x1=5.6, y=7.1, y1=8.4)
+      rct1 = rectangle(x=0.7, y=7.0, width=5, height=1.5)
+      stack = group(rct1, lin1)
+
+When this stack is assigned to a card and then drawn, the Rectangle will be
+drawn first, followed by the Line.
+
+This command is somewhat similar to ``Common()``, which provides a way to
+group commonly used properties.
 
 
 T(emplate) command
@@ -389,8 +418,8 @@ value for that card.
 To use this command, simply enclose the name of the data column in curly
 brackets - ``"{{...}}"``.
 
-This example shows how the text for the standard playing cards is derived
-from the **VALUE** column:
+This example shows how the card values in the top-left and lower-right corners
+for standard playing cards is derived from the **VALUE** column:
 
     .. code:: python
 
@@ -463,6 +492,7 @@ will produce no changes in the cards as there is no **nature** column or
 
 L(ookup) command
 ----------------
+
 This command ...
 
 

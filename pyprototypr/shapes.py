@@ -3366,17 +3366,15 @@ class TextShape(BaseShape):
         rotation = kwargs.get('rotation', self.rotation)
         # ---- set canvas
         self.set_canvas_props(index=ID)
-        # ---- overrides for text value
+        # ---- overrides for self.text / text value
         _locale = kwargs.get('locale', None)
-        # tools.feedback(f'*** {_locale=} {self.text=}')
-        if self.text == '' or self.text is None:
-            if _locale:
-                self.text = f'{_locale.sequence}'
+        if _locale:
+            self.text = tools.eval_template(self.text, _locale)
         _text = self.textify(ID)
+        # tools.feedback(f'*** {_locale=} {self.text=} {_text}')
         if _text is None:
             return
         _text = str(_text)  # card data could be numeric
-        # tools.feedback(f'*** {_locale=} {self.text=} {_text}')
         if '\\u' in _text:
             _text = codecs.decode(_text, 'unicode_escape')
         # ---- text style
