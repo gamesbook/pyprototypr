@@ -17,9 +17,11 @@ numbers, or shapes - in a straight line.
 
 Apart from the ``Sequence()`` command described here, there are also:
 
+- `Repeats <layouts_repeats.rst>`_
 - `Tracks <layouts_track.rst>`_
 - `RectangularLocations <layouts_rectangular.rst>`_
 - `TriangularLocations <layouts_triangular.rst>`_
+
 
 Usage
 =====
@@ -150,7 +152,7 @@ Example 2.
 ===== ======
 |sq2| This example shows the element constructed using differing values for the
       its properties.  In these cases, values in the sequence are being assigned
-      to a text-based property using the special ``{SEQUENCE}`` keyword; when this
+      to a text-based property using the special ``{{sequence}}`` keyword; when this
       is encountered, it is replaced by the **actual** value of the sequence item.
 
       The example with **hexagons** (top left) is created by:
@@ -160,7 +162,7 @@ Example 2.
           Sequence(
               hexagon(
                  x=0.5, y=1.5, radius=0.5,
-                  title_size=8, title="Fig. {SEQUENCE}"),
+                  title_size=8, title="Fig. {{sequence}}"),
               setting=('C', 'A', -1),
               gap_y=1.5,
               gap_x=0.5,
@@ -169,7 +171,7 @@ Example 2.
       Here the progression is one of uppercase letters (start letter is ``C``).
       Note that the *letter* value is missing from the setting; this is because
       the type of value can be inferred from the start and end values. Each letter
-      in the sequence is assigned to the ``{SEQUENCE}`` keyword and so that
+      in the sequence is assigned to the ``{{sequence}}`` keyword and so that
       sequence value becomes part of the ``Hexagon`` 's title text.
 
       The example with **rectangles** (lower edge) is created by:
@@ -179,13 +181,13 @@ Example 2.
           Sequence(
               rectangle(
                   x=0.25, y=0.25, height=0.75, width=1,
-                  label_size=8, label="${SEQUENCE}"),
+                  label_size=8, label="${{sequence}}"),
               setting=(1, 3, 1, 'number'),
               gap_x=1.2,
           )
 
       Here the progression is one of numbers; with each number in the sequence
-      is assigned to the ``{SEQUENCE}`` keyword and substituted into the text as
+      is assigned to the ``{{sequence}}`` keyword and substituted into the text as
       part of the ``Rectangle`` 's label; the `$` is just a normal character.
 
       The example with **circles** (top right) is created by:
@@ -195,7 +197,7 @@ Example 2.
           Sequence(
               circle(
                   cx=3.5, cy=5, radius=0.3,
-                  label="{SEQUENCE}"),
+                  label="{{sequence}}"),
               setting=[4, 'B?', '', 10, 'VI'],
               gap_y=-0.7,
           )
@@ -203,10 +205,10 @@ Example 2.
       Here the progression is a specific list of values; the items separated
       by commas between the square brackets from ``[`` to ``]``.  In this case,
       the list is a mixture of letters and numbers; which are assigned as
-      part of the ``Cirle`` 's label via the ``{SEQUENCE}`` keyword.
+      part of the ``Cirle`` 's label via the ``{{sequence}}`` keyword.
 
       **NOTE** that the ``''`` - empty quotes - for the third item in the
-      ``setting`` mean that nothing is assigned to the ``{SEQUENCE}`` but
+      ``setting`` mean that nothing is assigned to the ``{{sequence}}`` but
       that the ``Cirle`` itself is still drawn!
 
 ===== ======

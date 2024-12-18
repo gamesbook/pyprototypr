@@ -19,6 +19,7 @@ the elements that can be placed there using the ``Layout()`` command.
 Apart from the ``TriangularLocations()`` command described here, there are
 also other ways to place elements on a page:
 
+- `Repeats <layouts_repeats.rst>`_
 - `Sequences <layouts_sequence.rst>`_
 - `Tracks <layouts_track.rst>`_
 - `RectangularLocations <layouts_rectangular.rst>`_

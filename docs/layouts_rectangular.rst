@@ -36,6 +36,7 @@ The rows and columns themselves are not drawn - if needed you can use the
 Apart from the ``RectangularLocations()`` command described here, there are
 also other ways to place elements on a page:
 
+- `Repeats <layouts_repeats.rst>`_
 - `Sequences <layouts_sequence.rst>`_
 - `Tracks <layouts_track.rst>`_
 - `TriangularLocations <layouts_triangular.rst>`_

@@ -81,6 +81,8 @@ Linear layouts, where elements appear in one-dimensional space:
 
 Grid-based layouts, where elements appear in two-dimensional space:
 
+-  **Repeat()** - allows an element to be placed multiple times onto
+   a grid
 -  **RectangularLocations()** - defines a series of differing x- and y-points
    with rectangular spacing; the x- and y-values will correspond to the
    centre of the element being placed.
@@ -98,6 +100,7 @@ Command Details
 
 The commands are described in detail, with examples, in these sections:
 
+- `Repeats <layouts_repeats.rst>`_
 - `Sequences <layouts_sequence.rst>`_
 - `Tracks <layouts_track.rst>`_
 - `RectangularLocations <layouts_rectangular.rst>`_

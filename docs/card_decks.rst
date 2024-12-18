@@ -20,6 +20,7 @@ Table of Contents
   - `T(emplate) command`_
   - `S(election) command`_
   - `L(ookup) command`_
+- `Other Resources`_
 
 
 Introduction
@@ -501,3 +502,25 @@ This example shows :
     .. code:: python
 
         x = 1
+
+
+Other Resources
+===============
+`↑ <table-of-contents_>`_
+
+**pyprototypr** is by no means the only tool for creating decks of cards;
+numerous other options exist; both free and commercial.  A few of the free /
+open-source ones are listed below.
+
+================ ======= ========== =========================================================
+Title            O/S     Language   Link
+================ ======= ========== =========================================================
+Card Editor      Windows Java       https://bitbucket.org/mattsinger/card-editor/src/release/
+Strange Eons     Multi   Java       https://strangeeons.cgjennings.ca/index.html
+Batch Card Maker Multi   Python     https://github.com/p-dimi/Batch-Card-Maker
+DeCard64         Windows Delphi     https://github.com/Dimon-II/DeCard64
+Paperize         Online  JavaScript https://beta.editor.paperize.io/#/
+Squib            Multi   Ruby       https://squib.rocks/
+CardMaker        Multi   C#         https://github.com/nhmkdev/cardmaker
+Forge of Cards   Online  JavaScript https://forgeofcards.com/#/
+================ ======= ========== =========================================================
