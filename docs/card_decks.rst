@@ -437,7 +437,7 @@ for standard playing cards is derived from the **VALUE** column:
         Card("1-26", value_black, value_low_black)
 
 This example is described in more detail in
-`standard playing cards <examples/cards.rst#standard-playing-cards>_`_
+`playing cards <examples/cards.rst#standard-playing-cards>`_
 
 
 S(election) command
@@ -450,7 +450,7 @@ There are two properties required:
 
 - the first is the condition that must matched, enclosed in curly brackets
   ``"{{...}}"``
-- the second is the shape that must be drawn if the conditiion is matched
+- the second is the shape that must be drawn if the condition is matched
 
 The match condition contains three parts, all separated by spaces:
 
