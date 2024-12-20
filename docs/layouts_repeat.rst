@@ -40,6 +40,10 @@ The ``Repeat()`` command accepts the following properties:
   horizontal direction (between columns); defaults to the **offset** value
 - **offset_down** - the distance between each repeat of the shape in the
   vertical direction (between rows); defaults to the **offset** value
+- **across** - a set (list of whole numbers surrounded by curved brackets)
+  containing only those *column* numbers which should be active
+- **down** - a set (list of whole numbers surrounded by curved brackets)
+  containing only those *row* numbers which should be active
 
 All the examples below make use of a commonly-defined shape:
 
@@ -61,6 +65,9 @@ Example 1.
 
         Repeat(marble, cols=4, rows=5)
 
+      In this case, because there is *no* offset between the columns or the
+      rows, the shape is not drawn anywhere else except at the start location.
+
 ===== ======
 
 Example 2.
@@ -76,6 +83,9 @@ Example 2.
       .. code:: python
 
         Repeat(marble, cols=4, rows=5, offset=1)
+
+      In this case, because there is an offset of ``1`` cm between the columns
+      and the rows, and so the shape drawn at 20 different locations.
 
 ===== ======
 
@@ -94,6 +104,11 @@ Example 3.
         Repeat(marble, cols=4, rows=4,
                offset_across=0.75, offset_down=1.25)
 
+      In this case, there are different offsets between the columns
+      versus the rows; so the shapes are closer together between the columns
+      (offset of ``0.75`` cm) and further apart for the rows (offset of
+      ``1.25`` cm);  the shape is here drawn at **16** different locations.
+
 ===== ======
 
 Example 4.
@@ -110,6 +125,11 @@ Example 4.
 
         Repeat(marble, cols=4, rows=5, offset=1,
                across=(2, 4))
+
+      In this case, there is the same offset of ``1`` cm between the columns
+      and the rows; however, the **across** property sets only two of the
+      columns as being active, and so the shape is only drawn at **10**
+      different locations.
 
 ===== ======
 
@@ -128,6 +148,11 @@ Example 5.
         Repeat(marble, cols=4, rows=5, offset=1,
                down=(1, 3, 5))
 
+      In this case, there is the same offset of ``1`` cm between the columns
+      and the rows; however, the **down** property sets only three of the
+      columns as being active, and so the shape is only drawn at **12**
+      different locations.
+
 ===== ======
 
 Example 6.
@@ -144,5 +169,11 @@ Example 6.
 
         Repeat(marble, cols=4, rows=5, offset=1,
                across=(2, 4), down=(1, 3, 5))
+
+      In this case, there is the same offset of ``1`` cm between the columns
+      and the rows; however, the **across** property sets only two of the
+      columns as being active, and the **down** property sets only three of
+      the columns as being active, and so the shape is only drawn at **6**
+      different locations.
 
 ===== ======
