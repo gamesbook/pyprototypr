@@ -11,11 +11,14 @@ import math
 import jinja2
 # local
 from pyprototypr.utils import tools  # geoms,
+from pyprototypr.utils.tools import DatasetType
 from pyprototypr.base import BaseShape
 from pyprototypr.layouts import SequenceShape
 from pyprototypr.shapes import (
     CircleShape, HexShape, ImageShape, RectangleShape,  SquareShape)
 from pyprototypr.utils.support import LookupType
+
+from pyprototypr import globals
 
 log = logging.getLogger(__name__)
 
@@ -237,8 +240,17 @@ class DeckShape(BaseShape):
         self.cards = kwargs.get("cards", self.counters)  # default total number of cards
         self.height = kwargs.get("height", default_height)  # OVERWRITE
         self.width = kwargs.get("width", default_width)  # OVERWRITE
+        # ---- data
+        self.dataset = kwargs.get("dataset", None)
+        self.set_dataset()  # globals override : dataset AND cards
+        # ---- behaviour
         self.sequence = kwargs.get("sequence", [])  # e.g. "1-2" or "1-5,8,10"
         self.template = kwargs.get("template", None)
+        breakpoint()
+        self.skip = kwargs.get("skip", None)
+        if self.skip and not self.dataset:
+            tools.feedback('Cannot set "skip" for a Deck without existing Data!',
+                           True)
         # ---- user provided-rows and -columns
         self.card_rows = kwargs.get("rows", None)
         self.card_cols = kwargs.get("cols", kwargs.get("columns", None))
@@ -251,8 +263,23 @@ class DeckShape(BaseShape):
         self.images = kwargs.get("images", None)
         self.images_filter = kwargs.get("images_filter", None)
         self.image_list = []
-        self.dataset = []
         self.create(self.cards)
+
+    def set_dataset(self):
+        """Create deck dataset from globals dataset"""
+        if globals.dataset_type in [
+                DatasetType.DICT, DatasetType.FILE, DatasetType.MATRIX]:
+            log.debug("globals.dataset_type: %s", globals.dataset_type)
+            if len(globals.dataset) == 0:
+                tools.feedback("The provided data is empty or cannot be loaded!", True)
+            else:
+                # globals.deck.create(len(globals.dataset) + globals.extra)
+                self.dataset = globals.dataset
+        elif globals.dataset_type == DatasetType.IMAGE:
+            # OVERWRITE total number of cards
+            self.cards = len(globals.image_list) + globals.extra
+        else:
+            pass  # no Data created
 
     def create(self, cards: int = 0):
         """Create a new deck, based on number of `cards`"""
@@ -265,6 +292,12 @@ class DeckShape(BaseShape):
             self.deck.append(_card)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Method called by Save() in proto.
+
+        Kwargs:
+            * cards - number of cards in Deck
+            * image_list - list of image filenames
+        """
         cnv = cnv if cnv else self.canvas
         log.debug("Deck cnv:%s type:%s", type(self.canvas), type(cnv))
         # ---- handle kwargs
@@ -291,6 +324,9 @@ class DeckShape(BaseShape):
         for key, card in enumerate(self.deck):
             image = images[key] if images and key <= len(images) else None
             card.deck_data = self.dataset
+            if self.skip:
+                # breakpoint()
+                print(self.deck_data)
             card.draw_card(
                 cnv, row=row, col=col, cid=card.shape_id, image=image)
             col += 1

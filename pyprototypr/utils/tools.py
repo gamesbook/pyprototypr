@@ -7,6 +7,7 @@ from collections import namedtuple
 import cmath
 import csv
 import collections
+from enum import Enum
 from itertools import zip_longest
 import jinja2
 import logging
@@ -24,6 +25,13 @@ from pyprototypr.utils.support import numbers, feedback
 
 log = logging.getLogger(__name__)
 DEBUG = False
+
+
+class DatasetType(Enum):
+    FILE = 1
+    DICT = 2
+    MATRIX = 3
+    IMAGE = 4
 
 
 def script_path():
@@ -741,7 +749,7 @@ def base_fonts():
             #    _font['name'], _font['file'], err)
 
 
-def eval_template(source: str, data: dict = None, label: str = ''):
+def eval_template(string: str, data: dict = None, label: str = ''):
     """Process data dict via jinja2 template in source.
 
     Doc Test:
@@ -750,8 +758,9 @@ def eval_template(source: str, data: dict = None, label: str = ''):
     >>> eval_template("2+{{x}}", {'y': 2})
     '2+'
     """
+    breakpoint()
     if data is None or not data:
-        return source
+        return string
     if isinstance(data, tuple):
         try:
             data = data._asdict()
@@ -761,16 +770,16 @@ def eval_template(source: str, data: dict = None, label: str = ''):
         feedback('The data must be in the form of a dictionary', True)
     try:
         environment = jinja2.Environment()
-        template = environment.from_string(str(source))
+        template = environment.from_string(str(string))
         custom_value = template.render(data)
         return custom_value
     except jinja2.exceptions.TemplateSyntaxError:
         feedback(
-            f'Unable to create the text or value - check the grammar for "{source}"',
+            f'Unable to create the text or value - check the grammar for "{string}"',
             True)
     except (ValueError, jinja2.exceptions.UndefinedError):
         feedback(
-            f'Unable to process "{source}" data with this template', True)
+            f'Unable to process "{string}" data with this template', True)
 
 
 if __name__ == "__main__":

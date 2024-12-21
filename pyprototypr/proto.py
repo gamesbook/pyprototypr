@@ -73,7 +73,7 @@ from .groups import DeckShape, Switch, Lookup, LookupType
 from ._version import __version__
 from pyprototypr.utils.support import (
     steps, excels, excel_column, equilateral_height, numbers, letters)
-from pyprototypr.utils.tools import base_fonts
+from pyprototypr.utils.tools import base_fonts, DatasetType
 from pyprototypr.utils import geoms, tools, support
 from pyprototypr.utils.geoms import Locale, Point, Place  # namedtuples
 
@@ -210,8 +210,8 @@ def Save(**kwargs):
     if globals.deck and len(globals.deck.deck) > 1:
         globals.deck.draw(
             globals.cnv,
-            cards=globals.deck.cards,
-            image_list=globals.deck.image_list)
+            cards=globals.cards,
+            image_list=globals.image_list)
         globals.cnv.canvas.showPage()
     try:
         globals.cnv.canvas.save()
@@ -377,6 +377,7 @@ def Deck(**kwargs):
     globals.margin_top = kwargs.get('margin_top', globals.margin)
     globals.margin_bottom = kwargs.get('margin_bottom', globals.margin)
     globals.margin_right = kwargs.get('margin_right', globals.margin)
+    kwargs['dataset'] = globals.dataset
     globals.deck = DeckShape(**kwargs)
 
 
@@ -406,7 +407,7 @@ def group(*args, **kwargs):
 
 
 def Data(**kwargs):
-    """Load data from file, dictionary, list-of-lists, or directory for access by Deck.
+    """Load data from file, dictionary, list-of-lists, or directory for later access.
     """
     filename = kwargs.get('filename', None)  # CSV or Excel
     matrix = kwargs.get('matrix', None)  # Matrix()
@@ -415,21 +416,24 @@ def Data(**kwargs):
     images_filter = kwargs.get('images_filter', '')  # e.g. .png
     filters = tools.sequence_split(images_filter, False, True)
     source = kwargs.get('source', None)  # dict
-    _extra = tools.as_int(kwargs.get('extra', 0), 'extra')  # cards added to dataset
+    globals.extra = tools.as_int(kwargs.get('extra', 0), 'extra')  # cards added to dataset
     try:
-        extra = int(_extra)
+        extra = int(globals.extra)
     except Exception:
-        tools.feedback(f'Extra must be a whole number, not "{_extra}"!', True)
+        tools.feedback(f'Extra must be a whole number, not "{globals.extra}"!', True)
 
     if filename:  # handle excel and CSV
         globals.dataset = tools.load_data(filename, **kwargs)
+        globals.dataset_type = DatasetType.FILE
     elif matrix:  # handle pre-built dict
         globals.dataset = matrix
+        globals.dataset_type = DatasetType.MATRIX
     elif data_list:  # handle list-of-lists
         try:
             keys = data_list[0]  # get keys from first sub-list
             dict_list = [dict(zip(keys, values)) for values in data_list[1:]]
             globals.dataset = dict_list
+            globals.dataset_type = DatasetType.DICT
         except Exception:
             tools.feedback(
                 'The data_list is not valid - please check', True)
@@ -439,6 +443,7 @@ def Data(**kwargs):
             tools.feedback(f'The source must be a dictionary, not {source_type}',
                            True)
         globals.dataset = source
+        globals.dataset_type = DatasetType.DICT
     elif images:  # create list of images
         src = pathlib.Path(images)
         if not src.is_dir():
@@ -451,24 +456,15 @@ def Data(**kwargs):
                     f'Cannot locate or access directory: {images} or {full_path}', True)
         for child in src.iterdir():
             if not filters or child.suffix in filters:
-                globals.deck.image_list.append(child)
-        if len(globals.deck.image_list) == 0:
+                globals.image_list.append(child)
+        if len(globals.image_list) == 0:
             tools.feedback(
                 f'Directory "{src}" has no relevant files or cannot be loaded!', True)
-        # OVERWRITE total number of cards
-        globals.deck.cards = len(globals.deck.image_list) + extra
-        # resize deck based on images
-        globals.deck.create(globals.deck.cards)
+        else:
+            globals.dataset_type = DatasetType.IMAGE
     else:
         tools.feedback("You must provide data for the Data command!", True)
 
-    if filename or matrix or source:
-        log.debug("globals.dataset loaded: %s", globals.dataset)
-        if len(globals.dataset) == 0:
-            tools.feedback("The provided data is empty or cannot be loaded!", True)
-        else:
-            globals.deck.create(len(globals.dataset) + extra)
-            globals.deck.dataset = globals.dataset
     return globals.dataset
 
 
@@ -530,11 +526,10 @@ def L(lookup: str, target: str, result: str, default: Any = '') -> LookupType:
     return result
 
 
-def T(source: str, data: dict = None):
-    """Use source to create a Jinja2 Template."""
-
+def T(string: str, data: dict = None):
+    """Use string to create a Jinja2 Template."""
     environment = jinja2.Environment()
-    template = environment.from_string(str(source))
+    template = environment.from_string(str(string))
     return template
 
 
