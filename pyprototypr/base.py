@@ -360,6 +360,7 @@ class BaseCanvas:
         self.paper = _paper
         self.page_width = self.paper[0] / self.units  # user-units e.g. cm
         self.page_height = self.paper[1] / self.units  # user-units e.g. cm
+        # print(f" *** {self.page_height=} {self.page_width=}")
         self.margin = self.defaults.get('margin', 1)
         self.margin_top = self.defaults.get('margin_top', self.margin)
         self.margin_bottom = self.defaults.get('margin_bottom', self.margin)
@@ -1196,6 +1197,7 @@ class BaseShape:
         self.use_abs = True if self._abs_x is not None and self._abs_y is not None else False
         self.use_abs_1 = True if self._abs_x1 is not None and self._abs_y1 is not None else False
         self.use_abs_c = True if self._abs_cx is not None and self._abs_cy is not None else False
+        # tools.feedback(f'*** draw baseshape: {self._abs_x=} {self._abs_y=} {self._abs_cx=} {self._abs_cy=}')
 
     def register_font(self, font_name: str = ''):
         if not font_name:

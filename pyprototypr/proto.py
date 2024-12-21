@@ -138,20 +138,20 @@ def Create(**kwargs):
     globals.filename = os.path.join(globals.pargs.directory, _filename)
     # tools.feedback(f"output: {filename}", False)
 
-    # ---- canvas and deck
+    # ---- canvas, paper, page size, and deck
     globals.cnv = BaseCanvas(
         globals.filename, paper=globals.paper, defaults=defaults, kwargs=kwargs)
     if landscape:
         globals.cnv.canvas.setPageSize(landscape(globals.cnv.paper))
-        page_width = globals.cnv.paper[1]  # point units (1/72 of an inch)
-        page_height = globals.cnv.paper[0]  # point units (1/72 of an inch)
+        globals.page_width = globals.cnv.paper[1]  # point units (1/72 of an inch)
+        globals.page_height = globals.cnv.paper[0]  # point units (1/72 of an inch)
     else:
-        page_width = globals.cnv.paper[0]  # point units (1/72 of an inch)
-        page_height = globals.cnv.paper[1]  # point units (1/72 of an inch)
+        globals.page_width = globals.cnv.paper[0]  # point units (1/72 of an inch)
+        globals.page_height = globals.cnv.paper[1]  # point units (1/72 of an inch)
     if kwargs.get('page_fill'):
         globals.cnv.canvas.setFillColor(kwargs.get('page_fill'))
         globals.cnv.canvas.rect(
-            0, 0, page_width, page_height, stroke=0, fill=1)
+            0, 0, globals.page_width, globals.page_height, stroke=0, fill=1)
     if _cards:
         Deck(canvas=globals.cnv, sequence=range(1, _cards + 1), **kwargs)  # deck var
 

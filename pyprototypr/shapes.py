@@ -1308,6 +1308,44 @@ class HexShape(BaseShape):
         if not self.use_diameter and not self.use_radius and not self.use_side:
             self.use_height = True
 
+    def set_height_width(self):
+        """Calculate vertical and horizontal dimensions.
+
+        Notes:
+            * Useful for a row/col layout
+        """
+        # ---- calculate half_flat & half_side
+        if self.height and self.use_height:
+            side = self._u.height / math.sqrt(3)
+            half_flat = self._u.height / 2.0
+        elif self.diameter and self.use_diameter:
+            side = self._u.diameter / 2.0
+            half_flat = side * math.sqrt(3) / 2.0
+        elif self.radius and self.use_radius:
+            side = self._u.radius
+            half_flat = side * math.sqrt(3) / 2.0
+        else:
+            pass
+        if self.side and self.use_side:
+            side = self._u.side
+            half_flat = side * math.sqrt(3) / 2.0
+        if not self.radius and not self.height and not self.diameter and not self.side:
+            tools.feedback(
+                'No value for side or height or diameter or radius supplied for hexagon.',
+                True)
+        diameter = 2.0 * side
+        radius = side
+        if self.orientation.lower() in ['p', 'pointy']:
+            self.width = 2 * half_flat / self.units
+            self.height = 2 * radius / self.units
+        elif self.orientation.lower() in ['f', 'flat']:
+            self.height = 2 * half_flat / self.units
+            self.width = 2 * radius / self.units
+        else:
+            tools.feedback(
+                'Invalid orientation "{self.orientation}" supplied for hexagon.',
+                True)
+
     def calculate_caltrops(self, side, size=None, fraction=None, invert=False):
         """Calculate settings for caltrops (the hex "corner").
 
@@ -1556,7 +1594,9 @@ class HexShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a hexagon on a given canvas."""
-        # tools.feedback(f'*** draw hexshape: {kwargs} {off_x} {off_y} {ID}')
+        # tools.feedback(f'*** draw hex: {kwargs=} {off_x=} {off_y=} {ID=}')
+        # tools.feedback(f'*** draw hex: {self.x=} {self.y=} {self.cx=} {self.cy=}')
+        # tools.feedback(f'*** draw hex: {self.row=} {self.col=}')
         kwargs = self.kwargs | kwargs
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
@@ -1600,7 +1640,7 @@ class HexShape(BaseShape):
             # ---- ^ draw pointy by row/col
             if self.row is not None and self.col is not None and is_cards:
                 x = self.col * height_flat + self._o.delta_x
-                y = self.row * diameter + self._o.delta_x
+                y = self.row * diameter + self._o.delta_y    # do NOT add half_flat
             elif self.row is not None and self.col is not None:
                 if self.hex_offset in ['o', 'O', 'odd']:
                     # TODO => calculate!
@@ -1654,7 +1694,9 @@ class HexShape(BaseShape):
             # ---- ~ draw flat by row/col
             if self.row is not None and self.col is not None and is_cards:
                 x = self.col * 2.0 * side + self._o.delta_x
-                y = half_flat + self.row * 2.0 * half_flat + self._o.delta_x
+                if self.row & 1:
+                    x = x + side
+                y = self.row * 2.0 * half_flat + self._o.delta_y  # do NOT add half_flat
             elif self.row is not None and self.col is not None:
                 if self.hex_offset in ['o', 'O', 'odd']:
                     x = self.col * (half_side + side) + self._u.x + self._o.delta_x

@@ -110,29 +110,33 @@ class CardShape(BaseShape):
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(CardShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # tools.feedback(f'*** CardShape {kwargs=}')
+        self.kwargs = kwargs
         self.elements = []  # container for objects which get added to the card
         if kwargs.get("_is_countersheet", False):
             default_height = 2.54
             default_width = 2.54
+            default_radius = None
         else:
             default_height = 8.8
             default_width = 6.3
+            default_radius = None
         self.height = kwargs.get("height", default_height)
         self.width = kwargs.get("width", default_width)
+        self.radius = kwargs.get("width", default_radius)
+        self.outline = self.get_outline(
+            cnv=canvas, row=None, col=None, cid=None, label=None, **kwargs)
+        # tools.feedback(f"**** {self.outline.radius=}")
         self.kwargs.pop("width", None)
         self.kwargs.pop("height", None)
+        self.kwargs.pop("radius", None)
         self.image = kwargs.get('image', None)
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw an element on a given canvas."""
         raise NotImplementedError
 
-    def draw_card(self, cnv, row, col, cid, **kwargs):
-        """Draw a card on a given canvas."""
-        # tools.feedback(f"\n\nCard {row=} {col=} {cid=} {self.shape=}")
-        image = kwargs.get('image', None)
-        # ---- draw outline
-        label = "ID:%s" % cid if self.show_id else ""
+    def get_outline(self, cnv, row, col, cid, label, **kwargs):
+        outline = None
         if self.shape == "rectangle":
             outline = RectangleShape(
                 label=label,
@@ -141,9 +145,8 @@ class CardShape(BaseShape):
                 canvas=cnv,
                 col=col,
                 row=row,
-                **self.kwargs,
+                kwargs=kwargs,
             )
-            outline.draw()
         elif self.shape == "square":
             outline = SquareShape(
                 label=label,
@@ -152,25 +155,46 @@ class CardShape(BaseShape):
                 canvas=cnv,
                 col=col,
                 row=row,
-                **self.kwargs,
+                kwargs=kwargs,
             )
-            outline.draw()
         elif self.shape == "circle":
-            self.height = self.radius * 2.0
-            self.width = self.radius * 2.0
-            self.kwargs["radius"] = self.radius
             outline = CircleShape(
-                label=label, canvas=cnv, col=col, row=row, **self.kwargs
+                label=label,
+                canvas=cnv,
+                col=col,
+                row=row,
+                height=self.height,
+                width=self.width,
+                radius=self.radius,
+                kwargs=kwargs
             )
-            outline.draw()
         elif self.shape == "hexagon":
-            self.height = self.side * math.sqrt(3.0)
-            self.width = self.side * 2.0
-            self.kwargs["side"] = self.side
-            outline = HexShape(label=label, canvas=cnv, col=col, row=row, **self.kwargs)
-            outline.draw(is_cards=True)
+            outline = HexShape(
+                label=label,
+                canvas=cnv,
+                col=col,
+                row=row,
+                height=self.height,
+                width=self.width,
+                radius=self.radius,
+                kwargs=kwargs
+            )
+            outline.set_height_width()
         else:
-            tools.feedback("Unable to draw a {self.shape}-shaped card.", stop=True)
+            hint = ' Try a rectangle, hexagon, circle, or square.'
+            tools.feedback(f"Unable to draw a {self.shape}-shaped card. {hint}",
+                           stop=True)
+        return outline
+
+    def draw_card(self, cnv, row, col, cid, **kwargs):
+        """Draw a card on a given canvas."""
+        # tools.feedback(f"\n ++++ Card {row=} {col=} {cid=} {self.shape=} {kwargs=}\n")
+        image = kwargs.get('image', None)
+        # ---- draw outline
+        label = "ID:%s" % cid if self.show_id else ""
+        outline = self.get_outline(
+            cnv=cnv, row=row, col=col, cid=cid, label=label, kwargs=kwargs)
+        outline.draw(is_cards=True)
         # ---- draw card elements
         flat_elements = tools.flatten(self.elements)
         for index, flat_ele in enumerate(flat_elements):
@@ -183,14 +207,18 @@ class CardShape(BaseShape):
 
             members = self.members or flat_ele.members
             # tools.feedback(f' *** {members=}', False)
+            # tools.feedback(f' 210 *** {outline=} {self.shape=} {row=}')
+            _dx = col * outline.width
+            if row & 1 and self.shape == 'hexagon':
+                _dx = _dx + outline.height / math.sqrt(3)
+                # tools.feedback(f' 215 *** {outline.height=} {outline.side=}')
+            _dy = row * outline.height
             try:
                 # ---- * normal element
                 iid = members.index(cid + 1)
                 # tools.feedback(f"  *** {index=} {iid=} {flat_ele=} / {col=} {self.width=} / {row=} {self.height=}")
                 new_ele = self.handle_custom_values(flat_ele, cid)  # calculated values
-                new_ele.draw(
-                    cnv=cnv, off_x=col * self.width, off_y=row * self.height, ID=iid
-                )
+                new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid)
             except AttributeError:
                 # ---- * switch ... get a new element ... or not!?
                 # print(f"  ^^^ {self.shape_id=}  {flat_ele=}")
@@ -206,12 +234,8 @@ class CardShape(BaseShape):
                         # print(f"      --- POST --- {custom_new_ele=}")
                         if isinstance(custom_new_ele, SequenceShape):
                             custom_new_ele.deck_data = self.deck_data
-                        custom_new_ele.draw(
-                            cnv=cnv,
-                            off_x=col * self.width,
-                            off_y=row * self.height,
-                            ID=iid,
-                        )
+                        custom_new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid)
+
             except Exception as err:
                 tools.feedback(f"Unable to draw card #{cid + 1}. (Error:{err})")
 
@@ -226,20 +250,24 @@ class DeckShape(BaseShape):
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(DeckShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         # tools.feedback(f'*** DeckShape {kwargs=}')
+        self.kwargs = kwargs
         # ---- cards
         self.deck = []  # container for CardShape objects
         if kwargs.get("_is_countersheet", False):
             default_items = 70
             default_height = 2.54
             default_width = 2.54
+            default_radius = 0
         else:
             default_items = 9
             default_height = 8.8
             default_width = 6.3
+            default_radius = 0
         self.counters = kwargs.get("counters", default_items)
         self.cards = kwargs.get("cards", self.counters)  # default total number of cards
         self.height = kwargs.get("height", default_height)  # OVERWRITE
         self.width = kwargs.get("width", default_width)  # OVERWRITE
+        self.radius = kwargs.get("width", default_radius)  # OVERWRITE
         # ---- dataset (list of dicts)
         self.dataset = kwargs.get("dataset", None)
         self.set_dataset()  # globals override : dataset AND cards
@@ -309,19 +337,24 @@ class DeckShape(BaseShape):
         # ---- user-defined rows and cols
         max_rows = self.card_rows
         max_cols = self.card_cols
-        # ---- calculate rows/cols based on page size and margins
+        # ---- calculate rows/cols based on page size and margins AND card size
         margin_left = self.margin_left if self.margin_left is not None else self.margin
         margin_bottom = self.margin_bottom if self.margin_bottom is not None else self.margin
         margin_right = self.margin_right if self.margin_right is not None else self.margin
         margin_top = self.margin_top if self.margin_top is not None else self.margin
+        _height, _width, _radius = self.width, self.width, self.radius
+        if self.deck:
+            _card = self.deck[0]
+            _height, _width, = _card.outline.height, _card.outline.width
+            _radius = _card.outline.radius
         if not max_rows:
-            row_space = float(self.page_height) - margin_bottom - margin_top
-            max_rows = int(row_space / float(self.height))
+            row_space = float(globals.page_height / globals.units) - margin_bottom - margin_top
+            max_rows = int(row_space / float(_height))
         if not max_cols:
-            col_space = float(self.page_width) - margin_left - margin_right
-            max_cols = int(col_space / float(self.width))
-        log.debug("w:%s cs:%s mc:%s", self.page_width, col_space, max_cols)
-        log.debug("h:%s rs:%s mr:%s", self.page_height, row_space, max_rows)
+            col_space = float(globals.page_width / globals.units) - margin_left - margin_right
+            max_cols = int(col_space / float(_width))
+        log.debug("W:%s c-space:%s cols:%s", globals.page_width, col_space, max_cols)
+        log.debug("H:%s r-space:%s mr:%s", globals.page_height, row_space, max_rows)
         row, col = 0, 0
         # ---- draw cards
         for key, card in enumerate(self.deck):
@@ -337,7 +370,7 @@ class DeckShape(BaseShape):
                         'The "skip" test must result in True or False value!', True)
             if not skip:
                 card.draw_card(
-                    cnv, row=row, col=col, cid=card.shape_id, image=image)
+                    cnv, row=row, col=col, cid=card.shape_id, image=image, kwargs=kwargs)
                 col += 1
                 if col >= max_cols:
                     col = 0
