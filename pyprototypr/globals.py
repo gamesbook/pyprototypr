@@ -34,7 +34,7 @@ def initialize():
     dataset_type = None  # set when Data is loaded; enum DatasetType
     image_list = []  # filenames stored when Data is loaded from image dir
     extra = 0  # extra Cards specified by Deck
-    cards = 0  # total number of Cards specified for Deck
+    cards = 0  # total number of Cards specified for Deck (dataset length overrides)
     margin = 1
     margin_left = margin
     margin_top = margin

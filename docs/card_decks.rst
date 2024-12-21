@@ -116,6 +116,11 @@ The following are other properties that can also be set for a deck:
 - **stroke** - sets the color of the card's border; defaults to black
 - **grid_marks** - if set to ``True``, will cause small marks to be drawn at
   the border of the page that align with the eddges of the cards
+- **skip** - an expression which should evaluate to ``True` or ``False``;
+  this expression uses the same kind of syntax as the `T(emplate) command`_
+  described below and it uses data available from the Deck's ``Data``
+  (see `The Data Command`_); if ``True`` then any matching cards will be
+  skipped i.e. ignored and not drawn.
 
 Deck Example #1
 ---------------
@@ -147,7 +152,27 @@ there will be 9 cards on an A4 page (in default portrait mode):
         grid_marks=True,
         rounding=0.3,
         fill=gold,
-        border=tomato)
+        border=tomato,
+        skip="{{ Race == 'Hobbit' }}")
+
+In this case, there is data named with the label **Race** available in
+the Deck's dataset; and any card with data matching the value ``Hobbit``
+will be skipped (ignored and not drawn).
+
+If you need to match any of multiple *skip* conditions, use an **or**:
+
+    .. code:: python
+
+        skip="{{ Race == 'Hobbit' or Race == 'Dwarf' }}")
+
+If you need to match all of multiple *skip* conditions, use an **and**:
+
+    .. code:: python
+
+        skip="{{ Race == 'Hobbit' and Age < 39 }}")
+
+The full code - including the data - for this example is available as
+`cards_lotr.py <../examples/cards/cards_lotr.py>`_
 
 
 The Card Command
@@ -242,7 +267,7 @@ card. Each **column** must be named so that the data can be referenced:
   file
 - the names for a ``Matrix`` command must appear as a list assigned to the
   *labels* property
-- the names for a "list of lists" must appear as the first list
+- the names for a "list of lists" must appear in the first list
 
 The ``Data`` command uses different properties to reference these sources:
 
@@ -331,11 +356,32 @@ This example shows how data is sourced from a "list of lists":
            [1, "Gimli", 140, "Dwarf"],
            [2, "Legolas", 656, "Elf"],
            [3, "Aragorn", 88, "Human"],
+           [4, "Frodo", 51, "Hobbit"],
+           [5, "Pippin", 29, "Hobbit"],
+           [6, "Merry", 37, "Hobbit"],
+           [7, "Samwise", 39, "Hobbit"],
+           [8, "Boromir", 41, "Human"],
+           [9, "Gandalf", None, "Maia"],
        ]
        Data(data_list=lotr)
 
-See below under the `T(emplate) command`_ for an example how this data could
-be used.
+This list above is equivalent to a CSV file containing:
+
+    .. code:: text
+
+        ID,Name,Age,Race
+        1,Gimli,140,Dwarf
+        2,Legolas,656,Elf
+        3,Aragorn,88,Human
+        4,Frodo,51,Hobbit
+        5,Pippin,29,Hobbit
+        6,Merry,37,Hobbit
+        7,Samwise,39,Hobbit
+        8,Boromir,41,Human
+        9,Gandalf,,Maia
+
+See below under the `T(emplate) command`_ and also under the
+`S(election) command`_ for examples how this data could be used.
 
 
 The Matrix Command
@@ -389,6 +435,7 @@ reduced repetition when designing a deck of cards.
 
 group command
 -------------
+`↑ <table-of-contents_>`_
 
 This command provides a "shortcut" way to reference a stack of shapes that
 all need to be drawn together. Add the shapes to a set - comma-separated
@@ -412,6 +459,7 @@ group commonly used properties.
 
 T(emplate) command
 ------------------
+`↑ <table-of-contents_>`_
 
 This command causes the name of a column to be replaced by its equivalent
 value for that card.
@@ -419,38 +467,44 @@ value for that card.
 To use this command, simply enclose the name of the data column in curly
 brackets - ``"{{...}}"``.
 
-This example shows how the card values in the top-left and lower-right corners
-for standard playing cards is derived from the **VALUE** column:
+This example shows how to use the command, with reference to the ``Data``
+from `Data Example #5`_.  The text appearing at the top of all cards
+is derived from the **Name** column:
 
     .. code:: python
 
-        value_top = Common(
-            x=1.0, y=7.4, font_size=40)
-        value_black = text(
-            common=value_top, stroke=black, text=T('{{VALUE}}'))
+        Card("all", text(text=T("{{ Name }}"), x=3.3, y=7.5, font_size=18))
 
-        value_low = Common(
-            x=5.5, y=1.4, font_size=40, rotation=180)
-        value_low_black = text(
-            common=value_low, stroke=black, text=T('{{VALUE}}'))
+Data from the column can also be mixed in with other text or values:
 
-        Card("1-26", value_black, value_low_black)
+    .. code:: python
 
-This example is described in more detail in
-`playing cards <examples/cards.rst#standard-playing-cards>`_
+        power = text(
+            text=T("<i>Long-lived</i> <b>({{ Age or '\u221E' }})</b>"),
+            x=0.5, y=1.2, width=5, font_size=18,
+            align="centre", wrap=True, fill=None)
+
+Here the Text assigmed to the name *power* uses the full text capability to
+style the text - italic and bold - and also uses the **or** option in the
+``T()`` command to provide an alternate value - in this case the infinity
+sign - to use when there no *Age* value (for example, for the "Gandalf" row).
+
+The full code for this example is available as
+`cards_lotr.py <../examples/cards/cards_lotr.py>`_
 
 
 S(election) command
 -------------------
+`↑ <table-of-contents_>`_
 
 This command causes a shape to be added to a card, or set of cards, for a
 matching condition.
 
 There are two properties required:
 
-- the first is the condition that must matched, enclosed in curly brackets
+- the first is the **condition** that must matched, enclosed in curly brackets
   ``"{{...}}"``
-- the second is the shape that must be drawn if the condition is matched
+- the second is the **shape** that will be drawn if the condition is matched
 
 The match condition contains three parts, all separated by spaces:
 
@@ -465,21 +519,15 @@ from `Data Example #5`_:
 
     .. code:: python
 
-        back_red = rectangle(
-            x=0.5, y=0.5, width=5.3, height=7.8, fill_stroke=tomato)
-        Card("all", S("{{ Race == 'Human' }}", back_red))
+        back_race = Common(
+            x=0.5, y=0.5, width=5.3, height=7.9, rounded=0.2)
+        back_hum = rectangle(
+            common=back_race, fill_stroke=tomato)
+        Card("all", S("{{ Race == 'Human' }}", back_hum))
 
-        power = text(text="Long-lived", x=3.3, y=0.5)
-        Card("all", S("{{ Race != 'Human' }}", power))
-
-In the first case, any/all cards for which the **Race** column contains, or
+In this example, any/all cards for which the **Race** column contains, or
 is equal to -  the double equals ``==`` check  - the value **Human** a red
 rectangle will be drawn on the card.
-
-In the second case, any/all cards for which the **Race** column does *not*
-contain i.e. is *not* equal to -  the exclamation + equals signs ``!=`` check
-- the value **Human** a text with the value ``Long-lived`` will be drawn on
-the lower edge of card.
 
 A "nonsense" condition is usually ignored; for example:
 
@@ -490,6 +538,8 @@ A "nonsense" condition is usually ignored; for example:
 will produce no changes in the cards as there is no **nature** column or
 **Orc** value.
 
+The full code for this example is available as
+`cards_lotr.py <../examples/cards/cards_lotr.py>`_
 
 L(ookup) command
 ----------------

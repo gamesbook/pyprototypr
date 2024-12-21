@@ -240,16 +240,17 @@ class DeckShape(BaseShape):
         self.cards = kwargs.get("cards", self.counters)  # default total number of cards
         self.height = kwargs.get("height", default_height)  # OVERWRITE
         self.width = kwargs.get("width", default_width)  # OVERWRITE
-        # ---- data
+        # ---- dataset (list of dicts)
         self.dataset = kwargs.get("dataset", None)
         self.set_dataset()  # globals override : dataset AND cards
+        if self.dataset:
+            self.cards = len(self.dataset)
         # ---- behaviour
         self.sequence = kwargs.get("sequence", [])  # e.g. "1-2" or "1-5,8,10"
         self.template = kwargs.get("template", None)
-        breakpoint()
         self.skip = kwargs.get("skip", None)
         if self.skip and not self.dataset:
-            tools.feedback('Cannot set "skip" for a Deck without existing Data!',
+            tools.feedback('Cannot set "skip" for a Deck without any existing Data!',
                            True)
         # ---- user provided-rows and -columns
         self.card_rows = kwargs.get("rows", None)
@@ -263,6 +264,8 @@ class DeckShape(BaseShape):
         self.images = kwargs.get("images", None)
         self.images_filter = kwargs.get("images_filter", None)
         self.image_list = []
+        # ---- FINALLY...
+        self.cards += globals.extra
         self.create(self.cards)
 
     def set_dataset(self):
@@ -277,12 +280,12 @@ class DeckShape(BaseShape):
                 self.dataset = globals.dataset
         elif globals.dataset_type == DatasetType.IMAGE:
             # OVERWRITE total number of cards
-            self.cards = len(globals.image_list) + globals.extra
+            self.cards = len(globals.image_list)
         else:
             pass  # no Data created
 
     def create(self, cards: int = 0):
-        """Create a new deck, based on number of `cards`"""
+        """Create a new Deck of CardShapes, based on number of `cards`"""
         log.debug("Cards are: %s", self.sequence)
         self.deck = []
         log.debug("Deck => %s cards with kwargs: %s", cards, self.kwargs)
@@ -324,19 +327,25 @@ class DeckShape(BaseShape):
         for key, card in enumerate(self.deck):
             image = images[key] if images and key <= len(images) else None
             card.deck_data = self.dataset
+            skip = False
             if self.skip:
-                # breakpoint()
-                print(self.deck_data)
-            card.draw_card(
-                cnv, row=row, col=col, cid=card.shape_id, image=image)
-            col += 1
-            if col >= max_cols:
-                col = 0
-                row += 1
-            if row >= max_rows:
-                row, col = 0, 0
-                if key + 1 != len(self.deck):
-                    cnv.canvas.showPage()
+                _check = tools.eval_template(self.skip, self.dataset[key], label='skip')
+                skip = tools.as_bool(_check, label='skip', allow_none=False)
+                # print(f'{key=} :: {self.dataset[key]=}, {skip=}')
+                if not isinstance(skip, bool):
+                    tools.feedback(
+                        'The "skip" test must result in True or False value!', True)
+            if not skip:
+                card.draw_card(
+                    cnv, row=row, col=col, cid=card.shape_id, image=image)
+                col += 1
+                if col >= max_cols:
+                    col = 0
+                    row += 1
+                if row >= max_rows:
+                    row, col = 0, 0
+                    if key + 1 != len(self.deck):
+                        cnv.canvas.showPage()
 
     def get(self, cid):
         """Return a card based on the internal ID"""

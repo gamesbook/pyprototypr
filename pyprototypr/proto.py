@@ -1296,7 +1296,6 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
 def Locations(grid: list, labels: Union[str, list], shapes: list, **kwargs):
     kwargs = kwargs
 
-    breakpoint()
     if grid is None or not isinstance(grid, list):
         tools.feedback("The grid (as a list) must be supplied!", True)
     if labels is None:

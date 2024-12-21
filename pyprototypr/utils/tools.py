@@ -758,7 +758,6 @@ def eval_template(string: str, data: dict = None, label: str = ''):
     >>> eval_template("2+{{x}}", {'y': 2})
     '2+'
     """
-    breakpoint()
     if data is None or not data:
         return string
     if isinstance(data, tuple):

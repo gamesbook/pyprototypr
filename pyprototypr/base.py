@@ -1713,7 +1713,6 @@ class BaseShape:
 
         Values can be accessed via a Jinja template using e.g. T("{{ SUIT }}")
         """
-        breakpoint()
         if not self.deck_data:
             return the_element
         new_element = None
