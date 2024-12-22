@@ -53,6 +53,9 @@ python examples/counters/blocks_csv.py -d /tmp/demo
 # ---- cards
 echo "Creating cards..."
 python examples/cards/cards_design.py -d /tmp/demo
+python examples/cards/cards_hexagonal.py -d /tmp/demo
+python examples/cards/cards_circular.py -d /tmp/demo
+python examples/cards/cards_lotr.py -d /tmp/demo
 python examples/cards/cards_images.py -d /tmp/demo
 python examples/cards/cards_matrix_one.py -d /tmp/demo
 python examples/cards/cards_matrix_two.py -d /tmp/demo

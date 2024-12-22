@@ -2381,8 +2381,13 @@ class RectangleShape(BaseShape):
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a rectangle on a given canvas."""
         kwargs = self.kwargs | kwargs
+        kwargs = tools.flatten_keys(kwargs)
+        # tools.feedback(f' @@@rect {kwargs=}')
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        # ---- updated based on kwargs
+        self.rounding = kwargs.get('rounding', self.rounding)
+        self.grid_marks = kwargs.get('grid_marks', self.grid_marks)
         # ---- validate properties
         is_notched = True if (self.notch or self.notch_x or self.notch_y) else False
         is_chevron = True if (self.chevron or self.chevron_height) else False

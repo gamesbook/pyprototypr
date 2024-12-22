@@ -137,25 +137,17 @@ class CardShape(BaseShape):
 
     def get_outline(self, cnv, row, col, cid, label, **kwargs):
         outline = None
+        kwargs = tools.flatten_keys(kwargs)
+        kwargs['height'] = self.height
+        kwargs['width'] = self.width
+        kwargs['radius'] = self.radius
         if self.shape == "rectangle":
             outline = RectangleShape(
                 label=label,
-                height=self.height,
-                width=self.width,
                 canvas=cnv,
                 col=col,
                 row=row,
-                kwargs=kwargs,
-            )
-        elif self.shape == "square":
-            outline = SquareShape(
-                label=label,
-                height=self.height,
-                width=self.width,
-                canvas=cnv,
-                col=col,
-                row=row,
-                kwargs=kwargs,
+                **kwargs,
             )
         elif self.shape == "circle":
             outline = CircleShape(
@@ -163,10 +155,7 @@ class CardShape(BaseShape):
                 canvas=cnv,
                 col=col,
                 row=row,
-                height=self.height,
-                width=self.width,
-                radius=self.radius,
-                kwargs=kwargs
+                **kwargs
             )
         elif self.shape == "hexagon":
             outline = HexShape(
@@ -174,14 +163,11 @@ class CardShape(BaseShape):
                 canvas=cnv,
                 col=col,
                 row=row,
-                height=self.height,
-                width=self.width,
-                radius=self.radius,
-                kwargs=kwargs
+                **kwargs
             )
             outline.set_height_width()
         else:
-            hint = ' Try a rectangle, hexagon, circle, or square.'
+            hint = ' Try a rectangle, hexagon, or circle.'
             tools.feedback(f"Unable to draw a {self.shape}-shaped card. {hint}",
                            stop=True)
         return outline
@@ -194,7 +180,9 @@ class CardShape(BaseShape):
         label = "ID:%s" % cid if self.show_id else ""
         outline = self.get_outline(
             cnv=cnv, row=row, col=col, cid=cid, label=label, kwargs=kwargs)
-        outline.draw(is_cards=True)
+        shape_kwargs = tools.flatten_keys(kwargs)
+        shape_kwargs['is_cards'] = True
+        outline.draw(**shape_kwargs)
         # ---- draw card elements
         flat_elements = tools.flatten(self.elements)
         for index, flat_ele in enumerate(flat_elements):
@@ -249,7 +237,7 @@ class DeckShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(DeckShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        # tools.feedback(f'*** DeckShape {kwargs=}')
+        # tools.feedback(f' $$$$ DeckShape - init - {kwargs=}')
         self.kwargs = kwargs
         # ---- cards
         self.deck = []  # container for CardShape objects
@@ -276,9 +264,10 @@ class DeckShape(BaseShape):
         # ---- behaviour
         self.sequence = kwargs.get("sequence", [])  # e.g. "1-2" or "1-5,8,10"
         self.template = kwargs.get("template", None)
-        self.skip = kwargs.get("skip", None)
-        if self.skip and not self.dataset:
-            tools.feedback('Cannot set "skip" for a Deck without any existing Data!',
+        self.copy = kwargs.get("copy", None)
+        self.mask = kwargs.get("mask", None)
+        if self.mask and not self.dataset:
+            tools.feedback('Cannot set "mask" for a Deck without any existing Data!',
                            True)
         # ---- user provided-rows and -columns
         self.card_rows = kwargs.get("rows", None)
@@ -293,7 +282,7 @@ class DeckShape(BaseShape):
         self.images_filter = kwargs.get("images_filter", None)
         self.image_list = []
         # ---- FINALLY...
-        self.cards += globals.extra
+        self.cards += globals.deck_settings.get('extra', 0)
         self.create(self.cards)
 
     def set_dataset(self):
@@ -327,11 +316,14 @@ class DeckShape(BaseShape):
 
         Kwargs:
             * cards - number of cards in Deck
+            * copy - name of column to use to set number of copies of a Card
             * image_list - list of image filenames
         """
         cnv = cnv if cnv else self.canvas
         log.debug("Deck cnv:%s type:%s", type(self.canvas), type(cnv))
         # ---- handle kwargs
+        kwargs = self.kwargs | kwargs
+        kwargs = tools.flatten_keys(kwargs)
         images = kwargs.get('image_list', [])
         cards = kwargs.get('cards', None)
         # ---- user-defined rows and cols
@@ -360,25 +352,33 @@ class DeckShape(BaseShape):
         for key, card in enumerate(self.deck):
             image = images[key] if images and key <= len(images) else None
             card.deck_data = self.dataset
-            skip = False
-            if self.skip:
-                _check = tools.eval_template(self.skip, self.dataset[key], label='skip')
-                skip = tools.as_bool(_check, label='skip', allow_none=False)
-                # print(f'{key=} :: {self.dataset[key]=}, {skip=}')
-                if not isinstance(skip, bool):
+            mask = False
+            if self.mask:
+                _check = tools.eval_template(self.mask, self.dataset[key], label='mask')
+                mask = tools.as_bool(_check, label='mask', allow_none=False)
+                # print(f' ~~~~ {key=} :: {self.dataset[key]=}, {mask=}')
+                if not isinstance(mask, bool):
                     tools.feedback(
-                        'The "skip" test must result in True or False value!', True)
-            if not skip:
-                card.draw_card(
-                    cnv, row=row, col=col, cid=card.shape_id, image=image, kwargs=kwargs)
-                col += 1
-                if col >= max_cols:
-                    col = 0
-                    row += 1
-                if row >= max_rows:
-                    row, col = 0, 0
-                    if key + 1 != len(self.deck):
-                        cnv.canvas.showPage()
+                        'The "mask" test must result in True or False value!', True)
+            if not mask:
+                # get number of copies
+                copies = 1
+                if card.kwargs.get('dataset') and self.copy:
+                    _copies = card.deck_data[key].get(self.copy)
+                    copies = tools.as_int(_copies, 'copy')
+
+                for i in range(0, copies):
+                    # print(f'++++ {col=} {row=} {key=} {card=} ++++')
+                    card.draw_card(
+                        cnv, row=row, col=col, cid=card.shape_id, image=image, kwargs=kwargs)
+                    col += 1
+                    if col >= max_cols:
+                        col = 0
+                        row += 1
+                    if row >= max_rows:
+                        row, col = 0, 0
+                        if key != len(self.deck) - 1 or (i < (copies - 1)):
+                            cnv.canvas.showPage()
 
     def get(self, cid):
         """Return a card based on the internal ID"""

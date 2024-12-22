@@ -8,11 +8,10 @@ from reportlab.lib.units import cm
 def initialize():
     global cnv
     global deck
-    global cards
+    global deck_settings
     global dataset
     global dataset_type
     global image_list
-    global extra
     global filename
     global margin
     global margin_left
@@ -31,12 +30,11 @@ def initialize():
 
     cnv = None  # will become a reportlab.canvas object
     deck = None  # will become a shapes.DeckShape object
+    deck_settings = {}  # holds kwargs passed to Deck ; cards, copy, extra, grid_marks
     filename = None
     dataset = None  # will become a dictionary of data loaded from a file
     dataset_type = None  # set when Data is loaded; enum DatasetType
     image_list = []  # filenames stored when Data is loaded from image dir
-    extra = 0  # extra Cards specified by Deck
-    cards = 0  # total number of Cards specified for Deck (dataset length overrides)
     margin = 1
     margin_left = margin
     margin_top = margin

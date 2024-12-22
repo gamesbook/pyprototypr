@@ -7,7 +7,7 @@ Created on: 29 February 2016
 from pyprototypr import *
 
 # create the output card file
-Create(filename='example4.pdf', offset=0.5)
+Create(filename='example4.pdf', margin_bottom=2.5)
 
 # create a deck design
 Deck(cards=25,

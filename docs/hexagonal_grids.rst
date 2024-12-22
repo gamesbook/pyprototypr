@@ -7,15 +7,11 @@ Hexagonal Grids
 .. |deg|  unicode:: U+00B0 .. DEGREE SIGN
    :ltrim:
 
-Hexagonal grids are now widely used in the table top gaming industry.
-
-They are particularly suitable in providing an overlay for maps and have been
-used for decades in war games and role playing games, but can also act as grids
-or tiles in regular board games.
-
-Some practical example of these grids are shown in the section containing
-`commercial <examples/commercial.rst>`_ and `abstract <examples/abstract.rst>`_
-boards.
+This section assumes you are very familiar with the concepts, terms and ideas
+for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ ,
+that you understand all of the `Additional Concepts <additional_concepts.rst>`_
+and that you've created some basic scripts of your own using the
+`Core Shapes <core_shapes.rst>`_.
 
 .. _table-of-contents:
 
@@ -35,15 +31,20 @@ Overview
 ========
 `↑ <table-of-contents_>`_
 
-These descriptions assume you are familiar with the concepts, terms and ideas
-for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ -
-especially *units*, *properties* and *defaults*.
+Hexagonal grids are now widely used in the table top gaming industry.
+
+They are particularly suitable in providing an overlay for maps and have been
+used for decades in war games and role playing games, but can also act as grids
+or tiles in regular board games.
+
+Some practical example of these grids are shown in the section containing
+examples of both `commercial <examples/commercial.rst>`_ and
+`abstract <examples/abstract.rst>`_ boards.
 
 You should have already seen how a single Hexagon and a basic grid of Hexagons
 are created using defaults, in `Core Shapes <core_shapes.rst#hexagon>`_. You
 should also have seen how a single Hexagon can be further enhanced in
 `Customised Shapes <customised_shapes.rst#hexagon>`_.
-
 
 .. _rectIndex:
 

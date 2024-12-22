@@ -207,12 +207,17 @@ def page_break():
 
 def Save(**kwargs):
 
+    # ---- draw Deck
     if globals.deck and len(globals.deck.deck) > 1:
         globals.deck.draw(
             globals.cnv,
-            cards=globals.cards,
+            cards=globals.deck_settings.get('cards', 9),
+            copy=globals.deck_settings.get('copy', None),
+            grid_marks=globals.deck_settings.get('grid_marks', None),
             image_list=globals.image_list)
         globals.cnv.canvas.showPage()
+
+    # ---- save canvas to file
     try:
         globals.cnv.canvas.save()
     except RuntimeError as err:
@@ -220,6 +225,7 @@ def Save(**kwargs):
     except FileNotFoundError as err:
         tools.feedback(f'Unable to save "{globals.filename}" - {err}', True)
 
+    # ---- save to GIF
     output = kwargs.get('output', None)
     dpi = support.to_int(kwargs.get('dpi', 300), 'dpi')
     framerate = support.to_float(kwargs.get('framerate', 1), 'framerate')
@@ -314,11 +320,12 @@ def Matrix(labels: list = None, data: list = None) -> list:
     return result
 
 
-def Card(sequence, *elements):
+def Card(sequence, *elements, **kwargs):
     """Add one or more elements to a card or cards.
 
     NOTE: A Card receives its `draw()` command via Save()!
     """
+    kwargs = margins(**kwargs)
     if not globals.deck:
         tools.feedback('The Deck() has not been defined or is incorrect.', True)
     _cards = []
@@ -371,14 +378,10 @@ def Deck(**kwargs):
 
     NOTE: A Deck receives its `draw()` command from Save()!
     """
-
-    globals.margin = kwargs.get('margin', globals.margin)
-    globals.margin_left = kwargs.get('margin_left', globals.margin)
-    globals.margin_top = kwargs.get('margin_top', globals.margin)
-    globals.margin_bottom = kwargs.get('margin_bottom', globals.margin)
-    globals.margin_right = kwargs.get('margin_right', globals.margin)
+    kwargs = margins(**kwargs)
     kwargs['dataset'] = globals.dataset
     globals.deck = DeckShape(**kwargs)
+    globals.deck_settings['grid_marks'] = kwargs.get('grid_marks', None)
 
 
 def CounterSheet(**kwargs):
@@ -386,13 +389,9 @@ def CounterSheet(**kwargs):
 
     NOTE: A CounterSheet (aka Deck) receives its `draw()` command from Save()!
     """
-    globals.margin = kwargs.get('margin', globals.margin)
-    globals.margin_left = kwargs.get('margin_left', globals.margin)
-    globals.margin_top = kwargs.get('margin_top', globals.margin)
-    globals.margin_bottom = kwargs.get('margin_bottom', globals.margin)
-    globals.margin_right = kwargs.get('margin_right', globals.margin)
-
+    kwargs = margins(**kwargs)
     kwargs['_is_countersheet'] = True
+    kwargs['dataset'] = globals.dataset
     globals.deck = DeckShape(**kwargs)
 
 

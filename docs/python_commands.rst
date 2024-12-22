@@ -5,7 +5,8 @@ Using Python Commands
 This section assumes you are very familiar with the concepts, terms and ideas
 for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ ,
 that you understand all of the `Additional Concepts <additional_concepts.rst>`_
-and that you've created some basic scripts of your own.
+and that you've created some basic scripts of your own using the
+`Core Shapes <core_shapes.rst>`_.
 
 .. NOTE::
    Note that if you already know the Python programming language, you can skip
@@ -22,6 +23,7 @@ Table of Contents
 -  `If Statements`_
 -  `Functions`_
 
+
 Background
 ==========
 `↑ <table-of-contents_>`_
@@ -30,7 +32,7 @@ Working with an actual programming language, if you’re not a programmer,
 can be a little intimidating. Hopefully though, by the time you’ve
 started to look at this section, you will already be somewhat
 comfortable with writing and running **pyprototypr** scripts and
-therefore already on your way to controlling the computer through a
+therefore already on your way to controlling a computer through a
 written language.
 
 The concepts and methods represented here are relatively small
@@ -45,7 +47,7 @@ Introduction
 As you may already have worked out; the normal operation of the script
 is to start with the first command and then go on to the next one and
 so on until the last one has been carried out - this is the normal or
-“default” behaviour of any program.
+"default" behaviour of any program.
 
 However, most programming languages have the concept of **loops** and
 **if** statements. These commands are used to change the default
@@ -55,7 +57,7 @@ together, and which need to be used/activated a number of times.
 
 Any statement or functionality that is part of the Python programming language
 can be used in a script if you want to. The ones below are just to give
-you some idea of the “basics”.
+you some idea of "the basics".
 
 Loops
 =====
@@ -74,7 +76,7 @@ represents what happens in a loop. The first part indicates how many
 times the loop happens, and the second part is the action, or set of
 actions, that need to be repeated.
 
-In a Python, or _pyprototypr_, script, a loop can be set-up by using
+In a Python, or **pyprototypr**, script, a loop can be set-up by using
 the following kind of statement:
 
   .. code:: python
@@ -91,7 +93,8 @@ In this case the first line is the loop set-up:
    a start and end value inside a pair of brackets (the 1 and 4
    respectively);
 -  *number* stores how many times the loop has happened so far (for the very
-   first time the value of number will be set to the start value of 1).
+   first time the value of number will be set to the start value of 1); this
+   is referred to as the loop's *counter*
 
 The first line ends with ``:`` to show that it is expected that more lines
 will follow that describe what must happen each time the program goes through
@@ -108,9 +111,9 @@ line with the ``for`` line - this is where the “loop” concept comes from
 - to increase the ``number`` value and prepare to carry out the action(s)
 again.
 
-   NOTE: When the value stored in ``number`` matches that of the ``end``
-   value, the loop will stop right away and **not** process any of the
-   action(s) again.
+   NOTE: When the counter's value stored in ``number`` matches that of the
+   ``end`` value, the loop will stop right away and **not** process any of
+   the action(s) again.
 
 In the case of **pyprototypr**, a loop can be used to draw an item a
 number of times; for example:
@@ -124,7 +127,7 @@ Here the value of ``y`` for the Circle will be set to a different number
 every time the loop operates. For the first time it will have a value of
 1 (one); the second time a value of 2 (two); and the third time value of
 3 (three) - as noted above, when number reaches the value of 4, the loop
-ends right away. This loop will cause a Circle to be drawn in three
+ends right away. This loop will cause a ``Circle`` to be drawn in three
 different ``y`` locations on the page.
 
 You can combine the value of the number with other information to do more
@@ -150,8 +153,8 @@ different increment number. For example:
         Circle(x=1, y=number)
 
 Here number takes on the values 1, 3 and 5; because the third value of 2
-is added to the number value each time the loop operates. When number
-reaches 7, the loop ends right away.
+is added to the *number* value each time the loop operates. When the loop
+counter value stored in *number* reaches 7, the loop ends right away.
 
 Multiple Loops
 --------------
@@ -293,7 +296,7 @@ handle all of them.  Any options after the first one are handled with a
        pull_over()
 
 In this example, the driver might be unsure what to do if the light has
-malfunctioned!
+malfunctioned - best to be safe!
 
 
 Functions
@@ -351,10 +354,9 @@ of it,
       The function named *capitol* has three properties that
       can be set; *a*, *b* and *c*.
 
-      The values have defaults -
-      ``0``, ``0`` and ``red`` - which are used if no values
-      are provided; this can be seen by the first example
-      in the lower left.
+      The values have defaults - ``0``, ``0`` and ``red``
+      - respectively, which are used if no values are provided;
+      this can be seen by the first example in the lower left.
 
       If values are provided to *a* and *b*,
       these will change where the shapes are drawn; if a value

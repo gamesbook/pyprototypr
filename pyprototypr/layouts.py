@@ -38,6 +38,7 @@ class GridShape(BaseShape):
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a grid on a given canvas."""
         kwargs = self.kwargs | kwargs
+        breakpoint()
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         # ---- convert to using units

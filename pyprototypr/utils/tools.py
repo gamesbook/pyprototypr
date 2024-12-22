@@ -296,9 +296,13 @@ def tuple_split(
 '''
 '''
 
-def sequence_split(string: str, as_int: bool = True, unique: bool = True):
+def sequence_split(
+        string: str, as_int: bool = True, unique: bool = True, sep: str = ','):
     """
     Split a string into a list of individual values
+
+    Note:
+        * If `unique` is True, order will NOT be maintained!
 
     Doc Test:
 
@@ -316,16 +320,21 @@ def sequence_split(string: str, as_int: bool = True, unique: bool = True):
     >>> assert '5' in x
     >>> sequence_split('3-5,6,1-4')
     [1, 2, 3, 4, 5, 6]
+    >>> sequence_split('A,1,B', False, False)
+    ['A', '1', 'B']
     """
     values = []
     if string:
         try:
-            _string = (
-                string.replace(" ", "")
-                .replace('"', "")
-                .replace("'", "")
-                .replace(";", ",")
-            )
+            if sep == ',':
+                _string = (
+                    string.replace(" ", "")
+                    .replace('"', "")
+                    .replace("'", "")
+                    .replace(";", ",")
+                )
+            else:
+                _string = string
         except Exception:
             return values
     else:
@@ -338,7 +347,7 @@ def sequence_split(string: str, as_int: bool = True, unique: bool = True):
     except Exception:
         pass
     # multi-values
-    _strings = _string.split(",")
+    _strings = _string.split(sep)
     # log.debug('strings:%s', _strings)
     for item in _strings:
         if "-" in item:
@@ -356,6 +365,20 @@ def sequence_split(string: str, as_int: bool = True, unique: bool = True):
     if unique:
         return list(set(values))  # unique
     return values
+
+
+def split(string: str):
+    """
+    Split a string into a list of individual characters
+
+    Doc test:
+    >>> split('A,1,B')
+    ['A', '1', 'B']
+    >>> split('A 1 B')
+    ['A', '1', 'B']
+    """
+    sep = ' ' if string and ',' not in string else ','
+    return sequence_split(string, False, False, sep)
 
 
 def integer_pairs(pairs, label: str = 'list') -> list:
@@ -392,12 +415,14 @@ def integer_pairs(pairs, label: str = 'list') -> list:
         return pairs
     return []
 
+
 def splitq(seq, sep=None, pairs=("()", "[]", "{}"), quote="\"'"):
-    """Split seq by sep but considering parts inside pairs or quoted as
-       unbreakable pairs have different start and end value, quote have same
+    """Split sequence by separator but considering parts inside pairs or quoted
+       as unbreakable pairs have different start and end value, quote have same
        symbol in beginning and end.
 
-    Use itertools.islice if you want only part of splits
+    Notes:
+        * Use itertools.islice if only part of splits is needed
 
     Source:
         https://www.daniweb.com/programming/software-development/code/426990/\
@@ -571,6 +596,34 @@ def flatten(lst):
                 yield ele
     except TypeError:
         yield lst
+
+
+def flatten_keys(d: dict):
+    """Flatten nested dicts into a single dict.
+
+    NOTE:
+        * values for keys in nested dict will override those in parent(s)!
+        * See: https://www.geeksforgeeks.org/python-flatten-nested-keys/
+
+    >>> flatten_keys({'height': 8, 'cards': 1, 'image': None, 'kwargs': {'kwargs': {'image': 'FOO', 'kwargs': {'cards': 9}}}})
+    {'height': 8, 'cards': 9, 'image': 'FOO'}
+    """
+    result = {}
+    for k, v in d.items():
+        if isinstance(v, dict):
+            flat_v = flatten_keys(v)
+            for flat_k, flat_v in flat_v.items():
+                #result[k + '.' + flat_k] = flat_v
+                result[flat_k] = flat_v
+        elif isinstance(v, list):
+            for i, item in enumerate(v):
+                flat_item = flatten_keys(item)
+                for flat_k, flat_v in flat_item.items():
+                    #result[f"{k}.{i}.{flat_k}"] = flat_v
+                    result[f"{flat_k}"] = flat_v
+        else:
+            result[k] = v
+    return result
 
 
 def comparer(val, operator, target):

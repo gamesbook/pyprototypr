@@ -29,11 +29,12 @@ Card Images
 Unicode Characters
 ==================
 
-There are thousands of symbols that are potentially of use in a design.
+There are thousands of symbols that are potentially of use in a prototype
+design.
 
 For game design, the character sets from U+2000 (General Punctuation) to
 U+2BFF (Miscellaneous Symbols and Arrows) are likely to be of interest.
-**NOTE** that not all Unicode characters can be displayed in all fonts!
+**Note** that not all Unicode characters can be displayed in all fonts!
 
 - https://www.compart.com/en/unicode/plane/U+0000
 - https://www.w3schools.com/charsets/ref_html_utf8.asp
@@ -50,8 +51,16 @@ Other Tools
   for a game development process that can help choose *what* you need to
   prototype
 
+.. HINT::
+
     Please also see the section on `hexagonal grids <hexagonal_grids.rst>`_
     which lists tools specifically for working with hexagonal layouts.
+
+.. HINT::
+
+    Please also see the section on `card decks <card_decks.rst>`_
+    which lists tools useful for working with playing cards and decks.
+
 
 BoardGameGeek
 =============

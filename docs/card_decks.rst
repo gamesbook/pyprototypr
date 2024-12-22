@@ -2,6 +2,12 @@
 Decks of Cards
 ==============
 
+This section assumes you are very familiar with the concepts, terms and ideas
+for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ ,
+that you understand all of the `Additional Concepts <additional_concepts.rst>`_
+and that you've created some basic scripts of your own using the
+`Core Shapes <core_shapes.rst>`_.
+
 .. _table-of-contents:
 
 Table of Contents
@@ -44,17 +50,15 @@ the 1990s, has inspired the greater use of cards in all aspects of the
 modern board gaming experience, with cards taking the predominant role in
 many of them.
 
+
 Basic Concepts
 ==============
 `↑ <table-of-contents_>`_
 
-A common element in many games is a deck - or multiple decks - of cards.
-
-.. NOTE::
-
-    **pyprototypr** also considers items such tiles or counters to be "cards";
-    they are really just "shapes containing other shapes"; see the section
-    on `Countersheet and Counter Commands`_
+Unlike some of the designs, where you are specifying exactly where to locate
+elements on a page, **pyprototypr** is designed to handle the flow of placing
+cards onto multiple pages, based on their size and the type of paper chosen.
+Within a card, you will set out elements exactly as you want them to appear.
 
 There are two core concepts: the ``Card()`` and the ``Deck()``:
 
@@ -62,7 +66,14 @@ There are two core concepts: the ``Card()`` and the ``Deck()``:
    of cards, typically using elements that have already been defined.
    The patterns or designs can be set to appear on one or multiple cards.
 -  A ``Deck()`` command is used to specify type, size and number of cards
-   that  will be used to create all cards in the deck.
+   that will be used to create all cards in the deck and lay them out on
+   one or more pages.
+
+.. NOTE::
+
+    **pyprototypr** also considers items such tiles or counters to be "cards";
+    they are really just "shapes containing other shapes"; see the section
+    on `Countersheet and Counter Commands`_
 
 In many cases, the ``Data()`` command will be needed, in order to provide
 settings, for the properties of the elements appearing on a card, from another
@@ -100,27 +111,20 @@ The following are key properties that will usually need to be set for a deck:
 Secondary Properties
 --------------------
 
-The following are other properties that can also be set for a deck:
+The following are other properties that can also be set for a Deck:
 
-- **margin** - the margin for the page on which cards are drawn
-- **margin_left** - the left margin for the page on which cards are drawn;
-  defaults to the **margin** setting
-- **margin_right** - the right margin for the page on which cards are drawn;
-  defaults to the **margin** setting
-- **margin_top** - the top margin for the page on which cards are drawn;
-  defaults to the **margin** setting
-- **margin_bottom** - the bottom margin for the page on which cards are drawn;
-  defaults to the **margin** setting
-- **rounding** - sets the size of rounding on each corner of a card
+- **copy** - the name of a column in the dataset defined by
+  `the Data Command`_ that specifies how many copies of a card are needed
 - **fill** - sets the color of the card's area; defaults to white
-- **stroke** - sets the color of the card's border; defaults to black
 - **grid_marks** - if set to ``True``, will cause small marks to be drawn at
-  the border of the page that align with the eddges of the cards
-- **skip** - an expression which should evaluate to ``True` or ``False``;
+  the border of the page that align with the edges of the cards
+- **mask** - an expression which should evaluate to ``True` or ``False``;
   this expression uses the same kind of syntax as the `T(emplate) command`_
   described below and it uses data available from the Deck's ``Data``
   (see `The Data Command`_); if ``True`` then any matching cards will be
-  skipped i.e. ignored and not drawn.
+  masked i.e. ignored and not drawn.
+- **rounding** - sets the size of rounding on each corner of a card
+- **stroke** - sets the color of the card's border; defaults to black
 
 Deck Example #1
 ---------------
@@ -151,25 +155,40 @@ there will be 9 cards on an A4 page (in default portrait mode):
         cards=27,
         grid_marks=True,
         rounding=0.3,
-        fill=gold,
-        border=tomato,
-        skip="{{ Race == 'Hobbit' }}")
+        fill=None,
+        border=grey,
+        copy="Copies",
+        mask="{{ Race == 'Hobbit' }}")
 
-In this case, there is data named with the label **Race** available in
-the Deck's dataset; and any card with data matching the value ``Hobbit``
-will be skipped (ignored and not drawn).
+For the **copy** property, there is expected to be a column with the label
+**Copies** available in the Deck's dataset; and the number in this column
+will be used to make that many copies of the card (unless it has a **mask**).
 
-If you need to match any of multiple *skip* conditions, use an **or**:
+For the **mask** property, there is expected to be a column with the label
+**Race** available in the Deck's dataset; and any card with data matching the
+value ``Hobbit`` will be masked (ignored and not drawn).
+
+If you need to match any of multiple *mask* conditions, use an **or**:
 
     .. code:: python
 
-        skip="{{ Race == 'Hobbit' or Race == 'Dwarf' }}")
+        mask="{{ Race == 'Hobbit' or Race == 'Dwarf' }}")
 
-If you need to match all of multiple *skip* conditions, use an **and**:
+If you need to match all of multiple *mask* conditions, use an **and**:
 
     .. code:: python
 
-        skip="{{ Race == 'Hobbit' and Age < 39 }}")
+        mask="{{ Race == 'Hobbit' and Age < 39 }}")
+
+If you need multiple *mask* conditions, these can be combine using an
+**and** or an **or**, with groups in round brackets:
+
+    .. code:: python
+
+        mask="{{ (Race == 'Hobbit' and Age < 39) or  (Race == 'Human' and Age < 80) }}")
+
+The dataset that could be used with the above Deck is shown in
+`Data Example #5`_.
 
 The full code - including the data - for this example is available as
 `cards_lotr.py <../examples/cards/cards_lotr.py>`_
@@ -295,6 +314,7 @@ The ``Data`` command uses different properties to reference these sources:
 
 Data Example #1
 ---------------
+`↑ <table-of-contents_>`_
 
 This example shows how data is sourced from a CSV file:
 
@@ -304,6 +324,7 @@ This example shows how data is sourced from a CSV file:
 
 Data Example #2
 ---------------
+`↑ <table-of-contents_>`_
 
 This example shows how data is sourced from an Excel file:
 
@@ -313,6 +334,7 @@ This example shows how data is sourced from an Excel file:
 
 Data Example #3
 ---------------
+`↑ <table-of-contents_>`_
 
 This example shows how data is sourced from a Matrix; in this case the possible
 combinations for a standard deck of playing cards:
@@ -336,6 +358,7 @@ For more detail on these properties see `The Matrix Command`_.
 
 Data Example #4
 ---------------
+`↑ <table-of-contents_>`_
 
 This example shows how data is sourced from an image directory:
 
@@ -346,22 +369,23 @@ This example shows how data is sourced from an image directory:
 
 Data Example #5
 ---------------
+`↑ <table-of-contents_>`_
 
 This example shows how data is sourced from a "list of lists":
 
     .. code:: python
 
        lotr = [
-           ['ID', 'Name', 'Age', 'Race'],
-           [1, "Gimli", 140, "Dwarf"],
-           [2, "Legolas", 656, "Elf"],
-           [3, "Aragorn", 88, "Human"],
-           [4, "Frodo", 51, "Hobbit"],
-           [5, "Pippin", 29, "Hobbit"],
-           [6, "Merry", 37, "Hobbit"],
-           [7, "Samwise", 39, "Hobbit"],
-           [8, "Boromir", 41, "Human"],
-           [9, "Gandalf", None, "Maia"],
+           [1, "Gimli", 140, "Dwarf", 1],
+           [2, "Legolas", 656, "Elf", 1],
+           [3, "Aragorn", 88, "Human", 1],
+           [4, "Frodo", 51, "Hobbit", 1],
+           [5, "Pippin", 29, "Hobbit", 1],
+           [6, "Merry", 37, "Hobbit", 1],
+           [7, "Samwise", 39, "Hobbit", 1],
+           [8, "Boromir", 41, "Human", 1],
+           [9, "Gandalf", None, "Maia", 1],
+           [10, "RingWraith", 4300, "Nazgul", 9],
        ]
        Data(data_list=lotr)
 
@@ -369,16 +393,17 @@ This list above is equivalent to a CSV file containing:
 
     .. code:: text
 
-        ID,Name,Age,Race
-        1,Gimli,140,Dwarf
-        2,Legolas,656,Elf
-        3,Aragorn,88,Human
-        4,Frodo,51,Hobbit
-        5,Pippin,29,Hobbit
-        6,Merry,37,Hobbit
-        7,Samwise,39,Hobbit
-        8,Boromir,41,Human
-        9,Gandalf,,Maia
+        ID,Name,Age,Race,Copies
+        1,Gimli,140,Dwarf,1
+        2,Legolas,656,Elf,1
+        3,Aragorn,88,Human,1
+        4,Frodo,51,Hobbit,1
+        5,Pippin,29,Hobbit,1
+        6,Merry,37,Hobbit,1
+        7,Samwise,39,Hobbit,1
+        8,Boromir,41,Human,1
+        9,Gandalf,,Maia,1
+        10,RingWraith,4300,Nazgul,9
 
 See below under the `T(emplate) command`_ and also under the
 `S(election) command`_ for examples how this data could be used.
@@ -484,7 +509,7 @@ Data from the column can also be mixed in with other text or values:
             x=0.5, y=1.2, width=5, font_size=18,
             align="centre", wrap=True, fill=None)
 
-Here the Text assigmed to the name *power* uses the full text capability to
+Here the Text assigned to the name *power* uses the full text capability to
 style the text - italic and bold - and also uses the **or** option in the
 ``T()`` command to provide an alternate value - in this case the infinity
 sign - to use when there no *Age* value (for example, for the "Gandalf" row).
@@ -562,15 +587,19 @@ Other Resources
 numerous other options exist; both free and commercial.  A few of the free /
 open-source ones are listed below.
 
+Inclusion of these links does **not** constitute a recommendation of them or
+their use!
+
 ================ ======= ========== =========================================================
 Title            O/S     Language   Link
 ================ ======= ========== =========================================================
-Card Editor      Windows Java       https://bitbucket.org/mattsinger/card-editor/src/release/
-Strange Eons     Multi   Java       https://strangeeons.cgjennings.ca/index.html
 Batch Card Maker Multi   Python     https://github.com/p-dimi/Batch-Card-Maker
-DeCard64         Windows Delphi     https://github.com/Dimon-II/DeCard64
-Paperize         Online  JavaScript https://beta.editor.paperize.io/#/
-Squib            Multi   Ruby       https://squib.rocks/
+Card Editor      Windows Java       https://bitbucket.org/mattsinger/card-editor/src/release/
 CardMaker        Multi   C#         https://github.com/nhmkdev/cardmaker
+DeCard64         Windows Delphi     https://github.com/Dimon-II/DeCard64
 Forge of Cards   Online  JavaScript https://forgeofcards.com/#/
+NanDeck          Windows -          https://www.nandeck.com/
+Paperize         Online  JavaScript https://beta.editor.paperize.io/#/
+Strange Eons     Multi   Java       https://strangeeons.cgjennings.ca/index.html
+Squib            Multi   Ruby       https://squib.rocks/
 ================ ======= ========== =========================================================

@@ -4,9 +4,16 @@ TriangularLocations Command
 
 **pyprototypr** allows you to directly define where elements, that make up
 your design, should be placed within a page, or over a series of pages
-within a ``Deck``, but it also includes commands that let you place, or
-"`layout <layouts.rst>`_", elements in a more repetitive or regular way
-within a page.
+within a `deck <card_decks.rst>`_, but it also includes commands that let you
+place, or "`layout <layouts.rst>`_", elements in a more repetitive or regular
+way within a page.
+
+This section assumes you are very familiar with the concepts, terms and ideas
+for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ ,
+that you understand all of the `Additional Concepts <additional_concepts.rst>`_
+and that you've created some basic scripts of your own using the
+`Core Shapes <core_shapes.rst>`_.
+
 
 Overview
 ========

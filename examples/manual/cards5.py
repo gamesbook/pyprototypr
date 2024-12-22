@@ -6,7 +6,7 @@ Created on: 29 February 2016
 """
 from pyprototypr import *
 
-Create(filename="example5.pdf", offset=0.5)
+Create(filename="example5.pdf", margin_bottom=2.5)
 
 # deck design - a "template" that all cards will use
 Deck(cards=50,

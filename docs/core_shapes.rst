@@ -2,6 +2,12 @@
 Core Shapes
 ===========
 
+These descriptions of the available shapes assume you are familiar with
+the concepts, terms and ideas for **pyprototypr** as presented in `Basic
+Concepts <basic_concepts.rst>`_ - especially *units*, *properties* and
+*defaults*. It will also help to at least browse through the section on
+`Additional Concepts <additional_concepts.rst>`_.
+
 .. |copy| unicode:: U+00A9 .. COPYRIGHT SIGN
    :trim:
 .. |deg|  unicode:: U+00B0 .. DEGREE SIGN
@@ -62,12 +68,6 @@ Shape Index
 Overview
 ---------
 `↑ <table-of-contents_>`_
-
-These descriptions of the available shapes assume you are familiar with
-the concepts, terms and ideas for **pyprototypr** as presented in `Basic
-Concepts <basic_concepts.rst>`_ - especially *units*, *properties* and
-*defaults*. It will also help to at least browse through the section on
-`Additional Concepts <additional_concepts.rst>`_.
 
 Where possible, the basic examples first show how a shape would appear
 on a page when **only** the default properties are used. This means that,

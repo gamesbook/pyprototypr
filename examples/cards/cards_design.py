@@ -6,17 +6,15 @@ Created on: 19 February 2016
 """
 from pyprototypr import *
 
-Create(filename='cards_design.pdf')
+Create(filename='cards_design.pdf', margin_bottom=1.9)
 
 # design deck
 Deck(
-     cards=18,
-     margin=0.85,
-     margin_bottom=1.9,
-     height=8.8,
-     width=6.3,
-     rounding=0.3,
-     fill=ivory)
+    cards=18,
+    height=8.8,
+    width=6.3,
+    rounding=0.3,
+    fill=ivory)
 
 # basic shapes
 l1 = line(x=0.8, x1=5.6, y=7.1, y1=8.4, stroke=gold, stroke_width=2)

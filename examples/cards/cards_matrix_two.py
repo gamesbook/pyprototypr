@@ -7,7 +7,8 @@ Created on: 12 August 2024
 from pyprototypr import *
 
 # create deck
-Create(filename='cards_matrix_two.pdf')
+Create(filename='cards_matrix_two.pdf',
+       margin_bottom=1.9)
 
 # generate data for cards
 # Note: symbols are from https://www.w3schools.com/charsets/ref_utf_dingbats.asp
@@ -24,8 +25,6 @@ Data(matrix=combos, extra=9)  # (re)set no. of cards based on length
 
 # deck design
 Deck(cards=27,
-     margin=0.85,
-     margin_bottom=1.9,
      height=8.8,
      width=6.3,
      rounding=0.5,
