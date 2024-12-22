@@ -213,6 +213,7 @@ def Save(**kwargs):
             globals.cnv,
             cards=globals.deck_settings.get('cards', 9),
             copy=globals.deck_settings.get('copy', None),
+            extra=globals.deck_settings.get('extra', 0),
             grid_marks=globals.deck_settings.get('grid_marks', None),
             image_list=globals.image_list)
         globals.cnv.canvas.showPage()
@@ -415,11 +416,13 @@ def Data(**kwargs):
     images_filter = kwargs.get('images_filter', '')  # e.g. .png
     filters = tools.sequence_split(images_filter, False, True)
     source = kwargs.get('source', None)  # dict
-    globals.extra = tools.as_int(kwargs.get('extra', 0), 'extra')  # cards added to dataset
+    # extra cards added to deck (handle special cases not in the dataset)
+    globals.deck_settings['extra'] = tools.as_int(kwargs.get('extra', 0), 'extra')
     try:
-        extra = int(globals.extra)
+        int(globals.deck_settings['extra'])
     except Exception:
-        tools.feedback(f'Extra must be a whole number, not "{globals.extra}"!', True)
+        tools.feedback(
+            f'Extra must be a whole number, not \"{kwargs.get("extra")}\"!', True)
 
     if filename:  # handle excel and CSV
         globals.dataset = tools.load_data(filename, **kwargs)

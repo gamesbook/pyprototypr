@@ -25,10 +25,10 @@ lotr = [
 Data(data_list=lotr)
 
 # design deck
-Deck(cards=1, shape='circle', radius=3.1, copy='Copies')
+Deck(cards=1, shape='circle', radius=3.15, copy='Copies')
 
 # background color per Race
-back_race = Common(x=0.45, y=0.35,radius=2.8)
+back_race = Common(x=0.35, y=0.35,radius=2.8)
 back_hum = circle(common=back_race, fill_stroke=tomato)
 back_elf = circle(common=back_race, fill_stroke=gold)
 back_dwa = circle(common=back_race, fill_stroke=aqua)
@@ -41,19 +41,19 @@ Card("all", S("{{ Race == 'Hobbit' }}", back_hob))
 Card("all", S("{{ Race == 'Nazgul' }}", back_naz))
 
 # # character Name
-name_box = rectangle(x=2, y=4.5, width=3.2, height=1.25, rounded=0.2)
+name_box = rectangle(x=1.5, y=4.2, width=3.4, height=1, rounded=0.2)
 Card("*", name_box)
-Card("all", text(text=T("{{ Name }}"), x=3.6, y=4.8, font_size=18))
+Card("all", text(text=T("{{ Name }}"), x=3.2, y=4.5, font_size=18))
 
 # # character Age
 power = text(text=T("<i>Long-lived</i> <b>({{ Age or '\u221E' }})</b>"),  # infinity
-             x=1.9, y=1., width=3.5, font_size=12,
+             x=1.4, y=1.4, width=3.5, font_size=12,
              align="centre", wrap=True, fill=None)
 Card("all", S("{{ Race == 'Elf' }}", power))
 Card("all", S("{{ Race == 'Maia' }}", power))
 Card("all", S("{{ Race == 'Nazgul' }}", power))
 
-# # no effect!
+# no effect!
 Card("all", S("{{ foo == 'Orc' }}", power))
 
 Save()

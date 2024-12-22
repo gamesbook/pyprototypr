@@ -612,12 +612,18 @@ class CircleShape(BaseShape):
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw circle on a given canvas."""
         kwargs = self.kwargs | kwargs
+        _ = kwargs.pop('ID', None)
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
-        # tools.feedback(f"*** Circle: {self._o.delta_x=} {self._o.delta_y=}")
+        is_cards = kwargs.get("is_cards", False)
         # ---- set centre & area
         x, y = self.calculate_centre()  # self.x_c, self.y_c
         self.area = self.calculate_area()
+        # ---- draw by row/col
+        if self.row is not None and self.col is not None and is_cards:
+            x = self.col * self._u.radius * 2. + self._o.delta_x + self._u.radius
+            y = self.row * self._u.radius * 2. + self._o.delta_y + self._u.radius
+            self.x_c, self.y_c = x, y
         # ---- handle rotation: START
         is_rotated = False
         rotation = kwargs.get('rotation', self.rotation)

@@ -7,10 +7,10 @@ Created on: 12 August 2024
 Notes:
 
 Suit symbols are shown at: https://www.w3schools.com/charsets/ref_utf_symbols.asp
-    ♠    2660    BLACK SPADE SUIT
-    ♣    2663    BLACK CLUB SUIT
-    ♥    2665    BLACK HEART SUIT
-    ♦    2666    BLACK DIAMOND SUIT
+    ♠    2660    SPADE SUIT
+    ♣    2663    CLUB SUIT
+    ♥    2665    HEART SUIT
+    ♦    2666    DIAMOND SUIT
 """
 from pyprototypr import *
 
@@ -33,29 +33,31 @@ Deck(cards=54,
      rounding=0.5,
      grid_marks=True)
 
+gred = '#BD0000'  # Guardsman Red
+
 # card layout elements
-value_top = Common(x=1.0, y=6.5, font_size=40)
+value_top = Common(x=1.0, y=7.2, font_size=40)
 value_black = text(common=value_top, stroke=black, text=T('{{VALUE}}'))
-value_red = text(common=value_top, stroke=red, text=T('{{VALUE}}'))
+value_red = text(common=value_top, stroke=gred, text=T('{{VALUE}}'))
 
-value_low = Common(x=5.5, y=0.7, font_size=40, rotation=180)
+value_low = Common(x=5.5, y=1.4, font_size=40, rotation=180)
 value_low_black = text(common=value_low, stroke=black, text=T('{{VALUE}}'))
-value_low_red = text(common=value_low, stroke=red, text=T('{{VALUE}}'))
+value_low_red = text(common=value_low, stroke=gred, text=T('{{VALUE}}'))
 
-marker_base = Common(x=1.0, y=5.5, font_size=42)
+marker_base = Common(x=1.0, y=6.2, font_size=42)
 marker_black = text(common=marker_base, stroke=black, text=T('{{SUIT}}'))
-marker_red = text(common=marker_base, stroke=red, text=T('{{SUIT}}'))
+marker_red = text(common=marker_base, stroke=gred, text=T('{{SUIT}}'))
 
-marker_low = Common(x=5.5, y=1.7, font_size=42, rotation=180)
+marker_low = Common(x=5.5, y=2.4, font_size=42, rotation=180)
 marker_low_black = text(common=marker_low, stroke=black, text=T('{{SUIT}}'))
-marker_low_red = text(common=marker_low, stroke=red, text=T('{{SUIT}}'))
+marker_low_red = text(common=marker_low, stroke=gred, text=T('{{SUIT}}'))
 
 # cards setup
 Card("1-26", value_black, value_low_black, marker_black, marker_low_black)
 Card("27-52", value_red, value_low_red, marker_red, marker_low_red)
 
 # royalty
-royals = Common(x=1.5, y=1.1, width=3.5, height=5)
+royals = Common(x=1.5, y=1.8, width=3.5, height=5)
 # royalty - SPADES
 Card( "1", image("images/king_s.png", common=royals))
 Card( "2", image("images/queen_s.png", common=royals))
@@ -75,17 +77,18 @@ Card("42", image("images/jack_d.png", common=royals))
 
 # ace
 Card("13",
-     text(x=3.15, y=1.8, font_size=180, stroke=black, text='\u2660'),
-     text(x=3.15, y=3.0, font_size=60, stroke=white, text='\u2660'))
+     text(x=3.15, y=2.6, font_size=180, stroke=black, text='\u2660'),
+     text(x=3.15, y=3.8, font_size=60, stroke=white, text='\u2660'))
 
 # jokers (2 extra cards)
+jok_pic = Common(x=0.8, y=1.9, width=5, height=5)
 Card("53",
      text(common=value_top, stroke=black, text='J'),
      text(common=value_low, stroke=black, text='J'),
-     image("images/joker_black.png", x=1, y=1.1, width=5, height=5))
+     image("images/joker_black.png", common=jok_pic))
 Card("54",
-     text(common=value_top, stroke=red, text='J'),
-     text(common=value_low, stroke=red, text='J'),
-     image("images/joker_red.png", x=1, y=1.1, width=5, height=5))
+     text(common=value_top, stroke=gred, text='J'),
+     text(common=value_low, stroke=gred, text='J'),
+     image("images/joker_red.png", common=jok_pic))
 
 Save()

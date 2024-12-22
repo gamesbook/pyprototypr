@@ -122,10 +122,9 @@ class CardShape(BaseShape):
             default_radius = None
         self.height = kwargs.get("height", default_height)
         self.width = kwargs.get("width", default_width)
-        self.radius = kwargs.get("width", default_radius)
+        self.radius = kwargs.get("radius", default_radius)
         self.outline = self.get_outline(
             cnv=canvas, row=None, col=None, cid=None, label=None, **kwargs)
-        # tools.feedback(f"**** {self.outline.radius=}")
         self.kwargs.pop("width", None)
         self.kwargs.pop("height", None)
         self.kwargs.pop("radius", None)
@@ -137,7 +136,6 @@ class CardShape(BaseShape):
 
     def get_outline(self, cnv, row, col, cid, label, **kwargs):
         outline = None
-        kwargs = tools.flatten_keys(kwargs)
         kwargs['height'] = self.height
         kwargs['width'] = self.width
         kwargs['radius'] = self.radius
@@ -174,52 +172,41 @@ class CardShape(BaseShape):
 
     def draw_card(self, cnv, row, col, cid, **kwargs):
         """Draw a card on a given canvas."""
-        # tools.feedback(f"\n ++++ Card {row=} {col=} {cid=} {self.shape=} {kwargs=}\n")
         image = kwargs.get('image', None)
         # ---- draw outline
         label = "ID:%s" % cid if self.show_id else ""
         outline = self.get_outline(
             cnv=cnv, row=row, col=col, cid=cid, label=label, kwargs=kwargs)
-        shape_kwargs = tools.flatten_keys(kwargs)
+        shape_kwargs = kwargs
         shape_kwargs['is_cards'] = True
         outline.draw(**shape_kwargs)
         # ---- draw card elements
         flat_elements = tools.flatten(self.elements)
         for index, flat_ele in enumerate(flat_elements):
-            # tools.feedback(f'*** {index=} {flat_ele=}', False)
             # ---- * replace image source placeholder
             if image and isinstance(flat_ele, ImageShape):
-                #tools.feedback(f'*** {image=}', False)
                 if flat_ele.kwargs.get('source', '').lower() in ['*', 'all']:
                     flat_ele.source = image
 
             members = self.members or flat_ele.members
-            # tools.feedback(f' *** {members=}', False)
-            # tools.feedback(f' 210 *** {outline=} {self.shape=} {row=}')
             _dx = col * outline.width
             if row & 1 and self.shape == 'hexagon':
                 _dx = _dx + outline.height / math.sqrt(3)
-                # tools.feedback(f' 215 *** {outline.height=} {outline.side=}')
             _dy = row * outline.height
             try:
                 # ---- * normal element
                 iid = members.index(cid + 1)
-                # tools.feedback(f"  *** {index=} {iid=} {flat_ele=} / {col=} {self.width=} / {row=} {self.height=}")
                 new_ele = self.handle_custom_values(flat_ele, cid)  # calculated values
                 new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid)
             except AttributeError:
                 # ---- * switch ... get a new element ... or not!?
-                # print(f"  ^^^ {self.shape_id=}  {flat_ele=}")
                 new_ele = flat_ele(cid=self.shape_id) if flat_ele else None # uses __call__ on Switch
                 if new_ele:
                     flat_new_eles = tools.flatten(new_ele)
-                    # print(f"    ~~~ {flat_new_eles=}")
                     for flat_new_ele in flat_new_eles:
-                        # print(f"      --- PRE  --- {flat_new_ele=}")
                         members = flat_new_ele.members or self.members
                         iid = members.index(cid + 1)
-                        custom_new_ele = self.handle_custom_values(flat_new_ele, iid)  # calculate
-                        # print(f"      --- POST --- {custom_new_ele=}")
+                        custom_new_ele = self.handle_custom_values(flat_new_ele, iid)
                         if isinstance(custom_new_ele, SequenceShape):
                             custom_new_ele.deck_data = self.deck_data
                         custom_new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid)
@@ -237,7 +224,6 @@ class DeckShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(DeckShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        # tools.feedback(f' $$$$ DeckShape - init - {kwargs=}')
         self.kwargs = kwargs
         # ---- cards
         self.deck = []  # container for CardShape objects
@@ -255,7 +241,7 @@ class DeckShape(BaseShape):
         self.cards = kwargs.get("cards", self.counters)  # default total number of cards
         self.height = kwargs.get("height", default_height)  # OVERWRITE
         self.width = kwargs.get("width", default_width)  # OVERWRITE
-        self.radius = kwargs.get("width", default_radius)  # OVERWRITE
+        self.radius = kwargs.get("radius", default_radius)  # OVERWRITE
         # ---- dataset (list of dicts)
         self.dataset = kwargs.get("dataset", None)
         self.set_dataset()  # globals override : dataset AND cards
@@ -282,7 +268,9 @@ class DeckShape(BaseShape):
         self.images_filter = kwargs.get("images_filter", None)
         self.image_list = []
         # ---- FINALLY...
-        self.cards += globals.deck_settings.get('extra', 0)
+        extra = globals.deck_settings.get('extra', 0)
+        self.cards += extra
+        log.debug("Cards: %s Settings: %s", self.cards, globals.deck_settings)
         self.create(self.cards)
 
     def set_dataset(self):
@@ -323,7 +311,6 @@ class DeckShape(BaseShape):
         log.debug("Deck cnv:%s type:%s", type(self.canvas), type(cnv))
         # ---- handle kwargs
         kwargs = self.kwargs | kwargs
-        kwargs = tools.flatten_keys(kwargs)
         images = kwargs.get('image_list', [])
         cards = kwargs.get('cards', None)
         # ---- user-defined rows and cols
@@ -356,7 +343,6 @@ class DeckShape(BaseShape):
             if self.mask:
                 _check = tools.eval_template(self.mask, self.dataset[key], label='mask')
                 mask = tools.as_bool(_check, label='mask', allow_none=False)
-                # print(f' ~~~~ {key=} :: {self.dataset[key]=}, {mask=}')
                 if not isinstance(mask, bool):
                     tools.feedback(
                         'The "mask" test must result in True or False value!', True)
@@ -368,9 +354,8 @@ class DeckShape(BaseShape):
                     copies = tools.as_int(_copies, 'copy')
 
                 for i in range(0, copies):
-                    # print(f'++++ {col=} {row=} {key=} {card=} ++++')
                     card.draw_card(
-                        cnv, row=row, col=col, cid=card.shape_id, image=image, kwargs=kwargs)
+                        cnv, row=row, col=col, cid=card.shape_id, image=image, **kwargs)
                     col += 1
                     if col >= max_cols:
                         col = 0
