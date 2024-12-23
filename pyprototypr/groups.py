@@ -109,17 +109,17 @@ class CardShape(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(CardShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
-        # tools.feedback(f'*** CardShape {kwargs=}')
         self.kwargs = kwargs
+        # tools.feedback(f'$$$ CardShape KW=> {self.kwargs}')
         self.elements = []  # container for objects which get added to the card
         if kwargs.get("_is_countersheet", False):
             default_height = 2.54
             default_width = 2.54
-            default_radius = None
+            default_radius = 0.635
         else:
             default_height = 8.8
             default_width = 6.3
-            default_radius = None
+            default_radius = 2.54
         self.height = kwargs.get("height", default_height)
         self.width = kwargs.get("width", default_width)
         self.radius = kwargs.get("radius", default_radius)
@@ -173,12 +173,14 @@ class CardShape(BaseShape):
     def draw_card(self, cnv, row, col, cid, **kwargs):
         """Draw a card on a given canvas."""
         image = kwargs.get('image', None)
+        # tools.feedback(f'$$$ draw_card  KW=> {kwargs}')
         # ---- draw outline
         label = "ID:%s" % cid if self.show_id else ""
         outline = self.get_outline(
-            cnv=cnv, row=row, col=col, cid=cid, label=label, kwargs=kwargs)
+            cnv=cnv, row=row, col=col, cid=cid, label=label, **kwargs)
         shape_kwargs = kwargs
         shape_kwargs['is_cards'] = True
+        # tools.feedback(f'$$$ draw_card SKW=> {shape_kwargs}')
         outline.draw(**shape_kwargs)
         # ---- draw card elements
         flat_elements = tools.flatten(self.elements)
@@ -225,18 +227,19 @@ class DeckShape(BaseShape):
     def __init__(self, _object=None, canvas=None, **kwargs):
         super(DeckShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
         self.kwargs = kwargs
+        # tools.feedback(f'$$$ DeckShape KW=> {self.kwargs}')
         # ---- cards
         self.deck = []  # container for CardShape objects
         if kwargs.get("_is_countersheet", False):
             default_items = 70
             default_height = 2.54
             default_width = 2.54
-            default_radius = 0
+            default_radius = 0.635
         else:
             default_items = 9
             default_height = 8.8
             default_width = 6.3
-            default_radius = 0
+            default_radius = 2.54
         self.counters = kwargs.get("counters", default_items)
         self.cards = kwargs.get("cards", self.counters)  # default total number of cards
         self.height = kwargs.get("height", default_height)  # OVERWRITE

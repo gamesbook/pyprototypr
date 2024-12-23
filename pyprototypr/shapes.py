@@ -613,6 +613,7 @@ class CircleShape(BaseShape):
         """Draw circle on a given canvas."""
         kwargs = self.kwargs | kwargs
         _ = kwargs.pop('ID', None)
+        # tools.feedback(f' @@@ Circ.draw {kwargs=}')
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         is_cards = kwargs.get("is_cards", False)
@@ -1600,10 +1601,11 @@ class HexShape(BaseShape):
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a hexagon on a given canvas."""
-        # tools.feedback(f'*** draw hex: {kwargs=} {off_x=} {off_y=} {ID=}')
+        kwargs = self.kwargs | kwargs
+        # tools.feedback(f'*** draw hex: {off_x=} {off_y=} {ID=}')
         # tools.feedback(f'*** draw hex: {self.x=} {self.y=} {self.cx=} {self.cy=}')
         # tools.feedback(f'*** draw hex: {self.row=} {self.col=}')
-        kwargs = self.kwargs | kwargs
+        # tools.feedback(f' @@@ Hexg.draw {kwargs=}')
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         is_cards = kwargs.get("is_cards", False)
@@ -2387,8 +2389,7 @@ class RectangleShape(BaseShape):
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a rectangle on a given canvas."""
         kwargs = self.kwargs | kwargs
-        kwargs = tools.flatten_keys(kwargs)
-        # tools.feedback(f' @@@rect {kwargs=}')
+        # tools.feedback(f' @@@ Rect.draw {kwargs=}')
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         # ---- updated based on kwargs

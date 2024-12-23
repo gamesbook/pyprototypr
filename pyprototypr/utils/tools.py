@@ -617,10 +617,14 @@ def flatten_keys(d: dict):
                 result[flat_k] = flat_v
         elif isinstance(v, list):
             for i, item in enumerate(v):
-                flat_item = flatten_keys(item)
-                for flat_k, flat_v in flat_item.items():
-                    #result[f"{k}.{i}.{flat_k}"] = flat_v
-                    result[f"{flat_k}"] = flat_v
+                try:
+                    flat_item = flatten_keys(item)
+                except AttributeError:
+                    flat_item = item
+                if isinstance(flat_item, dict):
+                    for flat_k, flat_v in flat_item.items():
+                        #result[f"{k}.{i}.{flat_k}"] = flat_v
+                        result[f"{flat_k}"] = flat_v
         else:
             result[k] = v
     return result

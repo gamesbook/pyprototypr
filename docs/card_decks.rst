@@ -519,12 +519,12 @@ For example:
 
     .. code:: python
 
-      lin1 = line(x=0.8, x1=5.6, y=7.1, y1=8.4)
-      rct1 = rectangle(x=0.7, y=7.0, width=5, height=1.5)
-      stack = group(rct1, lin1)
+      line1 = line(x=0.8, x1=5.6, y=7.1, y1=8.4)
+      rect1 = rectangle(x=0.7, y=7.0, width=5, height=1.5)
+      stack = group(rect1, line1)
 
-When this stack is assigned to a card and then drawn, the Rectangle will be
-drawn first, followed by the Line.
+When this group named *stack* is assigned to a card and then drawn,
+the Rectangle will be drawn first, followed by the Line.
 
 This command is somewhat similar to ``Common()``, which provides a way to
 group commonly used properties.
@@ -581,11 +581,15 @@ There are two properties required:
 
 The match condition contains three parts, all separated by spaces:
 
-- the column name being checked - this **is** case-sensitive
-- the test condition; e.g. ``==`` for equal to; ``!=`` for not equal to;
-  ``>`` for greater than; ``<`` for less than; ``in`` to check if text is
-  contained in other text
-- the value being checked - for example, a number or some text
+- the *column* name being checked - this **is** case-sensitive
+- the test *condition* being used; e.g.:
+
+  - ``==`` for equal to;
+  - ``!=`` for not equal to;
+  - ``>`` for greater than;
+  - ``<`` for less than;
+  - ``in`` to check if text is contained in other text
+- the *value* being checked - for example, a number or some text
 
 This example shows how to use the command, with reference to the ``Data``
 from `Data Example #5`_:
@@ -598,9 +602,9 @@ from `Data Example #5`_:
             common=back_race, fill_stroke=tomato)
         Card("all", S("{{ Race == 'Human' }}", back_hum))
 
-In this example, any/all cards for which the **Race** column contains, or
-is equal to -  the double equals ``==`` check  - the value **Human** a red
-rectangle will be drawn on the card.
+In this example, any/all cards for which the **Race** column is equal
+to -  the double equals ``==`` check  - the value **Human**, a red
+rectangle will be drawn on the card (the one named ``back_hum``).
 
 A "nonsense" condition is usually ignored; for example:
 

@@ -6,7 +6,7 @@ Created on: 29 April 2024
 """
 from pyprototypr import *
 
-Create(filename='cards_images.pdf')
+Create(filename='cards_images.pdf', margin_bottom=1.5)
 
 # load image data
 Data(images="pictures", images_filter=".png,.jpg")

@@ -6,7 +6,7 @@ Created on: 21 December 2024
 """
 from pyprototypr import *
 
-Create(filename='cards_lotr.pdf')
+Create(filename='cards_lotr.pdf', margin_bottom=1.9)
 
 # deck data
 lotr = [

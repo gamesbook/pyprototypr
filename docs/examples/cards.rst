@@ -18,6 +18,9 @@ Table of Contents
 - `Matrix Generated`_
 - `Standard Playing Cards`_
 - `Image-only Cards`_
+- `Hexagonal Cards`_
+- `Circular Cards`_
+
 
 Simple
 ======
@@ -232,5 +235,51 @@ Discussion  This example shows how to construct a deck of cards using these
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/cards/cards_images.png
+               :width: 90%
+=========== ==================================================================
+
+
+Hexagonal Cards
+================
+`↑ <table-of-contents_>`_
+
+=========== ==================================================================
+Title       *Hexagonal-shaped Cards*
+----------- ------------------------------------------------------------------
+Source Code `<../../examples/cards/cards_hexagonal.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct a deck of cards using these
+            commands (only an extract of the code is shown here):
+
+              .. code:: python
+
+                Data(filename="lotr.csv")
+                Deck(cards=6, shape='hexagon', height=6.3, copy='Copies')
+
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/cards/cards_hexagonal.png
+               :width: 90%
+=========== ==================================================================
+
+
+Circular Cards
+==============
+`↑ <table-of-contents_>`_
+
+=========== ==================================================================
+Title       *Circular-shaped Cards*
+----------- ------------------------------------------------------------------
+Source Code `<../../examples/cards/cards_circular.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct a deck of cards using these
+            commands (only an extract of the code is shown here):
+
+              .. code:: python
+
+                Data(filename="lotr.csv")
+                Deck(cards=1, shape='circle', radius=3.15, copy='Copies')
+
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/cards/cards_circular.png
                :width: 90%
 =========== ==================================================================
