@@ -35,12 +35,11 @@ outline = rectangle(
     x=0.6, y=0.5,
     height=7.8, width=5.1,
     rounded=0.5,
-    stroke=T('{{SUIT}}'),
-    fill=T('{{SUIT}}'),
+    fill_stroke=T('{{SUIT}}')
     )
 
 icon_top = hexagon(
-    x=1., y=6.4,
+    x=1, y=6.4,
     side=0.8,
     stroke=white)
 value_top = text(

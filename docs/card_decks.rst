@@ -16,8 +16,17 @@ Table of Contents
 - `Introduction`_
 - `Basic Concepts`_
 - `The Deck Command`_
+
+  - `Deck Example #1`_
+  - `Deck Example #2`_  (copy & mask)
 - `The Card Command`_
 - `The Data Command`_
+
+  - `Data Example #1`_ (CSV)
+  - `Data Example #2`_ (Excel)
+  - `Data Example #3`_ (``Matrix``)
+  - `Data Example #4`_ (images)
+  - `Data Example #5`_ (list)
 - `The Matrix Command`_
 - `Countersheet and Counter Commands`_
 - `Supporting Commands`_
@@ -55,16 +64,16 @@ Basic Concepts
 ==============
 `↑ <table-of-contents_>`_
 
-Unlike some of the designs, where you are specifying exactly where to locate
+Unlike some other designs, where you are specifying exactly where to locate
 elements on a page, **pyprototypr** is designed to handle the flow of placing
 cards onto multiple pages, based on their size and the type of paper chosen.
-Within a card, you will set out elements exactly as you want them to appear.
+Then, for a card, you will set out elements exactly as you want them to appear.
 
-There are two core concepts: the ``Card()`` and the ``Deck()``:
+There are two core commands: the ``Card()`` and the ``Deck()``:
 
 -  A ``Card()`` command is used to specify the design for a card, or range
    of cards, typically using elements that have already been defined.
-   The patterns or designs can be set to appear on one or multiple cards.
+   The patterns or designs can be set to appear on single or multiple cards.
 -  A ``Deck()`` command is used to specify type, size and number of cards
    that will be used to create all cards in the deck and lay them out on
    one or more pages.
@@ -76,8 +85,8 @@ There are two core concepts: the ``Card()`` and the ``Deck()``:
     on `Countersheet and Counter Commands`_
 
 In many cases, the ``Data()`` command will be needed, in order to provide
-settings, for the properties of the elements appearing on a card, from another
-source, for example, and Excel file.
+settings for the properties of the elements appearing on a card, from another
+source; for example, an Excel file.
 
 In some cases, the ``Matrix()`` command will be needed; this is an alternate
 method of providing the settings for the properties of the elements appearing
@@ -103,10 +112,11 @@ Primary Properties
 The following are key properties that will usually need to be set for a deck:
 
 - **cards** - this is the number of cards appearing in the deck; it defaults
-  to 9; note that other commands such as ``Data()`` and ``Matrix`` can alternate
+  to 9; note that other commands such as ``Data()`` and ``Matrix()`` can alter
   this value
-- **height** - this is the card height; it defaults to 8.8 cm.
-- **width** - this is the card width; it defaults to 6.3 cm.
+- **height** - this is the card height; it defaults to 8.8 cm
+- **width** - this is the card width; it defaults to 6.3 cm
+- **radius** - this is circular card's radius; it defaults to 2.54 cm (1")
 
 Secondary Properties
 --------------------
@@ -121,18 +131,28 @@ The following are other properties that can also be set for a Deck:
 - **mask** - an expression which should evaluate to ``True` or ``False``;
   this expression uses the same kind of syntax as the `T(emplate) command`_
   described below and it uses data available from the Deck's ``Data``
-  (see `The Data Command`_); if ``True`` then any matching cards will be
+  (see `the Data Command`_); if ``True`` then any matching cards will be
   masked i.e. ignored and not drawn.
-- **rounding** - sets the size of rounding on each corner of a card
+- **rounding** - sets the size of rounding on each corner of a rectangular
+  card
+- **shape** - the default card shape is a rectangle (or square, if the
+  height and width match); but can be set to *hexagon* or *circle*
 - **stroke** - sets the color of the card's border; defaults to black
+
+.. HINT::
+
+    The **shape** property can be seen "in action" in an illustrated examples;
+    see a `hexagonal example <examples/cards.rst#hexagon-cards>`_ and a
+    `circular example <examples/cards.rst#circle-cards>`_.
+
 
 Deck Example #1
 ---------------
 
 This example shows the definition of a simple deck for cards that are a
 commonly-used size (with the default units of centimetres in place).
-The card size means that  there will be 9 cards on an A4 page
-(in default portrait mode):
+The card size means that  there will be 9 rectangular cards on each
+A4 page (in default portrait mode):
 
     .. code:: python
 
@@ -141,13 +161,17 @@ The card size means that  there will be 9 cards on an A4 page
         height=8.8,
         width=6.3)
 
+Note that height and width here are the default values; if omitted, the same
+size cards will be created.
+
+
 Deck Example #2
 ---------------
 
 This example shows the definition of a deck of 27 cards that are a
 default size, with rounded corner and their colors set; the grid marks
 will appear along the page edges.  The default card size means that
-there will be 9 cards on an A4 page (in default portrait mode):
+there will be 9 cards on each A4 page (in default portrait mode):
 
     .. code:: python
 
@@ -161,12 +185,14 @@ there will be 9 cards on an A4 page (in default portrait mode):
         mask="{{ Race == 'Hobbit' }}")
 
 For the **copy** property, there is expected to be a column with the label
-**Copies** available in the Deck's dataset; and the number in this column
-will be used to make that many copies of the card (unless it has a **mask**).
+**Copies** available in the Deck's dataset (created by `the Data Command`_);
+and the number in this column will be used to make that many copies of the
+card (unless it has a **mask**).
 
 For the **mask** property, there is expected to be a column with the label
-**Race** available in the Deck's dataset; and any card with data matching the
-value ``Hobbit`` will be masked (ignored and not drawn).
+**Race** available in the Deck's dataset (created by `the Data Command`_);
+and any card with data matching the value ``Hobbit`` will be masked
+(ignored and not drawn).
 
 If you need to match any of multiple *mask* conditions, use an **or**:
 
@@ -180,12 +206,12 @@ If you need to match all of multiple *mask* conditions, use an **and**:
 
         mask="{{ Race == 'Hobbit' and Age < 39 }}")
 
-If you need multiple *mask* conditions, these can be combine using an
-**and** or an **or**, with groups in round brackets:
+If you need multiple *mask* conditions, these can be combined using an
+**and** or an **or**, with each grouped condition in round brackets:
 
     .. code:: python
 
-        mask="{{ (Race == 'Hobbit' and Age < 39) or  (Race == 'Human' and Age < 80) }}")
+        mask="{{(Race == 'Hobbit' and Age < 39) or (Race == 'Human' and Age < 80)}}")
 
 The dataset that could be used with the above Deck is shown in
 `Data Example #5`_.
@@ -212,6 +238,12 @@ The **first value** supplied to the ``Card()`` command must be one or more
 sequence numbers of the relevant cards.  This value can be supplied either
 as a *string*, or a *list* (numbers between square brackets ``[`` and ``]``).
 
+.. NOTE::
+
+   A Card's sequence number depends on how the data for the Deck is sourced;
+   usually it will correspond to the order that it is read from the Excel or
+   CSV file.
+
 Examples of Card sequence numbers supplied as *strings*:
 
 - ``"10"`` - a single number; card number 10
@@ -231,7 +263,10 @@ The **second value**, and all further values, supplied to the ``Card()``
 command must be a shape or a `group <group-command_>`_.
 
 There can be any number of ``Card()`` commands; and the same Card could be
-targeted by multiple ``Card()`` commands.
+targeted by multiple ``Card()`` commands, each affecting some aspect of its
+appearance; as elsewhere in **pyprototypr** the order of commands matter in
+the sense that later commands will overwrite any elements created by earlier
+ones.
 
 Card Creation Example #1
 ------------------------
@@ -256,8 +291,9 @@ Here:
 - *all* (the ``*``) cards get assigned the same text (in the card centre)
 - cards 1, 2 and 3 are assigned a rectangle
 - cards 7, 8 and 9 are assigned a group (assigned to ``line_in_rect``); this
-  group contains a rectangle with a superimposed red, diagonal line.
-  (See below for how the `group <group-command_>`_ command works.)
+  group contains a rectangle with a red, diagonal line - the line is
+  superimposed on the rectangle because it appears after it in the group list
+  (see below for how the `group <group-command_>`_ command works.)
 
 
 The Data Command
@@ -267,32 +303,33 @@ The Data Command
 This command allows for a dataset to be used as the source for values or
 properties making up a Card. Because values now have "names" they can be
 accessed and used in the `Supporting Commands`_ - this is usually the primary
-reason to supply a data source this way.
+reason to supply a data source in this way.
 
 There are five possible types of data sources:
 
 1. A CSV file
 2. An Excel file
 3. A ``Matrix`` command
-4. A directory containing images
-5. A "list of lists" included in the script
+4. A directory (containing images)
+5. A "list of lists" (included in the script)
 
 Apart from the images directory, each data source is essentially a set of rows
-and columns.  Each **row** essentially represents data that must appear on a
-card. Each **column** must be named so that the data can be referenced:
+and columns.  Each **row** represents data that must appear on a card.
+Each **column** must be named so that the data can be referenced and used:
 
 - the names for a CSV file must appear in the first line of the file
-- the names for a Excel file must appear in the columns of the first row of the
-  file
-- the names for a ``Matrix`` command must appear as a list assigned to the
-  *labels* property
-- the names for a "list of lists" must appear in the first list
+- the names for a Excel file must appear in the columns of the first row of
+  the spreadsheet
+- the names for `the Matrix Command`_ command must appear as a list assigned
+  to the *labels* property of the command
+- the names for a "list of lists" must appear in the first list of the lists
 
-The ``Data`` command uses different properties to reference these sources:
+The ``Data`` command uses different properties to access these different
+types of sources:
 
 - **filename** - the full path to the name (including extension) of the
-  CSV or Excel file being used; if no directory is supplied it is assumed to
-  be the same one in which the script is located
+  CSV or Excel file being used; if no directory is supplied in the path,
+  then it is assumed to be the same one in which the script is located
 - **matrix** - refers to the name assigned to the ``Matrix`` being used
 - **images** - refers to the directory in which the images are located; if
   a full path is not given, its assumed to be directly under the one in which
@@ -307,10 +344,18 @@ The ``Data`` command uses different properties to reference these sources:
 
    If you are a Python programmer, there is a final way to provide data.
    Internally, all of these data sources are converted to a *dictionary*,
-   so if you have one available through any means, this can be supplied
-   directly to ``Data`` via the **source** property.  The onus is on you
+   so if you have one available, through any means, this can be supplied
+   directly to ``Data`` via a **source** property.  The onus is on you
    to ensure that the dictionary is correctly formatted.
 
+The other property that can be used for the ``Data`` command is:
+
+- **extra** - if additional cards need to be manually created for a Deck,
+  that are *not* part of the data source, then the number of those cards
+  can be specified here. See the
+  `standard playing cards <examples/cards.rst#standard-playing-cards>`_
+  example, where the primary cards are created through `the Matrix Command`_
+  and the two Jokers are the "extras".
 
 Data Example #1
 ---------------
@@ -336,8 +381,8 @@ Data Example #3
 ---------------
 `↑ <table-of-contents_>`_
 
-This example shows how data is sourced from a Matrix; in this case the possible
-combinations for a standard deck of playing cards:
+This example shows how data is sourced from a Matrix; in this case the data
+represents possible combinations for a standard deck of playing cards:
 
     .. code:: python
 
@@ -352,7 +397,8 @@ combinations for a standard deck of playing cards:
 
 The dataset will contain a combination of every item in the first list of
 *data* - representing the **SUIT** - with every item in the second list of
-*data* - representing the **VALUE**; so 4 by 13 which is 52 dataset items.
+*data* - representing the **VALUE**; so 4 suits, multiplied by 13 values,
+which equates to 52 dataset items.
 
 For more detail on these properties see `The Matrix Command`_.
 
@@ -434,6 +480,8 @@ of values in a "list of lists"; so for this set of *data*:
 
 There are 8 combinations:  A-1-x, A-1-y, A-2-x, A-2-y, B-1-x, B-1-y, B-2-x,
 and B-2-y and therefore eight cards in the deck.
+
+See the `Data Example #3`_ above for a full Matrix.
 
 
 Countersheet and Counter Commands
@@ -584,7 +632,7 @@ Other Resources
 `↑ <table-of-contents_>`_
 
 **pyprototypr** is by no means the only tool for creating decks of cards;
-numerous other options exist; both free and commercial.  A few of the free /
+numerous other options exist; both free and commercial.  Some of the free /
 open-source ones are listed below.
 
 Inclusion of these links does **not** constitute a recommendation of them or
