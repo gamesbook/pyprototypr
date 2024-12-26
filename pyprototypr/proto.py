@@ -498,22 +498,20 @@ def S(test='', result=None, alternate=None):
 def L(lookup: str, target: str, result: str, default: Any = '') -> LookupType:
     """Enable Lookup of data in a record of a dataset
 
-        lookup: Any
-            the lookup column whose value must be used for the match
+        lookup: str
+            the lookup column whose value must be used for the match ("source" record)
         target: str
-            the name of the column of the data being searched
+            the name of the column of the data being searched ("target" record)
         result: str
-            name of result column containing the data to be returned
+            name of result column containing the data to be returned ("target" record)
         default: Any
-            the data to be returned if no match is made
+            the data to be returned if NO match is made
 
     In short:
         lookup and target enable finding a matching record in the dataset;
         the data in the 'result' column of that record is stored as an
         `lookup: result` entry in the returned lookups dictionary of the LookupType
     """
-    print(f"L {lookup=} {target=} {result=}")
-
     lookups = {}
     if globals.dataset and isinstance(globals.dataset, list):
         # validate the lookup column
@@ -1242,7 +1240,7 @@ def Location(grid: list, label: str, shapes: list, **kwargs):
     kwargs = kwargs
 
     def test_foo(x: bool = True, **kwargs):
-        print(kwargs)
+        print('--- test only ---', kwargs)
 
     def draw_shape(shape: BaseShape, point: Point, locale: Locale):
         shape_name = shape.__class__.__name__

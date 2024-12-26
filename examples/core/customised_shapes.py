@@ -204,6 +204,17 @@ Polygon(
     dot=0.1, dot_stroke=red)
 PageBreak()
 
+# ---- polygon perbis
+Blueprint()
+Text(common=txt, text="Polygon: perbis (default & custom)")
+Polygon(cx=2, cy=4, sides=8, radius=1, perbis=True)
+Polygon(
+    cx=2, cy=1, sides=8, radius=1,
+    perbis=True, perbis_directions="2,4,7",
+    perbis_offset=0.25, perbis_length=0.5, perbis_stroke_width=1,
+    dot=0.1, dot_stroke=red)
+PageBreak()
+
 # ---- dates
 Blueprint()
 Text(common=txt, text="Dates: format and styles")
@@ -496,7 +507,8 @@ Save(
         "compass", "lines", "starfield_rectangle", "starfield_circle",
         "starfield_poly", "equilateral_triangle", "right_angled_triangle_flip",
         "sectors", "grid_gray", "dotgrid_moleskine", "arc",
-        "stadium_edges", "trapezoid_flip", "chord", "polygon_radii",
+        "stadium_edges", "trapezoid_flip", "chord",
+        "polygon_radii", "polygon_perbis",
         "dates_formats",
         "images_normal_rotation", "rhombus_red_rotation",
         "stadium_red_rotation", "polygon_rotation_flat",

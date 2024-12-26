@@ -643,14 +643,38 @@ The full code for this example is available as
 L(ookup) command
 ----------------
 
-This command ...
+This command enables the current Card to retrieve data from a named column
+corresponding to another Card based on the value of a named column in the
+current Card.
 
+It takes three properties; the names of the three columns:
 
-This example shows :
+- the *first* column name is one that must contain a value for the current
+  card;
+- the *second* column name is one that is used to find a matching card whose
+  column must contain a value that mtaches that of the one appearing in the
+  the current Card
+- the *third* column is the one that will return the value for the matched
+  Card.
+
+As an example, suppose a CSV file with data for these two cards:
+
+    .. code::
+
+       NAME,USES,IMAGE
+       wire,,wire.png
+       plug,wire,plug.png
+
+This example shows how to retrieve the **IMAGE** for *wire* when working
+with the second (*plug*) Card:
 
     .. code:: python
 
-        x = 1
+        Card("2", image(source=L('USES','NAME','IMAGE')))
+
+The program takes the value from the *plug*'s **USES** column; then finds
+a Card whose **NAME** column contains that value; and then returns the
+value from that card's **IMAGE** column.
 
 
 Other Resources

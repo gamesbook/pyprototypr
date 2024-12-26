@@ -974,14 +974,65 @@ Example 3.
         - *radii_stroke_width* - set to ``1`` point; a slightly thicker line
 ===== ======
 
+
 Example 4.
 ++++++++++
 
-.. |pl3| image:: images/customised/polygon_rotation_flat.png
+.. |pl3| image:: images/customised/polygon_perbis.png
    :width: 330
 
 ===== ======
-|pl3| This example shows five shapes constructed using the command with
+|pl3| This example shows the shape constructed using the command with the
+      additional properties.
+
+      The top example::
+
+          Polygon(cx=2, cy=4, sides=8, radius=1, perbis=True)
+
+      It has the following properties:
+
+      - *centre* at x-position ``2`` cm and at y-position ``4`` cm, with a *radius*
+        size of ``1`` cm
+      - *sides* - ``8`` sides (an octagon)
+      - *perbis* - set to ``True`` to force lines to be drawn from each of the
+        centres of the sides of the polygon to its centre
+
+      The lower example::
+
+          Polygon(
+            cx=2, cy=1, sides=8, radius=1,
+            perbis=True, perbis_directions="2,4,7",
+            perbis_offset=0.25, perbis_length=0.5, perbis_stroke_width=1,
+            dot=0.1, dot_stroke=red)
+
+      It has the following properties:
+
+      - *centre* at x-position ``2`` cm and at y-position ``1`` cm, with a *radius*
+        size of ``1`` cm
+      - *sides* - ``8`` (an octagon)
+      - *perbis* - set to ``True`` to force lines to be drawn from each of the
+        centres of the sides of the polygon to its centre; the line properties
+        are then set:
+
+        - *perbis_offset* - set to ``0.25`` cm; the distance away from the centre
+          that the lines will start to be drawn
+        - *perbis_length*  - set to ``0.5`` cm; the length is shorter than that of
+          the complete distance from centre point to edge, so the line goes in
+          the same direction but never touches the vertex or the edge
+        - *perbis_stroke_width* - set to ``1`` point; a slightly thicker line
+        - *perbis_directions* - the edges of the polygon are numbered from the
+          east-most facing edge as 1, and then in an anti-clockwise direction.
+===== ======
+
+
+Example 5.
+++++++++++
+
+.. |pl4| image:: images/customised/polygon_rotation_flat.png
+   :width: 330
+
+===== ======
+|pl4| This example shows five shapes constructed using the command with
       additional properties::
 
         Polygon(common=poly6, y=1, x=1.0, label="0")

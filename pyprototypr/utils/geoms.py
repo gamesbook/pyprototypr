@@ -241,6 +241,21 @@ def point_on_circle(point_centre: Point, radius: float, angle: float) -> Point:
     return Point(x, y)
 
 
+def fraction_along_line(point_start: Point, point_end: Point, fraction: float) -> Point:
+    """Calculate new Point at a fractional distance along line defined by end Points
+    """
+    if fraction > 1.0 or fraction < 0.0:
+        raise ValueError(
+            'The fraction cannot be greater than 1 or less than 0.')
+    line_length = length_of_line(start=point_start, end=point_end)
+    fraction_length = fraction * line_length
+    fraction_point = point_on_line(
+        point_start=point_start,
+        point_end=point_end,
+        distance=fraction_length)
+    return fraction_point
+
+
 def angles_from_points(x1, y1, x2, y2, radians=False):
     """Given two points, calculate the compass and rotation angles between them
 

@@ -552,7 +552,7 @@ class BaseCanvas:
         self.points = self.defaults.get('points', [])
         self.x_c = self.defaults.get('xc', 0)
         self.y_c = self.defaults.get('yc', 0)
-        # ---- circle and hex only
+        # ---- circle, hex & polygon only
         self.radii = self.defaults.get('radii', [])
         self.radii_stroke = self.defaults.get('radii_stroke', black)
         self.radii_stroke_width = self.defaults.get('radii_stroke_width', self.stroke_width)
@@ -591,6 +591,15 @@ class BaseCanvas:
         self.cross_stroke_width = self.defaults.get('cross_stroke_width', self.stroke_width)
         # ---- hexagon / polygon
         self.orientation = self.defaults.get('orientation', 'flat')  # flat|pointy
+        self.perbis = self.defaults.get('perbis', False)
+        self.perbis_directions = self.defaults.get('perbis_directions', [])
+        self.perbis_stroke = self.defaults.get('perbis_stroke', black)
+        self.perbis_stroke_width = self.defaults.get('perbis_stroke_width', self.stroke_width)
+        self.perbis_length = self.defaults.get('perbis_length', None)
+        self.perbis_offset = self.defaults.get('perbis_offset', 0)
+        self.perbis_cap = self.defaults.get('perbis_cap', None)
+        self.perbis_dotted = self.defaults.get('perbis_dotted', self.dotted)
+        self.perbis_dashed = self.defaults.get('perbis_dashed', self.dashed)
         # ---- hexagon
         self.caltrops = self.defaults.get('caltrops', None)
         self.caltrops_fraction = self.defaults.get('caltrops_fraction', None)
@@ -911,6 +920,16 @@ class BaseShape:
         self.cross = self.kw_float(kwargs.get('cross', cnv.cross))
         # ---- hexagon / polygon
         self.orientation = kwargs.get('orientation', cnv.orientation)
+        self.perbis = kwargs.get('perbis', cnv.perbis)
+        self.perbis_directions = kwargs.get('perbis_directions', cnv.perbis_directions)
+        self.perbis_stroke = kwargs.get('perbis_stroke', cnv.perbis_stroke)
+        self.perbis_stroke_width = self.kw_float(
+            kwargs.get('perbis_stroke_width', cnv.perbis_stroke_width))
+        self.perbis_length = self.kw_float(kwargs.get('perbis_length', cnv.perbis_length))
+        self.perbis_offset = self.kw_float(kwargs.get('perbis_offset', cnv.perbis_offset))
+        self.perbis_cap = kwargs.get('perbis_cap', cnv.perbis_cap)
+        self.perbis_dotted = kwargs.get('perbis_dotted', cnv.dotted)
+        self.perbis_dashed = kwargs.get('perbis_dashed', cnv.dashed)
         # ---- hexagon
         self.caltrops = kwargs.get('caltrops', cnv.caltrops)
         self.caltrops_fraction = self.kw_float(kwargs.get('caltrops_fraction', cnv.caltrops_fraction))
