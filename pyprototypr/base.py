@@ -1346,7 +1346,10 @@ class BaseShape:
         If source not found; try path in which script located.
 
         Returns:
-            tuple: Image or SVG; boolean (True if file type is SVG)
+            tuple:
+                * Image or SVG;
+                * boolean (True if file type is SVG);
+                * boolean (True if flie is a directory)
 
         Notes:
             * https://www.blog.pythonlibrary.org/2018/04/12/adding-svg-files-in-reportlab/
@@ -1368,8 +1371,9 @@ class BaseShape:
             return drawing
 
         img = None
+        svg = False
+        is_directory = False
         try:
-            svg = False
             source_ext = source.strip()[-3:]
             # tools.feedback(f'Loading type: {source_ext}')
             if source_ext.lower() == 'svg':
@@ -1386,7 +1390,7 @@ class BaseShape:
                         img = scale_image(img, scaling)
                 else:
                     img = ImageReader(source)
-                return img, svg
+                return img, svg, is_directory
             except IOError:
                 filepath = tools.script_path()
                 _source = os.path.join(filepath, source)
@@ -1399,13 +1403,17 @@ class BaseShape:
                             img = scale_image(img, scaling_factor=scaling)
                     else:
                         img = ImageReader(_source)
-                    return img, svg
+                    return img, svg, is_directory
                 except IOError:
                     ftype = 'SVG ' if svg else ''
-                    tools.feedback(
-                        f'Unable to find or open {ftype}image "{_source}";'
-                        f' including {filepath}.')
-        return img, svg
+                    if not os.path.isdir(_source):
+                        tools.feedback(
+                            f'Unable to find or open {ftype}image "{_source}";'
+                            f' including {filepath}.')
+                    else:
+                        is_directory = True
+
+        return img, svg, is_directory
 
     def process_template(self, _dict):
         """Set values for properties based on those defined in a dictionary."""
@@ -1715,8 +1723,8 @@ class BaseShape:
 
         Values can be accessed via a Jinja template using e.g. T("{{ SUIT }}")
         """
-        if not self.deck_data:
-            return the_element
+        # if not self.deck_data:
+        #     return the_element
         new_element = None
         if isinstance(the_element, BaseShape):
             new_element = copy.copy(the_element)
@@ -1724,6 +1732,10 @@ class BaseShape:
             for key in keys:
                 value = getattr(the_element, key)
                 if isinstance(value, Template):
+                    if not self.deck_data:
+                       tools.feedback(
+                           f'Cannot use T() or S() command without Data already defined!',
+                           True)
                     record = self.deck_data[ID]
                     try:
                         custom_value = value.render(record)

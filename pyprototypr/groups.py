@@ -199,6 +199,7 @@ class CardShape(BaseShape):
                 # ---- * normal element
                 iid = members.index(cid + 1)
                 new_ele = self.handle_custom_values(flat_ele, cid)  # calculated values
+                # tools.feedback(f'$$$ draw_card $$$ {new_ele=}')
                 new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid)
             except AttributeError:
                 # ---- * switch ... get a new element ... or not!?
@@ -214,7 +215,7 @@ class CardShape(BaseShape):
                         custom_new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid)
 
             except Exception as err:
-                tools.feedback(f"Unable to draw card #{cid + 1}. (Error:{err})")
+                tools.feedback(f"Unable to draw card #{cid + 1}. (Error:{err})", True)
 
 
 class DeckShape(BaseShape):
@@ -353,8 +354,8 @@ class DeckShape(BaseShape):
                 # get number of copies
                 copies = 1
                 if card.kwargs.get('dataset') and self.copy:
-                    _copies = card.deck_data[key].get(self.copy)
-                    copies = tools.as_int(_copies, 'copy')
+                    _copies = card.deck_data[key].get(self.copy, None)
+                    copies = tools.as_int(_copies, 'copy property', allow_none=True) or 1
 
                 for i in range(0, copies):
                     card.draw_card(

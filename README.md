@@ -3,12 +3,13 @@
 __pyprototypr__ is a utility written in Python for designing and creating
 simple, regular, graphical outputs in PDF (or PNG/GIF) format via a script.
 
-__pyprototypr__  has been created to handle prototyping of cards, counters,
-tiles and boards for board games, but can be also used for creation of any
-simple design that has regular or repetitive elements; typically containing
-a mix of graphics and text.
+__pyprototypr__  has been primarily created to handle the prototyping of cards,
+counters, tiles and boards for board games, but can be also used for creating
+any simple design that has regular or repetitive elements; typically a mix of
+graphics and text.
 
-> You do not need to know the Python language to be able to use __pyprototypr__!
+> You do not need to know the Python language to be able to use __pyprototypr__
+> but you do need Python installed on your machine!
 
 ## Documentation
 
@@ -87,12 +88,7 @@ Please see the [list of contributors](CONTRIBUTORS.txt).
 These features are **not** guaranteed to be implemented, but they are
 current / potential areas of work or development that have been identified.
 
-* [x] Page numbering
 * [ ] New shapes:
-    * [x] Square shape
-    * [x] Equilateral Triangle shape
-    * [x] Sector shape (wedge of a circle)
-    * [x] Trapezoid shape
     * [ ] Diamond shape
     * [ ] Parallelogram shape
     * [ ] Wave shape
@@ -103,9 +99,6 @@ current / potential areas of work or development that have been identified.
     * [ ] Domino (dots inside rectangle outline)
     * [ ] Die (6-sided with dots)
     * [ ] Picture Frame (trapezoid composite)
-* [x] Arrow: basic styling; rotation
-* [x] Circle, Rectangle, Hexagon: centre cross
-* [x] Hexagons: "pointy" layout
 * [ ] Hexagons: 18xx tile example (requires `Arcs` below!)
 * [ ] Line:
     * [x] end style
@@ -114,13 +107,7 @@ current / potential areas of work or development that have been identified.
 * [ ] Arcs (pathways) inside a hexagon (**in progress**)
 * [ ] Shortcut notation for styling of: area, line, text, etc.
 * [ ] Track: layout shapes along a rectangle, circle or polygon (**in progress**)
-* [x] Notches: different styles for a Rectangle
-* [ ] Srripes: interior "lines" for a Rectangle
-* [x] Interior hatching:
-    * [x] rectangle
-    * [x] hexagon
-    * [x] equilateral triangle
-    * [x] conditional for rounded rectangle
+* [ ] Stripes: interior "areas" for a Rectangle
 * [x] Layout: virtual grids for putting shapes into locations in different patterns
 * [x] Rotation:
     * [x] text along a line
@@ -130,17 +117,16 @@ current / potential areas of work or development that have been identified.
     * [ ] Trapezoid
     * [ ] Triangle
 * [ ] Cards:
-    * [ ] allow for copies of a card
-    * [ ] 'wrapper' for counters (default 1" squares)
+    * [ ] allow for card backs
 * [ ] Color:
     * [ ] add support for CMYK
 
 ## Planned/Potential Board Examples
 
-* [ ] Abstract boards: Go, Ludo, 9 Mens Morris, Wari, Queens Guard, Backgammon
+* [ ] Abstract boards: Go, Ludo, 9 Mens Morris, Wari, Octagons, Backgammon
 * [ ] Wargame board: Squad Leader with terrain features (vector and bitmap)
-* [ ] Traveller board: showing a fully styled Star system (to demo a custom Shape?)
-* [x] WarpWar board: showing a fully-styled sector
+* [ ] Traveller board: show a fully-styled Star system (to demo a custom Shape?)
+* [x] WarpWar board: show a fully-styled sector
 * [ ] 18xx board: show a basic map with tracks, towns, cities and off-map areas
 
 ## Acknowledgements
@@ -162,9 +148,9 @@ Additional libraries in use include:
 * `bgg-api` https://pypi.org/project/bgg-api/ - support for access to the
   [BoardGameGeek](https://boardgamegeek.com) API
 * `xlrd` https://pypi.org/project/xlrd/ - support for access to Excel `.xls` files
-* `openpyxl` https://pypi.org/project/openpyxl/ - support for access to Excel `.xlsx` files
-* `pymupdf` https://pymupdf.io/ - support for export from PDF to PNG images
-* `imageio` https://pypi.org/project/imageio/- support for compiling PNGs to a GIF
+* `openpyxl` https://pypi.org/project/openpyxl/ - support for access to Excel files
+* `pymupdf` https://pymupdf.io/ - support for exporting PDF to PNG images
+* `imageio` https://pypi.org/project/imageio/- support for compiling PNGs into a GIF
 * `jinja` https://jinja.palletsprojects.com - template logic with variables (for cards)
 
 ## License

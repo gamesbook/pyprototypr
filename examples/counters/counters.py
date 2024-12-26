@@ -10,11 +10,13 @@ from pyprototypr import *
 Create(filename='tannenberg.pdf')
 
 # create counters
-CounterSheet(counters=18, width=2.6, height=2.6, fill=yellow)
+CounterSheet(counters=18, width=2.6, height=2.6, grid_marks=True, fill=yellow)
 
 # basic values
-german_marker = 'ironcross_small.png'  # http://cliparts.co/clipart/3214807
-russian_marker = 'russianeagle_small.png'  # http://www.free-vectors.com/vector-russian-eagle/
+# http://cliparts.co/clipart/3214807
+german_marker = 'images/ironcross_small.png'
+# http://www.free-vectors.com/vector-russian-eagle/
+russian_marker = 'images/russianeagle_small.png'
 grey = "#B8BAB1"
 brown = "#B6A378"
 

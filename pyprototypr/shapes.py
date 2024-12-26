@@ -7,8 +7,8 @@ import codecs
 import copy
 import logging
 import math
+import os
 import random
-
 # third party
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle
@@ -75,8 +75,9 @@ class ImageShape(BaseShape):
             y = self._u.y + self._o.delta_y
         # ---- load image
         # tools.feedback(f'*** IMGE {ID=} {_source=} {x=} {y=} {self.scaling=}')
-        img, is_svg = self.load_image(_source, self.scaling)
-        if not img:
+        img, is_svg, is_dir = self.load_image(_source, self.scaling)
+        if not img and not is_dir:
+            breakpoint()
             tools.feedback(
                 f'Unable to load image "{_source}!" - please check name and location',
                 True)
@@ -2734,7 +2735,7 @@ class RectangleShape(BaseShape):
             # done
             cnv.drawPath(pth, stroke=1, fill=1)
         # ---- fill pattern?
-        img, is_svg = self.load_image(self.pattern)
+        img, is_svg, is_dir = self.load_image(self.pattern)
         if img:
             log.debug("IMG %s s%s %s", type(img._image), img._image.size)
             iwidth = img._image.size[0]

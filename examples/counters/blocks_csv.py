@@ -12,15 +12,17 @@ Notes:
     olives = "#937301"
     greens = "#57762C"
     blues = "#416E83"
+* Images sourced from "images" subdirectory
 """
 from pyprototypr import *
 
 # create counters
 Create(filename='blocks_csv.pdf')
-CounterSheet(width=2.9, height=2.9, grid_marks=True)
 
-# load data
-Data(filename="blocks.csv")  # (re)set no. of counters based on chosen rows in file
+# load data; sets no. of counters based on rows in the CSV file
+Data(filename="blocks.csv")
+
+CounterSheet(width=2.9, height=2.9, grid_marks=True)
 
 # common colors
 blue = "#005F9C"
@@ -45,7 +47,7 @@ strength = text(
 outline = rectangle(
     x=0.45, y=0.45, width=2.0, height=2.0,
     stroke_width=1, stroke=T('{{BORDER}}'), fill=None)
-pic = image(T('{{IMAGE}}'), x=0.7, y=0.8, width=1.5, height=1.1)
+pic = image(T('images/{{IMAGE}}'), x=0.7, y=0.8, width=1.5, height=1.1)
 
 # "dots" templates
 top4 = sequence(

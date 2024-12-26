@@ -22,6 +22,8 @@ Table of Contents
 - `The Card Command`_
 - `The Data Command`_
 
+  - `Data Sources`_
+  - `Data Properties`_
   - `Data Example #1`_ (CSV)
   - `Data Example #2`_ (Excel)
   - `Data Example #3`_ (``Matrix``)
@@ -36,6 +38,8 @@ Table of Contents
   - `S(election) command`_
   - `L(ookup) command`_
 - `Other Resources`_
+
+    .. code:: python
 
 
 Introduction
@@ -305,7 +309,21 @@ properties making up a Card. Because values now have "names" they can be
 accessed and used in the `Supporting Commands`_ - this is usually the primary
 reason to supply a data source in this way.
 
-There are five possible types of data sources:
+.. NOTE::
+
+   A dataset that the script must use should be defined **before** a ``Deck``
+   or ``Countersheet`` command is used; otherwise you will get this error:
+
+   .. code::
+
+     FEEDBACK:: Cannot use T() or S() command without Data already defined!
+
+
+Data Sources
+------------
+`↑ <table-of-contents_>`_
+
+There are five possible types of data sources to create a dataset:
 
 1. A CSV file
 2. An Excel file
@@ -347,6 +365,10 @@ types of sources:
    so if you have one available, through any means, this can be supplied
    directly to ``Data`` via a **source** property.  The onus is on you
    to ensure that the dictionary is correctly formatted.
+
+Data Properties
+---------------
+`↑ <table-of-contents_>`_
 
 The other property that can be used for the ``Data`` command is:
 

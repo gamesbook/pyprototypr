@@ -3,16 +3,21 @@
 
 Written by: Derek Hohls
 Created on: 29 February 2016
-Updated on: 22 September 2024
+Updated on: 26 December 2024
+
+Notes:
+    * Images sourced from "images" subdirectory
 """
 from pyprototypr import *
 
 # create counters
 Create(filename='tannenberg_excel.pdf')
-CounterSheet(width=2.6, height=2.6, fill=white)
 
 # load data
-Data(filename="counters.xls", headers=['NATION','TYPE','SIZE','VALUE','ID'])
+Data(filename="counters.xls", headers=['NATION','TYPE','SIZE','VALUE','ID','COPIES'])
+
+# no. of counters is based on rows in Excel file (and COPIES column)
+CounterSheet(width=2.6, height=2.6, fill=white, grid_marks=True, copy='COPIES')
 
 # colors and text labels
 grey = "#B8BAB1"
@@ -43,10 +48,10 @@ art = group(out, circ1)
 # markers
 marker_german = group(
     german,
-    image('ironcross_small.png', x=0.4, y=0.4, width=1.8, height=1.8))
+    image('images/ironcross_small.png', x=0.4, y=0.4, width=1.8, height=1.8))
 marker_russian = group(
     russian,
-    image('russianeagle_small.png', x=0.4, y=0.4, width=1.8, height=1.8))
+    image('images/russianeagle_small.png', x=0.4, y=0.4, width=1.8, height=1.8))
 
 # construct counters  ("small Counters")
 Counter("all", S("{{ NATION == 'ger' }}", german))

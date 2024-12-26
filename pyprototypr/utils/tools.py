@@ -164,7 +164,7 @@ def as_int(value, label, maximum=None, minimum=None, allow_none=False) -> int:
     # >>> as_int(value='3.1', label='N')
     # FEEDBACK:: 3.1 is not a valid N integer!
     """
-    if value is None and allow_none:
+    if value is None or value == '' and allow_none:
         return value
     _label = f" for {label}" if label else ' of'
     try:

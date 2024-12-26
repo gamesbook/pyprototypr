@@ -366,12 +366,12 @@ def Card(sequence, *elements, **kwargs):
                            ' (Check "cards" setting in Deck)')
 
 
-def Counter(sequence, *elements):
-    """Add one or more elements to a counter or counter.
+def Counter(sequence, *elements, **kwargs):
+    """Add one or more elements to a counter or counters.
 
     NOTE: A Counter receives its `draw()` command via Save()!
     """
-    Card(sequence, *elements)
+    Card(sequence, *elements, **kwargs)
 
 
 def Deck(**kwargs):
@@ -386,14 +386,17 @@ def Deck(**kwargs):
 
 
 def CounterSheet(**kwargs):
-    """Initialise a deck with all its settings, including source(s) of data.
+    """Initialise a countersheet with all its settings, including source(s) of data.
 
     NOTE: A CounterSheet (aka Deck) receives its `draw()` command from Save()!
     """
-    kwargs = margins(**kwargs)
     kwargs['_is_countersheet'] = True
-    kwargs['dataset'] = globals.dataset
-    globals.deck = DeckShape(**kwargs)
+    Deck(**kwargs)
+    # kwargs = margins(**kwargs)
+    # kwargs['_is_countersheet'] = True
+    # kwargs['dataset'] = globals.dataset
+    # globals.deck = DeckShape(**kwargs)
+    # globals.deck_settings['grid_marks'] = kwargs.get('grid_marks', None)
 
 
 def group(*args, **kwargs):

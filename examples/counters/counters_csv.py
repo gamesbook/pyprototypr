@@ -3,24 +3,29 @@
 
 Written by: Derek Hohls
 Created on: 29 February 2016
-Updated on: 22 September 2024
+Updated on: 26 December 2024
+
+Notes:
+    * Images sourced from "images" subdirectory
 """
 from pyprototypr import *
 
 # create counters
 Create(filename='tannenberg_csv.pdf')
-CounterSheet(width=2.6, height=2.6, fill=white)
 
 # load data
-Data(filename="counters.csv")  # (re)set no. of counters based on chosen rows in file
+Data(filename="counters.csv")
+
+# no. of counters is based on rows in CSV file (and COPIES column)
+CounterSheet(width=2.6, height=2.6, fill=white, grid_marks=True, copy='COPIES')
 
 # colors and text labels
 grey = "#B8BAB1"
 brown = "#B6A378"
-value = text(font_face="Arial", font_size=18, x=1.3, y=0.5, text=T('{{VALUE}}'))
-size = text(font_face="Arial", font_size=12, x=1.3, y=1.9, text=T('{{SIZE}}'))
+value = text(font_face="Arial", font_size=18, x=1.3, y=0.5, text=T('{{ VALUE }}'))
+size = text(font_face="Arial", font_size=12, x=1.3, y=1.9, text=T('{{ SIZE }}'))
 ident = text(font_face="Arial", font_size=12, x=0.55, y=1.18, align='left', rotation=90,
-             text=T('{{ID}}'))
+             text=T('{{ ID }}'))
 
 # national colors
 troop = Common(x=0, y=0, width=2.6, height=2.6, stroke_width=1)
@@ -43,10 +48,10 @@ art = group(out, circ1)
 # markers
 marker_german = group(
     german,
-    image('ironcross_small.png', x=0.4, y=0.4, width=1.8, height=1.8))
+    image('images/ironcross_small.png', x=0.4, y=0.4, width=1.8, height=1.8))
 marker_russian = group(
     russian,
-    image('russianeagle_small.png', x=0.4, y=0.4, width=1.8, height=1.8))
+    image('images/russianeagle_small.png', x=0.4, y=0.4, width=1.8, height=1.8))
 
 # construct counters
 Counter("all", S("{{ NATION == 'ger' }}", german))
