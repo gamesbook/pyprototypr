@@ -386,9 +386,6 @@ class BaseCanvas:
         # ---- repeats
         self.pattern = self.defaults.get('pattern', None)
         self.repeat = self.defaults.get('repeat', True)
-        self.offset = self.defaults.get('offset', 0)
-        self.offset_across = self.defaults.get('offset_across', self.offset)
-        self.offset_down = self.defaults.get('offset_down', self.offset)
         self.gap = self.defaults.get('gap', 0)
         self.gap_x = self.defaults.get('gap_x', self.gap)
         self.gap_y = self.defaults.get('gap_y', self.gap)
@@ -542,8 +539,9 @@ class BaseCanvas:
         self.grid = None  # some Shapes can auto-generate a GridShape
         self.rows = self.defaults.get('rows', 0)
         self.cols = self.defaults.get('cols', self.defaults.get('columns', 0))
-        self.offset_x = self.defaults.get('offset_x', 0)
-        self.offset_y = self.defaults.get('offset_y', 0)
+        self.offset = self.defaults.get('offset', 0)
+        self.offset_x = self.defaults.get('offset_x', self.offset)
+        self.offset_y = self.defaults.get('offset_y', self.offset)
         # ---- circle / star / polygon
         self.diameter = self.defaults.get('diameter', 1)
         self.radius = self.defaults.get('radius', self.diameter / 2.0)
@@ -742,9 +740,6 @@ class BaseShape:
         # ---- repeats
         self.pattern = kwargs.get('pattern', cnv.pattern)
         self.repeat = kwargs.get('repeat', cnv.repeat)
-        self.offset = self.kw_float(kwargs.get('offset', cnv.offset))
-        self.offset_across = self.kw_float(kwargs.get('offset_down', cnv.offset_down))
-        self.offset_down = self.kw_float(kwargs.get('offset_across', cnv.offset_across))
         self.gap = self.kw_float(kwargs.get('gap', cnv.gap))
         self.gap_x = self.kw_float(kwargs.get('gap_x', cnv.gap_x))
         self.gap_y = self.kw_float(kwargs.get('gap_y', cnv.gap_y))
@@ -868,6 +863,7 @@ class BaseShape:
         # ---- grid / card layout
         self.rows = self.kw_int(kwargs.get('rows', cnv.rows))
         self.cols = self.kw_int(kwargs.get('cols', kwargs.get('columns', cnv.cols)))
+        self.offset = self.kw_float(kwargs.get('offset', cnv.offset))
         self.offset_x = self.kw_float(kwargs.get('offset_x', cnv.offset_x))
         self.offset_y = self.kw_float(kwargs.get('offset_y', cnv.offset_y))
         # ---- circle / star / polygon

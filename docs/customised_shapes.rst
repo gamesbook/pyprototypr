@@ -523,6 +523,8 @@ applied to each.
 - `Hatch: Pointy <hexHatchPointy_>`_
 - `Radii: Flat <hexRadiiFlat_>`_
 - `Radii: Pointy <hexRadiiPointy_>`_
+- `Perbis: Flat <hexPerbisFlat_>`_
+- `Perbis: Pointy <hexPerbisPointy_>`_
 - `Text: Flat <hexTextFlat_>`_
 - `Text: Pointy <hexTextPointy_>`_
 
@@ -707,7 +709,7 @@ of a Hexagon towards its centre.
 
       These have the following properties:
 
-      - *common* - all Hexagons drawn with the Common value of `hxg` will
+      - *common* - all Hexagons drawn with the Common value of ``hxg`` will
         share the same properties; height, font size, dot and orientation
       - *x* and *y* to set the lower-left position
       - *radii* - a compass direction in which the radius is drawn
@@ -743,13 +745,89 @@ of a Hexagon towards its centre.
 
       These have the following properties:
 
-      - *common* - all Hexagons drawn with the Common value of `hxg` will
+      - *common* - all Hexagons drawn with the Common value of ``hxg`` will
         share the same properties; height, font size, dot and orientation
       - *x* and *y* to set the lower-left position
       - *radii* - a compass direction in which the radius is drawn
         (centre to vertex)
       - *label* - the text displayed in the centre
 ===== ======
+
+
+.. _hexPerbisFlat:
+
+Perbis: Flat
+------------
+`^ <hexagon_>`_
+
+"Perbis" is a shortcut name for "perpendicular bisector". These lines are like
+spokes of a bicycle wheel; they are drawn from the mid-points of the edges of
+a Hexagon towards its centre.
+
+.. |hpf| image:: images/custom/hexagon/perbis_flat.png
+   :width: 330
+
+===== ======
+|hpf| This example shows Hexagons constructed using the commands::
+
+        hxg = Common(
+            height=1.5, font_size=8,
+            dot=0.05, dot_stroke=red,
+            orientation="flat")
+
+        Hexagon(common=hxg, x=0.25, y=0.25, perbis='sw', label="SW")
+        Hexagon(common=hxg, x=0.25, y=2.15, perbis='w', label="W")
+        Hexagon(common=hxg, x=0.25, y=4, perbis='nw', label="NW")
+        Hexagon(common=hxg, x=2.25, y=4, perbis='ne', label="NE")
+        Hexagon(common=hxg, x=2.25, y=2.15, perbis='e', label="E")
+        Hexagon(common=hxg, x=2.25, y=0.25, perbis='se', label="SE")
+
+      These have the following properties:
+
+      - *common* - all Hexagons drawn with the Common value of ``hxg`` will
+        share the same properties; height, font size, dot and orientation
+      - *x* and *y* to set the lower-left position
+      - *perbis* - a compass direction in which the bisector is drawn
+        (centre to mid-point)
+      - *label* - the text displayed in the centre shows the compass direction
+===== ======
+
+.. _hexPerbisPointy:
+
+Perbis: Pointy
+--------------
+`^ <hexagon_>`__
+
+Perbis are like spokes of a bicycle wheel; they are drawn from the vertices
+of a Hexagon towards its centre.
+
+.. |hpp| image:: images/custom/hexagon/perbis_pointy.png
+   :width: 330
+
+===== ======
+|hpp| This example shows a Hexagon constructed using the command::
+
+        hxg = Common(
+            height=1.5, font_size=8,
+            dot=0.05, dot_stroke=red,
+            orientation="pointy")
+        Hexagon(common=hxg, x=0.25, y=0.25, perbis='sw', label="SW")
+        Hexagon(common=hxg, x=0.25, y=2.15, perbis='nw', label="NW")
+        Hexagon(common=hxg, x=0.25, y=4, perbis='n', label="N")
+        Hexagon(common=hxg, x=2.25, y=4, perbis='ne', label="NE")
+        Hexagon(common=hxg, x=2.25, y=0.25, perbis='s', label="S")
+        Hexagon(common=hxg, x=2.25, y=2.15, perbis='se', label="SE")
+
+      These have the following properties:
+
+      - *common* - all Hexagons drawn with the Common value of ``hxg`` will
+        share the same properties; height, font size, dot and orientation
+      - *x* and *y* to set the lower-left position
+      - *perbis* - a compass direction in which the bisector is drawn
+        (centre to mid-point)
+      - *label* - the text displayed in the centre
+===== ======
+
 
 .. _hexTextFlat:
 

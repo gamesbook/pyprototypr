@@ -84,8 +84,8 @@ In general, color can be set for the lines (**stroke**) and areas
 -  **stroke** - the color in which a line or text is drawn; there are
    many strokes for particular types of lines that are set by prefixing
    this term with the name of the item in question; for example:
-   **cross_stroke**; **grid_stroke**; **radii_stroke**;
-   **label_stroke**; **petals_stroke** etc.
+   **cross_stroke**; **grid_stroke**; **label_stroke**; **petals_stroke**,
+   **perbis_stroke**; **radii_stroke**; etc.
 -  **stroke_fill** - sets both the line ("stroke") and area ("fill") to
    be the *same* color
 
@@ -284,6 +284,9 @@ Display-orientated Terms
    number* (i.e. their position in the drawing order) which should **not**
    be used for display - the rest are displayed as normal
 -  **radii** - if given a value of ``True`` will cause the radii of a
+   ``Polygon`` to be shown
+-  **perbis** - if given a value of ``True`` will cause the perpendicular
+   bisectors (lines from centre to the middle of the edges) of a
    ``Polygon`` to be shown
 -  **shown** - a list of locations, indicated by their *row and
    column* identifier which are the only ones that **must** be used for

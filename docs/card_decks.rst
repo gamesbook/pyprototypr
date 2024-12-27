@@ -518,6 +518,12 @@ of a Counter is 1" square (2.54 cm x 2.54 cm).
 The aim of having these commands is to allow the script to be more informative
 as to its purpose and use.
 
+For an excellent guide on how to create counters for a "traditional"
+hex-and-counter wargame, see *"Creating Wargames Counters with Inkscape"*
+at https://github.com/jzedwards/creating-wargames-counters-with-inkscape ;
+although its "grammar" is specific to Inkscape, the principle and approach
+can be adapted to **pyprototypr**
+
 
 Supporting Commands
 ===================

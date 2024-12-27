@@ -256,8 +256,8 @@ class RepeatShape(BaseShape):
         self.rows = kwargs.get("rows", 1)
         self.cols = kwargs.get("cols", kwargs.get("columns", 1))
         self.repeat = kwargs.get("repeat", None)
-        self.offset_across = self.offset_across or self.offset
-        self.offset_down = self.offset_down or self.offset
+        self.offset_x = self.offset_x or self.offset
+        self.offset_y = self.offset_y or self.offset
         self.gap_x = self.gap_x or self.gap
         self.gap_y = self.gap_y or self.gap
         if self.repeat:
@@ -266,8 +266,8 @@ class RepeatShape(BaseShape):
                 self.repeat_down,
                 self.gap_y,
                 self.gap_x,
-                self.offset_across,
-                self.offset_down,
+                self.offset_x,
+                self.offset_y,
             ) = self.repeat.split(",")
         else:
             self.across = kwargs.get("across", self.cols)
@@ -289,10 +289,10 @@ class RepeatShape(BaseShape):
         for col in range(self.cols):
             for row in range(self.rows):
                 if ((col + 1) in self.across) and ((row + 1) in self.down):
-                    off_x = col * self.width + col * (
-                        self.offset_down - (self.margin_left or self.margin))
-                    off_y = row * self.height + row * (
-                        self.offset_across - (self.margin_bottom or self.margin))
+                    off_x = col * self.width + self.offset_x + col * (
+                        self.gap_x - (self.margin_left or self.margin))
+                    off_y = row * self.height + self.offset_y + row * (
+                        self.gap_y - (self.margin_bottom or self.margin))
                     flat_elements = tools.flatten(self._object)
                     log.debug("flat_eles:%s", flat_elements)
                     for flat_ele in flat_elements:

@@ -1523,7 +1523,7 @@ class HexShape(BaseShape):
                         f'Unable to handle hex "{separation=}"')
 
     def draw_radii(self, cnv, ID, centre: Point, vertices: list):
-        """Draw line(s) connecting the hexagon centre to a vertex.
+        """Draw line(s) connecting the Hexagon centre to a vertex.
         """
         self.set_canvas_props(
             index=ID,
@@ -1550,6 +1550,90 @@ class HexShape(BaseShape):
             self.draw_line_between_points(cnv, centre, vertices[3])
         if 'w' in _dirs and self.orientation in ['f', 'flat']:  # horizontal LEFT
             self.draw_line_between_points(cnv, centre, vertices[0])
+
+    def draw_perbis(
+            self, cnv, ID, centre: Point, vertices: list, rotation: float = None):
+        """Draw lines connecting the Hexagon centre to the centre of each edge.
+
+        Def:
+        A perpendicular bisector ("perbis") of a chord is:
+            A line passing through the center of circle such that it divides the
+            chord into two equal parts and meets the chord at a right angle;
+            for a polygon, each edge is effectively a chord.
+        """
+        _perbis = []  # store angles to centre of edges (the "chords")
+        _perbis_pts = []  # store centre Point of edges
+        vcount = len(vertices) - 1
+        for key, vertex in enumerate(vertices):
+            if key == 0:
+                p1 = Point(vertex.x, vertex.y)
+                p2 = Point(vertices[vcount].x, vertices[vcount].y)
+            else:
+                p1 = Point(vertex.x, vertex.y)
+                p2 = Point(vertices[key - 1].x, vertices[key - 1].y)
+            pc = geoms.fraction_along_line(p1, p2, 0.5)  # centre pt of edge
+            _perbis_pts.append(pc)
+            _, angle = geoms.angles_from_points(centre.x, centre.y, pc.x, pc.y)
+            _perbis.append(angle)
+        pb_offset = self.unit(self.perbis_offset, label='perbis offset') or 0
+        pb_length = self.unit(self.perbis_length, label='perbis length') if self.perbis_length \
+            else self.radius
+        self.set_canvas_props(
+            index=ID,
+            stroke=self.perbis_stroke,
+            stroke_width=self.perbis_stroke_width,
+            dashed=self.perbis_dashed,
+            dotted=self.perbis_dotted)
+
+        if self.perbis:
+            if isinstance(self.perbis, str):
+                self.perbis = tools.split(self.perbis)
+            _dirs = []
+            # tools.feedback(f'*** {self.perbis=} {vertices=} {_dirs=}')
+            if self.orientation in ['p', 'pointy']:
+                if 'e' in self.perbis or '*' in self.perbis:
+                    _dirs.append(4)
+                if 'ne' in self.perbis or '*' in self.perbis:
+                    _dirs.append(3)
+                if 'nw' in self.perbis or '*' in self.perbis:
+                    _dirs.append(2)
+                if 'w' in self.perbis or '*' in self.perbis:
+                    _dirs.append(1)
+                if 'sw' in self.perbis or '*' in self.perbis:
+                    _dirs.append(0)
+                if 'se' in self.perbis or '*' in self.perbis:
+                    _dirs.append(5)
+            if self.orientation in ['f', 'flat']:
+                if 'ne' in self.perbis or '*' in self.perbis:
+                    _dirs.append(3)
+                if 'n' in self.perbis or '*' in self.perbis:
+                    _dirs.append(2)
+                if 'nw' in self.perbis or '*' in self.perbis:
+                    _dirs.append(1)
+                if 'sw' in self.perbis or '*' in self.perbis:
+                    _dirs.append(0)
+                if 's' in self.perbis or '*' in self.perbis:
+                    _dirs.append(5)
+                if 'se' in self.perbis or '*' in self.perbis:
+                    _dirs.append(4)
+
+        for key, pb_angle in enumerate(_perbis):
+            if self.perbis and key not in _dirs:
+                continue
+            # points based on length of line, offset and the angle in degrees
+            edge_pt = _perbis_pts[key]
+            pth = cnv.beginPath()
+            if pb_offset is not None and pb_offset != 0:
+                offset_pt = geoms.point_on_circle(centre, pb_offset, pb_angle)
+                end_pt = geoms.point_on_line(offset_pt, edge_pt, pb_length)
+                # print(pb_angle, offset_pt, f'{x_c=}, {y_c=}')
+                pth.moveTo(offset_pt.x, offset_pt.y)
+                pth.lineTo(end_pt.x, end_pt.y)
+            else:
+                pth.moveTo(centre.x, centre.y)
+                pth.lineTo(edge_pt.x, edge_pt.y)
+            cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
+            # cnv.drawCentredString(edge_pt.x, edge_pt.y, f"{key}")  # test
 
     def draw_hatch(self, cnv, ID, side: float, vertices: list, num: int):
         """Draw lines connecting two opposite sides and parallel to adjacent side.
@@ -1803,6 +1887,9 @@ class HexShape(BaseShape):
         # ---- draw radii
         if self.radii:
             self.draw_radii(cnv, ID, Point(self.x_d, self.y_d), self.vertices)
+        # ---- draw perbis
+        if self.perbis:
+            self.draw_perbis(cnv, ID, Point(self.x_d, self.y_d), self.vertices)
         # ---- centred shape (with offset)
         if self.centre_shape:
             cshape_name = self.centre_shape.__class__.__name__

@@ -132,6 +132,38 @@ Hexagon(common=hxg, x=2.25, y=0.25, borders=('ne', 2, gold), label="NE")
 Hexagon(common=hxg, x=2.25, y=2.15, borders=('se', 2, gold), label="SE")
 PageBreak()
 
+# ---- perbis - flat
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Hex Flat: perbis")
+hxg = Common(height=1.5, dot_size=0.05, dot_stroke=red, orientation="flat", font_size=8)
+Hexagon(common=hxg, x=0.25, y=0.25, perbis='sw', label="SW")
+Hexagon(common=hxg, x=0.25, y=2.15, perbis='nw', label="NW")
+Hexagon(common=hxg, x=0.25, y=4, perbis='n', label="N")
+Hexagon(common=hxg, x=2.25, y=4, perbis='ne', label="NE")
+Hexagon(common=hxg, x=2.25, y=0.25, perbis='s', label="S")
+Hexagon(common=hxg, x=2.25, y=2.15, perbis='se', label="SE")
+PageBreak()
+
+# ---- perbis - pointy
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Hex Pointy: perbis")
+hxg = Common(height=1.5, dot_size=0.05, dot_stroke=red, orientation="pointy", font_size=8)
+Hexagon(common=hxg, x=0.25, y=0.25, perbis='sw', label="SW")
+Hexagon(common=hxg, x=0.25, y=2.15, perbis='w', label="W")
+Hexagon(common=hxg, x=0.25, y=4, perbis='nw', label="NW")
+Hexagon(common=hxg, x=2.25, y=4, perbis='ne', label="NE")
+Hexagon(common=hxg, x=2.25, y=2.15, perbis='e', label="E")
+Hexagon(common=hxg, x=2.25, y=0.25, perbis='se', label="SE")
+PageBreak()
+
+# ---- perbis - all
+Blueprint(stroke_width=0.5)
+Text(common=txt, text="Hex: perbis")
+hxg = Common(height=1.5, dot_size=0.05, dot_stroke=red, font_size=8)
+Hexagon(common=hxg, cx=2, cy=4, perbis='*', orientation="pointy")
+Hexagon(common=hxg, cx=2, cy=1, perbis='*')
+PageBreak()
+
 # ---- END
 Text(common=txt, text="Hexagon END...")
 PageBreak(footer=True)
@@ -147,4 +179,5 @@ Save(
         "hatch_text_flat", "hatch_text_pointy",
         "radii_flat", "radii_pointy",
         "borders_flat", "borders_pointy",
+        "perbis_flat", "perbis_pointy", "perbis_all",
         None])
