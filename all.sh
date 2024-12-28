@@ -28,6 +28,7 @@ python examples/core/layouts/layouts_repeat.py -d /tmp/demo
 echo "Creating abstract boards..."
 python examples/boards/abstract/chessboard.py -d /tmp/demo
 python examples/boards/abstract/chessboard_brown.py -d /tmp/demo
+python examples/boards/abstract/go.py -d /tmp/demo
 python examples/boards/abstract/hex_game.py -d /tmp/demo
 python examples/boards/abstract/hexhex.py -d /tmp/demo
 python examples/boards/abstract/hexhex_circles.py -d /tmp/demo

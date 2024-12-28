@@ -95,20 +95,19 @@ current / potential areas of work or development that have been identified.
     * [ ] Cross shape
     * [ ] Pod shape
 * [ ] Common objects:
-    * [ ] Cube (rhombus composite)
-    * [ ] Domino (dots inside rectangle outline)
-    * [ ] Die (6-sided with dots)
-    * [ ] Picture Frame (trapezoid composite)
+    * [ ] Cube (Rhombus composite)
+    * [ ] Domino (DotGrid inside Rectangle outline)
+    * [ ] Die (6-sided with dots; 3D)
+    * [ ] Picture Frame (Trapezoid composite)
 * [ ] Hexagons: 18xx tile example (requires `Arcs` below!)
 * [ ] Line:
     * [x] end style
     * [ ] join style
-* [ ] Polyline: create arcs along path
+* [ ] Polyline: define arcs along the path
 * [ ] Arcs (pathways) inside a hexagon (**in progress**)
 * [ ] Shortcut notation for styling of: area, line, text, etc.
 * [ ] Track: layout shapes along a rectangle, circle or polygon (**in progress**)
 * [ ] Stripes: interior "areas" for a Rectangle
-* [x] Layout: virtual grids for putting shapes into locations in different patterns
 * [x] Rotation:
     * [x] text along a line
     * [x] shape labels (at centre of shape)
@@ -123,9 +122,9 @@ current / potential areas of work or development that have been identified.
 
 ## Planned/Potential Board Examples
 
-* [ ] Abstract boards: Go, Ludo, 9 Mens Morris, Wari, Octagons, Backgammon
+* [ ] Abstract boards: Ludo, 9 Mens Morris, Wari, Backgammon
 * [ ] Wargame board: Squad Leader with terrain features (vector and bitmap)
-* [ ] Traveller board: show a fully-styled Star system (to demo a custom Shape?)
+* [ ] Traveller board: show a fully-styled Star system (demo a custom Shape?)
 * [x] WarpWar board: show a fully-styled sector
 * [ ] 18xx board: show a basic map with tracks, towns, cities and off-map areas
 

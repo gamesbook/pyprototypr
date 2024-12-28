@@ -14,6 +14,7 @@ Table of Contents
 =================
 
 - `Chess`_
+- `Go`_
 - `Hex`_
 - `HexHex Games`_
 - `TicTacToe`_
@@ -32,7 +33,7 @@ Discussion  This example shows how to construct a regular Chess board.
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/abstract/chessboard.png
-               :width: 66%
+               :width: 80%
 =========== ==================================================================
 
 =========== ==================================================================
@@ -45,8 +46,32 @@ Discussion  This example shows how to construct a regular Chess board with
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/abstract/chessboard_brown.png
-               :width: 66%
+               :width: 80%
 =========== ==================================================================
+
+Go
+==
+`↑ <table-of-contents_>`_
+
+=========== ==================================================================
+Title       *Go Board*
+----------- ------------------------------------------------------------------
+Source Code `go.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/go.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct a regular Go board.
+
+            The script is fairly simple; the board itself is contructed from a
+            ``Grid``, and relies on the default spacing being ``1`` cm.
+
+            The handicap points are constructed using a ``DotGrid``, with
+            larger than default dot sizes. The DotGrid offset is from the
+            *page* edge, not the margin!
+
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/boards/abstract/go.png
+               :width: 80%
+=========== ==================================================================
+
 
 Hex
 ===

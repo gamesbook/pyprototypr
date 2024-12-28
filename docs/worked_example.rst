@@ -1,12 +1,16 @@
-===================================
-Worked Examples for a Deck of Cards
-===================================
+==================================
+Worked Example for a Deck of Cards
+==================================
 
 These examples assumes that you have set-up your computer with Python and
-have tested to check that you can create a test file which generates a
-PDF. If not, please first see the `Setting Up <setting_up.rst>`_
-document. It will also be helpful if you have read the
+have tested to **check that you can create a test file which generates a
+blank PDF**. If not, please first see the `Setting Up <setting_up.rst>`_
+document.
+
+It will also be helpful if you have read the
 `Basic Concepts <basic_concepts.rst>`_ section.
+
+.. HINT::
 
    **Remember** when you create and edit your files, do **not** use a
    word processor such as "Word", "Pages" or "LibreOffice" - but a text
@@ -80,8 +84,8 @@ spaces):
 
 You can see that the ``Create()`` instruction has now been expanded with
 a list of new details appearing inside the brackets. These items are
-called *properties* and with` each property is separated by a “,”. Each
-**property** is defined by a name, followed by an “=” (equals) sign, and
+called *properties* and with` each property is separated by a ",". Each
+**property** is defined by a name, followed by an "=" (equals) sign, and
 then a value of some kind.
 
 In this case, the ``paper`` property has been set equal to a value of
@@ -107,7 +111,9 @@ your ``cards2.py`` file - it will be called ``example2.pdf``. It should
 contain a set of 9 blank cards appearing near the bottom-left corner on
 one A3-sized page.
 
-    *NOTE* Drawing in  **pyprototypr** always starts in the  bottom-left
+.. NOTE::
+
+    Drawing in  **pyprototypr** always starts in the  bottom-left
     corner and proceeds left-to-right and the upwards on the page.
 
 A simple card deck example: Take 3
@@ -198,10 +204,10 @@ Create this text in a file called ``cards4.py``:
    # the text is 1.9cm from the left of the card and 1cm from its lower edge
    Card("25", text(text="25!", x=1.9, y=1.0))
 
-   # create a reference for a particular font; with it's face and size and colour
+   # create a reference for a particular font; with it's face, size and colour
    times = Font("Times New Roman", size=8, colour="red")
 
-   # create more text, and display it using the font defined by 'times' reference
+   # create more text, and display it using the font defined by 'times'
    mytext = text(text="I'm on cards 1-9", font=times, x=1.9)
 
    # specify a range of cards that will contain 'mytext'
@@ -218,13 +224,13 @@ A new instruction, called ``Card()``, has been added. As might be
 expected, this specifies what will actually appear on a given card or
 cards apart from just the color. The number just after the ``(`` bracket
 is the card number or, if there are multiple cards, then the first and
-last card number separated by a dash (“-”).
+last card number separated by a dash ("-").
 
 In the line starting ``Card("25"``, you can see that Card#25 will
 contain the text ``25!``.
 
 This script also shows the use of a **reference** - a reference is just
-a name, followed by an “=” sign, and then an instruction of some kind.
+a name, followed by an "=" sign, and then an instruction of some kind.
 
 You can see that the ``times`` reference is used when specifying the
 ``mytext`` reference.
@@ -236,7 +242,9 @@ The resulting ``example4.pdf`` file will show a page of small,
 white-bordered, light-blue cards - with the same text appearing on cards
 one to nine, but with different text on card number 25 (twenty-five).
 
-   **Note** the cards are displayed from the bottom-left upwards and
+.. NOTE::
+
+   The cards are displayed from the bottom-left upwards and
    then from left to right - that is why the first cards appear on the
    bottom rows and the last card is shown on the top-right.
 
@@ -248,5 +256,5 @@ section on `Card Decks <card_decks.rst>`_ will be helpful for you (bear
 in mind that that section assumes you are familiar with all the `core
 concepts <core_concepts.rst>`_ and program usage described in earlier docs.)
 
-There are also card-related examples in the `Available
-Examples <examples/index.rst>`_ section.
+There are also card-related examples in the
+`Available Examples <examples/index.rst>`_ section.

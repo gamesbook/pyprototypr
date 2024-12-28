@@ -88,9 +88,15 @@ class DotGridShape(BaseShape):
         y = 0 + self.unit(self.offset_y)
         height = self._u.height  # of each grid item
         width = self._u.width  # of each grid item
-        if self.side:  # square grid
+        if 'side' in self.kwargs and not \
+                ('height' in self.kwargs or 'width' in self.kwargs):
+            # square grid
             side = self.unit(self.side)
             height, width = side, side
+        if 'side' in self.kwargs and \
+                ('height' in self.kwargs or 'width' in self.kwargs):
+            tools.feedback('Set either height&width OR side (not both) for a DotGrid',
+                           False, True)
         # ---- number of blocks in grid:
         if self.rows == 0:
             self.rows = int((
@@ -105,8 +111,8 @@ class DotGridShape(BaseShape):
         self.fill = self.stroke
         self.set_canvas_props(index=ID)
         # ---- draw dot grid
-        for y_col in range(0, self.rows + 1):
-            for x_col in range(0, self.cols + 1):
+        for y_col in range(0, self.rows):
+            for x_col in range(0, self.cols):
                 cnv.circle(
                     x + x_col * width,
                     y + y_col * height,
