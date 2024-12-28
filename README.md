@@ -73,7 +73,8 @@ any PDF-capable program or application.
 
 If this works, then download and try out other scripts from any of the `examples`
 sub-directories (**note** some examples may require additional files such as
-images, CSV files, or spreadsheets).
+images, CSV files, or spreadsheets). You can download all examples as a
+[ZIP file](https://github.com/gamesbook/pyprototypr/blob/master/examples.zip).
 
 If it does not work, you may want to look in more detail at the
 [installation](https://github.com/gamesbook/pyprototypr/blob/master/docs/setting_up.rst)
