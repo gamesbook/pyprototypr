@@ -126,7 +126,9 @@ Example 1.
 
 ===== ======
 |arc| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Arc()
 
@@ -143,17 +145,21 @@ Example 2.
 
 ===== ======
 |ac2| This example shows the shape constructed using the command with these
-      properties::
+      properties:
+
+      .. code:: python
 
           Arc(x=1, y=1, x1=3, y1=2)
 
-      To help with visualisation, the Arc is surrounded by a red Rectangle::
+      To help with visualisation, the Arc is surrounded by a red Rectangle:
 
-        Rectangle(
-            x=1, y=1, height=1, width=2, dot=0.02,
-            stroke=red, fill=None,
-            title="Arc(x=1, y=1, x1=3, y1=2)")
-        )
+      .. code:: python
+
+            Rectangle(
+                x=1, y=1, height=1, width=2, dot=0.02,
+                stroke=red, fill=None,
+                title="Arc(x=1, y=1, x1=3, y1=2)")
+            )
 
       The Arc has the following properties:
 
@@ -176,7 +182,9 @@ Example 1.
 
 ===== ======
 |bez| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Bezier()
 
@@ -193,15 +201,19 @@ Example 2.
 
 ===== ======
 |bz1| This example shows the shape constructed using the command with the
-      following properties::
+      following properties:
 
-          Bezier(x=0, y=1, x1=4, y1=3, x2=3, y2=4, x3=4, y3=6, stroke_width=1)
+      .. code:: python
 
-      It has the following properties based on the defaults:
+          Bezier(
+            x=0, y=1, x1=4, y1=3, x2=3, y2=4, x3=4, y3=6, stroke_width=1)
+
+      It has the following properties based on changes to the defaults:
 
       - starts at x-position ``0`` cm and at y-position ``1`` cm
       - has the inflection points set by *x1* and *y1* and then *x2* and *y2*
       - ends at position *x3* of ``4`` cm and at *y3* of ``6`` cm
+      - has a thicker *stroke_width*
 ===== ======
 
 Chord
@@ -218,12 +230,16 @@ Example 1.
 
 ===== ======
 |chd| If the shape constructed using only default properties, there will be
-      nothing to see::
+      nothing to see:
+
+      .. code:: python
 
           Chord()
 
       This example then shows the shape constructed using the command with these
-      properties::
+      properties:
+
+      .. code:: python
 
           Chord(shape=Circle(), angle=135, angle1=45)
 
@@ -253,7 +269,9 @@ Example 1.
 
 ===== ======
 |dot| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Dot()
 
@@ -278,7 +296,9 @@ Example 1.
 
 ===== ======
 |lne| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Line()
 
@@ -297,42 +317,28 @@ Example 2.
 
 ===== ======
 |ln1| This example shows Lines constructed using commands with the
-      following properties::
+      following properties:
 
-        Line(x=0, y=4, x1=4, y1=5, stroke=blue, stroke_width=1,
+      .. code:: python
+
+          Line(x=0, y=4, x1=4, y1=5, stroke=blue, stroke_width=1,
              dashed=[0.2, 0.2, 0.2, 0.2, 1.0, 0.0], label="dashed", font_size=6)
 
-        Line(x=0, y=3, length=4.1, angle=15, stroke=red, label="15", font_size=6)
+          Line(
+            x=0, y=3, length=4.1, angle=15, stroke=red, label="15", font_size=6)
 
-        Line(x=0, y=2, length=4, stroke=lime, stroke_width=2)
+          Line(
+            x=0, y=2, length=4, stroke=lime, stroke_width=2)
 
-        Line(x=0, y=0.5, stroke_width=0.2, dotted=True, label="0.2", font_size=6)
-        Line(x=1, y=0.5, stroke_width=0.4, dotted=True, label="0.4", font_size=6)
-        Line(x=2, y=0.5, stroke_width=0.8, dotted=True, label="0.8", font_size=6)
-        Line(x=3, y=0.5, stroke_width=1.6, dotted=True, label="1.6", font_size=6)
-
-      The various black lines have:
-
-      - *x* and *y* set as their starting point
-      - a default length of ``1`` cm
-
-      The thin red line has:
-
-      - *x* and *y* set as a starting point
-      - *x1* and *y1* set as an ending point
-
-      and the line length is calculated based on these points.
-
-      The thick green line and the thin red line both have:
-
-      - *x* and *y* set as their starting point
-      - *length* to set the specific size of the line
-
-      The thin red line has:
-
-      - *angle* - of 15 |deg| (from the baseline, anti-clockwise) to guide
-        the direction in which the line is drawn; if not given (as in the case
-        of the thick green line) this will be 0 |deg|
+          # black lines
+          Line(
+            x=0, y=0.5, stroke_width=0.2, dotted=True, label="0.2", font_size=6)
+          Line(
+            x=1, y=0.5, stroke_width=0.4, dotted=True, label="0.4", font_size=6)
+          Line(
+            x=2, y=0.5, stroke_width=0.8, dotted=True, label="0.8", font_size=6)
+          Line(
+            x=3, y=0.5, stroke_width=1.6, dotted=True, label="1.6", font_size=6)
 
       The medium blue line has a style set so that it is not a normal solid
       line:
@@ -343,12 +349,29 @@ Example 2.
         value; when the end of the list is reached it starts again until the
         full length of the line is drawn
 
+      The thin red line has:
+
+      - *x* and *y* set as a starting point
+      - *x1* and *y1* set as an ending point
+      - *angle* - of 15 |deg| (from the baseline, anti-clockwise) to guide
+        the direction in which the line is drawn; if not given (as in the case
+        of the thick green line) this will be 0 |deg|
+
+      and the line length is calculated based on these points.
+
+      The thick green line and the thin red line both have:
+
+      - *x* and *y* set as their starting point
+      - *length* to set the specific size of the line
+
       The various black lines have these properties:
 
+      - *x* and *y* set as their starting point
+      - a default length of ``1`` cm
       - *stroke_width* - set as value in points (and labelled accordingly)
       - *dotted* - has a value of ``True``, which then generates a series of
-        small lines, followed by gaps, of sizes equal to the line's
-        *stroke_width*
+        small lines (the "dots"), followed by gaps, of sizes equal to the
+        line's *stroke_width*
 ===== ======
 
 
@@ -365,7 +388,9 @@ Example 1.
    :width: 330
 
 ===== ======
-|ply| The shape cannot be constructed using only default properties::
+|ply| The shape cannot be constructed using only default properties:
+
+      .. code:: python
 
           Polyline()
 
@@ -374,7 +399,9 @@ Example 1.
         WARNING:: There are no points to draw the Polyline
 
       This example then shows the shape constructed using the command with these
-      properties::
+      properties:
+
+      .. code:: python
 
           Polyline(points=[(0, 0), (1, 1), (2, 0)])
 
@@ -409,7 +436,9 @@ Example 1.
 ===== ======
 |txt| This example shows the shape constructed using the command with only
       defaults; except for the **text** property - this is changed otherwise
-      there would not be any text to see!::
+      there would not be any text to see!:
+
+      .. code:: python
 
           Text(text="Hello World")
 
@@ -453,7 +482,9 @@ Example 1.
 
 ===== ======
 |ar0| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Arrow()
 
@@ -599,7 +630,7 @@ Circle
 
 .. NOTE::
 
-   There is more detail about the properties that can be defined for a
+   There is detail about the many properties that can be defined for a
    Circle in the `customised Circles <customised_shapes.rst#circle>`_ section.
 
 Example 1.
@@ -610,7 +641,9 @@ Example 1.
 
 ===== ======
 |ccl| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Circle()
 
@@ -637,7 +670,9 @@ Example 1.
 
 ===== ======
 |cmp| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Compass()
 
@@ -658,7 +693,9 @@ Example 2.
 
 ===== ======
 |cm2| This example shows the shape constructed using the command with different
-      properties.  The top left::
+      properties.  The top left:
+
+      .. code:: python
 
           Compass(cx=1, cy=5, perimeter='circle', directions="ne nw s")
 
@@ -668,7 +705,9 @@ Example 2.
       - *directions* define where the radial lines extend; in this case to the
         North-East, North-West and South
 
-      The centre::
+      The centre:
+
+      .. code:: python
 
           Compass(
               cx=2, cy=3, perimeter='rectangle', height=2, width=3,
@@ -684,7 +723,9 @@ Example 2.
         the ``rectangle``'s bounding lines and to its corners
       - *radii_stroke* defines the line colors used
 
-      The lower right::
+      The lower right:
+
+      .. code:: python
 
           Compass(cx=3, cy=1, perimeter='hexagon', radii_stroke_width=2)
 
@@ -711,7 +752,9 @@ Example 1.
 
 ===== ======
 |ell| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Ellipse()
 
@@ -734,7 +777,9 @@ Example 2.
 
 ===== ======
 |el1| This example shows the shape constructed using the command with these
-      properties::
+      properties:
+
+      .. code:: python
 
           Ellipse(cx=2, cy=3, width=3, height=4, dot=0.1)
 
@@ -760,7 +805,9 @@ Example 1.
 
 ===== ======
 |eqi| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           EquilateralTriangle()
 
@@ -778,7 +825,11 @@ Example 2.
 
 ===== ======
 |eq2| This example shows the shape constructed using the command with the
-      various properties.  In the lower section::
+      various properties.
+
+      In the lower section:
+
+      .. code:: python
 
         EquilateralTriangle(
           x=2, y=1, flip="north", hand="east", label="NE", fill=gold)
@@ -789,7 +840,7 @@ Example 2.
         EquilateralTriangle(
           x=2, y=1, flip="south", hand="west", label="SW", fill=blue)
 
-      These have the following properties:
+      These shapes have the following properties:
 
       - starting position at x-position ``2`` cm and at y-position ``1`` cm
       - default side of ``1`` cm; all sides are equal
@@ -798,13 +849,14 @@ Example 2.
       - *hand*  - this can be ``west`` or ``east`` and will cause the triangle
         to be drawn to the left or the right relative to the starting position
 
-      The middle section shows::
+      The middle section shows:
+
+      .. code:: python
 
         EquilateralTriangle(
             x=2, y=3, side=1.5,
             hatch_count=5, hatch_stroke=red,
-            title='Title', heading='Head'
-        )
+            title='Title', heading='Head')
 
       - starting position at *x*-position ``2`` cm and at *y*-position ``3`` cm
       - *side* of ``1.5`` cm; all sides are equal
@@ -812,11 +864,12 @@ Example 2.
         between opposing sides which run parallel to the third side
       - *hatch_stroke* - customise the hatches to show them as ``red``
 
-      The top section shows::
+      The top section shows:
+
+      .. code:: python
 
         EquilateralTriangle(
-            x=1, y=4, stroke_width=1, rotation=45, dot=.05
-        )
+            x=1, y=4, stroke_width=1, rotation=45, dot=.05)
 
       - starting position at x-position ``1`` cm and at y-position ``4`` cm
       - *dot* - in the centre
@@ -832,8 +885,9 @@ Hexagon
 
 .. NOTE::
 
-   There is more detail about the properties that can be defined for a
-   Hexagon in the `customised shapes' Hexagon <customised_shapes.rst#hexagon>`_ section.
+   There is more detail about the many properties that can be defined for a
+   Hexagon in the `customised shapes' Hexagon <customised_shapes.rst#hexagon>`_
+   section.
 
 Example 1.
 ++++++++++
@@ -843,7 +897,9 @@ Example 1.
 
 ===== ======
 |hx1| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Hexagon()
 
@@ -862,7 +918,9 @@ Example 2.
 
 ===== ======
 |hx2| This example shows the shape constructed using the command with only
-      one change to the defaults::
+      one change to the defaults:
+
+      .. code:: python
 
           Hexagon(orientation="pointy")
 
@@ -892,7 +950,9 @@ Example 1.
 
 ===== ======
 |pol| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Polygon()
 
@@ -911,7 +971,9 @@ Example 2.
 
 ===== ======
 |pl1| This example shows three shapes constructed using the command with the
-      following properties::
+      following properties:
+
+      .. code:: python
 
         Polygon(cx=1, cy=5, sides=7, radius=1, label="Seven")
         Polygon(cx=2, cy=3, sides=6, radius=1, label="Six")
@@ -937,7 +999,9 @@ Example 3.
 |pl2| This example shows the shape constructed using the command with the
       additional properties.
 
-      The top example::
+      The top example:
+
+      .. code:: python
 
           Polygon(cx=2, cy=4, sides=8, radius=1, radii=True)
 
@@ -949,7 +1013,9 @@ Example 3.
       - *radii* - set to ``True`` to force lines to be drawn from each of the
         vertices of the polygon to its centre
 
-      The lower example::
+      The lower example:
+
+      .. code:: python
 
           Polygon(
               cx=2, cy=1, sides=10, radius=1,
@@ -985,23 +1051,27 @@ Example 4.
 |pl3| This example shows the shape constructed using the command with the
       additional properties.
 
-      The top example::
+      The top example:
 
-          Polygon(cx=2, cy=4, sides=8, radius=1, perbis=True)
+      .. code:: python
+
+          Polygon(cx=2, cy=4, sides=8, radius=1, perbis='*')
 
       It has the following properties:
 
       - *centre* at x-position ``2`` cm and at y-position ``4`` cm, with a *radius*
         size of ``1`` cm
       - *sides* - ``8`` sides (an octagon)
-      - *perbis* - set to ``True`` to force lines to be drawn from each of the
+      - *perbis* - set to ``*``; this means lines are drawn from each of the
         centres of the sides of the polygon to its centre
 
-      The lower example::
+      The lower example:
+
+      .. code:: python
 
           Polygon(
             cx=2, cy=1, sides=8, radius=1,
-            perbis=True, perbis_directions="2,4,7",
+            perbis="2,4,7",
             perbis_offset=0.25, perbis_length=0.5, perbis_stroke_width=1,
             dot=0.1, dot_stroke=red)
 
@@ -1010,18 +1080,17 @@ Example 4.
       - *centre* at x-position ``2`` cm and at y-position ``1`` cm, with a *radius*
         size of ``1`` cm
       - *sides* - ``8`` (an octagon)
-      - *perbis* - set to ``True`` to force lines to be drawn from each of the
-        centres of the sides of the polygon to its centre; the line properties
-        are then set:
+      - *perbis* - this means lines will be drawn from the entres of the sides
+        of the polygon to its centre; the line properties are then set:
 
+        - *perbis* - the edges of the polygon are numbered from the
+          east-most facing edge as 1, and then in an anti-clockwise direction.
         - *perbis_offset* - set to ``0.25`` cm; the distance away from the centre
           that the lines will start to be drawn
         - *perbis_length*  - set to ``0.5`` cm; the length is shorter than that of
           the complete distance from centre point to edge, so the line goes in
           the same direction but never touches the vertex or the edge
         - *perbis_stroke_width* - set to ``1`` point; a slightly thicker line
-        - *perbis_directions* - the edges of the polygon are numbered from the
-          east-most facing edge as 1, and then in an anti-clockwise direction.
 ===== ======
 
 
@@ -1033,7 +1102,9 @@ Example 5.
 
 ===== ======
 |pl4| This example shows five shapes constructed using the command with
-      additional properties::
+      additional properties:
+
+      .. code:: python
 
         Polygon(common=poly6, y=1, x=1.0, label="0")
         Polygon(common=poly6, y=2, x=1.5, rotation=15, label="15")
@@ -1068,7 +1139,9 @@ Example 1.
    :width: 330
 
 ===== ======
-|shp| If the shape is constructed using the command with only defaults::
+|shp| If the shape is constructed using the command with only defaults:
+
+      .. code:: python
 
         Polyshape()
 
@@ -1077,7 +1150,9 @@ Example 1.
         WARNING:: There are no points to draw the Polyshape
 
       Like `polyline`_, the Polyshape requires a list of points to be constructed.
-      This example shows how to do this using the command with these properties::
+      This example shows how to do this using the command with these properties:
+
+      .. code:: python
 
         Polyshape(points=[(0, 0), (0, 1), (1,  2), (2, 1), (2, 0)])
 
@@ -1113,7 +1188,9 @@ no way of knowing or "checking" the values that you supply to it!
    :width: 330
 
 ===== ======
-|sh2| The shape is constructed using the command with these properties::
+|sh2| The shape is constructed using the command with these properties:
+
+      .. code:: python
 
         Polyshape(
               points=[(0, 0), (0, 1), (1,  2), (2, 1), (2, 0)],
@@ -1128,15 +1205,17 @@ no way of knowing or "checking" the values that you supply to it!
       As in Example 1, the *points* are used to construct the outline of the
       shape. Other properties:
 
-      - the centre is defined to be at x-position ``1`` cm and y-position
+      - the centre is *defined* to be at x-position ``1`` cm and y-position
         ``1`` cm; this will affect the drawing of the cross and the label but
         does **not** affect the drawing of the shape itself
       - *cross* - sets the length of each of the two lines that cross at the
         centre to be ``0.5`` cm
       - *label* - sets the text appearing at the defined centre position
-      - *fill* color of ``sandybrown`` (corresponds to hexadecimal value ``#F4A460``)
+      - *fill* - color of ``sandybrown`` (corresponds to the hexadecimal
+        value ``#F4A460``)
         that defines the color of the interior of the shape
-      - *stroke* color of ``peru`` (corresponds to hexadecimal value ``#CD853F``)
+      - *stroke* - color of ``peru`` (corresponds to the hexadecimal
+        value ``#CD853F``)
 
 ===== ======
 
@@ -1156,7 +1235,9 @@ pairs of values; so instead of ``[(0,0), (1,1)]`` just use ``"0,0 1,1"``.
    :width: 330
 
 ===== ======
-|sh3| The shapes are constructed using the command with these properties::
+|sh3| The shapes are constructed using the command with these properties:
+
+        .. code:: python
 
         Polyshape(
             points="0,0 0,1 2,0 2,1 0,0",
@@ -1202,7 +1283,9 @@ Example 1.
 
 ===== ======
 |rct| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Rectangle()
 
@@ -1223,7 +1306,9 @@ Example 2.
 
 ===== ======
 |rc1| This example shows the shape constructed using the command with these
-      properties::
+      properties:
+
+      .. code:: python
 
           Rectangle(cx=2, cy=3, width=3, height=4, dot=0.1)
 
@@ -1252,7 +1337,9 @@ Example 1.
 
 ===== ======
 |rh0| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Rhombus()
 
@@ -1274,7 +1361,9 @@ Example 2.
 
 ===== ======
 |rh1| This example shows the shape constructed using the command with these
-      properties::
+      properties:
+
+      .. code:: python
 
           Rhombus(cx=2, cy=3, width=2, height=3, dot=0.1)
 
@@ -1294,7 +1383,9 @@ Example 3.
 
 ===== ======
 |rh2| This example shows the shape constructed using the command with these
-      properties::
+      properties:
+
+      .. code:: python
 
           Rhombus(
             cx=2, cy=3, width=2, height=3,
@@ -1344,7 +1435,9 @@ Example 1.
 
 ===== ======
 |sct| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Sector()
 
@@ -1363,7 +1456,9 @@ Example 2.
 
 ===== ======
 |sc1| This example shows examples of the Sector constructed using commands
-      with the following properties::
+      with the following properties:
+
+      .. code:: python
 
         sctm = Common(
             cx=2, cy=3, radius=2, fill=black, angle_width=43)
@@ -1397,7 +1492,9 @@ Example 1.
 
 ===== ======
 |sqr| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Square()
 
@@ -1415,7 +1512,9 @@ Example 2.
 
 ===== ======
 |sq1| This example shows the shape constructed using the command with these
-      properties::
+      properties:
+
+      .. code:: python
 
           Square(cx=2, cy=3, side=3, dot=0.1)
 
@@ -1442,7 +1541,9 @@ Example 1.
 
 ===== ======
 |std| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Stadium()
 
@@ -1461,7 +1562,9 @@ Example 2.
 
 ===== ======
 |st1| This example shows example of the shape constructed using the command
-      with the following properties::
+      with the following properties:
+
+      .. code:: python
 
         Stadium(
           x=0, y=0, height=1, width=1, edges='n', fill=tan, label="north")
@@ -1502,7 +1605,9 @@ Example 1.
 
 ===== ======
 |str| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Star()
 
@@ -1520,10 +1625,13 @@ Example 2.
 
 ===== ======
 |st2| This example shows the shape constructed using the command with these
-      properties::
+      properties:
+
+      .. code:: python
 
           Star(
-            cx=2, cy=3, radius=2, fill=yellow, stroke=red, rotation=45)
+            cx=2, cy=3, radius=2,
+            fill=yellow, stroke=red, rotation=45)
 
       It has the following properties that differ from the defaults:
 
@@ -1548,11 +1656,15 @@ to simulate what might be seen looking at a portion of the night sky.
 The number of dots drawn depends on the "density", which is the product of the
 actual area of the shape multiplied by the density value.
 
+.. HINT::
+
     If you want repeatable randomness - that is to say, the same sequence of
     random numbers being generated every time the program is run - then assign
-    a value to the *seeding* property; for example::
+    a value to the *seeding* property; for example:
 
-              Starfield(seeding=42)
+    .. code:: python
+
+      Starfield(seeding=42)
 
     The images used for this document are created with such a setting; but only
     to avoid the code repository detecting a "change" each time the script runs.
@@ -1565,7 +1677,9 @@ Example 1.
 
 ===== ======
 |sf0| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Starfield()
 
@@ -1588,7 +1702,9 @@ Example 2.
 
 ===== ======
 |sf1| This example shows the shape constructed using the command with the
-      following properties::
+      following properties:
+
+      .. code:: python
 
         StarField(
             enclosure=rectangle(x=0, y=0, height=3, width=3),
@@ -1623,7 +1739,9 @@ Example 3.
 
 ===== ======
 |sf2| This example shows the shape constructed using the command with the
-      following properties::
+      following properties:
+
+      .. code:: python
 
         StarField(
             enclosure=circle(x=0, y=0, radius=1.5),
@@ -1654,7 +1772,9 @@ Example 4.
 
 ===== ======
 |sf3| This example shows the shape constructed using the command with the
-      following properties::
+      following properties:
+
+      .. code:: python
 
         StarField(
             enclosure=polygon(x=1.5, y=1.4, sides=10, radius=1.5),
@@ -1693,7 +1813,9 @@ Example 1.
 
 ===== ======
 |trp| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Trapezoid()
 
@@ -1713,9 +1835,12 @@ Example 2.
 
 ===== ======
 |tr1| This example shows the shape constructed using the command with these
-      properties::
+      properties:
 
-          Trapezoid(cx=2, cy=3, width=3, top=2, height=4, flip='s', dot=0.1)
+      .. code:: python
+
+          Trapezoid(
+            cx=2, cy=3, width=3, top=2, height=4, flip='s', dot=0.1)
 
       It has the following properties set for it:
 
@@ -1734,7 +1859,9 @@ Example 3.
 
 ===== ======
 |tr3| This example shows the shape constructed using the command with these
-      properties::
+      properties:
+
+      .. code:: python
 
         Trapezoid(
             cx=2, cy=3, width=2, height=2, top=1.5, stroke_width=2,
@@ -1819,7 +1946,9 @@ Example 1.
 
 ===== ======
 |blp| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Blueprint()
 
@@ -1827,8 +1956,8 @@ Example 1.
 
       - starts at the lower-left corner, as defined by the page margins
       - has vertical and horizontal lines filling the page from the lower left
-        corner up to the right and top margins
-      - has spacing between lines of ``1`` cm
+        corner up to the right-most and top-most margins
+      - has spacing between the lines of ``1`` cm
       - default line color is a shade of ``blue`` (``#2F85AC``)
       - the x- and y-axis are numbered from the lower left corner
 ===== ======
@@ -1841,9 +1970,12 @@ Example 2.
 
 ===== ======
 |bl2| This example shows the shape constructed using the command with these
-      properties::
+      properties:
 
-          Blueprint(subdivisions=5, stroke_width=0.5, style='invert')
+      .. code:: python
+
+          Blueprint(
+            subdivisions=5, stroke_width=0.5, style='invert')
 
       It has the following properties set:
 
@@ -1875,9 +2007,9 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower left at absolute page x-position ``0`` cm and y-position ``0`` cm
-        i.e. the margins are ignored
-      - a set of lines, spaced ``1`` cm apart, are created extending to the
+      - the lower-left of the grid is drawn at the absolute page x-position
+        of ``0`` cm and y-position ``0`` cm i.e. the margins are ignored
+      - a set of dots, spaced ``1`` cm apart, are created extending to the
         right- and top- margins
 ===== ======
 
@@ -1889,11 +2021,13 @@ Example 2.
 
 ===== ======
 |dg1| This example shows the shape constructed using the command with the
-      following properties::
+      following properties:
+
+      .. code:: python
 
         DotGrid(
-            stroke=darkgray, width=0.5, height=0.5, dot_point=1, offset_y=-0.25
-        )
+            stroke=darkgray, width=0.5, height=0.5,
+            dot_point=1, offset_y=-0.25)
 
       It is meant to simulate the dot grid found in Moleskine notebooks, and so
       it has the following properties set:
@@ -1903,10 +2037,13 @@ Example 2.
       - *stroke* color of ``darkgrey`` is a lighter shade than the default black
       - *offset_y* moves the start of the grid slightly downwards by 1/4 of a cm
 
-      **NOTE** If you wanted to create a notebook page that for actual use,
-      you could consider setting the page color to something like ``cornsilk``
-      to provide a suitable backdrop for the light grey of the grid; do this by
-      setting the *fill* property of the `Create()` command.
+      .. HINT::
+
+         If you wanted to create a notebook page for *actual* use,
+         you could consider setting the page color to something like
+         ``cornsilk`` to provide a suitable backdrop for the light
+         grey of the grid; do this by setting the *fill* property of
+         the `Create()` command.
 ===== ======
 
 
@@ -1926,7 +2063,9 @@ Example 1.
 
 ===== ======
 |grd| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Grid()
 
@@ -1944,7 +2083,9 @@ Example 2.
 
 ===== ======
 |gr2| This example shows the shape constructed using the command with the
-      following properties (and without a `Blueprint`_ background)::
+      following properties (and without a `Blueprint`_ background):
+
+      .. code:: python
 
           Grid(side=0.85, stroke=gray, stroke_width=1)
 
@@ -1966,7 +2107,9 @@ Example 3.
 
 ===== ======
 |gr3| This example shows the shape constructed using the command with the
-      following properties::
+      following properties:
+
+      .. code:: python
 
           Grid(
               x=0.5, y=0.5,
@@ -2010,15 +2153,23 @@ Example 1.
 
 ===== ======
 |im1| If the shape was constructed using only default properties, there will be
-      nothing to see::
+      nothing to see:
+
+      .. code:: python
 
           Image()
 
-      This example then shows the shape constructed with just a single property::
+      This example then shows the shape constructed with just a single property:
+
+      .. code:: python
 
         Image("sholes_typewriter.png")
 
-      It has the following other properties based on the defaults:
+      This first, unnamed property is the filename of the image; ; if no
+      directory is supplied for the path, then the image is assumed to be
+      in the same one in which the script is located.
+
+      The image has the following other properties based on the defaults:
 
       - lower-left corner at x-position ``1`` cm and at y-position ``1`` cm
       - *width* and *height* - default to ``1`` cm; this may distort the image if it
@@ -2033,7 +2184,9 @@ Example 2.
 
 ===== ======
 |im2| This example shows the shape constructed using the command with the
-      following properties::
+      following properties:
+
+      .. code:: python
 
         Image(
           "sholes_typewriter.png",
@@ -2095,7 +2248,9 @@ Example 1.
 
 ===== ======
 |hex| This example shows the shape constructed using the command with two
-      basic properties; the number of rows and columns in the grid::
+      basic properties; the number of rows and columns in the grid:
+
+      .. code:: python
 
           Hexagons(rows=2, cols=2)
 
@@ -2125,7 +2280,9 @@ Example 1.
 
 ===== ======
 |ls0| This example shows the shape constructed using the command with only
-      defaults::
+      defaults:
+
+      .. code:: python
 
           Lines()
 
@@ -2145,7 +2302,9 @@ Example 2.
 
 ===== ======
 |ls1| This example shows the shapes constructed using the command with the
-      following properties::
+      following properties:
+
+      .. code:: python
 
         Lines(
             x=1, x1=4, y=1, y1=1,
@@ -2192,7 +2351,9 @@ Example 1.
 
 ===== ======
 |rc0| This example shows the shape constructed using the command with these
-      properties::
+      properties:
+
+      .. code:: python
 
           Rectangles(rows=3, cols=2)
 
@@ -2210,10 +2371,13 @@ Example 2.
 
 ===== ======
 |rn1| This example shows the Rectangles constructed using the command with
-      these properties::
+      these properties:
+
+      .. code:: python
 
           Rectangles(
-             rows=4, cols=2, width=1.5, height=1.25, dotted=True, fill=lime)
+             rows=4, cols=2, width=1.5, height=1.25,
+             dotted=True, fill=lime)
 
       It has the following properties based on the defaults:
 
@@ -2278,15 +2442,19 @@ of the shape which they are part of; see the `Stadium` example below.
 
 ===== ======
 |dnc| This example shows various shapes constructed using the following
-      commands::
+      commands:
 
-        Rhombus(cx=1, cy=5, side=2, dot=0.1, dot_stroke=red)
+      .. code:: python
+
+        Rhombus(
+          cx=1, cy=5, side=2, dot=0.1, dot_stroke=red)
         Rhombus(
            cx=3, cy=5, side=2,
            cross=0.25, cross_stroke=red, cross_stroke_width=1)
 
         Polygon(
-          cx=1, cy=3, sides=8, radius=1, dot=0.1, dot_stroke=orange)
+          cx=1, cy=3, sides=8, radius=1,
+          dot=0.1, dot_stroke=orange)
         Polygon(
            cx=3, cy=3, sides=8, diameter=2,
            cross=0.25, cross_stroke=orange, cross_stroke_width=1)
@@ -2336,7 +2504,9 @@ will have no color, and effectively become transparent.
    :width: 330
 
 ===== ======
-|fsb| This example shows a shape constructed using the command::
+|fsb| This example shows a shape constructed using the command:
+
+      .. code:: python
 
           Rectangle(fill=yellow, stroke=red, stroke_width=6)
 
@@ -2358,7 +2528,9 @@ will have no color, and effectively become transparent.
    :width: 330
 
 ===== ======
-|fst| This example shows a shape constructed using the command::
+|fst| This example shows a shape constructed using the command:
+
+      .. code:: python
 
           Circle(fill_stroke=aqua)
 
@@ -2386,12 +2558,16 @@ Example 1. Rhombus
    :width: 330
 
 ===== ======
-|rt1| This example shows the shape constructed using these commands::
+|rt1| This example shows the shape constructed using these commands:
+
+      .. code:: python
 
         Rhombus(
-            cx=2, cy=3, width=1.5, height=2*equilateral_height(1.5), dot=0.06)
+            cx=2, cy=3,
+            width=1.5, height=2*equilateral_height(1.5), dot=0.06)
         Rhombus(
-            cx=2, cy=3, width=1.5, height=2*equilateral_height(1.5), dot=0.04,
+            cx=2, cy=3,
+            width=1.5, height=2*equilateral_height(1.5), dot=0.04,
             fill=None, stroke=red, rotation=60)
 
       The shape with the black outline and large dot in the centre is the
@@ -2418,10 +2594,13 @@ Example 2. Polygon
 
 ===== ======
 |rt2| This example shows five shapes constructed using the command with
-      additional properties::
+      additional properties:
+
+      .. code:: python
 
         poly6 = Common(
-          fill=None, sides=6, diameter=1, stroke_width=1, orientation='flat')
+          fill=None, sides=6, diameter=1,
+          stroke_width=1, orientation='flat')
 
         Polygon(common=poly6, y=1, x=1.0, label="0")
         Polygon(common=poly6, y=2, x=1.5, rotation=15, label="15")
@@ -2481,19 +2660,21 @@ Example 1. Descriptions
 
 ===== ======
 |tx1| This example shows two shapes constructed using these commands to change
-      default properties::
+      default properties:
 
-        Hexagon(
-            cx=2, cy=1.5, height=1.5,
-            title="Title", label="Label", heading="Heading")
+      .. code:: python
+
         Rectangle(
             x=0.5, y=3, width=3, height=2,
             label="red; size=14", label_stroke=red, label_size=14)
-
-      The Hexagon shows where the *heading*, *label* and *title* appear.
+        Hexagon(
+            cx=2, cy=1.5, height=1.5,
+            title="Title", label="Label", heading="Heading")
 
       The Rectangle shows how the *label* can be customised in terms of its
       *stroke* (``red``) and font *size* (``14`` points).
+
+      The Hexagon shows where the *heading*, *label* and *title* appear.
 ===== ======
 
 Example 2. Text Offsets
@@ -2503,10 +2684,13 @@ Example 2. Text Offsets
    :width: 330
 
 ===== ======
-|tx2| This example shows five Rectangles constructed using the command with
-      additional properties::
+|tx2| This example shows six Rectangles constructed using the command with
+      additional properties:
 
-        rct = Common(height=1.0, width=1.75, stroke_width=.5, label_size=7)
+      .. code:: python
+
+        rct = Common(
+          height=1.0, width=1.75, stroke_width=.5, label_size=7)
         Rectangle(
           common=rct, x=0, y=0.0, label="offset -x, -y",
           label_mx=-0.2, label_my=-0.2)
@@ -2552,7 +2736,9 @@ visible - then set the *fill* value to ``None``.
    :width: 330
 
 ===== ======
-|trn| This example shows a number of Rectangles constructed as follows::
+|trn| This example shows a number of Rectangles constructed as follows:
+
+      .. code:: python
 
         Rectangle(
             x=1, y=3, height=1, width=2, fill="#008000", stroke=silver,
@@ -2579,10 +2765,10 @@ visible - then set the *fill* value to ``None``.
 
       - *transparency* - the lower the value, the more "see through" the color
 
-      The last Rectangle, which also has a transparency value, is drawn
+      The last Rectangle, which also has a *transparency* value, is drawn
       partially over the Rectangle on the lower-left.  This means there is an
       apparent color change in the overlapping section, because some of the
-      underlying color is partially visible.
+      underlying color is partially visible ("bleed through").
 ===== ======
 
 Centre Shape
@@ -2592,19 +2778,24 @@ Centre Shape
 Any shape that can be defined using its centre, may have another shape -
 called a "centre shape" - placed inside of it.
 
-Only a dot, cross or label (if any are defined) will be drawn superimposed
-on the centre-shape.
+.. NOTE::
+   In terms of drawing order, the  "centre shape" is drawn after most of the
+   shape's other properties: only a dot, cross or label (if any are defined)
+   will be drawn superimposed on the centre-shape.
 
-The centre-shape can be shifted from the centre by setting values for
-*centre_shape_mx* and *centre_shape_my*.
+Example 1. Default Centre
++++++++++++++++++++++++++
 
 .. |cs0| image:: images/customised/shape_centred.png
    :width: 330
 
 ===== ======
-|cs0| This example shows a number of shapes constructed as follows::
+|cs0| This example shows a number of shapes constructed as follows:
+
+      .. code:: python
 
         small_star = star(radius=0.25)
+
         Polygon(
             cx=1, cy=5, radius=0.5, sides=8, centre_shape=small_star)
         EquilateralTriangle(
@@ -2618,33 +2809,47 @@ The centre-shape can be shifted from the centre by setting values for
         Square(
             x=2.5, y=0.5, height=1, centre_shape=small_star)
 
-      At the start, a Star shape is defined by the lowercase ``star()`` command
-      which means the shape is not drawn at this time but rather assigned to
-      a named value - ``small_star`` so that it can be referred to further on.
+      At the start, a Star shape is defined by the lowercase ``star()``
+      command which means the shape is not drawn at this time but rather
+      assigned to a named value - ``small_star`` so that it can be
+      referred to further on.
 
-      Each of the other shapes in the script can now use this named shape as
-      their ``centre_shape``.
+      Each of the other shapes in the script can now use this named shape
+      as their ``centre_shape``.
 
-      Note that regardless of whether the primary shape's position is defined
-      using ``x`` and ``y``, or  ``cx`` and ``cy``, the star is still drawn
-      in the centre of that shape.
+      Note that regardless of whether the primary shape's position is
+      defined using ``x`` and ``y``, or  ``cx`` and ``cy``, the Star
+      is still drawn in the centre of that shape.
 
 ===== ======
+
+Example 2. Off-Centre
++++++++++++++++++++++
 
 .. |cs1| image:: images/customised/shape_centred_move.png
    :width: 330
 
+
+The centre-shape can be shifted from the centre by setting values for
+*centre_shape_mx* and *centre_shape_my*.
+
 ===== ======
-|cs1| This example shows Hexagon shapes constructed as follows::
+|cs1| This example shows two Hexagon shapes constructed as follows:
+
+      .. code:: python
 
         small_star = star(radius=0.25)
         small_circle = circle(
             radius=0.33, fill=grey, centre_shape=small_star)
-        Hexagon(x=1, y=3, height=2,
+
+        Hexagon(
+            x=1, y=3, height=2,
             centre_shape=small_circle,
             centre_shape_mx=0.3, centre_shape_my=0.6)
+
         Hexagon(
-            x=1, y=0.5, height=2, hatch_count=5, hatch_stroke=red, dot=0.1,
+            x=1, y=0.5, height=2,
+            hatch_count=5, hatch_stroke=red, dot=0.1,
             centre_shape=small_circle)
 
       As in the first example, the ``small_star`` is defined but not drawn.

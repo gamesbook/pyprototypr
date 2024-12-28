@@ -342,7 +342,7 @@ class CircleShape(BaseShape):
             stroke_width=self.hatch_stroke_width,
             stroke_cap=self.hatch_cap)
         _dirs = tools.validated_directions(
-            self.hatch_directions, tools.DirectionGroup.CIRCULAR, 'hatch_directions')
+            self.hatch, tools.DirectionGroup.CIRCULAR, 'hatch')
         lines = int(num)
         if lines < 0:
             tools.feedback('Cannot draw negative number of lines!', True)
@@ -1154,7 +1154,7 @@ class EquilateralTriangleShape(BaseShape):
             stroke_width=self.hatch_stroke_width,
             stroke_cap=self.hatch_cap)
         _dirs = tools.validated_directions(
-            self.hatch_directions, tools.DirectionGroup.HEX_POINTY, 'hatch_directions')
+            self.hatch, tools.DirectionGroup.HEX_POINTY, 'hatch')
         lines = int(num) + 1
 
         if num >= 1:
@@ -1643,7 +1643,7 @@ class HexShape(BaseShape):
         dir_group = tools.DirectionGroup.HEX_POINTY if self.orientation == 'pointy' \
             else tools.DirectionGroup.HEX_FLAT
         _dirs = tools.validated_directions(
-            self.hatch_directions, dir_group, 'hatch_directions')
+            self.hatch, dir_group, 'hatch')
         lines = int((num - 1) / 2 + 1)
 
         if num >= 1:
@@ -2031,7 +2031,7 @@ class PolygonShape(BaseShape):
             stroke=self.mesh_stroke or self.stroke,
             stroke_width=self.mesh_stroke_width or self.stroke_width,
             stroke_cap=self.mesh_cap or self.line_cap)
-        _dirs = self.hatch_directions.lower().split()
+        _dirs = self.hatch.lower().split()
         lines = int(num)
         if num >= 1:
             if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
@@ -2445,7 +2445,7 @@ class RectangleShape(BaseShape):
 
     def draw_hatch(self, cnv, ID, vertices: list, num: int):
         _dirs = tools.validated_directions(
-            self.hatch_directions, tools.DirectionGroup.CIRCULAR, 'hatch_directions')
+            self.hatch, tools.DirectionGroup.CIRCULAR, 'hatch')
         # ---- check dirs
         if self.rounding or self.rounded:
             if 'ne' in _dirs or 'sw' in _dirs or 'se' in _dirs or 'nw' in _dirs \

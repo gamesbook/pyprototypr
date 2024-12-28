@@ -638,7 +638,7 @@ class BaseCanvas:
         self.mesh = self.defaults.get('mesh', None)
         # ---- hatches
         self.hatch_count = self.defaults.get('hatch_count', 0)
-        self.hatch_directions = self.defaults.get('hatch_directions', '*')
+        self.hatch = self.defaults.get('hatch', '*')
         self.hatch_stroke = self.defaults.get('hatch_stroke', self.stroke)
         self.hatch_stroke_width = self.defaults.get('hatch_stroke_width', self.stroke_width)
         self.hatch_dots = self.defaults.get('hatch_dots', None)
@@ -964,7 +964,7 @@ class BaseShape:
         self.mesh = kwargs.get('mesh', cnv.mesh)
         # ---- hatches
         self.hatch_count = kwargs.get('hatch_count', cnv.hatch_count)
-        self.hatch_directions = kwargs.get('hatch_directions', cnv.hatch_directions)
+        self.hatch = kwargs.get('hatch', cnv.hatch)
         self.hatch_stroke_width = self.kw_float(kwargs.get('hatch_width', cnv.hatch_stroke_width))
         self.hatch_stroke = kwargs.get('hatch_stroke', cnv.stroke)
         self.hatch_cap = kwargs.get('hatch_cap', cnv.hatch_cap)

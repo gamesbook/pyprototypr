@@ -182,25 +182,25 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
              height=1.5, width=1, hatch_count=5, hatch_width=0.1, hatch_stroke=red)
 
            Rectangle(
-             common=htch, x=0, y=0,  hatch_directions='w', label="W")
+             common=htch, x=0, y=0,  hatch='w', label="W")
            Rectangle(
-             common=htch, x=1.5, y=0, hatch_directions='e', label="E")
+             common=htch, x=1.5, y=0, hatch='e', label="E")
            Rectangle(
-             common=htch, x=3, y=0, hatch_directions='ne', label="NE\nSW")
+             common=htch, x=3, y=0, hatch='ne', label="NE\nSW")
 
            Rectangle(
-             common=htch, x=1.5, y=2, hatch_directions='n', label="N")
+             common=htch, x=1.5, y=2, hatch='n', label="N")
            Rectangle(
-             common=htch, x=0, y=2,  hatch_directions='s', label="S")
+             common=htch, x=0, y=2,  hatch='s', label="S")
            Rectangle(
-             common=htch, x=3, y=2, hatch_directions='nw', label="NW\nSE")
+             common=htch, x=3, y=2, hatch='nw', label="NW\nSE")
 
            Rectangle(
              common=htch, x=0, y=4, label="all")
            Rectangle(
-             common=htch, x=1.5, y=4, hatch_directions='o', label="O")
+             common=htch, x=1.5, y=4, hatch='o', label="O")
            Rectangle(
-             common=htch, x=3, y=4, hatch_directions='d', label="D")
+             common=htch, x=3, y=4, hatch='d', label="D")
 
          These Rectangles all share the following Common properties that
          differ from the defaults:
@@ -217,7 +217,7 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
          - *x* and *y* - different positions on the page for the lower-left
            corner
          - *label* - text to help identify it
-         - *hatch_directions* - if not specified, hatches will be drawn
+         - *hatch* - if not specified, hatches will be drawn
            in all directions - otherwise:
 
            - ``n`` (North) or ``s`` (South) draws vertical lines;
@@ -406,14 +406,14 @@ into the arc of a quarter-circle.
 
         rct = Common(
             x=0.5, height=1.5, width=3.0, stroke_width=.5,
-            hatch_stroke=red, hatch_directions='o')
+            hatch_stroke=red, hatch='o')
         Rectangle(
             common=rct, y=2.0, rounding=0.5,  hatch_count=3)
         Rectangle(
             common=rct, y=0.0, rounding=0.1, hatch_count=10)
 
       Both Rectangles share the Common properties of *x* (left side location),
-      *height* and *width*, *hatch_stroke* of `red` and *hatch_directions* of
+      *height* and *width*, *hatch_stroke* of `red` and *hatch* directions of
       (o)rthogonal; setting the color and directions of the lines crossing
       the Rectangles.
 
@@ -606,9 +606,9 @@ diagonal direction.
 
         hxgn = Common(
             x=1, height=1.5, orientation='flat', hatch_count=5, hatch_stroke=red)
-        Hexagon(common=hxgn, y=0, hatch_directions='e', label="e/w")
-        Hexagon(common=hxgn, y=2, hatch_directions='ne', label="ne/sw")
-        Hexagon(common=hxgn, y=4, hatch_directions='nw', label="nw/se")
+        Hexagon(common=hxgn, y=0, hatch='e', label="e/w")
+        Hexagon(common=hxgn, y=2, hatch='ne', label="ne/sw")
+        Hexagon(common=hxgn, y=4, hatch='nw', label="nw/se")
 
       These Hexagons all share the following Common properties that differ
       from the defaults:
@@ -624,7 +624,7 @@ diagonal direction.
 
       - *y* - different positions on the page for the lower corner
       - *label* - text to help identify it
-      - *hatch_directions* - if not specified, hatches will be drawn in all directions -
+      - *hatch* - if not specified, hatches will be drawn in all directions -
         otherwise:
 
         - `w` (West) or `e` (East) draws horizontal lines;
@@ -652,9 +652,9 @@ or diagonal direction.
 
         hxgn = Common(
             x=1, height=1.5, orientation='pointy', hatch_count=5, hatch_stroke=red)
-        Hexagon(common=hxgn, y=0, hatch_directions='n', label="n/s")
-        Hexagon(common=hxgn, y=2, hatch_directions='ne', label="ne/sw")
-        Hexagon(common=hxgn, y=4, hatch_directions='nw', label="nw/se")
+        Hexagon(common=hxgn, y=0, hatch='n', label="n/s")
+        Hexagon(common=hxgn, y=2, hatch='ne', label="ne/sw")
+        Hexagon(common=hxgn, y=4, hatch='nw', label="nw/se")
 
       These Hexagons all share the following Common properties that differ
       from the defaults:
@@ -670,7 +670,7 @@ or diagonal direction.
 
       - *y* - different positions on the page for the lower corner
       - *label* - text to help identify it
-      - *hatch_directions* - if not specified, hatches will be drawn in all directions -
+      - *hatch* - if not specified, hatches will be drawn in all directions -
         otherwise:
 
         - `n` (West) or `s` (East) draws vertical lines;
@@ -1021,12 +1021,12 @@ or diagonal direction.
 
         htc = Common(radius=0.7, hatch_count=5, hatch_stroke=red)
         Circle(common=htc, cx=2, cy=5.2, label='5')
-        Circle(common=htc, cx=1, cy=3.7, hatch_directions='o', label='o')
-        Circle(common=htc, cx=3, cy=3.7, hatch_directions='d', label='d')
-        Circle(common=htc, cx=1, cy=2.2, hhatch_directions='e', label='e')
-        Circle(common=htc, cx=3, cy=2.2, hatch_directions='n', label='n')
-        Circle(common=htc, cx=1, cy=0.7, hatch_directions='ne', label='ne')
-        Circle(common=htc, cx=3, cy=0.7, hatch_directions='nw', label='nw')
+        Circle(common=htc, cx=1, cy=3.7, hatch='o', label='o')
+        Circle(common=htc, cx=3, cy=3.7, hatch='d', label='d')
+        Circle(common=htc, cx=1, cy=2.2, hatch='e', label='e')
+        Circle(common=htc, cx=3, cy=2.2, hatch='n', label='n')
+        Circle(common=htc, cx=1, cy=0.7, hatch='ne', label='ne')
+        Circle(common=htc, cx=3, cy=0.7, hatch='nw', label='nw')
 
       These Circles all share the following Common properties that differ
       from the defaults:
@@ -1041,7 +1041,7 @@ or diagonal direction.
 
       - *cx* and *cy* - different positions on the page for the centres
       - *label* - text to help identify it
-      - *hatch_directions* - if not specified, hatches will be drawn in all
+      - *hatch* - if not specified, hatches will be drawn in all
         directions - as seen in top-most circle - otherwise:
 
         - `o` (orthogonal) draws vertical **and** horizontal lines;

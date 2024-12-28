@@ -17,6 +17,7 @@ Table of Contents
 - `Hex`_
 - `HexHex Games`_
 - `TicTacToe`_
+- `Octagons`_
 
 Chess
 =====
@@ -25,7 +26,7 @@ Chess
 =========== ==================================================================
 Title       *Chess Board*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/chessboard.py>`_
+Source Code `chessboard.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/chessboard.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a regular Chess board.
 
@@ -37,7 +38,7 @@ Screenshot  .. image:: images/boards/abstract/chessboard.png
 =========== ==================================================================
 Title       *Chess Board - Brown*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/chessboard_brown.py>`_
+Source Code `chessboard_brown.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/chessboard_brown.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a regular Chess board with
             brown styling and grid references.
@@ -56,7 +57,7 @@ Hex
 =========== ==================================================================
 Title       *Hex Board*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hex_game.py>`_
+Source Code `hex_game.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hex_game.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a Hex game board.
 
@@ -78,7 +79,7 @@ board with 5 smaller hexagons along each side.
 =========== ==================================================================
 Title       *Plain HexHex Board*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hexhex.py>`_
+Source Code `hexhex.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hexhex.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a regular HexHex board.
 
@@ -90,11 +91,12 @@ Screenshot  .. image:: images/boards/abstract/hexhex.png
 =========== ==================================================================
 Title       *HexHex Board - Circular Spaces*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hexhex_circles.py>`_
+Source Code `hexhex_circles.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hexhex_circles.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a HexHex board, but with
             circles replacing the usual hexagons in the layout; these are
-            placed at the centre of where that hexagon would be drawn.
+            placed at the centre of where that hexagon would normally
+            be drawn.
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/abstract/hexhex_circles.png
@@ -104,11 +106,12 @@ Screenshot  .. image:: images/boards/abstract/hexhex_circles.png
 =========== ==================================================================
 Title       *HexHex Board - Hexagonal Spaces*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hexhex_hexagons.py>`_
+Source Code `hexhex_hexagons.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hexhex_hexagons.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a HexHex board, but with
             smaller hexagons replacing the usual hexagons in the layout; these
-            are placed at the centre of where that hexagon would be drawn.
+            are placed at the centre of where that hexagon would normally
+            be drawn.
 
             In addition, the centre space is masked.
 
@@ -125,7 +128,7 @@ TicTacToe
 =========== ==================================================================
 Title       *TicTacToe Board and Game*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/tictactoe.py>`_
+Source Code `tictactoe.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/tictactoe.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a board and then show a series
             of moves played out on that board.
@@ -163,4 +166,32 @@ Discussion  This example shows how to construct a board and then show a series
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/abstract/tictactoe.gif
                :width: 50%
+=========== ==================================================================
+
+
+Octagons
+========
+`↑ <table-of-contents_>`_
+
+In Octagons, players alternate taking turns. On their turn, a player can
+either fill in one half of an octagon or two squares. The player who first
+forms an unbroken connection between the edges of their colour wins.
+
+=========== ==================================================================
+Title       *Octagons Board*
+----------- ------------------------------------------------------------------
+Source Code `octagons.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/octagons.py>`_
+----------- ------------------------------------------------------------------
+Discussion  The code uses a basic 8-sided ``Polygon()``, with the *perbis*
+            property being set to construct either a horizontal or vertical
+            line inside it.
+
+            The ``Repeat()`` command is used to lay out either of these shapes
+            into part of an 8x8 "grid"; choosing which rows or columns are
+            used by means of the *down* or *across* properties; with some
+            rows "indented" by means of the *offset_x* property.
+
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/boards/abstract/octagons.png
+               :width: 90%
 =========== ==================================================================

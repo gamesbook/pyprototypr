@@ -26,12 +26,12 @@ Blueprint()
 Text(common=txt, text="Circle: hatches")
 htc = Common(radius=0.7, hatch_count=5, hatch_stroke=red,)
 Circle(common=htc, cx=2, cy=5.2, label='5')  # all directions
-Circle(common=htc, cx=1, cy=3.7, hatch_directions='o', label='o')
-Circle(common=htc, cx=3, cy=3.7, hatch_directions='d', label='d')
-Circle(common=htc, cx=1, cy=2.2, hatch_directions='e', label='e')
-Circle(common=htc, cx=3, cy=2.2, hatch_directions='n', label='n')
-Circle(common=htc, cx=1, cy=0.7, hatch_directions='ne', label='ne')
-Circle(common=htc, cx=3, cy=0.7, hatch_directions='nw', label='nw')
+Circle(common=htc, cx=1, cy=3.7, hatch='o', label='o')
+Circle(common=htc, cx=3, cy=3.7, hatch='d', label='d')
+Circle(common=htc, cx=1, cy=2.2, hatch='e', label='e')
+Circle(common=htc, cx=3, cy=2.2, hatch='n', label='n')
+Circle(common=htc, cx=1, cy=0.7, hatch='ne', label='ne')
+Circle(common=htc, cx=3, cy=0.7, hatch='nw', label='nw')
 PageBreak()
 
 # ---- circle dot & cross

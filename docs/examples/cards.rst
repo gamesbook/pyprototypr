@@ -29,7 +29,7 @@ Simple
 =========== ==================================================================
 Title       *Simple set of Cards*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_design.py>`_
+Source Code `cards_design.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_design.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a deck of cards using these
             commands (only an extract of the code is shown here):
@@ -78,7 +78,7 @@ Matrix Generated
 =========== ==================================================================
 Title       *Cards generated from a Matrix*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_matrix_one.py>`_
+Source Code `cards_matrix_one.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_matrix_one.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a deck of cards using these
             commands (only an extract of the code is shown here):
@@ -129,7 +129,7 @@ Standard Playing Cards
 =========== ==================================================================
 Title       *Standard Playing Cards generated from a Matrix & Images*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_standard.py>`_
+Source Code `cards_standard.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_standard.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a deck of cards using these
             commands (only an extract of the code is shown here).
@@ -205,9 +205,9 @@ Image-Only Cards
 `↑ <table-of-contents_>`_
 
 =========== ==================================================================
-Title       *Cards generated from an images directory*
+Title       *Cards generated from a directory of images*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_images.py>`_
+Source Code `cards_images.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_images.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a deck of cards using these
             commands (only an extract of the code is shown here):
@@ -246,15 +246,19 @@ Hexagonal Cards
 =========== ==================================================================
 Title       *Hexagonal-shaped Cards*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_hexagonal.py>`_
+Source Code `cards_hexagonal.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_hexagonal.py>`_
 ----------- ------------------------------------------------------------------
-Discussion  This example shows how to construct a deck of cards using these
-            commands (only an extract of the code is shown here):
+Discussion  This example shows how to construct a deck of cards/tiles using
+            these commands (only an extract of the code is shown here):
 
               .. code:: python
 
                 Data(filename="lotr.csv")
                 Deck(cards=6, shape='hexagon', height=6.3, copy='Copies')
+
+            It can be seen that each alternate row is offset from the ones on
+            either side of it; this is to make cutting such cards/tiles much
+            easier.
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/cards/cards_hexagonal.png
@@ -269,7 +273,7 @@ Circular Cards
 =========== ==================================================================
 Title       *Circular-shaped Cards*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_circular.py>`_
+Source Code `cards_circular.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_circular.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a deck of cards using these
             commands (only an extract of the code is shown here):

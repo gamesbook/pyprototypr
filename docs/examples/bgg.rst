@@ -18,13 +18,13 @@ Simple
 =========== ==================================================================
 Title       *Simple BoardGameGeek Example*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/bgg/example01.py>`_
+Source Code `example01.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/bgg/example01.py>`_
 ----------- ------------------------------------------------------------------
-Discussion  This example shows how to construct a set cards using the
-            BoardGameGeek API with these commands (only an extract of the code
-            is shown here):
+Discussion  This example shows how to construct a set of cards - one per game -
+            using the BoardGameGeek API, accessed via the
+            https://github.com/SukiCZ/boardgamegeek library.
 
 ----------- ------------------------------------------------------------------
-Screenshot  .. image:: images/bgg/bgg_simple.png
+Screenshot  .. image:: images/bgg/example01.png
                :width: 90%
 =========== ==================================================================

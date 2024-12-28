@@ -303,7 +303,7 @@ Functions
 =========
 `↑ <table-of-contents_>`_
 
-A function is the workhorse of a langauge.  It allows you to define your
+A function is the workhorse of a language.  It allows you to define your
 "recipe" and then use that recipe multiple times with differing properties.
 
 Effectively, it allows you to create a mini  **pyprototypr** script inside your
@@ -314,9 +314,9 @@ of them.
 
 A function is simply created by using a ``def`` command, followed by the name you
 want to give the function (**remember** - no spaces allowed!) followed by the
-set of property names and default values.  These properties are only available
-as part of the function, and represent aspects that you need to be able to
-change every time the function is used.
+set of property names and their default values.  These properties are only
+available as part of the function, and represent aspects of that function
+that you need to be able to change every time the function is used.
 
 The ``def`` line is followed by one or more lines that are all indented below
 each other; these represent the actions that are to be carried out in that
@@ -352,13 +352,17 @@ of it,
         PageBreak()
 
       The function named *capitol* has three properties that
-      can be set; *a*, *b* and *c*.
+      can be set; *a*, *b* and *c*. These are used to control
+      some of the properties of the 3 shapes that are drawn by
+      the function.
 
       The values have defaults - ``0``, ``0`` and ``red``
       - respectively, which are used if no values are provided;
-      this can be seen by the first example in the lower left.
+      this can be seen via the first example on the lower left.
 
       If values are provided to *a* and *b*,
       these will change where the shapes are drawn; if a value
-      is provided to *c* it will change the shapes' color.
+      is provided to *c* it will change the shape's color.
+      These changes to the function's properties can be seen in
+      the other examples.
 ===== ======

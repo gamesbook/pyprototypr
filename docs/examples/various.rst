@@ -26,7 +26,7 @@ A Clock
 =========== ==================================================================
 Title       *A Wall Clock*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/various/clock.py>`_
+Source Code `clock.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/various/clock.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to create a complex element - a clock - by
             combining multiple
@@ -69,7 +69,7 @@ Miscellaneous Objects 1
 =========== ==================================================================
 Title       *Miscellaneous Objects #1*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/various/objects.py>`_
+Source Code `objects.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/various/objects.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  The first page of this set of examples shows how to construct
             various "compound" shapes by making use of various properties of
@@ -87,7 +87,7 @@ Miscellaneous Objects 2
 =========== ==================================================================
 Title       *Miscellaneous Objects #2*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/various/objects.py>`_
+Source Code `objects.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/various/objects.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  The second page of this set of examples shows how to construct
             various "compound" shapes by making use of various properties of
@@ -105,7 +105,7 @@ Chords
 =========== ==================================================================
 Title       *Chords (in a circle)*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/various/chords.py>`_
+Source Code `chords.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/various/chords.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a simple effect by combining
             a basic shape - a `chord <../core_shapes.rst#chord>`_ - with a
@@ -117,10 +117,13 @@ Discussion  This example shows how to construct a simple effect by combining
                    Chord(shape=Circle(cx=2, cy=2, radius=2, fill=None),
                          angle=Random(360), angle1=Random(360))
 
-            Here the ``for`` loop runs for 200 times; each time it does so, a
-            the ``Random()`` command pick a random value between 1 and 360 (to
-            get a value, in units of degrees) to assign to the Chord's start
-            and end points.
+            Here the ``for`` loop runs for 200 times. Each time it does so,
+            the ``Random()`` command generates a random value between 1 and 360
+            (i.e. corresponding to degrees around a circle) to assign to the
+            Chord's start and end points; then each Chord is drawn as usual.
+
+            See `Python loops <../python_commands.rst#loops>`_ for more
+            details.
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/various/chords.png
                :width: 50%
@@ -134,20 +137,26 @@ World Clocks
 =========== ==================================================================
 Title       *World Clocks*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/various/world_clocks.py>`_
+Source Code `world_clocks.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/various/world_clocks.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to reuse a complex element - a clock - by
-            means of a set of Python functions.
+            means of a set of Python functions (see
+            `Python functions <../python_commands.rst#functions>`_ for more
+            details).
 
             This is a fairly complex script - a mini program really - which
             is likely only to be legible to a Python programmer! Its probably
             beyond the scope of this library's intended use.
 
             The script essentially "wraps" the clock creation approach
-            described above into a function and then uses other functions to
-            calculate the position of the clock hands based on the current
-            time of the day.  The clock face and hand colors are changed
-            depending on the day/night (and light/dark) cycle.
+            described above into a function which is accessed for each city
+            (or place) whose clock should be displayed.
+
+            The script also uses other functions to calculate the position
+            of the clock hands based on the current time of the day; this is
+            a bit fiddly because the hour hand angle changes in relation to
+            the number of minutes.  The clock face and the hand colors are
+            changed depending on the day/night and light/dark cycles.
 
             Further ideas:
 
