@@ -73,19 +73,19 @@ setup(
     tests_require=['pytest'],
     cmdclass={'test': PyTest},
     description='Python utility for designing and creating simple, regular,'
-                '  graphic outputs as PDF files',
+                ' graphic outputs as PDF files',
     long_description=LONG_DESCRIPTION,
     packages=find_packages(exclude=['dist', 'build', 'docs', 'examples']),
     include_package_data=True,
-        install_requires=['reportlab', 'xlrd', 'bgg-api', 'svglib', 'lxml'],
-    test_suite='pyprototypr.test',
+        install_requires=[
+            'reportlab', 'xlrd', 'bgg-api', 'svglib', 'lxml', 'Jinja2', 'pymupdf'],
     classifiers=[
         'Programming Language :: Python :: 3.11',
         'Development Status :: 3 - Alpha',
         'Natural Language :: English',
         'Environment :: Console',
         'Intended Audience :: End Users/Desktop',
-        'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: GPL License',
         'Operating System :: OS Independent',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Games/Entertainment :: Board Games',
