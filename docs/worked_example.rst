@@ -168,10 +168,12 @@ doing. You could also add lines at the start of a script to define
 what its purpose is.
 
 The resulting ``example3.pdf`` will show two pages of small, blank,
-purple cards, approximately 2 inches by 1.5 inches, with 25 cards per
-page, for a total of 50 cards.
+purple cards, each card being approximately 2 inches by 1.5 inches,
+with 25 cards per page, for a total of 50 cards.
 
-   Note that **pyprototypr** will do the calculation for you on how
+.. NOTE::
+
+   **pyprototypr** will do the calculation for you on how
    many cards will fit on page to make up the total number of cards for
    the deck, based on the size of cards you want and how large the page is.
 
@@ -182,7 +184,7 @@ This example will only show the text in the file you create, and then
 discuss the new kinds of details added to it, as well as what the
 resulting output should be.
 
-Here we are providing information to actually display
+Here we are now providing information to actually display on the cards.
 
 Create this text in a file called ``cards4.py``:
 
@@ -194,7 +196,7 @@ Create this text in a file called ``cards4.py``:
    Create(filename='example4.pdf', offset=0.5)
 
    # create a deck design; use a white border instead of the default black
-   Deck(cards=25
+   Deck(cards=25,
         height=5,
         width=3.8,
         fill=skyblue,
@@ -202,12 +204,14 @@ Create this text in a file called ``cards4.py``:
 
    # customize a single card (number 25) in the deck with some text
    # the text is 1.9cm from the left of the card and 1cm from its lower edge
-   Card("25", text(text="25!", x=1.9, y=1.0))
+   # the font size has been set to 28pt
+   Card("25", text(text="25!", x=1.9, y=1.0, font_size=28))
 
    # create a reference for a particular font; with it's face, size and colour
-   times = Font("Times New Roman", size=8, colour="red")
+   times = Font("Times New Roman", size=14, colour="red")
 
    # create more text, and display it using the font defined by 'times'
+   # the font size has been set to 28pt
    mytext = text(text="I'm on cards 1-9", font=times, x=1.9)
 
    # specify a range of cards that will contain 'mytext'
@@ -227,13 +231,14 @@ is the card number or, if there are multiple cards, then the first and
 last card number separated by a dash ("-").
 
 In the line starting ``Card("25"``, you can see that Card#25 will
-contain the text ``25!``.
+contains the text ``25!`` in a large font size, using the default
+font face of *Arial*.
 
 This script also shows the use of a **reference** - a reference is just
 a name, followed by an "=" sign, and then an instruction of some kind.
 
 You can see that the ``times`` reference is used when specifying the
-``mytext`` reference.
+``mytext`` reference, by defining the properties of a ``Font``.
 
 You can also see that the ``mytext`` reference is used further on when
 specifying the design for cards numbered #1 to #9 (``Card("1-9"``).

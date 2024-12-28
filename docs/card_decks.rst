@@ -39,8 +39,6 @@ Table of Contents
   - `L(ookup) command`_
 - `Other Resources`_
 
-    .. code:: python
-
 
 Introduction
 ============
