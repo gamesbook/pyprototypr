@@ -11,6 +11,13 @@ from pyprototypr import *
 
 num = 9  # number of cards to be used
 Create(filename="cards_bgg.pdf", offset=0.5)
+
+# number of games to retrieve
+choice = range(1, num + 1)
+
+# BGG game data -> progress is True so we can see the rate of retrieval
+games = BGG(ids=choice, progress=True, short=610)  # short: number of characters
+
 Deck(cards=num, grid_marks=True, rounded=True)
 
 # format of text
@@ -22,12 +29,6 @@ body = Common(font_face="Times New Roman", font_size=9, stroke=black)
 time_img = image('time.png', x=0.2, y=6.8, width=1.8, height=1.8)
 players_img = image('players.png', x=2.2, y=6.8, width=1.8, height=1.8)
 age_img = image('age.png', x=4.2, y=6.8, width=1.8, height=1.8)
-
-# number of games to retrieve
-choice = range(1, num + 1)
-
-# BGG game data -> progress is True so we can see the rate of retrieval
-games = BGG(ids=choice, progress=True, short=610)  # short: number of characters
 
 # create a list of text elements for the cards
 time = text(common=numbers, x=1.1, y=6.9, text=games.playingtime)

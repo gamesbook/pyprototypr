@@ -27,7 +27,7 @@ Wargame - Basic Counters
 =========== ==================================================================
 Title       *Basic Wargame Counters*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/counters/counters.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/counters/counters.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a set of counters.
 

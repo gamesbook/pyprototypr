@@ -26,7 +26,7 @@ A Clock
 =========== ==================================================================
 Title       *A Wall Clock*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/various/clock.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/various/clock.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to create a complex element - a clock - by
             combining multiple

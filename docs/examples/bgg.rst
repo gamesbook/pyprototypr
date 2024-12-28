@@ -5,15 +5,26 @@ Board Game Geek Examples
 These examples are part of the set of `supplied examples <index.rst>`_
 with **pyprototypr**.
 
-Example 1
-=========
+Bear in mind that the images shown in these examples are lower-resolution
+screenshots; the original PDFs that can be generated from the source scripts
+will demonstrate full scalability.
 
-   The script for this example can be found in
-   `bgg1.py <../../examples/bgg/bgg1.py>`__
+.. _table-of-contents:
 
-**Overview To Be Done**
+Simple
+======
+`↑ <table-of-contents_>`_
 
-Details
--------
+=========== ==================================================================
+Title       *Simple BoardGameGeek Example*
+----------- ------------------------------------------------------------------
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/bgg/example01.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct a set cards using the
+            BoardGameGeek API with these commands (only an extract of the code
+            is shown here):
 
-**To Be Done**
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/bgg/bgg_simple.png
+               :width: 90%
+=========== ==================================================================

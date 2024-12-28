@@ -29,7 +29,7 @@ Squad Leader
 =========== ==================================================================
 Title       *Squad Leader Modular Board Section*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/commercial/squad_leader.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/squad_leader.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a board for a wargame - in
             this Avalon Hill's "Squad Leader" - using a hexagonal grid.
@@ -51,7 +51,7 @@ Orion
 =========== ==================================================================
 Title       *Orion Game Board*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/commercial/orion_game_board.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/orion_game_board.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a board for the commercial
             board game "Orion".  It is a fairly simple script, as the board
@@ -74,7 +74,7 @@ Adventurer Conqueror King
 =========== ==================================================================
 Title       *Adventurer Conqueror King RPG Blank Map*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/commercial/ack_map.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/ack_map.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a blank map for the
             "Adventurer Conqueror King" roleplaying game.
@@ -96,7 +96,7 @@ Traveller: Draft
 =========== ==================================================================
 Title       *Traveller RPG Map*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/commercial/traveller_draft.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/traveller_draft.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a blank sector map for the
             "Traveller" roleplaying game.
@@ -120,7 +120,7 @@ Traveller: Black
 =========== ==================================================================
 Title       *Traveller RPG Map*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/commercial/traveller_black.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/traveller_black.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a blank sector map for the
             "Traveller" roleplaying game.
@@ -147,7 +147,7 @@ Warp War
 =========== ==================================================================
 Title       *Warp War Map*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/commercial/warpwar.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/warpwar.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a map for the "Warp War" game.
             Its based off an image created by Rick Smith and posted to the
@@ -190,7 +190,7 @@ Underwater Cities
 =========== ==================================================================
 Title       *Underwater Cities Game Board*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/commercial/underwater_cities.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/underwater_cities.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct the board for the commercial
             board game "Underwater Cities". This is *not* a complete copy of

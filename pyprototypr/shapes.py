@@ -1986,7 +1986,11 @@ class PolygonShape(BaseShape):
         self.use_radius = True if self.is_kwarg('radius') else False
         if self.perbis:
             if isinstance(self.perbis, str):
-                self.perbis = tools.sequence_split(self.perbis)
+                if self.perbis.strip().lower() in ['all', '*']:
+                    sides = tools.as_int(self.sides, 'sides')
+                    self.perbis = list(range(1, sides + 1))
+                else:
+                    self.perbis = tools.sequence_split(self.perbis)
             if not isinstance(self.perbis, list):
                 tools.feedback('The perbis value must be a list of numbers!', True)
         # ---- perform overrides
@@ -2012,7 +2016,7 @@ class PolygonShape(BaseShape):
         return radius
 
     def calculate_area(self) -> float:
-        sides = int(self.sides)
+        sides = tools.as_int(self.sides, 'sides')
         radius = self.get_radius()
         area = (sides * radius * radius / 2.0) * math.sin(2.0 * math.pi / sides)
         return area

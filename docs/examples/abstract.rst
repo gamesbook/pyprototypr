@@ -25,7 +25,7 @@ Chess
 =========== ==================================================================
 Title       *Chess Board*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/abstract/chessboard.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/chessboard.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a regular Chess board.
 
@@ -37,7 +37,7 @@ Screenshot  .. image:: images/boards/abstract/chessboard.png
 =========== ==================================================================
 Title       *Chess Board - Brown*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/abstract/chessboard_brown.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/chessboard_brown.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a regular Chess board with
             brown styling and grid references.
@@ -56,7 +56,7 @@ Hex
 =========== ==================================================================
 Title       *Hex Board*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/abstract/hex_game.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hex_game.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a Hex game board.
 
@@ -78,7 +78,7 @@ board with 5 smaller hexagons along each side.
 =========== ==================================================================
 Title       *Plain HexHex Board*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/abstract/hexhex.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hexhex.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a regular HexHex board.
 
@@ -90,7 +90,7 @@ Screenshot  .. image:: images/boards/abstract/hexhex.png
 =========== ==================================================================
 Title       *HexHex Board - Circular Spaces*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/abstract/hexhex_circles.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hexhex_circles.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a HexHex board, but with
             circles replacing the usual hexagons in the layout; these are
@@ -104,7 +104,7 @@ Screenshot  .. image:: images/boards/abstract/hexhex_circles.png
 =========== ==================================================================
 Title       *HexHex Board - Hexagonal Spaces*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/abstract/hexhex_hexagons.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hexhex_hexagons.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a HexHex board, but with
             smaller hexagons replacing the usual hexagons in the layout; these
@@ -125,7 +125,7 @@ TicTacToe
 =========== ==================================================================
 Title       *TicTacToe Board and Game*
 ----------- ------------------------------------------------------------------
-Source Code `<../../examples/boards/abstract/tictactoe.py>`_
+Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/tictactoe.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a board and then show a series
             of moves played out on that board.

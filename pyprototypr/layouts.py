@@ -886,6 +886,7 @@ class ConnectShape(BaseShape):
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Draw a connection (line) between two shapes on given canvas."""
         kwargs = self.kwargs | kwargs
+        base_canvas = cnv
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         # ---- style
@@ -999,7 +1000,7 @@ class ConnectShape(BaseShape):
             if xc_f == xc_t and yc_f == yc_t:  # same!
                 return
             self.kwargs["points"] = points
-            plin = PolylineShape(None, cnv, **self.kwargs)
+            plin = PolylineShape(None, base_canvas, **self.kwargs)
             plin.draw(ID=ID)
         elif style == "direct":  # straight line
             # ---- direct points
@@ -1007,7 +1008,7 @@ class ConnectShape(BaseShape):
             self.kwargs["y"] = y_f
             self.kwargs["x1"] = x_t
             self.kwargs["y1"] = y_t
-            lin = LineShape(None, cnv, **self.kwargs)
+            lin = LineShape(None, base_canvas, **self.kwargs)
             lin.draw(ID=ID)
         else:
             tools.feedback('Style "{style}" is unknown.')

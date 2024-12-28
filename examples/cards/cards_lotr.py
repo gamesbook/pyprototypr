@@ -22,9 +22,8 @@ lotr = [
     [9, "Gandalf", None, "Maia", 1],
     [10, "RingWraith", 4300, "Nazgul", 9],
 ]
-#Data(data_list=lotr)
-d = Data(filename="lotr.csv")
-print(d)
+Data(data_list=lotr)
+# Data(filename="lotr.csv")  # matches other examples ...
 
 # design the deck
 Deck(

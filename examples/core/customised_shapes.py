@@ -207,10 +207,10 @@ PageBreak()
 # ---- polygon perbis
 Blueprint()
 Text(common=txt, text="Polygon: perbis (default & custom)")
-Polygon(cx=2, cy=4, sides=8, radius=1, perbis=True)
+Polygon(cx=2, cy=4, sides=8, radius=1, perbis='*')
 Polygon(
     cx=2, cy=1, sides=8, radius=1,
-    perbis=True, perbis_directions="2,4,7",
+    perbis="2,4,7",
     perbis_offset=0.25, perbis_length=0.5, perbis_stroke_width=1,
     dot=0.1, dot_stroke=red)
 PageBreak()

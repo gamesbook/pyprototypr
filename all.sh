@@ -34,6 +34,7 @@ python examples/boards/abstract/hexhex_circles.py -d /tmp/demo
 python examples/boards/abstract/hexhex_dots.py -d /tmp/demo
 python examples/boards/abstract/hexhex_hexagons.py -d /tmp/demo
 python examples/boards/abstract/hexhex_rectangles.py -d /tmp/demo
+python examples/boards/abstract/octagons.py -d /tmp/demo
 python examples/boards/abstract/tictactoe.py -d /tmp/demo
 # ---- boards: commercial
 echo "Creating commercial boards..."
@@ -70,6 +71,6 @@ python examples/various/unicode.py -d /tmp/demo
 python examples/various/world_clocks.py -d /tmp/demo
 # -- Board Game Geek
 echo "Creating BGG game sheet..."
-# python examples/bgg/example01.py -d /tmp/demo
+python examples/bgg/example01.py -d /tmp/demo
 
 echo "Done!"
