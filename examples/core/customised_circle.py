@@ -21,10 +21,10 @@ txt = Common(x=0, y=6, font_size=8, align="left")
 Text(common=txt, text="Circle START...")
 PageBreak(footer=True)
 
-# ---- circle hatch
+# ---- circle hatches
 Blueprint()
-Text(common=txt, text="Circle: hatch")
-htc = Common(radius=0.7, hatch=5, hatch_stroke=red,)
+Text(common=txt, text="Circle: hatches")
+htc = Common(radius=0.7, hatch_count=5, hatch_stroke=red,)
 Circle(common=htc, cx=2, cy=5.2, label='5')  # all directions
 Circle(common=htc, cx=1, cy=3.7, hatch_directions='o', label='o')
 Circle(common=htc, cx=3, cy=3.7, hatch_directions='d', label='d')

@@ -154,7 +154,7 @@ Hexagons(
     x=0.5, y=0,
     rows=3, cols=3,
     hex_offset="odd",
-    radii="w ne se",
+    radii="n ne se",
 )
 Hexagons(
     side=0.5,
@@ -163,7 +163,7 @@ Hexagons(
     stroke=red,
     radii_stroke=red,
     hex_offset="even",
-    radii="e nw sw",
+    radii="s nw sw",
 )
 PageBreak()
 

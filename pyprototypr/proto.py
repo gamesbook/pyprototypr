@@ -72,10 +72,10 @@ from .layouts import (
 from .groups import DeckShape, Switch, Lookup, LookupType
 from ._version import __version__
 from pyprototypr.utils.support import (
-    steps, excels, excel_column, equilateral_height, numbers, letters)
+    steps, excels, excel_column,  numbers, letters)
 from pyprototypr.utils.tools import base_fonts, DatasetType
 from pyprototypr.utils import geoms, tools, support
-from pyprototypr.utils.geoms import Locale, Point, Place  # namedtuples
+from pyprototypr.utils.geoms import equilateral_height, Locale, Point, Place
 
 from pyprototypr import globals
 

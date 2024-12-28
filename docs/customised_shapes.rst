@@ -179,7 +179,7 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
    |rht| This example shows Rectangles constructed using these commands::
 
            htch = Common(
-             height=1.5, width=1, hatch=5, hatch_width=0.1, hatch_stroke=red)
+             height=1.5, width=1, hatch_count=5, hatch_width=0.1, hatch_stroke=red)
 
            Rectangle(
              common=htch, x=0, y=0,  hatch_directions='w', label="W")
@@ -206,8 +206,8 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
          differ from the defaults:
 
          - *height* and *width* - set the basic configuration
-         - *hatch* - sets the **number** of lines to be drawn; the spacing
-           between them is equal and depends on the direction
+         - *hatch_count* - sets the **number** of lines to be drawn; the
+           spacing between them is equal and depends on the direction
          - *hatch_width* - set to `0.1` point; a fairly thin line
          - *hatch_stroke* - set to the color `red` to make it stand out
            from the rectangle sides
@@ -408,9 +408,9 @@ into the arc of a quarter-circle.
             x=0.5, height=1.5, width=3.0, stroke_width=.5,
             hatch_stroke=red, hatch_directions='o')
         Rectangle(
-            common=rct, y=2.0, rounding=0.5,  hatch=3)
+            common=rct, y=2.0, rounding=0.5,  hatch_count=3)
         Rectangle(
-            common=rct, y=0.0, rounding=0.1, hatch=10)
+            common=rct, y=0.0, rounding=0.1, hatch_count=10)
 
       Both Rectangles share the Common properties of *x* (left side location),
       *height* and *width*, *hatch_stroke* of `red` and *hatch_directions* of
@@ -420,19 +420,19 @@ into the arc of a quarter-circle.
       The first Rectangle has these properties:
 
       - *rounding* - set to `0.5`; the radius of the circle used for the corner
-      - *hatch* - set to `3`; the number of lines crossing the Rectangle in
-        both vertical and horizontal directions.
+      - *hatch_count* - set to `3`; the number of lines crossing the Rectangle
+        in both vertical and horizontal directions.
 
       The second Rectangle has these properties:
 
       - *rounding* - set to `0.1`; the radius of the circle used for the corner
-      - *hatch* - set to  `10`; the number of lines crossing the Rectangle in
-        both vertical and horizontal directions.
+      - *hatch_count* - set to  `10`; the number of lines crossing the Rectangle
+        in both vertical and horizontal directions.
 
       It should be noted that if the rounding is too large in comparison with
-      the number of hatch lines, as in this example::
+      the number of hatches, as in this example::
 
-        Rectangle(common=rct, y=2.0, rounding=0.5, hatch=10)
+        Rectangle(common=rct, y=2.0, rounding=0.5, hatch_count=10)
 
       then the program will issue an error::
 
@@ -605,7 +605,7 @@ diagonal direction.
 |hhf| This example shows Hexagons constructed using these commands::
 
         hxgn = Common(
-            x=1, height=1.5, orientation='flat', hatch=5, hatch_stroke=red)
+            x=1, height=1.5, orientation='flat', hatch_count=5, hatch_stroke=red)
         Hexagon(common=hxgn, y=0, hatch_directions='e', label="e/w")
         Hexagon(common=hxgn, y=2, hatch_directions='ne', label="ne/sw")
         Hexagon(common=hxgn, y=4, hatch_directions='nw', label="nw/se")
@@ -615,8 +615,8 @@ diagonal direction.
 
       - *x* and *height* - set the basic configuration
       - *orientation* - set to `flat`, so there will be no "peak" at the top
-      - *hatch* - sets the **number** of lines to be drawn; the spacing between
-        them is equal and depends on the direction
+      - *hatch_count* - sets the **number** of lines to be drawn; the spacing
+        between them is equal and depends on the direction
       - *hatch_stroke* - set to the color `red` to make it stand out from the
         hexagon sides
 
@@ -651,7 +651,7 @@ or diagonal direction.
 |hhp| This example shows Hexagons constructed using the command::
 
         hxgn = Common(
-            x=1, height=1.5, orientation='pointy', hatch=5, hatch_stroke=red)
+            x=1, height=1.5, orientation='pointy', hatch_count=5, hatch_stroke=red)
         Hexagon(common=hxgn, y=0, hatch_directions='n', label="n/s")
         Hexagon(common=hxgn, y=2, hatch_directions='ne', label="ne/sw")
         Hexagon(common=hxgn, y=4, hatch_directions='nw', label="nw/se")
@@ -661,8 +661,8 @@ or diagonal direction.
 
       - *x* and *height* - set the basic configuration
       - *orientation* - set to `pointy`, so there will be a "peak" at the top
-      - *hatch* - sets the **number** of lines to be drawn; the spacing between
-        them is equal and depends on the direction
+      - *hatch_count* - sets the **number** of lines to be drawn; the spacing
+        between them is equal and depends on the direction
       - *hatch_stroke* - set to the color `red` to make it stand out from the
         hexagon sides
 
@@ -1019,7 +1019,7 @@ or diagonal direction.
 ===== ======
 |chf| This example shows Circles constructed using these commands::
 
-        htc = Common(radius=0.7, hatch=5, hatch_stroke=red)
+        htc = Common(radius=0.7, hatch_count=5, hatch_stroke=red)
         Circle(common=htc, cx=2, cy=5.2, label='5')
         Circle(common=htc, cx=1, cy=3.7, hatch_directions='o', label='o')
         Circle(common=htc, cx=3, cy=3.7, hatch_directions='d', label='d')
@@ -1032,8 +1032,8 @@ or diagonal direction.
       from the defaults:
 
       - *radius* - sets the basic size
-      - *hatch* - sets the **number** of lines to be drawn; the spacing between
-        them is equal and depends on the direction
+      - *hatch_count* - sets the **number** of lines to be drawn; the spacing
+        between them is equal and depends on the direction
       - *hatch_stroke* - set to the color `red` to make it stand out from the
         hexagon sides
 

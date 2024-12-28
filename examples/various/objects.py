@@ -37,14 +37,14 @@ Text(common=header_font, x=5, y=15, text="Leaded Window: rectangle with diagonal
 Rectangle(
     x=2, y=13.5,
     height=3, width=2,
-    hatch=7, hatch_width=0.1, hatch_directions='d', hatch_stroke=black,
+    hatch_count=7, hatch_width=0.1, hatch_directions='d', hatch_stroke=black,
     stroke=saddlebrown, stroke_width=2, fill=lightcyan)
 
 Text(common=header_font, x=5, y=11, text="Paned Window: rectangle with single orthogonal hatch")
 Rectangle(
     x=2, y=9.5,
     height=3, width=2,
-    hatch=1, hatch_width=1, hatch_directions='o', hatch_stroke=sienna,
+    hatch_count=1, hatch_width=1, hatch_directions='o', hatch_stroke=sienna,
     stroke=sienna, stroke_width=3, fill=lightcyan)
 
 Text(common=header_font, x=5, y=7, text="Start Player Token: circles + radii using steps() function")
@@ -107,10 +107,10 @@ Ellipse(cx=2, cy=16, width=3, height=1, rotation=270, stroke_width=1, outline=re
 Circle(cx=2, cy=16, radius=0.2, fill_stroke=red)
 
 Text(common=header_font, x=5, y=12.5,
-     text="German Cross: rectangle with a hatch and notches")
+     text="German Cross: rectangle with hatches and notches")
 Rectangle(
     height=2.8, width=2.8, x=0.5, y=11, fill=white, stroke=black, stroke_width=2,
-    hatch=1, hatch_width=22, hatch_stroke=black, hatch_directions='o',
+    hatch_width=22, hatch_stroke=black, hatch_directions='o',
     notch=0.7, notch_style='step')
 Rectangle(
     height=2.8, width=2.8, x=0.5, y=11, fill=None, stroke=white, stroke_width=3)

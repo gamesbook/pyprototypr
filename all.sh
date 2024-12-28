@@ -3,7 +3,7 @@ echo ""
 mkdir -p /tmp/demo
 # ---- examples: simple
 echo "Creating basic examples..."
-python examples/core/demo.py -d docs/examples/demo.pdf
+python examples/core/demo.py -d /tmp/demo
 python examples/core/diagram.py -d /tmp/demo
 python examples/core/default_shapes.py -d /tmp/demo
 # ----  examples: customised

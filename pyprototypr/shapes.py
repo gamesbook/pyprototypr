@@ -329,7 +329,7 @@ class CircleShape(BaseShape):
             return length
 
     def draw_hatch(self, cnv, ID, num: int, x_c: float, y_c: float):
-        """Draw hatch lines from one edge to the other.
+        """Draw line(s) from one edge to the other.
 
         Args:
             num: number of lines
@@ -341,7 +341,8 @@ class CircleShape(BaseShape):
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_stroke_width,
             stroke_cap=self.hatch_cap)
-        _dirs = self.hatch_directions.lower().split()
+        _dirs = tools.validated_directions(
+            self.hatch_directions, tools.DirectionGroup.CIRCULAR, 'hatch_directions')
         lines = int(num)
         if lines < 0:
             tools.feedback('Cannot draw negative number of lines!', True)
@@ -661,20 +662,20 @@ class CircleShape(BaseShape):
             stroke=1 if self.stroke else 0,
             fill=1 if self.fill else 0)
         # ---- draw hatch
-        if self.hatch:
+        if self.hatch_count:
             if self.rotation:
-                # tools.feedback(f'*** {self.hatch=}, {self.rotation=}, {type(cnv)}')
+                # tools.feedback(f'*** {self.hatch_count=}, {self.rotation=}, {type(cnv)}')
                 cnv.saveState()
                 cnv.translate(self.x_c, self.y_c)
-                self.draw_hatch(cnv, ID, self.hatch, 0, 0)
+                self.draw_hatch(cnv, ID, self.hatch_count, 0, 0)
                 cnv.rotate(self.rotation)
                 cnv.restoreState()
             else:
-                self.draw_hatch(cnv, ID, self.hatch, self.x_c, self.y_c)
+                self.draw_hatch(cnv, ID, self.hatch_count, self.x_c, self.y_c)
         # ---- draw radii
         if self.radii:
             if self.rotation:
-                # tools.feedback(f'*** {self.hatch=}, {self.rotation=}, {type(cnv)}')
+                # tools.feedback(f'*** {self.hatch_count=}, {self.rotation=}, {type(cnv)}')
                 cnv.saveState()
                 cnv.translate(self.x_c, self.y_c)
                 self.draw_radii(cnv, ID, 0, 0)
@@ -902,38 +903,27 @@ class CompassShape(BaseShape):
         self.set_canvas_props(index=ID)
         if self.perimeter == 'circle':
             cnv.circle(self.x_c, self.y_c, radius, stroke=1, fill=1 if self.fill else 0)
-        # ---- get directions
-        if self.directions:
-            if isinstance(self.directions, str):
-                _dirs = self.directions.split(' ')
-                _directions = [str(_dir).lower() for _dir in _dirs]
-            elif isinstance(self.directions, list):
-                _directions = [str(_dir).lower() for _dir in self.directions]
-            else:
-                tools.feedback(
-                    f'Unable to process compass directions "{self.directions}"',
-                    True)
-        else:
-            _directions = [str(num) for num in range(0, 9)]  # ALL directions
         # ---- draw compass in circle
+        _directions = tools.validated_directions(
+            self.directions, tools.DirectionGroup.COMPASS, 'directions')
         if self.perimeter == 'circle':
             for direction in _directions:
                 match direction:
-                    case 'n' | '0':
+                    case 'n':
                         self.circle_radius(cnv, ID, 0)
-                    case 'ne' | '1':
+                    case 'ne':
                         self.circle_radius(cnv, ID, 45)
-                    case 'e' | '2':
+                    case 'e':
                         self.circle_radius(cnv, ID, 90)
-                    case 'se' | '3':
+                    case 'se':
                         self.circle_radius(cnv, ID, 135)
-                    case 's' | '4':
+                    case 's':
                         self.circle_radius(cnv, ID, 180)
-                    case 'sw' | '5':
+                    case 'sw':
                         self.circle_radius(cnv, ID, 225)
-                    case 'w' | '6':
+                    case 'w':
                         self.circle_radius(cnv, ID, 270)
-                    case 'nw' | '7':
+                    case 'nw':
                         self.circle_radius(cnv, ID, 315)
                     case _:
                         pass
@@ -949,21 +939,21 @@ class CompassShape(BaseShape):
 
             for direction in _directions:
                 match direction:
-                    case 'n' | '0':
+                    case 'n':
                         self.rectangle_radius(cnv, ID, vertices, 0, height, width)
-                    case 'ne' | '1':
+                    case 'ne':
                         self.rectangle_radius(cnv, ID, vertices, 45, height, width)
-                    case 'e' | '2':
+                    case 'e':
                         self.rectangle_radius(cnv, ID, vertices, 90, height, width)
-                    case 'se' | '3':
+                    case 'se':
                         self.rectangle_radius(cnv, ID, vertices, 315, height, width)
-                    case 's' | '4':
+                    case 's':
                         self.rectangle_radius(cnv, ID, vertices, 180, height, width)
-                    case 'sw' | '5':
+                    case 'sw':
                         self.rectangle_radius(cnv, ID, vertices, 225, height, width)
-                    case 'w' | '6':
+                    case 'w':
                         self.rectangle_radius(cnv, ID, vertices, 270, height, width)
-                    case 'nw' | '7':
+                    case 'nw':
                         self.rectangle_radius(cnv, ID, vertices, 135, height, width)
                     case _:
                         pass
@@ -971,21 +961,21 @@ class CompassShape(BaseShape):
         if self.perimeter == 'hexagon':
             for direction in _directions:
                 match direction:
-                    case 'n' | '0':
+                    case 'n':
                         self.circle_radius(cnv, ID, 0)
-                    case 'ne' | '1':
+                    case 'ne':
                         self.circle_radius(cnv, ID, 60)
-                    case 'e' | '2':
+                    case 'e':
                         pass
-                    case 'se' | '3':
+                    case 'se':
                         self.circle_radius(cnv, ID, 120)
-                    case 's' | '4':
+                    case 's':
                         self.circle_radius(cnv, ID, 180)
-                    case 'sw' | '5':
+                    case 'sw':
                         self.circle_radius(cnv, ID, 240)
-                    case 'w' | '6':
+                    case 'w':
                         pass
-                    case 'nw' | '7':
+                    case 'nw':
                         self.circle_radius(cnv, ID, 300)
                     case _:
                         pass
@@ -1163,8 +1153,10 @@ class EquilateralTriangleShape(BaseShape):
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_stroke_width,
             stroke_cap=self.hatch_cap)
-        _dirs = self.hatch_directions.lower().split()
+        _dirs = tools.validated_directions(
+            self.hatch_directions, tools.DirectionGroup.HEX_POINTY, 'hatch_directions')
         lines = int(num) + 1
+
         if num >= 1:
             # v_tl, v_tr, v_bl, v_br
             if 'ne' in _dirs or 'sw' in _dirs:  # slope UP to the right
@@ -1270,8 +1262,8 @@ class EquilateralTriangleShape(BaseShape):
         # ---- debug
         self._debug(cnv, vertices=self.vertices)
         # ---- draw hatch
-        if self.hatch:
-            self.draw_hatch(cnv, ID, side, self.vertices, self.hatch)
+        if self.hatch_count:
+            self.draw_hatch(cnv, ID, side, self.vertices, self.hatch_count)
         # ---- centred shape (with offset)
         if self.centre_shape:
             cshape_name = self.centre_shape.__class__.__name__
@@ -1530,7 +1522,11 @@ class HexShape(BaseShape):
             stroke=self.radii_stroke or self.stroke,
             stroke_width=self.radii_stroke_width or self.stroke_width,
             stroke_cap=self.radii_cap or self.line_cap)
-        _dirs = self.radii.lower().split()
+        #_dirs = self.radii.lower().split()
+        dir_group = tools.DirectionGroup.HEX_POINTY if self.orientation == 'pointy' \
+            else tools.DirectionGroup.HEX_FLAT
+        _dirs = tools.validated_directions(
+            self.radii, dir_group, 'radii')
         if 'ne' in _dirs:  # slope UP to the right
             self.draw_line_between_points(cnv, centre, vertices[2])
         if 'sw' in _dirs:  # slope DOWN to the left
@@ -1586,35 +1582,36 @@ class HexShape(BaseShape):
             dotted=self.perbis_dotted)
 
         if self.perbis:
-            if isinstance(self.perbis, str):
-                self.perbis = tools.split(self.perbis)
+            dir_group = tools.DirectionGroup.HEX_POINTY if self.orientation == 'pointy' \
+                else tools.DirectionGroup.HEX_FLAT
+            perbis_dirs = tools.validated_directions(self.perbis, dir_group, 'perbis')
             _dirs = []
-            # tools.feedback(f'*** {self.perbis=} {vertices=} {_dirs=}')
+            # tools.feedback(f'*** {self.perbis=} {self.orientation=} {perbis_dirs=}')
             if self.orientation in ['p', 'pointy']:
-                if 'e' in self.perbis or '*' in self.perbis:
+                if 'e' in perbis_dirs:
                     _dirs.append(4)
-                if 'ne' in self.perbis or '*' in self.perbis:
+                if 'ne' in perbis_dirs:
                     _dirs.append(3)
-                if 'nw' in self.perbis or '*' in self.perbis:
+                if 'nw' in perbis_dirs:
                     _dirs.append(2)
-                if 'w' in self.perbis or '*' in self.perbis:
+                if 'w' in perbis_dirs:
                     _dirs.append(1)
-                if 'sw' in self.perbis or '*' in self.perbis:
+                if 'sw' in perbis_dirs:
                     _dirs.append(0)
-                if 'se' in self.perbis or '*' in self.perbis:
+                if 'se' in perbis_dirs:
                     _dirs.append(5)
             if self.orientation in ['f', 'flat']:
-                if 'ne' in self.perbis or '*' in self.perbis:
+                if 'ne' in perbis_dirs:
                     _dirs.append(3)
-                if 'n' in self.perbis or '*' in self.perbis:
+                if 'n' in perbis_dirs:
                     _dirs.append(2)
-                if 'nw' in self.perbis or '*' in self.perbis:
+                if 'nw' in perbis_dirs:
                     _dirs.append(1)
-                if 'sw' in self.perbis or '*' in self.perbis:
+                if 'sw' in perbis_dirs:
                     _dirs.append(0)
-                if 's' in self.perbis or '*' in self.perbis:
+                if 's' in perbis_dirs:
                     _dirs.append(5)
-                if 'se' in self.perbis or '*' in self.perbis:
+                if 'se' in perbis_dirs:
                     _dirs.append(4)
 
         for key, pb_angle in enumerate(_perbis):
@@ -1643,7 +1640,10 @@ class HexShape(BaseShape):
             stroke=self.hatch_stroke,
             stroke_width=self.hatch_stroke_width,
             stroke_cap=self.hatch_cap)
-        _dirs = self.hatch_directions.lower().split()
+        dir_group = tools.DirectionGroup.HEX_POINTY if self.orientation == 'pointy' \
+            else tools.DirectionGroup.HEX_FLAT
+        _dirs = tools.validated_directions(
+            self.hatch_directions, dir_group, 'hatch_directions')
         lines = int((num - 1) / 2 + 1)
 
         if num >= 1:
@@ -1877,10 +1877,10 @@ class HexShape(BaseShape):
         # self._debug(cnv, Point(self.x_d, self.y_d), 'centre')
         self._debug(cnv, vertices=self.vertices)
         # ---- draw hatch
-        if self.hatch:
-            if not self.hatch & 1:
+        if self.hatch_count:
+            if not self.hatch_count & 1:
                 tools.feedback('Hatch must be an odd number for a Hexagon', True)
-            self.draw_hatch(cnv, ID, side, self.vertices, self.hatch)
+            self.draw_hatch(cnv, ID, side, self.vertices, self.hatch_count)
         # ---- draw links
         if self.links:
             self.draw_links(cnv, ID, side, self.vertices, self.links)
@@ -1984,8 +1984,11 @@ class PolygonShape(BaseShape):
         self.use_height = True if self.is_kwarg('height') else False
         self.use_width = True if self.is_kwarg('width') else False
         self.use_radius = True if self.is_kwarg('radius') else False
-        if self.perbis_directions and isinstance(self.perbis_directions, str):
-            self.perbis_directions = tools.sequence_split(self.perbis_directions)
+        if self.perbis:
+            if isinstance(self.perbis, str):
+                self.perbis = tools.sequence_split(self.perbis)
+            if not isinstance(self.perbis, list):
+                tools.feedback('The perbis value must be a list of numbers!', True)
         # ---- perform overrides
         if self.cx is not None and self.cy is not None:
             self.x, self.y = self.cx, self.cy
@@ -2097,7 +2100,7 @@ class PolygonShape(BaseShape):
             dashed=self.perbis_dashed,
             dotted=self.perbis_dotted)
         for key, pb_angle in enumerate(_perbis):
-            if self.perbis_directions and key + 1 not in self.perbis_directions:
+            if self.perbis and key + 1 not in self.perbis:
                 continue
             # points based on length of line, offset and the angle in degrees
             edge_pt = _perbis_pts[key]
@@ -2437,7 +2440,8 @@ class RectangleShape(BaseShape):
         return x, y
 
     def draw_hatch(self, cnv, ID, vertices: list, num: int):
-        _dirs = self.hatch_directions.lower().split()
+        _dirs = tools.validated_directions(
+            self.hatch_directions, tools.DirectionGroup.CIRCULAR, 'hatch_directions')
         # ---- check dirs
         if self.rounding or self.rounded:
             if 'ne' in _dirs or 'sw' in _dirs or 'se' in _dirs or 'nw' in _dirs \
@@ -2456,7 +2460,7 @@ class RectangleShape(BaseShape):
                 tools.feedback(
                     'No hatching permissible with this size rounding in the rectangle',
                     True)
-        if self.notch and self.hatch > 1 or self.notch_x or self.notch_y:
+        if self.notch and self.hatch_count > 1 or self.notch_x or self.notch_y:
             if 'ne' in _dirs or 'sw' in _dirs or 'se' in _dirs or 'nw' in _dirs \
                     or 'd' in _dirs:
                 tools.feedback(
@@ -2556,18 +2560,18 @@ class RectangleShape(BaseShape):
             tools.feedback("Cannot use rounding or rounded with chevron.", True)
         if (self.rounding or self.rounded) and is_peaks:
             tools.feedback("Cannot use rounding or rounded with peaks.", True)
-        if self.hatch and is_notched and self.hatch > 1:
+        if self.hatch_count and is_notched and self.hatch_count > 1:
             tools.feedback("Cannot use multiple hatches with notch.", True)
-        if self.hatch and is_chevron:
-            tools.feedback("Cannot use hatch with chevron.", True)
+        if self.hatch_count and is_chevron:
+            tools.feedback("Cannot use hatch_count with chevron.", True)
         if is_notched and is_chevron:
             tools.feedback("Cannot use notch and chevron together.", True)
         if is_notched and is_peaks:
             tools.feedback("Cannot use notch and peaks together.", True)
         if is_chevron and is_peaks:
             tools.feedback("Cannot use chevron and peaks together.", True)
-        if self.hatch and is_peaks:
-            tools.feedback("Cannot use hatch and peaks together.", True)
+        if self.hatch_count and is_peaks:
+            tools.feedback("Cannot use hatch_count and peaks together.", True)
         if is_borders and (is_chevron or is_peaks or is_notched):
             tools.feedback("Cannot use borders with any of: hatch, peaks or chevron.",
                            True)
@@ -2848,9 +2852,9 @@ class RectangleShape(BaseShape):
                     self.draw_border(cnv, border, ID)
 
         # ---- draw hatch
-        if self.hatch:
+        if self.hatch_count:
             vertices = self.get_vertices(rotation=rotation, **kwargs)
-            self.draw_hatch(cnv, ID, vertices, self.hatch)
+            self.draw_hatch(cnv, ID, vertices, self.hatch_count)
         # ---- grid marks
         self.set_canvas_props(
             index=ID,

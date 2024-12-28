@@ -29,18 +29,6 @@ def feedback(item, stop=False, warn=False):
         quit()
 
 
-def equilateral_height(side: Any):
-    """Calculate height of equilateral triangle from a side.
-
-    Doc Test:
-
-    >>> equilateral_height(5)
-    4.330127018922194
-    """
-    _side = to_float(side)
-    return math.sqrt(_side**2 - (0.5 * _side)**2)
-
-
 def numbers(*args):
     """Float range generator.
 

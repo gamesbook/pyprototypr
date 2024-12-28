@@ -7,7 +7,7 @@ from collections import namedtuple
 import cmath
 import logging
 import math
-from typing import List
+from typing import Any, List
 
 # local
 from pyprototypr.utils.support import numbers, feedback
@@ -438,6 +438,18 @@ def circle_angles(radius: float, chord: float):
     top = math.acos((2. * radius**2 - chord**2) / (2. * radius**2))
     base = (180. -  math.degrees(top)) / 2.
     return math.degrees(top), base, base
+
+
+def equilateral_height(side: Any):
+    """Calculate height of equilateral triangle from a side.
+
+    Doc Test:
+
+    >>> equilateral_height(5)
+    4.330127018922194
+    """
+    _side = float(side)
+    return math.sqrt(_side**2 - (0.5 * _side)**2)
 
 
 if __name__ == "__main__":

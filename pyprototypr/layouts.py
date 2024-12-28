@@ -841,7 +841,6 @@ class TriangularLocations(VirtualLocations):
                         y = self.y + dy + val * self.row_spacing
                         yield Locale(
                             key + 1, loc, x, y, self.set_id(key + 1, loc), count, corner)
-        return
 
 
 class DiamondLocations(VirtualLocations):

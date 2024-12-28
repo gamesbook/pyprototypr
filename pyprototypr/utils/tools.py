@@ -34,6 +34,19 @@ class DatasetType(Enum):
     IMAGE = 4
 
 
+class HexOrientation(Enum):
+    FLAT = 1
+    POINTY = 2
+
+
+class DirectionGroup(Enum):
+    CARDINAL = 1
+    COMPASS = 2
+    HEX_FLAT = 3
+    HEX_POINTY = 4
+    CIRCULAR = 5
+
+
 def script_path():
     """Get the path for a script being called from command line."""
     fname = os.path.abspath(sys.argv[0])
@@ -820,7 +833,7 @@ def eval_template(string: str, data: dict = None, label: str = ''):
     if isinstance(data, tuple):
         try:
             data = data._asdict()
-        except Exception as err:
+        except Exception:
             pass
     if not isinstance(data, dict):
         feedback('The data must be in the form of a dictionary', True)
@@ -836,6 +849,61 @@ def eval_template(string: str, data: dict = None, label: str = ''):
     except (ValueError, jinja2.exceptions.UndefinedError):
         feedback(
             f'Unable to process "{string}" data with this template', True)
+
+
+def validated_directions(
+        value: list | str,
+        direction_group: DirectionGroup,
+        label: str = '') -> list:
+    """Check and return a list of lowercase, direction abbreviations.
+
+    Doc Test:
+    >>> validated_directions('', DirectionGroup.CARDINAL)
+    []
+    >>> validated_directions([], DirectionGroup.CARDINAL)
+    []
+    >>> validated_directions(['n', 's'], DirectionGroup.CARDINAL)
+    ['n', 's']
+    >>> validated_directions('n s', DirectionGroup.CARDINAL)
+    ['n', 's']
+    >>> validated_directions('n s', DirectionGroup.HEX_FLAT)
+    ['n', 's']
+    >>> validated_directions('w e', DirectionGroup.HEX_POINTY)
+    ['w', 'e']
+    >>> validated_directions('w e n s ne', DirectionGroup.COMPASS)
+    ['w', 'e', 'n', 's', 'ne']
+    """
+    if not value:
+        return []
+    if isinstance(value, str):
+        values = split(value.lower())
+    else:
+        if not isinstance(value, list):
+            feedback(f'Cannot handle {label}value - must be a string or a list!',
+                     True)
+        values = [str(val).lower().strip() for val in value]
+    values_set = set(values)
+    match direction_group:
+        case DirectionGroup.CARDINAL:
+            valid = {'n', 'e', 'w', 's'}
+        case DirectionGroup.COMPASS:
+            valid = {'n', 'e', 'w', 's', 'ne', 'se', 'sw', 'nw'}
+        case DirectionGroup.HEX_FLAT:
+            valid = {'n', 'se', 'sw', 's', 'ne', 'nw'}
+        case DirectionGroup.HEX_POINTY:
+            valid = {'e', 'se', 'sw', 'w', 'ne', 'nw'}
+        case DirectionGroup.CIRCULAR:
+            valid = {'n', 'e', 'w', 's', 'ne', 'se', 'sw', 'nw', 'o', 'd'}
+        case _:
+            raise NotImplementedError('Cannot handle {direction_group} type!')
+    if 'all' in values or '*' in values:
+        values = list(valid)
+        values_set = set(values)
+    if values_set.issubset(valid):
+        return values
+    _label = f'the {label} value' if label else f'"{value}"'
+    feedback(f'Cannot use {_label} - it must contain valid directions {valid}!',
+             True)
 
 
 if __name__ == "__main__":

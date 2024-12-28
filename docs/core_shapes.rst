@@ -802,15 +802,15 @@ Example 2.
 
         EquilateralTriangle(
             x=2, y=3, side=1.5,
-            hatch=5, hatch_stroke=red,
+            hatch_count=5, hatch_stroke=red,
             title='Title', heading='Head'
         )
 
       - starting position at *x*-position ``2`` cm and at *y*-position ``3`` cm
       - *side* of ``1.5`` cm; all sides are equal
-      - *hatch* of ``5`` - this means there will be 5 equally spaced lines drawn
+      - *hatch_count* of ``5`` - this means there will be 5 equally spaced lines drawn
         between opposing sides which run parallel to the third side
-      - *hatch_stroke* - customise the hatch lines to show them as ``red``
+      - *hatch_stroke* - customise the hatches to show them as ``red``
 
       The top section shows::
 
@@ -2644,7 +2644,7 @@ The centre-shape can be shifted from the centre by setting values for
             centre_shape=small_circle,
             centre_shape_mx=0.3, centre_shape_my=0.6)
         Hexagon(
-            x=1, y=0.5, height=2, hatch=5, hatch_stroke=red, dot=0.1,
+            x=1, y=0.5, height=2, hatch_count=5, hatch_stroke=red, dot=0.1,
             centre_shape=small_circle)
 
       As in the first example, the ``small_star`` is defined but not drawn.

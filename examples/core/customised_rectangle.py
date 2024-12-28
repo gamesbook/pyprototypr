@@ -54,10 +54,10 @@ Text(common=txt, text="Rectangle: dot & cross")
 Rectangle(height=3, width=2, cross=0.75, dot=0.15)
 PageBreak()
 
-# ---- hatch
+# ---- hatches
 Blueprint()
-Text(common=txt, text="Rectangle: hatch + directions")
-htch = Common(height=1.5, width=1, hatch=5, hatch_width=0.1, hatch_stroke=red)
+Text(common=txt, text="Rectangle: hatches + directions")
+htch = Common(height=1.5, width=1, hatch_count=5, hatch_width=0.1, hatch_stroke=red)
 Rectangle(common=htch, x=0, y=0,  hatch_directions='w', label="W")
 Rectangle(common=htch, x=1.5, y=0, hatch_directions='e', label="E")
 Rectangle(common=htch, x=3, y=0, hatch_directions='ne', label="NE\nSW")
@@ -72,14 +72,14 @@ Rectangle(common=htch, x=3, y=4, hatch_directions='d', label="D")
 
 PageBreak()
 
-# ---- rounding + hatch
+# ---- rounding + hatches
 Blueprint()
-Text(common=txt, text="Rectangle: rounding; hatch")
+Text(common=txt, text="Rectangle: rounding; hatches")
 rct = Common(x=0.5, height=1.5, width=3.0, stroke_width=.5,
              hatch_stroke=red, hatch_directions='o')
-Rectangle(common=rct, y=0.0, rounding=0.1, hatch=10)
-Rectangle(common=rct, y=2.0, rounding=0.5, hatch=3)
-# Rectangle(common=rct, y=4.0, rounding=0.75, hatch=15)  # FAILS!
+Rectangle(common=rct, y=0.0, rounding=0.1, hatch_count=10)
+Rectangle(common=rct, y=2.0, rounding=0.5, hatch_count=3)
+# Rectangle(common=rct, y=4.0, rounding=0.75, hatch_count=15)  # FAILS!
 PageBreak()
 
 # ---- chevron

@@ -115,7 +115,7 @@ PageBreak()
 Blueprint()
 Text(common=txt, text="Equilateral Triangle; text; hatch")
 EquilateralTriangle(
-    x=2, y=3, side=1.5, hatch=5, hatch_stroke=red, title='Title', heading='Head')
+    x=2, y=3, side=1.5, hatch_count=5, hatch_stroke=red, title='Title', heading='Head')
 EquilateralTriangle(
     x=2, y=1, flip="north", hand="east", label="NE", fill=gold)
 EquilateralTriangle(
@@ -486,7 +486,7 @@ Blueprint()
 Text(common=txt, text="Centred Shape: move + double")
 small_star = star(radius=0.25)
 small_circle = circle(radius=0.33, fill=grey, centre_shape=small_star)
-Hexagon(x=1, y=0.5, height=2, hatch=5, hatch_stroke=red, dot=0.1,
+Hexagon(x=1, y=0.5, height=2, hatch_count=5, hatch_stroke=red, dot=0.1,
         centre_shape=small_circle)
 Hexagon(x=1, y=3, height=2,
         centre_shape=small_circle, centre_shape_mx=0.3, centre_shape_my=0.6)

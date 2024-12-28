@@ -589,8 +589,7 @@ class BaseCanvas:
         self.cross_stroke_width = self.defaults.get('cross_stroke_width', self.stroke_width)
         # ---- hexagon / polygon
         self.orientation = self.defaults.get('orientation', 'flat')  # flat|pointy
-        self.perbis = self.defaults.get('perbis', False)
-        self.perbis_directions = self.defaults.get('perbis_directions', [])
+        self.perbis = self.defaults.get('perbis', None)  # directions
         self.perbis_stroke = self.defaults.get('perbis_stroke', black)
         self.perbis_stroke_width = self.defaults.get('perbis_stroke_width', self.stroke_width)
         self.perbis_length = self.defaults.get('perbis_length', None)
@@ -638,8 +637,8 @@ class BaseCanvas:
         # ---- mesh
         self.mesh = self.defaults.get('mesh', None)
         # ---- hatches
-        self.hatch = self.defaults.get('hatch', 0)
-        self.hatch_directions = self.defaults.get('hatch_directions', 'n ne e se')
+        self.hatch_count = self.defaults.get('hatch_count', 0)
+        self.hatch_directions = self.defaults.get('hatch_directions', '*')
         self.hatch_stroke = self.defaults.get('hatch_stroke', self.stroke)
         self.hatch_stroke_width = self.defaults.get('hatch_stroke_width', self.stroke_width)
         self.hatch_dots = self.defaults.get('hatch_dots', None)
@@ -916,8 +915,7 @@ class BaseShape:
         self.cross = self.kw_float(kwargs.get('cross', cnv.cross))
         # ---- hexagon / polygon
         self.orientation = kwargs.get('orientation', cnv.orientation)
-        self.perbis = kwargs.get('perbis', cnv.perbis)
-        self.perbis_directions = kwargs.get('perbis_directions', cnv.perbis_directions)
+        self.perbis = kwargs.get('perbis', cnv.perbis)  # directions
         self.perbis_stroke = kwargs.get('perbis_stroke', cnv.perbis_stroke)
         self.perbis_stroke_width = self.kw_float(
             kwargs.get('perbis_stroke_width', cnv.perbis_stroke_width))
@@ -965,7 +963,7 @@ class BaseShape:
         # ---- mesh
         self.mesh = kwargs.get('mesh', cnv.mesh)
         # ---- hatches
-        self.hatch = kwargs.get('hatch', cnv.hatch)
+        self.hatch_count = kwargs.get('hatch_count', cnv.hatch_count)
         self.hatch_directions = kwargs.get('hatch_directions', cnv.hatch_directions)
         self.hatch_stroke_width = self.kw_float(kwargs.get('hatch_width', cnv.hatch_stroke_width))
         self.hatch_stroke = kwargs.get('hatch_stroke', cnv.stroke)
@@ -1799,34 +1797,27 @@ class BaseShape:
         else:
             dashed = bstyle
         # ---- multi-directions
-        _bdirections = bdirections.split(" ")
+        _bdirections = tools.validated_directions(
+            bdirections, tools.DirectionGroup.COMPASS, 'border')
         for bdirection in _bdirections:
             if not bdirection:
                 continue
-            if str(bdirection).lower() not in [
-                    'north', 'south', 'east', 'west',
-                    'n', 's', 'e', 'w',
-                    'northwest', 'southwest', 'northeast', 'southeast',
-                    'nw', 'sw', 'ne', 'se',
-                    '*']:
-                tools.feedback(
-                    f'"{bdirection}" is an invalid direction in "{border}"!')
             # ---- line start & end
             shape_name = self.__class__.__name__.replace('Shape', '')
             match self.__class__.__name__:
 
                 case 'RectangleShape' | 'SquareShape'| 'TrapezoidShape':
-                    match bdirection.lower():
-                        case 'n' | 'north' | '*':
+                    match bdirection:
+                        case 'n':
                             x, y = self.vertices[1][0], self.vertices[1][1]
                             x_1, y_1 = self.vertices[2][0], self.vertices[2][1]
-                        case 'e' | 'east' | '*':
+                        case 'e':
                             x, y = self.vertices[2][0], self.vertices[2][1]
                             x_1, y_1 = self.vertices[3][0], self.vertices[3][1]
-                        case 's' | 'south' | '*':
+                        case 's':
                             x, y = self.vertices[3][0], self.vertices[3][1]
                             x_1, y_1 = self.vertices[0][0], self.vertices[0][1]
-                        case 'w' | 'west' | '*':
+                        case 'w':
                             x, y = self.vertices[0][0], self.vertices[0][1]
                             x_1, y_1 = self.vertices[1][0], self.vertices[1][1]
                         case _:
@@ -1834,17 +1825,17 @@ class BaseShape:
                                 f'Invalid direction for {shape_name} border')
 
                 case 'RhombusShape':
-                    match bdirection.lower():
-                        case 'ne' | 'northeast' | '*':
+                    match bdirection:
+                        case 'ne':
                             x, y = self.vertices[1][0], self.vertices[1][1]
                             x_1, y_1 = self.vertices[2][0], self.vertices[2][1]
-                        case 'se' | 'southeast' | '*':
+                        case 'se':
                             x, y = self.vertices[2][0], self.vertices[2][1]
                             x_1, y_1 = self.vertices[3][0], self.vertices[3][1]
-                        case 'sw' | 'southwest' | '*':
+                        case 'sw':
                             x, y = self.vertices[3][0], self.vertices[3][1]
                             x_1, y_1 = self.vertices[0][0], self.vertices[0][1]
-                        case 'nw' | 'northwest' | '*':
+                        case 'nw':
                             x, y = self.vertices[0][0], self.vertices[0][1]
                             x_1, y_1 = self.vertices[1][0], self.vertices[1][1]
                         case _:
@@ -1853,46 +1844,46 @@ class BaseShape:
 
                 case 'HexShape':
                     if self.orientation == 'pointy':
-                        match bdirection.lower():
-                            case 'ne' | 'northeast' | '*':
+                        match bdirection:
+                            case 'ne':
                                 x, y = self.vertices[2][0], self.vertices[2][1]
                                 x_1, y_1 = self.vertices[3][0], self.vertices[3][1]
-                            case 'e' | 'east' | '*':
+                            case 'e':
                                 x, y = self.vertices[3][0], self.vertices[3][1]
                                 x_1, y_1 = self.vertices[4][0], self.vertices[4][1]
-                            case 'se' | 'southeast' | '*':
+                            case 'se':
                                 x, y = self.vertices[4][0], self.vertices[4][1]
                                 x_1, y_1 = self.vertices[5][0], self.vertices[5][1]
-                            case 'sw' | 'southwest' | '*':
+                            case 'sw':
                                 x, y = self.vertices[5][0], self.vertices[5][1]
                                 x_1, y_1 = self.vertices[0][0], self.vertices[0][1]
-                            case 'w' | 'west' | '*':
+                            case 'w':
                                 x, y = self.vertices[0][0], self.vertices[0][1]
                                 x_1, y_1 = self.vertices[1][0], self.vertices[1][1]
-                            case 'nw' | 'northwest' | '*':
+                            case 'nw':
                                 x, y = self.vertices[1][0], self.vertices[1][1]
                                 x_1, y_1 = self.vertices[2][0], self.vertices[2][1]
                             case _:
                                 raise ValueError(
                                     f'Invalid direction for {shape_name} border')
                     elif self.orientation == 'flat':
-                        match bdirection.lower():
-                            case 'n' | 'north' | '*':
+                        match bdirection:
+                            case 'n':
                                 x, y = self.vertices[1][0], self.vertices[1][1]
                                 x_1, y_1 = self.vertices[2][0], self.vertices[2][1]
-                            case 'ne' | 'northeast' | '*':
+                            case 'ne':
                                 x, y = self.vertices[2][0], self.vertices[2][1]
                                 x_1, y_1 = self.vertices[3][0], self.vertices[3][1]
-                            case 'se' | 'southeast' | '*':
+                            case 'se':
                                 x, y = self.vertices[3][0], self.vertices[3][1]
                                 x_1, y_1 = self.vertices[4][0], self.vertices[4][1]
-                            case 's' | 'south' | '*':
+                            case 's':
                                 x, y = self.vertices[4][0], self.vertices[4][1]
                                 x_1, y_1 = self.vertices[5][0], self.vertices[5][1]
-                            case 'sw' | 'southwest' | '*':
+                            case 'sw':
                                 x, y = self.vertices[5][0], self.vertices[5][1]
                                 x_1, y_1 = self.vertices[0][0], self.vertices[0][1]
-                            case 'nw' | 'northwest' | '*':
+                            case 'nw':
                                 x, y = self.vertices[0][0], self.vertices[0][1]
                                 x_1, y_1 = self.vertices[1][0], self.vertices[1][1]
                             case _:
@@ -1903,7 +1894,7 @@ class BaseShape:
                             'Invalid orientation "{self.orientation}" for border')
 
                 case _:
-                    match bdirection.lower():
+                    match bdirection:
                         case _:
                             tools.feedback(f'Cannot draw borders for a {shape_name}')
 
