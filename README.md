@@ -123,7 +123,7 @@ current / potential areas of work or development that have been identified.
 
 ## Planned/Potential Board Examples
 
-* [ ] Abstract boards: Ludo, 9 Mens Morris, Wari, Backgammon
+* [ ] Abstract boards: Ludo, 9 Mens Morris, Wari
 * [ ] Wargame board: Squad Leader with terrain features (vector and bitmap)
 * [ ] Traveller board: show a fully-styled Star system (demo a custom Shape?)
 * [x] WarpWar board: show a fully-styled sector

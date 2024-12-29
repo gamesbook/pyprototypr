@@ -14,11 +14,12 @@ Table of Contents
 =================
 
 - `Chess`_
+- `Backgammon`_
 - `Go`_
 - `Hex`_
 - `HexHex Games`_
-- `TicTacToe`_
 - `Octagons`_
+- `TicTacToe`_
 
 Chess
 =====
@@ -48,6 +49,28 @@ Discussion  This example shows how to construct a regular Chess board with
 Screenshot  .. image:: images/boards/abstract/chessboard_brown.png
                :width: 80%
 =========== ==================================================================
+
+
+Backgammon
+==========
+`↑ <table-of-contents_>`_
+
+=========== ==================================================================
+Title       *Backgammon Board*
+----------- ------------------------------------------------------------------
+Source Code `backgammon.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/backgammon.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct a regular Backgammon board.
+
+            This uses Trapezoid shape with a very narrow *top* to represent a
+            point; this can be copied across in a line using a ``Sequence()``
+            command.
+
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/boards/abstract/backgammon.png
+               :width: 80%
+=========== ==================================================================
+
 
 Go
 ==
@@ -146,54 +169,6 @@ Screenshot  .. image:: images/boards/abstract/hexhex_hexagons.png
 =========== ==================================================================
 
 
-TicTacToe
-=========
-`↑ <table-of-contents_>`_
-
-=========== ==================================================================
-Title       *TicTacToe Board and Game*
------------ ------------------------------------------------------------------
-Source Code `tictactoe.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/tictactoe.py>`_
------------ ------------------------------------------------------------------
-Discussion  This example shows how to construct a board and then show a series
-            of moves played out on that board.
-
-            This example uses ``RectangularLocations()`` to create a virutal
-            grid representing the centres of each space on the board.  One
-            ``Layout()`` command then places green squares representing board
-            spaces on that grid ; another ``Layout()`` command then places
-            a set of shapes, representing all pieces placed on the board up to
-            that turn, using their grid-location as a reference.
-
-            The example requires the use of Python lists to record the moves:
-
-              .. code:: python
-
-                turns = [(me,1,1), (you,2,2), (me,1,3), (you,1,2)]
-
-            The use of a loop allows the program to process all the moves and
-            create one page for the board state after each move:
-
-              .. code:: python
-
-                for number, turn in enumerate(turns):
-
-            Finally, the ``Save()`` command specifies output to a GIF image,
-            along with the framerate (interval between showing each new image).
-
-              .. code:: python
-
-                Save(output='gif',framerate=0.5)
-
-            (*Hint:* normally, you will need to do a "refresh" of the page to
-            see the GIF animation.)
-
------------ ------------------------------------------------------------------
-Screenshot  .. image:: images/boards/abstract/tictactoe.gif
-               :width: 50%
-=========== ==================================================================
-
-
 Octagons
 ========
 `↑ <table-of-contents_>`_
@@ -219,4 +194,56 @@ Discussion  The code uses a basic 8-sided ``Polygon()``, with the *perbis*
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/abstract/octagons.png
                :width: 90%
+=========== ==================================================================
+
+
+TicTacToe
+=========
+`↑ <table-of-contents_>`_
+
+=========== ==================================================================
+Title       *TicTacToe Board and Game*
+----------- ------------------------------------------------------------------
+Source Code `tictactoe.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/tictactoe.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to construct a board and then show a series
+            of moves played out on that board.
+
+            This example uses ``RectangularLocations()`` to create a virtual
+            grid representing the centres of each space on the board.  One
+            ``Layout()`` command then places green Squares representing board
+            spaces on that grid ; another ``Layout()`` command then places
+            a set of colored Circles, representing all pieces placed on the
+            board up to that turn, using their grid-location as a reference.
+
+            The example requires the use of Python lists to record the moves,
+            showing for each player in which grid row and column their piece
+            was placed:
+
+              .. code:: python
+
+                turns = [(me,1,1), (you,2,2), (me,1,3), (you,1,2)]
+
+            The use of a loop allows the program to process the moves and
+            create one page for the board state as it would be after all
+            moves *up to that point* have been carried out:
+
+              .. code:: python
+
+                for number, turn in enumerate(turns):
+                   # create board for all turns up to this one
+
+            Finally, the ``Save()`` command specifies output to a GIF image,
+            along with the framerate (interval between showing each new image).
+
+              .. code:: python
+
+                Save(output='gif',framerate=0.5)
+
+            (*Hint:* normally, you will need to do a "refresh" of this page to
+            see the GIF animation in action.)
+
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/boards/abstract/tictactoe.gif
+               :width: 50%
 =========== ==================================================================
