@@ -79,7 +79,7 @@ Very briefly, the different kinds of layout commands are as follows.
 Linear layouts, where elements appear in one-dimensional space:
 
 -  **Sequence()** - allows a set of elements to be placed at regular
-   spacings in a straight line
+   intervals in a straight line
 -  **Track()** - the elements are positioned along the line used to
    delineate a shape; they can be placed either at the vertices of that
    line (e.g. at the corners of a square) or in the centre between two
@@ -90,11 +90,11 @@ Grid-based layouts, where elements appear in two-dimensional space:
 -  **Repeat()** - allows an element to be placed multiple times onto
    a grid
 -  **RectangularLocations()** - defines a series of differing x- and y-points
-   with rectangular spacing; the x- and y-values will correspond to the
-   centre of the element being placed.
+   in a rectangular pattern; these x- and y-values will set the
+   centre of any element being placed on the grid
 -  **TriangularLocations()** - defines a series of differing x- and y-points
-   with triangular spacing; the x- and y-values will correspond to the
-   centre of the element being placed.
+   in a triangular pattern; these x- and y-values will set the
+   centre of any element being placed on the grid
 
 These Location-types are paired with the **Layout()** command, which
 links them with the shapes that are to be drawn at their locations.

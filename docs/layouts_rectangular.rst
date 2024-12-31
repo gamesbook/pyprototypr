@@ -58,13 +58,13 @@ The ``RectangularLocations()`` command accepts the following properties:
   defaults to *2*
 - **rows** - this is the number of locations in the vertical direction; this
   defaults to *2*
-- **spacing** - this is horizontal distance between columns, as well as the
+- **interval** - this is horizontal distance between columns, as well as the
   vertical distance between rows, in the grid; defaults to ``1`` cm
-- **col_spacing** - this is horizontal distance between columns in the grid;
-  defaults to **spacing**
-- **row_spacing** - this is vertical distance between rows in the grid;
-  defaults to **spacing**
-- **direction** - this is compass direction of the line of travel when
+- **interval_x** - this is horizontal distance between the centres of the
+  columns in the grid; defaults to **interval**
+- **interval_y** - this is vertical distance between the centres of the
+  rows in the gridl defaults to **interval**
+- **direction** - this is the compass direction of the line of travel when
   creating the row and column layout; the default is e(ast).
 - **start** - this is the initial corner, defined a secondary compass direction,
   from where the grid is initially drawn; values can be *ne*, *nw*, *se*, and
@@ -114,7 +114,7 @@ Key Properties
 
 - `Example 1. Rows and Columns`_
 - `Example 2. Start and Direction`_
-- `Example 3. Row and Column Spacing`_
+- `Example 3. Row and Column Interval`_
 - `Example 4. Row and Column Offset`_
 - `Example 5. Snaking`_
 - `Example 6. Outer Edge`_
@@ -184,15 +184,15 @@ Example 2. Start and Direction
         Layout(rect, shapes=[a_circle])
 
       Here the sequence starts in the top-left / northwest ("NW") corner,
-      and flows to the right ("east") and down.
+      and then flows to the right ("east") and down.
 
 ===== ======
 
-Example 3. Row and Column Spacing
----------------------------------
+Example 3. Row and Column Interval
+----------------------------------
 `^ <key-properties_>`_
 
-.. |02a| image:: images/layouts/rect_basic_spacing.png
+.. |02a| image:: images/layouts/rect_basic_interval.png
    :width: 330
 
 ===== ======
@@ -203,12 +203,17 @@ Example 3. Row and Column Spacing
 
         rect = RectangularLocations(
             cols=3, rows=4, start="NW", direction="east",
-            spacing=1.25)
+            interval=1.25)
         Layout(rect, shapes=[a_circle])
+
+      Here the sequence starts in the top-left / northwest ("NW") corner,
+      and then flows to the right ("east") and down.
+
+
 
 ===== ======
 
-.. |02b| image:: images/layouts/rect_basic_spacing_row_col.png
+.. |02b| image:: images/layouts/rect_basic_interval_row_col.png
    :width: 330
 
 ===== ======
@@ -220,7 +225,7 @@ Example 3. Row and Column Spacing
         rect = RectangularLocations(
             cols=3, rows=4, start="NW", direction="east",
             x=1.5, y=1.5,
-            row_spacing=1.25, col_spacing=0.75)
+            interval_y=1.25, interval_x=0.75)
         Layout(rect, shapes=[a_circle])
 
 ===== ======
@@ -321,7 +326,7 @@ Example 6b. Outer Edge - Stop and Start
         rct10 = square(common=rct_small, fill_stroke=mediumseagreen)
 
         rect = RectangularLocations(
-            x=0.25, y=0.25, cols=8, rows=11, spacing=0.5
+            x=0.25, y=0.25, cols=8, rows=11, interval=0.5
             start="NW", direction="east", pattern="outer",
             stop=26)
         Layout(rect, shapes=[rct1]*4 + [rct5] + [rct1]*4 + [rct10])
@@ -366,7 +371,7 @@ Example 6c. Outer Edge - Rotation
             fill=maroon, stroke=white)
 
         locs = RectangularLocations(
-            x=0.5, y=0.75, cols=7, rows=10, spacing=0.5,
+            x=0.5, y=0.75, cols=7, rows=10, interval=0.5,
             start="SW", direction="north", pattern="outer")
         Layout(
             locs,

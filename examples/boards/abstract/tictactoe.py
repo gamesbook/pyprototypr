@@ -11,7 +11,7 @@ from pyprototypr import *
 Create(filename="tictactoe.pdf", paper=A8, margin=0.2, stroke_width=0.5)
 
 # board & pieces
-rect = RectangularLocations(cols=3, rows=3, spacing=1.25, y=2)
+rect = RectangularLocations(cols=3, rows=3, interval=1.25, y=2)
 me = circle(radius=0.5, fill_stroke=white)
 you = circle(radius=0.5, fill_stroke=black)
 # turns

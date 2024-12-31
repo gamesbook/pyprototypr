@@ -138,8 +138,8 @@ class SequenceShape(BaseShape):
         else:
             self.calculate_setting_list()
 
-        self.gap_x = self.gap_x or self.gap
-        self.gap_y = self.gap_y or self.gap
+        self.interval_x = self.interval_x or self.interval
+        self.interval_y = self.interval_y or self.interval
 
     def calculate_setting_list(self):
         if not isinstance(self.setting, tuple):
@@ -208,9 +208,9 @@ class SequenceShape(BaseShape):
             _ID = ID if ID is not None else self.shape_id
             _locale = Locale(sequence=item)
             kwargs['locale'] = _locale._asdict()
-            # tools.feedback(f'*   @Seqnc@ {self.gap_x=}, {self.gap_y=}')
-            off_x = _off_x + key * self.gap_x
-            off_y = _off_y + key * self.gap_y
+            # tools.feedback(f'*   @Seqnc@ {self.interval_x=}, {self.interval_y=}')
+            off_x = _off_x + key * self.interval_x
+            off_y = _off_y + key * self.interval_y
             flat_elements = tools.flatten(self._object)
             log.debug("flat_eles:%s", flat_elements)
             for each_flat_ele in flat_elements:
@@ -264,14 +264,14 @@ class RepeatShape(BaseShape):
         self.repeat = kwargs.get("repeat", None)
         self.offset_x = self.offset_x or self.offset
         self.offset_y = self.offset_y or self.offset
-        self.gap_x = self.gap_x or self.gap
-        self.gap_y = self.gap_y or self.gap
+        self.interval_x = self.interval_x or self.interval
+        self.interval_y = self.interval_y or self.interval
         if self.repeat:
             (
                 self.repeat_across,
                 self.repeat_down,
-                self.gap_y,
-                self.gap_x,
+                self.interval_y,
+                self.interval_x,
                 self.offset_x,
                 self.offset_y,
             ) = self.repeat.split(",")
@@ -296,9 +296,9 @@ class RepeatShape(BaseShape):
             for row in range(self.rows):
                 if ((col + 1) in self.across) and ((row + 1) in self.down):
                     off_x = col * self.width + self.offset_x + col * (
-                        self.gap_x - (self.margin_left or self.margin))
+                        self.interval_x - (self.margin_left or self.margin))
                     off_y = row * self.height + self.offset_y + row * (
-                        self.gap_y - (self.margin_bottom or self.margin))
+                        self.interval_y - (self.margin_bottom or self.margin))
                     flat_elements = tools.flatten(self._object)
                     log.debug("flat_eles:%s", flat_elements)
                     for flat_ele in flat_elements:
@@ -369,9 +369,9 @@ class VirtualLocations(VirtualShape):
         self.cols = self.to_int(cols, 'cols')
         self.side = self.to_float(kwargs.get('side', 0), 'side')
         self.layout_size = self.rows * self.cols
-        self.spacing = kwargs.get('interval', 1)
-        self.row_spacing = kwargs.get('y_interval', self.spacing)
-        self.col_spacing = kwargs.get('x_interval', self.spacing)
+        self.interval = kwargs.get('interval', 1)
+        self.interval_y = kwargs.get('interval_y', self.interval)
+        self.interval_x = kwargs.get('interval_x', self.interval)
         # offset
         self.col_even = kwargs.get('col_even', 0)
         self.col_odd = kwargs.get('col_odd', 0)
@@ -465,16 +465,16 @@ class RectangularLocations(VirtualLocations):
     def __init__(self, rows=2, cols=2, **kwargs):
         super(RectangularLocations, self).__init__(rows, cols, **kwargs)
         self.kwargs = kwargs
-        _spacing = kwargs.get('spacing', 1)
-        self.spacing = tools.as_float(_spacing, 'spacing')
-        if kwargs.get('col_spacing'):
-            self.col_spacing = tools.as_float(kwargs.get('col_spacing'), 'col_spacing')
+        _interval = kwargs.get('interval', 1)
+        self.interval = tools.as_float(_interval, 'interval')
+        if kwargs.get('interval_x'):
+            self.interval_x = tools.as_float(kwargs.get('interval_x'), 'interval_x')
         else:
-            self.col_spacing = self.spacing
-        if kwargs.get('row_spacing'):
-            self.row_spacing = tools.as_float(kwargs.get('row_spacing'), 'row_spacing')
+            self.interval_x = self.interval
+        if kwargs.get('interval_y'):
+            self.interval_y = tools.as_float(kwargs.get('interval_y'), 'interval_y')
         else:
-            self.row_spacing = self.spacing
+            self.interval_y = self.interval
         self.start = kwargs.get('start', 'sw')
         if self.cols < 2 or self.rows < 2:
             tools.feedback(
@@ -484,12 +484,12 @@ class RectangularLocations(VirtualLocations):
             tools.feedback(
                 f"{self.start} is not a valid start - "
                 "use: 'sw', 'se', 'nw', or 'ne'", True)
-        if self.side and kwargs.get('col_spacing'):
+        if self.side and kwargs.get('interval_x'):
             tools.feedback(
-                'Using side will override col_spacing and offset values!', False)
-        if self.side and  kwargs.get('row_spacing'):
+                'Using side will override interval_x and offset values!', False)
+        if self.side and  kwargs.get('interval_y'):
             tools.feedback(
-                'Using side will override row_spacing and offset values!', False)
+                'Using side will override interval_y and offset values!', False)
 
     def next_locale(self) -> Locale:
         """Yield next Location for each call."""
@@ -522,20 +522,20 @@ class RectangularLocations(VirtualLocations):
         # print(f'\n*** {self.start=} {self.layout_size=} {max_outer=} {self.stop=} {clockwise=}')
         # ---- triangular layout
         if self.side:
-            self.col_spacing = self.side
-            self.row_spacing = math.sqrt(3) / 2. * self.side
+            self.interval_x = self.side
+            self.interval_y = math.sqrt(3) / 2. * self.side
             _dir = -1 if self.row_odd < 0 else 1
-            self.row_odd = _dir * (self.col_spacing / 2.)
+            self.row_odd = _dir * (self.interval_x / 2.)
             if self.row_even:
                 _dir = -1 if self.row_even < 0 else 1
                 self.row_odd = 0
-                self.row_even = _dir * (self.col_spacing / 2.)
+                self.row_even = _dir * (self.interval_x / 2.)
         while True:  # rows <= self.rows and col <= self.cols:
             count = count + 1
             # calculate point based on row/col
             # TODO!  set actual x and y
-            x = self.x + (col - 1) * self.col_spacing
-            y = self.y + (row - 1) * self.row_spacing
+            x = self.x + (col - 1) * self.interval_x
+            y = self.y + (row - 1) * self.interval_y
             # offset(s)
             if self.side:
                 if row & 1:
@@ -602,8 +602,8 @@ class RectangularLocations(VirtualLocations):
                                     col = col + 1
                                 self.direction = 'n'
 
-                    x = self.x + (col - 1) * self.col_spacing
-                    y = self.y + (row - 1) * self.row_spacing
+                    x = self.x + (col - 1) * self.interval_x
+                    y = self.y + (row - 1) * self.interval_y
 
                 # ---- * outer
                 case 'outer' | 'o':
@@ -669,8 +669,8 @@ class RectangularLocations(VirtualLocations):
                             case 's' | 'south':
                                 row = row - 1
 
-                    x = self.x + (col - 1) * self.col_spacing
-                    y = self.y + (row - 1) * self.row_spacing
+                    x = self.x + (col - 1) * self.interval_x
+                    y = self.y + (row - 1) * self.interval_y
 
                 # ---- * regular
                 case _:  # default pattern
@@ -726,8 +726,8 @@ class RectangularLocations(VirtualLocations):
                                     if col > self.cols:
                                         return  # end
 
-                    x = self.x + (col - 1) * self.col_spacing
-                    y = self.y + (row - 1) * self.row_spacing
+                    x = self.x + (col - 1) * self.interval_x
+                    y = self.y + (row - 1) * self.interval_y
                     # tools.feedback(f"{x=}, {y=}, {col=}, {row=}, ")
 
 
@@ -799,52 +799,52 @@ class TriangularLocations(VirtualLocations):
         max_outer = 2 * self.rows + (self.cols - 2) * 2
         corner = None
         # print(f'\n*** {self.start=} {self.layout_size=} {max_outer=} {self.stop=} {clockwise=}')
-        # ---- set row and col spacing
+        # ---- set row and col interval
         match _facing:
             case 'north' | 'south':  # layout is row-oriented
-                self.col_spacing = self.side
-                self.row_spacing = math.sqrt(3) / 2. * self.side
+                self.interval_x = self.side
+                self.interval_y = math.sqrt(3) / 2. * self.side
             case 'east' | 'west':  # layout is col-oriented
-                self.col_spacing = math.sqrt(3) / 2. * self.side
-                self.row_spacing = self.side
+                self.interval_x = math.sqrt(3) / 2. * self.side
+                self.interval_y = self.side
         # ---- iterate the rows and cols
         hlf_side = self.side / 2.0
         for key, entry in enumerate(array):
             match _facing:
                 case 'north':  # layout is row-oriented
-                    y = self.y + (self.rows - 1) * self.row_spacing - (key + 1) * self.row_spacing
-                    dx = 0.5 * (self.cols - len(entry)) * self.col_spacing - \
-                        (self.cols - 1) * 0.5 * self.col_spacing
+                    y = self.y + (self.rows - 1) * self.interval_y - (key + 1) * self.interval_y
+                    dx = 0.5 * (self.cols - len(entry)) * self.interval_x - \
+                        (self.cols - 1) * 0.5 * self.interval_x
                     for val, loc in enumerate(entry):
                         count = count + 1
-                        x = self.x + dx + val * self.col_spacing
+                        x = self.x + dx + val * self.interval_x
                         yield Locale(
                             loc, key + 1, x, y, self.set_id(loc, key + 1), count, corner)
                 case 'south':  # layout is row-oriented
-                    y = self.y + key * self.row_spacing
-                    dx = 0.5 * (self.cols - len(entry)) * self.col_spacing - \
-                        (self.cols - 1) * 0.5 * self.col_spacing
+                    y = self.y + key * self.interval_y
+                    dx = 0.5 * (self.cols - len(entry)) * self.interval_x - \
+                        (self.cols - 1) * 0.5 * self.interval_x
                     for val, loc in enumerate(entry):
                         count = count + 1
-                        x = self.x + dx + val * self.col_spacing
+                        x = self.x + dx + val * self.interval_x
                         yield Locale(
                             loc, key + 1, x, y, self.set_id(loc, key + 1), count, corner)
                 case 'east':  # layout is col-oriented
-                    x = self.x + self.cols * self.col_spacing - (key + 2) * self.col_spacing
-                    dy = 0.5 * (self.rows - len(entry)) * self.row_spacing - \
-                        (self.rows - 1) * 0.5 * self.row_spacing
+                    x = self.x + self.cols * self.interval_x - (key + 2) * self.interval_x
+                    dy = 0.5 * (self.rows - len(entry)) * self.interval_y - \
+                        (self.rows - 1) * 0.5 * self.interval_y
                     for val, loc in enumerate(entry):
                         count = count + 1
-                        y = self.y + dy + val * self.row_spacing
+                        y = self.y + dy + val * self.interval_y
                         yield Locale(
                             key + 1, loc, x, y, self.set_id(key + 1, loc), count, corner)
                 case 'west':  # layout is col-oriented
-                    x = self.x + key * self.col_spacing
-                    dy = 0.5 * (self.rows - len(entry)) * self.row_spacing - \
-                        (self.rows - 1) * 0.5 * self.row_spacing
+                    x = self.x + key * self.interval_x
+                    dy = 0.5 * (self.rows - len(entry)) * self.interval_y - \
+                        (self.rows - 1) * 0.5 * self.interval_y
                     for val, loc in enumerate(entry):
                         count = count + 1
-                        y = self.y + dy + val * self.row_spacing
+                        y = self.y + dy + val * self.interval_y
                         yield Locale(
                             key + 1, loc, x, y, self.set_id(key + 1, loc), count, corner)
 

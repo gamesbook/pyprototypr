@@ -386,9 +386,9 @@ class BaseCanvas:
         # ---- repeats
         self.pattern = self.defaults.get('pattern', None)
         self.repeat = self.defaults.get('repeat', True)
-        self.gap = self.defaults.get('gap', 0)
-        self.gap_x = self.defaults.get('gap_x', self.gap)
-        self.gap_y = self.defaults.get('gap_y', self.gap)
+        self.interval = self.defaults.get('interval', 0)
+        self.interval_x = self.defaults.get('interval_x', self.interval)
+        self.interval_y = self.defaults.get('interval_y', self.interval)
         # ---- rotation / position /elevation
         self.rotation = self.defaults.get('rotation', 0)  # degrees
         self.direction = self.defaults.get('direction', 'north')
@@ -739,9 +739,9 @@ class BaseShape:
         # ---- repeats
         self.pattern = kwargs.get('pattern', cnv.pattern)
         self.repeat = kwargs.get('repeat', cnv.repeat)
-        self.gap = self.kw_float(kwargs.get('gap', cnv.gap))
-        self.gap_x = self.kw_float(kwargs.get('gap_x', cnv.gap_x))
-        self.gap_y = self.kw_float(kwargs.get('gap_y', cnv.gap_y))
+        self.interval = self.kw_float(kwargs.get('interval', cnv.interval))
+        self.interval_x = self.kw_float(kwargs.get('interval_x', cnv.interval_x))
+        self.interval_y = self.kw_float(kwargs.get('interval_y', cnv.interval_y))
         # ---- rotation / position /elevation
         self.rotation = self.kw_float(kwargs.get('rotation', kwargs.get('rotation', cnv.rotation)))  # degree
         self._rotation_theta = math.radians(self.rotation)  # radians

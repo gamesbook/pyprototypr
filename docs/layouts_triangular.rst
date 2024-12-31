@@ -19,7 +19,7 @@ Overview
 ========
 
 The ``TriangularLocations()`` command defines an ordered series
-of row and column locations that create a triangular spacing.  The x- and
+of row and column locations that create a triangular pattern.  The x- and
 y-values of these rows and columns are then used to set the centres of
 the elements that can be placed there using the ``Layout()`` command.
 
@@ -37,11 +37,15 @@ Usage
 
 The ``TriangularLocations()`` command accepts the following properties:
 
-- **cols** - this is
-- **rows** - this is
-- **direction** - this is
-- **start** - this is
-- **shape** -
+- **cols** - this is the number of locations in the horizontal direction; this
+  defaults to *2*
+- **rows** - this is the number of locations in the vertical direction; this
+  defaults to *2*
+- **direction** - this is the compass direction of the line of travel when
+  creating the row and column layout; the default is e(ast).
+- **start** - this is the initial corner, defined a secondary compass direction,
+  from where the grid is initially drawn; values can be *ne*, *nw*, *se*, and
+  *sw* (the default i.e. the lower-left corner)
 
 The ``Layout()`` command accepts the following properties:
 
@@ -51,10 +55,15 @@ The ``Layout()`` command accepts the following properties:
   for example, a circle or rectangle
 
 
-Basic Examples
---------------
+.. _key-properties:
 
-All examples below make use of common ```Circle`` shape (called *a_circle*)
+Key Properties
+==============
+`↑ <table-of-contents_>`_
+
+- `Example 1. Rows and Columns`_
+
+All examples below make use of a common ```Circle`` shape (called *a_circle*)
 defined as:
 
   .. code:: python
@@ -69,8 +78,10 @@ and ``{{row}}`` will be replaced, in the label for the Circle, by the
 values for the row and column in which that circle is placed, as well as
 by the sequence number (order) in which that Circle is drawn.
 
-Example 1.
-~~~~~~~~~~
+
+Example 1. Rows and Columns
+---------------------------
+`^ <key-properties_>`_
 
 .. |tl0| image:: images/layouts/rect_basic_east.png
    :width: 330

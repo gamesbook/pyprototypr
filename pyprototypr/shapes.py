@@ -2453,16 +2453,16 @@ class RectangleShape(BaseShape):
                 tools.feedback(
                     'No diagonal hatching permissible with rounding in the rectangle',
                     True)
-        # ---- check spacing
+        # ---- check spaces
         if self.rounding or self.rounded:
-            spacing = max(self._u.width / (num + 1), self._u.height / (num + 1))
+            spaces = max(self._u.width / (num + 1), self._u.height / (num + 1))
             if self.rounding:
                 _rounding = self.unit(self.rounding)
             elif self.rounded:
                 _rounding = self._u.width * 0.08
-            if spacing < _rounding:
+            if spaces < _rounding:
                 tools.feedback(
-                    'No hatching permissible with this size rounding in the rectangle',
+                    'No hatching permissible with this size of rounding in a rectangle',
                     True)
         if self.notch and self.hatch_count > 1 or self.notch_x or self.notch_y:
             if 'ne' in _dirs or 'sw' in _dirs or 'se' in _dirs or 'nw' in _dirs \

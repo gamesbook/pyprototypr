@@ -207,7 +207,7 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
 
          - *height* and *width* - set the basic configuration
          - *hatch_count* - sets the **number** of lines to be drawn; the
-           spacing between them is equal and depends on the direction
+           intervals between them are equal and depend on the direction
          - *hatch_width* - set to `0.1` point; a fairly thin line
          - *hatch_stroke* - set to the color `red` to make it stand out
            from the rectangle sides
@@ -615,7 +615,7 @@ diagonal direction.
 
       - *x* and *height* - set the basic configuration
       - *orientation* - set to `flat`, so there will be no "peak" at the top
-      - *hatch_count* - sets the **number** of lines to be drawn; the spacing
+      - *hatch_count* - sets the **number** of lines to be drawn; the interval
         between them is equal and depends on the direction
       - *hatch_stroke* - set to the color `red` to make it stand out from the
         hexagon sides
@@ -661,7 +661,7 @@ or diagonal direction.
 
       - *x* and *height* - set the basic configuration
       - *orientation* - set to `pointy`, so there will be a "peak" at the top
-      - *hatch_count* - sets the **number** of lines to be drawn; the spacing
+      - *hatch_count* - sets the **number** of lines to be drawn; the interval
         between them is equal and depends on the direction
       - *hatch_stroke* - set to the color `red` to make it stand out from the
         hexagon sides
@@ -1032,7 +1032,7 @@ or diagonal direction.
       from the defaults:
 
       - *radius* - sets the basic size
-      - *hatch_count* - sets the **number** of lines to be drawn; the spacing
+      - *hatch_count* - sets the **number** of lines to be drawn; the interval
         between them is equal and depends on the direction
       - *hatch_stroke* - set to the color `red` to make it stand out from the
         hexagon sides

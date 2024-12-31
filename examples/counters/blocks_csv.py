@@ -54,17 +54,17 @@ top4 = sequence(
      square(
          x=0.9, y=2.35, side=0.25, stroke=lbrown, stroke_width=1, fill=T('{{BORDER}}')),
      setting=(1, 4),
-     gap_x=0.29)
+     interval_x=0.29)
 right3 = sequence(
      square(
          x=2.3, y=1.0, side=0.25, stroke=lbrown, stroke_width=1, fill=T('{{BORDER}}')),
      setting=(1, 3),
-     gap_y=0.29)
+     interval_y=0.29)
 low2 = sequence(
      square(
          x=1.2, y=0.35, side=0.25, stroke=lbrown, stroke_width=1, fill=T('{{BORDER}}')),
      setting=(1, 2),
-     gap_x=0.29)
+     interval_x=0.29)
 left1 = square(
     x=0.35, y=1.3, side=0.25, stroke=lbrown, stroke_width=1, fill=T('{{BORDER}}'))
 dots4 = group(top4, right3, low2, left1)
@@ -73,12 +73,12 @@ top3 = sequence(
      square(
          x=1.05, y=2.35, side=0.25, stroke=lbrown, stroke_width=1, fill=T('{{BORDER}}')),
      setting=(1, 3),
-     gap_x=0.29)
+     interval_x=0.29)
 right2 = sequence(
      square(
          x=2.3, y=1.2, side=0.25, stroke=lbrown, stroke_width=1, fill=T('{{BORDER}}')),
      setting=(1, 2),
-     gap_y=0.29)
+     interval_y=0.29)
 low1 = square(
     x=1.3, y=0.35, side=0.25, stroke=lbrown, stroke_width=1, fill=T('{{BORDER}}'))
 dots3 = group(top3, right2, low1)

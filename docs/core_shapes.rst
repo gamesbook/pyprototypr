@@ -1957,7 +1957,7 @@ Example 1.
       - starts at the lower-left corner, as defined by the page margins
       - has vertical and horizontal lines filling the page from the lower left
         corner up to the right-most and top-most margins
-      - has spacing between the lines of ``1`` cm
+      - has interval between the lines of ``1`` cm
       - default line color is a shade of ``blue`` (``#2F85AC``)
       - the x- and y-axis are numbered from the lower left corner
 ===== ======
@@ -2032,7 +2032,8 @@ Example 2.
       It is meant to simulate the dot grid found in Moleskine notebooks, and so
       it has the following properties set:
 
-      - *width* and *height* are the spacing in x and y directions respectively
+      - *width* and *height* are the intervals between the centre of the dots
+        in the x- and y-directions respectively
       - *dot_point* is set to be smaller than the default of ``3``
       - *stroke* color of ``darkgrey`` is a lighter shade than the default black
       - *offset_y* moves the start of the grid slightly downwards by 1/4 of a cm

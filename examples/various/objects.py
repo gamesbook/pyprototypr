@@ -30,7 +30,7 @@ Sequence(
     rectangle(x=1.5, y=17.1, width=1, height=2.8,
               chevron='E', chevron_height=1, stroke=yellow, fill=yellow),
     setting=(1, 3),
-    gap_x=2,
+    interval_x=2,
 )
 
 Text(common=header_font, x=5, y=15, text="Leaded Window: rectangle with diagonal hatches")

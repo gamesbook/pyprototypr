@@ -50,6 +50,9 @@ places in the documentation:
 - **vertex** / **vertices** - the sharp "points" at the intersection of the
   lines used to construct a shape; for example, a triangle has 3 vertices and
   a square has 4 vertices.
+- **_x** and **_y** - some terms can be modified to be specific for
+  *x* (left to right) or *y* (bottom to top) distances by appending one of
+  these to it
 
 
 Color-orientated Terms
@@ -161,6 +164,8 @@ to set.
    the centre of a shape
 -  **height** - the vertical dimension of a shape e.g. a ``Rectangle``
    or a bitmap ``Image``
+-  **interval** - the distance between the centres of a series of shapes;
+   typically in a repeated pattern of some type
 -  **margin** - used in ``Create`` command to set all margins for a
    page; the default for any margin is 1.25cm / 12.5mm (1/2 of an inch)
 -  **margin_top** - used in ``Create`` command to set top margin for a
@@ -186,7 +191,8 @@ to set.
 -  **stroke_width** - the thickness of a line in **points**; many
    specific widths are set by prefixing this term with the name of the
    item in question; examples: **cross_stroke_width**;
-   **grid_stroke_width**; **radii_stroke_width**
+   **grid_stroke_width**; **radii_stroke_width**; **perbsis_stroke_width**,
+   etc.
 -  **width** - the horizontal dimension of a shape e.g. a ``Rectangle``
    or a bitmap ``Image``
 
@@ -199,7 +205,7 @@ Amount- and count-orientated Terms
 
 The concept of counting is also important when creating a ``Track`` or a
 ``Sequence`` - each item being created is assigned a *sequence* number
-which can be used for reference.
+which can be used for reference or labelling.
 
 
 Direction-orientated Terms
@@ -217,26 +223,25 @@ rotation is 360 degrees i.e. a sweep around a full circle.
 
 A *compass direction* is one of the following:
 
-Primary compass directions (with abbreviations shown in brackets):
+Primary compass directions (with full names shown in brackets):
 
--  north (n) - normally corresponds to an angle of 90 degrees
--  south (s) - normally corresponds to an angle of 270 degrees
--  east (e) - normally corresponds to an angle of 0 degrees
--  west (e) - normally corresponds to an angle of 180 degrees
+-  n (north) - normally corresponds to an angle of 90 degrees
+-  s (south) - normally corresponds to an angle of 270 degrees
+-  e (east) - normally corresponds to an angle of 0 degrees
+-  w (west) - normally corresponds to an angle of 180 degrees
 
-Secondary compass directions (with abbreviations shown in brackets):
+Secondary compass directions (with full names shown in brackets):
 
--  north-east (ne) - normally corresponds to an angle of 45 degrees
--  south-east (se) - normally corresponds to an angle of 315 degrees
--  north-west (nw) - normally corresponds to an angle of 135 degrees
--  south-west (sw) - normally corresponds to an angle of 225 degrees
+-  ne (north-east) - normally corresponds to an angle of 45 degrees
+-  se (south-east) - normally corresponds to an angle of 315 degrees
+-  nw (north-west) - normally corresponds to an angle of 135 degrees
+-  sw (south-west) - normally corresponds to an angle of 225 degrees
 
 .. NOTE::
 
-   *NOTE* - if a compass direction is used in the context of a
-   **hexagon**, the angle is "reinterpreted" to match its context
-   e.g. the angle for NorthEast for a ‘pointy’ hexagon is 60, not 45,
-   degrees.
+   If a compass direction is used in the context of a ``Hexagon``,
+   then the angle is "reinterpreted" to match its context
+   e.g. the *NE* angle for a ‘pointy’ hexagon is 60, not 45, degrees.
 
 Properties that use direction include:
 
@@ -265,7 +270,7 @@ Styling-orientated Terms
 `↑ <table-of-contents_>`_
 
 -  **dotted** - allows a line to be broken into a series of "dots" (very short
-   lines) of length equal to the width of the line being drawn (with gaps
+   lines) of length equal to the width of the line being drawn (with spacing
    inbetween each dot of that same length); to make a line dashed, simply use
    ``dashed=True``
 -  **dashed** - allows a line to be broken into a series of short lines
@@ -285,14 +290,15 @@ Display-orientated Terms
    be used for display - the rest are displayed as normal
 -  **radii** - if given a value of ``True`` will cause the radii of a
    ``Polygon`` to be shown
--  **perbis** - if given a value of ``True`` will cause the perpendicular
+-  **perbis** - if given one or more numbers will cause the perpendicular
    bisectors (lines from centre to the middle of the edges) of a
-   ``Polygon`` to be shown
+   ``Polygon`` to be shown; edges are numbered from the east-facing one
+   in an anti-clockwise direction
 -  **shown** - a list of locations, indicated by their *row and
    column* identifier which are the only ones that **must** be used for
    display - the rest are ignored
 -  **visible** - a list of locations, indicated by their *sequence
-   number* (i.e. their position in the drawing order)  that **must** be used
+   number* (i.e. their position in the drawing order) that **must** be used
    for display - the rest are ignored
 
 
@@ -309,6 +315,9 @@ Miscellaneous Terms
    direction and a value, that designate that the edge of a rectangle
    should be drawn as a triangular "peak"; e.g. a set of ``('n', 2)``
    would draw a 2cm high triangle on the upper (north) edge
+-  **GIF** - Graphics Interchange Format - a file format in which an image
+   can be stored; its useful because its supports multiple layers and can be
+   animated
 -  **PNG** - Portable Network Graphic - a file format in which an image can
    be stored; its useful because its supports transparent backgrounds
 -  **SVG** - Scaleable Vector Graphics - a file format in which an image can

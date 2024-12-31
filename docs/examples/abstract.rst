@@ -89,7 +89,7 @@ Source Code `go.py <https://github.com/gamesbook/pyprototypr/blob/master/example
 Discussion  This example shows how to construct a regular Go board.
 
             The script is fairly simple; the board itself is contructed from a
-            ``Grid``, and relies on the default spacing being ``1`` cm.
+            ``Grid``, and relies on the default interval being ``1`` cm.
 
             The handicap points are constructed using a ``DotGrid``, with
             larger than default dot sizes. The DotGrid offset is from the

@@ -91,17 +91,16 @@ Layout(rect, shapes=[a_circle], visible=[1,3,6,8])
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Locations: NW->east: spacing")
+Text(common=header, text="Rect.Locations: NW->east: interval")
 rect = RectangularLocations(cols=3, rows=4, start="NW", direction="east",
-                            spacing=1.25)
+                            interval=1.25)
 Layout(rect, shapes=[a_circle,])
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Locations: NW->east: spacing")
+Text(common=header, text="Rect.Locations: NW->east: interval x&y")
 rect = RectangularLocations(cols=3, rows=4, start="NW", direction="east",
-                            x=1.5, y=1.5,
-                            row_spacing=1.25, col_spacing=0.75)
+                            x=1.5, y=1.5, interval_x=0.75, interval_y=1.25)
 Layout(rect, shapes=[a_circle,])
 PageBreak()
 
@@ -126,7 +125,7 @@ Save(
         "rect_basic_east", "rect_basic_east_even",  "rect_basic_east_odd",
         "rect_basic_snake",
         "rect_basic_outer", "rect_basic_outer_mask", "rect_basic_outer_visible",
-        "rect_basic_spacing", "rect_basic_spacing_row_col",
+        "rect_basic_interval", "rect_basic_interval_row_col",
         "rect_basic_locations",
      ]
 )

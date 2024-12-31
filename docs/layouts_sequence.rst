@@ -45,13 +45,13 @@ The ``Sequence()`` command accepts the following properties:
 
   - *start* - the value the sequence starts with
   - *end* - the value the sequence ends with
-  - *interval* - the difference between one value and next - if negative, the
+  - *increment* - the difference between one value and next - if negative, the
     values decrease
   - *type* - the sequence can be `letter`, `number`, `roman`, or `excel`
 - **setting** - [2] alternatively, the setting can be specified by providing a
   list of values (using square ``[...]`` brackets); these are drawn in the order
   provided and can be a mix of letters or numbers
-- **gap_x** and **gap_y** - the distance between the centre of each shape
+- **interval_x** and **interval_y** - the distance between the centre of each shape
   that is drawn, starting from the location of the first as the reference point;
   negative numbers means the distances are to the left and down (rather than to
   the right and up)
@@ -76,15 +76,15 @@ Example 1.
           Sequence(
               text(x=1, y=5.),
               setting=(10, 0, -2, 'number'),
-              gap_x=0.5,
+              interval_x=0.5,
           )
 
       Here the progression is one of numbers. The range starts at ``10`` and
       the sequence will use every second number because the interval is ``-2``.
-      The first shape is drawn at ``1.5`` cm and the ``gap_x`` property means
+      The first shape is drawn at ``1.5`` cm and the ``interval_x`` property means
       that each shape will be ``0.5`` cm to the right (positive ``x`` direction)
       of the previous one; they will be in a level line, because the default
-      ``y_gap`` value is zero.
+      ``interval_y`` value is zero.
 
       The example with **lowercase letters** (middle top) is created by:
 
@@ -93,16 +93,16 @@ Example 1.
           Sequence(
               text(x=1, y=3.5),
               setting=('h', 'b', -2, 'letter'),
-              gap_y=0.5,
-              gap_x=0.5,
+              interval_y=0.5,
+              interval_x=0.5,
           )
 
       Here the progression is one of letters - they will be lowercase because
       the start letter - ``h`` - is lowercase.  The sequence ends with a ``b``;
       the sequence will use every second letter because the interval value is
       set to ``-2``.  After the first shape is drawn, each following shape will
-      be ``0.5`` cm to the right (``gap_x``) and ``0.5`` cm (``gap_y``) above the
-      previous one.
+      be ``0.5`` cm to the right (``interval_x``) and ``0.5`` cm (``interval_y``)
+      above the previous one.
 
       The example with **uppercase letters** (middle bottom) is created by:
 
@@ -111,13 +111,13 @@ Example 1.
           Sequence(
               text(x=1, y=3),
               setting=('B', 'H', 2, 'letter'),
-              gap_y=-0.5,
-              gap_x=0.5,
+              interval_y=-0.5,
+              interval_x=0.5,
           )
 
       Here the progression is one of uppercase letters because the start letter
       is ``B``. After the first shape is drawn, each following shape will be
-      ``0.5`` cm to the right and below - because ``gap_y`` is negative - the
+      ``0.5`` cm to the right and below - because ``interval_y`` is negative - the
       previous one.
 
       The example with **Roman numerals** (lower down) is created by:
@@ -127,7 +127,7 @@ Example 1.
           Sequence(
               text(x=0.5, y=1),
               setting=(5, 11, 1, 'roman'),
-              gap_x=0.5,
+              interval_x=0.5,
           )
 
       Here the progression is one of Roman numbers. The range starts at ``5``,
@@ -140,7 +140,7 @@ Example 1.
           Sequence(
               text(x=0.5, y=0.25),
               setting=(27, 52, 5, 'excel'),
-              gap_x=0.5,
+              interval_x=0.5,
           )
 
       Here the progression is one of Excel column headers; this ranges from
@@ -173,8 +173,8 @@ Example 2.
                   title_size=8, title="Fig. {{sequence}}"),
                circle(cx=1, cy=2, radius=0.2, fill=grey)],
               setting=('C', 'A', -1),
-              gap_y=1.5,
-              gap_x=0.5,
+              interval_y=1.5,
+              interval_x=0.5,
           )
 
       Here the progression is one of uppercase letters (start letter is ``C``).
@@ -198,7 +198,7 @@ Example 2.
                   x=0.25, y=0.25, height=0.75, width=1,
                   label_size=8, label="${{sequence}}"),
               setting=(1, 3, 1, 'number'),
-              gap_x=1.2,
+              interval_x=1.2,
           )
 
       Here the progression is one of numbers; with each number in the sequence
@@ -214,7 +214,7 @@ Example 2.
                   cx=3.5, cy=5, radius=0.3,
                   label="{{sequence}}"),
               setting=[4, 'B?', '', 10, 'VI'],
-              gap_y=-0.7,
+              interval_y=-0.7,
           )
 
       Here the progression is a specific list of values; the items separated

@@ -40,15 +40,15 @@ drect = Common(fill=None, stroke=grey, dashed=[0,0.05,0.05], rounding=0.5, strok
 
 # Action Cards Slots: Red
 rrect = rectangle(common=drect, x=-0.5, y=4.25, height=6., width=6.75)
-Repeat(rrect, rows=5, cols=1, offset=7, gap=1)
+Repeat(rrect, rows=5, cols=1, offset=7, interval=1)
 
 action_red = "#D4322D"
 action_red_rect = rectangle(x=-0.5, y=4.5, width=6.5, height=5.5, fill_stroke=action_red, rounding=0.5)
-Repeat(action_red_rect, rows=5, cols=1, offset=7, gap=1)
+Repeat(action_red_rect, rows=5, cols=1, offset=7, interval=1)
 
 action_red_dark = "#9D2622"
 red_dark = Rectangle(y=4.5, x=0, width=2.5, height=5.5, fill_stroke=action_red_dark)
-Repeat(red_dark, rows=5, cols=1, offset=7, gap=1)
+Repeat(red_dark, rows=5, cols=1, offset=7, interval=1)
 
 lock_red = image('images/padlock-open-red.png', x=1.5, y=7.25, width=1.5, height=1.5, rotation=270)
 Repeat(lock_red, rows=5, cols=1, offset=3.5)
@@ -57,15 +57,15 @@ Rectangle(common=card_icon_med, x=4, y=34.5, label="A", rotation=270)
 
 # Action Cards Slots: Orange
 orect = rectangle(common=drect, y=36.75, x=6.75, width=6., height=6.75)
-Repeat(orect, cols=5, rows=1, offset=7, gap=1)
+Repeat(orect, cols=5, rows=1, offset=7, interval=1)
 
 action_ong = "#FFAD01"
 action_ong_rect = rectangle(x=7, y=37, width=5.5, height=6.5, fill_stroke=action_ong, rounding=0.5)
-Repeat(action_ong_rect, cols=5, rows=1, offset=7, gap=1)
+Repeat(action_ong_rect, cols=5, rows=1, offset=7, interval=1)
 
 action_ong_dark = "#FE9402"
 ong_dark = Rectangle(y=40, x=7, width=5.5, height=2.5, fill_stroke=action_ong_dark)
-Repeat(ong_dark, cols=5, rows=1, offset=7, gap=1)
+Repeat(ong_dark, cols=5, rows=1, offset=7, interval=1)
 
 lock_ong = image('images/padlock-open-orange.png', x=9, y=40.5, width=1.5, height=1.5)
 Repeat(lock_ong, rows=1, cols=5, offset=7)
@@ -74,7 +74,7 @@ Rectangle(common=card_icon_large, x=24, y=37.5, label="A", rotation=180)
 
 # Action Cards Slots: Green
 grect = rectangle(common=drect, y=-0.5, x=6.75, width=6., height=6.75)
-Repeat(grect, cols=5, rows=1, offset=7, gap=1)
+Repeat(grect, cols=5, rows=1, offset=7, interval=1)
 
 action_grn = "#017A51"
 action_grn_rect = rectangle(y=-0.5, x=7, width=5.5, height=6.5, fill_stroke=action_grn, rounding=0.5)
@@ -82,10 +82,10 @@ Repeat(action_grn_rect, cols=5, rows=1, offset=7)
 
 action_grn_dark = "#005D33"
 grn_dark = Rectangle(y=0, x=7, width=5.5, height=2.5, fill_stroke=action_grn_dark)
-Repeat(grn_dark, cols=5, rows=1, offset=7, gap=1)
+Repeat(grn_dark, cols=5, rows=1, offset=7, interval=1)
 
 lock_grn = image('images/padlock-open-green.png', x=9, y=0.5, width=1.5, height=1.5)
-Repeat(lock_grn, rows=1, cols=5, offset=7, gap=1)
+Repeat(lock_grn, rows=1, cols=5, offset=7, interval=1)
 
 Rectangle(common=card_icon_large, x=36, y=3, label="A")
 Image(common=pipe, x=28.5, y=4)
@@ -134,7 +134,7 @@ score_5 = circle(
 score_10 = circle(
     common=score_common, stroke="#EEE544", fill="#B5CDB0", label="{{sequence}}")
 score_track = RectangularLocations(
-    x=7.5, y=7.75, cols=32, rows=19, spacing=1.54,
+    x=7.5, y=7.75, cols=32, rows=19, interval=1.54,
     start="SE", direction="west", pattern="outer")
 Layout(score_track,
        shapes=[score_base]*4 + [score_5] + [score_base]*4 + [score_10])
@@ -145,9 +145,9 @@ Rectangle(
     x=57.4, y=6, width=2.4, height=30, fill_stroke="#554F52", rounding=0.4,
     hatch_count=12, hatch='w', hatch_stroke="#4E6B9A")
 Sequence(
-    text(x=58.5, y=6.8, font_size=24, stroke=grey),
+    text(x=58.5, y=6.8, font_size=24, stroke=grey, text="{{sequence}}"),
     setting=[1,2,3,4,' ',5,6,7,' ',8,9,10],
-    gap_y=2.3)
+    interval_y=2.3)
 
 # Player Order
 play_order = "#D4D4DB"
@@ -172,11 +172,11 @@ Circle(cx=14, cy=9.9, radius=0.5, fill_stroke=darkorchid)
 Sequence(
     text(x=10.4, y=18.4, font_size=32, stroke=orange, text="{{sequence}}."),
     setting=(1,4,1,'number'),
-    gap_y=-2.1)
+    interval_y=-2.1)
 Sequence(
     text(x=12.8, y=18.4, font_size=32, stroke=white, text="{{sequence}}."),
     setting=(1,4,1,'number'),
-    gap_y=-2.1)
+    interval_y=-2.1)
 
 Rectangle(common=money, label="1", x=13.75, y=14)
 

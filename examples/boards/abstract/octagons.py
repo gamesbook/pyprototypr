@@ -23,9 +23,13 @@ Polyshape(points=[(17.75,21), (15.75,18), (15.75,5), (17.75,2)], fill=black)
 
 Rectangle(x=1, y=4, height=15, width=16, fill=white)
 
-Repeat(oct_flat, cols=8, rows=8, gap=2.2, across=(1, 3, 5, 7), down=(1, 3, 5, 7), offset_x=2.2)
-Repeat(oct_vert, cols=8, rows=8, gap=2.2, across=(1, 3, 5, 7), down=(1, 3, 5, 7))
-Repeat(oct_vert, cols=8, rows=8, gap=2.2, across=(2, 4, 6, 8), down=(2, 4, 6, 8))
-Repeat(oct_flat, cols=8, rows=8, gap=2.2, across=(2, 4, 6, 8), down=(2, 4, 6, 8), offset_x=-2.2)
+Repeat(oct_flat, cols=8, rows=8, interval=2.2,
+       across=(1, 3, 5, 7), down=(1, 3, 5, 7), offset_x=2.2)
+Repeat(oct_vert, cols=8, rows=8, interval=2.2,
+       across=(1, 3, 5, 7), down=(1, 3, 5, 7))
+Repeat(oct_vert, cols=8, rows=8, interval=2.2,
+       across=(2, 4, 6, 8), down=(2, 4, 6, 8))
+Repeat(oct_flat, cols=8, rows=8, interval=2.2,
+       across=(2, 4, 6, 8), down=(2, 4, 6, 8), offset_x=-2.2)
 
 Save()

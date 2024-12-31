@@ -57,8 +57,14 @@ ww_grid = Hexagons(
 )
 
 # labels for map
-Sequence(text(common=gridnum, x=0.5, y=52.5), setting=('A', 'X'), gap_y=-2.2)
-Sequence(text(common=gridnum, x=1.7, y=56.5), setting=(1, 20), gap_x=1.92)
+Sequence(
+    text(common=gridnum, x=0.5, y=52.5, text="{{sequence}}"),
+    setting=('A', 'X'),
+    interval_y=-2.2)
+Sequence(
+    text(common=gridnum, x=1.7, y=56.5, text="{{sequence}}"),
+    setting=(1, 20),
+    interval_x=1.92)
 
 # star properties
 dstar = Common(fill=d_brown, stroke=d_brown, radius=0.18, dot=0.04, dot_stroke=black)
