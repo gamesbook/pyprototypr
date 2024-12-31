@@ -21,9 +21,9 @@ a_circle = circle(
 # ---- regular
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Rect.Locations: NW->south")
-rect = RectangularLocations(cols=2, rows=2, start="NW", direction="south")
-Layout(rect, shapes=[a_circle,], debug='xy')
+Text(common=header, text="Rect.Locations: NW->south (2x3)")
+rect = RectangularLocations(cols=2, rows=3, start="NW", direction="south")
+Layout(rect, shapes=[circle(x=0, y=0, diameter=1)], debug='cr')
 PageBreak()
 
 Blueprint(stroke_width=0.5)

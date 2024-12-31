@@ -160,16 +160,18 @@ Example 2.
 |sq2| This example shows the element constructed using differing values for the
       its properties.  In these cases, values in the sequence are being assigned
       to a text-based property using the special ``{{sequence}}`` keyword; when this
-      is encountered, it is replaced by the **actual** value of the sequence item.
+      is encountered, it is replaced by the **actual** value of the sequence number
+      for the item.
 
-      The example with **hexagons** (top left) is created by:
+      The example with **hexagons** and nested circles (upper left) is created by:
 
       .. code:: python
 
           Sequence(
-              hexagon(
+              [hexagon(
                  x=0.5, y=1.5, radius=0.5,
                   title_size=8, title="Fig. {{sequence}}"),
+               circle(cx=1, cy=2, radius=0.2, fill=grey)],
               setting=('C', 'A', -1),
               gap_y=1.5,
               gap_x=0.5,
@@ -180,6 +182,12 @@ Example 2.
       the type of value can be inferred from the start and end values. Each letter
       in the sequence is assigned to the ``{{sequence}}`` keyword and so that
       sequence value becomes part of the ``Hexagon`` 's title text.
+
+      This example also shows how multiple shapes can be drawn at the same time
+      with a single ``Sequence`` command; instead of supplying a single shape,
+      provide two or more in a list (enclosed with square brackets ``[...]``);
+      as always the shapes are drawn in order - in this case, the hexagon first
+      and then the grey circle.
 
       The example with **rectangles** (lower edge) is created by:
 
@@ -197,7 +205,7 @@ Example 2.
       is assigned to the ``{{sequence}}`` keyword and substituted into the text as
       part of the ``Rectangle`` 's label; the `$` is just a normal character.
 
-      The example with **circles** (top right) is created by:
+      The example with **circles** (upper right) is created by:
 
       .. code:: python
 

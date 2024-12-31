@@ -43,7 +43,10 @@ Title       *Chess Board - Brown*
 Source Code `chessboard_brown.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/chessboard_brown.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a regular Chess board with
-            brown styling and grid references.
+            brown styling and grid references. This example uses a Square grid;
+            with alphanumeric locations. These locations are then referenced
+            and drawn with a Location command. The grid notation along the
+            board edges is created via Sequence commands.
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/abstract/chessboard_brown.png
@@ -64,7 +67,9 @@ Discussion  This example shows how to construct a regular Backgammon board.
 
             This uses Trapezoid shape with a very narrow *top* to represent a
             point; this can be copied across in a line using a ``Sequence()``
-            command.
+            command. There is one Sequence command for each section of the
+            board (top and bottom sections of each panel); and each Sequence
+            draws a pair of Trapezoid shapes multiple times.
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/abstract/backgammon.png

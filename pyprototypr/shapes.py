@@ -3581,8 +3581,9 @@ class TextShape(BaseShape):
         if _locale:
             self.text = tools.eval_template(self.text, _locale)
         _text = self.textify(ID)
-        # tools.feedback(f'*** {_locale=} {self.text=} {_text}')
-        if _text is None:
+        # tools.feedback(f'*** {_locale=} {self.text=} {_text=}', False)
+        if _text is None or _text == '':
+            tools.feedback('No text supplied for the Text shape!', False, True)
             return
         _text = str(_text)  # card data could be numeric
         if '\\u' in _text:
@@ -3616,12 +3617,12 @@ class TextShape(BaseShape):
             endDots=None,
             splitLongWords=1,
             """
-            # tools.feedback(f'*** LONG-{ID} => text:{_text}')
+            # tools.feedback(f'*** LONG-{ID} => _text:{_text}')
             para = Paragraph(_text, style=_style)
             w, h = para.wrap(width, height)
             para.drawOn(cnv, x_t, y_t - h)  # start text from top of 'box'
         else:
-            # tools.feedback(f"*** {x_t=} {y_t=} {_text=} {_sequence} {rotation=}")
+            # tools.feedback(f"*** {x_t=} {y_t=} {_text=} {sequence=} {rotation=}")
             cnv.setFillColor(self.stroke)
             self.draw_multi_string(cnv, x_t, y_t, _text, rotation=rotation)
 

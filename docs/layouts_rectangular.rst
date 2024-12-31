@@ -158,6 +158,11 @@ Example 1. Rows and Columns
             cols=3, rows=4)
         Layout(rect, shapes=[a_circle])
 
+      As can be seen the sequence starts, by default, in the lower-left;
+      and increases from left to right and then from top to bottom. This
+      pattern is also mirrored in the column and row numbers (which follow
+      next to the *//* in the label).
+
 ===== ======
 
 Example 2. Start and Direction
@@ -177,6 +182,9 @@ Example 2. Start and Direction
             cols=3, rows=4,
             start="NW", direction="east")
         Layout(rect, shapes=[a_circle])
+
+      Here the sequence starts in the top-left / northwest ("NW") corner,
+      and flows to the right ("east") and down.
 
 ===== ======
 

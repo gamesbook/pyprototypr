@@ -62,7 +62,8 @@ Sequence(
     gap_x=1.2,
     )
 Sequence(
-    hexagon(x=0.5, y=1.5, radius=0.5, title_size=8, title="Fig. {{sequence}}"),
+    [hexagon(x=0.5, y=1.5, radius=0.5, title_size=8, title="Fig. {{sequence}}"),
+     circle(cx=1, cy=2, radius=0.2, fill=grey)],
     setting=('C', 'A', -1),
     gap_y=1.5,
     gap_x=0.5,
