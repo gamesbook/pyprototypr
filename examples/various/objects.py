@@ -99,15 +99,13 @@ Circle(cx=2, cy=19, radius=0.5,
 Circle(cx=2, cy=19, radius=0.15, fill_stroke=grey)
 
 Text(common=header_font, x=5, y=16, text="Atom: ellipses with rotation; circle")
-Ellipse(cx=2, cy=16, width=3, height=1, rotation=30, stroke_width=1, outline=red)
-Ellipse(cx=2, cy=16, width=3, height=1, rotation=150, stroke_width=1, outline=red)
-Ellipse(cx=2, cy=16, width=3, height=1, rotation=270, stroke_width=1, outline=red)
-#for r in range(0, 3): Ellipse(
-#        cx=2, cy=16, width=3, height=1, rotation=120*r + 30, stroke_width=1, outline=black)
+atom = Common(cx=2, cy=16, width=3, height=1, stroke_width=1, outline=red)
+for degrees in [30,150,270]:
+    Ellipse(common=atom, rotation=degrees)
 Circle(cx=2, cy=16, radius=0.2, fill_stroke=red)
 
 Text(common=header_font, x=5, y=12.5,
-     text="German Cross: rectangle with hatches and notches")
+     text="German Cross: rectangle with 'o' hatch and 'step' notch")
 Rectangle(
     height=2.8, width=2.8, x=0.5, y=11, fill=white, stroke=black, stroke_width=2,
     hatch_width=22, hatch_stroke=black, hatch='o', hatch_count=1,
@@ -128,5 +126,13 @@ Circle(cx=1, cy=9, radius=0.35, fill=None, stroke=firebrick, stroke_width=1,
 Circle(cx=3.5, cy=9, radius=0.35, fill=None, stroke=firebrick, stroke_width=1,
        radii=[30, 90, 147, 213, 270, 330], radii_offset=0.7,
        radii_stroke_width=1, radii_stroke=firebrick)
+
+Text(common=header_font, x=7, y=7, text="Sets of check boxes (loop + sequence)")
+for s in steps(0, 6, 2.2):
+    Sequence(
+        [rectangle(fill_stroke=black, x=s+0.05, y=6.95, height=0.5, width=0.5),
+         rectangle(stroke=black, x=s+0, y=7, height=0.5, width=0.5)],
+        setting=(1, 3),
+        interval_x=0.6)
 
 Save(output='png')

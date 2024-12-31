@@ -15,36 +15,36 @@ Create(filename="layouts_repeat.pdf",
        stroke_width=0.5)
 
 header = Common(x=0, y=6, font_size=7, align="left")
-marble = Circle(cx=1, cy=1, radius=0.25, fill=lime)
+marble = circle(cx=1, cy=1, radius=0.25, fill=lime)
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Repeat: cols&rows")
+Text(common=header, text="Repeat: cols&rows: interval=0")
 Repeat(marble, cols=4, rows=5)
 PageBreak()
 
 Blueprint(stroke_width=0.5)
-Text(common=header, text="Repeat: cols&rows: offset")
-Repeat(marble, cols=4, rows=5, offset=1)
+Text(common=header, text="Repeat: cols&rows: interval=1")
+Repeat(marble, cols=4, rows=5, interval=1)
 PageBreak()
 
 Blueprint(stroke_width=0.5, subdivisions=4)
-Text(common=header, text="Repeat: offset: across&down")
-Repeat(marble, cols=4, rows=4, offset_across=0.75, offset_down=1.25)
+Text(common=header, text="Repeat: interval: across&down")
+Repeat(marble, cols=4, rows=4, interval_x=0.75, interval_y=1.25)
 PageBreak()
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Repeat: across (cols 2 & 4)")
-Repeat(marble, cols=4, rows=5, offset=1, across=(2, 4))
+Repeat(marble, cols=4, rows=5, interval=1, across=(2, 4))
 PageBreak()
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Repeat: down (rows 1,3,5)")
-Repeat(marble, cols=4, rows=5, offset=1, down=(1, 3, 5))
+Repeat(marble, cols=4, rows=5, interval=1, down=(1, 3, 5))
 PageBreak()
 
 Blueprint(stroke_width=0.5)
 Text(common=header, text="Repeat: across&down")
-Repeat(marble, cols=4, rows=5, offset=1, across=(2, 4), down=(1, 3, 5))
+Repeat(marble, cols=4, rows=5, interval=1, across=(2, 4), down=(1, 3, 5))
 PageBreak()
 
 # Save()
@@ -54,7 +54,7 @@ Save(
      directory="docs/images/layouts",
      names=[
         "repeat_basic",
-        "repeat_offset", "repeat_offset_acrossdown",
+        "repeat_interval", "repeat_interval_acrossdown",
         "repeat_across", "repeat_down", "repeat_acrossdown",
 
      ]

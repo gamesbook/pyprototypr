@@ -209,6 +209,7 @@ class SequenceShape(BaseShape):
             _locale = Locale(sequence=item)
             kwargs['locale'] = _locale._asdict()
             # tools.feedback(f'*   @Seqnc@ {self.interval_x=}, {self.interval_y=}')
+            # tools.feedback(f'*   @Seqnc@ {kwargs["locale"]}')
             off_x = _off_x + key * self.interval_x
             off_y = _off_y + key * self.interval_y
             flat_elements = tools.flatten(self._object)
