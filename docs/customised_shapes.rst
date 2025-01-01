@@ -7,6 +7,14 @@ Customised Shapes
 .. |deg|  unicode:: U+00B0 .. DEGREE SIGN
    :ltrim:
 
+The descriptions here assume you are familiar with the concepts, terms
+and ideas for `pyprototypr <index.rst>`_ as presented in the
+`Basic Concepts <basic_concepts.rst>`_ - especially *units*, *properties*
+and *defaults*.
+
+You should have already seen how these shapes were created, with defaults,
+in `Core Shapes <core_shapes.rst>`_.
+
 .. _table-of-contents:
 
 Table of Contents
@@ -22,14 +30,6 @@ Table of Contents
 Overview
 ========
 `↑ <table-of-contents_>`_
-
-These descriptions assume you are familiar with the concepts, terms and ideas
-for `pyprototypr <index.rst>`_ as presented in the
-`Basic Concepts <basic_concepts.rst>`_ - especially *units*, *properties*
-and *defaults*.
-
-You should have already seen how these shapes were created, with defaults,
-in `Core Shapes <core_shapes.rst>`_.
 
 To make it easier to see where and how a shape has been drawn, most of these
 examples have been created with a background grid (which **pyprototypr**

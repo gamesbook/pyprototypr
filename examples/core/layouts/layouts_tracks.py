@@ -33,7 +33,7 @@ shp = circle(cx=1, cy=1, radius=0.5, fill=None)
 Track(rectangle(), shapes=[shp]*4)
 PageBreak()
 
-# ---- default track + cirlce
+# ---- default track + circle
 Blueprint()
 Text(common=txt, text="Track: default + sequence")
 shp = circle(cx=1, cy=1, radius=0.5, label='{{sequence}}')

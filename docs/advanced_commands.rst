@@ -3,8 +3,8 @@ Advanced Commands
 =================
 
 This section deals with some of the more advanced - and potentially more
-complex - concepts and options in **pyprototypr** - its therefore
-important that you are familiar with all of the
+complex - concepts and options in `pyprototypr <index.rst>`_ - its
+therefore important that you are familiar with all of the
 `Basic Concepts <basic_concepts.rst>`_, have looked through the
 `Core Shapes <core_shapes.rst>`_, have understood how these are used via
 the various examples, and are therefore comfortable with creating and using

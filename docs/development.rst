@@ -3,7 +3,8 @@ Development
 ===========
 
 These notes are aimed at those who might be developing the code further,
-or who want to use **pyprototypr** as part of other Python projects.
+or who want to use `pyprototypr <index.rst>`_ as part of other Python
+projects.
 
 
 Coding

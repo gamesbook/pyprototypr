@@ -55,15 +55,15 @@ Key Properties
 ==============
 `↑ <table-of-contents_>`_
 
-- `Example 1. Rows and Columns`_
-- `Example 2. X`_
-- `Example 3. X`_
-- `Example 4. X`_
-- `Example 5. X`_
-- `Example 6. X`_
-- `Example 7. X`_
-- `Example 8. X`_
-- `Example 9. X`_
+- `Example 1. Default`_
+- `Example 2. Track with a Shape`_
+- `Example 3. Track with sequence`_
+- `Example 4. Square Track with Star`_
+- `Example 5. Polygon Track`_
+- `Example 6. Polygon Track with stop`_
+- `Example 7. Polyline Track`_
+- `Example 8. Circle Track - clockwise`_
+- `Example 9. Polygon Track - custom shape`_
 - `Example 10. X`_
 - `Example 11. X`_
 - `Example 12. X`_
@@ -72,15 +72,15 @@ Key Properties
 - `Example 15. X`_
 
 
-Example 1. Rows and Columns
----------------------------
+Example 1. Default
+------------------
 `^ <key-properties_>`_
 
 .. |tk1| image:: images/tracks/track_default.png
    :width: 330
 
 ===== ======
-|tk1| This example shows the Track constructed using differing values for
+|tk1| This example shows the Track constructed using the default values for
       its properties.
 
       .. code:: python
@@ -91,8 +91,8 @@ Example 1. Rows and Columns
 ===== ======
 
 
-Example 2. X
-------------
+Example 2. Track with a Shape
+-----------------------------
 `^ <key-properties_>`_
 
 .. |tk2| image:: images/tracks/track_default_circle.png
@@ -104,14 +104,17 @@ Example 2. X
 
       .. code:: python
 
-          Track()
+        shp = circle(cx=1, cy=1, radius=0.5, fill=None)
+        Track(
+          rectangle(),
+          shapes=[shp])
 
 
 ===== ======
 
 
-Example 3. X
-------------
+Example 3. Track with sequence
+------------------------------
 `^ <key-properties_>`_
 
 .. |tk3| image:: images/tracks/track_default_count.png
@@ -123,14 +126,17 @@ Example 3. X
 
       .. code:: python
 
-          Track()
+        shp = circle(cx=1, cy=1, radius=0.5, label='{{sequence}}')
+        Track(
+          rectangle(),
+          shapes=[shp])
 
 
 ===== ======
 
 
-Example 4. X
-------------
+Example 4. Square Track with Star
+---------------------------------
 `^ <key-properties_>`_
 
 .. |tk4| image:: images/tracks/track_square_star.png
@@ -142,14 +148,16 @@ Example 4. X
 
       .. code:: python
 
-          Track()
-
+        shp = star(cx=1, cy=1, vertices=5, radius=0.5, label='{{sequence}}')
+        Track(
+          square(side=1.5),
+          shapes=[shp])
 
 ===== ======
 
 
-Example 5. X
-------------
+Example 5. Polygon Track
+------------------------
 `^ <key-properties_>`_
 
 .. |tk5| image:: images/tracks/track_polygon_hex.png
@@ -161,14 +169,17 @@ Example 5. X
 
       .. code:: python
 
-          Track()
+        shp = hexagon(cx=1, cy=1, height=0.5, label='{{sequence}}')
+        Track(
+           polygon(cx=2, cy=3, radius=1.5, sides=8),
+           shapes=[shp])
 
 
 ===== ======
 
 
-Example 6. X
-------------
+Example 6. Polygon Track with stop
+----------------------------------
 `^ <key-properties_>`_
 
 .. |tk6| image:: images/tracks/track_polygon_hex_stop.png
@@ -180,14 +191,18 @@ Example 6. X
 
       .. code:: python
 
-          Track()
+        shp = hexagon(cx=1, cy=1, height=0.5, label='{{sequence}}')
+        Track(
+          polygon(cx=2, cy=3, radius=1.5, sides=8),
+          shapes=[shp]*8,
+          stop=7)
 
 
 ===== ======
 
 
-Example 7. X
-------------
+Example 7. Polyline Track
+-------------------------
 `^ <key-properties_>`_
 
 .. |tk7| image:: images/tracks/track_polyline.png
@@ -199,14 +214,17 @@ Example 7. X
 
       .. code:: python
 
-          Track()
+        shp = hexagon(cx=1, cy=1, height=0.5, label='{{sequence}}')
+        Track(
+          Polyline(points=[(0, 0), (1, 2), (2, 1), (3, 3), (1, 5)]),
+          shapes=[shp])
 
 
 ===== ======
 
 
-Example 8. X
-------------
+Example 8. Circle Track - clockwise
+-----------------------------------
 `^ <key-properties_>`_
 
 .. |tk8| image:: images/tracks/track_circle.png
@@ -218,14 +236,19 @@ Example 8. X
 
       .. code:: python
 
-          Track()
-
+        shp = hexagon(cx=1, cy=1, height=0.5, label='{{sequence}}')
+        Track(
+             Circle(cx=2, cy=3, radius=1.5),
+             angles=[30,120,210,300],
+             shapes=[shp],
+             clockwise='t'
+        )
 
 ===== ======
 
 
-Example 9. X
-------------
+Example 9. Polygon Track - custom shape
+---------------------------------------
 `^ <key-properties_>`_
 
 .. |tk9| image:: images/tracks/track_polygon_six.png
@@ -237,7 +260,13 @@ Example 9. X
 
       .. code:: python
 
-          Track()
+        shp = rectangle(
+          cx=1, cy=1, width=0.5, height=0.5,
+          label='{{sequence}}', peaks=[("n", 0.25)])
+        Track(
+            polygon(cx=2, cy=3, sides=6, radius=1.5),
+            shapes=[shp],
+        )
 
 
 ===== ======

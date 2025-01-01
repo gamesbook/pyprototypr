@@ -3,10 +3,11 @@ Additional Concepts
 ===================
 
 This section assumes you are familiar with the concepts, terms and ideas
-for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_,
-have looked through the `Core Shapes <core_shapes.rst>`_,
-and that perhaps you have created one or two basic scripts on your own,
-along the lines described in the `Script Anatomy <script_anatomy.rst>`_.
+for `pyprototypr <index.rst>`_ as presented in
+`Basic Concepts <basic_concepts.rst>`_, have looked through the
+`Core Shapes <core_shapes.rst>`_, and that perhaps you have created one
+or two basic scripts on your own, along the lines described in the
+`Script Anatomy <script_anatomy.rst>`_.
 
 .. _table-of-contents:
 

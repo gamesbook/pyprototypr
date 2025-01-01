@@ -25,7 +25,7 @@ Table of Contents
 - `Diamond Hexagonal Grid`_
 - `Grid Locations`_
 - `Grid LinkLine`_
-- `Other Hexagonal Grid Resources`_
+- `Other Resources`_
 
 
 Overview
@@ -43,8 +43,8 @@ examples of both `commercial <examples/commercial.rst>`_ and
 `abstract <examples/abstract.rst>`_ boards.
 
 You should have already seen how a single Hexagon and a basic grid of Hexagons
-are created using defaults, in `Core Shapes <core_shapes.rst#hexagon>`_. You
-should also have seen how a single Hexagon can be further enhanced in
+are created using defaults, via a `Hexagon Shape <core_shapes.rst#hexagon>`_.
+You should also have seen how a single Hexagon can be further enhanced in
 `Customised Shapes <customised_shapes.rst#hexagon>`_.
 
 .. _rectIndex:
@@ -1029,8 +1029,8 @@ Example 4. An Offset LinkLine
 ===== ======
 
 
-Other Hexagonal Grid Resources
-==============================
+Other Resources
+===============
 `↑ <table-of-contents_>`_
 
 There are already a number of software tools available for creating

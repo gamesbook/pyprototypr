@@ -3,10 +3,10 @@ Layouts
 =======
 
 This section assumes you are very familiar with the concepts, terms and ideas
-for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ ,
-that you understand all of the `Additional Concepts <additional_concepts.rst>`_
-and that you've created some basic scripts of your own using the
-`Core Shapes <core_shapes.rst>`_.
+for `pyprototypr <index.rst>`_  as presented in the
+`Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
+`Additional Concepts <additional_concepts.rst>`_ and that you've created some
+basic scripts of your own using the `Core Shapes <core_shapes.rst>`_.
 
 .. _table-of-contents:
 
