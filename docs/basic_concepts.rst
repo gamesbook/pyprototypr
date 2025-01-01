@@ -2,10 +2,10 @@
 Basic Concepts
 ==============
 
-Like many other specialised tools, **pyprototypr** has its own set of
-terms and concepts that act as "short-cuts" to help it function. Some
-of these are likely to be common to other graphics editing or
-programming tools, but some are specific to it.
+Like many other specialised tools, `pyprototypr <index.rst>`_ has its
+own set of terms and concepts that act as "short-cuts" to help it
+function. Some of these are likely to be common to other graphics
+editing or programming tools, but some are specific to it.
 
 This is a general discussion; it may also be useful to look at the more
 detailed definitions of some of the terms in the section covering

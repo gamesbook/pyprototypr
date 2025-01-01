@@ -4,10 +4,10 @@ pyprototypr: Overview
 Introduction
 ------------
 
-The aim of **pyprototypr** is to provide a general purpose program that
-allows you to design simple and reproducible graphics that can be used
-for prototyping the elements or components of a project such as the
-creation of a board game; including the board, the tiles, the cards and
+The aim of `pyprototypr <index.rst>`_ is to provide a general purpose
+program that allows you to design simple and reproducible graphics that
+can be used for prototyping the elements or components of a project such as
+the creation of a board game; including the board, the tiles, the cards and
 so on.
 
 .. NOTE::

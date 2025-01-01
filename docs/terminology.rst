@@ -2,8 +2,9 @@
 Terminology
 ===========
 
-**pyprototypr** uses many terms; most of which should - hopefully - be fairly
-obvious by their name, or by the context in which they are used.
+`pyprototypr <index.rst>`_ uses many terms; most of which should -
+hopefully - be fairly obvious by their name, or by the context in
+which they are used.
 
 However, in order to help with clarity, below is a reasonably comprehensive
 list of terms used in different places, grouped by what they affect.

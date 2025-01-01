@@ -7,9 +7,10 @@ Hexagonal Grids
 .. |deg|  unicode:: U+00B0 .. DEGREE SIGN
    :ltrim:
 
-This section assumes you are very familiar with the concepts, terms and ideas
-for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ ,
-that you understand all of the `Additional Concepts <additional_concepts.rst>`_
+This section assumes you are very familiar with the concepts, terms and
+ideas for `pyprototypr <index.rst>`_ as presented in the
+`Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
+`Additional Concepts <additional_concepts.rst>`_
 and that you've created some basic scripts of your own using the
 `Core Shapes <core_shapes.rst>`_.
 
@@ -461,7 +462,7 @@ Radii
       - *hex_offset* determines which columns are shifted
       - *radii* - as described for a
         `customised hexagon <customised_shapes.rst#hexagon>`_,this will
-        setup lines running from each hexagon centre to the vertices, as
+        create lines running from each hexagon centre to the vertices, as
         define by the directions specified
 ===== ======
 

@@ -70,10 +70,15 @@ PageBreak()
 
 # # ---- circle track + shape
 Blueprint()
-Text(common=txt, text="Track: circle displayed")
+Text(common=txt, text="Track: circle; clockwise")
 #shp = rhombus(cx=1, cy=1, width=0.25, height=0.5, label='{{sequence}}')
 shp = hexagon(cx=1, cy=1, height=0.5, label='{{sequence}}')
-Track(Circle(cx=2, cy=3, radius=1.5), angles=[30,120,210,300], shapes=[shp]*8)
+Track(
+     Circle(cx=2, cy=3, radius=1.5),
+     angles=[30,120,210,300],
+     shapes=[shp],
+     clockwise='t'
+)
 PageBreak()
 
 # ---- polygon track
@@ -86,14 +91,14 @@ Track(
 )
 PageBreak()
 
-# ---- polygon track + anticlockwise
+# ---- polygon track + clockwise
 Blueprint()
-Text(common=txt, text="Track: polygon: anticlockwise")
+Text(common=txt, text="Track: polygon: clockwise")
 shp = rectangle(cx=1, cy=1, width=0.5, height=0.5, label='{{sequence}}', peaks=[("n", 0.25)])
 Track(
     polygon(cx=2, cy=3, sides=6, radius=1.5),
     shapes=[shp]*6,
-    anticlockwise='t',
+    clockwise='t',
 )
 PageBreak()
 
@@ -131,23 +136,23 @@ Track(
 )
 PageBreak()
 
-# ---- square track + rotation shape
+# ---- rectangle track + rotation shape
 Blueprint()
-Text(common=txt, text="Track: square: rotate 'i'")
+Text(common=txt, text="Track: rectangle: rotate 'i'")
 shp = rectangle(cx=1, cy=1, width=0.5, height=0.5, label='{{sequence}}', peaks=[("n", 0.25)])
 Track(
-    Square(cx=2, cy=3, side=2),
+    Rectangle(cx=2, cy=3, height=2, width=2),
     shapes=[shp]*4,
     rotation_style='i',
 )
 PageBreak()
 
-# ---- square track + rotation shape
+# ---- rectangle track + rotation shape
 Blueprint()
-Text(common=txt, text="Track: square: rotate 'o'")
+Text(common=txt, text="Track: rectangle: rotate 'o'")
 shp = rectangle(cx=1, cy=1, width=0.5, height=0.5, label='{{sequence}}', peaks=[("n", 0.25)])
 Track(
-    Square(cx=2, cy=3, side=2),
+    Rectangle(cx=2, cy=3, height=2, width=2),
     shapes=[shp]*4,
     rotation_style='o',
 )

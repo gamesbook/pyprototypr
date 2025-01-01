@@ -24,8 +24,9 @@ Overview
 `↑ <table-of-contents_>`_
 
 These descriptions assume you are familiar with the concepts, terms and ideas
-for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ -
-especially *units*, *properties* and *defaults*.
+for `pyprototypr <index.rst>`_ as presented in the
+`Basic Concepts <basic_concepts.rst>`_ - especially *units*, *properties*
+and *defaults*.
 
 You should have already seen how these shapes were created, with defaults,
 in `Core Shapes <core_shapes.rst>`_.

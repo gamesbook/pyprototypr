@@ -20,8 +20,8 @@ Outline
 =======
 `↑ <table-of-contents_>`_
 
-There are four parts to being able to use **pyprototypr** on your own
-machine:
+There are four parts to being able to use `pyprototypr <index.rst>`_
+on your own machine:
 
 1. Install the correct version of `Python <http://www.python.org>`_
 2. Install and set-up **pyprototypr**

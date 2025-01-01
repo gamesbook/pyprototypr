@@ -1607,7 +1607,7 @@ def Track(track=None, **kwargs):
     kwargs = kwargs
     angles = kwargs.get('angles', [])
     rotation_style = kwargs.get('rotation_style', None)
-    anticlockwise = tools.as_bool(kwargs.get('anticlockwise', None))
+    clockwise = tools.as_bool(kwargs.get('clockwise', None))
     stop = tools.as_int(kwargs.get('stop', None), 'stop', allow_none=True)
     start = tools.as_int(kwargs.get('start', None), 'start', allow_none=True)
 
@@ -1647,13 +1647,10 @@ def Track(track=None, **kwargs):
                 Point(c_pt.x + track._o.delta_x, c_pt.y + track._o.delta_y))
     else:
         # ---- get normal vertices
-        if isinstance(track.vertices, list):
-            track_points = track.vertices
-        else:
-            track_points = track.get_vertices()
+        track_points = track.get_vertices()
 
     # ---- change drawing order
-    if anticlockwise:
+    if clockwise:
         track_points = list(reversed(track_points))
         _swop = len(track_points) - 1
         track_points = track_points[_swop:] + track_points[:_swop]
@@ -1680,12 +1677,13 @@ def Track(track=None, **kwargs):
         shape = copy(shapes[shape_id])
         # ---- * supply data to text fields
         data = {'x': track_point.x, 'y': track_point.y, 'count': index + 1}
+        # tools.feedback(f'*Track* {index=} {data=}')
         # format_label(shape, data)
         # ---- supply data to change shape's location
         # TODO - can choose line centre, not vertex, as the cx,cy position
         shape.cx = shape.points_to_value(track_point.x - track._o.delta_x)
         shape.cy = shape.points_to_value(track_point.y - track._o.delta_y)
-        # tools.feedback(f'Track* {shape.cx=}, {shape.cy=}')
+        # tools.feedback(f'*Track* {shape.cx=}, {shape.cy=}')
         if _rotation_style:
             match _rotation_style:
                 case 'i' | 'inwards':

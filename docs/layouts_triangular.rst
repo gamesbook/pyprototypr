@@ -8,11 +8,22 @@ within a `deck <card_decks.rst>`_, but it also includes commands that let you
 place, or "`layout <layouts.rst>`_", elements in a more repetitive or regular
 way within a page.
 
-This section assumes you are very familiar with the concepts, terms and ideas
-for **pyprototypr** as presented in `Basic Concepts <basic_concepts.rst>`_ ,
-that you understand all of the `Additional Concepts <additional_concepts.rst>`_
+This section assumes you are very familiar with the concepts, terms and
+ideas for `pyprototypr <index.rst>`_ as presented in the
+`Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
+`Additional Concepts <additional_concepts.rst>`_
 and that you've created some basic scripts of your own using the
 `Core Shapes <core_shapes.rst>`_.
+
+
+.. _table-of-contents:
+
+Table of Contents
+=================
+
+- `Overview`_
+- `Usage`_
+- `Key Properties`_
 
 
 Overview
@@ -87,7 +98,7 @@ Example 1. Rows and Columns
    :width: 330
 
 ===== ======
-|tl0| This example shows the element constructed using differing values for the
+|tl0| This example shows the shape constructed using differing values for
       its properties.
 
       .. code:: python

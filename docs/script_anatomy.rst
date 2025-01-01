@@ -8,7 +8,7 @@ an extension of ".py".
 
 .. HINT::
 
-    *NOTE* This document assumes that **pyprototypr** is working on your
+    This document assumes that `pyprototypr <index.rst>`_ is working on your
     computer after successfully `Setting Up <setting_up.rst>`_, and that you
     have read and understood the `Basic Concepts <basic_concepts.rst>`_
 

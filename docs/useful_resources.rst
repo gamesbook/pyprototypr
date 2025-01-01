@@ -2,6 +2,9 @@
 Useful Resources
 ================
 
+These are resources that can supplement, or aid, with game design when
+working with `pyprototypr <index.rst>`_.
+
 .. NOTE::
 
    Inclusion of these links does **not** constitute a recommendation
