@@ -149,7 +149,7 @@ otherwise noted). The default is usually 1 e.g. 1cm.  The default *unit** is
 Some sizes are set in **points** - there are 72 points in an inch - so as to
 align with existing conventions, or simply because these items are
 typically very tiny. As far as possible, the term **size** is reserved
-for these settings; for example, **font_size**, **dot_size**. An exception
+for these settings; for example, **font_size** and **dot**. An exception
 is **stroke_width** which is also in points, again because of convention.
 
 A few sizes are given descriptive names; this makes them a little easier
@@ -159,7 +159,7 @@ to set.
    "caltrop" - the small three-pointed shape drawn at the vertex of a
    hexagon - which can be set one of: *small*, *medium* or *large*
 -  **diameter** - the diameter of a ``Circle``
--  **dot_size** - the diameter of a small ``Dot`` in **points**
+-  **dot** - the diameter of a small ``Dot`` in **points**
 -  **cross** - the height and width of the intersecting lines drawn at
    the centre of a shape
 -  **height** - the vertical dimension of a shape e.g. a ``Rectangle``

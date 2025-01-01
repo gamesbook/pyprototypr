@@ -24,7 +24,7 @@ Hexagons(
     hex_offset="odd",
     y=-0.8,
     x=-0.0,
-    dot_size=0.04,
+    dot=0.04,
     dot_stroke=white,
     coord_elevation="t",
     coord_type_x="upper",

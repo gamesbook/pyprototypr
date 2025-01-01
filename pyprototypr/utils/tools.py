@@ -42,9 +42,11 @@ class HexOrientation(Enum):
 class DirectionGroup(Enum):
     CARDINAL = 1
     COMPASS = 2
-    HEX_FLAT = 3
+    HEX_FLAT = 3  # vertex
     HEX_POINTY = 4
-    CIRCULAR = 5
+    HEX_FLAT_EDGE = 4  # edge
+    HEX_POINTY_EDGE = 5
+    CIRCULAR = 6
 
 
 def script_path():
@@ -845,9 +847,9 @@ def validated_directions(
     >>> validated_directions('n s', DirectionGroup.CARDINAL)
     ['n', 's']
     >>> validated_directions('n s', DirectionGroup.HEX_FLAT)
-    ['n', 's']
-    >>> validated_directions('w e', DirectionGroup.HEX_POINTY)
     ['w', 'e']
+    >>> validated_directions('w e', DirectionGroup.HEX_POINTY)
+    ['n', 's']
     >>> validated_directions('w e n s ne', DirectionGroup.COMPASS)
     ['w', 'e', 'n', 's', 'ne']
     """
@@ -867,8 +869,12 @@ def validated_directions(
         case DirectionGroup.COMPASS:
             valid = {'n', 'e', 'w', 's', 'ne', 'se', 'sw', 'nw'}
         case DirectionGroup.HEX_FLAT:
-            valid = {'n', 'se', 'sw', 's', 'ne', 'nw'}
+            valid = {'e', 'se', 'sw', 'w', 'ne', 'nw'}
         case DirectionGroup.HEX_POINTY:
+            valid = {'s', 'se', 'sw', 'n', 'ne', 'nw'}
+        case DirectionGroup.HEX_FLAT_EDGE:  # perbis
+            valid = {'s', 'se', 'sw', 'n', 'ne', 'nw'}
+        case DirectionGroup.HEX_POINTY_EDGE:  # perbis
             valid = {'e', 'se', 'sw', 'w', 'ne', 'nw'}
         case DirectionGroup.CIRCULAR:
             valid = {'n', 'e', 'w', 's', 'ne', 'se', 'sw', 'nw', 'o', 'd'}

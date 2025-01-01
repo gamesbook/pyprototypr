@@ -1581,8 +1581,8 @@ class HexShape(BaseShape):
             dotted=self.perbis_dotted)
 
         if self.perbis:
-            dir_group = tools.DirectionGroup.HEX_POINTY if self.orientation == 'pointy' \
-                else tools.DirectionGroup.HEX_FLAT
+            dir_group = tools.DirectionGroup.HEX_POINTY_EDGE if self.orientation == 'pointy' \
+                else tools.DirectionGroup.HEX_FLAT_EDGE
             perbis_dirs = tools.validated_directions(self.perbis, dir_group, 'perbis')
             _dirs = []
             # tools.feedback(f'*** {self.perbis=} {self.orientation=} {perbis_dirs=}')
