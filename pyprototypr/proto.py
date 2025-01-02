@@ -75,7 +75,7 @@ from pyprototypr.utils.support import (
     steps, excels, excel_column,  numbers, letters)
 from pyprototypr.utils.tools import base_fonts, DatasetType
 from pyprototypr.utils import geoms, tools, support
-from pyprototypr.utils.geoms import equilateral_height, Locale, Point, Place
+from pyprototypr.utils.geoms import equilateral_height, Locale, Point, Place, Ray
 
 from pyprototypr import globals
 
@@ -1613,7 +1613,7 @@ def Track(track=None, **kwargs):
 
     # ---- check kwargs inputs
     if not track:
-        track = Polygon(sides=4, fill_color=DEBUG_COLOR)
+        track = Polygon(sides=4, fill=None)
     track_name = track.__class__.__name__
     track_abbr = track_name.replace('Shape', '')
     if track_name == 'CircleShape':
@@ -1622,6 +1622,11 @@ def Track(track=None, **kwargs):
                 f"A list of 2 or more angles is needed for a Circle-based Track!", True)
     elif track_name in ['SquareShape', 'RectangleShape']:
         angles = track.get_angles()
+        # change behaviour to match Circle and Polygon
+        if clockwise is not None:
+            clockwise = not clockwise
+        else:
+            clockwise = True
     elif track_name == 'PolygonShape':
         angles = track.get_angles()
     elif track_name not in SHAPES_FOR_TRACK:
@@ -1632,11 +1637,14 @@ def Track(track=None, **kwargs):
             tools.feedback(f"The rotation_style '{rotation_style}' is not valid", True)
     else:
         _rotation_style = None
-    shapes = kwargs.get('shapes', [square(label="{{sequence}}")])  # shape(s) to draw at the locations
+    shapes = kwargs.get('shapes', [])  # [square(label="{{sequence}}", fill=None)])  # shape(s) to draw at the locations
+    if not shapes:
+        tools.feedback('Track needs at least one Shape assigned to shapes list',
+                       False, True)
 
-    # ---- create Circle vertices
+    track_points = []  # a list of Ray tuples
+    # ---- create Circle vertices and angles
     if track_name == 'CircleShape':
-        track_points = []
         # calculate vertices along circumference
         for angle in angles:
             c_pt = geoms.point_on_circle(
@@ -1644,13 +1652,17 @@ def Track(track=None, **kwargs):
                 radius=track._u.radius,
                 angle=angle)
             track_points.append(
-                Point(c_pt.x + track._o.delta_x, c_pt.y + track._o.delta_y))
+                Ray(c_pt.x + track._o.delta_x, c_pt.y + track._o.delta_y, angle))
     else:
-        # ---- get normal vertices
-        track_points = track.get_vertices()
+        # ---- get normal vertices and angles
+        vertices = track.get_vertices()
+        angles = [0] * len(vertices) if not angles else angles  # Polyline-> has none!
+        for key, vertex in enumerate(vertices):
+            track_points.append(
+                Ray(vertex.x, vertex.y, angles[key]))
 
     # ---- change drawing order
-    if clockwise:
+    if clockwise is not None and clockwise:
         track_points = list(reversed(track_points))
         _swop = len(track_points) - 1
         track_points = track_points[_swop:] + track_points[:_swop]
@@ -1671,12 +1683,16 @@ def Track(track=None, **kwargs):
         # TODO - delink shape index from track vertex index !
         # ---- * skip unwanted vertex
         # ---- * stop early if index exceeded
-        if stop and index + 1 >= stop:
+        if stop and index >= stop:
             break
         # ---- * enable overwrite/change of properties
+        if len(shapes) == 0:
+            continue
         shape = copy(shapes[shape_id])
-        # ---- * supply data to text fields
-        data = {'x': track_point.x, 'y': track_point.y, 'count': index + 1}
+        # ---- * store data for use by text
+        data = {
+            'x': track_point.x, 'y': track_point.y,
+            'theta': track_point.angle, 'count': index + 1}
         # tools.feedback(f'*Track* {index=} {data=}')
         # format_label(shape, data)
         # ---- supply data to change shape's location
@@ -1687,9 +1703,9 @@ def Track(track=None, **kwargs):
         if _rotation_style:
             match _rotation_style:
                 case 'i' | 'inwards':
-                    shape_rotation = 90 + angles[index]
+                    shape_rotation = 90 + track_point.angle
                 case 'o' | 'outwards':
-                    shape_rotation = angles[index] - 90
+                    shape_rotation = track_point.angle - 90
                 case _:
                     raise NotImplementedError(
                         f"The rotation_style '{_rotation_style}' is not valid")
