@@ -2,12 +2,6 @@
 TriangularLocations Command
 ===========================
 
-**pyprototypr** allows you to directly define where elements, that make up
-your design, should be placed within a page, or over a series of pages
-within a `deck <card_decks.rst>`_, but it also includes commands that let you
-place, or "`layout <layouts.rst>`_", elements in a more repetitive or regular
-way within a page.
-
 This section assumes you are very familiar with the concepts, terms and
 ideas for `pyprototypr <index.rst>`_ as presented in the
 `Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
@@ -34,8 +28,9 @@ of row and column locations that create a triangular pattern.  The x- and
 y-values of these rows and columns are then used to set the centres of
 the elements that can be placed there using the ``Layout()`` command.
 
-Apart from the ``TriangularLocations()`` command described here, there are
-also other ways to place elements on a page:
+Apart from the ``TriangularLocations()`` command described here,
+there are also these other commands which allow you to layout
+elements in a more repetitive or regular way within a page:
 
 - `Repeats <layouts_repeats.rst>`_
 - `Sequences <layouts_sequence.rst>`_

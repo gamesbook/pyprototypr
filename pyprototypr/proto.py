@@ -1610,8 +1610,14 @@ def Track(track=None, **kwargs):
     clockwise = tools.as_bool(kwargs.get('clockwise', None))
     stop = tools.as_int(kwargs.get('stop', None), 'stop', allow_none=True)
     start = tools.as_int(kwargs.get('start', None), 'start', allow_none=True)
+    sequences = kwargs.get('sequences', [])  # which sequence positions to show
 
     # ---- check kwargs inputs
+    if sequences and isinstance(sequences, str):
+        sequences = tools.sequence_split(sequences)
+    if sequences and stop:
+        tools.feedback(
+            "Both stop and sequences cannot be used together for a Track!", True)
     if not track:
         track = Polygon(sides=4, fill=None)
     track_name = track.__class__.__name__
@@ -1681,7 +1687,10 @@ def Track(track=None, **kwargs):
     shape_id = 0
     for index, track_point in enumerate(track_points):
         # TODO - delink shape index from track vertex index !
-        # ---- * skip unwanted vertex
+        # ---- * ignore sequence not in the list
+        if sequences:
+            if index + 1 not in sequences:
+                continue
         # ---- * stop early if index exceeded
         if stop and index >= stop:
             break

@@ -158,6 +158,18 @@ Track(
 )
 PageBreak()
 
+# ---- polygon track + sequences
+Blueprint()
+Text(common=txt, text="Track: polygon; sequences")
+shp = rectangle(cx=1, cy=1, width=0.5, height=0.5, label='{{sequence}}', peaks=[("n", 0.25)])
+Track(
+    polygon(cx=2, cy=3, sides=12, radius=1.5),
+    shapes=[shp],
+    rotation_style='o',
+    sequences=[1,3,5,7,9,11]
+)
+PageBreak()
+
 # ---- clock shape
 Blueprint()
 Text(common=txt, text="Track: circles; 'clock'")
@@ -170,6 +182,31 @@ Track(
     shapes=[shp],
     rotation_style='o',
     clockwise=True,
+)
+PageBreak()
+
+# ---- scoring track
+Blueprint()
+Text(common=txt, text="Track: polygon; 'scoring'")
+trk = polygon(cx=2, cy=3, sides=30, radius=1.75)
+shp = circle(cx=1, cy=1, radius=0.18, stroke=navy,
+             label='{{sequence}}', label_size=6)
+Track(
+    trk,
+    shapes=[shp],
+    rotation_style='o',
+    clockwise=True,
+    start=24
+)
+shp5 = circle(cx=1, cy=1, radius=0.18, stroke=navy, fill=aqua,
+             label='{{sequence}}', label_size=6)
+Track(
+    trk,
+    shapes=[shp5],
+    rotation_style='o',
+    clockwise=True,
+    start=24,
+    sequences=[5,10,15,20,25,30,35]
 )
 PageBreak()
 
@@ -193,7 +230,8 @@ Save(
         "track_polygon_rotate_i", "track_polygon_rotate_o",
         "track_circle_rotate_o",
         "track_square_rotate_i", "track_square_rotate_o",
-        "track_clock",
+        "track_sequences",
+        "track_clock", "track_score",
         None,
      ]
 )

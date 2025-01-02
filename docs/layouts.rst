@@ -106,8 +106,8 @@ Command Details
 
 The commands are described in detail, with examples, in these sections:
 
-- `Repeat <layouts_repeat.rst>`_
 - `Sequence <layouts_sequence.rst>`_
+- `Repeat <layouts_repeat.rst>`_
 - `Track <layouts_track.rst>`_
 - `RectangularLocations <layouts_rectangular.rst>`_
 - `TriangularLocations <layouts_triangular.rst>`_

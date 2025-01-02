@@ -2,12 +2,6 @@
 Sequence Command
 ================
 
-**pyprototypr** allows you to directly define where elements, that make up
-your design, should be placed within a page, or over a series of pages
-within a `deck <card_decks.rst>`_, but it also includes commands that let you
-place, or "`layout <layouts.rst>`_", elements in a more repetitive or regular
-way within a page.
-
 This section assumes you are very familiar with the concepts, terms and
 ideas for `pyprototypr <index.rst>`_ as presented in the
 `Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
@@ -21,7 +15,9 @@ Overview
 The `Sequence()` command is designed to lay out a number of values - letters or
 numbers, or shapes - in a straight line.
 
-Apart from the ``Sequence()`` command described here, there are also:
+Apart from the ``Sequence()`` command described here,
+there are also these other commands which allow you to layout
+elements in a more repetitive or regular way within a page:
 
 - `Repeats <layouts_repeats.rst>`_
 - `Tracks <layouts_track.rst>`_
