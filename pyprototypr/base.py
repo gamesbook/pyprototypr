@@ -307,6 +307,8 @@ PAGES = {
 }
 WIDTH = 0.1
 
+CLOCK_ANGLES = [60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 0, 30]
+
 
 class BaseCanvas:
     """Wrapper/extended class for a ReportLab canvas."""

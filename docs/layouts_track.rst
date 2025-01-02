@@ -92,8 +92,9 @@ Key Properties
 - `Example 14. Rectangular Track - inwards`_
 - `Example 15. Rectangular Track - outwards`_
 - `Example 16. Polygon Track - sequences`_
-- `Example 17. Circular Track - clock`_
-- `Example 18. Polygon Track - scoring`_
+- `Example 17. Multiple Tracks - starts`_
+- `Example 18. Circular Track - clock`_
+- `Example 19. Polygon Track - scoring`_
 
 
 Example 1. Default
@@ -516,15 +517,65 @@ Example 16. Polygon Track - sequences
 ===== ======
 
 
-Example 17. Circular Track - clock
-----------------------------------
+Example 17. Multiple Tracks - starts
+------------------------------------
 `^ <key-properties_>`_
 
-.. |tc7| image:: images/tracks/track_clock.png
+.. |tc7| image:: images/tracks/track_starts.png
    :width: 330
 
 ===== ======
 |tc7| This example shows the Track constructed using differing values for
+      its properties.
+
+      .. code:: python
+
+        shp = circle(cx=0, cy=0, radius=0.25, label='{{sequence}}')
+
+        # square
+        Track(
+          Square(x=0.75, y=0.75, side=0.75, stroke=red),
+          shapes=[shp])
+        Track(
+          Square(x=2.75, y=0.75, side=0.75, stroke=red),
+          shapes=[shp],
+          clockwise=True)
+        # circle
+        Track(
+          Circle(cx=1, cy=3, radius=0.5, stroke=red),
+          shapes=[shp],
+          angles=[45,135,225,315])
+        Track(
+          Circle(cx=3, cy=3, radius=0.5, stroke=red),
+          shapes=[shp],
+          angles=[45,135,225,315],
+          clockwise=True)
+        # poly
+        Track(
+          Polygon(cx=1, cy=5, radius=0.5, sides=4, stroke=red),
+          shapes=[shp])
+        Track(
+          Polygon(cx=3, cy=5, radius=0.5, sides=4, stroke=red),
+          shapes=[shp],
+          clockwise=True)
+
+      The purpose of this example to show that the start location varies
+      per type of track used.
+
+      The examples on the left are with default direction; the ones on the
+      right show how ``clockwise=True`` changes that.
+===== ======
+
+
+Example 18. Circular Track - clock
+----------------------------------
+`^ <key-properties_>`_
+
+.. |tc8| image:: images/tracks/track_clock.png
+   :width: 330
+
+===== ======
+|tc8| This example shows the Track constructed using differing values for
       its properties.
 
       .. code:: python
@@ -546,15 +597,15 @@ Example 17. Circular Track - clock
 ===== ======
 
 
-Example 18. Polygon Track - scoring
+Example 19. Polygon Track - scoring
 -----------------------------------
 `^ <key-properties_>`_
 
-.. |tc8| image:: images/tracks/track_score.png
+.. |tc9| image:: images/tracks/track_score.png
    :width: 330
 
 ===== ======
-|tc8| This example shows two Tracks constructed using differing values for
+|tc9| This example shows two Tracks constructed using differing values for
       their properties.
 
       .. code:: python

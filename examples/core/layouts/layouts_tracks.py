@@ -170,6 +170,38 @@ Track(
 )
 PageBreak()
 
+# ---- multi-type track starts
+Blueprint()
+Text(common=txt, text="Track: multiple types; starts")
+shp = circle(cx=0, cy=0, radius=0.25, label='{{sequence}}')
+# square
+Track(
+  Square(x=0.75, y=0.75, side=0.75, stroke=red),
+  shapes=[shp])
+Track(
+  Square(x=2.75, y=0.75, side=0.75, stroke=red),
+  shapes=[shp],
+  clockwise=True)
+# circle
+Track(
+  Circle(cx=1, cy=3, radius=0.5, stroke=red),
+  shapes=[shp],
+  angles=[45,135,225,315])
+Track(
+  Circle(cx=3, cy=3, radius=0.5, stroke=red),
+  shapes=[shp],
+  angles=[45,135,225,315],
+  clockwise=True)
+# poly
+Track(
+  Polygon(cx=1, cy=5, radius=0.5, sides=4, stroke=red),
+  shapes=[shp])
+Track(
+  Polygon(cx=3, cy=5, radius=0.5, sides=4, stroke=red),
+  shapes=[shp],
+  clockwise=True)
+PageBreak()
+
 # ---- clock shape
 Blueprint()
 Text(common=txt, text="Track: circles; 'clock'")
@@ -230,7 +262,7 @@ Save(
         "track_polygon_rotate_i", "track_polygon_rotate_o",
         "track_circle_rotate_o",
         "track_square_rotate_i", "track_square_rotate_o",
-        "track_sequences",
+        "track_sequences", "track_starts",
         "track_clock", "track_score",
         None,
      ]
