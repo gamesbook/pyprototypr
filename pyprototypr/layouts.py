@@ -83,9 +83,9 @@ class DotGridShape(BaseShape):
         kwargs = self.kwargs | kwargs
         cnv = cnv.canvas if cnv else self.canvas.canvas
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
-        # ---- convert to using units
-        x = 0 + self.unit(self.offset_x)
-        y = 0 + self.unit(self.offset_y)
+        # ---- switch to use of units
+        x = 0 + self._u.offset_x
+        y = 0 + self._u.offset_y
         height = self._u.height  # of each grid item
         width = self._u.width  # of each grid item
         if 'side' in self.kwargs and not \

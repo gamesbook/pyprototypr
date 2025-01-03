@@ -83,6 +83,10 @@ UnitProperties = namedtuple(
         'diameter',
         'side',
         'length',
+        'spacing_x',
+        'spacing_y',
+        'offset_x',
+        'offset_y',
     ]
 )
 OffsetProperties = namedtuple(
@@ -541,9 +545,12 @@ class BaseCanvas:
         self.grid = None  # some Shapes can auto-generate a GridShape
         self.rows = self.defaults.get('rows', 0)
         self.cols = self.defaults.get('cols', self.defaults.get('columns', 0))
-        self.offset = self.defaults.get('offset', 0)
+        self.offset = self.defaults.get('offset', 0)  # from margin
         self.offset_x = self.defaults.get('offset_x', self.offset)
         self.offset_y = self.defaults.get('offset_y', self.offset)
+        self.spacing = self.defaults.get('spacing', 0)  # between cards
+        self.spacing_x = self.defaults.get('spacing_x', self.spacing)
+        self.spacing_y = self.defaults.get('spacing_y', self.spacing)
         # ---- circle / star / polygon
         self.diameter = self.defaults.get('diameter', 1)
         self.radius = self.defaults.get('radius', self.diameter / 2.0)
@@ -865,8 +872,11 @@ class BaseShape:
         self.rows = self.kw_int(kwargs.get('rows', cnv.rows))
         self.cols = self.kw_int(kwargs.get('cols', kwargs.get('columns', cnv.cols)))
         self.offset = self.kw_float(kwargs.get('offset', cnv.offset))
-        self.offset_x = self.kw_float(kwargs.get('offset_x', cnv.offset_x))
-        self.offset_y = self.kw_float(kwargs.get('offset_y', cnv.offset_y))
+        self.offset_x = self.kw_float(kwargs.get('offset_x', self.offset))
+        self.offset_y = self.kw_float(kwargs.get('offset_y', self.offset))
+        self.spacing = self.kw_float(kwargs.get("spacing", cnv.spacing))
+        self.spacing_x = self.kw_float(kwargs.get("spacing_x", self.spacing))
+        self.spacing_y = self.kw_float(kwargs.get("spacing_y", self.spacing))
         # ---- circle / star / polygon
         self.diameter = self.kw_float(kwargs.get('diameter', cnv.diameter))
         self.radius = self.kw_float(kwargs.get('radius', cnv.radius))
@@ -1068,7 +1078,12 @@ class BaseShape:
             self.unit(self.radius) if self.radius is not None else None,
             self.unit(self.diameter) if self.diameter is not None else None,
             self.unit(self.side) if self.side is not None else None,
-            self.unit(self.length) if self.length is not None else None)
+            self.unit(self.length) if self.length is not None else None,
+            self.unit(self.spacing_x) if self.spacing_x is not None else None,
+            self.unit(self.spacing_y) if self.spacing_y is not None else None,
+            self.unit(self.offset_x) if self.offset_x is not None else None,
+            self.unit(self.offset_y) if self.offset_y is not None else None,
+        )
 
     def set_offset_props(self, off_x=0, off_y=0):
         """Get OffsetProperties for a Shape."""

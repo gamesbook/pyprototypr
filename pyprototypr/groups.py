@@ -139,6 +139,8 @@ class CardShape(BaseShape):
         kwargs['height'] = self.height
         kwargs['width'] = self.width
         kwargs['radius'] = self.radius
+        kwargs['spacing_x'] = self.spacing_x
+        kwargs['spacing_y'] = self.spacing_y
         if self.shape == "rectangle":
             outline = RectangleShape(
                 label=label,
@@ -176,11 +178,12 @@ class CardShape(BaseShape):
         # tools.feedback(f'$$$ draw_card  KW=> {kwargs}')
         # ---- draw outline
         label = "ID:%s" % cid if self.show_id else ""
-        outline = self.get_outline(
-            cnv=cnv, row=row, col=col, cid=cid, label=label, **kwargs)
         shape_kwargs = kwargs
         shape_kwargs['is_cards'] = True
+        shape_kwargs['fill'] = kwargs.get('fill', kwargs.get('bleed_fill', None))
         # tools.feedback(f'$$$ draw_card SKW=> {shape_kwargs}')
+        outline = self.get_outline(
+            cnv=cnv, row=row, col=col, cid=cid, label=label, **shape_kwargs)
         outline.draw(**shape_kwargs)
         # ---- draw card elements
         flat_elements = tools.flatten(self.elements)
@@ -191,10 +194,10 @@ class CardShape(BaseShape):
                     flat_ele.source = image
 
             members = self.members or flat_ele.members
-            _dx = col * outline.width
+            _dx = col * (outline.width + outline.spacing_x) + outline.offset_x
             if row & 1 and self.shape == 'hexagon':
-                _dx = _dx + outline.height / math.sqrt(3)
-            _dy = row * outline.height
+                _dx = _dx + (outline.height + outline.spacing_y) / math.sqrt(3)
+            _dy = row * (outline.height + outline.spacing_y) + outline.offset_y
             try:
                 # ---- * normal element
                 iid = members.index(cid + 1)
@@ -259,6 +262,9 @@ class DeckShape(BaseShape):
         if self.mask and not self.dataset:
             tools.feedback('Cannot set "mask" for a Deck without any existing Data!',
                            True)
+        # ---- bleed
+        self.bleed_fill = kwargs.get("bleed_fill", None)
+        self.bleed_areas = kwargs.get("bleed_areas", [])
         # ---- user provided-rows and -columns
         self.card_rows = kwargs.get("rows", None)
         self.card_cols = kwargs.get("cols", kwargs.get("columns", None))
@@ -303,6 +309,22 @@ class DeckShape(BaseShape):
             _card.shape_id = card
             self.deck.append(_card)
 
+    def draw_bleed(self, cnv, page_across: float, page_down: float):
+        # ---- bleed area for page (default)
+        if self.bleed_fill:
+            rect = RectangleShape(
+                canvas=cnv,
+                width=page_across,
+                height=page_down,
+                x=0,
+                y=0,
+                fill_stroke=self.bleed_fill)
+            # print(f'*** {page_across=}, {page_down=}')
+            rect.draw()
+        # ---- bleed areas (custom)
+        for area in self.bleed_areas:
+            print(area)
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Method called by Save() in proto.
 
@@ -325,7 +347,11 @@ class DeckShape(BaseShape):
         margin_bottom = self.margin_bottom if self.margin_bottom is not None else self.margin
         margin_right = self.margin_right if self.margin_right is not None else self.margin
         margin_top = self.margin_top if self.margin_top is not None else self.margin
+        page_across = self.points_to_value(globals.page_width) - margin_right - margin_left
+        page_down = self.points_to_value(globals.page_height) - margin_top - margin_bottom
         _height, _width, _radius = self.width, self.width, self.radius
+        self.draw_bleed(cnv, page_across, page_down)
+        # ---- deck settings
         if self.deck:
             _card = self.deck[0]
             _height, _width, = _card.outline.height, _card.outline.width
@@ -359,7 +385,7 @@ class DeckShape(BaseShape):
 
                 for i in range(0, copies):
                     card.draw_card(
-                        cnv, row=row, col=col, cid=card.shape_id, image=image, **kwargs)
+                       cnv, row=row, col=col, cid=card.shape_id, image=image, **kwargs)
                     col += 1
                     if col >= max_cols:
                         col = 0
@@ -368,6 +394,7 @@ class DeckShape(BaseShape):
                         row, col = 0, 0
                         if key != len(self.deck) - 1 or (i < (copies - 1)):
                             cnv.canvas.showPage()
+                            self.draw_bleed(cnv, page_across, page_down)
 
     def get(self, cid):
         """Return a card based on the internal ID"""

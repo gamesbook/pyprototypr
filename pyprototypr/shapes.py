@@ -2428,8 +2428,8 @@ class RectangleShape(BaseShape):
     def calculate_xy(self, **kwargs):
         # ---- adjust start
         if self.row is not None and self.col is not None:
-            x = self.col * self._u.width + self._o.delta_x
-            y = self.row * self._u.height + self._o.delta_y
+            x = self.col * (self._u.width + self._u.spacing_x) + self._o.delta_x + self._u.offset_x
+            y = self.row * (self._u.height + self._u.spacing_y) + self._o.delta_y + self._u.offset_y
         elif self.cx is not None and self.cy is not None:
             x = self._u.cx - self._u.width / 2.0 + self._o.delta_x
             y = self._u.cy - self._u.height / 2.0 + self._o.delta_y
