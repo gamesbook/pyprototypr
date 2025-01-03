@@ -1983,6 +1983,7 @@ class PolygonShape(BaseShape):
         self.use_height = True if self.is_kwarg('height') else False
         self.use_width = True if self.is_kwarg('width') else False
         self.use_radius = True if self.is_kwarg('radius') else False
+        # ---- perform overrides
         if self.perbis:
             if isinstance(self.perbis, str):
                 if self.perbis.strip().lower() in ['all', '*']:
@@ -1992,9 +1993,14 @@ class PolygonShape(BaseShape):
                     self.perbis = tools.sequence_split(self.perbis)
             if not isinstance(self.perbis, list):
                 tools.feedback('The perbis value must be a list of numbers!', True)
-        # ---- perform overrides
         if self.cx is not None and self.cy is not None:
             self.x, self.y = self.cx, self.cy
+        # ---- class variables
+        self.flatten_angle = 0
+        if (self.orientation.lower() == 'flat' and not (self.sides - 2) % 4 == 0) or \
+                (self.orientation.lower() == 'pointy' and (self.sides - 2) % 4 == 0):
+            interior = ((self.sides - 2) * 180.0) / self.sides
+            self.flatten_angle = (180 - interior) / 2.0
         # ---- RESET UNIT PROPS (last!)
         self.set_unit_properties()
 
@@ -2156,7 +2162,7 @@ class PolygonShape(BaseShape):
                 pth.lineTo(diam_pt.x, diam_pt.y)
             cnv.drawPath(pth, stroke=1 if self.stroke else 0, fill=1 if self.fill else 0)
 
-    def get_vertices(self, rotation: float = 0, is_rotated: bool = False):
+    def get_vertices(self, rotation: float = None, is_rotated: bool = False):
         """Calculate vertices of polygon.
         """
         # convert to using units
@@ -2167,10 +2173,12 @@ class PolygonShape(BaseShape):
             y = self._u.y + self._o.delta_y
         radius = self.get_radius()
         # calculate vertices - assumes x,y marks the centre point
-        vertices = geoms.polygon_vertices(self.sides, radius, Point(x, y), rotation)
+        _rotation = rotation or self.flatten_angle
+        vertices = geoms.polygon_vertices(self.sides, radius, Point(x, y), _rotation)
+        # for p in vertices: print(f'*V* {p.x / 28.3465}, {p.y / 28.3465}')
         return vertices
 
-    def get_geometry(self, rotation: float = 0, is_rotated: bool = False):
+    def get_geometry(self, rotation: float = None, is_rotated: bool = False):
         """Calculate centre, radius and vertices of polygon.
         """
         # convert to using units
@@ -2181,7 +2189,9 @@ class PolygonShape(BaseShape):
             y = self._u.y + self._o.delta_y
         radius = self.get_radius()
         # calculate vertices - assumes x,y marks the centre point
-        vertices = geoms.polygon_vertices(self.sides, radius, Point(x, y), rotation)
+        _rotation = rotation or self.flatten_angle
+        vertices = geoms.polygon_vertices(self.sides, radius, Point(x, y), _rotation)
+        # for p in vertices: print(f'*G* {p.x / 28.3465}, {p.y / 28.3465}')
         return x, y, radius, vertices
 
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
@@ -2217,13 +2227,8 @@ class PolygonShape(BaseShape):
                 cnv.translate(x, y)
             cnv.rotate(rotation)
         # --- handle 'orientation' (flat vs pointy)
-        flatten = 0
-        if (self.orientation.lower() == 'flat' and not (self.sides - 2) % 4 == 0) or \
-                (self.orientation.lower() == 'pointy' and (self.sides - 2) % 4 == 0):
-            interior = ((self.sides - 2) * 180.0) / self.sides
-            flatten = (180 - interior) / 2.0
         x, y, radius, vertices = self.get_geometry(
-            rotation=flatten, is_rotated=is_rotated)
+            rotation=rotation, is_rotated=is_rotated)
         # ---- invalid polygon?
         if not vertices or len(vertices) == 0:
             if rotation:

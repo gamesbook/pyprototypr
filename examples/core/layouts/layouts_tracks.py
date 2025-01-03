@@ -29,8 +29,7 @@ PageBreak()
 # ---- default track + shape
 Blueprint()
 Text(common=txt, text="Track: default + shape")
-shp = circle(cx=1, cy=1, radius=0.25, fill=None)
-Track(rectangle(), shapes=[shp])
+Track(rectangle(), shapes=[circle(radius=0.25, fill=None)])
 PageBreak()
 
 # ---- default track + circle
@@ -43,7 +42,7 @@ PageBreak()
 # ---- square track + star
 Blueprint()
 Text(common=txt, text="Track: square; star")
-shp = star(cx=1, cy=1, vertices=5, radius=0.5, label='{{sequence}}')
+shp = star(cx=1, cy=1, vertices=5, radius=0.5, label='{{sequence - 1}}')
 Track(square(side=1.5), shapes=[shp])
 PageBreak()
 
@@ -206,12 +205,13 @@ PageBreak()
 Blueprint()
 Text(common=txt, text="Track: circles; 'clock'")
 Circle(cx=2, cy=3, radius=1.8, stroke_width=2, dot=0.1)
-shp = circle(cx=1, cy=1, radius=0.25, stroke=white,
-             label='{{sequence}}', label_stroke=black)
+times = circle(
+    cx=1, cy=1, radius=0.25, stroke=white,
+    label='{{sequence}}', label_stroke=black)
 Track(
     circle(cx=2, cy=3, radius=1.5),
     angles=[60,90,120,150,180,210,240,270,300,330,0,30],
-    shapes=[shp],
+    shapes=[times],
     rotation_style='o',
     clockwise=True,
 )
@@ -221,8 +221,11 @@ PageBreak()
 Blueprint()
 Text(common=txt, text="Track: polygon; 'scoring'")
 trk = polygon(cx=2, cy=3, sides=30, radius=1.75)
-shp = circle(cx=1, cy=1, radius=0.18, stroke=navy,
-             label='{{sequence}}', label_size=6)
+score = Common(
+    cx=1, cy=1, radius=0.18, stroke=navy,
+    label='{{sequence}}', label_size=6)
+
+shp = circle(common=score, fill=white)
 Track(
     trk,
     shapes=[shp],
@@ -230,8 +233,7 @@ Track(
     clockwise=True,
     start=24
 )
-shp5 = circle(cx=1, cy=1, radius=0.18, stroke=navy, fill=aqua,
-             label='{{sequence}}', label_size=6)
+shp5 = circle(common=score, fill=aqua)
 Track(
     trk,
     shapes=[shp5],
