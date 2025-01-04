@@ -34,11 +34,6 @@ class DatasetType(Enum):
     IMAGE = 4
 
 
-class HexOrientation(Enum):
-    FLAT = 1
-    POINTY = 2
-
-
 class DirectionGroup(Enum):
     CARDINAL = 1
     COMPASS = 2
@@ -47,6 +42,17 @@ class DirectionGroup(Enum):
     HEX_FLAT_EDGE = 4  # edge
     HEX_POINTY_EDGE = 5
     CIRCULAR = 6
+
+
+class CardFrame(Enum):
+    RECTANGLE = 1
+    HEXAGON = 2
+    CIRCLE = 3
+
+
+class HexOrientation(Enum):
+    FLAT = 1
+    POINTY = 2
 
 
 def script_path():

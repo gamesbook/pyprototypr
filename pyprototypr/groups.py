@@ -10,8 +10,8 @@ import math
 # third party
 import jinja2
 # local
-from pyprototypr.utils import tools  # geoms,
-from pyprototypr.utils.tools import DatasetType
+from pyprototypr.utils import tools
+from pyprototypr.utils.tools import DatasetType, CardFrame  # enums
 from pyprototypr.base import BaseShape
 from pyprototypr.layouts import SequenceShape
 from pyprototypr.shapes import (
@@ -141,7 +141,7 @@ class CardShape(BaseShape):
         kwargs['radius'] = self.radius
         kwargs['spacing_x'] = self.spacing_x
         kwargs['spacing_y'] = self.spacing_y
-        if self.shape == "rectangle":
+        if kwargs['frame_type'] == CardFrame.RECTANGLE:
             outline = RectangleShape(
                 label=label,
                 canvas=cnv,
@@ -149,7 +149,7 @@ class CardShape(BaseShape):
                 row=row,
                 **kwargs,
             )
-        elif self.shape == "circle":
+        elif kwargs['frame_type'] == CardFrame.CIRCLE:
             outline = CircleShape(
                 label=label,
                 canvas=cnv,
@@ -157,7 +157,7 @@ class CardShape(BaseShape):
                 row=row,
                 **kwargs
             )
-        elif self.shape == "hexagon":
+        elif kwargs['frame_type'] == CardFrame.HEXAGON:
             outline = HexShape(
                 label=label,
                 canvas=cnv,
@@ -165,11 +165,9 @@ class CardShape(BaseShape):
                 row=row,
                 **kwargs
             )
-            outline.set_height_width()
+            outline.hex_height_width()
         else:
-            hint = ' Try a rectangle, hexagon, or circle.'
-            tools.feedback(f"Unable to draw a {self.shape}-shaped card. {hint}",
-                           stop=True)
+            raise NotImplementedError(f'Cannot handle card frame type: {self.frame_type}')
         return outline
 
     def draw_card(self, cnv, row, col, cid, **kwargs):
@@ -185,6 +183,10 @@ class CardShape(BaseShape):
         outline = self.get_outline(
             cnv=cnv, row=row, col=col, cid=cid, label=label, **shape_kwargs)
         outline.draw(**shape_kwargs)
+        if kwargs['frame_type'] == CardFrame.HEXAGON:
+            radius, diameter, side, half_flat = outline.hex_height_width()
+            side = self.points_to_value(side)
+            half_flat = self.points_to_value(half_flat)
         # ---- draw card elements
         flat_elements = tools.flatten(self.elements)
         for index, flat_ele in enumerate(flat_elements):
@@ -193,11 +195,20 @@ class CardShape(BaseShape):
                 if flat_ele.kwargs.get('source', '').lower() in ['*', 'all']:
                     flat_ele.source = image
 
+            # ---- * card frame
+            match kwargs['frame_type']:
+                case CardFrame.RECTANGLE | CardFrame.CIRCLE:
+                    _dx = col * (outline.width + outline.spacing_x) + outline.offset_x
+                    _dy = row * (outline.height + outline.spacing_y) + outline.offset_y
+                case CardFrame.HEXAGON:
+                    _dx = col * 2.0 * (side + outline.spacing_x) + outline.offset_x
+                    _dy = row * 2.0 * (half_flat + outline.spacing_y) + outline.offset_y
+                    if row & 1:
+                        _dx = _dx + side + outline.spacing_x
+                        # _dx = _dx + (outline.height + outline.spacing_y) / math.sqrt(3)
+            # print(f' #*# {kwargs["frame_type"]=} {col=} {row=} {_dx=} {_dy=} ')
+
             members = self.members or flat_ele.members
-            _dx = col * (outline.width + outline.spacing_x) + outline.offset_x
-            if row & 1 and self.shape == 'hexagon':
-                _dx = _dx + (outline.height + outline.spacing_y) / math.sqrt(3)
-            _dy = row * (outline.height + outline.spacing_y) + outline.offset_y
             try:
                 # ---- * normal element
                 iid = members.index(cid + 1)
@@ -249,6 +260,19 @@ class DeckShape(BaseShape):
         self.height = kwargs.get("height", default_height)  # OVERWRITE
         self.width = kwargs.get("width", default_width)  # OVERWRITE
         self.radius = kwargs.get("radius", default_radius)  # OVERWRITE
+        # ----- set card frame type
+        match self.frame:
+            case 'rectangle' | 'r':
+                self.frame_type = CardFrame.RECTANGLE
+            case 'circle' | 'c':
+                self.frame_type = CardFrame.CIRCLE
+            case 'hexagon' | 'h':
+                self.frame_type = CardFrame.HEXAGON
+            case _:
+                hint = ' Try rectangle, hexagon, or circle.'
+                tools.feedback(
+                    f"Unable to draw a {self.frame}-shaped card. {hint}", True)
+        self.kwargs['frame_type'] = self.frame_type
         # ---- dataset (list of dicts)
         self.dataset = kwargs.get("dataset", None)
         self.set_dataset()  # globals override : dataset AND cards
@@ -339,6 +363,7 @@ class DeckShape(BaseShape):
         kwargs = self.kwargs | kwargs
         images = kwargs.get('image_list', [])
         cards = kwargs.get('cards', None)
+        kwargs['frame_type'] = self.frame_type
         # ---- user-defined rows and cols
         max_rows = self.card_rows
         max_cols = self.card_cols

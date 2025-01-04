@@ -72,14 +72,14 @@ elements on a page, **pyprototypr** is designed to handle the flow of placing
 cards onto multiple pages, based on their size and the type of paper chosen.
 Then, for a card, you will set out elements exactly as you want them to appear.
 
-There are two core commands: the ``Card()`` and the ``Deck()``:
+There are two core commands needed; the ``Card()`` and the ``Deck()``:
 
 -  A ``Card()`` command is used to specify the design for a card, or range
    of cards, typically using elements that have already been defined.
    The patterns or designs can be set to appear on single or multiple cards.
 -  A ``Deck()`` command is used to specify type, size and number of cards
-   that will be used to create all cards in the deck and lay them out on
-   one or more pages.
+   that will be used to create all of the cards in the deck and lay them out
+   on one or more pages.
 
 .. NOTE::
 
@@ -112,23 +112,27 @@ they get drawn.
 Primary Properties
 ------------------
 
-The following are key properties that will usually need to be set for a deck:
+The following are key properties that will usually need to be set for a
+``Deck``:
 
 - **cards** - this is the number of cards appearing in the deck; it defaults
   to 9; note that other commands such as ``Data()`` and ``Matrix()`` can alter
   this value
 - **height** - this is the card height; it defaults to 8.8 cm
 - **width** - this is the card width; it defaults to 6.3 cm
-- **radius** - this is circular card's radius; it defaults to 2.54 cm (1")
+- **radius** - this is a circular or hexagonal card's radius;
+  it defaults to 2.54 cm (1")
 
 Secondary Properties
 --------------------
 
-The following are other properties that can also be set for a Deck:
+The following are other properties that can also be set for a ``Deck``:
 
 - **copy** - the name of a column in the dataset defined by
   `the Data Command`_ that specifies how many copies of a card are needed
 - **fill** - sets the color of the card's area; defaults to white
+- **frame** - the default card frame is a rectangle (or square, if the
+  height and width match); but can be set to *hexagon* or *circle*
 - **grid_marks** - if set to ``True``, will cause small marks to be drawn at
   the border of the page that align with the edges of the cards
 - **mask** - an expression which should evaluate to ``True` or ``False``;
@@ -137,14 +141,12 @@ The following are other properties that can also be set for a Deck:
   (see `the Data Command`_); if ``True`` then any matching cards will be
   masked i.e. ignored and not drawn.
 - **rounding** - sets the size of rounding on each corner of a rectangular
-  card
-- **shape** - the default card shape is a rectangle (or square, if the
-  height and width match); but can be set to *hexagon* or *circle*
+  frame card
 - **stroke** - sets the color of the card's border; defaults to black
 
 .. HINT::
 
-    The **shape** property can be seen "in action" in an illustrated examples;
+    The **frame** property can be seen "in action" in illustrated examples;
     see a `hexagonal example <examples/cards.rst#hexagon-cards>`_ and a
     `circular example <examples/cards.rst#circle-cards>`_.
 
@@ -172,9 +174,11 @@ Deck Example #2
 ---------------
 
 This example shows the definition of a deck of 27 cards that are a
-default size, with rounded corner and their colors set; the grid marks
-will appear along the page edges.  The default card size means that
-there will be 9 cards on each A4 page (in default portrait mode):
+default size and type (rectangular), with rounded corners and their
+colors set; the grid marks will appear along the page edges.
+
+The default card size means that there will be 9 cards on each A4
+page (in default portrait mode):
 
     .. code:: python
 
@@ -187,15 +191,15 @@ there will be 9 cards on each A4 page (in default portrait mode):
         copy="Copies",
         mask="{{ Race == 'Hobbit' }}")
 
-For the **copy** property, there is expected to be a column with the label
-**Copies** available in the Deck's dataset (created by `the Data Command`_);
-and the number in this column will be used to make that many copies of the
-card (unless it has a **mask**).
+For the **copy** property to work, it is expected that there is a column
+with the label **Copies** available in the Deck's dataset (which is created
+by `the Data Command`_); in this case, the number in that column will be
+used to make that many copies of the card (unless it has a **mask**).
 
-For the **mask** property, there is expected to be a column with the label
-**Race** available in the Deck's dataset (created by `the Data Command`_);
-and any card with data matching the value ``Hobbit`` will be masked
-(ignored and not drawn).
+For the **mask** property to work, it is expected that ther is a column
+with the label **Race** available in the Deck's dataset (which is created
+by `the Data Command`_); in this case, any card with data matching the
+value ``Hobbit`` will be masked (ignored and not drawn).
 
 If you need to match any of multiple *mask* conditions, use an **or**:
 
@@ -263,7 +267,8 @@ Examples of Card sequence numbers supplied as a *list*:
   10 through to 15 inclusive
 
 The **second value**, and all further values, supplied to the ``Card()``
-command must be a shape or a `group <group-command_>`_.
+command must be a `core shape <core_shapes.rst>`_ or a
+`group <group-command_>`_.
 
 There can be any number of ``Card()`` commands; and the same Card could be
 targeted by multiple ``Card()`` commands, each affecting some aspect of its
@@ -531,14 +536,19 @@ Supporting Commands
 The following commands are helpful in terms of increased flexibilty and
 reduced repetition when designing a deck of cards.
 
+- `group command`_
+- `T(emplate) command`_
+- `S(election) command`_
+- `L(ookup) command`_
+
 .. _group-command:
 
 group command
 -------------
 `↑ <table-of-contents_>`_
 
-This command provides a "shortcut" way to reference a stack of shapes that
-all need to be drawn together. Add the shapes to a set - comma-separated
+The ``group()`` command provides a "shortcut" way to reference a stack of shapes
+that all need to be drawn together. Add the shapes to a set - comma-separated
 names wrapped in curved brackets (``(..., ...)``) - and assign the set to a
 name.  The shapes are drawn in the order listed.
 
@@ -561,11 +571,11 @@ T(emplate) command
 ------------------
 `↑ <table-of-contents_>`_
 
-This command causes the name of a column to be replaced by its equivalent
+The ``T()`` command causes the name of a column to be replaced by its equivalent
 value for that card.
 
 To use this command, simply enclose the name of the data column in curly
-brackets - ``"{{...}}"``.
+brackets - ``"{{...}}"`` - remember that this **is** case-sensitive.
 
 This example shows how to use the command, with reference to the ``Data``
 from `Data Example #5`_.  The text appearing at the top of all cards
@@ -597,8 +607,8 @@ S(election) command
 -------------------
 `↑ <table-of-contents_>`_
 
-This command causes a shape to be added to a card, or set of cards, for a
-matching condition.
+The ``S()``  command causes a shape to be added to a card, or set of cards,
+for a matching condition.
 
 There are two properties required:
 
@@ -648,11 +658,12 @@ The full code for this example is available as
 L(ookup) command
 ----------------
 
-This command enables the current Card to retrieve data from a named column
-corresponding to another Card based on the value of a named column in the
-current Card.
+The ``L()``  command enables the current Card to retrieve data from a named
+column corresponding to another Card based on the value of a named column
+in the current Card.
 
-It takes three properties; the names of the three columns:
+It takes three properties; the names of the three columns (remember that
+these names **are** case-sensitive):
 
 - the *first* column name is one that must contain a value for the current
   card;
@@ -662,24 +673,25 @@ It takes three properties; the names of the three columns:
 - the *third* column is the one that will return the value for the matched
   Card.
 
-As an example, suppose a CSV file with data for these two cards:
+As an example, suppose a CSV file contains data for these two cards:
 
     .. code::
 
-       NAME,USES,IMAGE
-       wire,,wire.png
-       plug,wire,plug.png
+       ID, NAME, USES,   IMAGE
+       1,  wire, copper, wire.png
+       2,  plug, wire,   plug.png
 
-This example shows how to retrieve the **IMAGE** for *wire* when working
-with the second (*plug*) Card:
+This example shows how to retrieve the **IMAGE** for the *"wire"* card
+when working with the second (*"plug"*) card:
 
     .. code:: python
 
-        Card("2", image(source=L('USES','NAME','IMAGE')))
+        Card("2", image(source=L('USES', 'NAME', 'IMAGE')))
 
 The program takes the value from the *plug*'s **USES** column; then finds
-a Card whose **NAME** column contains that value; and then returns the
-value from that card's **IMAGE** column.
+a Card whose **NAME** column contains a matching value - in this case, the
+first card; and then returns the value from that card's **IMAGE** column - in
+this case, the value **wire.png**.
 
 
 Other Resources

@@ -352,7 +352,7 @@ class BaseCanvas:
         self.default_length = 1
         self.show_id = False
         # ---- general
-        self.shape = self.defaults.get('shape', 'rectangle')
+        self.shape = None
         self.shape_id = None
         self.sequence = self.defaults.get('sequence', [])
         self.dataset = []
@@ -545,6 +545,7 @@ class BaseCanvas:
         self.grid = None  # some Shapes can auto-generate a GridShape
         self.rows = self.defaults.get('rows', 0)
         self.cols = self.defaults.get('cols', self.defaults.get('columns', 0))
+        self.frame = self.defaults.get('frame', 'rectangle')
         self.offset = self.defaults.get('offset', 0)  # from margin
         self.offset_x = self.defaults.get('offset_x', self.offset)
         self.offset_y = self.defaults.get('offset_y', self.offset)
@@ -871,6 +872,7 @@ class BaseShape:
         # ---- grid / card layout
         self.rows = self.kw_int(kwargs.get('rows', cnv.rows))
         self.cols = self.kw_int(kwargs.get('cols', kwargs.get('columns', cnv.cols)))
+        self.frame = kwargs.get('frame', cnv.frame)
         self.offset = self.kw_float(kwargs.get('offset', cnv.offset))
         self.offset_x = self.kw_float(kwargs.get('offset_x', self.offset))
         self.offset_y = self.kw_float(kwargs.get('offset_y', self.offset))

@@ -624,8 +624,10 @@ class CircleShape(BaseShape):
         self.area = self.calculate_area()
         # ---- draw by row/col
         if self.row is not None and self.col is not None and is_cards:
-            x = self.col * self._u.radius * 2. + self._o.delta_x + self._u.radius
-            y = self.row * self._u.radius * 2. + self._o.delta_y + self._u.radius
+            x = self.col * (self._u.radius * 2. + self._u.spacing_x) + \
+                self._o.delta_x + self._u.radius + self._u.offset_x
+            y = self.row * (self._u.radius * 2. + self._u.spacing_y) + \
+                self._o.delta_y + self._u.radius + self._u.offset_y
             self.x_c, self.y_c = x, y
         # ---- handle rotation: START
         is_rotated = False
@@ -661,6 +663,37 @@ class CircleShape(BaseShape):
             x, y, self._u.radius,
             stroke=1 if self.stroke else 0,
             fill=1 if self.fill else 0)
+        # ---- grid marks
+        self.set_canvas_props(
+            index=ID,
+            stroke=self.grid_stroke,
+            stroke_width=self.grid_stroke_width)
+        if self.grid_marks:
+            # print(f'{self._u.radius=} {self._u.diameter=}')
+            deltag = self.unit(self.grid_length)
+            pth = cnv.beginPath()
+            gx, gy = 0, y - self._u.radius  # left-side
+            pth.moveTo(gx, gy)
+            pth.lineTo(deltag, gy)
+            pth.moveTo(0, gy + self._u.radius * 2.)
+            pth.lineTo(deltag, gy + self._u.radius * 2.)
+            gx, gy = x - self._u.radius, self.paper[1]  # top-side
+            pth.moveTo(gx, gy)
+            pth.lineTo(gx, gy - deltag)
+            pth.moveTo(gx + self._u.radius * 2., gy)
+            pth.lineTo(gx + self._u.radius * 2., gy - deltag)
+            gx, gy = self.paper[0], y - self._u.radius # right-side
+            pth.moveTo(gx, gy)
+            pth.lineTo(gx - deltag, gy)
+            pth.moveTo(gx, gy + self._u.radius * 2.)
+            pth.lineTo(gx - deltag, gy + self._u.radius * 2)
+            gx, gy = x - self._u.radius, 0  # bottom-side
+            pth.moveTo(gx, gy)
+            pth.lineTo(gx, gy + deltag)
+            pth.moveTo(gx + self._u.radius * 2., gy)
+            pth.lineTo(gx + self._u.radius * 2., gy + deltag)
+            # done
+            cnv.drawPath(pth, stroke=1, fill=1)
         # ---- draw hatch
         if self.hatch_count:
             if self.rotation:
@@ -816,22 +849,6 @@ class CompassShape(BaseShape):
         x = self._u.radius * math.sin(math.radians(angle))
         y = self._u.radius * math.cos(math.radians(angle))
         self.draw_radius(cnv, ID, x, y)
-
-    # def rectangle_ranges(self, height, width):
-    #     """Calculate angle ranges inside rectangle."""
-    #     ranges = []
-    #     first = math.degrees(math.atan((width / 2.0) / (height / 2.0)))
-    #     ranges.append((0, first))
-    #     half_second = math.degrees(math.atan((height / 2.0) / (width / 2.0)))
-    #     second = 2 * half_second + first
-    #     ranges.append((first, second))
-    #     third = second + 2 * first
-    #     ranges.append((second, third))
-    #     fourth = third + 2 * half_second
-    #     ranges.append((third, fourth))
-    #     ranges.append((fourth, 360.0))
-    #     tools.feedback(f'*** {ranges=}')
-    #     return ranges
 
     def rectangle_radius(self, cnv, ID, vertices, angle, height, width):
         """Calc x,y on rectangle and draw line from centre to it."""
@@ -1307,13 +1324,17 @@ class HexShape(BaseShape):
         if not self.use_diameter and not self.use_radius and not self.use_side:
             self.use_height = True
 
-    def set_height_width(self):
-        """Calculate vertical and horizontal dimensions.
+    def hex_height_width(self) -> tuple:
+        """Calculate vertical and horizontal point dimensions of a hexagon
+
+        Returns:
+            tuple: radius, diameter, side, half_flat
 
         Notes:
             * Useful for a row/col layout
+            * Units are in points!
         """
-        # ---- calculate half_flat & half_side
+        # ---- half_flat, side & half_side
         if self.height and self.use_height:
             side = self._u.height / math.sqrt(3)
             half_flat = self._u.height / 2.0
@@ -1332,6 +1353,7 @@ class HexShape(BaseShape):
             tools.feedback(
                 'No value for side or height or diameter or radius supplied for hexagon.',
                 True)
+        # ---- diameter and radius
         diameter = 2.0 * side
         radius = side
         if self.orientation.lower() in ['p', 'pointy']:
@@ -1344,6 +1366,7 @@ class HexShape(BaseShape):
             tools.feedback(
                 'Invalid orientation "{self.orientation}" supplied for hexagon.',
                 True)
+        return radius, diameter, side, half_flat
 
     def calculate_caltrops(self, side, size=None, fraction=None, invert=False):
         """Calculate settings for caltrops (the hex "corner").
@@ -1731,8 +1754,8 @@ class HexShape(BaseShape):
             y = self._u.y + self._o.delta_y
             # ---- ^ draw pointy by row/col
             if self.row is not None and self.col is not None and is_cards:
-                x = self.col * height_flat + self._o.delta_x
-                y = self.row * diameter + self._o.delta_y    # do NOT add half_flat
+                x = self.col * (height_flat + self._u.spacing_x) + self._o.delta_x + self._u.offset_x
+                y = self.row * (diameter + self._u.spacing_y) + self._o.delta_y + self._u.offset_y  # do NOT add half_flat
             elif self.row is not None and self.col is not None:
                 if self.hex_offset in ['o', 'O', 'odd']:
                     # TODO => calculate!
@@ -1785,10 +1808,14 @@ class HexShape(BaseShape):
             # tools.feedback(f"{x=} {y=} {half_flat=} {side=} {self.row=} {self.col=}")
             # ---- ~ draw flat by row/col
             if self.row is not None and self.col is not None and is_cards:
-                x = self.col * 2.0 * side + self._o.delta_x
+                # x = self.col * 2.0 * side + self._o.delta_x
+                # if self.row & 1:
+                #     x = x + side
+                # y = self.row * 2.0 * half_flat + self._o.delta_y  # do NOT add half_flat
+                x = self.col * 2.0 * (side + self._u.spacing_x) + self._o.delta_x + self._u.offset_x
                 if self.row & 1:
-                    x = x + side
-                y = self.row * 2.0 * half_flat + self._o.delta_y  # do NOT add half_flat
+                    x = x + side + self._u.spacing_x
+                y = self.row * 2.0 * (half_flat + self._u.spacing_y) + self._o.delta_y + self._u.offset_y  # do NOT add half_flat
             elif self.row is not None and self.col is not None:
                 if self.hex_offset in ['o', 'O', 'odd']:
                     x = self.col * (half_side + side) + self._u.x + self._o.delta_x
