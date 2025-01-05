@@ -29,20 +29,21 @@ other.
 10. `Customised Shapes <customised_shapes.rst>`_ - how to refine the
     appearance of certain shapes; circles, hexagons and rectangles
 11. `Layouts <layouts.rst>`_ - how to work with different kinds of
-    layouts (sequences, tracks and rectangular grids)
+    layouts (repeats, sequences, tracks and rectangular grids)
 12. `Hexagonal Grids <hexagonal_grids.rst>`_ - how to create different types
     of hexagonal grids and customise or add to them
 13. `Terminology <terminology.rst>`_ - summary of common jargon and descriptions
     of many of the elements' properties
+14. `Commands <commands.rst>`_ - summary of all the commands available
 
 The following are supplementary sections that you're likely to need when
 doing more advanced scripts or needing further resources:
 
-14. `Descriptions of Supplied Examples <examples/index.rst>`_ - brief
+15. `Descriptions of Supplied Examples <examples/index.rst>`_ - brief
     walkthoughs of many of the examples provided with **pyprototypr**
-15. `Using Python Commands <python_commands.rst>`_ - how to work with
+16. `Using Python Commands <python_commands.rst>`_ - how to work with
     *loops*, *if/then* statements and *functions* for more flexibility
-16. `Development Notes <development.rst>`_ - notes for programmers wanting
+17. `Development Notes <development.rst>`_ - notes for programmers wanting
     to develop further in or with  **pyprototypr**
-17. `Useful Resources <useful_resources.rst>`_ - links to
+18. `Useful Resources <useful_resources.rst>`_ - links to
     tools and websites related to boardgame prototyping

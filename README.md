@@ -111,13 +111,12 @@ current / potential areas of work or development that have been identified.
 * [ ] Stripes: interior "areas" for a Rectangle
 * [x] Rotation:
     * [x] text along a line
-    * [x] shape labels (at centre of shape)
     * [x] Polygon
-    * [x] Stadium
     * [ ] Trapezoid
     * [ ] Triangle
 * [ ] Cards:
     * [ ] allow for card backs
+    * [ ] grid lines for hexagonal cards
 * [ ] Color:
     * [ ] add support for CMYK
 

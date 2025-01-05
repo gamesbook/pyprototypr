@@ -47,6 +47,7 @@ If you want to make changes to the design, then you add to, delete, or
 change the instructions in your script and then use Python to process it
 again to create an updated PDF file.
 
+
 The "script" concept
 ====================
 `↑ <table-of-contents_>`_
@@ -115,8 +116,8 @@ Instructions in **pyprototypr** are termed *commands*.  These usually are
 written with an initial capital letter. They are effectively "imperative"
 in nature, causing something to happen; for example:
 
-- ``Save()`` - tells the program to save the output to file
--  ``Circle()``  - tells the program to draw a circle
+- ``Save()`` - instructs the program to save the output to file
+- ``Circle()``  - instructs the program to draw a circle
 
 
 The "element" concept
@@ -144,6 +145,9 @@ Examples of some of the available geometric **shapes** include:
 
 Descriptions of all of these shapes, and how to create and use them,
 are provided in the section on `Core Shapes <core_shapes.rst>`_.
+
+Other *elements* include things like `hexagonal grids <hexagonal_grids.rst>`_,
+regular `layouts <layouts.rst>`_ and `cards <card_decks.rst#the-card-command>`_ .
 
 .. _properties:
 

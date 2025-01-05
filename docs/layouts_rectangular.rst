@@ -38,8 +38,8 @@ Apart from the ``RectangularLocations()`` command described here,
 there are also these other commands which allow you to layout
 elements in a more repetitive or regular way within a page:
 
-- `Repeats <layouts_repeats.rst>`_
-- `Sequences <layouts_sequence.rst>`_
+- `Repeat <layouts_repeat.rst>`_
+- `Sequence <layouts_sequence.rst>`_
 - `Tracks <layouts_track.rst>`_
 - `TriangularLocations <layouts_triangular.rst>`_
 
@@ -47,6 +47,9 @@ elements in a more repetitive or regular way within a page:
 Usage
 =====
 `↑ <table-of-contents_>`_
+
+RectangularLocations
+--------------------
 
 The ``RectangularLocations()`` command accepts the following properties:
 
@@ -77,7 +80,13 @@ The ``RectangularLocations()`` creates a "virtual" grid that always has the
 first row and first column in the lower-left corner and the last row and last
 column in the upper-right corner.
 
-The ``Layout()`` command accepts the following properties:
+Layout
+------
+
+The ``Layout()`` command - designed to be used in conjuction with a
+location-based grid - specifies the shapes that are to be drawn at locations.
+
+It accepts the following properties:
 
 - **grid** - this *must* be the first property used for the command; it will
   refer to, in this case, a row & column grid created by ``RectangularLocations()``

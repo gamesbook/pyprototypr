@@ -19,8 +19,8 @@ Apart from the ``Sequence()`` command described here,
 there are also these other commands which allow you to layout
 elements in a more repetitive or regular way within a page:
 
-- `Repeats <layouts_repeats.rst>`_
-- `Tracks <layouts_track.rst>`_
+- `Repeat <layouts_repeat.rst>`_
+- `Track <layouts_track.rst>`_
 - `RectangularLocations <layouts_rectangular.rst>`_
 - `TriangularLocations <layouts_triangular.rst>`_
 

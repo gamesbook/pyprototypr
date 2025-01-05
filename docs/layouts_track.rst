@@ -36,8 +36,8 @@ Apart from the ``Track()`` command described here,
 there are also these other commands which allow you to layout
 elements in a more repetitive or regular way within a page:
 
-- `Repeats <layouts_repeats.rst>`_
-- `Sequences <layouts_sequence.rst>`_
+- `Repeat <layouts_repeat.rst>`_
+- `Sequence <layouts_sequence.rst>`_
 - `RectangularLocations <layouts_rectangular.rst>`_
 - `TriangularLocations <layouts_triangular.rst>`_
 

@@ -10,6 +10,7 @@ and that you've created some basic scripts of your own using the
 `Core Shapes <core_shapes.rst>`_.
 
 .. NOTE::
+
    Note that if you already know the Python programming language, you can skip
    this section, unless you have any uncertainty about any of these topics!
 
@@ -41,6 +42,7 @@ increments to what you likely already know, but should give you more
 flexibility in terms of the way you can write scripts - without adding
 too much complexity. These are *not* essential but *may* be very useful.
 
+
 Introduction
 ============
 `↑ <table-of-contents_>`_
@@ -59,6 +61,7 @@ together, and which need to be used/activated a number of times.
 Any statement or functionality that is part of the Python programming language
 can be used in a script if you want to. The ones below are just to give
 you some idea of "the basics".
+
 
 Loops
 =====
@@ -104,17 +107,17 @@ the loop.
 The lines immediately following this set-up line are all the actions
 that must happen each time. **These lines must all be indented 4 spaces
 and lined up below each other to show they are part of the loop.**
-(*Note:* ignore the words used here; they are just to indicate the
+(*Note:* ignore the actual words used here; they are just to indicate the
 concept of actions… more practical examples are shown below!).
 
 Once the action(s) have been carried out, the program goes back to the
-line with the ``for`` line - this is where the “loop” concept comes from
+line starting with the ``for`` - this is where the “loop” concept comes from
 - to increase the ``number`` value and prepare to carry out the action(s)
 again.
 
-   NOTE: When the counter's value stored in ``number`` matches that of the
-   ``end`` value, the loop will stop right away and **not** process any of
-   the action(s) again.
+   *NOTE:* When the loop counter's value stored in ``number`` matches that of
+   the ``end`` value, the loop will stop right away and **not** process any
+   of the action(s) again.
 
 In the case of **pyprototypr**, a loop can be used to draw an item a
 number of times; for example:
@@ -129,20 +132,21 @@ every time the loop operates. For the first time it will have a value of
 1 (one); the second time a value of 2 (two); and the third time value of
 3 (three) - as noted above, when number reaches the value of 4, the loop
 ends right away. This loop will cause a ``Circle`` to be drawn in three
-different ``y`` locations on the page.
+different ``y`` locations on the page (but with the same ``x`` location).
 
 You can combine the value of the number with other information to do more
 complex kinds of operations. In this next example, the values for ``y``
-will be 0.5, 1.0 and 1.5 over the three iterations of the loop:
+will be ``0.5``, ``1.0`` and ``1.5`` over the three iterations of the
+loop - which is achieved by "halving" the value of the loop counter:
 
   .. code:: python
 
     for y_location in range(1, 4):
-        Circle(x=1, y=y_location*0.5)
+        Circle(x=1, y=y_location * 0.5)
 
 Note that we have used a different word in place of the usual ``number``.
-It does not matter too much which word you use; so pick one that makes
-sense in terms of what you’re trying to achieve by using it.
+It does not matter too much which word you use; so just pick one that makes
+most sense in terms of what you’re trying to achieve by using it.
 
 The value of the loop counter normally goes up by 1 each time; but you can
 set a third value, inside the brackets, for the ``range`` that is a
@@ -153,9 +157,10 @@ different increment number. For example:
     for number in range(1, 7, 2):
         Circle(x=1, y=number)
 
-Here number takes on the values 1, 3 and 5; because the third value of 2
-is added to the *number* value each time the loop operates. When the loop
-counter value stored in *number* reaches 7, the loop ends right away.
+Here ``number`` takes on the values ``1``, then ``3`` and then ``5``; because
+the third value of 2 is added to the loop counter each time the loop operates.
+When the loop counter value stored in ``number`` reaches 7, then the loop
+ends right away.
 
 Multiple Loops
 --------------
@@ -174,7 +179,7 @@ loop happens twice. So there are actually four times (2 times 2) that
 the actions - in this case, drawing a Circle - are carried out.
 
 Python has a shortcut for handling multiple loops that you can use at your
-discretion called ``zip``.
+discretion - its called ``zip``.
 
 If you wanted to draw a ``Circle`` at three locations, in three different
 colors, you can store all of these in lists and then do the drawing in a loop.
@@ -345,12 +350,13 @@ of it,
             EquilateralTriangle(
                 cx=a+1, cy=b+1.5, side=0.25, fill_stroke=c)
 
+        Create(paper=A8, margin=0.25)
         Blueprint()
-        Text(common=txt, text="Function")
-        capitol()
+        capitol()  # uses default values
         capitol(a=1, b=2, c=gold)
         capitol(a=2, b=4, c=lime)
         PageBreak()
+        Save()
 
       The function named *capitol* has three properties that
       can be set; *a*, *b* and *c*. These are used to control
@@ -359,7 +365,7 @@ of it,
 
       The values have defaults - ``0``, ``0`` and ``red``
       - respectively, which are used if no values are provided;
-      this can be seen via the first example on the lower left.
+      this can be seen in the first example on the lower left.
 
       If values are provided to *a* and *b*,
       these will change where the shapes are drawn; if a value
