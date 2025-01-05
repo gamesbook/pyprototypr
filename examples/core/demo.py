@@ -2,6 +2,7 @@
 
 Written by: Derek Hohls
 Created on: 29 February 2016
+Last Update: 5 January 2025
 
 Sources and Credit:
     * pattern from http://elemisfreebies.com/11/07/20-abstract-patterns/
@@ -15,10 +16,28 @@ Footer()
 
 # one BIG hex
 Hexagon(
-    x=2, y=8,
-    side=8,
-    label="WELCOME!\nto the basic pyprototypr demo...",
-    label_size=16)
+    cx=9.5, cy=14,
+    side=10,
+    fill_stroke=forestgreen,
+    label="WELCOME!\nto a \npyprototypr\ndemo",
+    label_size=30,
+    label_stroke=white,
+    label_my=1.7)
+# the track of the signs...
+sign = circle(cx=0, cy=0, radius=2.7, label='{{sequence}}', fill=None, stroke_width=18,
+              radii=[0,90,180,270], radii_stroke_width=18,)
+iron = circle(common=sign, stroke=black)
+wood = circle(common=sign, stroke=sienna)
+bronze = circle(common=sign, stroke=goldenrod)
+stone = circle(common=sign, stroke=grey)
+fire = circle(common=sign, stroke=gold)
+water = circle(common=sign, stroke=snow)
+Track(
+    polygon(cx=9.5, cy=14, sides=6, radius=6),
+    shapes=[iron, wood, bronze, stone, fire, water],
+    clockwise=True,
+    rotation_style='i',
+    start=6)
 PageBreak()
 
 # ---- header text
@@ -145,7 +164,7 @@ Rectangle(cx=3, cy=23, width=5, height=3,
 EquilateralTriangle(
     x=7, y=21, side=4,
     title="triangle:9-22", title_stroke=black, fill_stroke=tomato)
-Stadium(cx=15, cy=23, width=3, height=2,
+Stadium(x=13.5, y=22, width=3, height=2,
         title="stadium:15-23", title_stroke=black, fill_stroke=tomato)
 Hexagon(cx=3, cy=17, side=2, orientation="flat",
         title="hexagon:3-17", title_stroke=black, fill_stroke=gold)
@@ -379,10 +398,11 @@ PageBreak()
 
 # one BIG hex
 Hexagon(
-    x=2, y=8,
-    side=8,
-    label="THIS IS THE END...\nof the basic pyprototypr demo!",
-    label_size=16)
+    cx=9.5, cy=14,
+    side=10,
+    label="THIS IS THE END...\nof a basic\npyprototypr demo!",
+    label_size=30,
+    label_my=1.3)
 
 PageBreak()
 # Save(output='png', dpi=300)

@@ -562,7 +562,7 @@ class BaseCanvas:
         self.y_c = self.defaults.get('yc', 0)
         # ---- circle, hex & polygon only
         self.radii = self.defaults.get('radii', [])
-        self.radii_stroke = self.defaults.get('radii_stroke', black)
+        self.radii_stroke = self.defaults.get('radii_stroke', self.stroke)
         self.radii_stroke_width = self.defaults.get('radii_stroke_width', self.stroke_width)
         self.radii_length = self.defaults.get('radii_length', None)  # default: circle radius
         self.radii_offset = self.defaults.get('radii_offset', 0)
@@ -887,7 +887,7 @@ class BaseShape:
         self.points = kwargs.get('points', cnv.points)
         # ---- circle / hexagon / polygon / compass
         self.radii = kwargs.get('radii', cnv.radii)
-        self.radii_stroke = kwargs.get('radii_stroke', cnv.radii_stroke)
+        self.radii_stroke = kwargs.get('radii_stroke', self.stroke)
         self.radii_stroke_width = self.kw_float(
             kwargs.get('radii_stroke_width', cnv.radii_stroke_width))
         self.radii_length = self.kw_float(kwargs.get('radii_length', cnv.radii_length))
