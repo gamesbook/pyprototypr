@@ -66,12 +66,13 @@ python examples/cards/cards_standard.py -d /tmp/demo
 echo "Creating various..."
 python examples/various/chords.py -d /tmp/demo
 python examples/various/clock.py -d /tmp/demo
+python examples/various/logo.py -d /tmp/demo
 python examples/various/objects.py -d /tmp/demo
-#python examples/various/rolling.py -d /tmp/demo
+python examples/various/rolling.py -d /tmp/demo
 python examples/various/unicode.py -d /tmp/demo
 python examples/various/world_clocks.py -d /tmp/demo
 # -- Board Game Geek
 echo "Creating BGG game sheet..."
-#python examples/bgg/example01.py -d /tmp/demo
+python examples/bgg/example01.py -d /tmp/demo
 
 echo "Done!"
