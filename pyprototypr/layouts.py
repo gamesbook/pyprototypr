@@ -532,7 +532,7 @@ class RectangularLocations(VirtualLocations):
                 self.row_odd = 0
                 self.row_even = _dir * (self.interval_x / 2.)
         while True:  # rows <= self.rows and col <= self.cols:
-            count = count + 1
+            count += 1
             # calculate point based on row/col
             # TODO!  set actual x and y
             x = self.x + (col - 1) * self.interval_x
@@ -817,7 +817,7 @@ class TriangularLocations(VirtualLocations):
                     dx = 0.5 * (self.cols - len(entry)) * self.interval_x - \
                         (self.cols - 1) * 0.5 * self.interval_x
                     for val, loc in enumerate(entry):
-                        count = count + 1
+                        count += 1
                         x = self.x + dx + val * self.interval_x
                         yield Locale(
                             loc, key + 1, x, y, self.set_id(loc, key + 1), count, corner)
@@ -826,7 +826,7 @@ class TriangularLocations(VirtualLocations):
                     dx = 0.5 * (self.cols - len(entry)) * self.interval_x - \
                         (self.cols - 1) * 0.5 * self.interval_x
                     for val, loc in enumerate(entry):
-                        count = count + 1
+                        count += 1
                         x = self.x + dx + val * self.interval_x
                         yield Locale(
                             loc, key + 1, x, y, self.set_id(loc, key + 1), count, corner)
@@ -835,7 +835,7 @@ class TriangularLocations(VirtualLocations):
                     dy = 0.5 * (self.rows - len(entry)) * self.interval_y - \
                         (self.rows - 1) * 0.5 * self.interval_y
                     for val, loc in enumerate(entry):
-                        count = count + 1
+                        count += 1
                         y = self.y + dy + val * self.interval_y
                         yield Locale(
                             key + 1, loc, x, y, self.set_id(key + 1, loc), count, corner)
@@ -844,7 +844,7 @@ class TriangularLocations(VirtualLocations):
                     dy = 0.5 * (self.rows - len(entry)) * self.interval_y - \
                         (self.rows - 1) * 0.5 * self.interval_y
                     for val, loc in enumerate(entry):
-                        count = count + 1
+                        count += 1
                         y = self.y + dy + val * self.interval_y
                         yield Locale(
                             key + 1, loc, x, y, self.set_id(key + 1, loc), count, corner)

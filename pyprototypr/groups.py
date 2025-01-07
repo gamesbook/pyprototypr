@@ -3,9 +3,7 @@
 Create layouts - grids, repeats, sequences and tracks - for pyprototypr
 """
 # lib
-import copy
 import logging
-import math
 
 # third party
 import jinja2
@@ -15,8 +13,8 @@ from pyprototypr.utils.tools import DatasetType, CardFrame  # enums
 from pyprototypr.base import BaseShape
 from pyprototypr.layouts import SequenceShape
 from pyprototypr.shapes import (
-    CircleShape, HexShape, ImageShape, RectangleShape,  SquareShape)
-from pyprototypr.utils.support import LookupType
+    CircleShape, HexShape, ImageShape, RectangleShape)
+from pyprototypr.utils.geoms import Locale
 
 from pyprototypr import globals
 
@@ -173,7 +171,7 @@ class CardShape(BaseShape):
     def draw_card(self, cnv, row, col, cid, **kwargs):
         """Draw a card on a given canvas."""
         image = kwargs.get('image', None)
-        # tools.feedback(f'$$$ draw_card  KW=> {kwargs}')
+        tools.feedback(f'$$$ draw_card  KW=> {kwargs}')
         # ---- draw outline
         label = "ID:%s" % cid if self.show_id else ""
         shape_kwargs = kwargs
@@ -214,7 +212,7 @@ class CardShape(BaseShape):
                 iid = members.index(cid + 1)
                 new_ele = self.handle_custom_values(flat_ele, cid)  # calculated values
                 # tools.feedback(f'$$$ draw_card $$$ {new_ele=}')
-                new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid)
+                new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid, **shape_kwargs)
             except AttributeError:
                 # ---- * switch ... get a new element ... or not!?
                 new_ele = flat_ele(cid=self.shape_id) if flat_ele else None # uses __call__ on Switch
@@ -226,7 +224,7 @@ class CardShape(BaseShape):
                         custom_new_ele = self.handle_custom_values(flat_new_ele, iid)
                         if isinstance(custom_new_ele, SequenceShape):
                             custom_new_ele.deck_data = self.deck_data
-                        custom_new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid)
+                        custom_new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid, **shape_kwargs)
 
             except Exception as err:
                 tools.feedback(f"Unable to draw card #{cid + 1}. (Error:{err})", True)
@@ -356,6 +354,8 @@ class DeckShape(BaseShape):
             * cards - number of cards in Deck
             * copy - name of column to use to set number of copies of a Card
             * image_list - list of image filenames
+            * card_rows - maximum number of rows of cards on a page
+            * card_cols - maximum number of columns of cards on a page
         """
         cnv = cnv if cnv else self.canvas
         log.debug("Deck cnv:%s type:%s", type(self.canvas), type(cnv))
@@ -392,8 +392,16 @@ class DeckShape(BaseShape):
         row, col = 0, 0
         # ---- draw cards
         for key, card in enumerate(self.deck):
+            # set meta data
+            _locale = Locale(
+                col=col + 1,
+                row=row + 1,
+                id=f"{col + 1}:{row + 1}",
+                sequence=key + 1)
+            kwargs['locale'] = _locale._asdict()
             image = images[key] if images and key <= len(images) else None
             card.deck_data = self.dataset
+
             mask = False
             if self.mask:
                 _check = tools.eval_template(self.mask, self.dataset[key], label='mask')

@@ -34,7 +34,7 @@ fire = circle(common=sign, stroke=gold)
 water = circle(common=sign, stroke=snow)
 Track(
     polygon(cx=9.5, cy=14, sides=6, radius=6),
-    shapes=[iron, wood, bronze, stone, fire, water],
+    shapes=[water, wood, stone, iron, bronze, fire],
     clockwise=True,
     rotation_style='i',
     start=6)
