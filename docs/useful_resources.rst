@@ -16,6 +16,7 @@ Icons and Images
 -  https://openclipart.org/
 -  https://www.svgrepo.com/
 -  https://game-icons.net/
+-  https://creazilla.com/
 -  https://bioart.niaid.nih.gov/ - medical, biological, animal and "various"
    in PNG and SVG formats
 -  https://thenounproject.com/ (some free, provided they are attributed)

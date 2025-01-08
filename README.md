@@ -14,10 +14,11 @@ graphics and text.
 ## Documentation
 
 The online documentation for __pyprototypr__ starts with the
-[Table of Contents](https://github.com/gamesbook/pyprototypr/blob/master/docs/index.rst)
+[Table of Contents](https://github.com/gamesbook/pyprototypr/blob/master/docs/index.rst);
+its highly recommended to read the sections in the order presented.
 
 If you're not familiar with any kind of programming or scripting, you should
-probably read some of the introductory sections, and especially the
+at least read some of the introductory sections, and especially the
 [installation](https://github.com/gamesbook/pyprototypr/blob/master/docs/setting_up.rst)
 before proceeding...
 
@@ -73,7 +74,7 @@ any PDF-capable program or application.
 
 If this works, then download and try out other scripts from any of the `examples`
 sub-directories (**note** some examples may require additional files such as
-images, CSV files, or spreadsheets). You can download all examples as a
+images, CSV files, or spreadsheets). You can download all examples in a single
 [ZIP file](https://github.com/gamesbook/pyprototypr/blob/master/examples.zip).
 
 If it does not work, you may want to look in more detail at the
@@ -86,8 +87,8 @@ Please see the [list of contributors](CONTRIBUTORS.txt).
 
 ## Work-in-Progress
 
-These features are **not** guaranteed to be implemented, but they are
-current / potential areas of work or development that have been identified.
+These features are **not** guaranteed to be implemented; they just represent
+current / potential areas of work or development.
 
 * [ ] New shapes:
     * [ ] Diamond shape
@@ -98,7 +99,7 @@ current / potential areas of work or development that have been identified.
 * [ ] Common objects:
     * [ ] Cube (Rhombus composite)
     * [ ] Domino (DotGrid inside Rectangle outline)
-    * [ ] Die (6-sided with dots; 3D)
+    * [ ] Die (Rectangle with DotGrid; 3D?)
     * [ ] Picture Frame (Trapezoid composite)
 * [ ] Hexagons: 18xx tile example (requires `Arcs` below!)
 * [ ] Line:
@@ -115,17 +116,18 @@ current / potential areas of work or development that have been identified.
     * [ ] Trapezoid
     * [ ] Triangle
 * [ ] Cards:
-    * [ ] allow for card backs
+    * [ ] support card back designs
     * [ ] grid lines for hexagonal cards
 * [ ] Color:
     * [ ] add support for CMYK
+    * [ ] investigate gradients
 
 ## Planned/Potential Board Examples
 
 * [ ] Abstract boards: Ludo, 9 Mens Morris, Wari
 * [ ] Wargame board: Squad Leader with terrain features (vector and bitmap)
 * [ ] Traveller board: show a fully-styled Star system (demo a custom Shape?)
-* [x] WarpWar board: show a fully-styled sector
+* [x] WarpWar board: show a fully-styled example
 * [ ] 18xx board: show a basic map with tracks, towns, cities and off-map areas
 
 ## Acknowledgements

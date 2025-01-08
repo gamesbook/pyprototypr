@@ -109,9 +109,6 @@ in the script.  It's primary purpose is to set the card size, and then
 calculate how many cards appear on a page.  It manages the "flow" of cards as
 they get drawn.
 
-Primary Properties
-------------------
-
 The following are key properties that will usually need to be set for a
 ``Deck``:
 
@@ -120,35 +117,11 @@ The following are key properties that will usually need to be set for a
   this value
 - **height** - this is the card height; it defaults to 8.8 cm
 - **width** - this is the card width; it defaults to 6.3 cm
-- **radius** - this is a circular or hexagonal card's radius;
-  it defaults to 2.54 cm (1")
 
-Secondary Properties
---------------------
+.. NOTE::
 
-The following are other properties that can also be set for a ``Deck``:
-
-- **copy** - the name of a column in the dataset defined by
-  `the Data Command`_ that specifies how many copies of a card are needed
-- **fill** - sets the color of the card's area; defaults to white
-- **frame** - the default card frame is a rectangle (or square, if the
-  height and width match); but can be set to *hexagon* or *circle*
-- **grid_marks** - if set to ``True``, will cause small marks to be drawn at
-  the border of the page that align with the edges of the cards
-- **mask** - an expression which should evaluate to ``True` or ``False``;
-  this expression uses the same kind of syntax as the `T(emplate) command`_
-  described below and it uses data available from the Deck's ``Data``
-  (see `the Data Command`_); if ``True`` then any matching cards will be
-  masked i.e. ignored and not drawn.
-- **rounding** - sets the size of rounding on each corner of a rectangular
-  frame card
-- **stroke** - sets the color of the card's border; defaults to black
-
-.. HINT::
-
-    The **frame** property can be seen "in action" in illustrated examples;
-    see a `hexagonal example <examples/cards.rst#hexagon-cards>`_ and a
-    `circular example <examples/cards.rst#circle-cards>`_.
+  The Deck command is covered in detail, with examples of all of its properties
+  in the section covering the `deck command <deck_command.rst>`_ .
 
 
 Deck Example #1
@@ -156,38 +129,28 @@ Deck Example #1
 
 This example shows the definition of a simple deck for cards that are a
 commonly-used size (with the default units of centimetres in place).
-The card size means that  there will be 9 rectangular cards on each
+The card size means that there will be 9 rectangular cards on each
 A4 page (in default portrait mode):
 
     .. code:: python
 
-      Deck(
-        cards=18,
-        height=8.8,
-        width=6.3)
+      Deck(cards=18)
 
-Note that height and width here are the default values; if omitted, the same
-size cards will be created.
+Note that height (``8.8`` cm) and width (``6.3`` cm) are the default values
+for rectangular cards.
 
 
 Deck Example #2
 ---------------
 
 This example shows the definition of a deck of 27 cards that are a
-default size and type (rectangular), with rounded corners and their
-colors set; the grid marks will appear along the page edges.
-
-The default card size means that there will be 9 cards on each A4
-page (in default portrait mode):
+default size and type (rectangular). This  means that there will be
+9 cards on each A4 page (in default portrait mode):
 
     .. code:: python
 
       Deck(
         cards=27,
-        grid_marks=True,
-        rounding=0.3,
-        fill=None,
-        border=grey,
         copy="Copies",
         mask="{{ Race == 'Hobbit' }}")
 
@@ -196,7 +159,7 @@ with the label **Copies** available in the Deck's dataset (which is created
 by `the Data Command`_); in this case, the number in that column will be
 used to make that many copies of the card (unless it has a **mask**).
 
-For the **mask** property to work, it is expected that ther is a column
+For the **mask** property to work, it is expected that there is a column
 with the label **Race** available in the Deck's dataset (which is created
 by `the Data Command`_); in this case, any card with data matching the
 value ``Hobbit`` will be masked (ignored and not drawn).
@@ -224,7 +187,7 @@ The dataset that could be used with the above Deck is shown in
 `Data Example #5`_.
 
 The full code - including the data - for this example is available as
-`cards_lotr.py <../examples/cards/cards_lotr.py>`_
+`cards_lotr.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_lotr.py>`_
 
 
 The Card Command
@@ -600,7 +563,7 @@ style the text - italic and bold - and also uses the **or** option in the
 sign - to use when there no *Age* value (for example, for the "Gandalf" row).
 
 The full code for this example is available as
-`cards_lotr.py <../examples/cards/cards_lotr.py>`_
+`cards_lotr.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_lotr.py>`_
 
 
 S(election) command
@@ -653,7 +616,7 @@ will produce no changes in the cards as there is no **nature** column or
 **Orc** value.
 
 The full code for this example is available as
-`cards_lotr.py <../examples/cards/cards_lotr.py>`_
+`cards_lotr.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_lotr.py>`_
 
 L(ookup) command
 ----------------

@@ -3,8 +3,8 @@
 Create layouts - grids, repeats, sequences and tracks - for pyprototypr
 """
 # lib
+import copy
 import logging
-
 # third party
 import jinja2
 # local
@@ -171,20 +171,22 @@ class CardShape(BaseShape):
     def draw_card(self, cnv, row, col, cid, **kwargs):
         """Draw a card on a given canvas."""
         image = kwargs.get('image', None)
-        tools.feedback(f'$$$ draw_card  KW=> {kwargs}')
+        # tools.feedback(f'$$$ draw_card  KW=> {kwargs}')
         # ---- draw outline
         label = "ID:%s" % cid if self.show_id else ""
-        shape_kwargs = kwargs
+        shape_kwargs = copy.copy(kwargs)
         shape_kwargs['is_cards'] = True
         shape_kwargs['fill'] = kwargs.get('fill', kwargs.get('bleed_fill', None))
         # tools.feedback(f'$$$ draw_card SKW=> {shape_kwargs}')
         outline = self.get_outline(
             cnv=cnv, row=row, col=col, cid=cid, label=label, **shape_kwargs)
         outline.draw(**shape_kwargs)
+        kwargs['grid_marks'] = None  # reset so not used by elements on card
         if kwargs['frame_type'] == CardFrame.HEXAGON:
             radius, diameter, side, half_flat = outline.hex_height_width()
             side = self.points_to_value(side)
             half_flat = self.points_to_value(half_flat)
+
         # ---- draw card elements
         flat_elements = tools.flatten(self.elements)
         for index, flat_ele in enumerate(flat_elements):
@@ -203,7 +205,6 @@ class CardShape(BaseShape):
                     _dy = row * 2.0 * (half_flat + outline.spacing_y) + outline.offset_y
                     if row & 1:
                         _dx = _dx + side + outline.spacing_x
-                        # _dx = _dx + (outline.height + outline.spacing_y) / math.sqrt(3)
             # print(f' #*# {kwargs["frame_type"]=} {col=} {row=} {_dx=} {_dy=} ')
 
             members = self.members or flat_ele.members
@@ -212,7 +213,7 @@ class CardShape(BaseShape):
                 iid = members.index(cid + 1)
                 new_ele = self.handle_custom_values(flat_ele, cid)  # calculated values
                 # tools.feedback(f'$$$ draw_card $$$ {new_ele=}')
-                new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid, **shape_kwargs)
+                new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid, **kwargs)
             except AttributeError:
                 # ---- * switch ... get a new element ... or not!?
                 new_ele = flat_ele(cid=self.shape_id) if flat_ele else None # uses __call__ on Switch
@@ -224,7 +225,8 @@ class CardShape(BaseShape):
                         custom_new_ele = self.handle_custom_values(flat_new_ele, iid)
                         if isinstance(custom_new_ele, SequenceShape):
                             custom_new_ele.deck_data = self.deck_data
-                        custom_new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid, **shape_kwargs)
+                        tools.feedback(f'$$$ draw_card $$$ {custom_new_ele=}')
+                        custom_new_ele.draw(cnv=cnv, off_x=_dx, off_y=_dy, ID=iid, **kwargs)
 
             except Exception as err:
                 tools.feedback(f"Unable to draw card #{cid + 1}. (Error:{err})", True)
