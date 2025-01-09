@@ -1,12 +1,12 @@
 """
-Deck design Example 08 for pyprototypr
+Deck design Example 09 for pyprototypr
 
 Written by: Derek Hohls
 Created on: 8 January 2025
 """
 from pyprototypr import *
 
-Create(filename='cards_deck_08.pdf', margin=0.25, paper=A8)
+Create(filename='cards_deck_09.pdf', margin=0.25, paper=A8)
 
 # design deck
 Deck(
@@ -18,7 +18,7 @@ Deck(
     offset=0.15,
     grid_marks=True,
     grid_length=0.18,
-    cols=1
+    rows=1
     )
 # design card
 Card(
@@ -32,5 +32,5 @@ Save(
      output='png',
      dpi=300,
      directory="docs/images/decks",
-     names=['cards_deck_08', None]
+     names=['cards_deck_09', None]
 )

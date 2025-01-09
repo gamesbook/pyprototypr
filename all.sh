@@ -62,6 +62,18 @@ python examples/cards/cards_images.py -d /tmp/demo
 python examples/cards/cards_matrix_one.py -d /tmp/demo
 python examples/cards/cards_matrix_two.py -d /tmp/demo
 python examples/cards/cards_standard.py -d /tmp/demo
+# ---- decks
+echo "Creating decks..."
+python examples/cards/cards_deck_01.py -d /tmp/demo
+python examples/cards/cards_deck_02.py -d /tmp/demo
+python examples/cards/cards_deck_03.py -d /tmp/demo
+python examples/cards/cards_deck_04.py -d /tmp/demo
+python examples/cards/cards_deck_05.py -d /tmp/demo
+python examples/cards/cards_deck_06.py -d /tmp/demo
+python examples/cards/cards_deck_07.py -d /tmp/demo
+python examples/cards/cards_deck_08.py -d /tmp/demo
+python examples/cards/cards_deck_09.py -d /tmp/demo
+python examples/cards/cards_deck_10.py -d /tmp/demo
 # -- various
 echo "Creating various..."
 python examples/various/chords.py -d /tmp/demo

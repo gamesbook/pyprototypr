@@ -379,6 +379,7 @@ class DeckShape(BaseShape):
         _height, _width, _radius = self.width, self.width, self.radius
         self.draw_bleed(cnv, page_across, page_down)
         # ---- deck settings
+        col_space, row_space = 0.0, 0.0
         if self.deck:
             _card = self.deck[0]
             _height, _width, = _card.outline.height, _card.outline.width
