@@ -35,6 +35,7 @@ they get drawn.
 
 Primary Properties
 ------------------
+`↑ <table-of-contents_>`_
 
 The following are key properties that will usually need to be set for a
 ``Deck``:
@@ -49,6 +50,7 @@ The following are key properties that will usually need to be set for a
 
 Secondary Properties
 --------------------
+`↑ <table-of-contents_>`_
 
 The following are other properties that can also be set for a ``Deck``:
 
@@ -71,8 +73,8 @@ The following are other properties that can also be set for a ``Deck``:
   and it uses data available from the Deck's
   `Data Command <card_decks.rst#the-data-command>`_); if ``True``
   then any matching cards will be masked i.e. ignored and not drawn
-- **radius** - this is a circular or hexagonal card *frame*'s radius;
-  it defaults to 2.54 cm (1"
+- **radius** - the radius for a frame of type *hexagon* or *circle*;
+  it defaults to 2.54 cm (1")
 - **rounding** - sets the size of rounding on each corner of a rectangular
   frame card
 - **rows** - the maximum number of card rows that should appear on a page
@@ -150,7 +152,9 @@ Example 1. Defaults
             height=3.2,
             width=2.1)
 
-      The outline for
+      The frame for the card is shown by default as a thin black line.
+      The shape, or shapes drawn on a card are located within that frame,
+      relative to its boundaries.
 
 ===== ======
 
@@ -175,6 +179,11 @@ Example 2. Card bleed
             width=2.1,
             fill=silver)
 
+      Every card can be assigned a background color via the *fill* property
+      of the Deck. This is also known as a "bleed" area, and is useful in case
+      the cutting is misaligned; allowing the main area of the card to still
+      be visible.
+
 ===== ======
 
 
@@ -198,6 +207,12 @@ Example 3. Full bleed
             width=2.1,
             fill=silver,
             bleed_fill=grey)
+
+      The bleed area for the card can also be extended to the whole page
+      (up to the margins) by using the *bleed_fill* color. In this example
+      it's shown as a different color from the Cards' bleed, so that it's
+      clear what its coverage is, but usually these colors would match - see
+      also `Example 5. Grid Marks`_ below.
 
 ===== ======
 
@@ -225,6 +240,17 @@ Example 4. Offset
             bleed_fill=grey,
             offset=0.25)
 
+      To allow for the possibility that a page may not printed all the way
+      to the margin, the printing area for the card frames can be offset
+      from the margin by any amount (in this example, by ``0.25`` cm).
+
+      Its also possible to offset only from the left by using **offset_x**
+      or only from the bottom by using **offset_y**.
+
+      Note that in this example, the color of the Cards frame line has been
+      changed to *red*; depending on the *bleed_fill* color it can be helpful
+      to set this.
+
 ===== ======
 
 
@@ -251,6 +277,18 @@ Example 5. Grid Marks
             offset=0.25,
             grid_marks=True,
             grid_length=0.18)
+
+      In this example, there are two changes from previous ones.
+
+      There is now a consistent bleed color across both page background and
+      within in the cards themselves; if no separate *fill* property is used,
+      then the fill color within the card frame will be set to match that of
+      the *bleed_fill*.
+
+      The edge of the page has small marks that are designed to help with
+      card cutting; ``grid_marks=True`` enables these marks, and the optional
+      *grid_length* allows the length of these lines to be set; the default
+      length is ``1`` cm.
 
 ===== ======
 
@@ -281,6 +319,19 @@ Example 6. Card Spacing
             spacing=0.1,
             spacing_y=0.15)
 
+      Depending on the priniting and cutting requirements, it can be useful
+      to add spacing (unused area) between the cards.  The *spacing* property
+      sets spacing distance in both x- and y-directions; but it can also be
+      set for each individually (using **spacing_x** for horizontal spacing
+      and **spacing_y** for vertical spacing).
+
+      Using spacing also adds extra grid marks.
+
+      .. HINT::
+
+        For simple "print, cut and use" cards, spacing is usually *not* needed
+        as it just adds more work to the cutting step without much more value!
+
 ===== ======
 
 
@@ -308,6 +359,12 @@ Example 7. Clean Layout
             grid_marks=True,
             grid_length=0.18,
             spacing=0.15)
+
+      By keeping all the other adjustments to the Deck layout - *bleed_fill*,
+      *offset*, *grid_marks* and (possibly) *spacing* - but disabling the
+      drawing of the Card frames by setting ``stroke=None``, the result is a
+      "clean" layout where small mistakes in cutting will mean cards are
+      still retain a fair visual appearance.
 
 ===== ======
 
@@ -337,6 +394,11 @@ Example 8. Column Limit
             grid_length=0.18,
             cols=1)
 
+      By default, **pyprototypr** will fit as many cards as possible into the
+      available page area.  If for any reason, there need to be less cards on
+      a page, then setting the *cols* property will limit the creation of the
+      number of columns on each one.
+
 ===== ======
 
 
@@ -365,6 +427,11 @@ Example 9. Row Limit
             grid_length=0.18,
             rows=1)
 
+      By default, **pyprototypr** will fit as many cards as possible into the
+      available page area.  If for any reason, there need to be less cards on
+      a page, then setting the *rows* property will limit the creation of the
+      number of rows on each one.
+
 ===== ======
 
 
@@ -392,6 +459,11 @@ Example 10. Circular Frame
             spacing=0.15,
             frame='circle')
 
+      The default frame for a Card is a rectangle, but this can be changed
+      by setting the **frame** property to either **circle** or **hexagon**.
+
+      In this example, because the cards are circular, the *radius* property
+      needs to be set.
 
       The **frame** property also can be seen "in action" in various
       examples; see a `hexagonal example <examples/cards.rst#hexagon-cards>`_

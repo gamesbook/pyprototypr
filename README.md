@@ -28,8 +28,11 @@ __pyprototypr__ requires Python (version of 3.11 or higher) to be installed
 and running on your machine.
 
 If this is **not** your current Python version, or Python is not installed on
-your machine, may want to use [uv](https://docs.astral.sh/uv/guides/install-python)
-which is a cross-platform tool able to install both Python and __pyprototypr__.
+your machine, may want to [install uv](https://docs.astral.sh/uv/getting-started/installation/)
+which is a cross-platform tool able to [install Python](https://docs.astral.sh/uv/guides/install-python).
+
+If using [uv](https://docs.astral.sh/uv/), it is recommended to also create and use a
+[virtual environment](https://docs.astral.sh/uv/pip/environments/#creating-a-virtual-environment).
 
 ## Quick Start (for the impatient)
 
@@ -37,6 +40,10 @@ Assuming that Python 3.11 or higher is installed on your machine, you can then
 install __pyprototypr__ via:
 ```
 pip install pyprototypr
+```
+or, if using [uv](https://docs.astral.sh/uv/):
+```
+uv pip install pyprototypr
 ```
 To check that __pyprototypr__ is working, you can use one (or more) of
 the files from any of the various
@@ -74,7 +81,7 @@ any PDF-capable program or application.
 
 If this works, then download and try out other scripts from any of the `examples`
 sub-directories (**note** some examples may require additional files such as
-images, CSV files, or spreadsheets). You can download all examples in a single
+images, CSV files, or spreadsheets). You can download all the examples in a single
 [ZIP file](https://github.com/gamesbook/pyprototypr/blob/master/examples.zip).
 
 If it does not work, you may want to look in more detail at the
@@ -118,6 +125,7 @@ current / potential areas of work or development.
 * [ ] Cards:
     * [ ] support card back designs
     * [ ] grid lines for hexagonal cards
+    * [ ] multiple bleed areas
 * [ ] Color:
     * [ ] add support for CMYK
     * [ ] investigate gradients

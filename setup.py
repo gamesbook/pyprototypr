@@ -92,8 +92,5 @@ setup(
         'Topic :: Multimedia :: Graphics :: Presentation'
         ],
     platforms='any',
-    license='MIT License',
-    extras_require={
-        'testing': ['pytest'],
-    }
+    license='GPL 3.0 License',
 )
