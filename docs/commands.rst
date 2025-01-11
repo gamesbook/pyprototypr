@@ -2,6 +2,8 @@
 Commands List
 =============
 
+.. |dash| unicode:: U+2014 .. EM DASH SIGN
+
 This list provides an alphabetic summary of all the
 `commands <basic_concepts.rst#the-command-concept>`_ specific to
 `pyprototypr <index.rst>`_.  It is not intended to be used for learning
@@ -11,9 +13,9 @@ but is a handy cross-reference to the detailed information for that command.
 
   `pyprototypr <index.rst>`_ is a small, specialised tool; but its part of a much
   greater Python language "ecosystem", and commands and tools from the
-  `Python language <python_commands.rst>`_ (or other
-  `Python packages <https://pypi.org>`_  ) can be used to further enhance your
-  own script.
+  `Python language <python_commands.rst>`_ |dash| or other
+  `Python packages <https://pypi.org>`_  |dash| can be used to further enhance
+  your own script.
 
 -  `Arc <core_shapes.rst#arc>`_ * - a geometric shape that can be drawn on a page
 -  `Arrow <core_shapes.rst#arrow>`_ * - a geometric shape that can be drawn on a page
@@ -28,6 +30,8 @@ but is a handy cross-reference to the detailed information for that command.
    of a `countersheet <card_decks.rst#the-countersheet-command>`_
 -  `countersheet <card_decks.rst#the-countersheet-command>`_  - details for a
    countersheet, containing one or more `counters <card_decks.rst#the-counter-command>`_
+-  `Create <script_anatomy.rst#create-command>`_ - start of a script; define the
+   paper size, output filename, margins, units, fill color etc.
 -  `Data <card_decks.rst#the-data-command>`_ - provides a source of information for
    a `deck <card_decks.rst#the-deck-command>`_ or a
    `countersheet <card_decks.rst#the-countersheet-command>`_ ; typically from a CSV or
@@ -52,6 +56,8 @@ but is a handy cross-reference to the detailed information for that command.
    grid and specifies the shapes that are to be drawn at the grid locations
 -  `Line <core_shapes.rst#line>`_ * - a geometric shape that can be drawn on a page
 -  `Lines <core_shapes.rst#lines>`_ - a set, or group, of lines that can be drawn on a page
+-  `PageBreak <script_anatomy.rst#pagebreak-command>`_ - set the start of a new page in
+   the document; not required for a `Deck <card_decks.rst#the-deck-command>`_
 -  `Polygon <core_shapes.rst#polygon>`_ * - a geometric shape that can be drawn on a page
 -  `Polyline <core_shapes.rst#polyline>`_ * - a geometric shape that can be drawn on a page
 -  `Polyshape <core_shapes.rst#polyshape>`_ * - a geometric shape that can be drawn on a page
@@ -59,11 +65,13 @@ but is a handy cross-reference to the detailed information for that command.
 -  `Rectangle <core_shapes.rst#rectangle>`_ * - a geometric shape that can be drawn on a page
 -  `Rectangles <core_shapes.rst#rectangles>`_ - a set, or group, of rectangles that can be drawn on a page
 -  `RectangularLocations <layouts_rectangular.rst>`_ - defines an ordered series of
-   row and column locations that create a rectangular grid of shapes (the grid itself
-   is not displayed; it is used for a `layout <layouts_rectangular.rst#layout>`_)
+   row and column locations that create a rectangular grid of shapes - the grid itself
+   is not displayed; it is used for a `layout <layouts_rectangular.rst#layout>`_
 -  `Rhombus <core_shapes.rst#rhombus>`_ * - a geometric shape that can be drawn on a page
 -  `S <card_decks.rst#s-election-command>`_ - short for *Selection*; the way to draw a
    shape on a `card <card_decks.rst#the-card-command>`_ depending on a condition
+-  `Save <script_anatomy.rst#save-command>`_ - end of a script; set the export
+   image file type and filenames, as well as resolution
 -  `Sector <core_shapes.rst#sector>`_ * - a geometric shape that can be drawn on a page
 -  `Sequence <layouts_sequence.rst>`_ -  lay out a number of items in a straight line
 -  `Square <core_shapes.rst#square>`_ * - a geometric shape that can be drawn on a page
@@ -77,8 +85,8 @@ but is a handy cross-reference to the detailed information for that command.
 -  `Track <layouts_track.rst>`_ - draw any number of shapes at the vertices of another shape
 -  `Trapezoid <core_shapes.rst#trapezoid>`_ * - a geometric shape that can be drawn on a page
 -  `TriangularLocations <layouts_triangular.rst>`_- defines an ordered series of
-   row and column locations that create a triangular grid of shapes (the grid itself
-   is not displayed; it is used for a `layout <layouts_rectangular.rst#layout>`_)
+   row and column locations that create a triangular grid of shapes - the grid itself
+   is not displayed; it is used for a `layout <layouts_rectangular.rst#layout>`_
 
 .. NOTE::
 

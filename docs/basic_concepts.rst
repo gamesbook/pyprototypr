@@ -2,10 +2,12 @@
 Basic Concepts
 ==============
 
+.. |dash| unicode:: U+2014 .. EM DASH SIGN
+
 Like many other specialised tools, `pyprototypr <index.rst>`_ has its
-own set of terms and concepts that act as "short-cuts" to help it
-function. Some of these are likely to be common to other graphics
-editing or programming tools, but some are specific to it.
+own set of terms and concepts that act as "short-cuts" to define
+its functions and behaviour. Some of these are likely to be common to
+other graphics editing or programming tools, but some are specific to it.
 
 This is a general discussion; it may also be useful to look at the more
 detailed definitions of some of the terms in the section covering
@@ -32,20 +34,20 @@ How you’ll use pyprototypr
 ==========================
 `↑ <table-of-contents_>`_
 
-You will be using **pyprototypr** to write what is termed a *script*
+You will be using **pyprototypr** to write what is termed a **script**
 i.e. a recipe or list of instructions that are stored in a file. These
 instructions are used to define a game board, a set of cards or tiles,
 or any other, similar, regular graphical design of your choice.
 
 You will then use Python to "run" the script. Python will take the file
 you have written, and step through it, line by line, from top to bottom,
-to finally create an output PDF file (or, optionally, PNG or GIF image)
+to finally create an output PDF file or, optionally, PNG or GIF images,
 that will show the outcome of this process - hopefully with your desired
 design!
 
 If you want to make changes to the design, then you add to, delete, or
-change the instructions in your script and then use Python to process it
-again to create an updated PDF file.
+change, the instructions in your script and use Python to process it
+again to create the update.
 
 
 The "script" concept
@@ -89,10 +91,10 @@ pages, but will always have at least one.
 
 The position of something is *where* it will be drawn on the page. To do
 this, you provide values for both **x** - the horizontal position - and
-**y** - the vertical position - for each thing that you want to on
-appear the page.
+**y** - the vertical position - for each thing that you want to appear
+on the page.
 
-So, if you look at an upright A4 page - which is 21cm wide and just less
+If you look at an upright A4 page - which is 21cm wide and just less
 than 30cm high - then a point in the middle of the page will have an **x
 position** of 10.5cm - its distance from the left edge of the page; and
 a **y position** of 14.8cm - its distance from the bottom edge of the
@@ -100,13 +102,14 @@ page. Similarly, for a US letter-sized page of 8.5" by 11", a point in
 the middle of the page would have an **x position** of 4.25" and a **y
 position** of 5.5".
 
-As the use of margins is common for most documents and drawings, *all*
+As the use of margins is common for most documents and drawings, nearly all
 distances in **pyprototypr** are considered to be relative to the margin
 settings i.e. if the default page margin, for the A4 page mentioned above,
 was 2.5cm (1") then to locate a point at those same distances would mean
 using an **x position** of 8cm and a **y position** of 12.3cm, as the margin
 size will be automtically added onto the supplied values for the position.
 
+.. _command:
 
 The "command" concept
 =====================
@@ -119,6 +122,9 @@ in nature, causing something to happen; for example:
 - ``Save()`` - instructs the program to save the output to file
 - ``Circle()``  - instructs the program to draw a circle
 
+The documents include a `summary list of all commands <commands.rst>`_.
+
+.. _element:
 
 The "element" concept
 =====================
@@ -158,10 +164,10 @@ Element properties
 *Elements* can have other settings apart from their `position <position_>`_
 
 For example, the rectangle which represents the outline of a card has a
-*height* (its size in the vertical direction) and a *width* (its size in
-the horizontal direction). The line used to draw the rectangle also has
-a *stroke width* and a *stroke color* (see below for more about the
-concepts of stroke and width). A circle will have its size defined by a
+*height* |dash| its size in the vertical direction and a  *width* |dash|
+its size in the horizontal direction. The line used to draw the rectangle
+also has a *stroke width* and a *stroke color* (see below for more about
+the concepts of stroke and width). A circle will have its size defined by a
 value for its *radius* or *diameter*, and so on.
 
 .. NOTE::
@@ -177,6 +183,7 @@ common properties are defined in the section covering
 `terminology <terminology.rst>`_ and their usage is covered in
 the section on `core chapes <core_shapes.rst>`_.
 
+.. _color:
 
 Working with color
 ==================
@@ -185,9 +192,9 @@ Working with color
 Everything we see has color.
 
 Color in **pyprototypr**, is defined in the same way as it is in pages
-that appear on the web i.e. in RGB (red-green-blue) *hexadecimal* format
-- for example, ``#A0522D`` represents a shade of the color that we would
-likely term "brown".
+that appear on the web i.e. in RGB |dash| red-green-blue |dash| *hexadecimal*
+format; for example, ``#A0522D`` represents a shade of the color that we
+would likely term "brown".
 
 Colors in **pyprototypr** can also make use of names from a pre-defined
 list - for example ``#A0522D`` is defined as the color *sienna*. The
@@ -204,6 +211,7 @@ set the color of an area, and *"stroke"* to set the color of a line.
    section https://www.w3.org/TR/css-color-3/#svg-color (this list can
    also be found at https://en.wikipedia.org/wiki/X11_color_names)
 
+.. _units:
 
 Working with units
 ==================
@@ -215,13 +223,14 @@ kinds of lengths or sizes all need to be measured in a particular set of
 
 In the USA, people tend to use the so-called Imperial System. In
 **pyprototypr** this means that distances might be measured in units of
-inches (inches are often shown with an *"* (double quotes) symbol in
-documents, but in **pyprototypr** inches are referred to using the term *inch*).
+inches. Inches are often shown with an *"*, or double-quotes, symbol
+in documents, but in **pyprototypr** inches are referred to using the
+term *inch*.
 
 In almost all of the rest of the world, the Metric System is in use. In
 **pyprototypr** this means that distances will be measured in units of
-centimetres (referred to in **pyprototypr** as *cm*). Alternatively, you
-can choose to use millimetres (abbreviated in **pyprototypr** as *mm*).
+centimetres; referred to in **pyprototypr** as *cm*. Alternatively, you
+can choose to use millimetres, abbreviated in **pyprototypr** as *mm*.
 
 .. HINT::
 
@@ -234,6 +243,7 @@ in 1 inch. Internal calculations in **pyprototypr** are all done in
 point units i.e. all inputs, regardless of being inches or centimetres
 are converted to points.
 
+.. _stroke:
 
 The "stroke" concept
 ====================
@@ -243,26 +253,27 @@ While the majority of size-based `properties <properties_>`_ in **pyprototypr**
 work with the "normal" units you have chosen - inches or centimetres - some use
 points (see `working with units`_ above). These include font height, that you’re
 likely familiar with from word processing programs, and line thickness - termed
-"stroke width". (The reason for doing this is to maintain consistency with other,
-existing tools.)
+"stroke width". The reason for doing this is to maintain consistency with other,
+existing tools.
 
+.. _default:
 
 The "default" concept
 =====================
 `↑ <table-of-contents_>`_
 
 A "default", in terms of **pyprototypr**, is a value or setting for
-something (usually a `property <properties_>`_) which is used unless you
-specify otherwise. This is helpful for quickly drawing or testing something
-until you're ready to make decisions about your own specific settings or
-values.
+something |dash| usually a `property <properties_>`_ |dash| which is used
+unless you specify otherwise. This is helpful for quickly drawing or testing
+something until you're ready to make decisions about your own specific
+settings or values.
 
 Some examples of defaults are:
 
 -  the default *margin* for pages in the output PDF is ``1.25`` cm
-   (or half of 1 inch)
--  the default *paper* size for pages in the output PDF is A4 (similar to
-   US letter size)
+   or half of 1 inch
+-  the default *paper* size for pages in the output PDF is A4 |dash| similar
+   to the US letter size
 -  the default *units* are centimetres (*cm*)
 -  the default *x* and *y* positions are each 1 (one) - with default
    units that equals 1cm

@@ -2,6 +2,8 @@
 Script Anatomy
 ==============
 
+.. |dash| unicode:: U+2014 .. EM DASH SIGN
+
 A "script" is the short-cut name for a file containing a list of instructions
 that will be read and processed by Python.  The script filename is usually given
 an extension of ".py".
@@ -18,11 +20,12 @@ Table of Contents
 =================
 
 - `Start, Middle and End`_
-- `Commands`_
+- `Key Commands`_
 
   - `Create Command`_
   - `PageBreak Command`_
   - `Save Command`_
+- `Other Commands`_
 - `Comments`_
 - `Drawing vs Assigning`_
 - `Basic Shapes`_
@@ -53,9 +56,10 @@ The final command in the script will be the `Save command`_, which triggers the
 creation of the output; by default a PDF file - with optional PNG or GIF output
 as well.
 
+.. _key-commands:
 
-Commands
-========
+Key Commands
+============
 `↑ <table-of-contents_>`_
 
 - `Create Command`_
@@ -65,13 +69,13 @@ Commands
 
 Create Command
 --------------
-`^ <commands_>`_
+`^ <key-commands_>`_
 
 The ``Create()`` command is the first, essential command that should appear
 in a script. It sets up the basic document framework for the inclusion of all
 the elements that will appear.
 
-By default, it will setup an A4 page (in portrait mode), with
+By default, it will setup an A4 page |dash| in portrait mode |dash| with
 a margin of one-half inch (1.25cm), and units of centimetres;
 the resulting output file will have the same name as the script,
 but with a '.pdf' extension.
@@ -86,11 +90,15 @@ To customise the command, set its properties as follows:
   (millimetres), or ``points``; the default is ``cm``
 - **landscape** - "wrap" the paper size with ``landscape()`` to change the page
   orientation; so ``landscape(A4)`` produces a "rotated" A4-sized page
-- **margin** - set the value for *all* margins (using the defined *units*)
+- **margin** - set the value for *all* margins using the defined *units*
 - **margin_top** - set the top margin
 - **margin_bottom** - set the bottom margin
 - **margin_left** - set the left margin
 - **margin_right** - set the the right margin
+
+
+Example 1
+~~~~~~~~~
 
 Here is an example of a customised ``Create`` command:
 
@@ -106,7 +114,7 @@ Here is an example of a customised ``Create`` command:
 
 PageBreak Command
 -----------------
-`^ <commands_>`_
+`^ <key-commands_>`_
 
 The ``PageBreak()`` command is only needed when you need to start a new page.
 
@@ -116,7 +124,7 @@ multiple pages.
 
 Save Command
 ------------
-`^ <commands_>`_
+`^ <key-commands_>`_
 
 The ``Save()`` is usually the last to appear.  By default it simply results in
 the outcome of all the commands used being written out to the PDF file as named
@@ -130,14 +138,17 @@ To customise the command, set its properties as follows:
   file composed of all the PNG pages that would have been created
 - **dpi** - can be set to the dots-per-inch resolution required; by default
   this is ``300``
-- **names** - this can be used to provide a list of names (without an extension)
-  for the image files that will be created from the PDF; the first name
-  corresponds to the first page, the second name to the second and so on.  Each
-  will automatically get the ``.png`` extension added to it.  If the term
-  ``None`` is used in place of a name, that page will **not** have a PNG file
-  created for it.
+- **names** - this can be used to provide a list of names |dash| without an
+  extension |dash| for the image files that will be created from the PDF; the
+  first name corresponds to the first page, the second name to the second and
+  so on.  Each will automatically get the ``.png`` extension added to it.
+  If the term ``None`` is used in place of a name, that page will **not** have
+  a PNG file created for it.
 - **framerate** - the delay in seconds between each "page" of a GIF image; by
   default this is ``1`` second
+
+Example 1
+~~~~~~~~~
 
 Here is an example of a customised ``Save`` command:
 
@@ -151,6 +162,9 @@ Here is an example of a customised ``Save`` command:
 
 In this example, no PNG file will be created from the second page.
 
+Example 2
+~~~~~~~~~
+
 Here is another example of a customised ``Save`` command:
 
 .. code:: python
@@ -162,13 +176,13 @@ Here is another example of a customised ``Save`` command:
     )
 
 In this example, an animated GIF image will be created, assembled out of the
-PNG images (one per page of the PDF).  There will be delay of half a second
+PNG images; one per page of the PDF.  There will be delay of half a second
 between showing each image.
 
 
 Other Commands
 --------------
-`^ <commands_>`_
+`^ <key-commands_>`_
 
 There are numerous other commands which are either used to draw shapes, or
 sets of shapes, or to control how and where sets of shapes appear on a page.
@@ -233,14 +247,14 @@ The use of a capital is the more common case, and it effectively tells
     Circle(stroke_width=5)
 
 The use of a lowercase is normally when you assign a shape to a name, so that
-it can be used (or drawn) later on in the script:
+it can be used |dash| or drawn |dash| later on in the script:
 
 .. code:: python
 
-    # this circle is not drawn at this point of the script
+    # this circle is *not* drawn at this point of the script
     clock = circle(stroke_width=5)
 
-    # the circle (aka "clock") will be drawn when the cards are drawn
+    # the circle - aka "clock" - drawn when cards are drawn
     Card("1-9", clock)
 
 
@@ -354,9 +368,9 @@ stop at this point and give you a feedback message::
     FEEDBACK:: Could not continue with program.
 
 Supplying the script a **property that does not exist**, for example,
-using ``u=2.0`` when you meant to say ``y=2.0`` (which can happen
+using ``u=2.0`` when you meant to say ``y=2.0``. This  can happen
 because those two letters are located right next to each other on a
-keyboard and the letters are bit similar). In this case, the script will
+keyboard and the letters are a little similar. In this case, the script will
 “fail silently” because properties that don’t exist are simply ignored.
 This kind of mistake is much harder to spot; often because the default value
 will then be used instead and it will seem as though the script is drawing
