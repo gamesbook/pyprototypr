@@ -15,13 +15,13 @@ graphics and text.
 
 ## Documentation
 
-The online documentation for __protograf__ starts with the
-[Table of Contents](https://github.com/gamesbook/protograf/blob/master/docs/index.rst);
+The online documentation for __protograf__ starts at the
+[Guide](https://github.com/gamesbook/protograf/blob/master/docs/source/guide.rst);
 its highly recommended to read the sections in the order presented.
 
 If you're not familiar with any kind of programming or scripting, you should
 at least read some of the introductory sections, and especially the
-[installation](https://github.com/gamesbook/protograf/blob/master/docs/setting_up.rst)
+[installation](https://github.com/gamesbook/protograf/blob/master/docs/source/setting_up.rst)
 before proceeding...
 
 ## Requirements
@@ -87,7 +87,7 @@ images, CSV files, or spreadsheets). You can download all the examples in a sing
 [ZIP file](https://github.com/gamesbook/protograf/blob/master/examples.zip).
 
 If it does not work, you may want to look in more detail at the
-[installation](https://github.com/gamesbook/protograf/blob/master/docs/setting_up.rst)
+[installation](https://github.com/gamesbook/protograf/blob/master/docs/source/setting_up.rst)
 guide.
 
 ## Contributions

@@ -1,5 +1,6 @@
-protograf: Table of Contents
-==============================
+=====
+Guide
+=====
 
 The **protograf** documentation consists of the primary sections listed
 below.
@@ -29,7 +30,7 @@ other.
 10. `Customised Shapes <customised_shapes.rst>`_ - how to refine the
     appearance of certain shapes; circles, hexagons and rectangles
 11. `Layouts <layouts.rst>`_ - how to work with different kinds of
-    layouts (repeats, sequences, tracks and rectangular grids)
+    layouts; repeats, sequences, tracks and rectangular grids
 12. `Hexagonal Grids <hexagonal_grids.rst>`_ - how to create different types
     of hexagonal grids and customise or add to them
 13. `Terminology <terminology.rst>`_ - summary of common jargon and descriptions

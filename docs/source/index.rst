@@ -6,10 +6,33 @@
 Welcome to protograf's documentation!
 =====================================
 
+The **protograf** documentation consists of the primary sections listed
+below.
+
+Although its great to be able to just "jump in" and start using a
+program, the sections below are designed to be read in order - apart from
+the terminology - as they all contain useful information and build on each
+other.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   guide
+   overview
+   setting_up
+   basic_concepts
+   worked_example
+   script_anatomy
+   additional_concepts
+   core_shapes
+   card_decks
+   advanced_commands
+   customised_shapes
+   layouts
+   hexagonal_grids
+   terminology
+   commands
 
 
 Indices and tables
