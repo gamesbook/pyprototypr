@@ -1,5 +1,7 @@
 # protograf
 
+![protograf](logo.png "protograf logo")
+
 __protograf__ is a utility written in Python for designing and creating
 simple, regular, graphical outputs in PDF (or PNG/GIF) format via a script.
 

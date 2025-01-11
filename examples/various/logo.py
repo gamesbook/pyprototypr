@@ -15,14 +15,15 @@ Create(filename="logo.pdf",
         margin_right=0.1)
 
 header = Common(x=0, y=6, font_size=8, align="left")
-Blueprint(stroke_width=0.5, subdivisions=5)
-Text(common=header, text="Logo")
+
+#Blueprint(stroke_width=0.5, subdivisions=5)
+#Text(common=header, text="Logo")
 
 sanserif = Font("Courier", size=24, stroke="#3085AC")
 Text(x=0, y=2, text='proto', width=3, height=2,
      wrap=True, align="left", stroke="#3085AC")
 sans = Font("Arial", size=20, stroke="#3085AC")
-Text(x=2.58, y=1.85, text='<b>typr</b>', width=2, height=2,
+Text(x=2.58, y=1.85, text='<b>graf</b>', width=2, height=2,
      wrap=True, align="left", stroke="#3085AC")
 
 Hexagon(
@@ -42,4 +43,7 @@ Polygon(
     sides=8
 )
 
-Save()
+Save(
+    output='png',
+    directory="docs/examples/images/various"
+)

@@ -1,6 +1,6 @@
 #!/bin/bash
 # CHANGE LINE BELOW AS NEEDED!
-#export PYTHONPATH="${PYTHONPATH}:/path/to/"  # parent of pyprototypr
+#export PYTHONPATH="${PYTHONPATH}:/path/to/"  # parent of proto
 rm *.pdf
 echo "Creating cards1.pdf..."
 python cards1.py
