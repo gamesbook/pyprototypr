@@ -3,7 +3,7 @@ Sequence Command
 ================
 
 This section assumes you are very familiar with the concepts, terms and
-ideas for `pyprototypr <index.rst>`_ as presented in the
+ideas for `protograf <index.rst>`_ as presented in the
 `Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
 `Additional Concepts <additional_concepts.rst>`_
 and that you've created some basic scripts of your own using the

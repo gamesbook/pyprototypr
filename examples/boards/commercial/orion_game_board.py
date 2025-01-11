@@ -1,12 +1,12 @@
 """
-"Orion Duel" game board example for pyprototypr
+"Orion Duel" game board example for protograf
 
 Written by: Derek Hohls
 Created on:12 March 2024
 Notes:
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="orion_game_board.pdf", margin=0.5, paper=A4)
 

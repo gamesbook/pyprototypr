@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-General purpose utility functions for pyprototypr
+General purpose utility functions for protograf
 """
 # lib
 from collections import namedtuple
@@ -21,7 +21,7 @@ import xlrd
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 # local
-from pyprototypr.utils.support import numbers, feedback
+from protograf.utils.support import numbers, feedback
 
 log = logging.getLogger(__name__)
 DEBUG = False

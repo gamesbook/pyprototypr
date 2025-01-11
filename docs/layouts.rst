@@ -3,7 +3,7 @@ Layouts
 =======
 
 This section assumes you are very familiar with the concepts, terms and ideas
-for `pyprototypr <index.rst>`_  as presented in the
+for `protograf <index.rst>`_  as presented in the
 `Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
 `Additional Concepts <additional_concepts.rst>`_ and that you've created some
 basic scripts of your own using the `Core Shapes <core_shapes.rst>`_.
@@ -21,12 +21,12 @@ Overview
 ========
 `↑ <table-of-contents_>`_
 
-**pyprototypr** allows you to directly define where elements, that make up
+**protograf** allows you to directly define where elements, that make up
 your design, should be placed within a page, or over a series of pages
 within a ``Deck``, but it also includes commands that let you place, or
 "layout", elements in a more repetitive or regular way within a page.
 
-To support this, **pyprototypr** includes a number of different kinds of
+To support this, **protograf** includes a number of different kinds of
 **layouts**.
 
 Sequences and Tracks
@@ -46,7 +46,7 @@ Grid-based Locations
 --------------------
 
 The other way that elements can be laid out on a page is through a
-grid **locations**. In **pyprototypr**, such a grid can be derived from
+grid **locations**. In **protograf**, such a grid can be derived from
 various of the built-in shapes - for example, ``Hexagons`` - or it can
 be constructed using a supplied set of properties. Because these grids
 do not themselves appear on the page, they are termed "virtual grids".

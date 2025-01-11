@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-A dynamic boardgame example for pyprototypr
+A dynamic boardgame example for protograf
 
 Written by: Derek Hohls
 Created on: 2 December 2024
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="tictactoe.pdf", paper=A8, margin=0.2, stroke_width=0.5)
 

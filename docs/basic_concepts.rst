@@ -4,7 +4,7 @@ Basic Concepts
 
 .. |dash| unicode:: U+2014 .. EM DASH SIGN
 
-Like many other specialised tools, `pyprototypr <index.rst>`_ has its
+Like many other specialised tools, `protograf <index.rst>`_ has its
 own set of terms and concepts that act as "short-cuts" to define
 its functions and behaviour. Some of these are likely to be common to
 other graphics editing or programming tools, but some are specific to it.
@@ -18,7 +18,7 @@ detailed definitions of some of the terms in the section covering
 Table of Contents
 =================
 
-- `How you’ll use pyprototypr`_
+- `How you’ll use protograf`_
 - `The "script" concept`_
 - `The "position" concept`_
 - `The "command" concept`_
@@ -30,11 +30,11 @@ Table of Contents
 - `The "default" concept`_
 
 
-How you’ll use pyprototypr
-==========================
+How you’ll use protograf
+========================
 `↑ <table-of-contents_>`_
 
-You will be using **pyprototypr** to write what is termed a **script**
+You will be using **protograf** to write what is termed a **script**
 i.e. a recipe or list of instructions that are stored in a file. These
 instructions are used to define a game board, a set of cards or tiles,
 or any other, similar, regular graphical design of your choice.
@@ -85,7 +85,7 @@ The "position" concept
 ======================
 `↑ <table-of-contents_>`_
 
-When using **pyprototypr** what you are doing is defining *where* and
+When using **protograf** what you are doing is defining *where* and
 *how* various things should appear on a *page*. A script can create multiple
 pages, but will always have at least one.
 
@@ -103,7 +103,7 @@ the middle of the page would have an **x position** of 4.25" and a **y
 position** of 5.5".
 
 As the use of margins is common for most documents and drawings, nearly all
-distances in **pyprototypr** are considered to be relative to the margin
+distances in **protograf** are considered to be relative to the margin
 settings i.e. if the default page margin, for the A4 page mentioned above,
 was 2.5cm (1") then to locate a point at those same distances would mean
 using an **x position** of 8cm and a **y position** of 12.3cm, as the margin
@@ -115,7 +115,7 @@ The "command" concept
 =====================
 `↑ <table-of-contents_>`_
 
-Instructions in **pyprototypr** are termed *commands*.  These usually are
+Instructions in **protograf** are termed *commands*.  These usually are
 written with an initial capital letter. They are effectively "imperative"
 in nature, causing something to happen; for example:
 
@@ -130,10 +130,10 @@ The "element" concept
 =====================
 `↑ <table-of-contents_>`_
 
-Rather than use the slightly clumsy term "thing", **pyprototypr** uses
+Rather than use the slightly clumsy term "thing", **protograf** uses
 the term *element*.
 
-Almost everything in **pyprototypr** that appears in the output is
+Almost everything in **protograf** that appears in the output is
 considered to be an *element* of some sort. Elements are often geometric
 **shapes**, such lines, circles or rectangles, but can also be text or
 images.
@@ -173,7 +173,7 @@ value for its *radius* or *diameter*, and so on.
 .. NOTE::
 
    Because the word "size" is such a general one, its not really
-   used much in **pyprototypr**; more specific terms are used instead.
+   used much in **protograf**; more specific terms are used instead.
 
 Similarly, the settings for the creation of a document can be provided,
 such its color, the *paper* size and so on.
@@ -191,17 +191,17 @@ Working with color
 
 Everything we see has color.
 
-Color in **pyprototypr**, is defined in the same way as it is in pages
+Color in **protograf**, is defined in the same way as it is in pages
 that appear on the web i.e. in RGB |dash| red-green-blue |dash| *hexadecimal*
 format; for example, ``#A0522D`` represents a shade of the color that we
 would likely term "brown".
 
-Colors in **pyprototypr** can also make use of names from a pre-defined
+Colors in **protograf** can also make use of names from a pre-defined
 list - for example ``#A0522D`` is defined as the color *sienna*. The
 `colorset.pdf <../examples/colorset.pdf>`_ file shows all the names and colors
 that are available.
 
-Color properties in **pyprototypr** are typically used via *"fill"* to
+Color properties in **protograf** are typically used via *"fill"* to
 set the color of an area, and *"stroke"* to set the color of a line.
 
 .. HINT::
@@ -222,24 +222,24 @@ kinds of lengths or sizes all need to be measured in a particular set of
 **units**.
 
 In the USA, people tend to use the so-called Imperial System. In
-**pyprototypr** this means that distances might be measured in units of
+**protograf** this means that distances might be measured in units of
 inches. Inches are often shown with an *"*, or double-quotes, symbol
-in documents, but in **pyprototypr** inches are referred to using the
+in documents, but in **protograf** inches are referred to using the
 term *inch*.
 
 In almost all of the rest of the world, the Metric System is in use. In
-**pyprototypr** this means that distances will be measured in units of
-centimetres; referred to in **pyprototypr** as *cm*. Alternatively, you
-can choose to use millimetres, abbreviated in **pyprototypr** as *mm*.
+**protograf** this means that distances will be measured in units of
+centimetres; referred to in **protograf** as *cm*. Alternatively, you
+can choose to use millimetres, abbreviated in **protograf** as *mm*.
 
 .. HINT::
 
    For conversion purposes, 1 inch equals 2.54 centimetres or 25.4
    millimetres.
 
-**pyprototypr** also allows units of *points*, which are the measurement
+**protograf** also allows units of *points*, which are the measurement
 units traditionally used in the printing industry. There are 72 points
-in 1 inch. Internal calculations in **pyprototypr** are all done in
+in 1 inch. Internal calculations in **protograf** are all done in
 point units i.e. all inputs, regardless of being inches or centimetres
 are converted to points.
 
@@ -249,7 +249,7 @@ The "stroke" concept
 ====================
 `↑ <table-of-contents_>`_
 
-While the majority of size-based `properties <properties_>`_ in **pyprototypr**
+While the majority of size-based `properties <properties_>`_ in **protograf**
 work with the "normal" units you have chosen - inches or centimetres - some use
 points (see `working with units`_ above). These include font height, that you’re
 likely familiar with from word processing programs, and line thickness - termed
@@ -262,7 +262,7 @@ The "default" concept
 =====================
 `↑ <table-of-contents_>`_
 
-A "default", in terms of **pyprototypr**, is a value or setting for
+A "default", in terms of **protograf**, is a value or setting for
 something |dash| usually a `property <properties_>`_ |dash| which is used
 unless you specify otherwise. This is helpful for quickly drawing or testing
 something until you're ready to make decisions about your own specific

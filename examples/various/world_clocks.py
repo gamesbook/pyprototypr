@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Example code showing use of functions to create customised shapes for pyprototypr
+Example code showing use of functions to create customised shapes for protograf
 
 Written by: Derek Hohls
 Created on: 20 August 2024
@@ -14,7 +14,7 @@ GMT Time :
 TODO:
     * replace fixed header with random quote from https://api.quotable.io/quotes/random
 """
-from pyprototypr import *
+from protograf import *
 from datetime import datetime, timedelta
 from time import gmtime, mktime
 import argparse

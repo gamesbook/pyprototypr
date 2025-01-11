@@ -1,11 +1,11 @@
 """
-Show customised Hexagons grid for pyprototypr
+Show customised Hexagons grid for protograf
 
 Written by: Derek Hohls
 Created on: 22 November 2024
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="customised_hexagonal_grid.pdf",
        paper=A8,

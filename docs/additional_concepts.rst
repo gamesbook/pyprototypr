@@ -3,7 +3,7 @@ Additional Concepts
 ===================
 
 This section assumes you are familiar with the concepts, terms and ideas
-for `pyprototypr <index.rst>`_ as presented in
+for `protograf <index.rst>`_ as presented in
 `Basic Concepts <basic_concepts.rst>`_, have looked through the
 `Core Shapes <core_shapes.rst>`_, and that perhaps you have created one
 or two basic scripts on your own, along the lines described in the
@@ -72,7 +72,7 @@ Values: Text, Numbers and Booleans
 ==================================
 `↑ <table-of-contents_>`_
 
-An important concept in **pyprototypr** is understanding the different types
+An important concept in **protograf** is understanding the different types
 of values and how they are used.
 
 Values are typically associated with a property, and affect how a shape
@@ -86,7 +86,7 @@ Also see below on `using quotes in text <Quotes in Text>`_.
 
 Numbers are either *integers* - "whole" or "counting" numbers, such as ``21``
 or ``100``, or *floats* which are numbers with fractions - ``3.141``.  In most
-cases,  **pyprototypr** will handle these differences for you.
+cases,  **protograf** will handle these differences for you.
 
 Booleans are commonly referred to a "true or false" values. In Python, the
 reserved names ``True`` and ``False`` can be used whenever such values are
@@ -121,7 +121,7 @@ Case-sensitivity
 ================
 `↑ <table-of-contents_>`_
 
-**pyprototypr**, like Python, is case-sensitive - unlike some computer
+**protograf**, like Python, is case-sensitive - unlike some computer
 languages (or, for example, the file names that are used in Windows); so a
 lowercase name is **NOT** the same as an uppercase version of it.
 
@@ -142,7 +142,7 @@ Calculations
 ============
 `↑ <table-of-contents_>`_
 
-Because **pyprototypr** is able to use any of Python's built-in functionality,
+Because **protograf** is able to use any of Python's built-in functionality,
 your script can make use of tools such as the ability to perform calculations.
 
 Basic arithmetic includes *addition* (``1+1``), *subtraction* (``1-1``),
@@ -160,7 +160,7 @@ Changeable Values
 =================
 `↑ <table-of-contents_>`_
 
-**pyprototypr** comes with a number of "built-in" names that can be used in
+**protograf** comes with a number of "built-in" names that can be used in
 some circumstances.  There are represented by the name enclosed in a pair of
 quotes *and* a pair of double curly brackets: ``"{{name}}"``
 
@@ -216,7 +216,7 @@ Properties and Short-cuts
 =========================
 `↑ <table-of-contents_>`_
 
-In general, **pyprototypr** tries to avoid the use of short-cuts and instead
+In general, **protograf** tries to avoid the use of short-cuts and instead
 relies on short, but hopefully memorable, names for things.
 
 There are exceptions; for example, many properties are set with *directions*
@@ -226,7 +226,7 @@ instead.  Other settings can be abbreviated to use their first letter; so
 ``d`` for ``diamond`` layout of a ``Hexagons`` grid.
 
 The other exceptions are the location names.  Instead of "across" and "up",
- **pyprototypr** uses ``x`` and ``y`` (because of their common usage in
+ **protograf** uses ``x`` and ``y`` (because of their common usage in
  geometry).  Similarly, ``cx`` and ``cy`` are used instead of "centre from left"
  or "centre from bottom"; and ``mx`` and ``my`` are used instead "move
  horizontally" or "move vertically".  Hopefully, these short-cut names will be
@@ -252,7 +252,7 @@ be written vertically in the form of a number of bullets:
 A column in a spreadsheet can be thought of as such a vertical list (but
 you would not usually use an “and” in it!)
 
-Lists in **pyprototypr** are written in a similar way but they need to
+Lists in **protograf** are written in a similar way but they need to
 be identified by wrapping them at their start and end by the use of
 *brackets*.
 
@@ -288,7 +288,7 @@ Errors
 A situation that you will often encounter, especially as your script gets
 longer and more complex, is the appearance of errors.
 
-While **pyprototypr** will attempt to check many details of the script,
+While **protograf** will attempt to check many details of the script,
 its very unlikely to be able to catch every mistake that might be made.
 
 It will do some basic error checking as to whether correct values have

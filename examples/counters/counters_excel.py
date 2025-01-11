@@ -1,5 +1,5 @@
 """
-`counters_excel` script for pyprototypr
+`counters_excel` script for protograf
 
 Written by: Derek Hohls
 Created on: 29 February 2016
@@ -8,7 +8,7 @@ Updated on: 26 December 2024
 Notes:
     * Images sourced from "images" subdirectory
 """
-from pyprototypr import *
+from protograf import *
 
 # create counters
 Create(filename='tannenberg_excel.pdf')

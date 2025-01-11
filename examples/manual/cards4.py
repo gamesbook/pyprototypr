@@ -1,10 +1,10 @@
 """
-`cards4` example for pyprototypr
+`cards4` example for protograf
 
 Written by: Derek Hohls
 Created on: 29 February 2016
 """
-from pyprototypr import *
+from protograf import *
 
 # create the output card file
 Create(filename='example4.pdf', margin_bottom=2.5)

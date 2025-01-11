@@ -8,7 +8,7 @@ Customised Shapes
    :ltrim:
 
 The descriptions here assume you are familiar with the concepts, terms
-and ideas for `pyprototypr <index.rst>`_ as presented in the
+and ideas for `protograf <index.rst>`_ as presented in the
 `Basic Concepts <basic_concepts.rst>`_ - especially *units*, *properties*
 and *defaults*.
 
@@ -32,7 +32,7 @@ Overview
 `↑ <table-of-contents_>`_
 
 To make it easier to see where and how a shape has been drawn, most of these
-examples have been created with a background grid (which **pyprototypr**
+examples have been created with a background grid (which **protograf**
 refers to as a `Blueprint`_ shape) added to the page - a small A8
 "business card" size - for cross-reference. In addition, the default line width
 (aka *stroke_width*) has been made thicker for easier viewing of the small

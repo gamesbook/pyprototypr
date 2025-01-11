@@ -3,7 +3,7 @@ Advanced Commands
 =================
 
 This section deals with some of the more advanced - and potentially more
-complex - concepts and options in `pyprototypr <index.rst>`_ - its
+complex - concepts and options in `protograf <index.rst>`_ - its
 therefore important that you are familiar with all of the
 `Basic Concepts <basic_concepts.rst>`_, have looked through the
 `Core Shapes <core_shapes.rst>`_, have understood how these are used via
@@ -49,7 +49,7 @@ Grid-based Layouts
 ==================
 `↑ <table-of-contents_>`_
 
-**pyprototypr** allows you to place elements that make up your design
+**protograf** allows you to place elements that make up your design
 anywhere within a page, or over a series of pages within a deck, but it
 also includes commands that you to place, or “layout”, elements in a
 more repetitive or regular way within a page.

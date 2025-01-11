@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Mathematical utility functions for pyprototypr
+Mathematical utility functions for protograf
 """
 # lib
 from collections import namedtuple
@@ -10,7 +10,7 @@ import math
 from typing import Any, List
 
 # local
-from pyprototypr.utils.support import numbers, feedback
+from protograf.utils.support import numbers, feedback
 
 log = logging.getLogger(__name__)
 DEBUG = False

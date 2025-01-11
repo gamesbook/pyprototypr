@@ -2,7 +2,7 @@
 Abstract Board Examples
 =======================
 
-These examples are part of **pyprototypr** `supplied examples <index.rst>`_.
+These examples are part of **protograf** `supplied examples <index.rst>`_.
 
 Bear in mind that the images shown in these examples are lower-resolution
 screenshots; the original PDFs that can be generated from the source scripts
@@ -28,7 +28,7 @@ Chess
 =========== ==================================================================
 Title       *Chess Board*
 ----------- ------------------------------------------------------------------
-Source Code `chessboard.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/chessboard.py>`_
+Source Code `chessboard.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/abstract/chessboard.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a regular Chess board.
 
@@ -40,7 +40,7 @@ Screenshot  .. image:: images/boards/abstract/chessboard.png
 =========== ==================================================================
 Title       *Chess Board - Brown*
 ----------- ------------------------------------------------------------------
-Source Code `chessboard_brown.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/chessboard_brown.py>`_
+Source Code `chessboard_brown.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/abstract/chessboard_brown.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a regular Chess board with
             brown styling and grid references. This example uses a Square grid;
@@ -61,7 +61,7 @@ Backgammon
 =========== ==================================================================
 Title       *Backgammon Board*
 ----------- ------------------------------------------------------------------
-Source Code `backgammon.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/backgammon.py>`_
+Source Code `backgammon.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/abstract/backgammon.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a regular Backgammon board.
 
@@ -84,7 +84,7 @@ Go
 =========== ==================================================================
 Title       *Go Board*
 ----------- ------------------------------------------------------------------
-Source Code `go.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/go.py>`_
+Source Code `go.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/abstract/go.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a regular Go board.
 
@@ -110,7 +110,7 @@ Hex
 =========== ==================================================================
 Title       *Hex Board*
 ----------- ------------------------------------------------------------------
-Source Code `hex_game.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hex_game.py>`_
+Source Code `hex_game.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/abstract/hex_game.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a Hex game board.
 
@@ -132,7 +132,7 @@ board with 5 smaller hexagons along each side.
 =========== ==================================================================
 Title       *Plain HexHex Board*
 ----------- ------------------------------------------------------------------
-Source Code `hexhex.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hexhex.py>`_
+Source Code `hexhex.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/abstract/hexhex.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a regular HexHex board.
 
@@ -144,7 +144,7 @@ Screenshot  .. image:: images/boards/abstract/hexhex.png
 =========== ==================================================================
 Title       *HexHex Board - Circular Spaces*
 ----------- ------------------------------------------------------------------
-Source Code `hexhex_circles.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hexhex_circles.py>`_
+Source Code `hexhex_circles.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/abstract/hexhex_circles.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a HexHex board, but with
             circles replacing the usual hexagons in the layout; these are
@@ -159,7 +159,7 @@ Screenshot  .. image:: images/boards/abstract/hexhex_circles.png
 =========== ==================================================================
 Title       *HexHex Board - Hexagonal Spaces*
 ----------- ------------------------------------------------------------------
-Source Code `hexhex_hexagons.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/hexhex_hexagons.py>`_
+Source Code `hexhex_hexagons.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/abstract/hexhex_hexagons.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a HexHex board, but with
             smaller hexagons replacing the usual hexagons in the layout; these
@@ -185,7 +185,7 @@ forms an unbroken connection between the edges of their colour wins.
 =========== ==================================================================
 Title       *Octagons Board*
 ----------- ------------------------------------------------------------------
-Source Code `octagons.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/octagons.py>`_
+Source Code `octagons.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/abstract/octagons.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  The code uses a basic 8-sided ``Polygon()``, with the *perbis*
             property being set to construct either a horizontal or vertical
@@ -209,7 +209,7 @@ TicTacToe
 =========== ==================================================================
 Title       *TicTacToe Board and Game*
 ----------- ------------------------------------------------------------------
-Source Code `tictactoe.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/abstract/tictactoe.py>`_
+Source Code `tictactoe.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/abstract/tictactoe.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a board and then show a series
             of moves played out on that board.

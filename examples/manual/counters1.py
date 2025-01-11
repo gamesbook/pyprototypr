@@ -1,10 +1,10 @@
 """
-`counters1` example for pyprototypr
+`counters1` example for protograf
 
 Written by: Derek Hohls
 Created on: 22 September 2024
 """
-from pyprototypr import *
+from protograf import *
 
 Create()
 CounterSheet()

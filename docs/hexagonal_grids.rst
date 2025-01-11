@@ -8,7 +8,7 @@ Hexagonal Grids
    :ltrim:
 
 This section assumes you are very familiar with the concepts, terms and
-ideas for `pyprototypr <index.rst>`_ as presented in the
+ideas for `protograf <index.rst>`_ as presented in the
 `Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
 `Additional Concepts <additional_concepts.rst>`_
 and that you've created some basic scripts of your own using the
@@ -1061,7 +1061,7 @@ them, some of which are game-specific - for example, the so-called
    package for LaTeX for authoring hex’n’counter wargames.
 
 The options and facilities provided by these tools have been the primary
-inspiration for how hexagonal grids work in **pyprototypr**. So if the
+inspiration for how hexagonal grids work in **protograf**. So if the
 functionality available here does not work for you, then possibly one of
 these other tools would be of better use.
 

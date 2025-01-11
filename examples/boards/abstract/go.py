@@ -1,11 +1,11 @@
 """
-A Go board example for pyprototypr
+A Go board example for protograf
 
 Written by: Derek Hohls
 Created on: 28 December 2024
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="go.pdf", margin=1.5)
 

@@ -2,7 +2,7 @@
 Commercial Board Examples
 =========================
 
-These examples are part of **pyprototypr** `supplied examples <index.rst>`_.
+These examples are part of **protograf** `supplied examples <index.rst>`_.
 
 Bear in mind that the images shown in these examples are lower-resolution
 screenshots; the original PDFs that can be generated from the source scripts
@@ -29,7 +29,7 @@ Squad Leader
 =========== ==================================================================
 Title       *Squad Leader Modular Board Section*
 ----------- ------------------------------------------------------------------
-Source Code `squad_leader.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/squad_leader.py>`_
+Source Code `squad_leader.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/commercial/squad_leader.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a board for a wargame - in
             this Avalon Hill's "Squad Leader" - using a hexagonal grid.
@@ -51,7 +51,7 @@ Orion
 =========== ==================================================================
 Title       *Orion Game Board*
 ----------- ------------------------------------------------------------------
-Source Code `orion_game_board.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/orion_game_board.py>`_
+Source Code `orion_game_board.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/commercial/orion_game_board.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a board for the commercial
             board game "Orion".  It is a fairly simple script, as the board
@@ -74,7 +74,7 @@ Adventurer Conqueror King
 =========== ==================================================================
 Title       *Adventurer Conqueror King RPG Blank Map*
 ----------- ------------------------------------------------------------------
-Source Code `ack_map.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/ack_map.py>`_
+Source Code `ack_map.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/commercial/ack_map.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a blank map for the
             "Adventurer Conqueror King" roleplaying game.
@@ -96,7 +96,7 @@ Traveller: Draft
 =========== ==================================================================
 Title       *Traveller RPG Map*
 ----------- ------------------------------------------------------------------
-Source Code `traveller_draft.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/traveller_draft.py>`_
+Source Code `traveller_draft.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/commercial/traveller_draft.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a blank sector map for the
             "Traveller" roleplaying game.
@@ -120,7 +120,7 @@ Traveller: Black
 =========== ==================================================================
 Title       *Traveller RPG Map*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/traveller_black.py>`_
+Source Code `<https://github.com/gamesbook/protograf/blob/master/examples/boards/commercial/traveller_black.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a blank sector map for the
             "Traveller" roleplaying game.
@@ -147,7 +147,7 @@ Warp War
 =========== ==================================================================
 Title       *Warp War Map*
 ----------- ------------------------------------------------------------------
-Source Code `warpwar.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/warpwar.py>`_
+Source Code `warpwar.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/commercial/warpwar.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a map for the "Warp War" game.
             Its based off an image created by Rick Smith and posted to the
@@ -169,7 +169,7 @@ Discussion  This example shows how to construct a map for the "Warp War" game.
             which represent the edges of a nebula; unfortunately, its quite
             tedious to define all of these one-by-one!
 
-            The hexagon numbering for this game, which  **pyprototypr** terms
+            The hexagon numbering for this game, which  **protograf** terms
             ``diagonal`` is fairly unusual.
 
             The hexagon identifers across the top and side are created with a
@@ -190,7 +190,7 @@ Underwater Cities
 =========== ==================================================================
 Title       *Underwater Cities Game Board*
 ----------- ------------------------------------------------------------------
-Source Code `underwater_cities.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/boards/commercial/underwater_cities.py>`_
+Source Code `underwater_cities.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/commercial/underwater_cities.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct the board for the commercial
             board game "Underwater Cities". This is *not* a complete copy of
@@ -206,7 +206,7 @@ Discussion  This example shows how to construct the board for the commercial
             - Extensive use of the ``Common()`` command to avoid duplication
               between similar items
             - Use of an SVG world map to create the background layer
-            - Mix of custom images, free icons and **pyprototypr** to create
+            - Mix of custom images, free icons and **protograf** to create
               the smaller graphic elements
             - Use of the ``RectangularLocation()`` command to layout the
               primary scoring track; the ``Layout()`` command makes use of multiple

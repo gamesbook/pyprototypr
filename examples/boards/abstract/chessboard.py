@@ -1,5 +1,5 @@
 """
-A chess board example for pyprototypr
+A chess board example for protograf
 
 Written by: Derek Hohls
 Created on: 29 February 2016
@@ -7,7 +7,7 @@ Notes:
     Chess font from: http://www.enpassant.dk/chess/fontimg/alpha.htm
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="chessboard.pdf", margin=1.25)
 

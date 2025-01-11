@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Virtual layout examples for pyprototypr
+Virtual layout examples for protograf
 
 Written by: Derek Hohls
 Created on: 19 May 2024
 """
-from pyprototypr import *
+from protograf import *
 
 Create(filename="layouts_basic_rectangular.pdf",
        paper=A8,

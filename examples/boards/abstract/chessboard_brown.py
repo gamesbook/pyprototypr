@@ -1,11 +1,11 @@
 """
-A chess board example, using a grid approach, for pyprototypr
+A chess board example, using a grid approach, for protograf
 
 Written by: Derek Hohls
 Created on: 3 August 2024
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="chessboard_brown.pdf")
 

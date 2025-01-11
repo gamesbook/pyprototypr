@@ -1,5 +1,5 @@
 ===========
-pyprototypr
+protograf
 ===========
 
 .. _table-of-contents:
@@ -16,11 +16,11 @@ Overview
 ========
 `↑ <table-of-contents_>`_
 
-**pyprototypr** is a simple Python utility for fast creation of elements needed for
+**protograf** is a simple Python utility for fast creation of elements needed for
 prototype board or card games or other creative endevours requiring regular, simple
 output.
 
-**pyprototypr** is *not* a graphic design program, nor even at the level of tools such
+**protograf** is *not* a graphic design program, nor even at the level of tools such
 as nanDeck (see http://www.nand.it/nandeck/), or MultiDeck
 (https://www.semicolon.com/multideck/multideck.html),  both of which have support for
 fairly complex designs.

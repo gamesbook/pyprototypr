@@ -1,11 +1,11 @@
 """
-`counters` script for pyprototypr
+`counters` script for protograf
 
 Written by: Derek Hohls
 Created on: 29 February 2016
 Updated on: 22 September 2024
 """
-from pyprototypr import *
+from protograf import *
 
 Create(filename='tannenberg.pdf')
 

@@ -1,11 +1,11 @@
 """
-Show customised Circles - and useful overides - for pyprototypr
+Show customised Circles - and useful overides - for protograf
 
 Written by: Derek Hohls
 Created on: 29 September 2024
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="customised_circles.pdf",
        paper=A8,

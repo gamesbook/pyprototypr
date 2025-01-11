@@ -1,11 +1,11 @@
 """
-Show customised Rectangle for pyprototypr
+Show customised Rectangle for protograf
 
 Written by: Derek Hohls
 Created on: 19 September 2024
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="customised_rectangle.pdf",
        paper=A8,

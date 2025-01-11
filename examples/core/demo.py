@@ -1,4 +1,4 @@
-"""Purpose: Show various `basic` examples for pyprototypr
+"""Purpose: Show various `basic` examples for protograf
 
 Written by: Derek Hohls
 Created on: 29 February 2016
@@ -9,7 +9,7 @@ Sources and Credit:
     * SVG from https://thenounproject.com/icon/typewriter-3933515/
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="demo.pdf", margin=1, margin_top=0.25)
 Footer()
@@ -19,7 +19,7 @@ Hexagon(
     cx=9.5, cy=14,
     side=10,
     fill_stroke=forestgreen,
-    label="WELCOME!\nto a \npyprototypr\ndemo",
+    label="WELCOME!\nto a \nprotograf\ndemo",
     label_size=30,
     label_stroke=white,
     label_my=1.7)
@@ -400,7 +400,7 @@ PageBreak()
 Hexagon(
     cx=9.5, cy=14,
     side=10,
-    label="THIS IS THE END...\nof a basic\npyprototypr demo!",
+    label="THIS IS THE END...\nof a basic\nprotograf demo!",
     label_size=30,
     label_my=1.3)
 

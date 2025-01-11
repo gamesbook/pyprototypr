@@ -3,7 +3,7 @@ Useful Resources
 ================
 
 These are resources that can supplement, or aid, with game design when
-working with `pyprototypr <index.rst>`_.
+working with `protograf <index.rst>`_.
 
 .. NOTE::
 

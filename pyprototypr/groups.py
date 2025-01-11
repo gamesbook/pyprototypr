@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Create layouts - grids, repeats, sequences and tracks - for pyprototypr
+Create layouts - grids, repeats, sequences and tracks - for protograf
 """
 # lib
 import copy
@@ -8,15 +8,15 @@ import logging
 # third party
 import jinja2
 # local
-from pyprototypr.utils import tools
-from pyprototypr.utils.tools import DatasetType, CardFrame  # enums
-from pyprototypr.base import BaseShape
-from pyprototypr.layouts import SequenceShape
-from pyprototypr.shapes import (
+from protograf.utils import tools
+from protograf.utils.tools import DatasetType, CardFrame  # enums
+from protograf.base import BaseShape
+from protograf.layouts import SequenceShape
+from protograf.shapes import (
     CircleShape, HexShape, ImageShape, RectangleShape)
-from pyprototypr.utils.geoms import Locale
+from protograf.utils.geoms import Locale
 
-from pyprototypr import globals
+from protograf import globals
 
 log = logging.getLogger(__name__)
 

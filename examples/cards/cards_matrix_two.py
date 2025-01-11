@@ -1,10 +1,10 @@
 """
-Matrix cards script, with "joker" cards, for pyprototypr
+Matrix cards script, with "joker" cards, for protograf
 
 Written by: Derek Hohls
 Created on: 12 August 2024
 """
-from pyprototypr import *
+from protograf import *
 
 # create deck
 Create(filename='cards_matrix_two.pdf',

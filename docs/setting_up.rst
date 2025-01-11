@@ -11,8 +11,8 @@ Table of Contents
 - `Python in 1 minute`_
 - `Installing Python`_
 - `Other Software Installs`_
-- `Installing pyprototypr`_
-- `Checking if pyprototypr works`_
+- `Installing protograf`_
+- `Checking if protograf works`_
 - `Python in the cloud`_
 
 
@@ -20,11 +20,11 @@ Outline
 =======
 `↑ <table-of-contents_>`_
 
-There are four parts to being able to use `pyprototypr <index.rst>`_
+There are four parts to being able to use `protograf <index.rst>`_
 on your own machine:
 
 1. Install the correct version of `Python <http://www.python.org>`_
-2. Install and set-up **pyprototypr**
+2. Install and set-up **protograf**
 3. Install a text editing program
 4. Install a PDF viewer (e.g. *Adobe Acrobat*)
 
@@ -46,7 +46,7 @@ Python itself.
 Python is composed of many built-in libaries, or *packages*, each of which
 handles some aspect of a program. Python is designed to be extended by adding
 on additional packages written by other programmers; ``ReportLab``, for example,
-is one of those, as is **pyprototypr**.  Python does not come with those packages
+is one of those, as is **protograf**.  Python does not come with those packages
 built-in - you need to install them after Python itself has been installed.
 
 Installing Python packages is handled by a tool called ``pip``, which is typically
@@ -57,7 +57,7 @@ Installing Python
 =================
 `↑ <table-of-contents_>`_
 
-**pyprototypr** requires a device e.g. laptop or desktop (but probably
+**protograf** requires a device e.g. laptop or desktop (but probably
 not a smart phone) that already has the correct version of Python
 (version 3.11 or higher) installed.
 
@@ -100,7 +100,7 @@ https://www.tomshardware.com/how-to/install-python-on-windows-10-and-11
 
 This guide will also take you through installing
 `NotePad++ <https://notepad-plus-plus.org/>`_ which is the recommended
-Windows editor for creating **pyprototypr** scripts.
+Windows editor for creating **protograf** scripts.
 
 For MacOS, there is a helpful guide on working with Python from
 *pyLadies*; see:
@@ -155,29 +155,29 @@ install these via::
    sudo apt-get install ttf-mscorefonts-installer
 
 
-Installing **pyprototypr**
+Installing **protograf**
 ==========================
 `↑ <table-of-contents_>`_
 
-The simplest way to install **pyprototypr** itself is via ``pip``.
+The simplest way to install **protograf** itself is via ``pip``.
 
 Open a command-line window (see the section `Test that Python is installed`_)
 and::
 
-   pip install pyprototypr
+   pip install protograf
 
 
-Checking if **pyprototypr** works
+Checking if **protograf** works
 =================================
 `↑ <table-of-contents_>`_
 
-To now check that ``pyprototypr`` works, you should create a small test
+To now check that ``protograf`` works, you should create a small test
 file.
 
 Open your text editor and type - or copy and paste - the following (
 but do not start any line with spaces!)::
 
-   from pyprototypr import *
+   from protograf import *
    Create()
    Text(text="Hello World")
    Save()
@@ -222,7 +222,7 @@ use the tools and infrastructure they provide.
     used to working via a "shell" in a terminal, or command-line, interface.
 
 *pythonanywhere* provides a terminal (`bash`) that you can use to install Python
-packages via `pip` and the option to upload files - such as **pyprototypr**
+packages via `pip` and the option to upload files - such as **protograf**
 scripts. Once scripts are uploaded there, they can be run in the terminal.
 
 *pythonanywhere* has its own documentation to help you work further with it.

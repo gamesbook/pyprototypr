@@ -3,7 +3,7 @@ Counters Examples
 =================
 
 These examples are part of the set of `supplied examples <index.rst>`_
-with **pyprototypr**.
+with **protograf**.
 
 Bear in mind that the images shown in these examples are lower-resolution
 screenshots; the original PDFs that can be generated from the source scripts
@@ -27,7 +27,7 @@ Wargame - Basic Counters
 =========== ==================================================================
 Title       *Basic Wargame Counters*
 ----------- ------------------------------------------------------------------
-Source Code `<https://github.com/gamesbook/pyprototypr/blob/master/examples/counters/counters.py>`_
+Source Code `<https://github.com/gamesbook/protograf/blob/master/examples/counters/counters.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a set of counters.
 

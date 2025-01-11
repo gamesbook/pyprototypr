@@ -3,7 +3,7 @@ The Deck Command
 ================
 
 This section assumes you are very familiar with the concepts, terms and
-ideas for `pyprototypr <index.rst>`_ as presented in the
+ideas for `protograf <index.rst>`_ as presented in the
 `Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
 `Additional Concepts <additional_concepts.rst>`_
 and that you've created some basic scripts of your own using the
@@ -394,7 +394,7 @@ Example 8. Column Limit
             grid_length=0.18,
             cols=1)
 
-      By default, **pyprototypr** will fit as many cards as possible into the
+      By default, **protograf** will fit as many cards as possible into the
       available page area.  If for any reason, there need to be less cards on
       a page, then setting the *cols* property will limit the creation of the
       number of columns on each one.
@@ -427,7 +427,7 @@ Example 9. Row Limit
             grid_length=0.18,
             rows=1)
 
-      By default, **pyprototypr** will fit as many cards as possible into the
+      By default, **protograf** will fit as many cards as possible into the
       available page area.  If for any reason, there need to be less cards on
       a page, then setting the *rows* property will limit the creation of the
       number of rows on each one.

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Logo for pyprototypr
+Logo for protograf
 
 Written by: Derek Hohls
 Created on: 5 January 2025
 """
-from pyprototypr import *
+from protograf import *
 
 Create(filename="logo.pdf",
         paper=landscape(A8),

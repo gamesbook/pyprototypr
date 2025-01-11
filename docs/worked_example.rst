@@ -28,7 +28,7 @@ spaces!
 
 .. code:: python
 
-   from pyprototypr import *
+   from protograf import *
    Create()
    Deck()
    Save()
@@ -36,14 +36,14 @@ spaces!
 As can be seen there are four lines in the file:
 
 -  *Line 1* - this tells Python to access the functionality in
-   **pyprototypr**; every script you write **must** start with this line
--  *Line 2* - ``Create()`` tells **pyprototypr** to setup an output PDF
+   **protograf**; every script you write **must** start with this line
+-  *Line 2* - ``Create()`` tells **protograf** to setup an output PDF
    file in which this design of will be saved. Because no further
    information is given, the default values for sizes and colours will
    used, as well as the default page dimensions - an A4 page. Every
    script you write **must** have this line before any further
-   **pyprototypr** instructions/commands are supplied.
--  *Line 3* - ``Deck()`` means that **pyprototypr** is defining a deck.
+   **protograf** instructions/commands are supplied.
+-  *Line 3* - ``Deck()`` means that **protograf** is defining a deck.
    Because there is no other information given, it will create the default
    number of cards - *9* - with each card having the same default size
    (i.e. a "Poker" card size of 8.8 cm high and a width of 6.3 cm).
@@ -76,7 +76,7 @@ spaces):
 
 .. code:: python
 
-   from pyprototypr import *
+   from protograf import *
 
    Create(paper=A3, filename="example2.pdf")
    Deck()
@@ -95,7 +95,7 @@ Also, a specific file name has been chosen for the output PDF; in this
 case ``example2.pdf``.
 
 A blank line has been added before the ``Create()`` instruction. Adding
-blank lines helps make your file more readable, but **pyprototypr** does
+blank lines helps make your file more readable, but **protograf** does
 *not* use or require them.
 
 Now save this new file, for example, as ``cards2.py``. Open a
@@ -113,7 +113,7 @@ one A3-sized page.
 
 .. NOTE::
 
-    Drawing in  **pyprototypr** always starts in the  bottom-left
+    Drawing in  **protograf** always starts in the  bottom-left
     corner and proceeds left-to-right and the upwards on the page.
 
 A simple card deck example: Take 3
@@ -128,7 +128,7 @@ Create this text in a file called ``cards3.py``:
 
 .. code:: python
 
-   from pyprototypr import *
+   from protograf import *
 
    Create(filename='example3.pdf', offset=0.5)
 
@@ -162,7 +162,7 @@ red, green and blue components that make up a color. In this case, we
 might see the color as a shade of "purple".
 
 In this script, the lines shown starting with a ``#`` are called
-**comments** - these will be ignored by **pyprototypr** but are included
+**comments** - these will be ignored by **protograf** but are included
 to provide some more explanation as to what the next line, or lines, are
 doing. You could also add lines at the start of a script to define
 what its purpose is.
@@ -173,7 +173,7 @@ with 25 cards per page, for a total of 50 cards.
 
 .. NOTE::
 
-   **pyprototypr** will do the calculation for you on how
+   **protograf** will do the calculation for you on how
    many cards will fit on page to make up the total number of cards for
    the deck, based on the size of cards you want and how large the page is.
 
@@ -190,7 +190,7 @@ Create this text in a file called ``cards4.py``:
 
 .. code:: python
 
-   from pyprototypr import *
+   from protograf import *
 
    # create the output card file and page details
    Create(filename='example4.pdf', offset=0.5)
@@ -221,7 +221,7 @@ Create this text in a file called ``cards4.py``:
    Save()
 
 For this deck we are are setting card colors by choosing their names
-from a a set of pre-defined colors available in **pyprototypr** - these
+from a a set of pre-defined colors available in **protograf** - these
 might be useful if they match your needs.
 
 A new instruction, called ``Card()``, has been added. As might be

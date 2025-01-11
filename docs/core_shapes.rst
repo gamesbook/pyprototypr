@@ -3,7 +3,7 @@ Core Shapes
 ===========
 
 These descriptions of the available shapes assume you are familiar with
-the concepts, terms and ideas for `pyprototypr <index.rst>`_ as presented
+the concepts, terms and ideas for `protograf <index.rst>`_ as presented
 in the `Basic Concepts <basic_concepts.rst>`_ - especially *units*,
 *properties* and *defaults*. It will also help to at least browse through
 the section on `Additional Concepts <additional_concepts.rst>`_.
@@ -82,7 +82,7 @@ Most shapes can be styled by setting one or more of the
 that allow even further styling.
 
 To make it easier to see where and how a shape has been drawn, most of these
-examples have been created with a background grid (which **pyprototypr**
+examples have been created with a background grid (which **protograf**
 refers to as a `Blueprint`_ shape) added to the page  - a small A8
 "business card" size - for cross-reference. In addition, the default line width
 (aka *stroke_width*) has been made thicker for easier viewing of the small
@@ -462,7 +462,7 @@ the shape can be filled with a color; the default fill color is *white*.
 There is an overview on how color is used in the
 `Basic Concepts section <basic_concepts.rst>`_
 
-    *Reminder:* **pyprototypr** comes with a predefined set of named colors, shown in the
+    *Reminder:* **protograf** comes with a predefined set of named colors, shown in the
     `colors <../examples/colorset.pdf>`_ PDF file.
 
 Arrow
@@ -470,7 +470,7 @@ Arrow
 `↑ <shape-index_>`_
 
 An Arrow consists of two main parts; the tail (or body) and the head.  In terms
-of **pyprototypr** conventions, the tail is the part that takes on the common
+of **protograf** conventions, the tail is the part that takes on the common
 properties of *height* and *width*; while the dimensions for the head, if not
 provided, are calculated from those.
 
@@ -2139,7 +2139,7 @@ Image
 `↑ <shape-index_>`_
 
 Pedantically speaking, an image is not like the other shapes in the sense that
-it does not consist of lines and areas drawn by **pyprototypr**  itself.  It is
+it does not consist of lines and areas drawn by **protograf**  itself.  It is
 an external file which is simply inserted into the drawing. It does, however,
 share a number of common aspects with other shapes - such as an x & y position,
 a width and height and the ability to be rotated. It can also be "drawn over"

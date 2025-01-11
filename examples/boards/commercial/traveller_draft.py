@@ -1,5 +1,5 @@
 """
-A Traveller RPG map example for pyprototypr
+A Traveller RPG map example for protograf
 
 Written by: Derek Hohls
 Created on: 2 March 2024
@@ -7,7 +7,7 @@ Notes:
     * Draft style; 'B' sector
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="traveller_draft.pdf", margin=0.5, paper=A4)
 

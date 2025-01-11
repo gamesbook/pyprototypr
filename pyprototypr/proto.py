@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Primary interface for pyprototypr (imported at top-level)
+Primary interface for protograf (imported at top-level)
 """
 # future
 from __future__ import division
@@ -69,14 +69,14 @@ from .layouts import (
     VirtualLocations, ConnectShape, RepeatShape, SequenceShape)
 from .groups import DeckShape, Switch
 from ._version import __version__
-# from pyprototypr.utils.support import (
+# from protograf.utils.support import (
 #     steps, excels, excel_column,  numbers, letters)
-from pyprototypr.utils.tools import base_fonts, DatasetType
-from pyprototypr.utils import geoms, tools, support
-from pyprototypr.utils.geoms import Locale, Point, Place, Ray
-from pyprototypr.utils.support import LookupType
+from protograf.utils.tools import base_fonts, DatasetType
+from protograf.utils import geoms, tools, support
+from protograf.utils.geoms import Locale, Point, Place, Ray
+from protograf.utils.support import LookupType
 
-from pyprototypr import globals
+from protograf import globals
 
 log = logging.getLogger(__name__)
 
@@ -264,7 +264,7 @@ def Font(face=None, **kwargs):
 
 
 def Version():
-    tools.feedback(f'Running pyprototypr version {__version__}.')
+    tools.feedback(f'Running protograf version {__version__}.')
 
 
 def Feedback(msg):

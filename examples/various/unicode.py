@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Example Unicode symbols for pyprototypr
+Example Unicode symbols for protograf
 
 Written by: Derek Hohls
 Created on: 19 September 2024
 """
-from pyprototypr import *
+from protograf import *
 
 Create(filename="unicode.pdf", margin=1, margin_top=0.25)
 

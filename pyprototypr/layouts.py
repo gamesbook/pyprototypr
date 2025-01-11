@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Create grids, repeats, sequences, layouts and connections - for pyprototypr
+Create grids, repeats, sequences, layouts and connections - for protograf
 """
 # lib
 import copy
@@ -8,10 +8,10 @@ import logging
 import math
 # third party
 # local
-from pyprototypr.utils.geoms import Point, Locale, Place  # named tuples
-from pyprototypr.utils import geoms, tools, support
-from pyprototypr.base import BaseShape, BaseCanvas
-from pyprototypr.shapes import (
+from protograf.utils.geoms import Point, Locale, Place  # named tuples
+from protograf.utils import geoms, tools, support
+from protograf.base import BaseShape, BaseCanvas
+from protograf.shapes import (
     CircleShape, LineShape, PolygonShape, PolylineShape, RectangleShape, TextShape)
 
 log = logging.getLogger(__name__)

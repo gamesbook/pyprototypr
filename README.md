@@ -1,30 +1,30 @@
-# pyprototypr
+# protograf
 
-__pyprototypr__ is a utility written in Python for designing and creating
+__protograf__ is a utility written in Python for designing and creating
 simple, regular, graphical outputs in PDF (or PNG/GIF) format via a script.
 
-__pyprototypr__  has been primarily created to handle the prototyping of cards,
+__protograf__  has been primarily created to handle the prototyping of cards,
 counters, tiles and boards for board games, but can be also used for creating
 any simple design that has regular or repetitive elements; typically a mix of
 graphics and text.
 
-> You do not need to know the Python language to be able to use __pyprototypr__
+> You do not need to know the Python language to be able to use __protograf__
 > but you do need Python installed on your machine!
 
 ## Documentation
 
-The online documentation for __pyprototypr__ starts with the
-[Table of Contents](https://github.com/gamesbook/pyprototypr/blob/master/docs/index.rst);
+The online documentation for __protograf__ starts with the
+[Table of Contents](https://github.com/gamesbook/protograf/blob/master/docs/index.rst);
 its highly recommended to read the sections in the order presented.
 
 If you're not familiar with any kind of programming or scripting, you should
 at least read some of the introductory sections, and especially the
-[installation](https://github.com/gamesbook/pyprototypr/blob/master/docs/setting_up.rst)
+[installation](https://github.com/gamesbook/protograf/blob/master/docs/setting_up.rst)
 before proceeding...
 
 ## Requirements
 
-__pyprototypr__ requires Python (version of 3.11 or higher) to be installed
+__protograf__ requires Python (version of 3.11 or higher) to be installed
 and running on your machine.
 
 If this is **not** your current Python version, or Python is not installed on
@@ -37,22 +37,22 @@ If using [uv](https://docs.astral.sh/uv/), it is recommended to also create and 
 ## Quick Start (for the impatient)
 
 Assuming that Python 3.11 or higher is installed on your machine, you can then
-install __pyprototypr__ via:
+install __protograf__ via:
 ```
-pip install pyprototypr
+pip install protograf
 ```
 or, if using [uv](https://docs.astral.sh/uv/):
 ```
-uv pip install pyprototypr
+uv pip install protograf
 ```
-To check that __pyprototypr__ is working, you can use one (or more) of
+To check that __protograf__ is working, you can use one (or more) of
 the files from any of the various
-[examples](https://github.com/gamesbook/pyprototypr/blob/master/examples/)
+[examples](https://github.com/gamesbook/protograf/blob/master/examples/)
 sub-directories.
 
 As a quick test, make a copy of `example1.py` script from the `examples/manual`
 directory. To do so, open the
-[example1.py](https://github.com/gamesbook/pyprototypr/blob/master/examples/manual/example1.py)
+[example1.py](https://github.com/gamesbook/protograf/blob/master/examples/manual/example1.py)
 link in your browser, click on the `Raw` button (near the top right), and then
 save the web page as a file into a local directory on your machine.
 
@@ -65,10 +65,10 @@ and press the `Enter` key.
 
 This script is very simple - it just contains these lines:
 ```
-# `example1` script for pyprototypr
+# `example1` script for protograf
 # Written by: Derek Hohls
 # Created on: 29 February 2016
-from pyprototypr import *
+from protograf import *
 Create()
 PageBreak()
 Save()
@@ -82,10 +82,10 @@ any PDF-capable program or application.
 If this works, then download and try out other scripts from any of the `examples`
 sub-directories (**note** some examples may require additional files such as
 images, CSV files, or spreadsheets). You can download all the examples in a single
-[ZIP file](https://github.com/gamesbook/pyprototypr/blob/master/examples.zip).
+[ZIP file](https://github.com/gamesbook/protograf/blob/master/examples.zip).
 
 If it does not work, you may want to look in more detail at the
-[installation](https://github.com/gamesbook/pyprototypr/blob/master/docs/setting_up.rst)
+[installation](https://github.com/gamesbook/protograf/blob/master/docs/setting_up.rst)
 guide.
 
 ## Contributions
@@ -147,7 +147,7 @@ As always, with Python, you are building "on the shoulders of giants".
 In this case, the
 [ReportLab PDF Toolkit](https://https://docs.reportlab.com/reportlab/userguide/ch1_intro/)
 provides all of the core infrastructure used to do the underlying graphics
-processing and PDF file creation; __pyprototypr__ is effectively a highly
+processing and PDF file creation; __protograf__ is effectively a highly
 customised wrapper to simplify common uses around its existing and extensive
 capabilities.
 
@@ -164,4 +164,4 @@ Additional libraries in use include:
 
 ## License
 
-__pyprototypr__ is licensed under the GNU General Public License.
+__protograf__ is licensed under the GNU General Public License.

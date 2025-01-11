@@ -1,5 +1,5 @@
 """
-Show customised shapes - and useful overides - for pyprototypr
+Show customised shapes - and useful overides - for protograf
 
 Written by: Derek Hohls
 Created on: 29 March 2024
@@ -8,7 +8,7 @@ Sources and Credit:
     * SVG from https://thenounproject.com/icon/typewriter-3933515/
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="customised_shapes.pdf",
        paper=A8,

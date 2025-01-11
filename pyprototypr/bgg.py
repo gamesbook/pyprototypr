@@ -1,5 +1,5 @@
 """
-BoardGameGeek.com interface for pyprototypr
+BoardGameGeek.com interface for protograf
 
 Based off of the BGGGame object, for example::
 
@@ -114,7 +114,7 @@ from __future__ import division
 from boardgamegeek import BGGClient
 from boardgamegeek.exceptions import BGGApiError
 # local
-from pyprototypr.utils import tools
+from protograf.utils import tools
 
 
 class BGGGameList(object):

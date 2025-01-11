@@ -1,5 +1,5 @@
 """
-A WarpWar map example for pyprototypr
+A WarpWar map example for protograf
 
 The original map was created by Rick Smith and posted to https://groups.io/g/warpwar/
 forum on 3 June 2024.  This is not a complete copy - but serves to illustrate
@@ -9,7 +9,7 @@ Code by: Derek Hohls
 Created on: 30 July 2024
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="warpwar.pdf", margin=0.5, paper=A2)
 

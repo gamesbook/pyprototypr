@@ -1,5 +1,5 @@
 """
-Retrieve game info from boardgamegeek.com, and display this in cards via pyprototypr
+Retrieve game info from boardgamegeek.com, and display this in cards via protograf
 
 Written by: Derek Hohls
 Created on: 21 May 2016
@@ -7,7 +7,7 @@ Created on: 21 May 2016
 Notes:
     BGG() uses the `bgg-api` Python library (https://github.com/SukiCZ/boardgamegeek)
 """
-from pyprototypr import *
+from protograf import *
 
 num = 9  # number of cards to be used
 Create(filename="cards_bgg.pdf", offset=0.5)

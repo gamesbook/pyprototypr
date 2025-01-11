@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Dice functions for pyprototypr
+Dice functions for protograf
 """
 # lib
 import random

@@ -1,5 +1,5 @@
 """
-Standard playing cards script for pyprototypr
+Standard playing cards script for protograf
 
 Written by: Derek Hohls
 Created on: 12 August 2024
@@ -12,7 +12,7 @@ Suit symbols are shown at: https://www.w3schools.com/charsets/ref_utf_symbols.as
     ♥    2665    HEART SUIT
     ♦    2666    DIAMOND SUIT
 """
-from pyprototypr import *
+from protograf import *
 
 # create deck
 Create(filename='cards_standard.pdf', margin_bottom=1.9)

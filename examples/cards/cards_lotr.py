@@ -1,10 +1,10 @@
 """
-Deck and Card example using list data for pyprototypr
+Deck and Card example using list data for protograf
 
 Written by: Derek Hohls
 Created on: 21 December 2024
 """
-from pyprototypr import *
+from protograf import *
 
 Create(filename='cards_lotr.pdf', margin_bottom=1.9)
 

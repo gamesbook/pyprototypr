@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Show default shapes - and useful overrides - for pyprototypr
+Show default shapes - and useful overrides - for protograf
 
 Written by: Derek Hohls
 Created on: 20 March 2024
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="default_shapes.pdf",
        paper=A8,

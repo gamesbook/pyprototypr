@@ -1,12 +1,12 @@
 """
-"HexHex" game board, with dots, example for pyprototypr
+"HexHex" game board, with dots, example for protograf
 
 Written by: Derek Hohls
 Created on: 3 August 2024
 Notes:
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="hexhex_board_dots.pdf", margin=0.5, paper=A4)
 

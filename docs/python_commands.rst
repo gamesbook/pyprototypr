@@ -3,7 +3,7 @@ Using Python Commands
 =====================
 
 This section assumes you are very familiar with the concepts, terms and
-ideas for `pyprototypr <index.rst>`_ as presented in the
+ideas for `protograf <index.rst>`_ as presented in the
 `Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
 `Additional Concepts <additional_concepts.rst>`_
 and that you've created some basic scripts of your own using the
@@ -33,7 +33,7 @@ Background
 Working with an actual programming language, if you’re not a programmer,
 can be a little intimidating. Hopefully though, by the time you’ve
 started to look at this section, you will already be somewhat
-comfortable with writing and running **pyprototypr** scripts and
+comfortable with writing and running **protograf** scripts and
 therefore already on your way to controlling a computer through a
 written language.
 
@@ -80,7 +80,7 @@ represents what happens in a loop. The first part indicates how many
 times the loop happens, and the second part is the action, or set of
 actions, that need to be repeated.
 
-In a Python, or **pyprototypr**, script, a loop can be set-up by using
+In a Python, or **protograf**, script, a loop can be set-up by using
 the following kind of statement:
 
   .. code:: python
@@ -119,7 +119,7 @@ again.
    the ``end`` value, the loop will stop right away and **not** process any
    of the action(s) again.
 
-In the case of **pyprototypr**, a loop can be used to draw an item a
+In the case of **protograf**, a loop can be used to draw an item a
 number of times; for example:
 
   .. code:: python
@@ -312,7 +312,7 @@ Functions
 A function is the workhorse of a language.  It allows you to define your
 "recipe" and then use that recipe multiple times with differing properties.
 
-Effectively, it allows you to create a mini  **pyprototypr** script inside your
+Effectively, it allows you to create a mini  **protograf** script inside your
 main script. As with `loops`_, functions embed a set of steps to be carried when
 they are activated, but functions are more powerful because they can allow
 control of the behaviour of **any** of the properties or commands that are part

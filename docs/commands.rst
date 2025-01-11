@@ -6,12 +6,12 @@ Commands List
 
 This list provides an alphabetic summary of all the
 `commands <basic_concepts.rst#the-command-concept>`_ specific to
-`pyprototypr <index.rst>`_.  It is not intended to be used for learning
+`protograf <index.rst>`_.  It is not intended to be used for learning
 but is a handy cross-reference to the detailed information for that command.
 
 .. HINT::
 
-  `pyprototypr <index.rst>`_ is a small, specialised tool; but its part of a much
+  `protograf <index.rst>`_ is a small, specialised tool; but its part of a much
   greater Python language "ecosystem", and commands and tools from the
   `Python language <python_commands.rst>`_ |dash| or other
   `Python packages <https://pypi.org>`_  |dash| can be used to further enhance

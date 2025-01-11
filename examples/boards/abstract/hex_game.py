@@ -1,12 +1,12 @@
 """
-"Hex" game board example for pyprototypr
+"Hex" game board example for protograf
 
 Written by: Derek Hohls
 Created on: 8 March 2024
 Notes:
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="hex_game_board.pdf", margin=0.5, paper=landscape(A4))
 

@@ -1,5 +1,5 @@
 """
-Setup for pyprototypr
+Setup for protograf
 """
 import ast
 import io
@@ -38,7 +38,7 @@ class PyTest(TestCommand):
 def get_version():
     """."""
     try:
-        version_file = 'pyprototypr/_version.py'
+        version_file = 'protograf/_version.py'
         with open(version_file, "rt") as vf:
             verstrline = vf.readlines()[0]
         _ver = verstrline.split('__version_info__ = ')
@@ -65,11 +65,11 @@ VERSION = get_version()
 LONG_DESCRIPTION = read('README.md', 'CHANGES.txt')
 
 setup(
-    name='pyprototypr',
+    name='protograf',
     version=VERSION,
     author='Derek Hohls',
     author_email='gamesbook@gmail.com',
-    url='http://github.com/gamesbook/pyprototypr/',
+    url='http://github.com/gamesbook/protograf/',
     tests_require=['pytest'],
     cmdclass={'test': PyTest},
     description='Python utility for designing and creating simple, regular,'

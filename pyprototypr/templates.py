@@ -1,5 +1,5 @@
 """
-Pre-defined templates for pyprototypr
+Pre-defined templates for protograf
 """
 # lib
 # third party

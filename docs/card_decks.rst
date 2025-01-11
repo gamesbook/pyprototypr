@@ -3,7 +3,7 @@ Decks of Cards
 ==============
 
 This section assumes you are very familiar with the concepts, terms and
-ideas for `pyprototypr <index.rst>`_ as presented in the
+ideas for `protograf <index.rst>`_ as presented in the
 `Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
 `Additional Concepts <additional_concepts.rst>`_
 and that you've created some basic scripts of your own using the
@@ -68,7 +68,7 @@ Basic Concepts
 `↑ <table-of-contents_>`_
 
 Unlike some other designs, where you are specifying exactly where to locate
-elements on a page, **pyprototypr** is designed to handle the flow of placing
+elements on a page, **protograf** is designed to handle the flow of placing
 cards onto multiple pages, based on their size and the type of paper chosen.
 Then, for a card, you will set out elements exactly as you want them to appear.
 
@@ -83,7 +83,7 @@ There are two core commands needed; the ``Card()`` and the ``Deck()``:
 
 .. NOTE::
 
-    **pyprototypr** also considers items such tiles or counters to be "cards";
+    **protograf** also considers items such tiles or counters to be "cards";
     they are really just "shapes containing other shapes"; see the section
     on `Countersheet and Counter Commands`_
 
@@ -187,7 +187,7 @@ The dataset that could be used with the above Deck is shown in
 `Data Example #5`_.
 
 The full code - including the data - for this example is available as
-`cards_lotr.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_lotr.py>`_
+`cards_lotr.py <https://github.com/gamesbook/protograf/blob/master/examples/cards/cards_lotr.py>`_
 
 
 The Card Command
@@ -201,7 +201,7 @@ The **key concept** to note about a card is that is essentially a "small page".
 Any x- and y-locations are defined relative to the lower left of the card
 and **not** that of the page.
 
-A Card is defined slightly differently from other shapes in **pyprototypr**
+A Card is defined slightly differently from other shapes in **protograf**
 in that the properties are not named.
 
 The **first value** supplied to the ``Card()`` command must be one or more
@@ -235,7 +235,7 @@ command must be a `core shape <core_shapes.rst>`_ or a
 
 There can be any number of ``Card()`` commands; and the same Card could be
 targeted by multiple ``Card()`` commands, each affecting some aspect of its
-appearance; as elsewhere in **pyprototypr** the order of commands matter in
+appearance; as elsewhere in **protograf** the order of commands matter in
 the sense that later commands will overwrite any elements created by earlier
 ones.
 
@@ -489,7 +489,7 @@ For an excellent guide on how to create counters for a "traditional"
 hex-and-counter wargame, see *"Creating Wargames Counters with Inkscape"*
 at https://github.com/jzedwards/creating-wargames-counters-with-inkscape ;
 although its "grammar" is specific to Inkscape, the principle and approach
-can be adapted to **pyprototypr**
+can be adapted to **protograf**
 
 
 Supporting Commands
@@ -563,7 +563,7 @@ style the text - italic and bold - and also uses the **or** option in the
 sign - to use when there no *Age* value (for example, for the "Gandalf" row).
 
 The full code for this example is available as
-`cards_lotr.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_lotr.py>`_
+`cards_lotr.py <https://github.com/gamesbook/protograf/blob/master/examples/cards/cards_lotr.py>`_
 
 
 S(election) command
@@ -616,7 +616,7 @@ will produce no changes in the cards as there is no **nature** column or
 **Orc** value.
 
 The full code for this example is available as
-`cards_lotr.py <https://github.com/gamesbook/pyprototypr/blob/master/examples/cards/cards_lotr.py>`_
+`cards_lotr.py <https://github.com/gamesbook/protograf/blob/master/examples/cards/cards_lotr.py>`_
 
 L(ookup) command
 ----------------
@@ -661,7 +661,7 @@ Other Resources
 ===============
 `↑ <table-of-contents_>`_
 
-**pyprototypr** is by no means the only tool for creating decks of cards;
+**protograf** is by no means the only tool for creating decks of cards;
 numerous other options exist; both free and commercial.  Some of the free /
 open-source ones are listed below.
 

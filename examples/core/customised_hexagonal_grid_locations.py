@@ -1,11 +1,11 @@
 """
-Show customised Hexagons grid locations and linklines for pyprototypr
+Show customised Hexagons grid locations and linklines for protograf
 
 Written by: Derek Hohls
 Created on: 7 December 2024
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(
     filename="customised_hexagonal_grid_locations.pdf",

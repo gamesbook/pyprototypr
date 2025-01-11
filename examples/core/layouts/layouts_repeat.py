@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Repeat layout examples for pyprototypr
+Repeat layout examples for protograf
 
 Written by: Derek Hohls
 Created on: 19 December 2024
 """
-from pyprototypr import *
+from protograf import *
 
 Create(filename="layouts_repeat.pdf",
        paper=A8,

@@ -1,10 +1,10 @@
 """
-`cards1` example for pyprototypr
+`cards1` example for protograf
 
 Written by: Derek Hohls
 Created on: 29 February 2016
 """
-from pyprototypr import *
+from protograf import *
 
 Create()
 Deck())

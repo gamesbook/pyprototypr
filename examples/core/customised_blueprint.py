@@ -1,11 +1,11 @@
 """
-Show customised BluePrint shape for pyprototypr
+Show customised BluePrint shape for protograf
 
 Written by: Derek Hohls
 Created on: 18 August 2024
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="customised_blueprint.pdf",
        paper=A8,

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Examples of multiple shapes on outer edge of RectangularLocations for pyprototypr
+Examples of multiple shapes on outer edge of RectangularLocations for protograf
 
 Written by: Derek Hohls
 Created on: 15 September 2024
 """
-from pyprototypr import *
+from protograf import *
 
 Create(filename="layouts_shapes_outer.pdf",
        paper=A8,

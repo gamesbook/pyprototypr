@@ -1,5 +1,5 @@
 """
-"Underwater Cities" board example for pyprototypr
+"Underwater Cities" board example for protograf
 
 Written by: Derek Hohls
 Created on: 27 October 2024
@@ -7,7 +7,7 @@ Notes:
     This is not a complete "copy" of the board; its just to show how
     some aspects could be implemented
 """
-from pyprototypr import *
+from protograf import *
 
 Create(filename="underwater_cities.pdf", margin=0.0, paper=landscape(A2))
 

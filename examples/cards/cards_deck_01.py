@@ -1,10 +1,10 @@
 """
-Deck design Example 01 for pyprototypr
+Deck design Example 01 for protograf
 
 Written by: Derek Hohls
 Created on: 7 January 2025
 """
-from pyprototypr import *
+from protograf import *
 
 Create(filename='cards_deck_01.pdf', margin=0.25, paper=A8)
 

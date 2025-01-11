@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Purpose: Shows all pre-defined colors for pyprototypr (available from ReportLab)
+Purpose: Shows all pre-defined colors for protograf (available from ReportLab)
 Author: Derek Hohls
 Created: 29 February 2016
 """
 # lib
 # local
-from pyprototypr import Create, Text, Save, Rectangle, black, red
-from pyprototypr.utils.tools import color_to_hex
-from pyprototypr.base import COLORS
+from protograf import Create, Text, Save, Rectangle, black, red
+from protograf.utils.tools import color_to_hex
+from protograf.base import COLORS
 
 
 Create(filename="colorset.pdf")

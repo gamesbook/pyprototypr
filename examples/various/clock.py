@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Example code for pyprototypr
+Example code for protograf
 
 Written by: Derek Hohls
 Created on: 19 August 2024
 """
-from pyprototypr import *
+from protograf import *
 
 Create(filename="clock.pdf",
         paper=A7,

@@ -1,12 +1,12 @@
 """
-"Adventurer Conqueror King System" map example for pyprototypr
+"Adventurer Conqueror King System" map example for protograf
 
 Written by: Derek Hohls
 Created on: 3 March 2024
 Notes:
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="ack_map.pdf", margin=0.5, paper=landscape(A3))
 

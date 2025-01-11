@@ -1,10 +1,10 @@
 """
-PNG to GIF example for pyprototypr
+PNG to GIF example for protograf
 
 Written by: Derek Hohls
 Created on: 1 December 2024
 """
-from pyprototypr import *
+from protograf import *
 
 Create(filename="rolling.pdf",
        paper=A8,  #A8

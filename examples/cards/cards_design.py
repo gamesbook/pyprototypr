@@ -1,10 +1,10 @@
 """
-`cards_design` example for pyprototypr
+`cards_design` example for protograf
 
 Written by: Derek Hohls
 Created on: 19 February 2016
 """
-from pyprototypr import *
+from protograf import *
 
 Create(filename='cards_design.pdf', margin_bottom=1.9)
 

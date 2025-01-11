@@ -1,5 +1,5 @@
 """
-`blocks_csv` script for pyprototypr
+`blocks_csv` script for protograf
 
 Written by: Derek Hohls
 Created on: 9 August 2024
@@ -14,7 +14,7 @@ Notes:
     blues = "#416E83"
 * Images sourced from "images" subdirectory
 """
-from pyprototypr import *
+from protograf import *
 
 # create counters
 Create(filename='blocks_csv.pdf')

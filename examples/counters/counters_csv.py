@@ -1,5 +1,5 @@
 """
-`counters_csv` script for pyprototypr
+`counters_csv` script for protograf
 
 Written by: Derek Hohls
 Created on: 29 February 2016
@@ -8,7 +8,7 @@ Updated on: 26 December 2024
 Notes:
     * Images sourced from "images" subdirectory
 """
-from pyprototypr import *
+from protograf import *
 
 # create counters
 Create(filename='tannenberg_csv.pdf')

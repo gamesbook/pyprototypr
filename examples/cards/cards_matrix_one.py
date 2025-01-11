@@ -1,10 +1,10 @@
 """
-Matrix cards script for pyprototypr
+Matrix cards script for protograf
 
 Written by: Derek Hohls
 Created on: 12 August 2024
 """
-from pyprototypr import *
+from protograf import *
 
 # create deck
 Create(filename='cards_matrix_one.pdf', margin_bottom=1.9)

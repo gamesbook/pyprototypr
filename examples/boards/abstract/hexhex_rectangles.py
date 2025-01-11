@@ -1,12 +1,12 @@
 """
-"HexHex" game board, with inset rectangle, example for pyprototypr
+"HexHex" game board, with inset rectangle, example for protograf
 
 Written by: Derek Hohls
 Created on: 30 August 2024
 Notes:
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="hexhex_board_rectangles.pdf", margin=0.5, paper=A4)
 

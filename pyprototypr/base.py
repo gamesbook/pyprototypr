@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Base shape class for pyprototypr
+Base shape class for protograf
 
 Notes:
     * https://www.a2-size.com/american-paper-sizes/
@@ -56,8 +56,8 @@ from reportlab.lib.colors import (
     whitesmoke, yellow, yellowgreen, fidblue, fidred, fidlightblue,
     cornflower, firebrick)
 # local
-from pyprototypr.utils import geoms, tools
-from pyprototypr.utils.support import LookupType
+from protograf.utils import geoms, tools
+from protograf.utils.support import LookupType
 
 log = logging.getLogger(__name__)
 

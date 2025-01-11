@@ -1,10 +1,10 @@
 """
-`diagram` examples for pyprototypr
+`diagram` examples for protograf
 
 Written by: Derek Hohls
 Created on: 29 February 2016
 """
-from pyprototypr import *
+from protograf import *
 
 Create(filename='diagram.pdf', margin=1)
 

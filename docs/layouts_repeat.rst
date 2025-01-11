@@ -2,7 +2,7 @@
 Repeat Command
 ==============
 
-**pyprototypr** allows you to directly define where elements, that make up
+**protograf** allows you to directly define where elements, that make up
 your design, should be placed within a page, or over a series of pages
 within a ``Deck``, but it also includes commands that let you place, or
 "`layout <layouts.rst>`_", elements in a more repetitive or regular way

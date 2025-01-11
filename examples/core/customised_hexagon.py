@@ -1,11 +1,11 @@
 """
-Show customised Hexagon for pyprototypr
+Show customised Hexagon for protograf
 
 Written by: Derek Hohls
 Created on: 19 September 2024
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="customised_hexagon.pdf",
        paper=A8,

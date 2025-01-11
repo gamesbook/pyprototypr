@@ -2,7 +2,7 @@
 Terminology
 ===========
 
-`pyprototypr <index.rst>`_ uses many terms; most of which should -
+`protograf <index.rst>`_ uses many terms; most of which should -
 hopefully - be fairly obvious by their name, or by the context in
 which they are used.
 
@@ -18,7 +18,7 @@ descriptions to understand exactly how these can used.
 Table of Contents
 =================
 
-- `pyprototypr Jargon`_
+- `protograf Jargon`_
 - `Color-orientated Terms`_
 - `Position- and Location-orientated Terms`_
 - `Size- and Length-orientated Terms`_
@@ -29,22 +29,22 @@ Table of Contents
 - `Miscellaneous Terms`_
 
 
-pyprototypr Jargon
+protograf Jargon
 ==================
 `↑ <table-of-contents_>`_
 
-**pyprototypr** uses a number of 'generic' terms which you'll see in many
+**protograf** uses a number of 'generic' terms which you'll see in many
 places in the documentation:
 
-- **command** - an instruction that is specified in a **pyprototypr** script
-- **default**  - a value set by **pyprototypr** if no other is given;
+- **command** - an instruction that is specified in a **protograf** script
+- **default**  - a value set by **protograf** if no other is given;
   for example, the line length defaults to being 1 centimetre long
 - **property** - an aspect of a command or shape that helps define how it works
   or looks; for example, a circle might have its size defined by using a radius
   property of 2 centimetres - in a script this would be shown as ``radius=2``
 - **shape** - a geometric element, for example, a circle or square, or text or
   line; something that can be drawn
-- **script** - a file containing all **pyprototypr** instructions
+- **script** - a file containing all **protograf** instructions
 - **run** - to cause Python to act on the script so that all instructions are
   carried out; this should usually cause an output file to be created (or
   recreated)
@@ -105,7 +105,7 @@ Position- and Location-orientated Terms
 =======================================
 `↑ <table-of-contents_>`_
 
-Everything in **pyprototypr** that needs to be displayed or drawn or
+Everything in **protograf** that needs to be displayed or drawn or
 positioned must be placed at a **position** on the page; i.e. each thing
 must have both a horizontal position - its **x** value - and a vertical
 position - its **y** value. These respectively represent the distances

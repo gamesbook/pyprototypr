@@ -10,7 +10,7 @@ an extension of ".py".
 
 .. HINT::
 
-    This document assumes that `pyprototypr <index.rst>`_ is working on your
+    This document assumes that `protograf <index.rst>`_ is working on your
     computer after successfully `Setting Up <setting_up.rst>`_, and that you
     have read and understood the `Basic Concepts <basic_concepts.rst>`_
 
@@ -202,7 +202,7 @@ Comments
 It can be useful to "annotate" a script with other details that can remind
 you, as a reader, about any of the "what" or "why" aspects of the script.
 
-These comments are effectively ignored by Python and **pyprototypr** and
+These comments are effectively ignored by Python and **protograf** and
 have no effect on the output.
 
 Single Line Comments
@@ -240,7 +240,7 @@ All of the `shape <core_shapes.rst>`_ commands can either be called with a
 **capital** letter or a **lowercase** letter.
 
 The use of a capital is the more common case, and it effectively tells
-**pyprototypr** to "draw this shape now":
+**protograf** to "draw this shape now":
 
 .. code:: python
 
@@ -262,7 +262,7 @@ Basic Shapes
 ============
 `↑ <table-of-contents_>`_
 
-**pyprototypr**  allows for the creation of many shapes, with a command for
+**protograf**  allows for the creation of many shapes, with a command for
 each one.
 
 These are described in the `Core Shapes <core_shapes.rst>`_ section, which also
@@ -277,7 +277,7 @@ Card Decks
 `↑ <table-of-contents_>`_
 
 A common element in many games is a deck - or multiple decks - of cards.
-**pyprototypr** also considers items such tiles or counters to be "cards";
+**protograf** also considers items such tiles or counters to be "cards";
 they are really just "shapes containing other shapes"
 
 There are two key commands for creating a deck of cards: the ``Card()`` and

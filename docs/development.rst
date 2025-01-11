@@ -3,7 +3,7 @@ Development
 ===========
 
 These notes are aimed at those who might be developing the code further,
-or who want to use `pyprototypr <index.rst>`_ as part of other Python
+or who want to use `protograf <index.rst>`_ as part of other Python
 projects.
 
 
@@ -21,7 +21,7 @@ Note, however, that this project "breaks" a few normal conventions:
   error; this could be improved by creating numerous subclasses with a more
   extensive inheritance framework, but these soon start getting tricky to
   juggle...
-- Use of ``from pyprototypr import *`` for running scripts; you could force a
+- Use of ``from protograf import *`` for running scripts; you could force a
   user to import only what they need but that makes it really tedious for them,
   and much harder to do if you're not a programmer;  if you are using it as
   part of another project, then of course you should follow the normal approach

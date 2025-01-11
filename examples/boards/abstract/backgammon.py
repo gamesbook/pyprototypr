@@ -1,11 +1,11 @@
 """
-A Backgammon board example for pyprototypr
+A Backgammon board example for protograf
 
 Written by: Derek Hohls
 Created on: 29 December 2024
 """
 
-from pyprototypr import *
+from protograf import *
 
 Create(filename="backgammon.pdf", margin=1, paper=landscape(A4))
 
