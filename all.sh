@@ -1,4 +1,4 @@
-echo "Creating PDFs for all examples (except those in examples/manual)"
+echo "Creating PDFs and PNGs for all examples (except those in examples/manual)"
 echo ""
 mkdir -p /tmp/demo
 # ---- examples: simple
