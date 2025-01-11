@@ -1,8 +1,9 @@
-protograf: Overview
-=====================
+========
+Overview
+========
 
 Introduction
-------------
+============
 
 The aim of `protograf <index.rst>`_ is to provide a general purpose
 program that allows you to design simple and reproducible graphics that
@@ -20,7 +21,7 @@ so on.
 
 
 Who might want to use **protograf** ?
----------------------------------------
+=====================================
 
 **protograf** is useful for anyone that needs to work on a design in
 an incremental fashion, tweaking and changing as they go along. Doing
@@ -39,7 +40,7 @@ Excel documents; this can help separate out the design and layout from
 the content - the text and numbers - that appears in the design.
 
 How do I use it?
-----------------
+================
 
 In general, what you do is type a set of instructions - which **protograf**
 terms a *script* -  into a file, save that file on your computer, and then
@@ -50,7 +51,7 @@ As your design changes and evolves, you add or change instructions and
 recreate the output.
 
 How does it work?
------------------
+=================
 
 **protograf** is written in Python; the reason being that this is a
 relatively easy-to-use programming language that is often used for
@@ -68,7 +69,7 @@ library and add in your own additional Python code or logic to your
 scripts for your own purpose.
 
 How do I get started?
----------------------
+=====================
 
 Its suggested that you first get everything `set-up <setting_up.rst>`_
 and tested. Then read through the `basic concepts <basic_concepts.rst>`_

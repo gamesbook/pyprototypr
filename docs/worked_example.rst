@@ -2,6 +2,8 @@
 Worked Example for a Deck of Cards
 ==================================
 
+.. |dash| unicode:: U+2014 .. EM DASH SIGN
+
 These examples assumes that you have set-up your computer with Python and
 have tested to **check that you can create a test file which generates a
 blank PDF**. If not, please first see the `Setting Up <setting_up.rst>`_
@@ -71,7 +73,7 @@ A simple card deck example: Take 2
 ----------------------------------
 
 Open up a new text file with your text file editor and type in the
-following (again, remember to start each line with **NO** any blank
+following (again, remember to start each line with **NO** blank
 spaces):
 
 .. code:: python
@@ -84,7 +86,7 @@ spaces):
 
 You can see that the ``Create()`` instruction has now been expanded with
 a list of new details appearing inside the brackets. These items are
-called *properties* and with` each property is separated by a ",". Each
+called *properties* and each property is separated by a ",". Each
 **property** is defined by a name, followed by an "=" (equals) sign, and
 then a value of some kind.
 
@@ -114,7 +116,7 @@ one A3-sized page.
 .. NOTE::
 
     Drawing in  **protograf** always starts in the  bottom-left
-    corner and proceeds left-to-right and the upwards on the page.
+    corner and proceeds left-to-right and then upwards on the page.
 
 A simple card deck example: Take 3
 ----------------------------------
@@ -152,7 +154,7 @@ to make sure that such a split happens directly *after a comma*, and
 **not** in the middle of a word or a property setting.
 
 When you split an instruction, make sure that there are one or more
-spaces at the start of the continuation lines; its often helpful to
+spaces at the start of the continuation lines; it's often helpful to
 start the next line indented by four (4) spaces.
 
 In this ``Deck``, the number of cards has been set to 50. The size of
@@ -162,7 +164,7 @@ red, green and blue components that make up a color. In this case, we
 might see the color as a shade of "purple".
 
 In this script, the lines shown starting with a ``#`` are called
-**comments** - these will be ignored by **protograf** but are included
+**comments** |dash| these will be ignored by **protograf** but are included
 to provide some more explanation as to what the next line, or lines, are
 doing. You could also add lines at the start of a script to define
 what its purpose is.

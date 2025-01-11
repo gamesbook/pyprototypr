@@ -2,6 +2,7 @@
 Customised Shapes
 =================
 
+.. |dash| unicode:: U+2014 .. EM DASH SIGN
 .. |copy| unicode:: U+000A9 .. COPYRIGHT SIGN
    :trim:
 .. |deg|  unicode:: U+00B0 .. DEGREE SIGN

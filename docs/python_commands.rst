@@ -2,6 +2,8 @@
 Using Python Commands
 =====================
 
+.. |dash| unicode:: U+2014 .. EM DASH SIGN
+
 This section assumes you are very familiar with the concepts, terms and
 ideas for `protograf <index.rst>`_ as presented in the
 `Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
@@ -39,7 +41,7 @@ written language.
 
 The concepts and methods represented here are relatively small
 increments to what you likely already know, but should give you more
-flexibility in terms of the way you can write scripts - without adding
+flexibility in terms of the way you can write scripts |dash| without adding
 too much complexity. These are *not* essential but *may* be very useful.
 
 
@@ -92,10 +94,10 @@ the following kind of statement:
 
 In this case the first line is the loop set-up:
 
--  the *for* indicates that we want to set-up a loop;
+-  the *for* indicates that we want to set-up a loop
 -  the *range* part limits how many times the loop will happen by using
-   a start and end value inside a pair of brackets (the 1 and 4
-   respectively);
+   a start and end value inside a pair of brackets |dash| the 1 and 4
+   respectively
 -  *number* stores how many times the loop has happened so far (for the very
    first time the value of number will be set to the start value of 1); this
    is referred to as the loop's *counter*
@@ -111,11 +113,13 @@ and lined up below each other to show they are part of the loop.**
 concept of actions… more practical examples are shown below!).
 
 Once the action(s) have been carried out, the program goes back to the
-line starting with the ``for`` - this is where the “loop” concept comes from
-- to increase the ``number`` value and prepare to carry out the action(s)
-again.
+line starting with the ``for`` |dash| this is where the "loop" concept
+comes from |dash| to increase the ``number`` value and prepare to carry
+out the action(s) again.
 
-   *NOTE:* When the loop counter's value stored in ``number`` matches that of
+.. NOTE::
+
+   When the loop counter's value stored in ``number`` matches that of
    the ``end`` value, the loop will stop right away and **not** process any
    of the action(s) again.
 
@@ -132,7 +136,7 @@ every time the loop operates. For the first time it will have a value of
 1 (one); the second time a value of 2 (two); and the third time value of
 3 (three) - as noted above, when number reaches the value of 4, the loop
 ends right away. This loop will cause a ``Circle`` to be drawn in three
-different ``y`` locations on the page (but with the same ``x`` location).
+different ``y`` locations on the page but with the same ``x`` location.
 
 You can combine the value of the number with other information to do more
 complex kinds of operations. In this next example, the values for ``y``
@@ -175,11 +179,13 @@ Multiple loops can be used to control different values. For example:
 
 Here the outer loop runs twice, setting values for both ``x`` and ``y``.
 The outer loop happens twice, and for each time it happens, the inner
-loop happens twice. So there are actually four times (2 times 2) that
-the actions - in this case, drawing a Circle - are carried out.
+loop happens twice. So there are actually four times i.e. 2 times 2
+that the actions |dash| in this case, drawing a Circle |dash| are
+carried out.
 
 Python has a shortcut for handling multiple loops that you can use at your
-discretion - its called ``zip``.
+discretion |dash| its called ``zip`` (for more see
+`zip function <https://www.freecodecamp.org/news/python-zip-function-explained-with-examples/>`_).
 
 If you wanted to draw a ``Circle`` at three locations, in three different
 colors, you can store all of these in lists and then do the drawing in a loop.
@@ -231,9 +237,9 @@ the actions that are to be carried out in that part of the script.
 The statement itself that forms part of the ``if``, is termed a “true or
 false” check. This means that it’s a comparison of some kind. In this
 case, the script examines the value stored inside ``color`` and checks
-if it is equal to (the double-equals sign) the value of ``green``. And
-because the script understands what is meant by ``green`` it can carry
-out this comparison.
+if it is "equal to" |dash| by using the double-equals sign |dash| the
+value of ``green``. And because the script understands what is meant by
+``green`` it can carry out this comparison.
 
 Should the comparison be dealing with two values that are equivalent
 then the check is deemed to be correct or “true”, and so the actions
@@ -254,8 +260,8 @@ An ``if`` statement can be used inside a loop, for example:
             Rectangle(x=1, y=number)
 
 Here, the script will either draw a ``Circle`` or a ``Rectangle`` depending
-on the value of ``number``: if its less than than 3 (the ``<`` comparison is
-a “less than” check), then draw a ``Circle``, otherwise if its 3 or more, then
+on the value of ``number``: if its less than than 3  |dash| the ``<`` comparison is
+a "less than" check |dash| then draw a ``Circle``, otherwise if its 3 or more, then
 draw a ``Rectangle``.
 
 This example is shown below.
@@ -319,9 +325,9 @@ control of the behaviour of **any** of the properties or commands that are part
 of them.
 
 A function is simply created by using a ``def`` command, followed by the name you
-want to give the function (**remember** - no spaces allowed!) followed by the
-set of property names and their default values.  These properties are only
-available as part of the function, and represent aspects of that function
+want to give the function  |dash| using a word with **no** spaces in it  |dash|
+followed by the set of property names and their default values.  These properties
+are only available as part of the function, and represent aspects of that function
 that you need to be able to change every time the function is used.
 
 The ``def`` line is followed by one or more lines that are all indented below
