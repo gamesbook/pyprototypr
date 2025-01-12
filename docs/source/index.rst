@@ -37,12 +37,12 @@ what is in all
    terminology
    commands
    examples/index
-       examples/abstract
-       examples/commercial
-       examples/bgg
-       examples/cards
-       examples/counters
-       examples/various
+   examples/abstract
+   examples/commercial
+   examples/bgg
+   examples/cards
+   examples/counters
+   examples/various
    python_commands
    useful_resources
 

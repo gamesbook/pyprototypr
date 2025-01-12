@@ -15,13 +15,14 @@ graphics and text.
 
 ## Documentation
 
-The online documentation for __protograf__ starts at the
-[Guide](https://github.com/gamesbook/protograf/blob/master/docs/source/guide.rst);
-its highly recommended to read the sections in the order presented.
+The online documentation for __protograf__ is available at
+[Read the Docs](https://protograf.readthedocs.io/);
+its highly recommended to read the sections in the order presented in the
+[Guide](https://protograf.readthedocs.io/en/latest/guide.html).
 
 If you're not familiar with any kind of programming or scripting, you should
 at least read some of the introductory sections, and especially the
-[installation](https://github.com/gamesbook/protograf/blob/master/docs/source/setting_up.rst)
+[installation](https://protograf.readthedocs.io/en/latest/setting_up.html)
 before proceeding...
 
 ## Requirements
