@@ -292,6 +292,9 @@ Example 1.
 ++++++++++
 
 .. |lne| image:: images/defaults/line.png
+   :widths: 330
+
+.. table:: Line Example 1
    :widths: 50, 50
 
 ===== ======
@@ -313,6 +316,9 @@ Example 2.
 ++++++++++
 
 .. |ln1| image:: images/customised/line_custom.png
+   :widths: 330
+
+.. table:: Line Example 2
    :widths: 50, 50
 
 ===== ======
