@@ -33,6 +33,9 @@ other.
    hexagonal_grids
    terminology
    commands
+   examples/index
+   python_commands
+   useful_resources
 
 
 Indices and tables

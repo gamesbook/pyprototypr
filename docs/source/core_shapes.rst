@@ -292,7 +292,7 @@ Example 1.
 ++++++++++
 
 .. |lne| image:: images/defaults/line.png
-   :width: 330
+   :widths: 50, 50
 
 ===== ======
 |lne| This example shows the shape constructed using the command with only
@@ -313,7 +313,7 @@ Example 2.
 ++++++++++
 
 .. |ln1| image:: images/customised/line_custom.png
-   :width: 330
+   :widths: 50, 50
 
 ===== ======
 |ln1| This example shows Lines constructed using commands with the
