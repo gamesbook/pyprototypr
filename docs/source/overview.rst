@@ -11,7 +11,7 @@ can be used for prototyping the elements or components of a project such as
 the creation of a board game; including the board, the tiles, the cards and
 so on.
 
-.. NOTE::
+.. IMPORTANT::
 
    **protograf** is *NOT* a full-blown graphics editor - like the
    Adobe Photoshop, GIMP, or Inkscape packages - or a desktop publishing
@@ -59,7 +59,9 @@ scripting or automating routines - both by itself and as part of larger
 systems. Python has access to numerous libraries that help avoid having
 to write code from scratch.
 
-   *NOTE* Python is not a speedy language, but its still fast enough to
+.. NOTE::
+
+   Python is *not* a speedy language, but its still fast enough to
    use for **protograf**
 
 **protograf** is designed such that you *don’t* need to know how to
@@ -71,7 +73,7 @@ scripts for your own purpose.
 How do I get started?
 =====================
 
-Its suggested that you first get everything `set-up <setting_up.rst>`_
+Its suggested that you first get everything :ref:`set-up <setting_up>`_
 and tested. Then read through the `basic concepts <basic_concepts.rst>`_
 before trying out a `worked example <worked_example.py>`__. After that,
 browse through the sections listed in the `index <index.rst>`_.
