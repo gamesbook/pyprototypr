@@ -87,8 +87,8 @@ sub-directories (**note** some examples may require additional files such as
 images, CSV files, or spreadsheets). You can download all the examples in a single
 [ZIP file](https://github.com/gamesbook/protograf/blob/master/examples.zip).
 
-If it does not work, you may want to look in more detail at the
-[installation](https://github.com/gamesbook/protograf/blob/master/docs/source/setting_up.rst)
+If it does not work, you may want to look at more detail provided in the
+[installation](https://protograf.readthedocs.io/en/latest/setting_up.html)
 guide.
 
 ## Contributions
@@ -148,7 +148,7 @@ current / potential areas of work or development.
 
 As always, with Python, you are building "on the shoulders of giants".
 In this case, the
-[ReportLab PDF Toolkit](https://https://docs.reportlab.com/reportlab/userguide/ch1_intro/)
+[ReportLab PDF Toolkit](https://docs.reportlab.com/reportlab/userguide/ch1_intro/)
 provides all of the core infrastructure used to do the underlying graphics
 processing and PDF file creation; __protograf__ is effectively a highly
 customised wrapper to simplify common uses around its existing and extensive
