@@ -73,7 +73,7 @@ scripts for your own purpose.
 How do I get started?
 =====================
 
-Its suggested that you first get everything :ref:`set-up <setting_up>`_
+Its suggested that you first get everything `set-up <setting_up>`_
 and tested. Then read through the `basic concepts <basic_concepts.rst>`_
 before trying out a `worked example <worked_example.py>`__. After that,
 browse through the sections listed in the `index <index.rst>`_.

@@ -14,6 +14,9 @@ program, the sections below are designed to be read in order - apart from
 the terminology - as they all contain useful information and build on each
 other.
 
+If its your first time here, consult the `guide <guide>`_ to get a sense of
+what is in all
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
@@ -34,6 +37,12 @@ other.
    terminology
    commands
    examples/index
+       examples/abstract
+       examples/commercial
+       examples/bgg
+       examples/cards
+       examples/counters
+       examples/various
    python_commands
    useful_resources
 

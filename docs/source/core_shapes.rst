@@ -292,7 +292,7 @@ Example 1.
 ++++++++++
 
 .. |lne| image:: images/defaults/line.png
-   :width: 330
+   :width: 310
 
 ..  table::
     :width: 100%
@@ -310,14 +310,17 @@ Example 1.
 
           - starts at x-position ``1`` cm and at y-position ``1`` cm
           - length of ``1`` cm
-          - heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east")
+          - heading/default direction is 0 |deg|
+
+          *Note* that direction means "anti-clockwise from 0 |deg|", where
+          the zero lines runs in the "east" direction from the left.
     ===== ======
 
 Example 2.
 ++++++++++
 
 .. |ln1| image:: images/customised/line_custom.png
-   :width: 330
+   :width: 310
 
 ..  table::
     :width: 100%
@@ -358,20 +361,22 @@ Example 2.
           line:
 
           - *dashed* - a list, shown by the square brackets from `[` to `]`,
-            which provides a number of "on"/"off" pairs; the line is drawn for a
-            distance matching an "on" value followed by a gap matching an "off"
-            value; when the end of the list is reached it starts again until the
-            full length of the line is drawn
+
+          The list provides a number of "on"/"off" pairs; the line is drawn for a
+          distance matching an "on" value followed by a gap matching an "off"
+          value; when the end of the list is reached it starts again until the
+          full length of the line is drawn.
 
           The thin red line has:
 
           - *x* and *y* set as a starting point
           - *x1* and *y1* set as an ending point
-          - *angle* - of 15 |deg| (from the baseline, anti-clockwise) to guide
-            the direction in which the line is drawn; if not given (as in the case
-            of the thick green line) this will be 0 |deg|
+          - *angle* - of 15 |deg| from the baseline, anti-clockwise
 
-          and the line length is calculated based on these points.
+          The angle guides the direction in which the line is drawn; if not
+          given |dash| as in the case of the thick green line |dash| this
+          will be 0 |deg|. The line length is then calculated based on these
+          points.
 
           The thick green line and the thin red line both have:
 
@@ -382,10 +387,11 @@ Example 2.
 
           - *x* and *y* set as their starting point
           - a default length of ``1`` cm
-          - *stroke_width* - set as value in points (and labelled accordingly)
-          - *dotted* - has a value of ``True``, which then generates a series of
-            small lines (the "dots"), followed by gaps, of sizes equal to the
-            line's *stroke_width*
+          - *stroke_width* - set as value in points and labelled accordingly
+          - *dotted* - has a value of ``True``
+
+          The dotted line is just a series of small lines i.e. the "dots",
+          followed by gaps, of sizes equal to the line's *stroke_width*.
     ===== ======
 
 
