@@ -1,4 +1,4 @@
-# Read the Docs configuration file for Sphinx projects
+# "Read the Docs" configuration file for Sphinx projects
 
 # Required
 version: 2
@@ -17,8 +17,7 @@ sphinx:
 #   - pdf
 #   - epub
 
-# Optional but recommended, declare the Python requirements required
-# to build documentation
-# python:
-#   install:
-#     - requirements: docs/requirements.txt
+# Declare the Python requirements required to build documentation
+python:
+   install:
+     - requirements: docs/requirements.txt
