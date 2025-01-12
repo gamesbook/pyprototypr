@@ -292,99 +292,101 @@ Example 1.
 ++++++++++
 
 .. |lne| image:: images/defaults/line.png
+   :width: 330
 
-.. table:: Line Example 1
-   :width: 100%
-   :widths: 50, 50
+..  table::
+    :width: 100%
+    :widths: 40, 60
 
-===== ======
-|lne| This example shows the shape constructed using the command with only
-      defaults:
+    ===== ======
+    |lne| This example shows the shape constructed using the command with only
+          defaults:
 
-      .. code:: python
+          .. code:: python
 
-          Line()
+              Line()
 
-      It has the following properties based on the defaults:
+          It has the following properties based on the defaults:
 
-      - starts at x-position ``1`` cm and at y-position ``1`` cm
-      - length of ``1`` cm
-      - heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east")
-===== ======
+          - starts at x-position ``1`` cm and at y-position ``1`` cm
+          - length of ``1`` cm
+          - heading/default direction is 0 |deg| (anti-clockwise from 0 |deg| "east")
+    ===== ======
 
 Example 2.
 ++++++++++
 
 .. |ln1| image:: images/customised/line_custom.png
+   :width: 330
 
-.. table:: Line Example 2
-   :width: 100%
-   :widths: 50, 50
+..  table::
+    :width: 100%
+    :widths: 40, 60
 
-===== ======
-|ln1| This example shows Lines constructed using commands with the
-      following properties:
+    ===== ======
+    |ln1| This example shows Lines constructed using commands with the
+          following properties:
 
-      .. code:: python
+          .. code:: python
 
-          Line(x=0, y=4, x1=4, y1=5, stroke=blue, stroke_width=1,
-             dashed=[0.2, 0.2, 0.2, 0.2, 1.0, 0.0],
-             label="dashed", font_size=6)
+              Line(x=0, y=4, x1=4, y1=5, stroke=blue, stroke_width=1,
+                 dashed=[0.2, 0.2, 0.2, 0.2, 1.0, 0.0],
+                 label="dashed", font_size=6)
 
-          Line(
-            x=0, y=3, length=4.1, angle=15, stroke=red,
-            label="15", font_size=6)
+              Line(
+                x=0, y=3, length=4.1, angle=15, stroke=red,
+                label="15", font_size=6)
 
-          Line(
-            x=0, y=2, length=4, stroke=lime, stroke_width=2)
+              Line(
+                x=0, y=2, length=4, stroke=lime, stroke_width=2)
 
-          # black lines
-          Line(
-            x=0, y=0.5, stroke_width=0.2, dotted=True,
-            label="0.2", font_size=6)
-          Line(
-            x=1, y=0.5, stroke_width=0.4, dotted=True,
-            label="0.4", font_size=6)
-          Line(
-            x=2, y=0.5, stroke_width=0.8, dotted=True,
-            label="0.8", font_size=6)
-          Line(
-            x=3, y=0.5, stroke_width=1.6, dotted=True,
-            label="1.6", font_size=6)
+              # black lines
+              Line(
+                x=0, y=0.5, stroke_width=0.2, dotted=True,
+                label="0.2", font_size=6)
+              Line(
+                x=1, y=0.5, stroke_width=0.4, dotted=True,
+                label="0.4", font_size=6)
+              Line(
+                x=2, y=0.5, stroke_width=0.8, dotted=True,
+                label="0.8", font_size=6)
+              Line(
+                x=3, y=0.5, stroke_width=1.6, dotted=True,
+                label="1.6", font_size=6)
 
-      The medium blue line has a style set so that it is not a normal solid
-      line:
+          The medium blue line has a style set so that it is not a normal solid
+          line:
 
-      - *dashed* - a list, shown by the square brackets from `[` to `]`,
-        which provides a number of "on"/"off" pairs; the line is drawn for a
-        distance matching an "on" value followed by a gap matching an "off"
-        value; when the end of the list is reached it starts again until the
-        full length of the line is drawn
+          - *dashed* - a list, shown by the square brackets from `[` to `]`,
+            which provides a number of "on"/"off" pairs; the line is drawn for a
+            distance matching an "on" value followed by a gap matching an "off"
+            value; when the end of the list is reached it starts again until the
+            full length of the line is drawn
 
-      The thin red line has:
+          The thin red line has:
 
-      - *x* and *y* set as a starting point
-      - *x1* and *y1* set as an ending point
-      - *angle* - of 15 |deg| (from the baseline, anti-clockwise) to guide
-        the direction in which the line is drawn; if not given (as in the case
-        of the thick green line) this will be 0 |deg|
+          - *x* and *y* set as a starting point
+          - *x1* and *y1* set as an ending point
+          - *angle* - of 15 |deg| (from the baseline, anti-clockwise) to guide
+            the direction in which the line is drawn; if not given (as in the case
+            of the thick green line) this will be 0 |deg|
 
-      and the line length is calculated based on these points.
+          and the line length is calculated based on these points.
 
-      The thick green line and the thin red line both have:
+          The thick green line and the thin red line both have:
 
-      - *x* and *y* set as their starting point
-      - *length* to set the specific size of the line
+          - *x* and *y* set as their starting point
+          - *length* to set the specific size of the line
 
-      The various black lines have these properties:
+          The various black lines have these properties:
 
-      - *x* and *y* set as their starting point
-      - a default length of ``1`` cm
-      - *stroke_width* - set as value in points (and labelled accordingly)
-      - *dotted* - has a value of ``True``, which then generates a series of
-        small lines (the "dots"), followed by gaps, of sizes equal to the
-        line's *stroke_width*
-===== ======
+          - *x* and *y* set as their starting point
+          - a default length of ``1`` cm
+          - *stroke_width* - set as value in points (and labelled accordingly)
+          - *dotted* - has a value of ``True``, which then generates a series of
+            small lines (the "dots"), followed by gaps, of sizes equal to the
+            line's *stroke_width*
+    ===== ======
 
 
 Polyline
