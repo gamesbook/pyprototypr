@@ -299,16 +299,16 @@ at regular positions in a linear direction.
 
 A **track** can be defined as the borders of a rectangle or polygon shape;
 or at specific angles along the circumference of a circle. Shapes can then
-be place at these locations.
+be placed at these locations.
 
 The other way that elements can be laid out on a page is through a
-**grid layout** which can be derived a built-in shape such ``Hexagons``
+**grid layout** which can be derived from a built-in shape such ``Hexagons``
 or constructed using a defined set of properties.
 
 These are described in the `Layouts <layouts.rst>`_ section.
 
 There is also a separate section on `Hexagonal Grids <hexagonal_grids.rst>`_
-which describes the variety of these type of grids, as well as some options
+which describes the variety of these types of grids, as well as some options
 for adding shapes to them.
 
 
@@ -368,7 +368,7 @@ stop at this point and give you a feedback message::
     FEEDBACK:: Could not continue with program.
 
 Supplying the script a **property that does not exist**, for example,
-using ``u=2.0`` when you meant to say ``y=2.0``. This  can happen
+using ``u=2.0`` when you meant to say ``y=2.0``. This can happen
 because those two letters are located right next to each other on a
 keyboard and the letters are a little similar. In this case, the script will
 “fail silently” because properties that don’t exist are simply ignored.

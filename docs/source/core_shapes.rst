@@ -362,9 +362,9 @@ Example 2.
 
           - *dashed* - a list, shown by the square brackets from `[` to `]`,
 
-          The list provides a number of "on"/"off" pairs; the line is drawn for a
+          The list provides a number of "on"/"off" pairs: the line is drawn for a
           distance matching an "on" value followed by a gap matching an "off"
-          value; when the end of the list is reached it starts again until the
+          value. When the end of the list is reached it starts again until the
           full length of the line is drawn.
 
           The thin red line has:
@@ -442,8 +442,8 @@ Text
 ~~~~
 `↑ <shape-index_>`_
 
-It may seem strange to view text as a "shape"; but from a drawing point of
-view, its really just a series of complex lines drawn in a particular pattern!
+It may seem strange to view text as a "shape" but, from a drawing point of
+view, it's really just a series of complex lines drawn in a particular pattern!
 Thus text has size, color and position in common with many other shapes, as
 well as its own special properties.
 
@@ -455,7 +455,7 @@ Example 1.
 
 ===== ======
 |txt| This example shows the shape constructed using the command with only
-      defaults; except for the **text** property - this is changed otherwise
+      defaults except for the **text** property - this is changed otherwise
       there would not be any text to see!:
 
       .. code:: python
@@ -474,11 +474,11 @@ Enclosed Shapes
 ---------------
 `↑ <table-of-contents_>`_
 
-These shapes are created by enclosing an area; the most basic being a simple rectangle.
+These shapes are created by enclosing an area, the most basic being a simple rectangle.
 They effectively have two dimensions: *height* and *width*.
 
 The difference between enclosed and linear shapes is that the area enclosed by
-the shape can be filled with a color; the default fill color is *white*.
+the shape can be filled with a color. The default fill color is *white*.
 There is an overview on how color is used in the
 `Basic Concepts section <basic_concepts.rst>`_
 
@@ -489,7 +489,7 @@ Arrow
 ~~~~~~
 `↑ <shape-index_>`_
 
-An Arrow consists of two main parts; the tail (or body) and the head.  In terms
+An Arrow consists of two main parts: the tail (or body) and the head.  In terms
 of **protograf** conventions, the tail is the part that takes on the common
 properties of *height* and *width*; while the dimensions for the head, if not
 provided, are calculated from those.
@@ -544,7 +544,7 @@ Example 2.
 
       - centre-bottom point at *x* and *y*
       - *title* appears below the shape
-      - *dot* - small, filled circle; this also marks the **centre** of the
+      - *dot* - small, filled circle. This also marks the **centre** of the
         Arrow
 
       The lower-left Arrow also sets the following properties:
@@ -630,7 +630,7 @@ Example 3.
 
       - *points_offset* of ``0.25`` cm; this means that the two "wingtips" of
         the arrowhead are not in line with the top of the tail portion but
-        are moved forwards, away from the tail; and the head has been been
+        are moved forwards, away from the tail, and the head has been been
         made narrower and longer
 
       The **blue** (``aqua`` fill) arrow has these properties:
@@ -809,7 +809,7 @@ Example 2.
       - *height* of ``4`` cm
       - *width* of ``3`` cm
 
-      Because the *height* is greater than the *width* it has more an egg-shape.
+      Because the *height* is greater than the *width* it has more of an egg-shape.
 ===== ======
 
 
@@ -1138,9 +1138,9 @@ Example 5.
       - *radius* - ``1`` cm in each case
       - *sides* - the default of ``6`` in each case (a `hexagon`_ shape)
       - *rotation* - varies from 0 |deg| to 60 |deg| (anti-clockwise from the
-        horizontal); the fact that the angle of the sides of the polygon is
+        horizontal). The fact that the angle of the sides of the polygon is
         30 |deg| creates a type of regularity, so that the polygon with the
-        rotation of 60 |deg| appears to match the first polygon - but the slope
+        rotation of 60 |deg| appears to match the first polygon — but the slope
         of the label inside that polygon clearly shows that rotation has
         happened.
 ===== ======
@@ -2252,7 +2252,7 @@ Hexagons
 ~~~~~~~~
 `↑ <shape-index_>`_
 
-Hexagons are often drawn in a "honeycomb" arrangement to form a grid - for games
+Hexagons are often drawn in a "honeycomb" arrangement to form a grid. For games
 this is often used to delineate the spaces in which playing pieces can be placed
 and their movement regulated.
 
@@ -2360,7 +2360,7 @@ Rectangles
 ~~~~~~~~~~
 `↑ <shape-index_>`_
 
-Rectangles can be drawn in a row-by-column layout to form a grid - for games
+Rectangles can be drawn in a row-by-column layout to form a grid. For games
 this is often used to delineate a track or other spaces in which playing pieces
 can be placed.
 
@@ -2879,7 +2879,7 @@ The centre-shape can be shifted from the centre by setting values for
       as the ``centre_shape``  for both of the Hexagons.
 
       The top Hexagon shows how the centre-shape can be moved with the ``*_mx``
-      and ``*_my`` values.  Positive values move it up and to the right;
+      and ``*_my`` values.  Positive values move it up and to the right while
       negative values move it down and to the left.
 
       The lower Hexagon shows how the centre-shape is drawn super-imposed

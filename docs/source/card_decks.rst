@@ -54,7 +54,7 @@ about books. Businesses in the 20th century used Rolodexes and business
 cards as means to track and exchange information about individuals. Early
 computers used a form of index cards called "punch" cards to store their
 data. Playing cards, of course, have been popular both in China and
-Europe; coming into more widespread use somewhere in the 9th and 14th
+Europe, coming into more widespread use somewhere in the 9th and 14th
 centuries respectively.
 
 The massive rise in popularity of a game like *Magic the Gathering*, from
@@ -83,15 +83,15 @@ There are two core commands needed; the ``Card()`` and the ``Deck()``:
 
 .. NOTE::
 
-    **protograf** also considers items such tiles or counters to be "cards";
-    they are really just "shapes containing other shapes"; see the section
+    **protograf** also considers items such tiles or counters to be "cards" as
+    they are really just "shapes containing other shapes". See the section
     on `Countersheet and Counter Commands`_
 
 In many cases, the ``Data()`` command will be needed, in order to provide
 settings for the properties of the elements appearing on a card, from another
 source; for example, an Excel file.
 
-In some cases, the ``Matrix()`` command will be needed; this is an alternate
+In some cases, the ``Matrix()`` command will be needed. This is an alternate
 method of providing the settings for the properties of the elements appearing
 on a card.
 
@@ -112,15 +112,15 @@ they get drawn.
 The following are key properties that will usually need to be set for a
 ``Deck``:
 
-- **cards** - this is the number of cards appearing in the deck; it defaults
-  to 9; note that other commands such as ``Data()`` and ``Matrix()`` can alter
+- **cards** - this is the number of cards appearing in the deck. It defaults
+  to 9. Note that other commands such as ``Data()`` and ``Matrix()`` can alter
   this value
-- **height** - this is the card height; it defaults to 8.8 cm
-- **width** - this is the card width; it defaults to 6.3 cm
+- **height** - this is the card height. It defaults to 8.8 cm
+- **width** - this is the card width. It defaults to 6.3 cm
 
 .. NOTE::
 
-  The Deck command is covered in detail, with examples of all of its properties
+  The Deck command is covered in detail, with examples of all of its properties,
   in the section covering the `deck command <deck_command.rst>`_ .
 
 
@@ -661,8 +661,8 @@ Other Resources
 ===============
 `↑ <table-of-contents_>`_
 
-**protograf** is by no means the only tool for creating decks of cards;
-numerous other options exist; both free and commercial.  Some of the free /
+**protograf** is by no means the only tool for creating decks of cards.
+Numerous other options exist, both free and commercial.  Some of the free /
 open-source ones are listed below.
 
 Inclusion of these links does **not** constitute a recommendation of them or
