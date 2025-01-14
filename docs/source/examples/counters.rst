@@ -2,8 +2,9 @@
 Counters Examples
 =================
 
-These examples are part of the set of `supplied examples <index.rst>`_
-with **protograf**.
+These examples are meant to demonstrate the type of output you can expect
+to create with **protograf**.  They are *not* meant to be exhaustive or
+comprehensive!
 
 Bear in mind that the images shown in these examples are lower-resolution
 screenshots; the original PDFs that can be generated from the source scripts

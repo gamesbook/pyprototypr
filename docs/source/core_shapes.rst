@@ -8,6 +8,7 @@ in the `Basic Concepts <basic_concepts.rst>`_ - especially *units*,
 *properties* and *defaults*. It will also help to at least browse through
 the section on `Additional Concepts <additional_concepts.rst>`_.
 
+.. |dash| unicode:: U+2014 .. EM DASH SIGN
 .. |copy| unicode:: U+00A9 .. COPYRIGHT SIGN
    :trim:
 .. |deg|  unicode:: U+00B0 .. DEGREE SIGN
@@ -88,12 +89,14 @@ refers to as a `Blueprint`_ shape) added to the page  - a small A8
 (aka *stroke_width*) has been made thicker for easier viewing of the small
 PNG images that were generated from the original PDF output.
 
-   The graphics for these examples were generated from either of two of the
-   scripts saved in the ``examples`` directory - look at the
-   `default_shapes <../examples/simple/default_shapes.py>`_ and
-   `customised_shapes <../examples/simple/customised_shapes.py>`_
-   scripts.  The program first creates a PDF, then generates a PNG file for
-   each page in the PDF.
+.. NOTE::
+
+   The graphics for these examples were generated from either of the following
+   scripts;
+   `default_shapes <https://github.com/gamesbook/protograf/blob/master/examples/simple/default_shapes.py>`_ or
+   `customised_shapes <https://github.com/gamesbook/protograf/blob/master/examples/simple/customised_shapes.py>`_.
+   The program first creates a PDF, then generates a PNG file for each page
+   in the PDF.
 
 Commonalities
 --------------
@@ -103,8 +106,11 @@ There are some properties that can be set for almost all of the shapes;
 examples of these are presented in the section on `Shapes Common Properties`_
 at the end, rather than being described in detail for every single shape.
 
-    **HINT** Bear in mind that if a property, that it does not support, is
-    provided for a shape then that property and its value will simply be ignored.
+.. HINT::
+
+   Bear in mind that if a property that it does not support is
+   provided for a shape, then that property and its value will simply be
+   ignored.
 
 .. _linearIndex:
 
@@ -482,8 +488,11 @@ the shape can be filled with a color. The default fill color is *white*.
 There is an overview on how color is used in the
 `Basic Concepts section <basic_concepts.rst>`_
 
-    *Reminder:* **protograf** comes with a predefined set of named colors, shown in the
-    `colors <../examples/colorset.pdf>`_ PDF file.
+.. HINT:::
+
+   **protograf** comes with a predefined set of named colors, shown in the
+   `colors <https://github.com/gamesbook/protograf/blob/master/examples/colorset.pdf>`_
+   PDF file.
 
 Arrow
 ~~~~~~
@@ -560,7 +569,9 @@ Example 2.
       .. NOTE::
 
          The degrees sign is a Unicode character i.e. a "\\u" followed by four
-         numbers and/or letters. For access to full Unicode lists as well as
+         numbers and/or letters.
+
+         For access to full Unicode lists as well as
          the option to search for characters by name, see:
          https://www.compart.com/en/unicode/plane/U+0000
 
@@ -606,13 +617,15 @@ Example 3.
       - *height* of the tail portion (``1`` cm for all)
       - *width* of the tail portion
       - *head_height* sets height of the head portion
-      - *head_width* sets width of the head portion (maximum dsistance between
-        the outer arrowhead "wingtips")
+      - *head_width* sets width of the head portion.
+
+      The *head_width* represents the maximum distance between the outer
+      arrowhead "wingtips".
 
       The **silver** arrow has these properties:
 
       - *tail_width* of ``0.75`` cm; this means the base of the arrow is wider
-        than the body (the width at the top of the tail section)
+        than the body i.e. the width at the top of the tail section
       - *transparency* - set to ``50`` %; the grid is partly visible through it
 
       The **gold** arrow has these properties:
@@ -622,21 +635,24 @@ Example 3.
 
       The **green** (``lime`` fill) arrow has these properties:
 
-      - *points_offset* of ``-0.25`` cm; this means that the two "wingtips" of
-        the arrowhead are not in line with the top of the tail portion but are
-        moved backwards towards the tail
+      - *points_offset* of ``-0.25`` cm
+
+      The *points_offset* here means that the two "wingtips" of the arrowhead
+      are not in line with the top of the tail portion but are moved backwards
+      towards the tail.
 
       The **red** (``tomato`` fill)  arrow has these properties:
 
-      - *points_offset* of ``0.25`` cm; this means that the two "wingtips" of
-        the arrowhead are not in line with the top of the tail portion but
-        are moved forwards, away from the tail, and the head has been been
-        made narrower and longer
+      - *points_offset* of ``0.25`` cm;
+
+      The *points_offset* here means that the two "wingtips" of the arrowhead
+      are not in line with the top of the tail portion but are moved forwards,
+      away from the tail, and the head has been been made narrower and longer.
 
       The **blue** (``aqua`` fill) arrow has these properties:
 
-      - *tail_notch* of ``0.25`` cm; this means the base has a small inwards
-        facing triangle "cut" out of it
+      - *tail_notch* of ``0.25`` cm; the base has a small inwards-facing
+        triangle "cut out"
 
       The blue arrow also has matching *width* and *head_width* (of ``0.5`` cm)
       which means that there are no visible arrowhead "wingtips".
@@ -1097,20 +1113,24 @@ Example 4.
 
       It has the following properties:
 
-      - *centre* at x-position ``2`` cm and at y-position ``1`` cm, with a *radius*
-        size of ``1`` cm
+      - *centre* at x-position ``2`` cm and at y-position ``1`` cm
+      - *radius* size of ``1`` cm
       - *sides* - ``8`` (an octagon)
-      - *perbis* - this means lines will be drawn from the entres of the sides
-        of the polygon to its centre; the line properties are then set:
+      - *perbis* - lines drawn to sides 2, 4 and 7
 
-        - *perbis* - the edges of the polygon are numbered from the
-          east-most facing edge as 1, and then in an anti-clockwise direction.
-        - *perbis_offset* - set to ``0.25`` cm; the distance away from the centre
-          that the lines will start to be drawn
-        - *perbis_length*  - set to ``0.5`` cm; the length is shorter than that of
-          the complete distance from centre point to edge, so the line goes in
-          the same direction but never touches the vertex or the edge
-        - *perbis_stroke_width* - set to ``1`` point; a slightly thicker line
+      The *perbis* |dash| short for "perperdicular bisector" |dash| defines
+      lines  that are to be drawn from the centres of the sides
+      of the polygon to its centre. Its properties can be set as follows:
+
+      - *perbis* - the edges of the polygon are numbered from the
+        east-most facing edge as 1, and then in an anti-clockwise direction.
+      - *perbis_offset* - set to ``0.25`` cm; the distance away from the centre
+        that the lines will start to be drawn
+      - *perbis_length*  - set to ``0.5`` cm; the length is shorter than that of
+        the complete distance from centre point to edge, so the line goes in
+        the same direction but never touches the vertex or the edge
+      - *perbis_stroke_width* - set to ``1`` point; a slightly thicker line
+
 ===== ======
 
 
@@ -1137,12 +1157,14 @@ Example 5.
       - *x* and *y* - set the lower-left location
       - *radius* - ``1`` cm in each case
       - *sides* - the default of ``6`` in each case (a `hexagon`_ shape)
-      - *rotation* - varies from 0 |deg| to 60 |deg| (anti-clockwise from the
-        horizontal). The fact that the angle of the sides of the polygon is
-        30 |deg| creates a type of regularity, so that the polygon with the
-        rotation of 60 |deg| appears to match the first polygon — but the slope
-        of the label inside that polygon clearly shows that rotation has
-        happened.
+      - *rotation* - varies from 0 |deg| to 60 |deg|
+
+      The rotation defined here is anti-clockwise from the horizontal.
+      The fact that the angle of the sides of the polygon is
+      30 |deg| creates a type of regularity, so that the polygon with the
+      rotation of 60 |deg| appears to match the first polygon |dash| but the
+      slope of the label inside that polygon clearly shows that rotation has
+      happened.
 ===== ======
 
 
@@ -1170,6 +1192,7 @@ Example 1.
         WARNING:: There are no points to draw the Polyshape
 
       Like `polyline`_, the Polyshape requires a list of points to be constructed.
+
       This example shows how to do this using the command with these properties:
 
       .. code:: python
@@ -1453,20 +1476,24 @@ Example 1.
 .. |sct| image:: images/defaults/sector.png
    :width: 330
 
-===== ======
-|sct| This example shows the shape constructed using the command with only
-      defaults:
+..  table::
+    :width: 100%
+    :widths: 40, 60
 
-      .. code:: python
+    ===== ======
+    |sct| This example shows the shape constructed using the command with only
+          defaults:
 
-          Sector()
+          .. code:: python
 
-      It has the following properties based on the defaults:
+              Sector()
 
-      - lower-left "corner"at x-position ``1`` cm and at y-position ``1`` cm
-      - sector is then drawn inside a circle of diameter ``1`` cm, with a
-        default *angle_width* of 90 |deg|
-===== ======
+          It has the following properties based on the defaults:
+
+          - lower-left "corner"at x-position ``1`` cm and at y-position ``1`` cm
+          - sector is then drawn inside a circle of diameter ``1`` cm, with a
+            default *angle_width* of 90 |deg|
+    ===== ======
 
 Example 2.
 ++++++++++
@@ -1474,30 +1501,35 @@ Example 2.
 .. |sc1| image:: images/customised/sectors.png
    :width: 330
 
-===== ======
-|sc1| This example shows examples of the Sector constructed using commands
-      with the following properties:
+..  table::
+    :width: 100%
+    :widths: 40, 60
 
-      .. code:: python
+    ===== ======
+    |sc1| This example shows examples of the Sector constructed using commands
+          with the following properties:
 
-        sctm = Common(
-            cx=2, cy=3, radius=2, fill=black, angle_width=43)
-        Sector(common=sctm, angle=40)
-        Sector(common=sctm, angle=160)
-        Sector(common=sctm, angle=280)
+          .. code:: python
 
-      These all have the following Common properties:
+            sctm = Common(
+                cx=2, cy=3, radius=2, fill=black, angle_width=43)
 
-      - centred at x-position ``2`` cm and at y-position ``3`` cm
-      - *radius* of ``2`` cm for the enclosing "virtual" circle
-      - *fill* color of black
-      - *angle_width* - determines the coverage (i.e. the "width" of the
-        Sector); in all these cases it is 43 |deg|
+            Sector(common=sctm, angle=40)
+            Sector(common=sctm, angle=160)
+            Sector(common=sctm, angle=280)
 
-      Each sector in this example is drawn at a different *angle*; with the
-      this being the "virtual" centre-line  extending through the sector,
-      outwards from the middle of the  enclosing "virtual" circle.
-===== ======
+          These all have the following Common properties:
+
+          - centred at x-position ``2`` cm and at y-position ``3`` cm
+          - *radius* of ``2`` cm for the enclosing "virtual" circle
+          - *fill* color of black
+          - *angle_width* - determines the coverage i.e. the "width" of the
+            Sector; in all these cases it is 43 |deg|
+
+          Each sector in this example is drawn at a different *angle*; with the
+          this being the "virtual" centre-line  extending through the sector,
+          outwards from the middle of the  enclosing "virtual" circle.
+    ===== ======
 
 
 Square
