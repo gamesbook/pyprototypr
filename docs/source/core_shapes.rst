@@ -83,8 +83,8 @@ Most shapes can be styled by setting one or more of the
 available that allow even further styling.
 
 To make it easier to see where and how a shape has been drawn, most of these
-examples have been created with a background grid (which **protograf**
-refers to as a `Blueprint`_ shape) added to the page  - a small A8
+examples have been created with a background grid, which **protograf**
+refers to as a `Blueprint`_ shape, added to the page  - a small A8
 "business card" size - for cross-reference. In addition, the default line width
 (aka *stroke_width*) has been made thicker for easier viewing of the small
 PNG images that were generated from the original PDF output.
