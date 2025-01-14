@@ -1531,6 +1531,34 @@ Example 2.
           outwards from the middle of the  enclosing "virtual" circle.
     ===== ======
 
+..  table::
+    :width: 100%
+    :widths: 40, 60
+
+    +-------+-----------------------------------------------------------------------+
+    | |sc1| | This example shows examples of the Sector constructed using commands  |
+    |       | with the following properties:                                        |
+    |       |                                                                       |
+    |       | .. code:: python                                                      |                                                                              |
+    |       |   sctm = Common(                                                      |
+    |       |       cx=2, cy=3, radius=2, fill=black, angle_width=43)               |
+    |       |                                                                       |
+    |       |   Sector(common=sctm, angle=40)                                       |
+    |       |   Sector(common=sctm, angle=160)                                      |
+    |       |   Sector(common=sctm, angle=280)                                      |
+    |       |                                                                       |
+    |       | These all have the following Common properties:                       |
+    |       |                                                                       |
+    |       | - centred at x-position ``2`` cm and at y-position ``3`` cm           |
+    |       | - *radius* of ``2`` cm for the enclosing "virtual" circle             |
+    |       | - *fill* color of black                                               |
+    |       | - *angle_width* - determines the coverage i.e. the "width" of the     |
+    |       |    Sector; in all these cases it is 43 |deg|                          |
+    |       |                                                                       |
+    |       | Each sector in this example is drawn at a different *angle*; with the |
+    |       | this being the "virtual" centre-line  extending through the sector,   |
+    |       | outwards from the middle of the  enclosing "virtual" circle.          |
+    +-------+-----------------------------------------------------------------------+
 
 Square
 ~~~~~~
