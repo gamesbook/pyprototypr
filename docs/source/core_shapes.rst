@@ -1531,12 +1531,18 @@ Example 2.
           outwards from the middle of the  enclosing "virtual" circle.
     ===== ======
 
+
+Example 2b.
+++++++++++
+
+.. |scz| image:: images/customised/sectors.png
+   :width: 330
 ..  table::
     :width: 100%
     :widths: 40, 60
 
     +-------+-----------------------------------------------------------------------+
-    | |sc1| | This example shows examples of the Sector constructed using commands  |
+    | |scz| | This example shows examples of the Sector constructed using commands  |
     |       | with the following properties:                                        |
     |       |                                                                       |
     |       | .. code:: python                                                      |                                                                              |
