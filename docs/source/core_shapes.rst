@@ -1586,8 +1586,12 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - lower-left corner at x-position ``1`` cm and at y-position ``1`` cm
+      - lower-left corner at:
+
+        - x-position ``1`` cm and
+        - y-position ``1`` cm
       - side of ``1`` cm
+
 ===== ======
 
 Example 2.
@@ -1609,6 +1613,7 @@ Example 2.
       - centre at x-position ``2`` cm and at y-position ``3`` cm
       - *side* of ``3`` cm; both *width* and *height* match this
       - *dot* - a small, filled circle placed at the centre
+
 ===== ======
 
 
@@ -1635,9 +1640,13 @@ Example 1.
 
       It has the following properties based on the defaults:
 
-      - straight edge start at x-position ``1`` cm and at y-position ``1`` cm
+      - straight edge start at:
+
+        - x-position ``1`` cm and
+        - y-position ``1`` cm
       - height and width of ``1`` cm each
-      - curved ends at the east (right) and west (left) sides
+      - curved ends at the east/right and west/left sides
+
 ===== ======
 
 Example 2.
@@ -1664,12 +1673,19 @@ Example 2.
       These have the following properties set:
 
       - *height* and *width* - of ``1`` cm and ``1`` cm respectively
-      - *edges* - the display of the rounded projection(s) can also be set using
-        a letter to represent the direction, where ``n`` is ``north`` ("up"),
-        ``s`` is ``south`` ("down"), ``e`` is ``east`` ("right") and
-        ``w`` is ``west`` ("left"");
-        one or more edge values can be used together with spaces between them
-        e.g. ``n e`` to draw both north **and** east.
+      - *edges* - set the display
+
+      The edges of the rounded projection(s) can be set using
+      a letter to represent direction, where:
+
+      - ``n`` is ``north`` ("up"),
+      - ``s`` is ``south`` ("down"),
+      - ``e`` is ``east`` ("right") and
+      - ``w`` is ``west`` ("left"").
+
+      One or more edge values can be used together with spaces between them
+      e.g. ``n e`` to draw both north **and** east.
+
 ===== ======
 
 
