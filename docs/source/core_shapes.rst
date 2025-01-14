@@ -79,8 +79,8 @@ examples, has been to make the default line width (*stroke_width*) thicker
 for easier viewing of the small PNG images.
 
 Most shapes can be styled by setting one or more of the
-`Shapes Common Properties`_. Other shapes have additional properties available
-that allow even further styling.
+`Shapes Common Properties`_. Other shapes have additional properties
+available that allow even further styling.
 
 To make it easier to see where and how a shape has been drawn, most of these
 examples have been created with a background grid (which **protograf**

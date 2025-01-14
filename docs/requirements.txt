@@ -1,2 +1,2 @@
 --index-url https://pypi.python.org/pypi
-sphinx_rtd_theme>=3.0.1
+sphinx-rtd-theme==3.0.2
