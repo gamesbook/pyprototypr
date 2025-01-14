@@ -74,7 +74,9 @@ Centred
    :widths: 30,70
 
    ===== ======
-   |rcn| This example shows a Rectangle constructed using the command::
+   |rcn| This example shows a Rectangle constructed using the command:
+
+         .. code:: python
 
             Rectangle(cx=2, cy=3)
 
@@ -99,7 +101,9 @@ A cross or a dot are symbols that mark the centre of the Rectangle.
    :widths: 30,70
 
    ===== ======
-   |rdc| This example shows a Rectangle constructed using the command::
+   |rdc| This example shows a Rectangle constructed using the command:
+
+         .. code:: python
 
            Rectangle(height=3, width=2, cross=0.75, dot=0.15)
 
@@ -129,7 +133,9 @@ point in a specified direction.  This creates an arrow-like effect.
    :widths: 30,70
 
    ===== ======
-   |rcv| This example shows Rectangles constructed using these commands::
+   |rcv| This example shows Rectangles constructed using these commands:
+
+         .. code:: python
 
            Rectangle(
                x=3, y=2, height=2, width=1, font_size=4,
@@ -178,7 +184,9 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
    :widths: 30, 70
 
    ===== ======
-   |rht| This example shows Rectangles constructed using these commands::
+   |rht| This example shows Rectangles constructed using these commands:
+
+         .. code:: python
 
            htch = Common(
              height=1.5, width=1, hatch_count=5, hatch_width=0.1, hatch_stroke=red)
@@ -248,7 +256,9 @@ Rectangle.
    :width: 330
 
 ===== ======
-|rnt| This example shows Rectangles constructed using these commands::
+|rnt| This example shows Rectangles constructed using these commands:
+
+      .. code:: python
 
         Rectangle(
             x=2, y=1, height=2, width=1,
@@ -282,7 +292,9 @@ Rectangle.
 ===== ======
 
 ===== ======
-|rns| These examples shows Rectangles constructed using these commands::
+|rns| These examples shows Rectangles constructed using these commands:
+
+      .. code:: python
 
         styles = Common(
           height=1, width=3.5, x=0.25, notch=0.25, label_size=7, fill=silver)
@@ -330,7 +342,9 @@ a specified direction
    :width: 330
 
 ===== ======
-|rpk| This example shows Rectangles constructed using these commands::
+|rpk| This example shows Rectangles constructed using these commands:
+
+      .. code:: python
 
         Rectangle(
             x=1, y=4, width=2, height=1.5,
@@ -370,7 +384,9 @@ Rotation takes place in anti-clockwise direction, from the horizontal, around
 the centre of the Rectangle.
 
 ===== ======
-|rrt| This example shows Rectangles constructed using the commands::
+|rrt| This example shows Rectangles constructed using the commands:
+
+      .. code:: python
 
         Rectangle(cx=2, cy=3, width=1.5, height=3, dot=0.06)
         Rectangle(
@@ -404,7 +420,9 @@ into the arc of a quarter-circle.
    :width: 330
 
 ===== ======
-|rnd| This example shows Rectangles constructed using the commands::
+|rnd| This example shows Rectangles constructed using the commands:
+
+      .. code:: python
 
         rct = Common(
             x=0.5, height=1.5, width=3.0, stroke_width=.5,
@@ -467,7 +485,9 @@ e.g. ``n s`` to draw both lines on both north **and** south sides.
    :width: 330
 
 ===== ======
-|rb1| This example shows Rectangles constructed using these commands::
+|rb1| This example shows Rectangles constructed using these commands:
+
+      .. code:: python
 
         Rectangle(
             y=3, height=2, width=2, stroke=None, fill=gold,
@@ -540,10 +560,12 @@ Centre
    :width: 330
 
 ===== ======
-|hcn| This example shows Hexagons constructed using these commands::
+|hcn| This example shows Hexagons constructed using these commands:
 
-          Hexagon(cx=2, cy=1)
+      .. code:: python
+
           Hexagon(cx=2, cy=3, orientation='pointy')
+		  Hexagon(cx=2, cy=1)
 
       Both Hexagons are located via their centres - *cx* and *cy*
 
@@ -563,7 +585,9 @@ Dot & Cross
    :width: 330
 
 ===== ======
-|hcd| This example shows Hexagons constructed using these commands::
+|hcd| This example shows Hexagons constructed using these commands:
+
+      .. code:: python
 
         Hexagon(x=-0.25, y=4, height=2,
                 dot=0.1, dot_stroke=red)
@@ -582,8 +606,8 @@ Dot & Cross
       - *x* and *y* - set the lower-left position of the Hexagon
       - *height* - sets the distance from flat-edge to flat-edge
       - *dot* - sets the size of dot at the centre
-      - *dot_stroke*  - sets the color of the dot (note that the dot is "filled
-        in" with that same color)
+      - *dot_stroke*  - sets the color of the dot. Note that the dot is "filled
+        in" with that same color.
       - *cross* - sets the length of each of the two lines that cross at the centre
       - *cross_stroke*  - sets the color of the cross lines
       - *cross_stroke_width* - sets the thickness of the cross lines
@@ -596,7 +620,7 @@ Hatch: Flat
 -----------
 `^ <hexagon_>`_
 
-Hatches are a set of parallel lines that are drawn, in a specified direction, across
+Hatches are a set of parallel lines that are drawn across
 the Hexagon from one opposing side to another in a vertical, horizontal or
 diagonal direction.
 
@@ -604,7 +628,9 @@ diagonal direction.
    :width: 330
 
 ===== ======
-|hhf| This example shows Hexagons constructed using these commands::
+|hhf| This example shows Hexagons constructed using these commands:
+
+      .. code:: python
 
         hxgn = Common(
             x=1, height=1.5, orientation='flat', hatch_count=5, hatch_stroke=red)
@@ -617,7 +643,7 @@ diagonal direction.
 
       - *x* and *height* - set the basic configuration
       - *orientation* - set to `flat`, so there will be no "peak" at the top
-      - *hatch_count* - sets the **number** of lines to be drawn; the interval
+      - *hatch_count* - sets the **number** of lines to be drawn. The interval
         between them is equal and depends on the direction
       - *hatch_stroke* - set to the color `red` to make it stand out from the
         hexagon sides
@@ -650,10 +676,13 @@ or diagonal direction.
    :width: 330
 
 ===== ======
-|hhp| This example shows Hexagons constructed using the command::
+|hhp| This example shows Hexagons constructed using these commands:
+
+      .. code:: python
 
         hxgn = Common(
-            x=1, height=1.5, orientation='pointy', hatch_count=5, hatch_stroke=red)
+            x=1, height=1.5, orientation='pointy',
+            hatch_count=5, hatch_stroke=red)
         Hexagon(common=hxgn, y=0, hatch='n', label="n/s")
         Hexagon(common=hxgn, y=2, hatch='ne', label="ne/sw")
         Hexagon(common=hxgn, y=4, hatch='nw', label="nw/se")
@@ -695,7 +724,9 @@ of a Hexagon towards its centre.
    :width: 330
 
 ===== ======
-|hrf| This example shows Hexagons constructed using the commands::
+|hrf| This example shows Hexagons constructed using these commands:
+
+      .. code:: python
 
         hxg = Common(
             height=1.5, font_size=8,
@@ -732,7 +763,9 @@ of a Hexagon towards its centre.
    :width: 330
 
 ===== ======
-|hrp| This example shows a Hexagon constructed using the command::
+|hrp| This example shows Hexagons constructed using these commands:
+
+      .. code:: python
 
         hxg = Common(
             height=1.5, font_size=8,
@@ -770,7 +803,9 @@ a Hexagon towards its centre.
    :width: 330
 
 ===== ======
-|hpf| This example shows Hexagons constructed using the commands::
+|hpf| This example shows Hexagons constructed using these commands:
+
+      .. code:: python
 
         hxg = Common(
             height=1.5, font_size=8,
@@ -807,7 +842,9 @@ of a Hexagon towards its centre.
    :width: 330
 
 ===== ======
-|hpp| This example shows a Hexagon constructed using the command::
+|hpp| This example shows Hexagons constructed using these commands:
+
+      .. code:: python
 
         hxg = Common(
             height=1.5, font_size=8,
@@ -841,7 +878,9 @@ Text: Flat
    :width: 330
 
 ===== ======
-|htf| This example shows a Hexagon constructed using this command::
+|htf| This example shows a Hexagon constructed using this command:
+
+      .. code:: python
 
         Hexagon(
             y=2,
@@ -872,7 +911,9 @@ Text: Pointy
    :width: 330
 
 ===== ======
-|htp| This example shows a Hexagon constructed using the command::
+|htp| This example shows a Hexagon constructed using this command:
+
+      .. code:: python
 
         Hexagon(
             y=2,
@@ -921,7 +962,9 @@ e.g. ``ne se`` to draw lines on both northeast **and** southeast.
    :width: 330
 
 ===== ======
-|hb1| This example shows ``flat`` Hexagons constructed using these commands::
+|hb1| This example shows ``flat`` Hexagons constructed using these commands:
+
+      .. code:: python
 
         hxg = Common(
           height=1.5, orientation="flat", font_size=8)
@@ -942,7 +985,9 @@ e.g. ``ne se`` to draw lines on both northeast **and** southeast.
    :width: 330
 
 ===== ======
-|hb2| This example shows ``pointy`` Hexagons constructed using these commands::
+|hb2| This example shows ``pointy`` Hexagons constructed using these commands:
+
+      .. code:: python
 
         hxg = Common(
           height=1.5, orientation="pointy", font_size=8)
@@ -954,9 +999,11 @@ e.g. ``ne se`` to draw lines on both northeast **and** southeast.
         Hexagon(common=hxg, x=2.25, y=2.15, borders=('se', 2, gold), label="SE")
 
       Each Hexagon has a normal *stroke_width* as its outline, with a
-      default *fill* of white and default *stroke* color of black. For each,
-      there is a single thick yellow line site via the *borders* that appears
-      on one of the sides, as defined by the first value in the *borders* set.
+      default *fill* of white and default *stroke* color of black.
+
+      For each, Hexagon there is a single thick yellow line site via the
+      *borders* property that appears on one of the sides, as defined by the
+      first value in the *borders* set.
 ===== ======
 
 
@@ -986,7 +1033,9 @@ Dot & Cross
    :width: 330
 
 ===== ======
-|ccd| This example shows Circles constructed using these commands::
+|ccd| This example shows Circles constructed using these commands:
+
+      .. code:: python
 
         Circle(cx=1, cy=1, radius=1, dot=0.1, dot_stroke=green)
         Circle(
@@ -1019,7 +1068,9 @@ or diagonal direction.
    :width: 330
 
 ===== ======
-|chf| This example shows Circles constructed using these commands::
+|chf| This example shows Circles constructed using these commands:
+
+      .. code:: python
 
         htc = Common(radius=0.7, hatch_count=5, hatch_stroke=red)
         Circle(common=htc, cx=2, cy=5.2, label='5')
@@ -1069,7 +1120,9 @@ of a Circle towards its centre.
    :width: 330
 
 ===== ======
-|crr| This example shows Circles constructed using the commands::
+|crr| This example shows Circles constructed using these commands:
+
+      .. code:: python
 
         Circle(x=0, y=0, radius=2,
                fill=None,
@@ -1120,7 +1173,9 @@ effect.
    :width: 330
 
 ===== ======
-|cpp| This example shows Circles constructed using the commands::
+|cpp| This example shows Circles constructed using these commands:
+
+      .. code:: python
 
         Circle(cx=2, cy=4.5, radius=1,
                stroke=None,
@@ -1153,8 +1208,8 @@ effect.
       - *petals_stroke_width* - sets the thickness of the line used to draw
         the petals
       - *petals_fill* - sets the color of the area inside the line used to
-        draw the petals (any *fill* or *stroke* settings for the circle itself
-        may appear superimposed on this area)
+        draw the petals. Any *fill* or *stroke* settings for the circle itself
+        may appear superimposed on this area.
       - *petals_dotted* - if True, sets the line style to `dotted`
       - *petals_height* - sets the distance between the highest and the lowest
         points of the petal line
@@ -1175,7 +1230,9 @@ effect.
    :width: 330
 
 ===== ======
-|cpc| This example shows Circles constructed using the commands::
+|cpc| This example shows Circles constructed using the commands:
+
+      .. code:: python
 
         Circle(cx=2, cy=4.5, radius=1,
                stroke=None,  fill=None,
@@ -1207,8 +1264,8 @@ effect.
       - *petals_stroke_width* - sets the thickness of the line used to draw
         the petals
       - *petals_fill* - sets the color of the area inside the line used to
-        draw the petals  (any *fill* or *stroke* settings for the circle itself
-        may appear superimposed on this area)
+        draw the petals. Any *fill* or *stroke* settings for the circle itself
+        may appear superimposed on this area.
       - *petals_dotted* - if True, sets the line style to `dotted`
       - *petals_height* - sets the distance between the highest and the lowest
         points of the petal line
@@ -1229,7 +1286,9 @@ effect.
    :width: 330
 
 ===== ======
-|cpt| This example shows Circles constructed using the commands::
+|cpt| This example shows Circles constructed using these commands:
+
+      .. code:: python
 
         Circle(cx=2, cy=4.5, radius=1,
                stroke=None, fill=None,
@@ -1257,8 +1316,8 @@ effect.
       - *petals_stroke_width* - sets the thickness of the line used to draw
         the petals
       - *petals_fill* - sets the color of the area inside the line used to
-        draw the petals (any *fill* or *stroke* settings for the circle itself
-        may appear superimposed on this area)
+        draw the petals. Any *fill* or *stroke* settings for the circle itself
+        may appear superimposed on this area.
       - *petals_dotted* - if True, sets the line style to `dotted`
       - *petals_height* - sets the distance between the highest and the lowest
         points of the petal line
@@ -1275,10 +1334,15 @@ Blueprint
 `↑ <table-of-contents_>`_
 
 This shape is primarily intended to support drawing while it is "in progress".
-It can take on the appearance of typical "cutting board".
-It provides a quick and convenient way to orientate and place other shapes
-that *are* required for the final product.  Typically one would just comment
-out the command when its purpose has been served.
+
+It can take on the appearance of typical "cutting board", so it provides a quick
+and convenient way to orientate and place other shapes that *are* required for
+the final product.
+
+Typically one would just comment out the Blueprint command when its purpose has
+been served.
+
+It can be styled as described below.
 
 - `Subdivisions <blueSub_>`_
 - `Style: Blue <blueStyleBlue_>`_
@@ -1298,8 +1362,10 @@ Subdivisions
    :width: 330
 
 ===== ======
-|bl1| This example shows the shape constructed using the command with these
-      properties::
+|bl1| This example shows the Blueprint constructed using the command with these
+      properties:
+
+        .. code:: python
 
           Blueprint(subdivisions=5, stroke_width=0.5)
 
@@ -1323,7 +1389,9 @@ Style - Blue
 
 ===== ======
 |bl2| This example shows the Blueprint constructed using the command with these
-      properties::
+      properties:
+
+        .. code:: python
 
           Blueprint(style='blue')
 
@@ -1344,7 +1412,9 @@ Style - Green
 
 ===== ======
 |bl3| This example shows the Blueprint constructed using the command with these
-      properties::
+      properties:
+
+        .. code:: python
 
           Blueprint(style='green')
 
@@ -1365,7 +1435,9 @@ Style - Grey
 
 ===== ======
 |bl4| This example shows the Blueprint constructed using the command with these
-      properties::
+      properties:
+
+        .. code:: python
 
           Blueprint(style='grey')
 
@@ -1385,8 +1457,10 @@ Stroke
    :width: 330
 
 ===== ======
-|bl5| This example shows the shape constructed using the command with these
-      properties::
+|bl5| This example shows the Blueprint constructed using the command with these
+      properties:
+
+        .. code:: python
 
           Blueprint(stroke_width=1, stroke=red)
 
@@ -1407,8 +1481,10 @@ Fill
    :width: 330
 
 ===== ======
-|bl6| This example shows the shape constructed using the command with these
-      properties::
+|bl6| This example shows the Blueprint constructed using the command with these
+      properties:
+
+        .. code:: python
 
           Blueprint(style='grey', stroke=purple)
 
@@ -1429,13 +1505,15 @@ Decimals
    :width: 330
 
 ===== ======
-|bl7| This example shows the shape constructed using the command with these
-      properties::
+|bl7| This example shows the Blueprint constructed using the command with these
+      properties:
+
+        .. code:: python
 
           Blueprint(decimals=1)
 
       It has the following properties set:
 
       - *decimals* - set to `1`; these are the number of decimal points to
-        be displayed in the grid numbers
+        be shown in the grid numbers
 ===== ======
