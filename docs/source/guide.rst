@@ -10,41 +10,41 @@ program, the sections below are designed to be read in order - apart from
 the terminology - as they all contain useful information and build on each
 other.
 
-1.  `Overview <overview.rst>`_ - a brief introduction of the purpose and
+1.  :doc: `Overview <overview>` - a brief introduction of the purpose and
     rationale of **protograf**
-2.  `Setting Up <setting_up.rst>`_ - how to get **protograf** working
+2.  :doc:`Setting Up <setting_up>` - how to get **protograf** working
     on your computer
-3.  `Basic Concepts <basic_concepts.rst>`_ - core aspects of
+3.  :doc:`Basic Concepts <basic_concepts>` - core aspects of
     **protograf** that you **must** know
-4.  `A First Example <worked_example.rst>`_ - step-by-step
+4.  :doc:`A First Example <worked_example>` - step-by-step
     example of setting up and running a script to generate a deck of cards
-5.  `Script Anatomy <script_anatomy.rst>`_ - how a script is constructed
-6.  `Additional Concepts <additional_concepts.rst>`_ - additional
+5.  :doc:`Script Anatomy <script_anatomy>` - how a script is constructed
+6.  :doc:`Additional Concepts <additional_concepts>` - additional
     aspects of **protograf** that can also help with script creation
-7.  `Core Shapes <core_shapes.rst>`_ - a tour of the core geometries
+7.  :doc:`Core Shapes <core_shapes>` - a tour of the core geometries
     available and how to construct and customise them
-8.  `Card Decks <card_decks.rst>`_ - how to create a deck, or set, of
-    cards/tiles; more detail also in the `Deck command <deck_command.html>`_
-9.  `Advanced Commands <advanced_commands.rst>`_ - how to work with
+8.  :doc:`Card Decks <card_decks>` - how to create a deck, or set, of
+    cards/tiles; more detail also in the :doc:`Deck command <deck_command>`
+9.  :doc:`Advanced Commands <advanced_commands>` - how to work with
     common/reused items and repetitive elements
-10. `Customised Shapes <customised_shapes.rst>`_ - how to refine the
+10. :doc:`Customised Shapes <customised_shapes>` - how to refine the
     appearance of certain shapes; circles, hexagons and rectangles
-11. `Layouts <layouts.rst>`_ - how to work with different kinds of
+11. :doc:`Layouts <layouts>` - how to work with different kinds of
     layouts; repeats, sequences, tracks and rectangular grids
-12. `Hexagonal Grids <hexagonal_grids.rst>`_ - how to create different types
+12. :doc:`Hexagonal Grids <hexagonal_grids>` - how to create different types
     of hexagonal grids and customise or add to them
-13. `Terminology <terminology.rst>`_ - summary of common jargon and descriptions
+13. :doc:`Terminology <terminology>` - summary of common jargon and descriptions
     of many of the elements' properties
-14. `Commands <commands.rst>`_ - summary of all the commands available
+14. :doc:`Commands <commands>` - summary of all the commands available
 
 The following are supplementary sections that you're likely to need when
 doing more advanced scripts or needing further resources:
 
-15. `Descriptions of Supplied Examples <examples/index.rst>`_ - brief
+15. :doc:`Descriptions of Supplied Examples <examples/index>` - brief
     walkthoughs of many of the examples provided with **protograf**
-16. `Using Python Commands <python_commands.rst>`_ - how to work with
+16. :doc:`Using Python Commands <python_commands>` - how to work with
     *loops*, *if/then* statements and *functions* for more flexibility
-17. `Development Notes <development.rst>`_ - notes for programmers wanting
+17. :doc:`Development Notes <development>` - notes for programmers wanting
     to develop further in or with  **protograf**
-18. `Useful Resources <useful_resources.rst>`_ - links to
+18. :doc:`Useful Resources <useful_resources>` - links to
     tools and websites related to boardgame prototyping
