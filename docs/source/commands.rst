@@ -13,8 +13,8 @@ but is a handy cross-reference to the detailed information for that command.
 
   :doc:`protograf <index>` is a small, specialised tool; but its part of a much
   greater Python language "ecosystem", and commands and tools from the
-  :doc:`Python language <python_commands` |dash| or other
-  `Python packages <https://pypi.org>`  |dash| can be used to further enhance
+  :doc:`Python language <python_commands>` |dash| or other
+  `Python packages <https://pypi.org>`_  |dash| can be used to further enhance
   your own script.
 
 -  :doc:`Arc <core_shapes#arc>` * - a geometric shape that can be drawn on a page
@@ -88,7 +88,7 @@ but is a handy cross-reference to the detailed information for that command.
    row and column locations that create a triangular grid of shapes - the grid itself
    is not displayed; it is used for a :doc:`layout <layouts_rectangular#layout>`
 
-.. NOTE::
+.. IMPORTANT::
 
    Commands marked with an asterisk (``*``) can be given with a uppercase or
    lowercase initial (``Commmand`` vs ``command``); meaning the shape should
