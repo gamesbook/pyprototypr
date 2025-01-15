@@ -1,21 +1,19 @@
 .. protograf documentation master file, created by
    sphinx-quickstart on Sat Jan 11 20:23:56 2025.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
 
 Welcome to protograf's documentation!
 =====================================
 
-The **protograf** documentation consists of the primary sections listed
-below.
+The `protograf <https://github.com/gamesbook/protograf>`_  documentation consists
+of the sections listed below.
 
 Although its great to be able to just "jump in" and start using a
 program, the sections below are designed to be read in order - apart from
 the terminology - as they all contain useful information and build on each
 other.
 
-If its your first time here, consult the `guide <guide>`_ to get a sense of
-what is in all
+If its your first time here, please consult the `guide <guide.html>`_ to get
+a sense of what is contained in these different sections.
 
 .. toctree::
    :maxdepth: 2

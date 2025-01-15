@@ -2,8 +2,8 @@
 Guide
 =====
 
-The **protograf** documentation consists of the primary sections listed
-below.
+The `protograf <https://github.com/gamesbook/protograf>`_ documentation
+consists of the primary sections listed below.
 
 Although its great to be able to just "jump in" and start using a
 program, the sections below are designed to be read in order - apart from

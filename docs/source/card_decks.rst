@@ -58,9 +58,9 @@ Europe, coming into more widespread use somewhere in the 9th and 14th
 centuries respectively.
 
 The massive rise in popularity of a game like *Magic the Gathering*, from
-the 1990s, has inspired the greater use of cards in all aspects of the
-modern board gaming experience, with cards taking the predominant role in
-many of them.
+the 1990s onwards, has inspired the greater use of cards in all aspects of
+the modern board gaming experience, with cards or tiles taking the predominant
+role  in many of them.
 
 
 Basic Concepts
@@ -69,7 +69,7 @@ Basic Concepts
 
 Unlike some other designs, where you are specifying exactly where to locate
 elements on a page, **protograf** is designed to handle the flow of placing
-cards onto multiple pages, based on their size and the type of paper chosen.
+cards onto multiple pages, based on their size and the size of paper chosen.
 Then, for a card, you will set out elements exactly as you want them to appear.
 
 There are two core commands needed; the ``Card()`` and the ``Deck()``:
@@ -78,8 +78,8 @@ There are two core commands needed; the ``Card()`` and the ``Deck()``:
    of cards, typically using elements that have already been defined.
    The patterns or designs can be set to appear on single or multiple cards.
 -  A ``Deck()`` command is used to specify type, size and number of cards
-   that will be used to create all of the cards in the deck and lay them out
-   on one or more pages.
+   that will be used to create "frames" for all of the cards in the deck and
+   then lay them out on one or more pages.
 
 .. NOTE::
 
@@ -87,15 +87,15 @@ There are two core commands needed; the ``Card()`` and the ``Deck()``:
     they are really just "shapes containing other shapes". See the section
     on `Countersheet and Counter Commands`_
 
-In many cases, the ``Data()`` command will be needed, in order to provide
-settings for the properties of the elements appearing on a card, from another
+In many cases, the ``Data()`` command will be needed in order to provide
+settings, for the properties of the elements appearing on a card, from another
 source; for example, an Excel file.
 
 In some cases, the ``Matrix()`` command will be needed. This is an alternate
 method of providing the settings for the properties of the elements appearing
 on a card.
 
-Thse commands, and the ones supporting them, are described in detail below.
+These commands, and the ones supporting them, are described in detail below.
 For additional examples that illustrate some of these, see the
 `card and deck examples <examples/cards.rst>`_.
 
@@ -118,10 +118,10 @@ The following are key properties that will usually need to be set for a
 - **height** - this is the card height. It defaults to 8.8 cm
 - **width** - this is the card width. It defaults to 6.3 cm
 
-.. NOTE::
+.. IMPORTANT::
 
-  The Deck command is covered in detail, with examples of all of its properties,
-  in the section covering the `deck command <deck_command.html>`_ .
+  The ``Deck`` command is covered in detail, with examples of all of its
+  properties, in `The Deck Command <deck_command.html>`_ section.
 
 
 Deck Example #1
@@ -197,7 +197,7 @@ The Card Command
 This command is both simple and flexible. It allows for a complex design, with
 many elements, to be added to any - or all - of the cards in a deck.
 
-The **key concept** to note about a card is that is essentially a "small page".
+The **key concept** to note about a card is that its essentially a "small page".
 Any x- and y-locations are defined relative to the lower left of the card
 and **not** that of the page.
 
