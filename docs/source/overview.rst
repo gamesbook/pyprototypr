@@ -5,7 +5,7 @@ Overview
 Introduction
 ============
 
-The aim of `protograf <index.rst>`_ is to provide a general purpose
+The aim of :doc:`protograf <index>` is to provide a general purpose
 program that allows you to design simple and reproducible graphics that
 can be used for prototyping the elements or components of a project such as
 the creation of a board game; including the board, the tiles, the cards and
@@ -73,7 +73,7 @@ scripts for your own purpose.
 How do I get started?
 =====================
 
-Its suggested that you first get everything `set-up <setting_up>`_
-and tested. Then read through the `basic concepts <basic_concepts.rst>`_
-before trying out a `worked example <worked_example.py>`__. After that,
-browse through the sections listed in the `index <index.rst>`_.
+Its suggested that you first get everything :doc:`set-up <setting_up>`
+and tested. Then read through the :doc:`basic concepts <basic_concepts>`
+before trying out a :doc:`worked example <worked_example>`. After that,
+browse through the sections listed in the :doc:`Guide <guide>`.

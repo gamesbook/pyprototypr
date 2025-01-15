@@ -3,11 +3,11 @@ Decks of Cards
 ==============
 
 This section assumes you are very familiar with the concepts, terms and
-ideas for `protograf <index.rst>`_ as presented in the
-`Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
-`Additional Concepts <additional_concepts.rst>`_
+ideas for :doc:`protograf <index>` as presented in the
+:doc:`Basic Concepts <basic_concepts>` , that you understand all of the
+:doc:`Additional Concepts <additional_concepts>`
 and that you've created some basic scripts of your own using the
-`Core Shapes <core_shapes.rst>`_.
+:doc:`Core Shapes <core_shapes>`.
 
 .. _table-of-contents:
 

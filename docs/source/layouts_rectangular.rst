@@ -6,11 +6,11 @@ RectangularLocations Command
    :ltrim:
 
 This section assumes you are very familiar with the concepts, terms and
-ideas for `protograf <index.rst>`_ as presented in the
-`Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
-`Additional Concepts <additional_concepts.rst>`_
+ideas for :doc:`protograf <index>` as presented in the
+:doc:`Basic Concepts <basic_concepts>` , that you understand all of the
+:doc:`Additional Concepts <additional_concepts>`
 and that you've created some basic scripts of your own using the
-`Core Shapes <core_shapes.rst>`_.
+:doc:`Core Shapes <core_shapes>`.
 
 .. _table-of-contents:
 
@@ -38,10 +38,10 @@ Apart from the ``RectangularLocations()`` command described here,
 there are also these other commands which allow you to layout
 elements in a more repetitive or regular way within a page:
 
-- `Repeat <layouts_repeat.rst>`_
-- `Sequence <layouts_sequence.rst>`_
-- `Tracks <layouts_track.rst>`_
-- `TriangularLocations <layouts_triangular.rst>`_
+- :doc:`Repeat <layouts_repeat>`
+- :doc:`Sequence <layouts_sequence>`
+- :doc:`Tracks <layouts_track>`
+- :doc:`TriangularLocations <layouts_triangular>`
 
 
 Usage
@@ -67,7 +67,7 @@ The ``RectangularLocations()`` command accepts the following properties:
   creating the row and column layout; the default is e(ast).
 - **start** - this is the initial corner, defined a secondary compass direction,
   from where the grid is initially drawn; values can be *ne*, *nw*, *se*, and
-  *sw* (the default i.e. the lower-left corner)
+  *sw*, the default i.e. the lower-left corner
 - **pattern** - this is the way in which the grid is drawn; the default
   behaviour is to draw each row, and then move across all columns in a regular
   line; but the setting can also be:
@@ -102,9 +102,9 @@ It accepts the following properties:
 - **debug** - this will display the centre points of the grid, along with any
   extra information specified.  Allowed settings for debug include:
 
-  - *none* - only the locations are shown (as small dots, matching the color
-    of the `Blueprint <core_shapes.rst#blueprint>`_)
-  - *count* - shows the sequence number (i.e. the order of drawing)
+  - *none* - only the locations are shown as small dots; matching the color
+    of the :doc:`Blueprint <core_shapes#blueprint>`
+  - *count* - shows the sequence number i.e. the order of drawing
   - *xy* - shows x- and y-values
   - *yx* - shows y- and x-values
   - *rowcol* - shows row and column numbers

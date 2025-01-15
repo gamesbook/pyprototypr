@@ -3,10 +3,10 @@ Advanced Commands
 =================
 
 This section deals with some of the more advanced - and potentially more
-complex - concepts and options in `protograf <index.rst>`_ - its
+complex - concepts and options in :doc:`protograf <index>` - its
 therefore important that you are familiar with all of the
-`Basic Concepts <basic_concepts.rst>`_, have looked through the
-`Core Shapes <core_shapes.rst>`_, have understood how these are used via
+:doc:`Basic Concepts <basic_concepts>`, have looked through the
+:doc:`Core Shapes <core_shapes>`, have understood how these are used via
 the various examples, and are therefore comfortable with creating and using
 scripts.
 
@@ -55,4 +55,4 @@ also includes commands that you to place, or “layout”, elements in a
 more repetitive or regular way within a page.
 
 The different kinds of layouts are described in the section on
-`layouts <layouts.rst>`_.
+:doc:`layouts <layouts>`.

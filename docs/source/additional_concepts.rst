@@ -3,11 +3,11 @@ Additional Concepts
 ===================
 
 This section assumes you are familiar with the concepts, terms and ideas
-for `protograf <index.rst>`_ as presented in
-`Basic Concepts <basic_concepts.rst>`_, have looked through the
-`Core Shapes <core_shapes.rst>`_, and that perhaps you have created one
+for :doc:`protograf <index>` as presented in
+:doc:`Basic Concepts <basic_concepts>`, have looked through the
+:doc:`Core Shapes <core_shapes>`, and that perhaps you have created one
 or two basic scripts on your own, along the lines described in the
-`Script Anatomy <script_anatomy.rst>`_.
+:doc:`Script Anatomy <script_anatomy>`.
 
 .. _table-of-contents:
 
@@ -76,7 +76,7 @@ An important concept in **protograf** is understanding the different types
 of values and how they are used.
 
 Values are typically associated with a property, and affect how a shape
-appears, as discussed in `Basic Concepts <basic_concepts.rst>`_.
+appears, as discussed in :doc:`Basic Concepts <basic_concepts>`.
 
 Text - whether individual letters or words - is often called a *string*, and
 is wrapped in quotes - ``"`` - at the start and end of the string.

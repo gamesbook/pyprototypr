@@ -4,7 +4,7 @@ Basic Concepts
 
 .. |dash| unicode:: U+2014 .. EM DASH SIGN
 
-Like many other specialised tools, `protograf <index.rst>`_ has its
+Like many other specialised tools, :doc:`protograf <index>` has its
 own set of terms and concepts that act as "short-cuts" to define
 its functions and behaviour. Some of these are likely to be common to
 other graphics editing or programming tools, but some are specific to it.
@@ -150,9 +150,9 @@ Examples of some of the available geometric **shapes** include:
 -  Stadium
 
 Descriptions of all of these shapes, and how to create and use them,
-are provided in the section on `Core Shapes <core_shapes.rst>`_.
+are provided in the section on :doc:`Core Shapes <core_shapes>`.
 
-Other *elements* include things like `hexagonal grids <hexagonal_grids.rst>`_,
+Other *elements* include things like :doc:`Hexagonal Grids <hexagonal_grids>`,
 regular `layouts <layouts.rst>`_ and `cards <card_decks.rst#the-card-command>`_ .
 
 .. _properties:

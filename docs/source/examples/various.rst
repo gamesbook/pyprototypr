@@ -32,7 +32,7 @@ Source Code `clock.py <https://github.com/gamesbook/protograf/blob/master/exampl
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to create a complex element - a clock - by
             combining multiple
-            `customised Circles <../customised_shapes.rst#circle>`_, each with
+            :doc:`customised Circles <../customised_shapes#circle>`, each with
             different properties.
 
             Only the first circle - the clock's outline border and its title -
@@ -110,7 +110,7 @@ Title       *Chords (in a circle)*
 Source Code `chords.py <https://github.com/gamesbook/protograf/blob/master/examples/various/chords.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a simple effect by combining
-            a basic shape - a `chord <../core_shapes.rst#chord>`_ - with a
+            a basic shape - a :doc:`chord <../core_shapes#chord>` - with a
             Python loop:
 
               .. code:: python
@@ -124,7 +124,7 @@ Discussion  This example shows how to construct a simple effect by combining
             (i.e. corresponding to degrees around a circle) to assign to the
             Chord's start and end points; then each Chord is drawn as usual.
 
-            See `Python loops <../python_commands.rst#loops>`_ for more
+            See :doc:`Python loops <../python_commands#loops>` for more
             details.
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/various/chords.png
@@ -143,7 +143,7 @@ Source Code `world_clocks.py <https://github.com/gamesbook/protograf/blob/master
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to reuse a complex element - a clock - by
             means of a set of Python functions (see
-            `Python functions <../python_commands.rst#functions>`_ for more
+            :doc:`Python functions <../python_commands#functions>` for more
             details).
 
             This is a fairly complex script - a mini program really - which

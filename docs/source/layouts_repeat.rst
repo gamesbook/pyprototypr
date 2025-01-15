@@ -5,7 +5,7 @@ Repeat Command
 **protograf** allows you to directly define where elements, that make up
 your design, should be placed within a page, or over a series of pages
 within a ``Deck``, but it also includes commands that let you place, or
-"`layout <layouts.rst>`_", elements in a more repetitive or regular way
+":doc:`layout <layouts>`", elements in a more repetitive or regular way
 within a page.
 
 
@@ -19,17 +19,17 @@ Apart from the ``Repeat()`` command described here,
 there are also these other commands which allow you to layout
 elements in a more repetitive or regular way within a page:
 
-- `Sequence <layouts_sequence.rst>`_
-- `Track <layouts_track.rst>`_
-- `RectangularLocations <layouts_rectangular.rst>`_
-- `TriangularLocations <layouts_triangular.rst>`_
+- :doc:`Sequence <layouts_sequence>`
+- :doc:`Track <layouts_track>`
+- :doc:`RectangularLocations <layouts_rectangular>`
+- :doc:`TriangularLocations <layouts_triangular>`
 
 Usage
 =====
 
 The ``Repeat()`` command accepts the following properties:
 
-- **shape** - this is one of the `core shapes <core_shapes.rst>`_ available,
+- **shape** - this is one of the :doc:`Core Shapes <core_shapes>` available,
   for example, a circle or rectangle; the properties of that shape will
   determine where the first one in the sequence is drawn; the shape command
   should always be specified with a lowercase initial so that ``Repeat()``

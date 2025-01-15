@@ -10,9 +10,9 @@ an extension of ".py".
 
 .. HINT::
 
-    This document assumes that `protograf <index.rst>`_ is working on your
+    This document assumes that :doc:`protograf <index>` is working on your
     computer after successfully `Setting Up <setting_up.rst>`_, and that you
-    have read and understood the `Basic Concepts <basic_concepts.rst>`_
+    have read and understood the :doc:`Basic Concepts <basic_concepts>`
 
 .. _table-of-contents:
 
@@ -188,11 +188,11 @@ There are numerous other commands which are either used to draw shapes, or
 sets of shapes, or to control how and where sets of shapes appear on a page.
 See:
 
-- `Core shapes <core_shapes.rst>`_
-- `Card and Deck commands <card_decks.rst>`_
-- `Repetitive and reuse commands <advanced_commands.rst>`_
-- `Layout commands <layouts.rst>`_
-- `Hexagonal grid commands <hexagonal_grids.rst>`_
+- :doc:`Core Shapes <core_shapes>`
+- :doc:`Card and Deck commands <card_decks>`
+- :doc:`Repetitive and reuse commands <advanced_commands>`
+- :doc:`Layout <layouts>` commands
+- :doc:`Hexagonal Grid <hexagonal_grids>` commands
 
 
 Comments
@@ -265,7 +265,7 @@ Basic Shapes
 **protograf**  allows for the creation of many shapes, with a command for
 each one.
 
-These are described in the `Core Shapes <core_shapes.rst>`_ section, which also
+These are described in the :doc:`Core Shapes <core_shapes>` section, which also
 covers common customisation options.
 
 Extensive customisation of some shapes is also possible; see the section
@@ -307,7 +307,7 @@ or constructed using a defined set of properties.
 
 These are described in the `Layouts <layouts.rst>`_ section.
 
-There is also a separate section on `Hexagonal Grids <hexagonal_grids.rst>`_
+There is also a separate section on :doc:`Hexagonal Grids <hexagonal_grids>`
 which describes the variety of these types of grids, as well as some options
 for adding shapes to them.
 

@@ -3,10 +3,10 @@ Core Shapes
 ===========
 
 These descriptions of the available shapes assume you are familiar with
-the concepts, terms and ideas for `protograf <index.rst>`_ as presented
-in the `Basic Concepts <basic_concepts.rst>`_ - especially *units*,
+the concepts, terms and ideas for :doc:`protograf <index>` as presented
+in the :doc:`Basic Concepts <basic_concepts>` - especially *units*,
 *properties* and *defaults*. It will also help to at least browse through
-the section on `Additional Concepts <additional_concepts.rst>`_.
+the section on :doc:`Additional Concepts <additional_concepts>`.
 
 .. |dash| unicode:: U+2014 .. EM DASH SIGN
 .. |copy| unicode:: U+00A9 .. COPYRIGHT SIGN
@@ -2341,7 +2341,7 @@ and their movement regulated.
 .. NOTE::
 
    Very detailed information about using hexagons in grids can be found in the
-   section on `Hexagonal Grids <hexagonal_grids.rst>`_.
+   section on :doc:`Hexagonal Grids <hexagonal_grids>`.
 
 Example 1.
 ++++++++++

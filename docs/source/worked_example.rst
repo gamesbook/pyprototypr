@@ -6,11 +6,11 @@ Worked Example for a Deck of Cards
 
 These examples assumes that you have set-up your computer with Python and
 have tested to **check that you can create a test file which generates a
-blank PDF**. If not, please first see the `Setting Up <setting_up.rst>`_
+blank PDF**. If not, please first see the :doc:`Setting Up <setting_up>`
 document.
 
 It will also be helpful if you have read the
-`Basic Concepts <basic_concepts.rst>`_ section.
+:doc:`Basic Concepts <basic_concepts>` section.
 
 .. HINT::
 
@@ -56,7 +56,7 @@ As can be seen there are four lines in the file:
    extension instead.)
 
 Now save the text file, for example, as ``cards1.py``. Then open a
-command-line window (as described in `Setting Up <setting_up.rst>`_ )
+command-line window (as described in :doc:`Setting Up <setting_up>`)
 and change to the directory where the file is saved.
 
 Type the following::
@@ -249,7 +249,7 @@ The resulting ``example4.pdf`` file will show a page of small,
 white-bordered, light-blue cards - with the same text appearing on cards
 one to nine, but with different text on card number 25 (twenty-five).
 
-.. NOTE::
+.. HINT::
 
    The cards are displayed from the bottom-left upwards and
    then from left to right - that is why the first cards appear on the
@@ -259,9 +259,10 @@ Continuing on …
 ---------------
 
 If you are interested in carrying on with design of card decks, then the
-section on `Card Decks <card_decks.rst>`_ will be helpful for you (bear
-in mind that that section assumes you are familiar with all the `core
-concepts <core_concepts.rst>`_ and program usage described in earlier docs.)
+section on :doc:`Card Decks <card_decks>` will be helpful for you (bear
+in mind that that section assumes you are familiar with all the
+:doc:`core concepts <core_concepts>` and program usage described in
+earlier docs.)
 
 There are also card-related examples in the
-`Available Examples <examples/index.rst>`_ section.
+:doc:`Available Examples <examples/index>` section.

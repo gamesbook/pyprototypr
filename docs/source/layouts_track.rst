@@ -3,11 +3,11 @@ Track Command
 =============
 
 This section assumes you are very familiar with the concepts, terms and
-ideas for `protograf <index.rst>`_ as presented in the
-`Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
-`Additional Concepts <additional_concepts.rst>`_
+ideas for :doc:`protograf <index>` as presented in the
+:doc:`Basic Concepts <basic_concepts>` , that you understand all of the
+:doc:`Additional Concepts <additional_concepts>`
 and that you've created some basic scripts of your own using the
-`Core Shapes <core_shapes.rst>`_.
+:doc:`Core Shapes <core_shapes>`.
 
 .. _table-of-contents:
 
@@ -36,10 +36,10 @@ Apart from the ``Track()`` command described here,
 there are also these other commands which allow you to layout
 elements in a more repetitive or regular way within a page:
 
-- `Repeat <layouts_repeat.rst>`_
-- `Sequence <layouts_sequence.rst>`_
-- `RectangularLocations <layouts_rectangular.rst>`_
-- `TriangularLocations <layouts_triangular.rst>`_
+- :doc:`Repeat <layouts_repeat>`
+- :doc:`Sequence <layouts_sequence>`
+- :doc:`RectangularLocations <layouts_rectangular>`
+- :doc:`TriangularLocations <layouts_triangular>`
 
 
 Usage

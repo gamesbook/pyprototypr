@@ -10,7 +10,7 @@ program, the sections below are designed to be read in order - apart from
 the terminology - as they all contain useful information and build on each
 other.
 
-1.  :doc: `Overview <overview>` - a brief introduction of the purpose and
+1.  :doc:`Overview <overview>` - a brief introduction of the purpose and
     rationale of **protograf**
 2.  :doc:`Setting Up <setting_up>` - how to get **protograf** working
     on your computer

@@ -8,11 +8,11 @@ Hexagonal Grids
    :ltrim:
 
 This section assumes you are very familiar with the concepts, terms and
-ideas for `protograf <index.rst>`_ as presented in the
-`Basic Concepts <basic_concepts.rst>`_ , that you understand all of the
-`Additional Concepts <additional_concepts.rst>`_
+ideas for :doc:`protograf <index>` as presented in the
+:doc:`Basic Concepts <basic_concepts>` , that you understand all of the
+:doc:`Additional Concepts <additional_concepts>`
 and that you've created some basic scripts of your own using the
-`Core Shapes <core_shapes.rst>`_.
+:doc:`Core Shapes <core_shapes>`.
 
 .. _table-of-contents:
 
@@ -39,13 +39,13 @@ used for decades in war games and role playing games, but can also act as grids
 or tiles in regular board games.
 
 Some practical example of these grids are shown in the section containing
-examples of both `commercial <examples/commercial.rst>`_ and
-`abstract <examples/abstract.rst>`_ boards.
+examples of both :doc:`commercial <examples/commercial>` and
+:doc:`abstract <examples/abstract>` boards.
 
 You should have already seen how a single Hexagon and a basic grid of Hexagons
-are created using defaults, via a `Hexagon Shape <core_shapes.rst#hexagon>`_.
+are created using defaults, via a :doc:`Hexagon Shape <core_shapes#hexagon>`.
 You should also have seen how a single Hexagon can be further enhanced in
-`Customised Shapes <customised_shapes.rst#hexagon>`_.
+:doc:`Customised Shapes <customised_shapes#hexagon>`.
 
 .. _rectIndex:
 
@@ -461,7 +461,7 @@ Radii
       - *cols* sets the number of columns in the grid
       - *hex_offset* determines which columns are shifted
       - *radii* - as described for a
-        `customised hexagon <customised_shapes.rst#hexagon>`_,this will
+        :doc:`customised hexagon <customised_shapes#hexagon>`,this will
         create lines running from each hexagon centre to the vertices, as
         define by the directions specified
 ===== ======

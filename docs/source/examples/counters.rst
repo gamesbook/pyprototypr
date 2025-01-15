@@ -244,7 +244,7 @@ Discussion  This example shows how to construct a set of labels, designed to
 
             Of interest, is that second-last column in each row defines a
             hexadecimal color (see:
-            `colors <../basic_concepts.rst#working-with-color>`_) which can
+            :doc:`colors <../basic_concepts#working-with-color>`) which can
             used, for example, via:
 
               .. code:: python

@@ -2,7 +2,7 @@
 Terminology
 ===========
 
-`protograf <index.rst>`_ uses many terms; most of which should -
+:doc:`protograf <index>` uses many terms; most of which should -
 hopefully - be fairly obvious by their name, or by the context in
 which they are used.
 

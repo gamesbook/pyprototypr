@@ -20,7 +20,7 @@ Outline
 =======
 `↑ <table-of-contents_>`_
 
-There are four parts to being able to use `protograf <index.rst>`_
+There are four parts to being able to use :doc:`protograf <index>`
 on your own machine:
 
 1. Install the correct version of `Python <http://www.python.org>`_

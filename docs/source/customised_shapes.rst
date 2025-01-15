@@ -9,12 +9,12 @@ Customised Shapes
    :ltrim:
 
 The descriptions here assume you are familiar with the concepts, terms
-and ideas for `protograf <index.rst>`_ as presented in the
-`Basic Concepts <basic_concepts.rst>`_ - especially *units*, *properties*
+and ideas for :doc:`protograf <index>` as presented in the
+:doc:`Basic Concepts <basic_concepts>` - especially *units*, *properties*
 and *defaults*.
 
 You should have already seen how these shapes were created, with defaults,
-in `Core Shapes <core_shapes.rst>`_.
+in :doc:`Core Shapes <core_shapes>`.
 
 .. _table-of-contents:
 

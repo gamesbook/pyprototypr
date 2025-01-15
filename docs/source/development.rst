@@ -3,7 +3,7 @@ Development
 ===========
 
 These notes are aimed at those who might be developing the code further,
-or who want to use `protograf <index.rst>`_ as part of other Python
+or who want to use :doc:`protograf <index>` as part of other Python
 projects.
 
 

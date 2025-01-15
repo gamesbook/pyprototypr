@@ -110,7 +110,7 @@ Discussion  This example shows how to construct a deck of cards using these
             .. HINT::
                 As can be seen, a Unicode symbol is shown by 4-characters
                 prefixed by the ``\u`` (For more, see
-                `Unicode <../useful_resources.rst#unicode-characters>`_
+                :doc:`Unicode <../useful_resources#unicode-characters>`
                 character resources.)
 
             Once defined in the ``Matrix``, the results will be generated and
