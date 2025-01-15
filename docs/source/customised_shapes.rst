@@ -359,16 +359,24 @@ a specified direction
 
       The Rectangles all have the following properties that differ from the defaults:
 
-      - *x* and *y*, *width* and *height* - set the basic configuration
+      - *x* and *y*; *width* and *height* - set the basic configuration
       - *label*, *font_size* - for the text to describe the shape's peak setting
-      - *peaks* - the value(s) used to create the peak; this is a list, shown
-        by the square brackets (``[`` to ``]``), of one or more sets, each
-        enclosed by the round brackets, consisting of a *directions* and a peak
-        *size*.  Directions are the primary compass directions - (n)orth,
-        (s)outh, (e)ast and (w)est, and sizes are the distances of the centre
-        of the peak from the edge of the Rectangle.  If the value ``*``` is used
-        for a direction, its short-cut meaning that peaks myst drawn in all four
-        directions.
+      - *peaks* - the value(s) used to create the peak
+
+      The *peaks* property is a list:
+
+      - the square brackets (``[`` to ``]``) contain one or more sets
+      - a set is enclosed by round brackets, consisting of *directions* and
+        a peak *size*:
+
+        - Directions are the primary compass directions - (n)orth,
+          (s)outh, (e)ast and (w)est,
+        - Sizes are the distances of the centre of the peak from the edge
+          of the Rectangle.
+
+        *Note* If the value ``*``` is used for a direction, it is a short-cut
+        meaning that peaks should drawn in all four directions.
+
 ===== ======
 
 .. _rectRotation:
@@ -514,17 +522,17 @@ e.g. ``n s`` to draw both lines on both north **and** south sides.
         is given so it defaults to black
 
       The lower rectangle has a thick *stroke_width* as its outline, with a
-      default *fill* of white and default *stroke* of black. There are three
-      *borders* that are set in the list (the square brackets going from ``[``
-      to ``]``):
+      default *fill* of white and default *stroke* of black.
+
+      There are three *borders* that are set in the list (the square brackets
+      going from ``[`` to ``]``):
 
       - first border sets a thick yellow line for the left (west) edge
-      - second border sets a thick green dotted line for the top (north) edge;
-        in this case the underlying black line of the rectangle shows in the
-        gaps
-      - third border sets a thick red dashed line for the left (west) edge;
-        in this case the underlying black line of the rectangle shows in the
-        gaps
+      - second border sets a thick green dotted line for the top (north) edge
+      - third border sets a thick red dashed line for the left (west) edge
+
+      *Note* that for both dotted and dashed lines, any underlying color or
+      image will "show though" the gaps in the line.
 ===== ======
 
 
