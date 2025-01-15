@@ -121,7 +121,7 @@ The following are key properties that will usually need to be set for a
 .. NOTE::
 
   The Deck command is covered in detail, with examples of all of its properties,
-  in the section covering the `deck command <deck_command.rst>`_ .
+  in the section covering the `deck command <deck_command.html>`_ .
 
 
 Deck Example #1

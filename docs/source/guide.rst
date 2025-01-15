@@ -24,7 +24,7 @@ other.
 7.  `Core Shapes <core_shapes.rst>`_ - a tour of the core geometries
     available and how to construct and customise them
 8.  `Card Decks <card_decks.rst>`_ - how to create a deck, or set, of
-    cards/tiles
+    cards/tiles; more detail also in the `Deck command <deck_command.html>`_
 9.  `Advanced Commands <advanced_commands.rst>`_ - how to work with
     common/reused items and repetitive elements
 10. `Customised Shapes <customised_shapes.rst>`_ - how to refine the

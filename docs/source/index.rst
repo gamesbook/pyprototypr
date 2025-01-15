@@ -30,6 +30,7 @@ what is in all
    additional_concepts
    core_shapes
    card_decks
+   deck_command
    advanced_commands
    customised_shapes
    layouts

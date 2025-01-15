@@ -85,6 +85,7 @@ Centred
 
          - *cx* and *cy* are used to set the centre of the Rectangle at
            ``2`` and ``3`` centimetres respectively
+
    ===== ======
 
 .. _rectCross:
@@ -117,6 +118,7 @@ A cross or a dot are symbols that mark the centre of the Rectangle.
            is set to ``0.75`` cm (7.5mm)
          - *dot* - a circle with a diameter of ``0.15`` cm (1.5mm); the fill color
            for the dot is the same as the stroke (default is ``black``)
+
    ===== ======
 
 .. _rectChevron:
@@ -170,6 +172,7 @@ point in a specified direction.  This creates an arrow-like effect.
            pointing; N(orth), S(outh), E(ast) or W(est)
          - *chevron_height* - the distance of the chevron peak from the side of
            the rectangle
+
    ===== ======
 
 .. _rectHatch:
@@ -243,6 +246,7 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
              from bottom-left to top-right;
            - ``o`` (orthogonal) draws vertical **and** horizontal lines;
            - ``d`` (diagonal) draws diagonal lines between all corners
+
    ===== ======
 
 .. _rectNotch:
@@ -294,6 +298,7 @@ Rectangle.
         notch will start
       - *notch_corners* - the specific corners of the rectangle where the notch
         will be applied
+
 ===== ======
 
 ===== ======
@@ -332,6 +337,7 @@ Rectangle.
       - *fold* - makes it appear there is a crease across the corner
       - *step* - is sillohette of a step "cut out"
       - *snip* - is a small triangle "cut out"; this is the default style
+
 ===== ======
 
 .. _rectPeak:
@@ -418,6 +424,7 @@ the centre of the Rectangle.
       - *dot* - has the same color as the *stroke* (by default) and is smaller
         than the *dot* of the  first Rectangle
       - *rotation* - of 45 |deg|; counter-clockwise from the horizontal
+
 ===== ======
 
 .. _rectRounding:
@@ -446,18 +453,23 @@ into the arc of a quarter-circle.
             common=rct, y=0.0, rounding=0.1, hatch_count=10)
 
 
-      Both Rectangles share the Common properties of *x* (left side location),
-      *height* and *width*, *hatch_stroke* of ``red`` and *hatch* directions of
-      ``o`` (for orthogonal); setting the color and directions of the lines crossing
+      Both Rectangles share the Common properties of:
+
+      - *x* the left side location
+      - *height* and *width*
+      - *hatch_stroke* - set to ``red``
+      - *hatch* directions of ``o`` (for orthogonal)A8
+
+      These properties set the color and directions of the lines crossing
       the Rectangles.
 
-      The first Rectangle has these properties:
+      The first Rectangle has these specific properties:
 
       - *rounding* - set to ``0.5``; the radius of the circle used for the corner
       - *hatch_count* - set to ``3``; the number of lines crossing the Rectangle
         in both vertical and horizontal directions.
 
-      The second Rectangle has these properties:
+      The second Rectangle has these specific properties:
 
       - *rounding* - set to ``0.1``; the radius of the circle used for the corner
       - *hatch_count* - set to  ``10``; the number of lines crossing the Rectangle
@@ -541,6 +553,7 @@ e.g. ``n s`` to draw both lines on both north **and** south sides.
 
       *Note* that for both dotted and dashed lines, any underlying color or
       image will "show though" the gaps in the line.
+
 ===== ======
 
 
@@ -590,6 +603,7 @@ Centre
       ``pointy``, ensuring there is a "peak" at the top of it.
 
       The lower Hexagon has the default *orientation* value of ``flat``.
+
 ===== ======
 
 .. _hexCross:
@@ -768,6 +782,7 @@ of a Hexagon towards its centre.
       - *radii* - a compass direction in which the radius is drawn
         (centre to vertex)
       - *label* - the text displayed in the centre shows the compass direction
+
 ===== ======
 
 .. _hexRadiiPointy:
@@ -806,6 +821,7 @@ of a Hexagon towards its centre.
       - *radii* - a compass direction in which the radius is drawn
         (centre to vertex)
       - *label* - the text displayed in the centre
+
 ===== ======
 
 
@@ -847,6 +863,7 @@ a Hexagon towards its centre.
       - *perbis* - a compass direction in which the bisector is drawn
         (centre to mid-point)
       - *label* - the text displayed in the centre shows the compass direction
+
 ===== ======
 
 .. _hexPerbisPointy:
@@ -885,6 +902,7 @@ of a Hexagon towards its centre.
       - *perbis* - a compass direction in which the bisector is drawn
         (centre to mid-point)
       - *label* - the text displayed in the centre
+
 ===== ======
 
 
@@ -1006,6 +1024,7 @@ e.g. ``ne se`` to draw lines on both northeast **and** southeast.
 
       For each Hexagon, there is a single thick yellow line on one side set by
       the direction in  *borders*.
+
 ===== ======
 
 .. |hb2| image:: images/custom/hexagon/borders_pointy.png
@@ -1030,6 +1049,7 @@ e.g. ``ne se`` to draw lines on both northeast **and** southeast.
 
       For each Hexagon, there is a single thick yellow line on one side set by
       the direction in *borders*.
+
 ===== ======
 
 
@@ -1073,11 +1093,13 @@ Dot & Cross
       - *cx* and *cy* - set the centre position of the Circle
       - *radius* - sets the distance from centre to circumference
       - *dot* - sets the size of dot at the centre
-      - *dot_stroke*  - sets the color of the dot (note that the dot is "filled
-        in" with that same color)
-      - *cross* - sets the length of each of the two lines that cross at the centre
+      - *dot_stroke*  - sets the color of the dot. Note that the dot is
+        "filled in" with that same color.
+      - *cross* - sets the length of each of the two lines that cross
+        at the centre
       - *cross_stroke*  - sets the color of the cross lines
       - *cross_stroke_width* - sets the thickness of the cross lines
+
 ===== ======
 
 .. _circleHatch:
@@ -1123,14 +1145,15 @@ or diagonal direction.
       - *hatch* - if not specified, hatches will be drawn in all
         directions - as seen in top-most circle - otherwise:
 
-        - ``o`` (orthogonal) draws vertical **and** horizontal lines;
+        - ``o`` (orthogonal) draws vertical **and** horizontal lines
         - ``d`` (diagonal) draws diagonal lines between all corners
-        - ``e`` (East) or ``w`` (West) or draws horizontal lines;
-        - ``n`` (West) or ``s`` (East) draws vertical lines;
+        - ``e`` (East) or ``w`` (West) or draws horizontal lines
+        - ``n`` (West) or ``s`` (East) draws vertical lines
         - ``ne`` (North-East) or ``sw`` (South-West) draws diagonal lines from
-          bottom-left to top-right;
+          bottom-left to top-right
         - ``nw`` (North-West) or ``se`` (South-East) draws diagonal lines from
-          top-left to bottom-right;
+          top-left to bottom-right
+
 ===== ======
 
 .. _circleRadii:
@@ -1183,6 +1206,7 @@ of a Circle towards its centre.
         from the default (centre to circumference)
       - *radii_offset* - if set, will move the endpoint of the radii line
         **away** from the centre
+
 ===== ======
 
 .. _circlePetalsPetal:
@@ -1350,6 +1374,7 @@ effect.
 
       Note that these petals have a default *petals_style* of
       ``t`` or ``triangle``.
+
 ===== ======
 
 
@@ -1474,6 +1499,7 @@ Style - Grey
 
       - *style* - set to ``grey``; this affects both the line and the background
         colors
+
 ===== ======
 
 .. _blueStroke:
@@ -1496,8 +1522,9 @@ Stroke
       It has the following properties set:
 
       - *stroke* - set to ``red``; ; changes the grid line color
-      - *stroke_width* - set to ``1``; this much thicker primary line makes
+      - *stroke_width* - set to ``1``; this thicker primary line makes
         the grid more visible
+
 ===== ======
 
 .. _blueFill:
@@ -1522,6 +1549,7 @@ Fill
       - *style* - see `Style: Grey <blueStyleGrey_>`_ above
       - *stroke* - set to ``purple``; changes the grid line color and overrides
         the default color used for that style
+
 ===== ======
 
 .. _blueDec:
@@ -1545,4 +1573,5 @@ Decimals
 
       - *decimals* - set to ``1``; these are the number of decimal points to
         be shown in the grid numbers
+
 ===== ======
