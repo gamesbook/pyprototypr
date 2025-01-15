@@ -71,7 +71,8 @@ Centred
    :width: 330
 
 .. table::
-   :widths: 30,70
+   :width: 100
+   :widths: 30, 70
 
    ===== ======
    |rcn| This example shows a Rectangle constructed using the command:
@@ -82,8 +83,8 @@ Centred
 
          It has the following properties that differ from the defaults:
 
-         - *cx* and *cy* are used to set the centre of the Rectangle at `2` and `3`
-           centimetres respectively
+         - *cx* and *cy* are used to set the centre of the Rectangle at
+           ``2`` and ``3`` centimetres respectively
    ===== ======
 
 .. _rectCross:
@@ -98,6 +99,7 @@ A cross or a dot are symbols that mark the centre of the Rectangle.
    :width: 330
 
 .. table::
+   :width: 100
    :widths: 30,70
 
    ===== ======
@@ -109,12 +111,12 @@ A cross or a dot are symbols that mark the centre of the Rectangle.
 
          It has the following properties that differ from the defaults:
 
-         - *height* and *width* are used to set the size of the Rectangle at `3`
-           and `2` centimetres respectively
+         - *height* and *width* are used to set the size of the Rectangle at ``3``
+           and ``2`` centimetres respectively
          - *cross* - the length of each of the two lines that cross at the centre
-           is set to `0.75` cm (7.5mm)
-         - *dot* - a circle with a diameter of `0.15` cm (1.5mm); the fill color
-           for the dot is the same as the stroke (default is black)
+           is set to ``0.75`` cm (7.5mm)
+         - *dot* - a circle with a diameter of ``0.15`` cm (1.5mm); the fill color
+           for the dot is the same as the stroke (default is ``black``)
    ===== ======
 
 .. _rectChevron:
@@ -130,6 +132,7 @@ point in a specified direction.  This creates an arrow-like effect.
    :width: 330
 
 .. table::
+   :width: 100
    :widths: 30,70
 
    ===== ======
@@ -158,7 +161,8 @@ point in a specified direction.  This creates an arrow-like effect.
                chevron='E', chevron_height=0.5
            )
 
-         The Rectangles all have the following properties that differ from the defaults:
+         The Rectangles all have the following properties that differ from
+         the defaults:
 
          - *x* and *y*, *height* and *width* - set the basic configuration
          - *label*, *title* and *heading* - text to describe the shape's setting
@@ -181,6 +185,7 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
    :width: 330
 
 .. table::
+   :width: 100
    :widths: 30, 70
 
    ===== ======
@@ -218,8 +223,8 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
          - *height* and *width* - set the basic configuration
          - *hatch_count* - sets the **number** of lines to be drawn; the
            intervals between them are equal and depend on the direction
-         - *hatch_width* - set to `0.1` point; a fairly thin line
-         - *hatch_stroke* - set to the color `red` to make it stand out
+         - *hatch_width* - set to ``0.1`` point; a fairly thin line
+         - *hatch_stroke* - set to the color ``red`` to make it stand out
            from the rectangle sides
 
          Each Rectangle has its own setting for:
@@ -317,8 +322,8 @@ Rectangle.
 
       - *height* and *width* - set the basic configuration
       - *x* - sets the position of the left edge
-      - *fill* - set to the color `silver` so the interior color differs from the
-        default white elsewhere
+      - *fill* - set to the color ``silver`` so the interior color differs from
+        the default white elsewhere
       - *notch* - sets the size of notch, in terms of distance from the corner
 
       Each *notch_style* results in a slightly different effect:
@@ -374,7 +379,7 @@ a specified direction
         - Sizes are the distances of the centre of the peak from the edge
           of the Rectangle.
 
-        *Note* If the value ``*``` is used for a direction, it is a short-cut
+        *Note* If the value ``*`` is used for a direction, it is a short-cut
         meaning that peaks should drawn in all four directions.
 
 ===== ======
@@ -402,14 +407,14 @@ the centre of the Rectangle.
             stroke=red, stroke_width=.3, rotation=45, dot=0.04)
 
       The first, upright, Rectangle is a normal one, with a black outline, and
-      centred at x-location 2cm and y-location 3cm.  It has a small black
-      *dot* in the centre.
+      centred at x-location ``2`` cm and y-location ``3`` cm.  It has a small
+      black *dot* in the centre.
 
       The second Rectangle is similar to the first, except:
 
-      - *fill* - set to `None` so that is efectively fully transparent, allowing
-        the first Rectangle to be seen
-      - *stroke* - set to `red` to show
+      - *fill* - set to ``None``. It is efectively fully transparent, allowing
+        the first Rectangle to be seen "below"
+      - *stroke* - set to ``red`` to highlight it
       - *dot* - has the same color as the *stroke* (by default) and is smaller
         than the *dot* of the  first Rectangle
       - *rotation* - of 45 |deg|; counter-clockwise from the horizontal
@@ -440,27 +445,30 @@ into the arc of a quarter-circle.
         Rectangle(
             common=rct, y=0.0, rounding=0.1, hatch_count=10)
 
+
       Both Rectangles share the Common properties of *x* (left side location),
-      *height* and *width*, *hatch_stroke* of `red` and *hatch* directions of
-      (o)rthogonal; setting the color and directions of the lines crossing
+      *height* and *width*, *hatch_stroke* of ``red`` and *hatch* directions of
+      ``o`` (for orthogonal); setting the color and directions of the lines crossing
       the Rectangles.
 
       The first Rectangle has these properties:
 
-      - *rounding* - set to `0.5`; the radius of the circle used for the corner
-      - *hatch_count* - set to `3`; the number of lines crossing the Rectangle
+      - *rounding* - set to ``0.5``; the radius of the circle used for the corner
+      - *hatch_count* - set to ``3``; the number of lines crossing the Rectangle
         in both vertical and horizontal directions.
 
       The second Rectangle has these properties:
 
-      - *rounding* - set to `0.1`; the radius of the circle used for the corner
-      - *hatch_count* - set to  `10`; the number of lines crossing the Rectangle
+      - *rounding* - set to ``0.1``; the radius of the circle used for the corner
+      - *hatch_count* - set to  ``10``; the number of lines crossing the Rectangle
         in both vertical and horizontal directions.
 
       It should be noted that if the rounding is too large in comparison with
-      the number of hatches, as in this example::
+      the number of hatches, as in this example:
 
-        Rectangle(common=rct, y=2.0, rounding=0.5, hatch_count=10)
+        .. code:: python
+
+          Rectangle(common=rct, y=2.0, rounding=0.5, hatch_count=10)
 
       then the program will issue an error::
 
@@ -575,12 +583,13 @@ Centre
           Hexagon(cx=2, cy=3, orientation='pointy')
 		  Hexagon(cx=2, cy=1)
 
-      Both Hexagons are located via their centres - *cx* and *cy*
 
-      The upper Hexagon also has the following *orientation* property set to
-      `pointy`, ensuring there is a "peak" at the top of it.
+      Both Hexagons are located via their centres - *cx* and *cy*.
 
-      The lower Hexagon has the default *orientation* property of `flat`.
+      The upper Hexagon also has the *orientation* property set to
+      ``pointy``, ensuring there is a "peak" at the top of it.
+
+      The lower Hexagon has the default *orientation* value of ``flat``.
 ===== ======
 
 .. _hexCross:
@@ -620,6 +629,7 @@ Dot & Cross
       - *cross_stroke*  - sets the color of the cross lines
       - *cross_stroke_width* - sets the thickness of the cross lines
       - *orientation* - if set to `pointy`, there will be a "peak" at the top
+
 ===== ======
 
 .. _hexHatchFlat:
@@ -650,10 +660,10 @@ diagonal direction.
       from the defaults:
 
       - *x* and *height* - set the basic configuration
-      - *orientation* - set to `flat`, so there will be no "peak" at the top
+      - *orientation* - set to ``flat``, so there will be no "peak" at the top
       - *hatch_count* - sets the **number** of lines to be drawn. The interval
         between them is equal and depends on the direction
-      - *hatch_stroke* - set to the color `red` to make it stand out from the
+      - *hatch_stroke* - set to the color ``red`` to make it stand out from the
         hexagon sides
 
       Each Hexagon has its own setting for:
@@ -663,11 +673,12 @@ diagonal direction.
       - *hatch* - if not specified, hatches will be drawn in all directions -
         otherwise:
 
-        - `w` (West) or `e` (East) draws horizontal lines;
-        - `ne` (North-East) or `sw` (South-West) draws diagonal lines from
-          bottom-left to top-right;
-        - `nw` (North-West) or `se` (South-East) draws diagonal lines from
-          top-left to bottom-right;
+        - ``w`` (West) or ``e`` (East) draws horizontal lines
+        - ``ne`` (North-East) or ``sw`` (South-West) draws diagonal lines from
+          bottom-left to top-right
+        - ``nw`` (North-West) or ``se`` (South-East) draws diagonal lines from
+          top-left to bottom-right
+
 ===== ======
 
 .. _hexHatchPointy:
@@ -699,11 +710,11 @@ or diagonal direction.
       from the defaults:
 
       - *x* and *height* - set the basic configuration
-      - *orientation* - set to `pointy`, so there will be a "peak" at the top
+      - *orientation* - set to ``pointy``, so there will be a "peak" at the top
       - *hatch_count* - sets the **number** of lines to be drawn; the interval
         between them is equal and depends on the direction
-      - *hatch_stroke* - set to the color `red` to make it stand out from the
-        hexagon sides
+      - *hatch_stroke* - set to the color ``red`` to make it stand out from the
+        Hexagon sides
 
       Each Hexagon has its own setting for:
 
@@ -712,11 +723,12 @@ or diagonal direction.
       - *hatch* - if not specified, hatches will be drawn in all directions -
         otherwise:
 
-        - `n` (West) or `s` (East) draws vertical lines;
-        - `ne` (North-East) or `sw` (South-West) draws diagonal lines from
-          bottom-left to top-right;
-        - `nw` (North-West) or `se` (South-East) draws diagonal lines from
-          top-left to bottom-right;
+        - ``n`` (West) or ``s`` (East) draws vertical lines
+        - ``ne`` (North-East) or ``sw`` (South-West) draws diagonal lines from
+          bottom-left to top-right
+        - ``nw`` (North-West) or ``se`` (South-East) draws diagonal lines from
+          top-left to bottom-right
+
 ===== ======
 
 .. _hexRadiiFlat:
@@ -904,9 +916,12 @@ Text: Flat
       - *label* - this text appears in the middle of the shape
       - *title* - this test appears below the shape (slightly offset)
 
-      All of this text is, by default, centred horizontally. Each can be further
-      customised in terms of its color, size and font face by appending
-      *_stroke*, *_size* and *_face* respectively to the text type's name.
+      All of this text is, by default, centred horizontally.
+
+      Each text item can be further customised in terms of its color, size and
+      font face by appending *_stroke*, *_size* and *_face* respectively to the
+      text type's name.
+
 ===== ======
 
 .. _hexTextPointy:
@@ -938,9 +953,11 @@ Text: Pointy
       - *label* - this text appears in the middle of the shape
       - *title* - this text appears below the shape (slightly offset)
 
-      All of this text is, by default, centred horizontally. Each can be further
-      customised in terms of its color, size and font face by appending
-      *_stroke*, *_size* and *_face* respectively to the text type's name.
+      All of this text is, by default, centred horizontally.
+
+      Each text item can be further customised in terms of its color, size and
+      font face by appending *_stroke*, *_size* and *_face* respectively to the
+      text type's name.
 
 ===== ======
 
@@ -962,8 +979,9 @@ comma-separated inside of round brackets, in the following order:
 - color - either a named color or a hexadecimal value
 - style - ``True`` makes it dotted; or a list of values creates dashes
 
-Direction and width are required, but color and style are optional.  One
-or more border values can be used together with spaces between them
+Direction and width are required, but color and style are optional.
+
+One or more border values can be used together with spaces between them
 e.g. ``ne se`` to draw lines on both northeast **and** southeast.
 
 .. |hb1| image:: images/custom/hexagon/borders_flat.png
@@ -984,9 +1002,10 @@ e.g. ``ne se`` to draw lines on both northeast **and** southeast.
         Hexagon(common=hxg, x=2.25, y=2.15, borders=('se', 2, gold), label="SE")
 
       Each Hexagon has a normal *stroke_width* as its outline, with a
-      default *fill* of white and default *stroke* color of black. For each,
-      there is a single thick yellow line site via the *borders* that appears
-      on one of the sides, as defined by the first value in the *borders* set.
+      default *fill* and *stroke* color of black.
+
+      For each Hexagon, there is a single thick yellow line on one side set by
+      the direction in  *borders*.
 ===== ======
 
 .. |hb2| image:: images/custom/hexagon/borders_pointy.png
@@ -1007,11 +1026,10 @@ e.g. ``ne se`` to draw lines on both northeast **and** southeast.
         Hexagon(common=hxg, x=2.25, y=2.15, borders=('se', 2, gold), label="SE")
 
       Each Hexagon has a normal *stroke_width* as its outline, with a
-      default *fill* of white and default *stroke* color of black.
+      default *fill* and *stroke* color of black.
 
-      For each, Hexagon there is a single thick yellow line site via the
-      *borders* property that appears on one of the sides, as defined by the
-      first value in the *borders* set.
+      For each Hexagon, there is a single thick yellow line on one side set by
+      the direction in *borders*.
 ===== ======
 
 
@@ -1105,13 +1123,13 @@ or diagonal direction.
       - *hatch* - if not specified, hatches will be drawn in all
         directions - as seen in top-most circle - otherwise:
 
-        - `o` (orthogonal) draws vertical **and** horizontal lines;
-        - `d` (diagonal) draws diagonal lines between all corners
-        - `e` (East) or `w` (West) or draws horizontal lines;
-        - `n` (West) or `s` (East) draws vertical lines;
-        - `ne` (North-East) or `sw` (South-West) draws diagonal lines from
+        - ``o`` (orthogonal) draws vertical **and** horizontal lines;
+        - ``d`` (diagonal) draws diagonal lines between all corners
+        - ``e`` (East) or ``w`` (West) or draws horizontal lines;
+        - ``n`` (West) or ``s`` (East) draws vertical lines;
+        - ``ne`` (North-East) or ``sw`` (South-West) draws diagonal lines from
           bottom-left to top-right;
-        - `nw` (North-West) or `se` (South-East) draws diagonal lines from
+        - ``nw`` (North-West) or ``se`` (South-East) draws diagonal lines from
           top-left to bottom-right;
 ===== ======
 
@@ -1155,7 +1173,7 @@ of a Circle towards its centre.
 
       - *x* and *y* to set the lower-left position; or *cx* and *cy* to set the
         centre
-      - *fill* - the color inside the Circle; if `None` then it is transparent
+      - *fill* - the color inside the Circle; if ``None`` then it is transparent
       - *radii* - a list of angles (in |deg|) sets the directions at which the
         radii lines are drawn
       - *radii_stroke_width* - if set, will determine the thickness of the radii
@@ -1218,7 +1236,7 @@ effect.
       - *petals_fill* - sets the color of the area inside the line used to
         draw the petals. Any *fill* or *stroke* settings for the circle itself
         may appear superimposed on this area.
-      - *petals_dotted* - if True, sets the line style to `dotted`
+      - *petals_dotted* - if True, sets the line style to ``dotted``
       - *petals_height* - sets the distance between the highest and the lowest
         points of the petal line
 
@@ -1274,7 +1292,7 @@ effect.
       - *petals_fill* - sets the color of the area inside the line used to
         draw the petals. Any *fill* or *stroke* settings for the circle itself
         may appear superimposed on this area.
-      - *petals_dotted* - if True, sets the line style to `dotted`
+      - *petals_dotted* - if True, sets the line style to ``dotted``
       - *petals_height* - sets the distance between the highest and the lowest
         points of the petal line
 
@@ -1379,11 +1397,12 @@ Subdivisions
 
       It has the following properties set:
 
-      - *subdivisions* - set to `5`; these are the number of thinner lines that
+      - *subdivisions* - set to ``5``; these are the number of thinner lines that
         are drawn between each pair of primary lines - they do not have any
-        numbering and are automatically drawn witjh *dotted* style
-      - *stroke_width* - set to `0.5`; this slightly thicker primary line makes
+        numbering and are automatically drawn with a *dotted* style
+      - *stroke_width* - set to ``0.5``; this slightly thicker primary line makes
         the grid more visible
+
 ===== ======
 
 .. _blueStyleBlue:
@@ -1405,8 +1424,9 @@ Style - Blue
 
       It has the following properties set:
 
-      - *style* - set to `blue`; this affects both the line and the background
-        colors
+      - *style* - set to ``blue``; this affects both the line and the
+        background colors
+
 ===== ======
 
 .. _blueStyleGreen:
@@ -1430,6 +1450,7 @@ Style - Green
 
       - *style* - set to `green`; this affects both the line and the background
         colors
+
 ===== ======
 
 .. _blueStyleGrey:
@@ -1451,7 +1472,7 @@ Style - Grey
 
       It has the following properties set:
 
-      - *style* - set to `grey`; this affects both the line and the background
+      - *style* - set to ``grey``; this affects both the line and the background
         colors
 ===== ======
 
@@ -1474,8 +1495,8 @@ Stroke
 
       It has the following properties set:
 
-      - *stroke* - set to `red`; ; changes the grid line color
-      - *stroke_width* - set to `1`; this much thicker primary line makes
+      - *stroke* - set to ``red``; ; changes the grid line color
+      - *stroke_width* - set to ``1``; this much thicker primary line makes
         the grid more visible
 ===== ======
 
@@ -1499,7 +1520,7 @@ Fill
       It has the following properties set:
 
       - *style* - see `Style: Grey <blueStyleGrey_>`_ above
-      - *stroke* - set to `purple`; changes the grid line color and overrides
+      - *stroke* - set to ``purple``; changes the grid line color and overrides
         the default color used for that style
 ===== ======
 
@@ -1522,6 +1543,6 @@ Decimals
 
       It has the following properties set:
 
-      - *decimals* - set to `1`; these are the number of decimal points to
+      - *decimals* - set to ``1``; these are the number of decimal points to
         be shown in the grid numbers
 ===== ======
