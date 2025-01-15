@@ -5,7 +5,7 @@ Commands List
 .. |dash| unicode:: U+2014 .. EM DASH SIGN
 
 This list provides an alphabetic summary of all the
-"doc:`commands <basic_concepts#the-command-concept>` specific to
+:doc:`commands <basic_concepts#the-command-concept>` specific to
 :doc:`protograf <index>`.  It is not intended to be used for learning
 but is a handy cross-reference to the detailed information for that command.
 
