@@ -667,8 +667,7 @@ Circle
 .. NOTE::
 
    There is more detail about the many properties that can be defined for a
-   Circle in the :ref:`customised Circles <circleIndex>`
-   section.
+   Circle in the :ref:`customised Circles <circleIndex>` section.
 
 Example 1.
 ++++++++++
@@ -923,8 +922,7 @@ Hexagon
 .. NOTE::
 
    There is more detail about the many properties that can be defined for a
-   Hexagon in the :ref:`customised shapes' Hexagon <customised_shapes:hexIndex>`
-   section.
+   Hexagon in the :ref:`customised shapes' Hexagon <hexIndex>` section.
 
 Example 1.
 ++++++++++
@@ -1316,8 +1314,7 @@ Rectangle
 .. NOTE::
 
    There is more detail about the many properties that can be defined for a
-   Rectangle in the :ref:`customised Rectangle <customised_shapes:rectangleIndex>`
-   section.
+   Rectangle in the :ref:`customised Rectangle <rectangleIndex>` section.
 
 Example 1.
 ++++++++++
@@ -1698,7 +1695,7 @@ A Star is five-pointed shape; essentially made by extending the sides for a
 pentagram outwards to meet at a point.
 
 To create more varied kinds of stars, see the triangle petal shapes that can
-be created via a :ref:`customised Circle <customised_shapes:circleIndex>`.
+be created via a :ref:`customised Circle <circleIndex>`.
 
 Example 1.
 ++++++++++
@@ -2039,8 +2036,7 @@ useful in different contexts.
 .. NOTE::
 
    There is more detail about the various properties that can be defined for a
-   Blueprint in the section on
-   :ref:`customised Blueprint <customised_shapes:blueprintIndex>`.
+   Blueprint in the :ref:`customised Blueprint <blueprintIndex>` section.
 
 
 Example 1.

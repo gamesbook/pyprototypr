@@ -19,6 +19,9 @@ Table of Contents
 
 - `Overview`_
 - `Usage`_
+
+  - `RectangularLocations`_
+  - `Layout`_
 - `Key Properties`_
 
 
@@ -80,6 +83,8 @@ The ``RectangularLocations()`` creates a "virtual" grid that always has the
 first row and first column in the lower-left corner and the last row and last
 column in the upper-right corner.
 
+.. _layoutIndex:
+
 Layout
 ------
 
@@ -103,7 +108,7 @@ It accepts the following properties:
   extra information specified.  Allowed settings for debug include:
 
   - *none* - only the locations are shown as small dots; matching the color
-    of the :doc:`Blueprint <core_shapes#blueprint>`
+    of the :ref:`Blueprint <blueprintIndex>`
   - *count* - shows the sequence number i.e. the order of drawing
   - *xy* - shows x- and y-values
   - *yx* - shows y- and x-values
