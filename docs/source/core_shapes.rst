@@ -667,7 +667,7 @@ Circle
 .. NOTE::
 
    There is more detail about the many properties that can be defined for a
-   Circle in the :ref:`customised Circles <customised_shapes:circleIndex>`
+   Circle in the :ref:`customised Circles <circleIndex>`
    section.
 
 Example 1.
