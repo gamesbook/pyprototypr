@@ -22,14 +22,15 @@ but is a handy cross-reference to the detailed information for that command.
 -  :doc:`Blueprint <core_shapes#blueprint>` - a grid of lines that can be drawn on a page
 -  :doc:`Bezier <core_shapes#bezier>` * - a geometric shape that can be drawn on a page
 -  :doc:`Card <card_decks#the-card-command>`  - details for a card that is part of a
-   `deck <card_decks#the-deck-command>`
+   :doc:`deck <card_decks#the-deck-command>`
 -  :doc:`Circle <core_shapes#circle>` * - a geometric shape that can be drawn on a page
 -  :doc:`Compass <core_shapes#compass>` * - a geometric shape that can be drawn on a page
 -  :doc:`Chord <core_shapes#chord>` * - a geometric shape that can be drawn on a page
 -  :doc:`Counter <card_decks#the-counter-command>`  - details for a counter that is part
-   of a `countersheet <card_decks#the-countersheet-command>`
+   of a :doc:`countersheet <card_decks#the-countersheet-command>`
 -  :doc:`countersheet <card_decks#the-countersheet-command>`  - details for a
-   countersheet, containing one or more `counters <card_decks#the-counter-command>`
+   countersheet, containing one or more
+   :doc:`counters <card_decks#the-counter-command>`
 -  :doc:`Create <script_anatomy#create-command>` - start of a script; define the
    paper size, output filename, margins, units, fill color etc.
 -  :doc:`Data <card_decks#the-data-command>` - provides a source of information for

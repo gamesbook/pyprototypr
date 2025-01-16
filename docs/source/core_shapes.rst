@@ -486,7 +486,7 @@ They effectively have two dimensions: *height* and *width*.
 The difference between enclosed and linear shapes is that the area enclosed by
 the shape can be filled with a color. The default fill color is *white*.
 There is an overview on how color is used in the
-`Basic Concepts section <basic_concepts.rst>`_
+:doc:`Basic Concepts section <basic_concepts>`
 
 .. HINT:::
 
@@ -666,8 +666,9 @@ Circle
 
 .. NOTE::
 
-   There is detail about the many properties that can be defined for a
-   Circle in the `customised Circles <customised_shapes.rst#circle>`_ section.
+   There is more detail about the many properties that can be defined for a
+   Circle in the :ref:`customised Circles <customised_shapes:circleIndex>`
+   section.
 
 Example 1.
 ++++++++++
@@ -922,7 +923,7 @@ Hexagon
 .. NOTE::
 
    There is more detail about the many properties that can be defined for a
-   Hexagon in the `customised shapes' Hexagon <customised_shapes.rst#hexagon>`_
+   Hexagon in the :ref:`customised shapes' Hexagon <customised_shapes:hexIndex>`
    section.
 
 Example 1.
@@ -1314,8 +1315,8 @@ Rectangle
 
 .. NOTE::
 
-   There is more detail about the properties that can be defined for a
-   Rectangle in the `customised Rectangle <customised_shapes.rst#rectangle>`_
+   There is more detail about the many properties that can be defined for a
+   Rectangle in the :ref:`customised Rectangle <customised_shapes:rectangleIndex>`
    section.
 
 Example 1.
@@ -1697,7 +1698,7 @@ A Star is five-pointed shape; essentially made by extending the sides for a
 pentagram outwards to meet at a point.
 
 To create more varied kinds of stars, see the triangle petal shapes that can
-be created via a `customised Circle <customised_shapes.rst#circlepetalstriangle>`_
+be created via a :ref:`customised Circle <customised_shapes:circleIndex>`.
 
 Example 1.
 ++++++++++
@@ -2038,7 +2039,9 @@ useful in different contexts.
 .. NOTE::
 
    There is more detail about the various properties that can be defined for a
-   Blueprint in the section on `customised Blueprint <customised_shapes.rst#blueprint>`_.
+   Blueprint in the section on
+   :ref:`customised Blueprint <customised_shapes:blueprintIndex>`.
+
 
 Example 1.
 ++++++++++

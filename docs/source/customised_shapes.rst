@@ -42,7 +42,7 @@ PNG images that were generated from the original PDF output.
 A number of examples also used the ``Common`` command - this allows shared
 properties to be defined once and then used by any number of shapes.
 
-.. _rectangle:
+.. _rectangleIndex:
 
 Rectangle
 =========
@@ -65,7 +65,7 @@ that it can be customised.
 
 Centred
 -------
-`^ <rectangle_>`_
+`^ <rectangleIndex_>`_
 
 .. |rcn| image:: images/custom/rectangle/centre.png
    :width: 330
@@ -92,7 +92,7 @@ Centred
 
 Cross and Dot
 -------------
-`^ <rectangle_>`_
+`^ <rectangleIndex_>`_
 
 A cross or a dot are symbols that mark the centre of the Rectangle.
 
@@ -125,7 +125,7 @@ A cross or a dot are symbols that mark the centre of the Rectangle.
 
 Chevron
 -------
-`^ <rectangle_>`_
+`^ <rectangleIndex_>`_
 
 A chevron converts sides of the Rectangle into two triangular peaks that both
 point in a specified direction.  This creates an arrow-like effect.
@@ -179,7 +179,7 @@ point in a specified direction.  This creates an arrow-like effect.
 
 Hatch
 -----
-`^ <rectangle_>`_
+`^ <rectangleIndex_>`_
 
 Hatches are a set of parallel lines that are drawn, in a specified direction, across
 the length or width of the Rectangle in a vertical, horizontal or diagonal direction.
@@ -253,7 +253,7 @@ the length or width of the Rectangle in a vertical, horizontal or diagonal direc
 
 Notch
 -----
-`^ <rectangle_>`_
+`^ <rectangleIndex_>`_
 
 Notches are small indents - or outdents - that are drawn in the corners of the
 Rectangle.
@@ -344,7 +344,7 @@ Rectangle.
 
 Peak
 ----
-`^ <rectangle_>`_
+`^ <rectangleIndex_>`_
 
 A peak is small triangular shape that juts out from the side of a Rectangle in
 a specified direction
@@ -394,7 +394,7 @@ a specified direction
 
 Rotation
 --------
-`^ <rectangle_>`_
+`^ <rectangleIndex_>`_
 
 .. |rrt| image:: images/custom/rectangle/rotation.png
    :width: 330
@@ -431,7 +431,7 @@ the centre of the Rectangle.
 
 Rounding
 --------
-`^ <rectangle_>`_
+`^ <rectangleIndex_>`_
 
 Rounding changes the corners of a Rectangle from a sharp, right-angled, join
 into the arc of a quarter-circle.
@@ -492,7 +492,7 @@ into the arc of a quarter-circle.
 
 Borders
 -------
-`^ <rectangle_>`_
+`^ <rectangleIndex_>`_
 
 The ``Borders`` property allows for the normal line that is drawn around the
 Rectangle to be overwritten on specific sides by another type of line.
