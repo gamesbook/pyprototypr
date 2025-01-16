@@ -1,6 +1,6 @@
-=========================
-Commercial Board Examples
-=========================
+================================
+Examples: Commercial Board Games
+================================
 
 These examples are meant to demonstrate the type of output you can expect
 to create with **protograf**.  They are *not* meant to be exhaustive or
@@ -9,6 +9,12 @@ comprehensive!
 Bear in mind that the images shown in these examples are lower-resolution
 screenshots; the original PDFs that can be generated from the source scripts
 will demonstrate full scalability.
+
+.. IMPORTANT::
+
+    Note that there is *no* intention to infringe on copyright; these are
+    partial examples designed to show possibilities and **not** to encourage
+    copying or reproduction of any copyrighted game material.
 
 .. _table-of-contents:
 

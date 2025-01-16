@@ -1,6 +1,6 @@
-=============
-Card Examples
-=============
+========================
+Examples: Decks of Cards
+========================
 
 These examples are meant to demonstrate the type of output you can expect
 to create with **protograf**.  They are *not* meant to be exhaustive or
@@ -223,10 +223,12 @@ Discussion  This example shows how to construct a deck of cards using these
 
             The commands for generating cards that just consist of an image
             are simple.  the ``Data`` command's **images** property points to
-            a directory containing all the images. It can be helpful to ensure
-            that any non-image files stored in that  directory are ignored;
-            for this purpose the **images_filter** property can be set to
-            contain a list of allowable file extensions.
+            a directory containing all the images.
+
+            It can be helpful to ensure that any non-image files stored in
+            that images directory are ignored; for this purpose the
+            **images_filter** property can be set to contain a comma-delimited
+            list of allowable file extensions.
 
             The ``Card`` command sets all cards in the deck (via ``*``) to
             each use an image; but in thise case no ``Image`` name is set

@@ -1,6 +1,6 @@
-=======================
-Abstract Board Examples
-=======================
+==============================
+Examples: Abstract Board Games
+==============================
 
 These examples are meant to demonstrate the type of output you can expect
 to create with **protograf**.  They are *not* meant to be exhaustive or
@@ -9,6 +9,8 @@ comprehensive!
 Bear in mind that the images shown in these examples are lower-resolution
 screenshots; the original PDFs that can be generated from the source scripts
 will demonstrate full scalability.
+
+.. |dash| unicode:: U+2014 .. EM DASH SIGN
 
 .. _table-of-contents:
 
@@ -36,7 +38,7 @@ Discussion  This example shows how to construct a regular Chess board.
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/abstract/chessboard.png
-               :width: 80%
+               :width: 90%
 =========== ==================================================================
 
 =========== ==================================================================
@@ -45,14 +47,18 @@ Title       *Chess Board - Brown*
 Source Code `chessboard_brown.py <https://github.com/gamesbook/protograf/blob/master/examples/boards/abstract/chessboard_brown.py>`_
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a regular Chess board with
-            brown styling and grid references. This example uses a Square grid;
-            with alphanumeric locations. These locations are then referenced
-            and drawn with a Location command. The grid notation along the
-            board edges is created via Sequence commands.
+            brown styling and grid references.
+
+            This example uses a Square grid with alphanumeric locations.
+            These locations are then referenced and drawn with a ``Location()``
+            command.
+
+            The grid notation along the board edges is created via
+            ``Sequence()`` commands.
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/abstract/chessboard_brown.png
-               :width: 80%
+               :width: 70%
 =========== ==================================================================
 
 
@@ -69,9 +75,11 @@ Discussion  This example shows how to construct a regular Backgammon board.
 
             This uses Trapezoid shape with a very narrow *top* to represent a
             point; this can be copied across in a line using a ``Sequence()``
-            command. There is one Sequence command for each section of the
-            board (top and bottom sections of each panel); and each Sequence
-            draws a pair of Trapezoid shapes multiple times.
+            command.
+
+            There is one Sequence command for each section of the
+            board |dash| top and bottom sections of each panel |dash| and each
+            Sequence draws a pair of Trapezoid shapes multiple times.
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/abstract/backgammon.png
@@ -127,9 +135,11 @@ HexHex Games
 `↑ <table-of-contents_>`_
 
 There are many games that are played on "hexagonal" board i.e. a board that is
-hexagonal in outline and is composed of many hexagons.  The number of hexagons
-on a side is used to identify the board size, for example; *hexhex5* is a
-board with 5 smaller hexagons along each side.
+hexagonal in outline and is composed of many hexagons.
+
+The number of hexagons on the side of such a board is used to identify the
+board size, for example; *hexhex5* is a board with 5 smaller hexagons along
+each side.
 
 =========== ==================================================================
 Title       *Plain HexHex Board*

@@ -1,6 +1,6 @@
-=================
-Counters Examples
-=================
+==================
+Examples: Counters
+==================
 
 These examples are meant to demonstrate the type of output you can expect
 to create with **protograf**.  They are *not* meant to be exhaustive or
@@ -96,17 +96,18 @@ Discussion  This example shows how to construct a set of counters.
 
                 Counter("10-12", inf_russian_A)
 
-            These counters are shown outlined in blue in the screenshot (note
-            that the blue line was *not* created as part of the script).
+            These counters are shown outlined in blue in the screenshot. Note
+            that the blue line was *not* created as part of the script.
 
-            (Bear in mind conters are drawn in order, starting from the
+            Bear in mind that counters are drawn in order, starting from the
             bottom-left, then moving across to the right to complete a row,
             then moving up to the next row - so in this example, counters 1
-            to 7 are drawn along the bottow row; 8 to 14 on the next up etc.)
+            to 7 are drawn along the bottow row; 8 to 14 on the next row up,
+            and so on.
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/counters/counters_basic.png
-               :width: 90%
+               :width: 80%
 =========== ==================================================================
 
 
@@ -188,13 +189,15 @@ Discussion  This example shows how to construct a set of counters using data
             1. it has a **TYPE** value equal to *MARKER* ``and``
             2. it has a  **NATION** value equal to *ger*
 
+            Note that both examples ensure that the *case* is being matched.
+
             An example of this is last two rows from the snippet of CSV shown
             above.  The resulting counters are outlined in yellow in the
             screenshot.
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/counters/counters_csv.png
-               :width: 90%
+               :width: 80%
 =========== ==================================================================
 
 
@@ -219,7 +222,7 @@ Discussion  This example shows how to construct a set of counters using data
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/counters/counters_excel.png
-               :width: 90%
+               :width: 100%
 =========== ==================================================================
 
 
@@ -253,8 +256,8 @@ Discussion  This example shows how to construct a set of labels, designed to
                   x=0.45, y=0.45, width=2.0, height=2.0, stroke_width=1,
                   stroke=T('{{BORDER}}'), fill=None)
 
-            As described previously, the ``T()`` command allows the value
-            from the **BORDER** column to be used as for the ``stroke``
+            As described previously, the ``T()`` command allows the hexadecimal
+            color value from the **BORDER** column to be used for the ``stroke``
             property of the Rectangle.
 
             Another item of interest is the use of the ``Sequence`` command
@@ -265,7 +268,8 @@ Discussion  This example shows how to construct a set of labels, designed to
 
                 top4 = sequence(
                      square(
-                       x=0.9, y=2.35, side=0.25, stroke=lbrown, stroke_width=1,
+                       x=0.9, y=2.35, side=0.25,
+                       stroke=lbrown, stroke_width=1,
                        fill=T('{{BORDER}}')),
                      setting=(1, 4),
                      gap_x=0.29)
@@ -277,5 +281,5 @@ Discussion  This example shows how to construct a set of labels, designed to
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/counters/blocks_csv.png
-               :width: 90%
+               :width: 80%
 =========== ==================================================================

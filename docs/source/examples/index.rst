@@ -1,11 +1,11 @@
-======================
-Discussion of Examples
-======================
+==================
+Examples: Overview
+==================
 
 The examples supplied with :doc:`protograf <../index>` attempt to highlight
-or demonstrate how different functions or features can be used. They are
-do **not** attempt to be comprehensive and cover all features, but they
-do give some ideas as to what can be done - and how.
+or demonstrate how different functions or features can be used. They do
+**not** attempt to be comprehensive and cover all features, but they
+**do** give some ideas as to what can be done - and how.
 
 In most cases, you will need to look at the source code to understand how the
 output has been created.
@@ -14,7 +14,7 @@ output has been created.
    available as a `PDF file <https://github.com/gamesbook/protograf/blob/master/docs/examples/demo.pdf>`_ - it is based on the
    `demo script <https://github.com/gamesbook/protograf/blob/master/examples/core/demo.py>`_
 2. :doc:`Abstract Boards <abstract>` and
-   `Commercial Boards <commercial>` - construction examples for games
+   :doc:`Commercial Boards <commercial>` - construction examples for games
 3. :doc:`Counters <counters>` - counters are really just "tiny square
    cards"!
 4. :doc:`Cards <cards>` - different kinds of decks that can be

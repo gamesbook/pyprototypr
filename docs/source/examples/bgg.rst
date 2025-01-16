@@ -1,6 +1,6 @@
-========================
-Board Game Geek Examples
-========================
+=========================
+Examples: Board Game Geek
+=========================
 
 These examples are meant to demonstrate the type of output you can expect
 to create with **protograf**.  They are *not* meant to be exhaustive or
@@ -23,7 +23,7 @@ Source Code `example01.py <https://github.com/gamesbook/protograf/blob/master/ex
 ----------- ------------------------------------------------------------------
 Discussion  This example shows how to construct a set of cards - one per game -
             using the BoardGameGeek API, accessed via the
-            https://github.com/SukiCZ/boardgamegeek library.
+            https://github.com/SukiCZ/boardgamegeek Python library.
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/bgg/example01.png
