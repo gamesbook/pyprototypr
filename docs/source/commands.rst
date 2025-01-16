@@ -26,11 +26,10 @@ but is a handy cross-reference to the detailed information for that command.
 -  :ref:`Circle <circle>` * - a geometric shape that can be drawn on a page
 -  :ref:`Compass <compass>` * - a geometric shape that can be drawn on a page
 -  :ref:`Chord <chord>` * - a geometric shape that can be drawn on a page
--  :ref:`Counter <the-counter-command>`  - details for a counter that is part
+-  :ref:`Counter <the-countersheet-command>`  - details for a counter that is part
    of a :ref:`countersheet <the-countersheet-command>`
 -  :ref:`countersheet <the-countersheet-command>`  - details for a
-   countersheet, containing one or more
-   :ref:`counters <the-counter-command>`
+   countersheet, containing one or more counters
 -  :ref:`Create <create-command>` - start of a script; define the
    paper size, output filename, margins, units, fill color etc.
 -  :ref:`Data <the-data-command>` - provides a source of information for
@@ -57,6 +56,8 @@ but is a handy cross-reference to the detailed information for that command.
    grid and specifies the shapes that are to be drawn at the grid locations
 -  :ref:`Line <line>` * - a geometric shape that can be drawn on a page
 -  :ref:`Lines <lines>` - a set, or group, of lines that can be drawn on a page
+-  :ref:`Matrix <the-matrix-command>` - a way to create a dataset, inside a script,
+   for a :ref:`deck <the-deck-command>` of cards
 -  :ref:`PageBreak <pagebreak-command>` - set the start of a new page in
    the document; not required for a :ref:`Deck <the-deck-command>`
 -  :ref:`Polygon <polygon>` * - a geometric shape that can be drawn on a page

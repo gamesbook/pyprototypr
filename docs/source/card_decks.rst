@@ -99,6 +99,7 @@ These commands, and the ones supporting them, are described in detail below.
 For additional examples that illustrate some of these, see the
 `card and deck examples <examples/cards.rst>`_.
 
+.. _the-deck-command
 
 The Deck Command
 ================
@@ -189,6 +190,7 @@ The dataset that could be used with the above Deck is shown in
 The full code - including the data - for this example is available as
 `cards_lotr.py <https://github.com/gamesbook/protograf/blob/master/examples/cards/cards_lotr.py>`_
 
+.. _the-card-command
 
 The Card Command
 ================
@@ -266,6 +268,7 @@ Here:
   superimposed on the rectangle because it appears after it in the group list
   (see below for how the `group <group-command_>`_ command works.)
 
+.. _the-data-command
 
 The Data Command
 ================
@@ -443,6 +446,7 @@ This list above is equivalent to a CSV file containing:
 See below under the `T(emplate) command`_ and also under the
 `S(election) command`_ for examples how this data could be used.
 
+.. _the-matrix-command
 
 The Matrix Command
 ==================
@@ -472,6 +476,7 @@ and B-2-y and therefore eight cards in the deck.
 
 See the `Data Example #3`_ above for a full Matrix.
 
+.. _the-countersheet-command
 
 Countersheet and Counter Commands
 =================================
@@ -524,7 +529,8 @@ For example:
       stack = group(rect1, line1)
 
 When this group named *stack* is assigned to a card and then drawn,
-the Rectangle will be drawn first, followed by the Line.
+the Rectangle will be drawn first, followed by the Line, following the
+order in which the appear in the group's listing.
 
 This command is somewhat similar to ``Common()``, which provides a way to
 group commonly used properties.
@@ -676,7 +682,7 @@ Card Editor      Windows Java       https://bitbucket.org/mattsinger/card-editor
 CardMaker        Multi   C#         https://github.com/nhmkdev/cardmaker
 DeCard64         Windows Delphi     https://github.com/Dimon-II/DeCard64
 Forge of Cards   Online  JavaScript https://forgeofcards.com/#/
-NanDeck          Windows -          https://www.nandeck.com/
+NanDeck          Windows ?          https://www.nandeck.com/
 Paperize         Online  JavaScript https://beta.editor.paperize.io/#/
 Strange Eons     Multi   Java       https://strangeeons.cgjennings.ca/index.html
 Squib            Multi   Ruby       https://squib.rocks/

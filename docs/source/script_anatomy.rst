@@ -67,6 +67,8 @@ Key Commands
 - `Save Command`_
 - `Other Commands`_
 
+.. _create-command
+
 Create Command
 --------------
 `^ <key-commands_>`_
@@ -112,6 +114,8 @@ Here is an example of a customised ``Create`` command:
         margin_left=1,
     )
 
+.. _pagebreak-command
+
 PageBreak Command
 -----------------
 `^ <key-commands_>`_
@@ -121,6 +125,8 @@ The ``PageBreak()`` command is only needed when you need to start a new page.
 When generating cards for a `deck <card_decks.rst>`_ the program will
 automatically insert ``PageBreak()`` commands as needed if the cards occupy
 multiple pages.
+
+.. _save-command
 
 Save Command
 ------------
