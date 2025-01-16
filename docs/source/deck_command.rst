@@ -10,7 +10,7 @@ and that you've created some basic scripts of your own using the
 :doc:`Core Shapes <core_shapes>`.
 
 It also assumes you have read through the section on
-`card decks <card_decks.rst>`_.
+:doc:`card decks <card_decks>`.
 
 .. _table-of-contents:
 
@@ -57,7 +57,7 @@ The following are other properties that can also be set for a ``Deck``:
 - **cols** - the maximum number of card columns that should appear on a
   page
 - **copy** - the name of a column in the dataset defined by
-  `the Data Command <card_decks.rst#the-data-command>`_) that specifies
+  :ref:`the Data Command <the-data-command>`) that specifies
   how many copies of a card are needed
 - **fill** - sets the color of the card's area; defaults to white
 - **frame** - the default card frame is a rectangle (or square, if the
@@ -69,9 +69,9 @@ The following are other properties that can also be set for a ``Deck``:
   the border of the page that align with the edges of the cards
 - **mask** - an expression which should evaluate to ``True` or ``False``;
   this expression uses the same kind of syntax as the
-  `T(emplate) command <card_decks.rst#the-template-command>`_
+  :ref:`T(emplate) command <the-template-command>`
   and it uses data available from the Deck's
-  `Data Command <card_decks.rst#the-data-command>`_); if ``True``
+  :ref:`Data Command <the-data-command>`); if ``True``
   then any matching cards will be masked i.e. ignored and not drawn
 - **radius** - the radius for a frame of type *hexagon* or *circle*;
   it defaults to 2.54 cm (1")
@@ -466,7 +466,7 @@ Example 10. Circular Frame
       needs to be set.
 
       The **frame** property also can be seen "in action" in various
-      examples; see a `hexagonal example <examples/cards.rst#hexagon-cards>`_
-      and another `circular example <examples/cards.rst#circle-cards>`_.
+      examples; see a :ref:`hexagonal example <hexagonal-cards>`
+      and another :ref:`circular example <circular-cards>`.
 
 ===== ======

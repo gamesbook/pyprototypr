@@ -97,7 +97,7 @@ on a card.
 
 These commands, and the ones supporting them, are described in detail below.
 For additional examples that illustrate some of these, see the
-`card and deck examples <examples/cards.rst>`_.
+:doc:`card and deck examples <examples/cards>` section.
 
 .. _the-deck-command
 
@@ -232,8 +232,8 @@ Examples of Card sequence numbers supplied as a *list*:
   10 through to 15 inclusive
 
 The **second value**, and all further values, supplied to the ``Card()``
-command must be a `core shape <core_shapes.rst>`_ or a
-`group <group-command_>`_.
+command must be a :doc:`core shape <core_shapes>` or a
+:ref:`group <group-command>`.
 
 There can be any number of ``Card()`` commands; and the same Card could be
 targeted by multiple ``Card()`` commands, each affecting some aspect of its
@@ -345,7 +345,7 @@ The other property that can be used for the ``Data`` command is:
 - **extra** - if additional cards need to be manually created for a Deck,
   that are *not* part of the data source, then the number of those cards
   can be specified here. See the
-  `standard playing cards <examples/cards.rst#standard-playing-cards>`_
+  :ref:`standard playing cards <standard-playing-cards>`
   example, where the primary cards are created through `the Matrix Command`_
   and the two Jokers are the "extras".
 
@@ -662,6 +662,7 @@ a Card whose **NAME** column contains a matching value - in this case, the
 first card; and then returns the value from that card's **IMAGE** column - in
 this case, the value **wire.png**.
 
+.. _other-card-resources
 
 Other Resources
 ===============

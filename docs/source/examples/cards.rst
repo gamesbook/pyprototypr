@@ -22,6 +22,7 @@ Table of Contents
 - `Hexagonal Cards`_
 - `Circular Cards`_
 
+.. _simple-cards
 
 Simple
 ======
@@ -71,6 +72,7 @@ Screenshot  .. image:: images/cards/cards_simple.png
                :width: 90%
 =========== ==================================================================
 
+.. _matrix-generated-cards
 
 Matrix Generated
 ================
@@ -119,7 +121,6 @@ Discussion  This example shows how to construct a deck of cards using these
 Screenshot  .. image:: images/cards/cards_matrix.png
                :width: 90%
 =========== ==================================================================
-
 
 .. _standard-playing-cards:
 
@@ -200,6 +201,7 @@ Screenshot  .. image:: images/cards/cards_standard.png
                :width: 90%
 =========== ==================================================================
 
+.. _image-only-cards
 
 Image-Only Cards
 ================
@@ -239,6 +241,7 @@ Screenshot  .. image:: images/cards/cards_images.png
                :width: 90%
 =========== ==================================================================
 
+.. _hexagonal-cards
 
 Hexagonal Cards
 ================
@@ -255,7 +258,11 @@ Discussion  This example shows how to construct a deck of cards/tiles using
               .. code:: python
 
                 Data(filename="lotr.csv")
-                Deck(cards=6, shape='hexagon', height=6.3, copy='Copies')
+                Deck(
+                    cards=6,
+                    shape='hexagon',
+                    height=6.3,
+                    copy='Copies')
 
             It can be seen that each alternate row is offset from the ones on
             either side of it; this is to make cutting such cards/tiles much
@@ -266,6 +273,7 @@ Screenshot  .. image:: images/cards/cards_hexagonal.png
                :width: 90%
 =========== ==================================================================
 
+.. _circular-cards
 
 Circular Cards
 ==============
@@ -282,7 +290,11 @@ Discussion  This example shows how to construct a deck of cards using these
               .. code:: python
 
                 Data(filename="lotr.csv")
-                Deck(cards=1, shape='circle', radius=3.15, copy='Copies')
+                Deck(
+                    cards=1,
+                    shape='circle',
+                    radius=3.15,
+                    copy='Copies')
 
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/cards/cards_circular.png

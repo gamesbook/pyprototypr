@@ -1028,6 +1028,7 @@ Example 4. An Offset LinkLine
 
 ===== ======
 
+.. _other-hexagonal-resources
 
 Other Resources
 ===============

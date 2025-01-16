@@ -57,12 +57,9 @@ Other Tools
 
 .. HINT::
 
-    Please also see the sections on:
-
-    - `hexagonal grids <hexagonal_grids.rst#other-resources>`_
-      which lists tools specifically for working with hexagonal layouts,
-    - `card decks <card_decks.rst#other-resources>`_
-      which lists tools useful for working with playing cards and decks.
+    Please also see the sections on
+    :ref:`other hexagonal resources <other-hexagonal-resources>`
+    as well as  :ref:`other playing cards resources <other-card-resources>`
 
 
 BoardGameGeek

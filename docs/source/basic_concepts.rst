@@ -76,8 +76,8 @@ will affect what you see at the end!
 
 .. HINT::
 
-   For more detail on what goes into a script, see the section on `Script
-   Anatomy <script_anatomy.rst>`_.
+   For more detail on what goes into a script, see the section on
+   :doc:`Script Anatomy <script_anatomy>`.
 
 .. _position:
 
@@ -120,9 +120,10 @@ written with an initial capital letter. They are effectively "imperative"
 in nature, causing something to happen; for example:
 
 - ``Save()`` - instructs the program to save the output to file
-- ``Circle()``  - instructs the program to draw a circle
+- ``Circle()`` - instructs the program to draw a circle
 
-The documents include a `summary list of all commands <commands.rst>`_.
+The :doc:`summary list of all commands <commands>` is a useful reference
+for checking what is available.
 
 .. _element:
 

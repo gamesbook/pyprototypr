@@ -42,4 +42,5 @@ Documents are written in reStructuredText. Some helpful web resources:
 Some useful tools:
 
 - https://github.com/retext-project/retext - a reStructuredText editor
-- https://github.com/pydanny/restructuredtext/blob/master/sphinx_tutorial.rst - Sphinx
+- https://github.com/mgedmin/restview - a reStructuredText viewer in your browser
+  (but currently does not support Sphinx directives)
