@@ -17,7 +17,10 @@ but is a handy cross-reference to the detailed information for that command.
   `Python packages <https://pypi.org>`_  |dash| can be used to further enhance
   your own script.
 
--  :doc:`Arc <core_shapes#arc>` * - a geometric shape that can be drawn on a page
+-  :doc:`Arc1 <core_shapes>` * - a geometric shape that can be drawn on a page
+-  :doc:`Arc2 <core_shapes>#arc` * - a geometric shape that can be drawn on a page
+-  :doc:`Arc3 <core_shapes#arc>` * - a geometric shape that can be drawn on a page
+-  :ref:`Arc4 <core_shapes:arc>` * - a geometric shape that can be drawn on a page
 -  :doc:`Arrow <core_shapes#arrow>` * - a geometric shape that can be drawn on a page
 -  :doc:`Blueprint <core_shapes#blueprint>` - a grid of lines that can be drawn on a page
 -  :doc:`Bezier <core_shapes#bezier>` * - a geometric shape that can be drawn on a page
