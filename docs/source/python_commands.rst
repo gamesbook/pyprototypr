@@ -132,9 +132,13 @@ number of times; for example:
         Circle(x=1, y=number)
 
 Here the value of ``y`` for the Circle will be set to a different number
-every time the loop operates. For the first time it will have a value of
-1 (one); the second time a value of 2 (two); and the third time value of
-3 (three) - as noted above, when number reaches the value of 4, the loop
+every time the loop operates:
+
+- for the first time it will have a value of 1 (one);
+- for the second time a value of 2 (two); and
+- for the third time value of 3 (three).
+
+As noted above, when number reaches the value of 4, the loop
 ends right away. This loop will cause a ``Circle`` to be drawn in three
 different ``y`` locations on the page but with the same ``x`` location.
 
@@ -154,7 +158,9 @@ most sense in terms of what you’re trying to achieve by using it.
 
 The value of the loop counter normally goes up by 1 each time; but you can
 set a third value, inside the brackets, for the ``range`` that is a
-different increment number. For example:
+different increment number.
+
+For example:
 
   .. code:: python
 
@@ -163,6 +169,7 @@ different increment number. For example:
 
 Here ``number`` takes on the values ``1``, then ``3`` and then ``5``; because
 the third value of 2 is added to the loop counter each time the loop operates.
+
 When the loop counter value stored in ``number`` reaches 7, then the loop
 ends right away.
 
@@ -283,18 +290,23 @@ This example is shown below.
                 Rectangle(x=1, y=number, label=number)
         PageBreak()
 
+      The value of ``number`` is used to locate the lower
+      corner position of the shape that is being drawn.
+
       The value of ``number`` can easily be seen as it is used to
       create the text for the shape's label.
+
 ===== ======
 
 
 Multi-part If Statements
 ------------------------
 
-An ``if`` statement can deal with multiple choices as well.  To continue with
-the driving example, we know there are three colors and so the program must
-handle all of them.  Any options after the first one are handled with a
-``elif`` prefix - short for "else if":
+An ``if`` statement can deal with multiple choices as well.
+
+To continue with the driving example, we know there are three colors and
+so the program must handle all of them.  Any options after the first one
+are handled with an ``elif`` prefix |dash| short for "else if":
 
   .. code:: python
 
@@ -336,8 +348,8 @@ functions; this can include drawing of shapes, but could also involve use of
 `loops`_ and `if statements`_.
 
 When a function is defined, it is **not** activated; its only when you issue a
-command for it - ``name()`` - that it will perform the actions defined as part
-of it,
+command for it |dash| ``name()`` |dash| that it will perform the actions defined
+as part of it.
 
 .. |fn1| image:: images/custom/commands/function.png
    :width: 330
@@ -364,8 +376,8 @@ of it,
         PageBreak()
         Save()
 
-      The function named *capitol* has three properties that
-      can be set; *a*, *b* and *c*. These are used to control
+      The function named ``capitol`` has three properties that
+      can be set: *a*, *b* and *c*. These are used to control
       some of the properties of the 3 shapes that are drawn by
       the function.
 
@@ -376,6 +388,7 @@ of it,
       If values are provided to *a* and *b*,
       these will change where the shapes are drawn; if a value
       is provided to *c* it will change the shape's color.
+
       These changes to the function's properties can be seen in
       the other examples.
 ===== ======

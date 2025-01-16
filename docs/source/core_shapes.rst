@@ -35,7 +35,7 @@ Table of Contents
 Shape Index
 -----------
 
--  `Arc`_
+-  `Arc Command`_
 -  `Arrow`_
 -  `Blueprint`_
 -  `Bezier`_
@@ -118,11 +118,11 @@ Linear Shapes
 --------------
 `↑ <shape-index_>`_
 
-Arc
-~~~
+Arc Command
+~~~~~~~~~~~
 `↑ <shape-index_>`_
 
-An arc is curved line.
+An arc is a curved line.
 
 Example 1.
 ++++++++++
