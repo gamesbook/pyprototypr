@@ -11,7 +11,7 @@ an extension of ".py".
 .. HINT::
 
     This document assumes that :doc:`protograf <index>` is working on your
-    computer after successfully `Setting Up <setting_up.rst>`_, and that you
+    computer after successfully :doc:`Setting Up <setting_up.>`, and that you
     have read and understood the :doc:`Basic Concepts <basic_concepts>`
 
 .. _table-of-contents:
@@ -122,7 +122,7 @@ PageBreak Command
 
 The ``PageBreak()`` command is only needed when you need to start a new page.
 
-When generating cards for a `deck <card_decks.rst>`_ the program will
+When generating a :doc:`deck of cards<card_decks>` the program will
 automatically insert ``PageBreak()`` commands as needed if the cards occupy
 multiple pages.
 
@@ -242,7 +242,7 @@ Drawing vs Assigning
 ====================
 `↑ <table-of-contents_>`_
 
-All of the `shape <core_shapes.rst>`_ commands can either be called with a
+All of the :doc:`shape <core_shapes>` commands can either be called with a
 **capital** letter or a **lowercase** letter.
 
 The use of a capital is the more common case, and it effectively tells
@@ -274,8 +274,8 @@ each one.
 These are described in the :doc:`Core Shapes <core_shapes>` section, which also
 covers common customisation options.
 
-Extensive customisation of some shapes is also possible; see the section
-on `Customised Shapes <customised_shapes.rst>`_
+More extensive customisation of some shapes is also possible; see the
+:doc:`Customised Shapes <customised_shapes>` section.
 
 
 Card Decks
@@ -288,10 +288,10 @@ they are really just "shapes containing other shapes"
 
 There are two key commands for creating a deck of cards: the ``Card()`` and
 the ``Deck()``.  These are discussed in detail in the
-`card decks <card_decks.rst>`_ section.
+`card decks <card_decks>` section.
 
 A useful "getting started" approach is to look through the section with
-`worked examples <worked_example.rst>`_ which shows an increasingly
+`worked examples <worked_example>` which shows an increasingly
 complex set of examples for setting up and running scripts to generate a
 deck of cards.
 
@@ -311,9 +311,9 @@ The other way that elements can be laid out on a page is through a
 **grid layout** which can be derived from a built-in shape such ``Hexagons``
 or constructed using a defined set of properties.
 
-These are described in the `Layouts <layouts.rst>`_ section.
+These are all described in the `Layouts <layout>` section.
 
-There is also a separate section on :doc:`Hexagonal Grids <hexagonal_grids>`
+There is also a separate section on `Hexagonal Grids <hexagonal_grids>`
 which describes the variety of these types of grids, as well as some options
 for adding shapes to them.
 
@@ -394,5 +394,7 @@ This kind of mistake is usually easier to see as both keywords, in this
 case, are part of the same command and the error message that you see also
 highlights the repetition with the ``^^^^^^^^`` characters.
 
-Errors are discussed further in the `Additional Concepts
-<additional_concepts.rst#errors>`_ section.
+.. HINT::
+
+   Errors are discussed further in the :ref:`Additional Concepts <script-errors>`
+   section.

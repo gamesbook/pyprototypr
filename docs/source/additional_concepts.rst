@@ -280,6 +280,7 @@ shorthand reference name (in this case ``groceries``). There are various
 examples of the use of lists of elsewhere in these documents and also in
 the script examples.
 
+.. _script-errors
 
 Errors
 ======

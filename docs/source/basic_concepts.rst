@@ -11,7 +11,7 @@ other graphics editing or programming tools, but some are specific to it.
 
 This is a general discussion; it may also be useful to look at the more
 detailed definitions of some of the terms in the section covering
-`terminology <terminology.rst>`_
+`terminology <terminology>`.
 
 .. _table-of-contents:
 
@@ -152,8 +152,8 @@ Examples of some of the available geometric **shapes** include:
 Descriptions of all of these shapes, and how to create and use them,
 are provided in the section on :doc:`Core Shapes <core_shapes>`.
 
-Other *elements* include things like :doc:`Hexagonal Grids <hexagonal_grids>`,
-regular `layouts <layouts.rst>`_ and `cards <card_decks.rst#the-card-command>`_ .
+Other *elements* include things like :ref:`Hexagonal Grids <hexagonal_grids>`,
+regular :ref:`layouts <layouts>` and :ref:`cards <the-card-command>`.
 
 .. _properties:
 
@@ -180,8 +180,8 @@ such its color, the *paper* size and so on.
 
 All of these kinds of settings are called **properties**. Most of the
 common properties are defined in the section covering
-`terminology <terminology.rst>`_ and their usage is covered in
-the section on `core chapes <core_shapes.rst>`_.
+:doc:`terminology <terminology>` and their usage is covered in
+the section on :doc:`core chapes <core_shapes>`.
 
 .. _color:
 
@@ -198,8 +198,8 @@ would likely term "brown".
 
 Colors in **protograf** can also make use of names from a pre-defined
 list - for example ``#A0522D`` is defined as the color *sienna*. The
-`colorset.pdf <../examples/colorset.pdf>`_ file shows all the names and colors
-that are available.
+`colorset.pdf <https://github.com/gamesbook/protograf/blob/master/examples/colorset.pdf>`
+file shows all the names and colors that are available.
 
 Color properties in **protograf** are typically used via *"fill"* to
 set the color of an area, and *"stroke"* to set the color of a line.
