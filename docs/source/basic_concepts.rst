@@ -49,6 +49,7 @@ If you want to make changes to the design, then you add to, delete, or
 change, the instructions in your script and use Python to process it
 again to create the update.
 
+.. _script-concept:
 
 The "script" concept
 ====================
@@ -79,7 +80,7 @@ will affect what you see at the end!
    For more detail on what goes into a script, see the section on
    :doc:`Script Anatomy <script_anatomy>`.
 
-.. _position:
+.. _position-concept:
 
 The "position" concept
 ======================
@@ -109,7 +110,7 @@ was 2.5cm (1") then to locate a point at those same distances would mean
 using an **x position** of 8cm and a **y position** of 12.3cm, as the margin
 size will be automtically added onto the supplied values for the position.
 
-.. _command:
+.. _command-concept:
 
 The "command" concept
 =====================
@@ -125,7 +126,7 @@ in nature, causing something to happen; for example:
 The :doc:`summary list of all commands <commands>` is a useful reference
 for checking what is available.
 
-.. _element:
+.. _element-concept:
 
 The "element" concept
 =====================
@@ -156,7 +157,7 @@ are provided in the section on :doc:`Core Shapes <core_shapes>`.
 Other *elements* include things like :ref:`Hexagonal Grids <hexagonal_grids>`,
 regular :ref:`layouts <layouts>` and :ref:`cards <the-card-command>`.
 
-.. _properties:
+.. _element-properties:
 
 Element properties
 ==================
@@ -184,7 +185,7 @@ common properties are defined in the section covering
 :doc:`terminology <terminology>` and their usage is covered in
 the section on :doc:`core chapes <core_shapes>`.
 
-.. _color:
+.. _basic-color:
 
 Working with color
 ==================
@@ -212,7 +213,7 @@ set the color of an area, and *"stroke"* to set the color of a line.
    section https://www.w3.org/TR/css-color-3/#svg-color (this list can
    also be found at https://en.wikipedia.org/wiki/X11_color_names)
 
-.. _units:
+.. _basic-units:
 
 Working with units
 ==================
@@ -244,7 +245,7 @@ in 1 inch. Internal calculations in **protograf** are all done in
 point units i.e. all inputs, regardless of being inches or centimetres
 are converted to points.
 
-.. _stroke:
+.. _stroke-concept:
 
 The "stroke" concept
 ====================
@@ -257,7 +258,7 @@ likely familiar with from word processing programs, and line thickness - termed
 "stroke width". The reason for doing this is to maintain consistency with other,
 existing tools.
 
-.. _default:
+.. _default-concept:
 
 The "default" concept
 =====================

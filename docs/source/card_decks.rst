@@ -18,18 +18,18 @@ Table of Contents
 - `Basic Concepts`_
 - `The Deck Command`_
 
-  - `Deck Example #1`_
-  - `Deck Example #2`_  (copy & mask)
+  - `Deck Example #1 Defaults`_
+  - `Deck Example #2 Copies`_
 - `The Card Command`_
 - `The Data Command`_
 
   - `Data Sources`_
   - `Data Properties`_
-  - `Data Example #1`_ (CSV)
-  - `Data Example #2`_ (Excel)
-  - `Data Example #3`_ (``Matrix``)
-  - `Data Example #4`_ (images)
-  - `Data Example #5`_ (list)
+  - `Data Example #1 CSV`_
+  - `Data Example #2 Excel`_
+  - `Data Example #3 Matrix`_
+  - `Data Example #4 Images`_
+  - `Data Example #5 Lists`_
 - `The Matrix Command`_
 - `Countersheet and Counter Commands`_
 - `Supporting Commands`_
@@ -125,8 +125,8 @@ The following are key properties that will usually need to be set for a
   properties, in `The Deck Command <deck_command.html>`_ section.
 
 
-Deck Example #1
----------------
+Deck Example #1 Defaults
+------------------------
 
 This example shows the definition of a simple deck for cards that are a
 commonly-used size (with the default units of centimetres in place).
@@ -141,8 +141,8 @@ Note that height (``8.8`` cm) and width (``6.3`` cm) are the default values
 for rectangular cards.
 
 
-Deck Example #2
----------------
+Deck Example #2 Copies
+----------------------
 
 This example shows the definition of a deck of 27 cards that are a
 default size and type (rectangular). This  means that there will be
@@ -349,8 +349,8 @@ The other property that can be used for the ``Data`` command is:
   example, where the primary cards are created through `the Matrix Command`_
   and the two Jokers are the "extras".
 
-Data Example #1
----------------
+Data Example #1 CSV
+-------------------
 `↑ <table-of-contents_>`_
 
 This example shows how data is sourced from a CSV file:
@@ -359,8 +359,8 @@ This example shows how data is sourced from a CSV file:
 
        Data(filename="card_data.csv")
 
-Data Example #2
----------------
+Data Example #2 Excel
+---------------------
 `↑ <table-of-contents_>`_
 
 This example shows how data is sourced from an Excel file:
@@ -369,8 +369,8 @@ This example shows how data is sourced from an Excel file:
 
        Data(filename="card_data.xls")
 
-Data Example #3
----------------
+Data Example #3 Matrix
+----------------------
 `↑ <table-of-contents_>`_
 
 This example shows how data is sourced from a Matrix; in this case the data
@@ -394,8 +394,8 @@ which equates to 52 dataset items.
 
 For more detail on these properties see `The Matrix Command`_.
 
-Data Example #4
----------------
+Data Example #4 Images
+----------------------
 `↑ <table-of-contents_>`_
 
 This example shows how data is sourced from an image directory:
@@ -405,8 +405,8 @@ This example shows how data is sourced from an image directory:
        Data(
            images="pictures", images_filter=".png,.jpg")
 
-Data Example #5
----------------
+Data Example #5 Lists
+---------------------
 `↑ <table-of-contents_>`_
 
 This example shows how data is sourced from a "list of lists":
@@ -443,8 +443,12 @@ This list above is equivalent to a CSV file containing:
         9,Gandalf,,Maia,1
         10,RingWraith,4300,Nazgul,9
 
+It can be seen that using ``None`` is the same as the missing item for
+Gandalf's age.
+
 See below under the `T(emplate) command`_ and also under the
 `S(election) command`_ for examples how this data could be used.
+
 
 .. _the-matrix-command:
 
@@ -535,6 +539,7 @@ order in which the appear in the group's listing.
 This command is somewhat similar to ``Common()``, which provides a way to
 group commonly used properties.
 
+.. _the-template-command
 
 T(emplate) command
 ------------------
@@ -571,6 +576,8 @@ sign - to use when there no *Age* value (for example, for the "Gandalf" row).
 The full code for this example is available as
 `cards_lotr.py <https://github.com/gamesbook/protograf/blob/master/examples/cards/cards_lotr.py>`_
 
+
+.. _the-selection-command
 
 S(election) command
 -------------------
@@ -623,6 +630,9 @@ will produce no changes in the cards as there is no **nature** column or
 
 The full code for this example is available as
 `cards_lotr.py <https://github.com/gamesbook/protograf/blob/master/examples/cards/cards_lotr.py>`_
+
+
+.. _the-lookup-command
 
 L(ookup) command
 ----------------

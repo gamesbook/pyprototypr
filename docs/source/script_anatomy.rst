@@ -67,7 +67,7 @@ Key Commands
 - `Save Command`_
 - `Other Commands`_
 
-.. _create-command
+.. _create-command:
 
 Create Command
 --------------
@@ -114,7 +114,7 @@ Here is an example of a customised ``Create`` command:
         margin_left=1,
     )
 
-.. _pagebreak-command
+.. _pagebreak-command:
 
 PageBreak Command
 -----------------
@@ -126,7 +126,7 @@ When generating a :doc:`deck of cards<card_decks>` the program will
 automatically insert ``PageBreak()`` commands as needed if the cards occupy
 multiple pages.
 
-.. _save-command
+.. _save-command:
 
 Save Command
 ------------

@@ -35,7 +35,7 @@ Table of Contents
 Shape Index
 -----------
 
--  `Arc Command`_
+-  `Arc`_
 -  `Arrow`_
 -  `Blueprint`_
 -  `Bezier`_
