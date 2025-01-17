@@ -118,6 +118,8 @@ Linear Shapes
 --------------
 `↑ <shape-index_>`_
 
+.. _arcCommand
+
 Arc Command
 ~~~~~~~~~~~
 `↑ <shape-index_>`_
