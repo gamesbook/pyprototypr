@@ -17,7 +17,7 @@ but is a handy cross-reference to the detailed information for that command.
   `Python packages <https://pypi.org>`_  |dash| can be used to further enhance
   your own script.
 
--  :ref:`Arc <arcCommand>` * - a geometric shape that can be drawn on a page
+-  :ref:`Arc <arc-command>` * - a geometric shape that can be drawn on a page
 -  :ref:`Arrow <arrow>` * - a geometric shape that can be drawn on a page
 -  :ref:`Blueprint <blueprint>` - a grid of lines that can be drawn on a page
 -  :ref:`Bezier <bezier>` * - a geometric shape that can be drawn on a page

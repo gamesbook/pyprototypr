@@ -118,10 +118,10 @@ Linear Shapes
 --------------
 `↑ <shape-index_>`_
 
-.. _arcCommand
+.. _arc-command:
 
-Arc Command
-~~~~~~~~~~~
+Arc
+~~~
 `↑ <shape-index_>`_
 
 An arc is a curved line.
