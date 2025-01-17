@@ -176,6 +176,8 @@ Example 2.
 ===== ======
 
 
+.. _bezier-command:
+
 Bezier
 ~~~~~~
 `↑ <shape-index_>`_
@@ -224,6 +226,8 @@ Example 2.
       - has a thicker *stroke_width*
 ===== ======
 
+.. _chord-command:
+
 Chord
 ~~~~~
 `↑ <shape-index_>`_
@@ -262,6 +266,7 @@ Example 1.
 
 ===== ======
 
+.. _dot-command:
 
 Dot
 ~~~
@@ -291,6 +296,8 @@ Example 1.
       - fill color for a Dot is the same as the stroke - default is black
 ===== ======
 
+
+.. _line-command:
 
 Line
 ~~~~
@@ -403,6 +410,8 @@ Example 2.
     ===== ======
 
 
+.. _polyline-command:
+
 Polyline
 ~~~~~~~~
 `↑ <shape-index_>`_
@@ -445,6 +454,8 @@ Example 1.
       Each pair of values in the list is also separated by a comma.
 ===== ======
 
+
+.. _text-command:
 
 Text
 ~~~~
@@ -495,6 +506,9 @@ There is an overview on how color is used in the
    **protograf** comes with a predefined set of named colors, shown in the
    `colors <https://github.com/gamesbook/protograf/blob/master/examples/colorset.pdf>`_
    PDF file.
+
+
+.. _arrow-command:
 
 Arrow
 ~~~~~~
@@ -662,6 +676,8 @@ Example 3.
 ===== ======
 
 
+.. _circle-command:
+
 Circle
 ~~~~~~
 `↑ <shape-index_>`_
@@ -691,6 +707,8 @@ Example 1.
       - diameter of ``1`` cm
 ===== ======
 
+
+.. _compass-command:
 
 Compass
 ~~~~~~~
@@ -778,6 +796,8 @@ Example 2.
 ===== ======
 
 
+.. _ellipse-command:
+
 Ellipse
 ~~~~~~~
 `↑ <shape-index_>`_
@@ -830,6 +850,8 @@ Example 2.
       Because the *height* is greater than the *width* it has more of an egg-shape.
 ===== ======
 
+
+.. _equilateraltriangle-command:
 
 EquilateralTriangle
 ~~~~~~~~~~~~~~~~~~~
@@ -917,6 +939,8 @@ Example 2.
 ===== ======
 
 
+.. _hexagon-command:
+
 Hexagon
 ~~~~~~~
 `↑ <shape-index_>`_
@@ -968,6 +992,8 @@ Example 2.
       - a ``pointy`` top set via the *orientation*
 ===== ======
 
+
+.. _polygon-command:
 
 Polygon
 ~~~~~~~
@@ -1134,7 +1160,6 @@ Example 4.
 
 ===== ======
 
-
 Example 5.
 ++++++++++
 
@@ -1168,6 +1193,8 @@ Example 5.
       happened.
 ===== ======
 
+
+.. _polyshape-command:
 
 Polyshape
 ~~~~~~~~~
@@ -1309,6 +1336,8 @@ pairs of values; so instead of ``[(0,0), (1,1)]`` just use ``"0,0 1,1"``.
 ===== ======
 
 
+.. _rectangle-command:
+
 Rectangle
 ~~~~~~~~~
 `↑ <shape-index_>`_
@@ -1367,6 +1396,8 @@ Example 2.
       card-like appearance.
 ===== ======
 
+
+.. _rhombus-command:
 
 Rhombus
 ~~~~~~~
@@ -1461,6 +1492,8 @@ Example 3.
 ===== ======
 
 
+.. _sector-command:
+
 Sector
 ~~~~~~
 `↑ <shape-index_>`_
@@ -1532,39 +1565,7 @@ Example 2.
     ===== ======
 
 
-Example 2b.
-++++++++++
-
-.. |scz| image:: images/customised/sectors.png
-   :width: 330
-.. table::
-   :width: 100%
-   :widths: 40, 60
-
-   +-------+-----------------------------------------------------------------------+
-   | |scz| | This example shows examples of the Sector constructed using commands  |
-   |       | with the following properties:                                        |
-    |       |                                                                       |
-    |       | .. code:: python                                                      |                                                                              |
-    |       |   sctm = Common(                                                      |
-    |       |       cx=2, cy=3, radius=2, fill=black, angle_width=43)               |
-    |       |                                                                       |
-    |       |   Sector(common=sctm, angle=40)                                       |
-    |       |   Sector(common=sctm, angle=160)                                      |
-    |       |   Sector(common=sctm, angle=280)                                      |
-    |       |                                                                       |
-    |       | These all have the following Common properties:                       |
-    |       |                                                                       |
-    |       | - centred at x-position ``2`` cm and at y-position ``3`` cm           |
-    |       | - *radius* of ``2`` cm for the enclosing "virtual" circle             |
-    |       | - *fill* color of black                                               |
-    |       | - *angle_width* - determines the coverage i.e. the "width" of the     |
-    |       |    Sector; in all these cases it is 43 |deg|                          |
-    |       |                                                                       |
-    |       | Each sector in this example is drawn at a different *angle*; with the |
-    |       | this being the "virtual" centre-line  extending through the sector,   |
-    |       | outwards from the middle of the  enclosing "virtual" circle.          |
-    +-------+-----------------------------------------------------------------------+
+.. _square-command:
 
 Square
 ~~~~~~
@@ -1616,6 +1617,8 @@ Example 2.
 
 ===== ======
 
+
+.. _stadium-command:
 
 Stadium
 ~~~~~~~
@@ -1689,6 +1692,8 @@ Example 2.
 ===== ======
 
 
+.. _star-command:
+
 Star
 ~~~~
 `↑ <shape-index_>`_
@@ -1747,6 +1752,8 @@ Example 2.
         the centre
 ===== ======
 
+
+.. _starfield-command:
 
 Starfield
 ~~~~~~~~~
@@ -1903,6 +1910,8 @@ Example 4.
 ===== ======
 
 
+.. _trapezoid-command:
+
 Trapezoid
 ~~~~~~~~~
 `↑ <shape-index_>`_
@@ -2016,6 +2025,8 @@ The following are all such shapes:
 - `Rectangles`_
 
 
+.. _blueprint-command:
+
 Blueprint
 ~~~~~~~~~
 `↑ <shape-index_>`_
@@ -2092,6 +2103,8 @@ Example 2.
 ===== ======
 
 
+.. _dotgrid-command:
+
 DotGrid
 ~~~~~~~
 `↑ <shape-index_>`_
@@ -2150,6 +2163,8 @@ Example 2.
          the `Create()` command.
 ===== ======
 
+
+.. _grid-command:
 
 Grid
 ~~~~
@@ -2237,16 +2252,21 @@ Example 3.
 ===== ======
 
 
+.. _image-command:
+
 Image
 ~~~~~
 `↑ <shape-index_>`_
 
 Pedantically speaking, an image is not like the other shapes in the sense that
-it does not consist of lines and areas drawn by **protograf**  itself.  It is
-an external file which is simply inserted into the drawing. It does, however,
-share a number of common aspects with other shapes - such as an x & y position,
-a width and height and the ability to be rotated. It can also be "drawn over"
-by other shapes appearing further on in a script.
+it does not consist of lines and areas drawn by **protograf**  itself.
+
+An "image" refers to an external file which is simply inserted into the drawing.
+
+The Image shape shares a number of common aspects with other shapes - such as
+an x & y position, a width and height and the ability to be rotated.
+
+An image can also be "drawn over" by other shapes appearing further on in a script.
 
 
 Example 1.
@@ -2331,6 +2351,8 @@ Example 2.
 ===== ======
 
 
+.. _hexagons-command:
+
 Hexagons
 ~~~~~~~~
 `↑ <shape-index_>`_
@@ -2368,6 +2390,8 @@ Example 1.
         of a hexagon "downwards"
 ===== ======
 
+
+.. _lines-command:
 
 Lines
 ~~~~~~
@@ -2438,6 +2462,8 @@ Example 2.
       drawn.
 ===== ======
 
+
+.. _rectangles-command:
 
 Rectangles
 ~~~~~~~~~~
