@@ -11,7 +11,7 @@ In most cases, you will need to look at the source code to understand how the
 output has been created.
 
 1. There is a somewhat random tour of various elements in **protograf**
-   available as a `PDF file <https://github.com/gamesbook/protograf/blob/master/docs/examples/demo.pdf>`_ - it is based on the
+   available as a `PDF file <https://github.com/gamesbook/protograf/blob/master/docs/source/examples/demo.pdf>`_ - it is based on the
    `demo script <https://github.com/gamesbook/protograf/blob/master/examples/core/demo.py>`_
 2. :doc:`Abstract Boards <abstract>` and
    :doc:`Commercial Boards <commercial>` - construction examples for games

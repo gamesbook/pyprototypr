@@ -22,6 +22,8 @@ but is a handy cross-reference to the detailed information for that command.
 -  :ref:`Blueprint <blueprint-command>` - a grid of lines that can be drawn on a page
    (see also further :ref:`customisation options <blueprintIndex>`)
 -  :ref:`Bezier <bezier-command>` * - a geometric shape that can be drawn on a page
+-  :ref:`BGG <the-bgg-command>` - access boardgame data from BGG (typically for display
+   on one or more :ref:`cards <the-card-command>`)
 -  :ref:`Card <the-card-command>`  - details for a card that is part of a
    :ref:`deck <the-deck-command>`
 -  :ref:`Circle <circle-command>` * - a geometric shape that can be drawn on a page
@@ -44,7 +46,7 @@ but is a handy cross-reference to the detailed information for that command.
 -  :ref:`DotGrid <dotgrid-command>` - a set, or group, of dots that can be drawn on a page
 -  :ref:`Ellipse <ellipse-command>` * - a geometric shape that can be drawn on a page
 -  :ref:`EquilateralTriangle <equilateraltriangle-command>` * - a geometric shape that can be drawn on a page
--  Font - set the font properties for any :ref:`Text <text-command>` drawn on a page
+-  :ref:`Font <the-font-command>` - set the font properties for any :ref:`Text <text-command>` drawn on a page
 -  :ref:`Grid <grid-command>` - a set, or group, of lines that can be drawn on a page
 -  :ref:`group <group-command>` - a way to  reference a stack of shapes that
    all need to be drawn together on a :ref:`card <the-card-command>`
@@ -88,6 +90,7 @@ but is a handy cross-reference to the detailed information for that command.
    item in a column from a set of :ref:`data <the-data-command>` for a
    :ref:`card <the-card-command>`
 -  :ref:`Text <text-command>` * - a shape containing text that can be displayed on a page
+-  :ref:`Today <the-today-command>` - display - as text - the current date and time
 -  :doc:`Track <layouts_track>` - draw any number of shapes at the vertices of another shape
 -  :ref:`Trapezoid <trapezoid-command>` * - a geometric shape that can be drawn on a page
 -  :doc:`TriangularLocations <layouts_triangular>`- defines an ordered series of

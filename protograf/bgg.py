@@ -1,7 +1,12 @@
 """
-BoardGameGeek.com interface for protograf
+Purpose: BoardGameGeek.com API wrapper for protograf
+Written by: Derek Hohls
+Created on: 21 May 2016
 
-Based off of the BGGGame object, for example::
+Notes:
+
+* BGG() uses the `bgg-api` Python library (https://github.com/SukiCZ/boardgamegeek)
+* Code is based off of the BGGGame object, for example::
 
     {'_comments': [],
      '_data': {'accessory': False,
@@ -123,6 +128,7 @@ class BGGGameList(object):
     def __init__(self):
         """create empty lists to hold values"""
         self.bgg = BGGClient()
+        self.games = []  # list of BGGGame objects
         self.alternative_names = []
         self.artists = []
         self.average = []
@@ -166,6 +172,7 @@ class BGGGameList(object):
         """Append a game's property to a matching list."""
         self._game = game  # BGGGame object
         if self._game:
+            self.games.append(game)
             self.alternative_names.append(self._game.alternative_names)
             self.artists.append(self._game.artists)
             self.average.append(self._game.average)
@@ -215,7 +222,6 @@ class BGGGame(object):
             short: int
                 number of characters to use for short description
         """
-        #try:
         self._game = None
         self.short = int(short) or 500
         self.bgg = BGGClient()
@@ -337,3 +343,9 @@ class BGGGame(object):
             self._players = (self._game.minplayers, self._game.maxplayers)
             self.age = f"{self._game.minage}+"
             self._age = self._game.minage
+
+    def display(self):
+        """Display all properties and values of a BGGGame."""
+        for attr in dir(self):
+            if '__' not in attr:
+                print("%s: %r" % (attr, getattr(self, attr)))

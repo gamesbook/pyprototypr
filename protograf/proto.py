@@ -1742,6 +1742,9 @@ def BGG(ids=None, user=None, progress=False, short=500):
     if user:
         tools.feedback("Sorry - the BGG user collection function is not available yet!")
     if ids:
+        tools.feedback(
+            'All board game data acessed via this tool is owned by BoardGameGeek'
+            ' and provided through their XML API')
         for game_id in ids:
             if progress:
                 tools.feedback(f"Retrieving game '{game_id}' from BoardGameGeek...")
