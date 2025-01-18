@@ -11,7 +11,7 @@ other graphics editing or programming tools, but some are specific to it.
 
 This is a general discussion; it may also be useful to look at the more
 detailed definitions of some of the terms in the section covering
-`terminology <terminology>`.
+:doc:`terminology <terminology>`.
 
 .. _table-of-contents:
 
@@ -35,9 +35,10 @@ How you’ll use protograf
 `↑ <table-of-contents_>`_
 
 You will be using **protograf** to write what is termed a **script**
-i.e. a recipe or list of instructions that are stored in a file. These
-instructions are used to define a game board, a set of cards or tiles,
-or any other, similar, regular graphical design of your choice.
+i.e. a recipe or list of instructions that are stored in a file.
+
+A script's instructions are used to define a game board, a set of cards
+or tiles, or any other, similar, regular graphical design of your choice.
 
 You will then use Python to "run" the script. Python will take the file
 you have written, and step through it, line by line, from top to bottom,
@@ -47,7 +48,7 @@ design!
 
 If you want to make changes to the design, then you add to, delete, or
 change, the instructions in your script and use Python to process it
-again to create the update.
+again to create the updated version.
 
 .. _script-concept:
 
@@ -116,9 +117,10 @@ The "command" concept
 =====================
 `↑ <table-of-contents_>`_
 
-Instructions in **protograf** are termed *commands*.  These usually are
-written with an initial capital letter. They are effectively "imperative"
-in nature, causing something to happen; for example:
+Instructions in **protograf** are termed *commands*.
+
+Command are usually written with an initial capital letter. They are effectively
+"imperative" in nature, causing something to happen; for example:
 
 - ``Save()`` - instructs the program to save the output to file
 - ``Circle()`` - instructs the program to draw a circle
@@ -136,9 +138,10 @@ Rather than use the slightly clumsy term "thing", **protograf** uses
 the term *element*.
 
 Almost everything in **protograf** that appears in the output is
-considered to be an *element* of some sort. Elements are often geometric
-**shapes**, such lines, circles or rectangles, but can also be text or
-images.
+considered to be an element of some sort.
+
+Elements are often geometric **shapes**, such lines, circles or rectangles,
+but can also be text or images.
 
 Examples of some of the available geometric **shapes** include:
 
@@ -151,11 +154,11 @@ Examples of some of the available geometric **shapes** include:
 -  Square
 -  Stadium
 
-Descriptions of all of these shapes, and how to create and use them,
-are provided in the section on :doc:`Core Shapes <core_shapes>`.
+Descriptions of all of these kinds of shapes, and how to create and use them,
+are provided in the section on :doc:`core shapes <core_shapes>`.
 
-Other *elements* include things like :ref:`Hexagonal Grids <hexagonal_grids>`,
-regular :ref:`layouts <layouts>` and :ref:`cards <the-card-command>`.
+Other *elements* include things like :doc:`hexagonal grids <hexagonal_grids>`,
+regular :doc:`layouts <layouts>` and :doc:`decks of cards <card_decks>`.
 
 .. _element-properties:
 
@@ -163,27 +166,23 @@ Element properties
 ==================
 `↑ <table-of-contents_>`_
 
-*Elements* can have other settings apart from their `position <position_>`_
+*Elements*, including *shapes*, can have other settings apart from their
+:ref:`position <position-concept>`.
 
-For example, the rectangle which represents the outline of a card has a
-*height* |dash| its size in the vertical direction and a  *width* |dash|
-its size in the horizontal direction. The line used to draw the rectangle
-also has a *stroke width* and a *stroke color* (see below for more about
-the concepts of stroke and width). A circle will have its size defined by a
-value for its *radius* or *diameter*, and so on.
+For example, settings can include:
 
-.. NOTE::
+- the *height* |dash| size in the vertical direction and *width* |dash| the
+  size in the horizontal direction, of a rectangle;
+- the *stroke width* and *stroke color* of the line used to draw a rectangle;
+- the *radius* or *diameter* of a circle;
+- the  *color*, *paper* size, and so on for a document.
 
-   Because the word "size" is such a general one, its not really
-   used much in **protograf**; more specific terms are used instead.
+All of these kinds of settings are termed **properties**.
 
-Similarly, the settings for the creation of a document can be provided,
-such its color, the *paper* size and so on.
-
-All of these kinds of settings are called **properties**. Most of the
-common properties are defined in the section covering
+Most of the common properties are defined in the section covering
 :doc:`terminology <terminology>` and their usage is covered in
-the section on :doc:`core chapes <core_shapes>`.
+the section on :doc:`core chapes <core_shapes>`.  Some shapes have
+more :doc:`extensive properties  <customised_shapes>`.
 
 .. _basic-color:
 
@@ -200,8 +199,9 @@ would likely term "brown".
 
 Colors in **protograf** can also make use of names from a pre-defined
 list - for example ``#A0522D`` is defined as the color *sienna*. The
-`colorset.pdf <https://github.com/gamesbook/protograf/blob/master/examples/colorset.pdf>`
-file shows all the names and colors that are available.
+`colorset.pdf <https://github.com/gamesbook/protograf/blob/master/examples/colorset.pdf>`_
+file shows all the names and colors that are available, along with their
+*hexadecimal* value.
 
 Color properties in **protograf** are typically used via *"fill"* to
 set the color of an area, and *"stroke"* to set the color of a line.
@@ -245,15 +245,21 @@ in 1 inch. Internal calculations in **protograf** are all done in
 point units i.e. all inputs, regardless of being inches or centimetres
 are converted to points.
 
+.. NOTE::
+
+   In a few cases, **protograf** adopts the word "size" where point units are
+   in use e.g. font size, but because the term is such a general one,  it's
+   not really used that much.
+
 .. _stroke-concept:
 
 The "stroke" concept
 ====================
 `↑ <table-of-contents_>`_
 
-While the majority of size-based `properties <properties_>`_ in **protograf**
+While the majority of size-based `element properties`_ in **protograf**
 work with the "normal" units you have chosen - inches or centimetres - some use
-points (see `working with units`_ above). These include font height, that you’re
+points (see `working with units`_ above). These include *font size*, that you’re
 likely familiar with from word processing programs, and line thickness - termed
 "stroke width". The reason for doing this is to maintain consistency with other,
 existing tools.
@@ -265,19 +271,20 @@ The "default" concept
 `↑ <table-of-contents_>`_
 
 A "default", in terms of **protograf**, is a value or setting for
-something |dash| usually a `property <properties_>`_ |dash| which is used
-unless you specify otherwise. This is helpful for quickly drawing or testing
-something until you're ready to make decisions about your own specific
-settings or values.
+something |dash| usually a `property <element properties_>`_ |dash| which is used
+unless you specify otherwise.
+
+Defaults are helpful for quickly drawing or testing something until you're ready
+to make decisions about your own specific settings or values.
 
 Some examples of defaults are:
 
 -  the default *margin* for pages in the output PDF is ``1.25`` cm
    or half of 1 inch
--  the default *paper* size for pages in the output PDF is A4 |dash| similar
-   to the US letter size
+-  the default *paper* size for pages in the output PDF is ``A4`` |dash| similar
+   to the US Letter size
 -  the default *units* are centimetres (*cm*)
--  the default *x* and *y* positions are each 1 (one) - with default
+-  the default *x* and *y* positions are each ``1`` (one) - with default
    units that equals 1cm
 -  the default line *length* is ``1`` (one) - with default units that is 1cm
 -  the default line *stroke width* is ``1`` point - that corresponds to
