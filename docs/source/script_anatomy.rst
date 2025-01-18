@@ -377,7 +377,7 @@ Supplying the script a **property that does not exist**, for example,
 using ``u=2.0`` when you meant to say ``y=2.0``. This can happen
 because those two letters are located right next to each other on a
 keyboard and the letters are a little similar. In this case, the script will
-“fail silently” because properties that don’t exist are simply ignored.
+"fail silently" because properties that don’t exist are simply ignored.
 This kind of mistake is much harder to spot; often because the default value
 will then be used instead and it will seem as though the script is drawing
 something incorrectly.

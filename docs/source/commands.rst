@@ -66,7 +66,7 @@ but is a handy cross-reference to the detailed information for that command.
 -  :ref:`Polygon <polygon-command>` * - a geometric shape that can be drawn on a page
 -  :ref:`Polyline <polyline-command>` * - a geometric shape that can be drawn on a page
 -  :ref:`Polyshape <polyshape-command>` * - an irregular geometric shape that can be drawn on a page
--  :doc:`Repeat <layouts_repeat>` - repeat the drawing of shape across a rectangular grid pattern
+-  :doc:`Repeat <layouts_repeat>` - repeat the drawing of a shape across a rectangular grid pattern
 -  :ref:`Rectangle <rectangle-command>` * - a geometric shape that can be drawn on a page
    (see also further :ref:`customisation options <rectangleIndex>`)
 -  :ref:`Rectangles <rectangles-command>` - a set, or group, of rectangles that can be drawn on a page

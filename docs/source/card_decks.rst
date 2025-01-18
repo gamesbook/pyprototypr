@@ -539,7 +539,7 @@ order in which the appear in the group's listing.
 This command is somewhat similar to ``Common()``, which provides a way to
 group commonly used properties.
 
-.. _the-template-command
+.. _the-template-command:
 
 T(emplate) command
 ------------------
@@ -576,8 +576,7 @@ sign - to use when there no *Age* value (for example, for the "Gandalf" row).
 The full code for this example is available as
 `cards_lotr.py <https://github.com/gamesbook/protograf/blob/master/examples/cards/cards_lotr.py>`_
 
-
-.. _the-selection-command
+.. _the-selection-command:
 
 S(election) command
 -------------------
@@ -631,8 +630,7 @@ will produce no changes in the cards as there is no **nature** column or
 The full code for this example is available as
 `cards_lotr.py <https://github.com/gamesbook/protograf/blob/master/examples/cards/cards_lotr.py>`_
 
-
-.. _the-lookup-command
+.. _the-lookup-command:
 
 L(ookup) command
 ----------------

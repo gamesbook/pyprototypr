@@ -6,10 +6,10 @@ Introduction
 ============
 
 The aim of :doc:`protograf <index>` is to provide a general purpose
-program that allows you to design simple and reproducible graphics that
-can be used for prototyping the elements or components of a project such as
-the creation of a board game; including the board, the tiles, the cards and
-so on.
+program that allows you to design simple and reproducible text and graphics
+that can be used for prototyping the elements or components of a project,
+such as the creation of a board game, including the board, the tiles, the
+cards and so on.
 
 .. IMPORTANT::
 
@@ -35,9 +35,11 @@ pictures or background images should be made, as usual, in a regular
 graphics design package and then added into your script by a link
 to the image file.
 
-**protograf** also supports access of data in text files (“CSV”) and
-Excel documents; this can help separate out the design and layout from
-the content - the text and numbers - that appears in the design.
+**protograf** also supports access of data in comma-delimited text files
+|dash| often called "CSV" files |dash| and Excel documents; this can help
+separate out the design and layout from the content - the text and the
+numbers - that appears in the design.
+
 
 How do I use it?
 ================
@@ -49,6 +51,7 @@ of those instructions; hopefully the design that you intended to make!
 
 As your design changes and evolves, you add or change instructions and
 recreate the output.
+
 
 How does it work?
 =================
@@ -67,8 +70,9 @@ to write code from scratch.
 **protograf** is designed such that you *don’t* need to know how to
 program in Python in order to use it; but if you *are* a Python
 programmer then you can certainly treat this as you would any other
-library and add in your own additional Python code or logic to your
+package and add in your own additional Python code or logic to your
 scripts for your own purpose.
+
 
 How do I get started?
 =====================

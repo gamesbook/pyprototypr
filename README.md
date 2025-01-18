@@ -27,7 +27,7 @@ before proceeding...
 
 ## Requirements
 
-__protograf__ requires Python (version of 3.11 or higher) to be installed
+__protograf__ requires Python (version of 3.13 or higher) to be installed
 and running on your machine.
 
 If this is **not** your current Python version, or Python is not installed on
@@ -39,7 +39,7 @@ If using [uv](https://docs.astral.sh/uv/), it is recommended to also create and 
 
 ## Quick Start (for the impatient)
 
-Assuming that Python 3.11 or higher is installed on your machine, you can then
+Assuming that Python 3.13 or higher is installed on your machine, you can then
 install __protograf__ via:
 ```
 pip install protograf
@@ -117,8 +117,7 @@ current / potential areas of work or development.
     * [ ] join style
 * [ ] Polyline: define arcs along the path
 * [ ] Arcs (pathways) inside a hexagon (**in progress**)
-* [ ] Shortcut notation for styling of: area, line, text, etc.
-* [ ] Track: layout shapes along a rectangle, circle or polygon (**in progress**)
+* [ ] Shortcut notation for styling of a shape
 * [ ] Stripes: interior "areas" for a Rectangle
 * [x] Rotation:
     * [x] text along a line
@@ -126,6 +125,7 @@ current / potential areas of work or development.
     * [ ] Trapezoid
     * [ ] Triangle
 * [ ] Cards:
+    * [ ] multiple decks in one script
     * [ ] support card back designs
     * [ ] grid lines for hexagonal cards
     * [ ] multiple bleed areas
@@ -144,7 +144,8 @@ current / potential areas of work or development.
 ## Acknowledgements
 
 > *The world is full of power and energy and a person can go far by just
-> skimming off a tiny bit of it.* "Snow Crash", Neal Stephenson.
+> skimming off a tiny bit of it.*
+> "[Snow Crash](https://en.wikipedia.org/wiki/Snow_Crash)", Neal Stephenson, 1992.
 
 As always, with Python, you are building "on the shoulders of giants".
 In this case, the
@@ -163,7 +164,7 @@ Additional libraries in use include:
 * `openpyxl` https://pypi.org/project/openpyxl/ - support for access to Excel files
 * `pymupdf` https://pymupdf.io/ - support for exporting PDF to PNG images
 * `imageio` https://pypi.org/project/imageio/- support for compiling PNGs into a GIF
-* `jinja` https://jinja.palletsprojects.com - template logic with variables (for cards)
+* `jinja` https://jinja.palletsprojects.com - template logic with variables
 
 ## License
 

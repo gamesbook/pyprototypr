@@ -241,15 +241,15 @@ As with the loop, a statement that ends with a ``:`` is followed by one
 or more lines that are all indented below each other; these represent
 the actions that are to be carried out in that part of the script.
 
-The statement itself that forms part of the ``if``, is termed a “true or
-false” check. This means that it’s a comparison of some kind. In this
+The statement itself that forms part of the ``if``, is termed a "true or
+false" check. This means that it’s a comparison of some kind. In this
 case, the script examines the value stored inside ``color`` and checks
 if it is "equal to" |dash| by using the double-equals sign |dash| the
 value of ``green``. And because the script understands what is meant by
 ``green`` it can carry out this comparison.
 
 Should the comparison be dealing with two values that are equivalent
-then the check is deemed to be correct or “true”, and so the actions
+then the check is deemed to be correct or "true", and so the actions
 that are in the first part of the ``if`` are carried out - in this case
 the ``keep driving`` action - and the rest will be ignored. However,
 should the comparison be false, for example because the value stored in

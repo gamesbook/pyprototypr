@@ -41,7 +41,7 @@ so-called "reserved" names that are available as part of Python.
 .. WARNING::
 
    If your assigned name is the same as a reserved name, then you’ll
-   overwite it and your scripts may fail in very strange ways!!
+   overwite it and your scripts may fail in *very* strange ways!!
 
 Reserved Names
 --------------
@@ -111,10 +111,10 @@ referred to, and used or reused, later in the script.  For example:
    Circle(common=green_dots)
    Rectangle(common=green_dots)
 
-Both the ``Circle`` and ``Rectangle`` share common properties (``fill`` and
-``dot``) which are assigned to each of their ``common`` property value.
-This value - ``green_dots`` - is in turn created when is assigned to the
-``Common`` command.
+Both the ``Circle`` and ``Rectangle`` share common properties |dash| ``fill``
+and ``dot``|dash| which are assigned to each of their ``common`` property value.
+This value |dash| ``green_dots`` |dash| is in turn created when is assigned
+to the ``Common`` command.
 
 
 Case-sensitivity
@@ -122,20 +122,24 @@ Case-sensitivity
 `↑ <table-of-contents_>`_
 
 **protograf**, like Python, is case-sensitive - unlike some computer
-languages (or, for example, the file names that are used in Windows); so a
+languages or, for example, the file names that are used in Windows; so a
 lowercase name is **NOT** the same as an uppercase version of it.
 
-For example::
+For example:
+
+.. code:: python
 
     Rectangle()
 
-will create and draw a ``Rectangle`` shape on the page; but::
+will create and draw a ``Rectangle`` shape on the page; but:
+
+.. code:: python
 
     area = rectangle()
 
 will create a ``Rectangle`` shape, and assign a reference to it in the
-property named ``area`` (for use later on in the script) but will **not**
-draw the Rectangle on the page.
+property named ``area`` |dash| for use later on in the script |dash| but
+will **not** draw the Rectangle on the page.
 
 
 Calculations
@@ -188,22 +192,28 @@ Quotes in Text
 
 Using quotes - ``'`` or ``"`` - inside a string of letters can be tricky.
 
-If you have a Text shape, for example, like this::
+If you have a Text shape, for example, like this:
+
+.. code:: python
 
    Text(x=1, y=1, text="Something interesting")
 
-You can easily add single quotes as part of the text (for ``isn't``)::
+You can easily add single quotes as part of the text e.g. for ``isn't``::
 
    Text(x=1, y=1, text="Something isn't interesting")
 
 However, if you want to use double quotes inside the text, then you’ll
-need to change the outer ones to singles::
+need to change the outer ones to singles:
+
+.. code:: python
 
    Text(x=1, y=1, text='Something "interesting"!')
 
 What if you want to use single and double quotes in the text? In this
 case, you’ll need to add a special marker character - a backslash - before
-the quote that is matched by the outer one::
+the quote that is matched by the outer one:
+
+.. code:: python
 
    Text(x=1, y=1, text='Something isn\'t "interesting"!')
 
@@ -217,20 +227,29 @@ Properties and Short-cuts
 `↑ <table-of-contents_>`_
 
 In general, **protograf** tries to avoid the use of short-cuts and instead
-relies on short, but hopefully memorable, names for things.
+relies on short, but hopefully memorable, names for things, although there
+are some exceptions,
 
-There are exceptions; for example, many properties are set with *directions*
-matching those shown on a compass, and though you can write these names out
-in full, it can be tedious to type ``southeast`` and so ``se`` can be used
-instead.  Other settings can be abbreviated to use their first letter; so
-``d`` for ``diamond`` layout of a ``Hexagons`` grid.
+Many properties are set with *directions* matching those shown on a compass,
+and although you could want write these names out in full, it can be very
+tedious  to type, for example, ``southeast`` or ``northwest`` and so
+``se`` and ``nw`` are used instead.
 
-The other exceptions are the location names.  Instead of "across" and "up",
- **protograf** uses ``x`` and ``y`` (because of their common usage in
- geometry).  Similarly, ``cx`` and ``cy`` are used instead of "centre from left"
- or "centre from bottom"; and ``mx`` and ``my`` are used instead "move
- horizontally" or "move vertically".  Hopefully, these short-cut names will be
- memorable after working with the program for a while.
+The other exceptions are the location names.
+
+- Instead of "across" and "up", **protograf** uses ``x`` and ``y`` because
+  of their common usage in geometry.
+- Similarly, ``cx`` and ``cy`` are used instead of "centre from left"
+  or "centre from bottom".
+- Also, ``mx`` and ``my`` are used instead of "move horizontally" or
+  "move vertically".
+
+Hopefully, these "short-cut" names will become memorable after working with
+the program for a while.
+
+Some of the other proprerties can be *optionally* abbreviated to use just their
+first letter; so, for example, using ``d`` for a ``diamond`` layout of a
+``Hexagons`` grid.
 
 
 Lists
@@ -242,15 +261,16 @@ so that they can be processed together.
 
 You may be familiar with examples such as grocery lists or to-do lists.
 A list is normally written as a series of items, each separated with a
-comma. For example; apples, oranges, bananas and plums. A list can also
-be written vertically in the form of a number of bullets:
+comma. For example; apples, oranges, bananas and plums.
+
+A list can also be written vertically in the form of a number of bullets:
 
 -  first,
 -  second, and
 -  third.
 
-A column in a spreadsheet can be thought of as such a vertical list (but
-you would not usually use an “and” in it!)
+A column in a spreadsheet can be thought of as such a vertical list,
+although you would not usually use an "and" in it!
 
 Lists in **protograf** are written in a similar way but they need to
 be identified by wrapping them at their start and end by the use of
@@ -263,20 +283,22 @@ The brackets that are used are so-called **square brackets** - ``[`` and
    7]* - this list is a series of odd numbers.
 -  If they are words, or strings of text then each item must be wrapped
    in quotes: for example, *['apples', 'oranges', 'bananas', 'plums']*
-   or *["apples", "oranges", "bananas", "plums"]* (remember that quotes
-   can be single or double but not a mix of both!)
+   or *["apples", "oranges", "bananas", "plums"]* |dash| remember that quotes
+   can be single or double but not a mix of both!
 
 .. NOTE::
 
    Note that there is **no** use of the word "and" in these lists!
 
 A list is normally given an assignment to store it in memory for use by
-the script; for example::
+the script; for example:
+
+.. code:: python
 
    groceries = ['apples', 'oranges', 'bananas', 'plums']
 
 This is so that the list can be referred to in the script by using the
-shorthand reference name (in this case ``groceries``). There are various
+shorthand reference name |dash| in this case ``groceries``. There are various
 examples of the use of lists of elsewhere in these documents and also in
 the script examples.
 
@@ -293,7 +315,9 @@ While **protograf** will attempt to check many details of the script,
 its very unlikely to be able to catch every mistake that might be made.
 
 It will do some basic error checking as to whether correct values have
-been assigned to properties; so::
+been assigned to properties; so:
+
+.. code:: python
 
     Rectangle(height="a")
 
@@ -305,7 +329,9 @@ will cause this error when the script is run::
 because the ``height`` is meant to be a number, not a string.
 
 In some cases, instructions will **not** cause an error, but they will simply
-be ignored, for example::
+be ignored, for example:
+
+.. code:: python
 
     Rectangle(corner="a")
 
@@ -315,7 +341,9 @@ simply be skipped.
 Python-specific Errors
 ----------------------
 
-"Under the hood" Python will itself also report on various errors, for example::
+"Under the hood" Python will itself also report on various errors, for example:
+
+.. code:: python
 
    Arc(x=1, y=1, x=2, y1=3)
                  ^^^
@@ -325,11 +353,15 @@ Python attempts to identify the type and location of the error - a
 ``SyntaxError`` is just a grammar error of some type - as well as what
 the cause *might* be. Here, it found that you have used the property ``x``
 twice, so in this case you might need to change the second one to ``x1`` --
-which  is probably the intended one::
+which  is probably the intended one:
+
+.. code:: python
 
    Arc(x=1, y=1, x1=2, y1=3)
 
-Another example::
+Another example:
+
+.. code:: python
 
    Rectangle(height=1.5, stroke=green, fill=bred)
                                             ^^^^
@@ -338,12 +370,16 @@ Another example::
 In this case, the script uses the name of something - ``bred`` - which
 is unknown. It could be a simple spelling mistake e.g. here it should be
 ``red`` *or* possibly you'd meant to assign the word ``bred`` to a particular
-color before using it for the ``Rectangle``::
+color before using it for the ``Rectangle``:
+
+.. code:: python
 
    bred = "#A0522D"
    Rectangle(height=1.5, stroke=green, fill=bred)
 
-Another example::
+Another example:
+
+.. code:: python
 
    paper=A8 cards=9
             ^^
@@ -352,7 +388,9 @@ Another example::
 Another ``SyntaxError`` where Python tries to assess what the cause
 might be. Here, you’d need to add a ``,`` (comma) at the end of setting the
 ``paper=A8`` property as each property in the list **must** be comma-separated
-(a space is not sufficient) as follows::
+(a space is not sufficient) as follows:
+
+.. code:: python
 
    paper=A8, cards=9
 

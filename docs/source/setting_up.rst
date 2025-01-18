@@ -59,7 +59,7 @@ Installing Python
 
 **protograf** requires a device e.g. laptop or desktop (but probably
 not a smart phone) that already has the correct version of Python
-(version 3.11 or higher) installed.
+(version 3.13 or higher) installed.
 
 Linux users
 -----------
@@ -71,7 +71,7 @@ https://ubuntushell.com/install-uv-python-package-manager/
 You can then use `uv` to install an updated version of Python as well as this
 virtual environment; for example::
 
-    uv venv --python 3.11.6
+    uv venv --python 3.13
 
 New packages can be installed using `uv` and `pip`::
 
@@ -86,7 +86,7 @@ If you have no experience of working with Python, then "miniconda" is a fairly
 simple way of using Python; follow
 https://docs.anaconda.com/miniconda/miniconda-install/ for instructions on
 downloading and running the installer. Make sure you choose a version that will
-install Python 3.11 or higher (3.11, 3.12, 3.13 etc.).  Again, follow the
+install Python 3.13 or higher (3.13, 3.14, etc.).  Again, follow the
 documentation there to ensure that Python is working after the installation
 is complete.
 
@@ -112,11 +112,11 @@ Test that Python is installed
 In order to test that Python is installed, start a **command-line
 window**. The way you do this depends on your operating system.
 
--  For Windows users - go to “Start -> Run” (On Windows 7 to 10, press
-   “WindowsKey+R” or use the search box at the bottom of the Start menu)
+-  For Windows users - go to "Start -> Run" (On Windows 7 to 10, press
+   "WindowsKey+R" or use the search box at the bottom of the Start menu)
 
 -  For Mac OS X users - go to your Applications/Utilities folder and
-   choose “Terminal”.
+   choose "Terminal".
 
 -  For Linux users; you should already know how to open a Terminal!
 
@@ -126,9 +126,9 @@ When the command-line window appears, type::
 
 You should see something like::
 
-   Python 3.11.5
+   Python 3.13.1
 
-The exact number after the “11” does not matter.
+The exact number after the "13" does not matter.
 
 You can now close the command-line window.
 
@@ -182,12 +182,12 @@ but do not start any line with spaces!)::
    Text(text="Hello World")
    Save()
 
-Save the file; call it something like *test.py*. (The “.py” indicates
+Save the file; call it something like *test.py*. (The ".py" indicates
 its a Python file - this is useful but not essential).
 
-Now use Python to “run” this file.
+Now use Python to "run" this file.
 
-By “run”, its meant that you open a command-line window (see the section
+By "run", its meant that you open a command-line window (see the section
 `Test that Python is installed`_), change to the directory in which the
 test file was created, for example on Windows::
 

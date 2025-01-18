@@ -4,16 +4,17 @@
 Welcome to protograf's documentation!
 =====================================
 
+.. image:: logo.png
+  :width: 511
+  :alt: protograf logo
+  :target: https://github.com/gamesbook/protograf
+
 The `protograf <https://github.com/gamesbook/protograf>`_  documentation consists
 of the sections listed below.
 
-Although its great to be able to just "jump in" and start using a
-program, the sections below are designed to be read in order - apart from
-the terminology - as they all contain useful information and build on each
-other.
-
-If its your first time here, please consult the `guide <guide.html>`_ to get
-a sense of what is contained in these different sections.
+If it's your first time here, please consult the `guide <guide.html>`_
+which presents the sections designed to be read in order; they all contain
+useful information but do build on each other.
 
 .. toctree::
    :maxdepth: 2
