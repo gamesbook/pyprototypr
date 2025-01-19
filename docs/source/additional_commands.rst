@@ -28,11 +28,55 @@ You will get the following feedback::
 
     FEEDBACK:: All board game data accessed via this tool is owned by BoardGameGeek and provided through their XML API
 
+Usable Fields
+-------------
+
+These are:
+
+- **AVERAGEWEIGHT** -
+- **BAYESAVERAGE** -
+- **BGG** -
+- **CATEGORIES** -
+- **DESCRIPTION** -
+- **DESCRIPTION_SHORT** -
+- **DESIGNERS** -
+- **DISPLAY** -
+- **EXPANDS** -
+- **EXPANSION** -
+- **EXPANSIONS** -
+- **FAMILIES** -
+- **GET_DESCRIPTION_SHORT** -
+- **ID** -
+- **IMAGE** -
+- **IMPLEMENTATIONS** -
+- **MAXPLAYERS** -
+- **MECHANICS** -
+- **MEDIAN** -
+- **MINAGE** -
+- **MINPLAYERS** -
+- **NAME** -
+- **NUMCOMMENTS** -
+- **NUMWEIGHTS** -
+- **OWNED** -
+- **PLAYERS** -
+- **PLAYINGTIME** -
+- **PROPERTIES** -
+- **PUBLISHERS** -
+- **RANKS** -
+- **SET_PROPERTIES** -
+- **SHORT** -
+- **STDDEV** -
+- **THUMBNAIL** -
+- **TRADING** -
+- **USERSRATED** -
+- **WANTING** -
+- **WISHING** -
+- **YEARPUBLISHED** -
 
 Subsets of Games
 ----------------
 
-You can retrieve a subset of games by provding one or more items to match on.
+You can retrieve a subset of games by providing one or more items to match on.
 
 These are:
 

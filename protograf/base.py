@@ -15,6 +15,7 @@ import json
 import logging
 import math
 import os
+from urllib.parse import urlparse
 # third party
 import jinja2
 from jinja2.environment import Template
@@ -63,6 +64,9 @@ log = logging.getLogger(__name__)
 
 DEBUG = False
 DEBUG_COLOR = lightsteelblue
+CACHE_DIRECTORY = '.protograf'   # append to the user's home directory
+BGG_IMAGES = 'cf.geekdo-images.com'
+
 # ---- named tuples
 UnitProperties = namedtuple(
     'UnitProperties', [
@@ -1372,8 +1376,11 @@ class BaseShape:
                 return True
         return False
 
-    def load_image(self, source=None, scaling=None) -> tuple:
+    def load_image(self, source=None, scaling=None, cache_directory=None) -> tuple:
         """Load an image from file or website.
+
+        Attempt to use local cache directory to source an image
+        for web-based assets, if possible.
 
         If source not found; try path in which script located.
 
@@ -1402,6 +1409,19 @@ class BaseShape:
             drawing.scale(scaling_x, scaling_y)
             return drawing
 
+        def image_reader(source) -> object:
+            """Attempt to load first from local, then source."""
+            img = None
+            if cache_directory:
+                if tools.is_url_valid(source):
+                    loc = urlparse(source)
+                    filename = loc.path.split("/")[-1]
+                    if os.path.exists(cache_directory, filename):
+                        _source = os.path.join(cache_directory, filename)
+                        img = ImageReader(_source)
+            if not img:
+                img = ImageReader(source)
+
         img = None
         svg = False
         is_directory = False
@@ -1421,7 +1441,7 @@ class BaseShape:
                     if scaling:
                         img = scale_image(img, scaling)
                 else:
-                    img = ImageReader(source)
+                    img = image_reader(source)
                 return img, svg, is_directory
             except IOError:
                 filepath = tools.script_path()

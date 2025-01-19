@@ -5,7 +5,6 @@ Global variables for proto (import at top-level)
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
 
-CACHE_DIRECTORY = '.protograf'   # append to the user's home directory
 
 def initialize():
     global cnv

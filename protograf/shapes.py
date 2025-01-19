@@ -8,7 +8,9 @@ import copy
 import logging
 import math
 import os
+from pathlib import Path
 import random
+from urllib.parse import urlparse
 # third party
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle
@@ -20,7 +22,9 @@ from reportlab.lib.colors import red, green, black
 from protograf.utils.geoms import Point, Link, Locale  # named tuples
 from protograf.utils import geoms, tools, support
 from protograf.base import (
-    BaseShape, BaseCanvas, GridShape, UNITS, COLORS, PAGES, DEBUG_COLOR)
+    BaseShape, BaseCanvas, GridShape,
+    UNITS, COLORS, PAGES, DEBUG_COLOR,
+    CACHE_DIRECTORY, BGG_IMAGES)
 
 log = logging.getLogger(__name__)
 
@@ -44,6 +48,30 @@ class ImageShape(BaseShape):
     Image (bitmap or SVG) on a given canvas.
     """
 
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super(ImageShape, self).__init__(_object=_object, canvas=canvas, **kwargs)
+        # overrides / extra args
+        default_cache = Path(Path.home() / CACHE_DIRECTORY / 'images')
+        default_cache.mkdir(parents=True, exist_ok=True)
+        self.cache_directory = kwargs.get('cache_directory', str(default_cache))
+        if not os.path.exists(self.cache_directory):
+            tools.feedback(
+                'Unable to create or find the cache directory:'
+                f' {str(self.cache_directory)}', True)
+
+    def set_cached_dir(source):
+        """Set special cached directory, depending on source being a URL."""
+        if not tools.is_url_valid(url=source):
+            return None
+        loc = urlparse(source)
+        # print('@http@',  loc)
+        # handle special case of BGG images
+        if loc.netloc == BGG_IMAGES:
+            the_cache = Path(Path.home() / CACHE_DIRECTORY / 'bgg' / 'images')
+            the_cache.mkdir(parents=True, exist_ok=True)
+            return str(the_cache)
+        return None
+
     def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
         """Show an image on a given canvas."""
         kwargs = self.kwargs | kwargs
@@ -51,9 +79,11 @@ class ImageShape(BaseShape):
         super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
         img = None
         # ---- check for Card usage
+        cache_directory = str(self.cache_directory)
         # tools.feedback(f'*** {ID=} {self.source=}')
         if ID is not None and isinstance(self.source, list):
             _source = self.source[ID]
+            cache_directory = self.set_cached_dir(_source) or cache_directory
         else:
             _source = self.source
         if not _source:
@@ -75,9 +105,11 @@ class ImageShape(BaseShape):
             y = self._u.y + self._o.delta_y
         # ---- load image
         # tools.feedback(f'*** IMGE {ID=} {_source=} {x=} {y=} {self.scaling=}')
-        img, is_svg, is_dir = self.load_image(_source, self.scaling)
+        img, is_svg, is_dir = self.load_image(
+            _source,
+            scaling=self.scaling,
+            cache_directory=cache_directory)
         if not img and not is_dir:
-            breakpoint()
             tools.feedback(
                 f'Unable to load image "{_source}!" - please check name and location',
                 True)
