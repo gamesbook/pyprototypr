@@ -5,3 +5,8 @@
 .wy-table-responsive table td, .wy-table-responsive table th {
     white-space: normal;
 }
+div.highlight-python {
+    background-color: #f4debf;
+    border-top: 1px solid #ac9;
+    border-bottom: 1px solid #ac9;
+}

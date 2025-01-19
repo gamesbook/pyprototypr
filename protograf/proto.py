@@ -2,8 +2,6 @@
 """
 Primary interface for protograf (imported at top-level)
 """
-# future
-from __future__ import division
 # lib
 import argparse
 from copy import copy
@@ -1736,20 +1734,59 @@ def Track(track=None, **kwargs):
 # ---- bgg API ====
 
 
-def BGG(ids=None, user=None, progress=False, short=500):
+def BGG(user: str = None, ids: list = None, progress=False, short=500, **kwargs):
     """Access BGG API for game data"""
-    gamelist = BGGGameList()
+    ckwargs = {}
+    # ---- self filters
+    if kwargs.get('own') is not None:
+        ckwargs['own'] = tools.as_bool(kwargs.get('pwn'))
+    if kwargs.get('rated') is not None:
+        ckwargs['rated'] = tools.as_bool(kwargs.get('rate'))
+    if kwargs.get('played') is not None:
+        ckwargs['played'] = tools.as_bool(kwargs.get('played'))
+    if kwargs.get('commented') is not None:
+        ckwargs['commented'] = tools.as_bool(kwargs.get('commented'))
+    if kwargs.get('trade') is not None:
+        ckwargs['trade'] = tools.as_bool(kwargs.get('trade'))
+    if kwargs.get('want') is not None:
+        ckwargs['want'] = tools.as_bool(kwargs.get('want'))
+    if kwargs.get('wishlist') is not None:
+        ckwargs['wishlist'] = tools.as_bool(kwargs.get('wishlist'))
+    if kwargs.get('preordered') is not None:
+        ckwargs['preordered'] = tools.as_bool(kwargs.get('preordered'))
+    if kwargs.get('want_to_play') is not None:
+        ckwargs['want_to_play'] = tools.as_bool(kwargs.get('want_to_play'))
+    if kwargs.get('want_to_buy') is not None:
+        ckwargs['want_to_buy'] = tools.as_bool(kwargs.get('want_to_buy'))
+    if kwargs.get('prev_owned') is not None:
+        ckwargs['prev_owned'] = tools.as_bool(kwargs.get('prev_owned'))
+    if kwargs.get('has_parts') is not None:
+        ckwargs['has_parts'] = tools.as_bool(kwargs.get('has_parts'))
+    if kwargs.get('want_parts') is not None:
+        ckwargs['want_parts'] = tools.as_bool(kwargs.get('want_parts'))
+    gamelist = BGGGameList(user, **ckwargs)
     if user:
-        tools.feedback("Sorry - the BGG user collection function is not available yet!")
-    if ids:
+        ids = []
+        if gamelist.collection:
+            for item in gamelist.collection.items:
+                ids.append(item.id)
+                _game = BGGGame(game_id=item.id, user_game=item, user=user, short=short)
+                gamelist.set_values(_game)
+        if not ids:
+            tools.feedback(
+                f"Sorry - no games could be retrieved for BGG username {user}", True)
+    elif ids:
         tools.feedback(
-            'All board game data acessed via this tool is owned by BoardGameGeek'
+            'All board game data accessed via this tool is owned by BoardGameGeek'
             ' and provided through their XML API')
         for game_id in ids:
             if progress:
                 tools.feedback(f"Retrieving game '{game_id}' from BoardGameGeek...")
             _game = BGGGame(game_id=game_id, short=short)
             gamelist.set_values(_game)
+    else:
+        tools.feedback(
+            "Please supply either `ids` or `user` to retrieve games from BGG", True)
     return gamelist
 
 # ---- dice ====

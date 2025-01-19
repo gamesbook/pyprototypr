@@ -30,6 +30,7 @@ Table of Contents
   - `Data Example #3 Matrix`_
   - `Data Example #4 Images`_
   - `Data Example #5 Lists`_
+  - `Data Example #6 BoardGameGeek API`_
 - `The Matrix Command`_
 - `Countersheet and Counter Commands`_
 - `Supporting Commands`_
@@ -293,13 +294,14 @@ Data Sources
 ------------
 `↑ <table-of-contents_>`_
 
-There are five possible types of data sources to create a dataset:
+There are six possible types of data sources to create a dataset:
 
 1. A CSV file
 2. An Excel file
 3. A ``Matrix`` command
 4. A directory (containing images)
 5. A "list of lists" (included in the script)
+6. The BoardGameGeek API (available as a list-of-lists)
 
 Apart from the images directory, each data source is essentially a set of rows
 and columns.  Each **row** represents data that must appear on a card.
@@ -310,7 +312,7 @@ Each **column** must be named so that the data can be referenced and used:
   the spreadsheet
 - the names for `the Matrix Command`_ command must appear as a list assigned
   to the *labels* property of the command
-- the names for a "list of lists" must appear in the first list of the lists
+- the names for a "list of lists" must appear in the first list in the lists
 
 The ``Data`` command uses different properties to access these different
 types of sources:
@@ -349,6 +351,8 @@ The other property that can be used for the ``Data`` command is:
   example, where the primary cards are created through `the Matrix Command`_
   and the two Jokers are the "extras".
 
+.. _deck-data-csv:
+
 Data Example #1 CSV
 -------------------
 `↑ <table-of-contents_>`_
@@ -359,6 +363,8 @@ This example shows how data is sourced from a CSV file:
 
        Data(filename="card_data.csv")
 
+.. _deck-data-excel:
+
 Data Example #2 Excel
 ---------------------
 `↑ <table-of-contents_>`_
@@ -368,6 +374,8 @@ This example shows how data is sourced from an Excel file:
     .. code:: python
 
        Data(filename="card_data.xls")
+
+.. _deck-data-matrix:
 
 Data Example #3 Matrix
 ----------------------
@@ -394,6 +402,8 @@ which equates to 52 dataset items.
 
 For more detail on these properties see `The Matrix Command`_.
 
+.. _deck-data-images:
+
 Data Example #4 Images
 ----------------------
 `↑ <table-of-contents_>`_
@@ -405,6 +415,8 @@ This example shows how data is sourced from an image directory:
        Data(
            images="pictures", images_filter=".png,.jpg")
 
+.. _deck-data-lists:
+
 Data Example #5 Lists
 ---------------------
 `↑ <table-of-contents_>`_
@@ -414,6 +426,7 @@ This example shows how data is sourced from a "list of lists":
     .. code:: python
 
        lotr = [
+           ['ID', 'Name', 'Age', 'Race', 'Copies'],
            [1, "Gimli", 140, "Dwarf", 1],
            [2, "Legolas", 656, "Elf", 1],
            [3, "Aragorn", 88, "Human", 1],
@@ -448,6 +461,38 @@ Gandalf's age.
 
 See below under the `T(emplate) command`_ and also under the
 `S(election) command`_ for examples how this data could be used.
+
+.. _deck-data-bgg:
+
+Data Example #6 BoardGameGeek API
+---------------------------------
+`↑ <table-of-contents_>`_
+
+This example shows how data is loaded for boardgame details obtained from the
+:ref:`BoardGameGeek API <the-bgg-command>`.
+
+    .. code:: python
+
+    boardgames = BGG(ids=[1, 2, 3], progress=True)
+    Data(data_list=boardgames.data_list)
+
+Assuming access to the BoardGameGeek API works and returns the game data
+required |dash| in this case games with ID's ``1``, ``2``, and ``3`` |dash|
+which in turn, in this case, are assigned to the name ``boardgames``.
+
+The ``data_list`` required for Data can be obtained from the stored set of
+games  |dash| in this case ``boardgames`` |dash| by appending the term
+``.data_list`` to it.
+
+The game information can then be used as it would for other data sources.
+
+A collection of games, linked to a BoardGameGeek user, can also be retrieved
+by supplying their username, for example:
+
+    .. code:: python
+
+    boardgames = BGG(user='BenKenobi1976', progress=True)
+    Data(data_list=boardgames.data_list)
 
 
 .. _the-matrix-command:

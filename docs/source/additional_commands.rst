@@ -24,6 +24,46 @@ BGG Command
 
 **To Be Done**
 
+You will get the following feedback::
+
+    FEEDBACK:: All board game data accessed via this tool is owned by BoardGameGeek and provided through their XML API
+
+
+Subsets of Games
+----------------
+
+You can retrieve a subset of games by provding one or more items to match on.
+
+These are:
+
+- *own* -  include (if ``True``) or exclude (if ``False``) owned items
+- *rated* -  include (if ``True``) or exclude (if ``False``) rated items
+- *played* -  include (if ``True``) or exclude (if ``False``) played items
+- *commented* -  include (if ``True``) or exclude (if ``False``) items commented on
+- *trade* -  include (if ``True``) or exclude (if ``False``) items for trade
+- *want* -  include (if ``True``) or exclude (if ``False``) items wanted in trade
+- *wishlist* -  include (if ``True``) or exclude (if ``False``) items in the wishlist
+- *preordered* -  include (if ``True``) or exclude (if ``False``) preordered items
+- *want_to_play* -  include (if ``True``) or exclude (if ``False``) items wanting to play
+- *want_to_buy* -  include (if ``True``) or exclude (if ``False``) items wanting to buy
+- *prev_owned* -  include (if ``True``) or exclude (if ``False``) previously owned items
+- *has_parts* -  include (if ``True``) or exclude (if ``False``) items for which there is a comment in the "Has parts" field
+- *want_parts* -  include (if ``True``) or exclude (if ``False``) items for which there is a comment in the "Want parts" field
+
+These are added as properties to the ``BGG()`` command. For example:
+
+.. code:: python
+
+    bgames = BGG(
+        user='BenKenobi1976',
+        own=True,
+        want_to_play=True,
+    )
+
+In this example, games must be marked both as "want to play" items **and**
+items that are "own"ed for the user ``BenKenobi1976``.
+
+
 .. _the-font-command:
 
 Font Command

@@ -30,6 +30,7 @@ useful information but do build on each other.
    core_shapes
    card_decks
    deck_command
+   additional_commands
    advanced_commands
    customised_shapes
    layouts

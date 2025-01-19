@@ -165,6 +165,7 @@ Additional libraries in use include:
 * `pymupdf` https://pymupdf.io/ - support for exporting PDF to PNG images
 * `imageio` https://pypi.org/project/imageio/- support for compiling PNGs into a GIF
 * `jinja` https://jinja.palletsprojects.com - template logic with variables
+* `pillow` https://github.com/python-pillow/Pillow - support for image processing
 
 ## License
 

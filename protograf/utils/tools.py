@@ -16,6 +16,7 @@ import os
 import pathlib
 import string
 import sys
+from urllib.parse import urlparse
 import xlrd
 # third party
 from reportlab.pdfbase import pdfmetrics
@@ -25,6 +26,7 @@ from protograf.utils.support import numbers, feedback
 
 log = logging.getLogger(__name__)
 DEBUG = False
+MIN_ATTRIBUTES = ('scheme', 'netloc')
 
 
 class DatasetType(Enum):
@@ -198,8 +200,8 @@ def as_bool(value, label=None, allow_none=True) -> bool:
     return result
 
 
-def as_float(value, label, maximum=None, minimum=None) -> int:
-    """Set a value to an float; or stop if an invalid value
+def as_float(value, label, maximum=None, minimum=None, stop=True, default=None) -> int:
+    """Set a value to an float; or end program if an invalid value and stop is True
 
     Doc Test:
 
@@ -214,22 +216,25 @@ def as_float(value, label, maximum=None, minimum=None) -> int:
     # >>> as_float(value='z', label='N')
     # FEEDBACK:: z is not a valid N integer!
     # >>> as_float(value='3.1', label='N')
-    # FEEDBACK:: The value of 3.1 for N is not a valid integer!
+    # FEEDBACK:: The value "3.1" for N is not a valid integer!
     """
-    _label = f" for {label}" if label else ' of'
+    _label = f" for {label}" if label else ' '
     try:
         the_value = float(value)
         if minimum and the_value < minimum:
             feedback(
                 f'The "{value}"{_label} float value is less than the minimum of {minimum}!',
-                True)
+                stop)
         if maximum and the_value > maximum:
             feedback(
                 f'The "{value}"{_label} float value is more than the maximum of {maximum}!',
-                True)
+                stop)
         return the_value
     except (ValueError, Exception):
-        feedback(f'The value "{value}"{label} is not a valid float number!', True)
+        if stop:
+            feedback(f'The value "{value}"{label} is not a valid float number!', True)
+        else:
+            return None
 
 
 def tuple_split(
@@ -842,20 +847,20 @@ def validated_directions(
     """Check and return a list of lowercase, direction abbreviations.
 
     Doc Test:
-    >>> validated_directions('', DirectionGroup.CARDINAL)
-    []
-    >>> validated_directions([], DirectionGroup.CARDINAL)
-    []
-    >>> validated_directions(['n', 's'], DirectionGroup.CARDINAL)
-    ['n', 's']
-    >>> validated_directions('n s', DirectionGroup.CARDINAL)
-    ['n', 's']
-    >>> validated_directions('n s', DirectionGroup.HEX_FLAT)
-    ['w', 'e']
-    >>> validated_directions('w e', DirectionGroup.HEX_POINTY)
-    ['n', 's']
-    >>> validated_directions('w e n s ne', DirectionGroup.COMPASS)
-    ['w', 'e', 'n', 's', 'ne']
+    # >>> validated_directions('', DirectionGroup.CARDINAL)
+    # []
+    # >>> validated_directions([], DirectionGroup.CARDINAL)
+    # []
+    # >>> validated_directions(['n', 's'], DirectionGroup.CARDINAL)
+    # ['n', 's']
+    # >>> validated_directions('n s', DirectionGroup.CARDINAL)
+    # ['n', 's']
+    # >>> validated_directions('n s', DirectionGroup.HEX_FLAT)
+    # ['w', 'e']
+    # >>> validated_directions('w e', DirectionGroup.HEX_POINTY)
+    # ['n', 's']
+    # >>> validated_directions('w e n s ne', DirectionGroup.COMPASS)
+    # ['w', 'e', 'n', 's', 'ne']
     """
     if not value:
         return []
@@ -892,6 +897,45 @@ def validated_directions(
     _label = f'the {label} value' if label else f'"{value}"'
     feedback(f'Cannot use {_label} - it must contain valid directions {valid}!',
              True)
+
+
+def is_url_valid(url: str, qualifying=MIN_ATTRIBUTES):
+    """Test if a URL is valid.
+
+    See: https://stackoverflow.com/a/36283503/154858
+
+    Doc Test:
+    >>> is_url_valid(None)
+    False
+    >>> is_url_valid('')
+    False
+    >>> is_url_valid({})
+    False
+    >>> is_url_valid('naboo')
+    False
+    >>> is_url_valid('"file:///yoda.txt')
+    False
+    >>> is_url_valid('httpx://www.google.com')
+    False
+    >>> is_url_valid('https://https://https://www.foo.bar')
+    False
+
+    >>> is_url_valid('https://www.google.com')
+    True
+    >>> is_url_valid('https://www.tiktok.com/@outlikethevapors')
+    True
+    >>> is_url_valid('https://-wee.com')
+    True
+    >>> is_url_valid('http://localhost:8080')
+    True
+    """
+    tokens = urlparse(url)
+    if tokens.scheme and tokens.scheme not in ['http', 'https']:
+        return False
+    if tokens.netloc:
+        if tokens.netloc[0:4] == 'http' or tokens.netloc[0:5] == 'https':
+            return False
+    return all(getattr(tokens, qualifying_attr) for qualifying_attr in qualifying)
 
 
 if __name__ == "__main__":

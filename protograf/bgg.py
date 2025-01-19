@@ -2,6 +2,7 @@
 Purpose: BoardGameGeek.com API wrapper for protograf
 Written by: Derek Hohls
 Created on: 21 May 2016
+Updated on: 16 January 2024
 
 Notes:
 
@@ -112,22 +113,257 @@ Notes:
      }
 
 """
-# future
-from __future__ import division
 # lib
+import os
+import pickle
+from pathlib import Path
 # third party
 from boardgamegeek import BGGClient
+from boardgamegeek.objects.things import Thing
 from boardgamegeek.exceptions import BGGApiError
+from boardgamegeek.objects.games import CollectionBoardGame
+from boardgamegeek.objects.games import BoardGame
 # local
 from protograf.utils import tools
+from protograf.globals import CACHE_DIRECTORY
 
 
-class BGGGameList(object):
+class BGGGame():
+    """Wrapper around the `game` object from boardgamegeek.api"""
+
+    def __init__(
+            self,
+            game_id: int = None,
+            user: str = None,
+            user_game: CollectionBoardGame = None,
+            short: int = 500):
+        """
+        Args:
+            user_game: obj
+                a boardgamegeek.game.CollectionBoardGame object
+            game_id: int
+                Unique BGG number for a boardgame
+            short: int
+                number of characters to use for short description
+        """
+        self._game = None
+        self.user_game = user_game
+        self.user = user or ''
+        self.short = int(short) or 500
+        self.bgg = BGGClient()
+        self.cache_directory = Path(Path.home() / CACHE_DIRECTORY / 'bgg')
+        self.cache_directory.mkdir(parents=True, exist_ok=True)
+        # load and cache game
+        local_cache = False
+        if not self._game:
+            game_id = tools.as_int(game_id, "game ID", minimum=1)
+            self._game, local_cache = self.load_game(game_id)
+        if self._game:
+            self.set_properties()
+            if not local_cache:
+                self.save_game()  # do cache
+
+    def load_game(self, game_id: int) -> (BoardGame, bool):
+        """Retrieve and save boardgame; from BGG or local cache.
+
+        Returns:
+            tuple (boardgamegeek.objects.games.BoardGame object, bool):
+                bool is True if loaded from file; False if from API
+        """
+        the_game = None
+        game_file = f'{game_id}_{self.user}.pck' if self.user_game else f'{game_id}.pck'
+        try:
+            filename = Path(self.cache_directory / game_file)
+            with open(str(filename), 'rb') as filehandler:
+                the_game = pickle.load(filehandler)
+                return the_game, True
+                print(f' !!! loaded {game_file} for GameID#{game_id}')
+        except:
+            try:
+                the_game = self.bgg.game(game_id=game_id)
+                if not the_game:
+                    tools.feedback(
+                        f'Unable to load Game #{game_id} from BGG', False, True)
+                return the_game, False
+            except BGGApiError as err:
+                if "Failed to resolve 'boardgamegeek.com'" in str(err):
+                    msg = 'Test if your internet connection reaches boardgamegeek.com'
+                else:
+                    msg = err
+                tools.feedback(f'Unable to access boardgamegeek API ({msg})', True)
+            except Exception as err:
+                tools.feedback(f'Unable to create game: {game_id} ({err})', True)
+        return the_game, None
+
+    def save_game(self):
+        """Retrieve game from BGG or local cache.
+
+        Notes:
+            * Base game filename is the ID of the game
+            * Game files where user's collection data are available and stored
+              are appended with the user's name.
+        """
+        game_id = f"{self._game.id}"
+        game_file = f'{game_id}_{self.user}.pck' if self.user_game else f'{game_id}.pck'
+        filename = Path(self.cache_directory / game_file)
+        with open(str(filename), 'wb') as file_pickle:
+            pickle.dump(self._game, file_pickle)
+        print(f' !!! saved {game_file} for GameID#{game_id}')
+
+    def get_description_short(self):
+        """Create an abbreviated description for a game."""
+        if self._game:
+            desc = self._game.description[0:self.short]
+            _cut = int(
+                (len(desc) -
+                 len(desc.replace(',', '').replace('.', '').replace(':', '')))
+                / 2 + self.short)
+            desc = self._game.description[0:_cut]
+            return desc[0:-3] + '...'
+
+    def set_properties(self):
+        """Create both raw (_ prefix) and string formatted versions of props"""
+        if not self._game:
+            return
+        self._alternative_names = self._game.alternative_names
+        self.alternative_names = ', '.join(self._game.alternative_names)
+        self._artists = self._game.artists
+        self.artists = ', '.join(self._game.artists)
+        self._average = self._game.stats['average']
+        self.average = '%.3f' % self._game.stats['average']
+        self._averageweight = self._game.stats['averageweight']
+        self.averageweight = '%.3f' % self._game.stats['averageweight']
+        self._bayesaverage = self._game.stats['bayesaverage']
+        self.bayesaverage = '%.3f' % self._game.stats['bayesaverage']
+        self._categories = self._game.categories
+        self.categories = ', '.join(self._game.categories)
+        self._description = self._game.description
+        self.description = f"{self._game.description}"
+        self._designers = self._game.designers
+        self.designers = ', '.join(self._game.designers)
+        self._expands = self._game.expands
+        try:
+            self.expands = ', '.join(self._game.expands)
+        except TypeError:
+            self.expands = ''
+            for item in self._game.expands:
+                if isinstance(item, Thing):
+                    new_game, from_file = self.load_game(item.id)
+                    if new_game:
+                        self.expands += new_game.name + ','
+            if len(self.expands) > 0:
+                self.expands = self.expands[:-1]
+            # print(f'Cannot turn {self._game.expands} into a list from type '
+            #       f'{type(self._game.expands)} for ID#{self._game.id}')
+        self._expansion = self._game.expansion
+        if self._game.expansion is True:
+            self.expansion = 'Yes'
+        else:
+            self.expansion = 'False'
+        self._expansions = self._game.expansions
+        if self._expansions:
+            names = []
+            for exp in self._expansions:
+                names.append(exp.name)
+            self.expansions = ', '.join(names)
+        else:
+            self.expansions = ''
+        self._families = self._game.families
+        self.families = ', '.join(self._game.families)
+        self._id = self._game.id
+        self.id = f"{self._game.id}"
+        self._image = self._game.image
+        self.image = f"{self._game.image}"
+        self._implementations = self._game.implementations
+        self.implementations = ', '.join(self._game.implementations)
+        self._maxplayers = self._game.maxplayers
+        self.maxplayers = f"{self._game.maxplayers}"
+        self._mechanics = self._game.mechanics
+        self.mechanics = ', '.join(self._game.mechanics)
+        self._median = self._game.stats['median']
+        self.median = '%.3f' % self._game.stats['median']
+        self._minage = self._game.minage
+        self.minage = f"{self._game.minage}"
+        self._minplayers = self._game.minplayers
+        self.minplayers = f"{self._game.minplayers}"
+        self._name = self._game.name
+        self.name = f"{self._game.name}"
+        self._numcomments = self._game.stats['numcomments']
+        self.numcomments = f"{self._game.stats['numcomments']}"
+        self._numweights = self._game.stats['numweights']
+        self.numweights = f"{self._game.stats['numweights']}"
+        self._owned = self._game.stats['owned']
+        self.owned = f"{self._game.stats['owned']}"
+        self._playingtime = self._game.playingtime
+        self.playingtime = f"{self._game.playingtime}"
+        self._publishers = self._game.publishers
+        self.publishers = ', '.join(self._game.publishers)
+        self._ranks = self._game.stats['ranks']
+        self.ranks = f"{self._game.stats['ranks']}"
+        self._stddev = self._game.stats['stddev']
+        self.stddev = '%.3f' % self._game.stats['stddev']
+        self._thumbnail = self._game.thumbnail
+        self.thumbnail = f"{self._game.thumbnail}"
+        self._trading = self._game.stats['trading']
+        self.trading = f"{self._game.stats['trading']}"
+        self._usersrated = self._game.stats['usersrated']
+        self.usersrated = f"{self._game.stats['usersrated']}"
+        self._wanting = self._game.stats['wanting']
+        self.wanting = f"{self._game.stats['wanting']}"
+        self._wishing = self._game.stats['wishing']
+        self.wishing = f"{self._game.stats['wishing']}"
+        self._yearpublished = self._game.yearpublished
+        self.yearpublished = f"{self._game.yearpublished}"
+        # custom fields
+        self.description_short = self.get_description_short()
+        self._description_short = self.description_short
+        if self._game.minplayers == self._game.maxplayers:
+            self.players = f"{self._game.maxplayers}"
+        else:
+            self.players = f"{self._game.minplayers}-{self._game.maxplayers}"
+        self._players = (self._game.minplayers, self._game.maxplayers)
+        self.age = f"{self._game.minage}+"
+        self._age = self._game.minage
+        if self.user_game:
+            self.user_rating = tools.as_float(
+                self.user_game.rating, 'BGG user rating', stop=False)
+            self.user_own = tools.as_bool(self.user_game.own)
+            self.user_preordered = tools.as_bool(self.user_game.preordered)
+            self.user_prevowned = tools.as_bool(self.user_game.prevowned)
+            self.user_want = tools.as_bool(self.user_game.want)
+            self.user_wanttobuy = tools.as_bool(self.user_game.wanttobuy)
+            self.user_wanttoplay = tools.as_bool(self.user_game.wanttoplay)
+            self.user_fortrade = tools.as_bool(self.user_game.fortrade)
+            self.user_wishlist = tools.as_bool(self.user_game.wishlist)
+            self.user_wishlistpriority = tools.as_int(self.user_game.wishlistpriority,
+                                                      'BGG user wishlist priority')
+
+    def display(self):
+        """Display all properties and values of a BGGGame."""
+        for attr in dir(self):
+            if '__' not in attr:
+                print("%s: %r" % (attr, getattr(self, attr)))
+
+    def properties(self):
+        """Return all properties of a BGGGame as list."""
+        props = []
+        for attr in dir(self):
+            if '__' not in attr:
+                props.append(attr)
+        return props
+
+
+class BGGGameList():
     """Lists which are groups of multiple games' string-based properties."""
 
-    def __init__(self):
+    def __init__(self, user=None, **kwargs):
         """create empty lists to hold values"""
-        self.bgg = BGGClient()
+        self.bgg = BGGClient(requests_per_minute=120)
+        self.user = user
+        self.collection = None  # boardgamegeek.collection.Collection
+        if self.user:
+            self.collection = self.bgg.collection(user_name=user, **kwargs)
+        self.game_data = []   # list of games; each as a list of values
         self.games = []  # list of BGGGame objects
         self.alternative_names = []
         self.artists = []
@@ -212,140 +448,21 @@ class BGGGameList(object):
             self.description_short.append(self._game.description_short)
             self.age.append(self._game.age)
 
-
-class BGGGame(object):
-    """Wrapper around the `game` object from boardgamegeek.api"""
-
-    def __init__(self, game_id, short=500):
-        """
-        Args:
-            short: int
-                number of characters to use for short description
-        """
-        self._game = None
-        self.short = int(short) or 500
-        self.bgg = BGGClient()
-        try:
-            if isinstance(game_id, int):
-                self._game = self.bgg.game(game_id=game_id)
-            elif isinstance(game_id, ""):
-                self._game = self.bgg.game(name=game_id)
-            else:
-                pass
-            self.set_properties()
-        except BGGApiError as err:
-            if "Failed to resolve 'boardgamegeek.com'" in str(err):
-                msg = 'Test if your internet connection reaches boardgamegeek.com'
-            else:
-                msg = err
-            tools.feedback(f'Unable to access boardgamegeek API ({msg})', True)
-        except Exception as err:
-            tools.feedback(f'Unable to create game: {game_id} ({err})', True)
-
-    def get_description_short(self):
-        """Create an abbreviated description for a game."""
-        if self._game:
-            desc = self._game.description[0:self.short]
-            _cut = int(
-                (len(desc) -
-                 len(desc.replace(',', '').replace('.', '').replace(':', '')))
-                / 2 + self.short)
-            desc = self._game.description[0:_cut]
-            return desc[0:-3] + '...'
-
-    def set_properties(self):
-        """Create both raw (_ prefix) and string formatted versions of props"""
-        if self._game:
-            self._alternative_names = self._game.alternative_names
-            self.alternative_names = ', '.join(self._game.alternative_names)
-            self._artists = self._game.artists
-            self.artists = ', '.join(self._game.artists)
-            self._average = self._game.stats['average']
-            self.average = '%.3f' % self._game.stats['average']
-            self._averageweight = self._game.stats['averageweight']
-            self.averageweight = '%.3f' % self._game.stats['averageweight']
-            self._bayesaverage = self._game.stats['bayesaverage']
-            self.bayesaverage = '%.3f' % self._game.stats['bayesaverage']
-            self._categories = self._game.categories
-            self.categories = ', '.join(self._game.categories)
-            self._description = self._game.description
-            self.description = f"{self._game.description}"
-            self._designers = self._game.designers
-            self.designers = ', '.join(self._game.designers)
-            self._expands = self._game.expands
-            self.expands = ', '.join(self._game.expands)
-            self._expansion = self._game.expansion
-            if self._game.expansion is True:
-                self.expansion = 'Yes'
-            else:
-                self.expansion = 'False'
-            self._expansions = self._game.expansions
-            if self._expansions:
-                names = []
-                for exp in self._expansions:
-                    names.append(exp.name)
-                self.expansions = ', '.join(names)
-            else:
-                self.expansions = ''
-            self._families = self._game.families
-            self.families = ', '.join(self._game.families)
-            self._id = self._game.id
-            self.id = f"{self._game.id}"
-            self._image = self._game.image
-            self.image = f"{self._game.image}"
-            self._implementations = self._game.implementations
-            self.implementations = ', '.join(self._game.implementations)
-            self._maxplayers = self._game.maxplayers
-            self.maxplayers = f"{self._game.maxplayers}"
-            self._mechanics = self._game.mechanics
-            self.mechanics = ', '.join(self._game.mechanics)
-            self._median = self._game.stats['median']
-            self.median = '%.3f' % self._game.stats['median']
-            self._minage = self._game.minage
-            self.minage = f"{self._game.minage}"
-            self._minplayers = self._game.minplayers
-            self.minplayers = f"{self._game.minplayers}"
-            self._name = self._game.name
-            self.name = f"{self._game.name}"
-            self._numcomments = self._game.stats['numcomments']
-            self.numcomments = f"{self._game.stats['numcomments']}"
-            self._numweights = self._game.stats['numweights']
-            self.numweights = f"{self._game.stats['numweights']}"
-            self._owned = self._game.stats['owned']
-            self.owned = f"{self._game.stats['owned']}"
-            self._playingtime = self._game.playingtime
-            self.playingtime = f"{self._game.playingtime}"
-            self._publishers = self._game.publishers
-            self.publishers = ', '.join(self._game.publishers)
-            self._ranks = self._game.stats['ranks']
-            self.ranks = f"{self._game.stats['ranks']}"
-            self._stddev = self._game.stats['stddev']
-            self.stddev = '%.3f' % self._game.stats['stddev']
-            self._thumbnail = self._game.thumbnail
-            self.thumbnail = f"{self._game.thumbnail}"
-            self._trading = self._game.stats['trading']
-            self.trading = f"{self._game.stats['trading']}"
-            self._usersrated = self._game.stats['usersrated']
-            self.usersrated = f"{self._game.stats['usersrated']}"
-            self._wanting = self._game.stats['wanting']
-            self.wanting = f"{self._game.stats['wanting']}"
-            self._wishing = self._game.stats['wishing']
-            self.wishing = f"{self._game.stats['wishing']}"
-            self._yearpublished = self._game.yearpublished
-            self.yearpublished = f"{self._game.yearpublished}"
-            # custom fields
-            self.description_short = self.get_description_short()
-            self._description_short = self.description_short
-            if self._game.minplayers == self._game.maxplayers:
-                self.players = f"{self._game.maxplayers}"
-            else:
-                self.players = f"{self._game.minplayers}-{self._game.maxplayers}"
-            self._players = (self._game.minplayers, self._game.maxplayers)
-            self.age = f"{self._game.minage}+"
-            self._age = self._game.minage
-
-    def display(self):
-        """Display all properties and values of a BGGGame."""
-        for attr in dir(self):
-            if '__' not in attr:
-                print("%s: %r" % (attr, getattr(self, attr)))
+    @property
+    def data_list(self) -> list:
+        """Return `game_data` - list of game list data."""
+        if len(self.games) < 1:
+            return []
+        properties = self.games[0].properties()
+        # append one row per game; data matched to header
+        for _game in self.games:
+            game_list = []
+            for attr in properties:
+                game_list.append(getattr(_game, attr))
+            self.game_data.append(game_list)
+        # TODO sort on a key
+        # self.game_data.sort(key=lambda x: x[3])
+        # create header row
+        headers = [prop.upper() for prop in properties]
+        self.game_data.insert(0, headers)
+        return self.game_data
