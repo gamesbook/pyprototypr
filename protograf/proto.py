@@ -77,16 +77,28 @@ from protograf.utils.support import LookupType
 from protograf import globals
 
 log = logging.getLogger(__name__)
+globals_set = False
 
+def validate_globals():
+    """Check that Create has been called to set initialise globals"""
+    global globals_set
+    if not globals_set:
+        tools.feedback(
+            'Please ensure Create() command has been called first!', True)
 
 # ---- page-related ====
 
 def Create(**kwargs):
-    """Initialisation of page and canvas.
+    """Initialisation of page, units and canvas.
 
-    Allows shortcut creation of cards.
+    NOTE:
+        * Allows shortcut creation of cards.
     """
+    global globals_set
+
+    # ---- set and confirm globals
     globals.initialize()
+    globals_set =True
 
     # ---- margins
     globals.margin = kwargs.get('margin', globals.margin)
@@ -149,6 +161,8 @@ def Create(**kwargs):
         globals.cnv.canvas.setFillColor(kwargs.get('page_fill'))
         globals.cnv.canvas.rect(
             0, 0, globals.page_width, globals.page_height, stroke=0, fill=1)
+
+    # ---- cards
     if _cards:
         Deck(canvas=globals.cnv, sequence=range(1, _cards + 1), **kwargs)  # deck var
 
@@ -158,6 +172,7 @@ def create(**kwargs):
 
 
 def Footer(**kwargs):
+    validate_globals()
 
     kwargs['paper'] = globals.paper
     if not kwargs.get('font_size'):
@@ -168,10 +183,12 @@ def Footer(**kwargs):
 
 
 def Header(**kwargs):
+    validate_globals()
     pass
 
 
 def PageBreak(**kwargs):
+    validate_globals()
 
     globals.page_count += 1
     kwargs = margins(**kwargs)
@@ -203,6 +220,7 @@ def page_break():
 
 
 def Save(**kwargs):
+    validate_globals()
 
     # ---- draw Deck
     if globals.deck and len(globals.deck.deck) > 1:
@@ -240,6 +258,8 @@ def save(**kwargs):
 
 def margins(**kwargs):
     """Add margins to a set of kwargs, if not present."""
+    validate_globals()
+
     kwargs['margin'] = kwargs.get('margin', globals.margin)
     kwargs['margin_left'] = kwargs.get(
         'margin_left', globals.margin_left or globals.margin)
@@ -253,6 +273,7 @@ def margins(**kwargs):
 
 
 def Font(face=None, **kwargs):
+    validate_globals()
 
     globals.cnv.font_face = face or 'Helvetica'
     globals.cnv.font_size = kwargs.get('size', 12)
@@ -376,6 +397,8 @@ def Deck(**kwargs):
 
     NOTE: A Deck receives its `draw()` command from Save()!
     """
+    validate_globals()
+
     kwargs = margins(**kwargs)
     kwargs['dataset'] = globals.dataset
     globals.deck = DeckShape(**kwargs)
@@ -389,11 +412,6 @@ def CounterSheet(**kwargs):
     """
     kwargs['_is_countersheet'] = True
     Deck(**kwargs)
-    # kwargs = margins(**kwargs)
-    # kwargs['_is_countersheet'] = True
-    # kwargs['dataset'] = globals.dataset
-    # globals.deck = DeckShape(**kwargs)
-    # globals.deck_settings['grid_marks'] = kwargs.get('grid_marks', None)
 
 
 def group(*args, **kwargs):
@@ -409,6 +427,8 @@ def group(*args, **kwargs):
 def Data(**kwargs):
     """Load data from file, dictionary, list-of-lists, or directory for later access.
     """
+    validate_globals()
+
     filename = kwargs.get('filename', None)  # CSV or Excel
     matrix = kwargs.get('matrix', None)  # Matrix()
     data_list = kwargs.get('data_list', None)  # list-of-lists
@@ -1047,12 +1067,13 @@ def connect(shape_from, shape_to, **kwargs):
 
 def Repeat(_object, **kwargs):
     """Initialise a deck with all its settings, including source of data."""
+    kwargs = margins(**kwargs)
     repeat = RepeatShape(_object=_object, **kwargs)
     repeat.draw()
 
 
 def Lines(rows=1, cols=1, **kwargs):
-    kwargs = kwargs
+    kwargs = margins(**kwargs)
     for row in range(rows):
         for col in range(cols):
             Line(row=row, col=col, **kwargs)
@@ -1062,6 +1083,7 @@ def Lines(rows=1, cols=1, **kwargs):
 
 def Sequence(_object=None, **kwargs):
     """Draw a set of objects in a line."""
+    kwargs = margins(**kwargs)
     sequence = SequenceShape(_object=_object, **kwargs)
     sequence.draw()
 
@@ -1394,6 +1416,7 @@ def LinkLine(grid: list, locations: Union[list, str], **kwargs):
 def Layout(grid, **kwargs):
     """Determine locations for cols&rows in a virtual layout and draw shape(s)
     """
+    validate_globals()
 
     kwargs = kwargs
     shapes = kwargs.get('shapes', [])  # shapes or Places
@@ -1600,6 +1623,8 @@ def Track(track=None, **kwargs):
             tools.feedback(
                 f'You cannot use {text[0]} as a special field; remove the {{ }} brackets',
                 True)
+
+    validate_globals()
 
     kwargs = kwargs
     angles = kwargs.get('angles', [])

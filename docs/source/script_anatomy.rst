@@ -73,12 +73,20 @@ Create Command
 --------------
 `^ <key-commands_>`_
 
-The ``Create()`` command is the first, essential command that should appear
-in a script. It sets up the basic document framework for the inclusion of all
-the elements that will appear.
+The ``Create()`` command is the essential command that **must** appear first
+in every script.
 
-By default, it will setup an A4 page |dash| in portrait mode |dash| with
-a margin of one-half inch (1.25cm), and units of centimetres;
+``Create()`` sets up the basic document framework to support all of the
+elements that will appear after it.
+
+.. HINT::
+
+    If you omit the ``Create()`` command, you should get an error message::
+
+        FEEDBACK:: Please ensure Create() command has been called first!
+
+By default, this command will setup an A4 page |dash| in portrait mode |dash|
+with a margin of one-half inch (1.25cm), and units of centimetres;
 the resulting output file will have the same name as the script,
 but with a '.pdf' extension.
 
@@ -87,7 +95,8 @@ To customise the command, set its properties as follows:
 - **paper** - use a paper size from either of the ISO series - A0 down to A8;
   or B6 down to B0 - or a USA type - letter, legal or elevenSeventeen; note
   that the name does **not** have quotes around it!
-- **filename** - name of the output PDF file
+- **filename** - name of the output PDF file; by default this is the prefix
+  name of the script, with a ``.pdf`` extension
 - **units** - these can be ``cm`` (centimetres), ``in`` (inches), ``mm``
   (millimetres), or ``points``; the default is ``cm``
 - **landscape** - "wrap" the paper size with ``landscape()`` to change the page
@@ -102,7 +111,8 @@ To customise the command, set its properties as follows:
 Example 1
 ~~~~~~~~~
 
-Here is an example of a customised ``Create`` command:
+Here is an example of a customised ``Create`` command, for an A3-sized page
+in landscape mode, with top and left margins being 2 inches each:
 
 .. code:: python
 
@@ -110,8 +120,8 @@ Here is an example of a customised ``Create`` command:
         paper=landscape(A3),
         units=in,
         filename="testA3.pdf",
-        margin_top=1,
-        margin_left=1,
+        margin_top=2,
+        margin_left=2,
     )
 
 .. _pagebreak-command:
@@ -123,7 +133,7 @@ PageBreak Command
 The ``PageBreak()`` command is only needed when you need to start a new page.
 
 When generating a :doc:`deck of cards<card_decks>` the program will
-automatically insert ``PageBreak()`` commands as needed if the cards occupy
+automatically insert ``PageBreak()`` commands as needed, if the cards occupy
 multiple pages.
 
 .. _save-command:
@@ -132,9 +142,11 @@ Save Command
 ------------
 `^ <key-commands_>`_
 
-The ``Save()`` is usually the last to appear.  By default it simply results in
-the outcome of all the commands used being written out to the PDF file as named
-in the `Create Command`_
+The ``Save()`` is usually the last to appear in a script.
+
+The ``Save()`` command, by default, simply results in the outcome of all the
+commands used to that point being written out to a PDF file; either with a
+default filename, or with the one set in the `Create Command`_ .
 
 To customise the command, set its properties as follows:
 
@@ -166,7 +178,9 @@ Here is an example of a customised ``Save`` command:
         names=['pageOne', None, 'pageThree']
     )
 
-In this example, no PNG file will be created from the second page.
+In this example, no PNG file will be created from the second page, while PNG
+files named ``'pageOne.png`` and ``'pageThree.png`` will be used created from
+the first and third pages of the PDF file.
 
 Example 2
 ~~~~~~~~~
@@ -182,8 +196,8 @@ Here is another example of a customised ``Save`` command:
     )
 
 In this example, an animated GIF image will be created, assembled out of the
-PNG images; one per page of the PDF.  There will be delay of half a second
-between showing each image.
+PNG images; one per page of the PDF.  There will be a delay of half-a-second
+between the showing of each image.
 
 
 Other Commands
@@ -197,6 +211,7 @@ See:
 - :doc:`Core Shapes <core_shapes>`
 - :doc:`Card and Deck commands <card_decks>`
 - :doc:`Repetitive and reuse commands <advanced_commands>`
+- :doc:`Further commands <additional_commands>`
 - :doc:`Layout <layouts>` commands
 - :doc:`Hexagonal Grid <hexagonal_grids>` commands
 
@@ -271,8 +286,8 @@ Basic Shapes
 **protograf**  allows for the creation of many shapes, with a command for
 each one.
 
-These are described in the :doc:`Core Shapes <core_shapes>` section, which also
-covers common customisation options.
+These are described in the :doc:`Core Shapes <core_shapes>` section, which
+also covers common customisation options.
 
 More extensive customisation of some shapes is also possible; see the
 :doc:`Customised Shapes <customised_shapes>` section.
@@ -288,10 +303,11 @@ they are really just "shapes containing other shapes"
 
 There are two key commands for creating a deck of cards: the ``Card()`` and
 the ``Deck()``.  These are discussed in detail in the
-`card decks <card_decks>` section.
+:doc:`card decks <card_decks>` section, while the options for customisation of
+the deck itself are discussed in the :doc:`Deck command <deck_command>`.
 
 A useful "getting started" approach is to look through the section with
-`worked examples <worked_example>` which shows an increasingly
+:doc:`worked examples <worked_example>` which shows an increasingly
 complex set of examples for setting up and running scripts to generate a
 deck of cards.
 
@@ -311,9 +327,9 @@ The other way that elements can be laid out on a page is through a
 **grid layout** which can be derived from a built-in shape such ``Hexagons``
 or constructed using a defined set of properties.
 
-These are all described in the `Layouts <layout>` section.
+These are all described in the :doc:`Layouts <layout>` section.
 
-There is also a separate section on `Hexagonal Grids <hexagonal_grids>`
+There is also a separate section on :doc:`Hexagonal Grids <hexagonal_grids>`
 which describes the variety of these types of grids, as well as some options
 for adding shapes to them.
 

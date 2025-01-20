@@ -1412,12 +1412,13 @@ class BaseShape:
         def image_reader(source) -> object:
             """Attempt to load first from local, then source."""
             img = None
+            breakpoint()
             if cache_directory:
                 if tools.is_url_valid(source):
                     loc = urlparse(source)
                     filename = loc.path.split("/")[-1]
-                    if os.path.exists(cache_directory, filename):
-                        _source = os.path.join(cache_directory, filename)
+                    _source = os.path.join(cache_directory, filename)
+                    if os.path.exists(_source):
                         img = ImageReader(_source)
             if not img:
                 img = ImageReader(source)
