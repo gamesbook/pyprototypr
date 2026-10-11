@@ -18,7 +18,8 @@ txt = Common(x=0, y=0, font_size=12, align="left")
 header = Common(x=0, y=0, font_size=12, align="left")
 diagram= Common(font_size=12, align="centre")
 
-# ---- Hexagonal Grid Labels
+
+# ---- HexHex Grid Labels
 games = Common(
     name="hexhex",
     height=1.5,
@@ -60,13 +61,49 @@ AbstractState(board=atr)
 Text("HexHex: label TR", x=14, y=18, common=diagram)
 
 PageBreak()
-# Hexagons(
-#     x=10, y=10,
-#     height=1,
-#     rows=5, cols=5,
-#     stroke_width=1,
-#     orientation="pointy"
-# )
+
+# ---- Hexagonal Grid Labels
+games = Common(
+    name="hexagonal",
+    height=1.5,
+    hexes=4,
+    label=True,
+    label_size=12,
+)
+
+abl = AbstractGame(
+    common=games,
+    x=0, y=0,
+    label_start='BL',
+    )
+AbstractState(board=abl)
+Text("Hexagonal: label BL", x=4, y=8, common=diagram)
+
+abr = AbstractGame(
+    common=games,
+    x=10, y=0,
+    label_start='BR',
+    )
+AbstractState(board=abr)
+Text("Hexagonal: label BR", x=14, y=8, common=diagram)
+
+atl = AbstractGame(
+    common=games,
+    x=0, y=10,
+    label_start='TL',
+    )
+AbstractState(board=atl)
+Text("Hexagonal: label TL", x=4, y=18, common=diagram)
+
+atr = AbstractGame(
+    common=games,
+    x=10, y=10,
+    label_start='TR',
+    )
+AbstractState(board=atr)
+Text("Hexagonal: label TR", x=14, y=18, common=diagram)
+
+PageBreak()
 
 # ---- Rectangular Grid Labels
 gridded = Common(

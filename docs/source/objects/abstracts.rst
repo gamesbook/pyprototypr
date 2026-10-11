@@ -36,9 +36,9 @@ The aim of the ``AbstractGame`` and ``AbstractState`` commands is to allow
 diagrams for many of these types of games to be readily created.
 
 The ``AbstractGame`` command allows for the details of the board and pieces
-for such a game to be specified and, optionally, annotated and/or labelled
-via markers. However, an ``AbstractGame`` is **not** designed to be drawn
-|dash| it can be thought of as the game being "still in the box".
+for such a game to be specified.  However, an ``AbstractGame`` is **not**
+designed to be drawn |dash| it can be thought of as the game being
+"still in the box".
 
 The ``AbstractState`` command will, when supplied with a previously defined
 ``AbstractGame``, allow for a position in the game |dash| at any point from
@@ -131,7 +131,7 @@ Other useful properties that can be set for an AbstractGame are:
   *stroke_width*
 * *frame*: if ``True``, draw a frame around a gridded board's outlines; use the
   normal styling options for the frame |dash| *frame_width*, *frame_stroke*,
-  , *frame_fill*, *frame_dotted*, and/or *frame_dashed* to customize it
+  *frame_fill*, *frame_dotted*, and/or *frame_dashed* to customize it
 * *height*: sets the height of a single cell ("edge-to-edge" for a hexagon)
 * *pattern*: an on/off design showing which cells should be blank i.e. unused
 * *intersections*: if ``True``, draw pieces on **grid intersections**, not
@@ -148,10 +148,9 @@ Other useful properties that can be set for an AbstractGame are:
   while Shogi boards use the *top-right*.
 * *label_offset*: how far away a label are drawn from the board edge(s); if not
   set, this is calculated from the label's font size
-* *markers*: a list of AbstractGame markers; see below for details
 * *pieces_type*: choose a predefined set of pieces from well-known abstract
-  games; possible choices areL ``chess``, ``checkers``, ``go``, ``shogi`` or
-  ``shog-int`` (International, or Westernised, Shogi)
+  games; possible choices are: ``chess``, ``checkers``, ``go``, ``shogi`` or
+  ``shogi-int`` (International, or Westernised, Shogi)
 * *pieces_resize*: a fractional value by which to resize the built-in piece
   shapes or images; this defaults to ``1`` |dash| note that this does **not**
   apply to custom-made shapes
@@ -253,7 +252,8 @@ Example 2: Styled Board
 
       The *label_start* defaults to begin at the *bottom-left* (``BL``),
       and the *label_type* defaults to  *alpha-numeric* (``AN```); with
-      letters along the bottom edge and numbers increasing up the left.
+      letters for the columns going from left to right along the bottom edge
+      and numbers for the rows increasing from ``1`` up on the left.
 
       As can be seen, the board is drawn when it is referenced by the *board*
       property of an ``AbstractState`` command.
@@ -479,6 +479,7 @@ referred to as "the game state".
 
 - `AbstractState Properties`_
 - `AbstractState Positions`_
+- `AbstractState Annotations`_
 - `AbstractState Markers`_
 - `AbstractState Examples`_
 
@@ -498,6 +499,7 @@ The properties that can be set for an AbstractState command are:
 * *setup*: if set to ``True``, and the game is one whose initial position is
   stored in **protograf**, then the pieces will be assigned to the board to
   match that defined setup
+* *annotation*: a list of AbstractState annotations; see below for details
 * *markers*: a list of AbstractState markers; see below for details
 
 
@@ -574,13 +576,33 @@ If a row on the board contains **no** pieces, this can be shown with a single
 ``.``.
 
 
+.. _abstractStateAnnotations:
+
+AbstractState Annotations
+-------------------------
+`^ <abstractstate-command_>`_
+
+An annotation is typically a thing that needs to be drawn to customise the
+board in some way |dash| this can be via text, shape or image.  For example,
+a cross drawn in the centre square of the board
+
+Annnotations are always drawn **before** any `AbstractState Markers`_ or
+any pieces that may appear on the board.
+
+
 .. _abstractStateMarkers:
 
 AbstractState Markers
 ---------------------
 `^ <abstractstate-command_>`_
 
-<TBD>
+A marker is typically a thing that needs to be shown to draw attention to some
+aspect of the current state of the board and its pieces |dash| this can be via
+text, shape or image.   For example, an arrow drawn to show how a piece can
+move from one square to another.
+
+Markers are always drawn **after** any `AbstractState Annotations`_ or
+any pieces that may appear on the board.
 
 
 .. _abstractStateExamples:

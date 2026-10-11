@@ -92,8 +92,7 @@ class AbstractGameObject(BaseShape):
             kwargs.get("label_offset_row", self.label_offset), "label_offset_row"
         )
 
-        self.markers = self._commons("markers") or kwargs.get("markers") or None
-        self.pieces = self._commons("pieces") or kwargs.get("pieces") or None
+        self.pieces = self._commons("pieces") or kwargs.get("pieces") or []
         self.pieces_type = (
             self._commons("pieces_type") or kwargs.get("pieces_type") or None
         )  # Shogi can change!
@@ -133,8 +132,8 @@ class AbstractGameObject(BaseShape):
         self.set_options_by_game()
         self._validate_choices()
         # ---- setup pieces
-        _pieces = kwargs.get("pieces", [])  # custom, define by user
-        self.pieces = self.setup_pieces(self.pieces_type, _pieces)
+        # _pieces = kwargs.get("pieces", [])  # custom, define by user
+        self.pieces = self.setup_pieces(self.pieces_type, self.pieces)
         # ---- setup board
         self.setup_board()
 
@@ -266,23 +265,6 @@ class AbstractGameObject(BaseShape):
                     self.cols = 9
                 self.label_start = Corner.TOP_RIGHT
                 self.label_type = "NN"
-            case "hexagons":
-                if self.fills is None:
-                    self.fills = ("white",)
-                if self.stroke is None:
-                    self.stroke = "black"
-                if not self.rows:
-                    self.rows = 8
-                if not self.cols:
-                    self.cols = 8
-                _max_cells = max(self.rows, self.cols)
-                if not self.kwargs.get("height"):
-                    self.cell_size = _available / _max_cells
-                self.board_type = "hexagonal"
-                if self.label_start is None:
-                    self.label_start = Corner.BOTTOM_LEFT
-                if self.label_type is None:
-                    self.label_type = "AN"
             case "hex":
                 if self.fills is None:
                     self.fills = ("white",)
@@ -294,7 +276,7 @@ class AbstractGameObject(BaseShape):
                 if not self.kwargs.get("height"):
                     self.cell_size = _available / _max_cells
                 if self.label_start is None:
-                    self.label_start = Corner.TOP_LEFT
+                    self.label_start = Corner.BOTTOM_LEFT
                 if self.label_type is None:
                     self.label_type = "AN"
                 self.board_type = "hexagonal"
@@ -327,6 +309,23 @@ class AbstractGameObject(BaseShape):
                 self.rows = self.hexes * 2 - 1
                 self.cols = self.hexes * 2 - 1
                 self.pattern = self.hexhex_pattern(side=self.hexes)
+            case "hexagons" | "hexagonal":
+                if self.fills is None:
+                    self.fills = ("white",)
+                if self.stroke is None:
+                    self.stroke = "black"
+                if not self.rows:
+                    self.rows = 8
+                if not self.cols:
+                    self.cols = 8
+                _max_cells = max(self.rows, self.cols)
+                if not self.kwargs.get("height"):
+                    self.cell_size = _available / _max_cells
+                self.board_type = "hexagonal"
+                if self.label_start is None:
+                    self.label_start = Corner.BOTTOM_LEFT
+                if self.label_type is None:
+                    self.label_type = "AN"
             case "tri" | "triangle" | "triangular":
                 self.board_type = "tri"
                 if self.fills is None:
@@ -447,7 +446,7 @@ class AbstractGameObject(BaseShape):
                         True,
                     )
         match _lower(self.name):
-            case "hexagons":
+            case "hexagons" | "hexagonal":
                 if not self.cols:
                     feedback(
                         'Missing number of cols for AbstractBoard of type "hexagons"',
@@ -550,19 +549,6 @@ class AbstractGameObject(BaseShape):
                     True,
                 )
 
-    def draw_markers(self):
-        """Draw marker elements on the board."""
-        if self.markers:
-            for mark in self.markers:
-                if not isinstance(mark, BaseShape):
-                    feedback(
-                        "The AbstractGame 'markers' property must be a list of shapes, "
-                        f" not a '{type(mark).__name__}'.",
-                        True,
-                        True,
-                    )
-                mark.draw()
-
     def draw_labels(self):
         """Draw labels around the board."""
         from protograf.protos import Text
@@ -602,12 +588,12 @@ class AbstractGameObject(BaseShape):
                 case Corner.TOP_LEFT:  # eg. Hex
                     start_col, start_row = 1, 1
                     delta_row, delta_col = 1, 1
-                    end_col, end_row = self.cols, self.rows + 1
+                    end_col, end_row = self.cols + 1, self.rows + 1
                 case Corner.BOTTOM_RIGHT:  # eg. ???
                     start_col, start_row = self.cols, self.rows
                     delta_row, delta_col = -1, -1
-                    end_col, end_row = 1, 0
-                case Corner.BOTTOM_LEFT:  # default
+                    end_col, end_row = 0, 0
+                case Corner.BOTTOM_LEFT:  # eg. Chess (default)
                     start_col, start_row = 1, self.rows
                     delta_row, delta_col = -1, 1
                     end_col, end_row = self.cols + 1, 0
@@ -821,7 +807,7 @@ class AbstractGameObject(BaseShape):
                     self.cells_non_blank.append(non_blank)  # per-row list of non-blank
 
             # ---- setup Hexagonal boards
-            case "hexagonal":
+            case "hexagons" | "hexagonal" | "hexes" | "hex" | "hexhex":
                 # TODO - pass 'shapes' into Hexagons for drawing e.g. circles
                 top_x = self.x if self.kwargs.get("x") else 0
                 top_y = self.y if self.kwargs.get("y") else 0
@@ -1183,17 +1169,22 @@ class AbstractStateObject(BaseShape):
 
     def __init__(self, _object=None, canvas=None, **kwargs):
         super().__init__(_object=_object, canvas=canvas, **kwargs)
-        self.kwargs = kwargs
-        self.set_unit_properties()
-        self.cnv = (
-            canvas if canvas else globals.canvas
-        )  # a new Page/Shape may now exist
-        # ---- custom properties
-        self.board = kwargs.get("board", None)
-        self.positions = kwargs.get("positions", ".")
-        self.setup = tools.as_bool(kwargs.get("setup", False))
-        self.moves = kwargs.get("moves", None)
-        self.markers = kwargs.get("markers", None)
+        # self.kwargs = kwargs
+        # self.set_unit_properties()
+        # self.cnv = (
+        #     canvas if canvas else globals.canvas
+        # )  # a new Page/Shape may now exist
+        # ---- unique properties
+        self.board = self._commons("board") or kwargs.get("board") or None
+        self.positions = self._commons("positions") or kwargs.get("positions") or "."
+        self.setup = self._commons("setup") or kwargs.get("setup") or False
+        self.setup = tools.as_bool(self.setup, False)
+        self.moves = self._commons("moves") or kwargs.get("moves") or None
+        self.markers = self._commons("markers") or kwargs.get("markers") or None
+        self.annotations = (
+            self._commons("annotations") or kwargs.get("annotations") or None
+        )
+        # --- internal properties
         self.position_shapes = []
         self._validate_choices()
         # ---- set positions
@@ -1274,6 +1265,14 @@ class AbstractStateObject(BaseShape):
                 feedback(
                     "The AbstractState 'markers' property must be a list of elements, "
                     f" not a '{type(self.markers).__name__}'.",
+                    True,
+                    True,
+                )
+        if self.annotations is not None:
+            if not isinstance(self.annotations, (list, tuple)):
+                feedback(
+                    "The AbstractState 'annotations' property must be a list of elements, "
+                    f" not a '{type(self.annotations).__name__}'.",
                     True,
                     True,
                 )
@@ -1359,6 +1358,31 @@ class AbstractStateObject(BaseShape):
                         True,
                     )
         return position_list
+
+    def draw_annotations(self):
+        """Draw annotation elements on the board."""
+        if self.annotations:
+            for anno in self.annotations:
+                if not isinstance(anno, BaseShape):
+                    feedback(
+                        "The AbstractState 'annotations' property must be a list of shapes, "
+                        f" not a '{type(anno).__name__}'.",
+                        True,
+                        True,
+                    )
+                anno.draw()
+
+    def draw_markers(self):
+        """Draw marker elements on the board."""
+        for mark in self.markers:
+            if not isinstance(mark, BaseShape):
+                feedback(
+                    "The AbstractGame 'markers' property must be a list of shapes, "
+                    f" not a '{type(mark).__name__}'.",
+                    True,
+                    True,
+                )
+            mark.draw()
 
     def draw_pieces(self):
         """Draw the piece shapes on a given canvas using their character IDs."""
@@ -1458,7 +1482,7 @@ class AbstractStateObject(BaseShape):
                         # debug="colrow",  (for testing only!)
                         **kwargs,
                     )
-            case "hexagons" | "hex" | "hexhex":
+            case "hexagons" | "hex" | "hexhex" | "hexagonal" | "hexes" | "hex":
                 self.board.board_layout._draw_grid = True
                 self.board.board_layout.draw_layout()
             case _:
@@ -1470,9 +1494,9 @@ class AbstractStateObject(BaseShape):
         # ---- draw the board labels
         if self.board.label is True:
             self.board.draw_labels()
-        # ---- draw the board markers
-        if self.board.markers:
-            self.board.draw_markers()
+        # ---- draw the annotations on the board
+        if self.annotations:
+            self.draw_annotations()
         # ---- draw the pieces
         if self.board.pieces and self.position_matrix:
             self.draw_pieces()
@@ -1500,12 +1524,4 @@ class AbstractStateObject(BaseShape):
             )
         # ---- draw the state markers
         if self.markers:
-            for anno in self.markers:
-                if not isinstance(anno, BaseShape):
-                    feedback(
-                        "The AbstractGame 'markers' property must be a list of shapes, "
-                        f" not a '{type(anno).__name__}'.",
-                        True,
-                        True,
-                    )
-                anno.draw()
+            self.draw_markers()
