@@ -33,7 +33,7 @@ played and appreciated by gamers of all ages across many societies.
 In addition, many new abstract games continue to be designed and tested.
 
 The aim of the ``AbstractGame`` and ``AbstractState`` commands is to allow
-diagrams for many of these types of games to be readily created.
+diagrams for many of these types of games to be easily created.
 
 The ``AbstractGame`` command allows for the details of the board and pieces
 for such a game to be specified.  However, an ``AbstractGame`` is **not**
@@ -41,12 +41,12 @@ designed to be drawn |dash| it can be thought of as the game being
 "still in the box".
 
 The ``AbstractState`` command will, when supplied with a previously defined
-``AbstractGame``, allow for a position in the game |dash| at any point from
+``AbstractGame``, allow for a position in that game |dash| at any point from
 the setup through to its end state |dash| to be shown in diagrammatic form
-and also, optionally, annotated and/or labelled via markers.
+and also, optionally, annotated.
 
 A series of ``AbstractState`` commands, all using the same ``AbstractGame``
-could, if so required, depict an entire game but this is not the primary
+command could, if required, depict an entire game but this is not the primary
 intended use of the ``AbstractState`` command.
 
 .. NOTE::
@@ -66,14 +66,18 @@ AbstractGame Command
 The ``AbstractGame()`` command defines the parts of an abstract game; primarily
 the type, and styling, of the board and pieces that it uses.
 
-There are two primary types of board; grid |dash| an arrangement of square
-cells, and hexagonal |dash| an arrangement of hexagons. In both cases,
-the size of the board is usually set by a combination of rows and columns.
+There are two primary types of board:
+
+- **grid** which is an array-like arrangement of square cells, and
+- **hexagonal** which  an arrangement of hexagons.
+
+For both type, the **size** of the board is usually set by a combination of
+rows and columns.
 
 A board can also be specified either by referring to an existing abstract game
 by name |dash| for example, Chess, Checkers (aka Draughts), Go or Shogi.
 
-Pieces can also be specified by the type of game that they are usually used
+Pieces can be specified by the type of game that they are usually used
 with |dash| for example, Chess, Checkers (aka Draughts), Go or Shogi. It is
 also possible to create completely unique pieces either by using one or more
 of **protograf** shapes and/or images of your choice.
@@ -82,7 +86,6 @@ of **protograf** shapes and/or images of your choice.
 - `AbstractGame Board: Grid`_
 - `AbstractGame Board: Hexagonal`_
 - `AbstractGame Pieces`_
-- `AbstractGame Markers`_
 - `AbstractGame Examples`_
 
 .. _abstractGameProperties:
@@ -94,26 +97,27 @@ AbstractGame Properties
 The key properties that can be set for an AbstractGame are:
 
 * *name*: the name of a type of board; which can chosen from  one of:
-  ``chess``, ``checkers``, ``go`` or ``shogi``; if omitted, the default
-  is a ``grid``
+  ``chess``, ``checkers``, ``go``, ``shogi``, ``hex``, ``hexhex``,
+  ``hexagonal``; if omitted, the default type is a ``grid``
 * *pieces*: details of pieces that will be placed on the board; these
   pieces can:
 
   * make use of the full set available from a pre-defined game (``chess``,
     ``checkers``, ``go``, ``shogi``, ``shogi-int``) by using
     *pieces_type* property (see below); or
-  * each be chosen individual and **independently** of the board name from
+  * each be chosen individually and **independently** of the board name from
     any of the pre-existing sets: ``chess``, ``checkers``, ``go``,
     ``shogi``, ``shogi-int``; or
   * be defined with a customised list of piece names and shapes; see below
     for `AbstractGame Pieces`_
-* *cols*: if no game *name* has been set |dash| each game is already associated
-  with a predefined number of columns |dash| then this is the number of cells,
+* *cols*: if no game *name* has been set, then this is the number of cells,
   in the horizontal direction, for a regular grid; a default of  ``8`` is used
-* *rows*: if no game *name* has been set |dash| each game is already associated
-  with a predefined number of rows |dash| then this is the number of cells,
+* *rows*: if no game *name* has been set, then this is the number of cells,
   in the vertical direction, for a regular grid; a default of  ``8`` is used
 
+Using the name of an existing game will also select the associated number of
+rows and columns for that game; for example, a *Shogi* board has 9 rows and
+9 columns.
 
 .. IMPORTANT::
 
@@ -127,16 +131,20 @@ Other useful properties that can be set for an AbstractGame are:
 
 * *fills*: a list of one or more :ref:`colors <basic-color>` in which to draw
   one or more alternating board spaces; the default is to draw all cells
-  ``white`` |dash| cell properties can be set with the normal *stroke* and
-  *stroke_width*
+  ``white`` |dash| other cell properties can be set with the normal *stroke*
+  and *stroke_width*
 * *frame*: if ``True``, draw a frame around a gridded board's outlines; use the
-  normal styling options for the frame |dash| *frame_width*, *frame_stroke*,
-  *frame_fill*, *frame_dotted*, and/or *frame_dashed* to customize it
-* *height*: sets the height of a single cell ("edge-to-edge" for a hexagon)
+  normal styling options to customize it |dash| *frame_width*, *frame_stroke*,
+  *frame_fill*, *frame_dotted*, and/or *frame_dashed*
+* *height*: sets the height of a single cell (the "edge-to-edge" distance for a
+  hexagon)
+* *hexes*: a value, only used for hexhex board, which sets the number of
+  hexagons along each edge of the board; see `Example 2: Hex Game Grid`_
 * *pattern*: an on/off design showing which cells should be blank i.e. unused
+  |dash| see `Example 4: Pattern Grid`_ for how this works
 * *intersections*: if ``True``, draw pieces on **grid intersections**, not
   grid spaces, and label the lines, not the spaces
-* *label*: if ``True``, draw a labels around the board's edges; use the
+* *label*: if ``True``, draw labels around the board's edges; use the
   normal styling options for a label; *label_font*, *label_stroke* etc.
 * *label_type*: the type of label, drawn on the board edges, which is
   used to identify a row or column; it can be  either *alpha-numeric*,
@@ -144,11 +152,12 @@ Other useful properties that can be set for an AbstractGame are:
   or *numeric*, or ``NN``, which is the labelling used for Shogi boards
 * *label_start*: the corner of the board at which the labelling starts; this
   can be: *bottom-left* (``BL``), *bottom-right* (``BR``), *top-left* (``TL``),
-  or *top-right* (``TR``). Chess boards use the *bottom-left*, the default,
-  while Shogi boards use the *top-right*.
-* *label_offset*: how far away a label are drawn from the board edge(s); if not
-  set, this is calculated from the label's font size
-* *pieces_type*: choose a predefined set of pieces from well-known abstract
+  or *top-right* (``TR``). Chess board labels start at the *bottom-left*
+  |dash| which is the default |dash| while Shogi board labels start at the
+  *top-right*.
+* *label_offset*: how far away label are drawn from the board edge(s); if not
+  set, this is calculated based on the label's font size
+* *pieces_type*: choose a predefined set of pieces from various abstract
   games; possible choices are: ``chess``, ``checkers``, ``go``, ``shogi`` or
   ``shogi-int`` (International, or Westernised, Shogi)
 * *pieces_resize*: a fractional value by which to resize the built-in piece
@@ -166,12 +175,12 @@ Other useful properties that can be set for an AbstractGame are:
     * *pieces*: ``checkers`` (simple black and white circles)
 
     A board is sized to occupy as much space as possible, unless the *height*
-    of a cell is set, following which the space occupied is calculate using
-    the *rows* and *cols* values.
+    of a cell is set, following which the space occupied by the board is
+    calculated using the *rows* and *cols* values.
 
     Note also that the definitions of the board and pieces are **not**,
-    generally speaking, the determinants of where the pieces get placed;
-    how many pieces there are, or what the rules are for their movement!
+    generally speaking, the determinants of *where* the pieces get placed;
+    how *many* pieces there are, or what the rules are for their movement!
 
 
 .. _abstractGameGrid:
@@ -180,15 +189,15 @@ AbstractGame Board: Grid
 ------------------------
 `^ <abstractgame-command_>`_
 
-A basic AbstractGame board is just a square grid and, depending on the game,
-will contain either an equal or unequal number of rows and columms.
+A basic AbstractGame board is just a grid of squares and, depending on the
+game, will contain either an equal or unequal number of rows and columms.
 
 Such a grid allows pieces to be placed either in the spaces between the lines
 or on their intersection points |dash| **protograf** terms these locations
 *cells*.
 
-Below are some examples of gridded board.  There are further examples in
-the
+Below are some examples of gridded boards.  There are further examples in
+the section on the `AbstractState Command`_.
 
 Example 1: Default Board
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -204,7 +213,7 @@ Example 1: Default Board
          agd = AbstractGame()
          AbstractState(board=agd)
 
-      The default settings for a board are for a 8x8 grid of square cells.
+      The default settings for a board are those for a 8x8 grid of square cells.
 
       As can be seen, the board is drawn when it is referenced by the *board*
       property of an ``AbstractState`` command.
@@ -241,19 +250,19 @@ Example 2: Styled Board
 
       In this case, the board is further styled by setting:
 
-      - *fills* - this can be one or colors; in this case a single one
+      - *fills* - a list one or more colors; in this case just a single one
       - *stroke* - the color of the grid lines
       - *stroke_width* - the thickness of the grid lines
-      - *frame* - when ``True``, the frame will be drawn
+      - *frame* - if ``True``, the frame will be drawn
       - *frame_width* - the thickness of the frame (in point units)
       - *frame_stroke* - the color of the frame
-      - *label* - when ``True``, the labels will be drawn
+      - *label* - if ``True``, the labels will be drawn
       - *label_stroke* - the color of the labels
 
-      The *label_start* defaults to begin at the *bottom-left* (``BL``),
-      and the *label_type* defaults to  *alpha-numeric* (``AN```); with
-      letters for the columns going from left to right along the bottom edge
-      and numbers for the rows increasing from ``1`` up on the left.
+      The *label_start* defaults to the *bottom-left* (``BL``),
+      and the *label_type* defaults to  *alpha-numeric* (``AN```); so
+      letters for the columns go from left to right along the bottom edge
+      and numbers for the rows increase from ``1`` up along the left edge.
 
       As can be seen, the board is drawn when it is referenced by the *board*
       property of an ``AbstractState`` command.
@@ -272,8 +281,8 @@ different styles, or type of hexagonal grids, all referenced through the
 board's *name* property.
 
 
-Example 1: Rectangular Grid
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Example 1: Rectangular Hexagonal Grid
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. |ah1| image:: ../images/objects/abstracts_hexagons_default.png
    :width: 330
@@ -289,8 +298,11 @@ Example 1: Rectangular Grid
         AbstractState(board=aghd)
 
       The default hexagonal board size is a 8x8 arrangement of hexagonal
-      cells in a "pointy" orientation; in this example this type of board is
-      set via its *name* property to ``hexagons``.
+      cells in a "pointy" orientation.
+
+      In this example this type of board is
+      set via its *name* property to ``hexagons`` |dash| a *name* property
+      of ``hexagonal`` is equivalent to this.
 
 ===== ======
 
@@ -315,7 +327,8 @@ Example 2: Hex Game Grid
       In this example the type of board is set via its *name* property to
       ``hex``.
 
-      This board appears as a rhombus of 11 rows by 11 columns.
+      This board appears as a rhombus of 11 rows by 11 columns and it is
+      used for the game called **Hex**.
 
       The game of  **Hex**, was created by Piet Hein in 1942; see
       https://en.wikipedia.org/wiki/Hex_(board_game)
@@ -359,26 +372,25 @@ Example 4: Pattern Grid
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 If a hexagonal grid for a game contains a custom number of hexagons,
-that may even be different in every row of the board, then a pattern
-design, or layout, can be defined for an ``AbstractGame``.
+that may vary across the rows of the board, then a pattern design,
+or layout, can be defined for the ``AbstractGame``.
 
 A pattern grid uses a cell-and-dot notation which is set with the
-*hex_pattern* property.
+*pattern* property.
 
 This notation represents each row as separate line, with each regular, or
 normal hexagon with a ``O`` (the letter "oh"), and each blank, or missing,
 cell with a ``.`` (dot or full stop).
 
 There should be as many lines in the pattern as are set in the *rows* value
-for the ``AbstractGame``. Similarly, there must not be more hexagons or
-blanks, in total, in any given line than the *cols* value.
+for the ``AbstractGame``. Similarly, the total combined number of hexagons
+and blanks, in any given line, must match the *cols* value.
 
 The best way to represent multi-line list of characters such as this is by
 starting and ending the pattern definition with triple quotes |dash| ``"""``.
 
 Note that empty lines and "whitespace" at the start and end of a pattern will
-be ignored; but each line **must** contain an equal number of characters
-|dash| also ignoring any whitespace |dash| corresponding to the *cols* value.
+be ignored; as is any whitespace on a line.
 
 If a row on the board contains only hexagons, this can be shown with a
 single ``O``.
@@ -409,9 +421,10 @@ single ``O``.
       ``hexagons``.
 
       The *pattern* property shows, in string format, an arrangement of
-      hexagons (``O``) and spaces (``.``). Note that the spaces are ignored
-      when constructing the board; they are just used to help visualise
-      the pattern being created.
+      hexagons (``O``) and spaces (``.``).
+
+      Note that the spaces in the pattern are ignored when constructing the
+      board; they are just used to help visualise the pattern being created.
 
       .. NOTE::
 
@@ -448,13 +461,6 @@ pre-create image.
 
     If you use an image for a shape, ensure that it is square to fit into a
     standard grid cell |dash| square or hexagon.
-
-
-.. _abstractGameMarkers:
-
-AbstractGame Markers
---------------------
-`^ <abstractgame-command_>`_
 
 
 .. _abstractGameExamples:
@@ -499,7 +505,7 @@ The properties that can be set for an AbstractState command are:
 * *setup*: if set to ``True``, and the game is one whose initial position is
   stored in **protograf**, then the pieces will be assigned to the board to
   match that defined setup
-* *annotation*: a list of AbstractState annotations; see below for details
+* *annotations*: a list of AbstractState annotations; see below for details
 * *markers*: a list of AbstractState markers; see below for details
 
 
@@ -584,7 +590,7 @@ AbstractState Annotations
 
 An annotation is typically a thing that needs to be drawn to customise the
 board in some way |dash| this can be via text, shape or image.  For example,
-a cross drawn in the centre square of the board
+a cross can be drawn in the centre square of the board.
 
 Annnotations are always drawn **before** any `AbstractState Markers`_ or
 any pieces that may appear on the board.
@@ -598,8 +604,8 @@ AbstractState Markers
 
 A marker is typically a thing that needs to be shown to draw attention to some
 aspect of the current state of the board and its pieces |dash| this can be via
-text, shape or image.   For example, an arrow drawn to show how a piece can
-move from one square to another.
+text, shape or image.   For example, an arrow can be drawn to show how a piece
+can, or should, move from one square to another.
 
 Markers are always drawn **after** any `AbstractState Annotations`_ or
 any pieces that may appear on the board.
@@ -623,8 +629,10 @@ Chess
 -----
 
 The following are the SVG images, sourced from Wikipedia Commons, available
-for use in constructing abstract games.  The pieces are referenced, using the
-notation described above, via the letter in the last column of the table.
+for use in constructing abstract games.
+
+The pieces are referenced, using the notation described above, via the letter
+in the last column of the table.
 
 Uppercase letters are used for White pieces; lowercase letters for Black.
 
@@ -654,7 +662,7 @@ Uppercase letters are used for White pieces; lowercase letters for Black.
       :alt: Pawn
 
 
-.. list-table:: Chess Pieces
+.. list-table:: Chess Pieces for White
    :widths: 60 20 30
    :header-rows: 1
 
@@ -684,8 +692,10 @@ Shogi
 -----
 
 The following are the SVG images, sourced from Wikipedia Commons, available
-for use in constructing abstract games.  The pieces are referenced, using the
-notation described above, via the letter in the last column of the table.
+for use in constructing abstract games.
+
+The pieces are referenced, using the notation described above, via the letter
+in the last column of the table.
 
 In Japanese the two opposing sides are called *Sente* ("earlier move") and
 *Gote* ("later move"), but in English they are referred to as Black and White,
@@ -756,7 +766,7 @@ for Black.
        :height: 35px
        :alt:  tokin (promoted pawn; reaches gold)
 
-.. list-table:: Shogi Pieces
+.. list-table:: Shogi Pieces for Black (*Sente*)
    :widths: 30 10 20 20 10 10
    :header-rows: 1
 

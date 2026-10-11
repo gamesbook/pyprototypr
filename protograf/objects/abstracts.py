@@ -779,20 +779,31 @@ class AbstractGameObject(BaseShape):
                     Layout(self.board_layout, shapes=self.areas, _draw_grid=False)
 
                 # ---- * default cell attributes (plus label); track non-blank cells
-                r_start, r_end, r_inc = self.rows, 0, -1
-                # ---- * label direction
-                if self.label_start in [Corner.BOTTOM_RIGHT, Corner.BOTTOM_LEFT]:
-                    r_start, r_end, r_inc = 1, self.rows + 1, 1
 
-                for row in range(r_start, r_end, r_inc):
+                # ---- * label direction
+                for row in range(1, self.rows + 1, 1):
                     non_blank = []
-                    for col in range(1, self.cols + 1):
+                    for col in range(1, self.cols + 1, 1):
+                        # alter ID according to direction
+                        match self.label_start:
+                            case Corner.TOP_LEFT:
+                                col_no = col
+                                row_no = row
+                            case Corner.BOTTOM_RIGHT:
+                                col_no = self.cols - col + 1
+                                row_no = self.rows - row + 1
+                            case Corner.TOP_RIGHT:
+                                col_no = self.cols - col + 1
+                                row_no = row
+                            case Corner.BOTTOM_LEFT:
+                                col_no = col
+                                row_no = self.rows - row + 1
                         if self.label_type == "AN":  # alpha-numeric
-                            col_id = tools.sheet_column(col, lower=self.label_lower)
-                            row_id = str(row)
+                            col_id = tools.sheet_column(col_no, lower=self.label_lower)
+                            row_id = str(row_no)
                         elif self.label_type == "NN":  # numeric-numeric
-                            col_id = str(col)
-                            row_id = str(row)
+                            col_id = str(col_no)
+                            row_id = str(row_no)
                         else:
                             raise NotImplementedError(
                                 f"Cannot process label_type {self.label_type}"
@@ -801,7 +812,7 @@ class AbstractGameObject(BaseShape):
                         cell_geo = self.board_layout.cells[(col, row)]
                         if not cell_geo.blank:
                             non_blank.append((col, row))
-                        # print(f"&&& GRID {col=} {row=}", col_row, cell_geo)
+                        # print(f"&&& GRID {col=} {row=}",  cell_id)
                         cell_geo_label = cell_geo._replace(name=cell_id)
                         setattr(self, cell_id, cell_geo_label)
                     self.cells_non_blank.append(non_blank)  # per-row list of non-blank

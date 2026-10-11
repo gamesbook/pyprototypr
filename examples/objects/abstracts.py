@@ -309,19 +309,28 @@ AbstractState(
     12345"""
 )
 
+
 # ---- Abstract Game Grid - markers
 PageBreak()
-Text(common=header, text="GridLine: markers")
-markers = [
-    (1,1)
-]
-ahsp = AbstractGame(
-    x=0, y=1,
+Text(common=header, text="Grid Board: markers and annotations")
+agm = AbstractGame(
+    x=2, y=1,
     height=1,
+    label=True,
     rows=5, cols=5,
     default=thick
 )
-AbstractState(board=ahsp)
+markers = [
+    line(xy=agm.c3.c, xy1=agm.d4.c, stroke_width=1, arrow=True)
+]
+annotations = [
+    circle(cxy=agm.c3.c, fill_stroke="green")
+]
+AbstractState(
+    board=agm,
+    annotations=annotations,
+    markers=markers,
+)
 
 
 Save(
