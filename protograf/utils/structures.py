@@ -21,6 +21,14 @@ log = logging.getLogger(__name__)
 # ---- ENUM
 
 
+class AbstractBoardType(Enum):
+    """Constants for each type of Abstract board"""
+
+    GRID = 1
+    HEXAGONAL = 2
+    TRIANGULAR = 3
+
+
 class CardFrame(Enum):
     """Constants for types of Card frames"""
 

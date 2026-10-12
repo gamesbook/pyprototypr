@@ -321,7 +321,8 @@ agm = AbstractGame(
     default=thick
 )
 markers = [
-    line(xy=agm.c3.c, xy1=agm.d4.c, stroke_width=1, arrow=True)
+    line(xy=agm.b2.c, xy1=agm.d4.c, stroke_width=1, arrow=True),
+    text(agm.d4.name, xy=agm.d4.c),
 ]
 annotations = [
     circle(cxy=agm.c3.c, fill_stroke="green")

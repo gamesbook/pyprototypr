@@ -22,6 +22,7 @@ from protograf.shapes import (
 from protograf.utils import tools, colrs, geoms
 from protograf.utils.messaging import feedback
 from protograf.utils.structures import (  # named tuples; enums
+    AbstractBoardType,
     Corner,
     HexOrientationName,
     Point,
@@ -59,6 +60,8 @@ class AbstractGameObject(BaseShape):
         # )  # a new Page/Shape may now exist
         # ---- unique properties
         self.name = self._commons("name") or kwargs.get("name") or "grid"
+        self.cell_size = self._commons("height") or kwargs.get("height") or 1
+        self.cell_size = tools.as_float(self.cell_size, "height")
         self.areas = (
             self._commons("areas") or kwargs.get("areas") or None
         )  # MUST be none; set by user
@@ -108,23 +111,23 @@ class AbstractGameObject(BaseShape):
         self.hexes = tools.as_int(self.hexes, "hexes", minimum=2, allow_none=True)
         # ---- custom / internal properties
         self.board_pattern = "default"
-        self.board_type = "grid"
+        self.board_type = AbstractBoardType.GRID
         self.label_lower = not self.label_uppercase
         self.orientation = HexOrientationName.POINTY.value  # set for HexHex & Hex Grid
         # ---- calculated properties
         # ---- cell dimensions: side of square; hexagon/triangle height; circle diameter
         if self._commons("height") or kwargs.get("height"):
-            self.cell_size = tools.as_float(kwargs.get("height", 1), "height")
+            self.auto_size = False
+            self.page_width = None
+            self.page_height = None
         else:
-            self.cell_size = 1
-            if not kwargs.get("width"):  # default to page width
-                self.width = (
-                    globals.page.width - globals.margins.left - globals.margins.right
-                )
-            if not kwargs.get("height"):  # default to page height
-                self.height = (
-                    globals.page.height - globals.margins.top - globals.margins.bottom
-                )
+            self.auto_size = True
+            self.page_width = (
+                globals.page.width - globals.margins.left - globals.margins.right
+            )
+            self.page_height = (
+                globals.page.height - globals.margins.top - globals.margins.bottom
+            )
         self.cells_non_blank = []  # (col,row) pairs of non-blank cells PER ROW
         self.hexgrid_diagonals = None  # hexes in a diagonal
         self.hexgrid_alpha_coords = None  # grid coordinates dict, keyed on (col,row)
@@ -192,7 +195,7 @@ class AbstractGameObject(BaseShape):
 
     def set_options_by_game(self):
         """Set properties according to preset, known, game."""
-        _available = min(self.height, self.width)
+        _max_cells = None
         match _lower(self.name):
             case "grid":  # default
                 self.pieces_type = "checkers"
@@ -204,9 +207,6 @@ class AbstractGameObject(BaseShape):
                     self.rows = 8
                 if not self.cols:
                     self.cols = 8
-                _max_cells = max(self.rows, self.cols)
-                if not self.kwargs.get("height"):
-                    self.cell_size = _available / _max_cells
                 if self.label_start is None:
                     self.label_start = Corner.BOTTOM_LEFT
                 if self.label_type is None:
@@ -272,14 +272,11 @@ class AbstractGameObject(BaseShape):
                     self.stroke = "black"
                 self.rows = 11
                 self.cols = 16
-                _max_cells = max(self.rows, self.cols)
-                if not self.kwargs.get("height"):
-                    self.cell_size = _available / _max_cells
                 if self.label_start is None:
                     self.label_start = Corner.BOTTOM_LEFT
                 if self.label_type is None:
                     self.label_type = "AN"
-                self.board_type = "hexagonal"
+                self.board_type = AbstractBoardType.HEXAGONAL
                 self.pattern = """
                 O O O O O O O O O O O . . . . .
                  O O O O O O O O O O O . . . . .
@@ -298,10 +295,11 @@ class AbstractGameObject(BaseShape):
                     self.fills = ("white",)
                 if self.stroke is None:
                     self.stroke = "black"
-                _max_cells = self.hexes * 2 - 1
-                if not self.kwargs.get("height"):
-                    self.cell_size = _available / _max_cells / 0.866
-                self.board_type = "hexagonal"
+                if self.auto_size:
+                    _available = min(self.page_height, self.page_width)
+                    _max_cells = self.hexes * 2 - 1
+                    self.cell_size = _available / _max_cells  # / 0.866
+                self.board_type = AbstractBoardType.HEXAGONAL
                 if self.label_start is None:
                     self.label_start = Corner.BOTTOM_LEFT
                 if self.label_type is None:
@@ -318,16 +316,13 @@ class AbstractGameObject(BaseShape):
                     self.rows = 8
                 if not self.cols:
                     self.cols = 8
-                _max_cells = max(self.rows, self.cols)
-                if not self.kwargs.get("height"):
-                    self.cell_size = _available / _max_cells
-                self.board_type = "hexagonal"
+                self.board_type = AbstractBoardType.HEXAGONAL
                 if self.label_start is None:
                     self.label_start = Corner.BOTTOM_LEFT
                 if self.label_type is None:
                     self.label_type = "AN"
             case "tri" | "triangle" | "triangular":
-                self.board_type = "tri"
+                self.board_type = AbstractBoardType.TRIANGULAR
                 if self.fills is None:
                     self.fills = ("white",)
                 if self.stroke is None:
@@ -347,17 +342,18 @@ class AbstractGameObject(BaseShape):
                     self.label_type = "AN"
             case _:
                 self.game_name_error()
-        # ---- calculate "auto" cell_size for gridded boards
-        if not self.kwargs.get("height"):
+        # ---- calculate "auto" cell_size
+        # do for gridded boards NOT already calculated
+        if self.auto_size and not _max_cells:
+            _available = min(self.page_height, self.page_width)
             match self.board_type:
-                case "grid":
+                case AbstractBoardType.GRID:
                     _max_cells = max(self.rows, self.cols)
                     self.cell_size = _available / _max_cells
-                case "hexagonal":
+                case AbstractBoardType.HEXAGONAL:
                     _max_cells = max(self.rows, self.cols)
-                    if _max_cells:
-                        self.cell_size = _available / _max_cells
-                case "tri":
+                    self.cell_size = _available / _max_cells
+                case AbstractBoardType.TRIANGULAR:
                     raise NotImplementedError(
                         "Sorry, a triangular board is not available yet to calculate cell size."
                     )
@@ -478,7 +474,7 @@ class AbstractGameObject(BaseShape):
                     self.hexes = int(self.hexes)
                     if self.hexes < 2:
                         feedback(
-                            "The 'side' value (hexagons along an edge) must be more"
+                            "The 'hexes' value (hexagons along an edge) must be more"
                             " than 2 for an AbstractBoard of type 'hexhex'",
                             True,
                             True,
@@ -627,7 +623,7 @@ class AbstractGameObject(BaseShape):
                 )
 
             # ---- grid column labels
-            if self.board_type == "grid":
+            if self.board_type == AbstractBoardType.GRID:
                 col_num = 1
                 for col_no in range(start_col, end_col, delta_col):
                     # skip blank columns at start OR end of row
@@ -658,7 +654,7 @@ class AbstractGameObject(BaseShape):
                     Text(col_value, x=x, y=y, **lkeys)
                     col_num += 1
             # ---- hex column labels
-            elif self.board_type == "hexagonal":
+            elif self.board_type == AbstractBoardType.HEXAGONAL:
                 non_blank_col_no = 1  # do NOT label blank diagonals
                 for _, dcells in self.hexgrid_diagonals.items():
                     # print(f'&&& {diagonal=} {non_blank_col_no=}')
@@ -672,10 +668,12 @@ class AbstractGameObject(BaseShape):
                             non_blank_col_no += 1
                             break  # label done; next diagonal, please!
             # ---- tri column labels
-            elif self.board_type == "tri":
+            elif self.board_type == AbstractBoardType.TRIANGULAR:
                 raise NotImplementedError(f"No labels for {self.board_type} grid!")
             else:
-                raise NotImplementedError(f"No labels for {self.board_type} grid!")
+                raise NotImplementedError(
+                    "No labels can be drawn for this type of board!"
+                )
             # print('&&& col label', ltype, col_value, x, y)
 
             # ---- row labels
@@ -701,7 +699,7 @@ class AbstractGameObject(BaseShape):
                 col_no = label_col  # label col can be at start or end
                 # print(f"{row_no=} {col_no=}") ; breakpoint()
                 # skip blank columns at start of a hexagonal grid row
-                if self.board_type == "hexagonal":
+                if self.board_type == AbstractBoardType.HEXAGONAL:
                     active_cells = self.cells_non_blank[row_no - 1]
                     while True:
                         col_exists = any(
@@ -715,21 +713,21 @@ class AbstractGameObject(BaseShape):
                             break
                 # get cell geo to use for label position
                 adjacent_cell = self.board_layout.cells[(col_no, row_no)]
-                if self.board_type == "grid":
+                if self.board_type == AbstractBoardType.GRID:
                     if self.label_start in [Corner.TOP_LEFT, Corner.BOTTOM_LEFT]:
                         x = adjacent_cell.w.x + shift * loffset_row
                         y = adjacent_cell.w.y + (self.label_size * 0.5) / globals.units
                     else:
                         x = adjacent_cell.e.x + shift * loffset_row
                         y = adjacent_cell.e.y + (self.label_size * 0.5) / globals.units
-                elif self.board_type == "hexagonal":
+                elif self.board_type == AbstractBoardType.HEXAGONAL:
                     if self.label_start in [Corner.TOP_LEFT, Corner.BOTTOM_LEFT]:
                         x = adjacent_cell.w.x + shift * loffset_row
                         y = adjacent_cell.w.y + (self.label_size * 0.5) / globals.units
                     else:
                         x = adjacent_cell.e.x + shift * loffset_row
                         y = adjacent_cell.e.y + (self.label_size * 0.5) / globals.units
-                elif self.board_type == "tri":
+                elif self.board_type == AbstractBoardType.TRIANGULAR:
                     raise NotImplementedError("No labels for Triangle grids!")
                 # print('&&& row label', ltype, row_value, x, y)
                 Text(row_value, x=x, y=y, **lkeys)
@@ -745,7 +743,7 @@ class AbstractGameObject(BaseShape):
         # Point(top_x, top_x) is the top-left point of the VirtualLocations (grid points)
         match self.board_type:
             # ---- setup Grid boards
-            case "grid":
+            case AbstractBoardType.GRID:
                 top_x = self.x if self.kwargs.get("x") else self.cell_size / 2.0
                 top_y = self.y if self.kwargs.get("y") else self.cell_size / 2.0
                 self.board_layout = RectangularLocations(  # VirtualLocations
@@ -801,14 +799,16 @@ class AbstractGameObject(BaseShape):
                         if self.label_type == "AN":  # alpha-numeric
                             col_id = tools.sheet_column(col_no, lower=self.label_lower)
                             row_id = str(row_no)
+                            id_prefix = ""
                         elif self.label_type == "NN":  # numeric-numeric
                             col_id = str(col_no)
                             row_id = str(row_no)
+                            id_prefix = "_"
                         else:
                             raise NotImplementedError(
                                 f"Cannot process label_type {self.label_type}"
                             )
-                        cell_id = f"{col_id}{row_id}"
+                        cell_id = f"{id_prefix}{col_id}{row_id}"
                         cell_geo = self.board_layout.cells[(col, row)]
                         if not cell_geo.blank:
                             non_blank.append((col, row))
@@ -818,15 +818,15 @@ class AbstractGameObject(BaseShape):
                     self.cells_non_blank.append(non_blank)  # per-row list of non-blank
 
             # ---- setup Hexagonal boards
-            case "hexagons" | "hexagonal" | "hexes" | "hex" | "hexhex":
+            case AbstractBoardType.HEXAGONAL:
                 # TODO - pass 'shapes' into Hexagons for drawing e.g. circles
                 top_x = self.x if self.kwargs.get("x") else 0
                 top_y = self.y if self.kwargs.get("y") else 0
                 colr = self.fills[0] if self.fills else "white"
-                # x_offset = -0.5 * self.cell_size
-                # if self.name == "hexhex" and self.hexes % 2 == 0:
-                #     x_offset = -self.cell_size
                 x_offset = 0
+                # x_offset = -0.5 * self.cell_size
+                if self.name == "hexhex" and self.auto_size and self.hexes % 2 == 0:
+                    x_offset = -self.cell_size * 0.5
                 self.board_layout = Hexagons(
                     cols=self.cols,
                     rows=self.rows,
@@ -909,7 +909,7 @@ class AbstractGameObject(BaseShape):
                                 )
 
             # ---- setup Triangular boards
-            case "tri":
+            case AbstractBoardType.TRIANGULAR:
                 raise NotImplementedError(
                     "Sorry, a triangular board is not available yet."
                 )

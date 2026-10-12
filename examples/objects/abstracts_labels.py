@@ -22,10 +22,11 @@ diagram= Common(font_size=12, align="centre")
 # ---- HexHex Grid Labels
 games = Common(
     name="hexhex",
-    height=1.5,
+    height=1,
     hexes=4,
     label=True,
     label_size=12,
+    stroke_width=1,
 )
 
 abl = AbstractGame(
@@ -85,10 +86,11 @@ PageBreak()
 # ---- Hexagonal Grid Labels ==================================================
 games = Common(
     name="hexagonal",
-    height=1.5,
+    height=1,
     hexes=4,
     label=True,
     label_size=12,
+    stroke_width=1,
 )
 
 abl = AbstractGame(
@@ -148,11 +150,12 @@ PageBreak()
 # ---- Rectangular Grid Labels ================================================
 gridded = Common(
     name="grid",
-    height=1.5,
+    height=1,
     rows=6,
     cols=7,
     label=True,
     label_size=12,
+    stroke_width=1,
 )
 
 agbl = AbstractGame(
