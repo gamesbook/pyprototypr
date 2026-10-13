@@ -176,7 +176,7 @@ AbstractState(board=aghg)
 # ---- Hexagons - hex game
 PageBreak()
 Text("Hexagons: hexhex", common=header)
-aghh = AbstractGame(name="hexhex", default=thick)
+aghh = AbstractGame(name="hexhex", hexes=4, default=thick)
 AbstractState(board=aghh)
 
 # ---- Hexagons - pattern
