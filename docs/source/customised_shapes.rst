@@ -508,7 +508,7 @@ If multiple alterations are specified, they are applied in this order:
 3. Invert
 4. Balance
 5. Brightness
-6. Sharpness`
+6. Sharpness
 
 For examples, see `Example 9: Alterations: Multiple`_
 
@@ -520,7 +520,7 @@ Image Resizing
 `^ <imageIndex_>`_
 
 It is possible to change the physical size of an Image to be smaller or larger;
-either using specific pixel sizes or via a fittin process.
+either using specific pixel sizes or via a "fitting" process.
 
 Resizing is only relevant to raster images, such PNG or JPEG files, as vector-based
 SVG images can be scaled to any size without loss of quality.

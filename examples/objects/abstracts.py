@@ -216,6 +216,25 @@ AbstractState(
     board=aghpp,
     positions="B2W/B4W/B3W/B4W/B2W")  # SHOULD ignore blank cells!!
 
+# ---- Grid - reuse Chess pieces
+PageBreak()
+Text("Abstract Game: Chess Pieces", common=header)
+knights = [
+    ('K', 'chess_white_knight'),
+    ('J', 'chess_black_knight')]
+agcp = AbstractGame(default=thick,
+    rows=4, cols=4,
+    pieces=knights,
+    )
+AbstractState(
+    board=agcp,
+    positions="""
+    .
+    KKKK
+    JJJJ
+    .
+    """)
+
 # ---- Hexagons - custom pieces
 PageBreak()
 Text(common=header, text="Grid: custom pieces")
@@ -354,6 +373,7 @@ Save(
         'abstracts_hexagons_hexhex',
         'abstracts_hexagons_pattern',
         'abstracts_hexagons_pattern_pieces',
+        'abstracts_grid_chess_pieces',
         'abstracts_grid_pieces',
         'abstracts_grid_pieces_numbered',
         'abstracts_grid_markers',

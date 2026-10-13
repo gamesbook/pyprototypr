@@ -86,7 +86,6 @@ of **protograf** shapes and/or images of your choice.
 - `AbstractGame Board: Grid`_
 - `AbstractGame Board: Hexagonal`_
 - `AbstractGame Pieces`_
-- `AbstractGame Examples`_
 
 .. _abstractGameProperties:
 
@@ -537,7 +536,47 @@ corresponding to that game will automatically be selected.
 Reusing built-in pieces for a game
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+It is possible to select a piece, or pieces, from any of the built-in games.
 
+This is done by using a ``game_color_piece`` notation; for example, the White
+King from Chess is referenced by ``chess_white_king``.
+
+.. |ap2| image:: ../images/objects/abstracts_grid_chess_pieces.png
+   :width: 330
+
+===== ======
+|ap2| This example shows an ``AbstractBoard`` constructed using these commands:
+
+      .. code:: python
+
+        knights = [
+            ('K', 'chess_white_knight'),
+            ('J', 'chess_black_knight')]
+        agcp = AbstractGame(default=thick,
+            rows=4, cols=4,
+            pieces=knights,
+            )
+        AbstractState(
+            board=agcp,
+            positions="""
+            .
+            KKKK
+            JJJJ
+            .
+            """)
+
+      In this example the type of board is set via its *name* property to
+      ``grid`` of size 4 rows by 4 columns.
+
+      The ``knights`` value is assigned to a list of pieces; with each letter
+      |dash| one that you choose to represent the pieces for the purpose of
+      displaying it on the board |dash| is paired with an existing piece;
+      in this case the Knights from Chess.
+
+      The use of the *positions* property is described in
+      :ref:`AbstractState Positions <abstractStatePositions>`.
+
+===== ======
 
 Defining custom pieces
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -604,17 +643,18 @@ or by referencing a pre-created image.
       In this example the type of board is set via its *name* property to
       ``hexhex``, with 4 *hexes* per side.
 
+      The board's *pieces* property is set to the name ``all_pieces``.  This
+      in turn is assigned to a list of paired values:  a letter and another
+      name, for example, ``('L', RL)``.
+
+      The ``RL`` in turn is defined by a Circle shape, with various properties
+      creating the red circle piece with six black lines drawn through it.
+
+      The use of the *positions* property to display these pieces on the
+      board is described in
+      :ref:`AbstractState Positions <abstractStatePositions>`.
 
 ===== ======
-
-
-.. _abstractGameExamples:
-
-
-AbstractGame Examples
-----------------------
-`^ <abstractgame-command_>`_
-
 
 
 .. _abstractstate-command:
@@ -625,8 +665,8 @@ AbstractState Command
 
 The ``AbstractState()`` command will create a display of a board and its pieces
 that have been defined in an :ref:`AbstractGame <abstractgame-command>`. This
-display represents a given point in an abstract game |dash| a situation commonly
-referred to as "the game state".
+display represents a given point during the play of an abstract game |dash| a
+situation commonly referred to as "the game state".
 
 - `AbstractState Properties`_
 - `AbstractState Positions`_
@@ -643,13 +683,13 @@ AbstractState Properties
 
 The properties that can be set for an AbstractState command are:
 
-* *board*: an AbstractGame object; this is a required setting and the
+* *board*: an ``AbstractGame`` object; this is a required setting and the
   AbstractState object cannot be displayed without it
 * *positions*: details of where an AbstractGame's pieces go on the board;
   see below for details
 * *setup*: if set to ``True``, and the game is one whose initial position is
   stored in **protograf**, then the pieces will be assigned to the board to
-  match that defined setup
+  match that predefined setup
 * *annotations*: a list of AbstractState annotations; see below for details
 * *markers*: a list of AbstractState markers; see below for details
 
@@ -694,7 +734,8 @@ a game of Go, then use multiple numbers, For example:
 
 This represents a situation where the first row has 9 empty points, a Black
 stone, and then 9 empty points; whereas the second row has a Black stone,
-followed by 9 empty points, and then another 9 empty points.
+followed by 9 empty points, and then another 9 empty points |dash| 18 in
+total.
 
 The FEN-like notation is converted internally by **protograf** into
 `Piece-and-Dot Notation`_.
@@ -720,8 +761,8 @@ For example:
 would show two rows near the start of a Chess game where Black has moved
 both Knights and one Pawn.
 
-Note that empty lines and "whitespace" at the start and end of a line is
-ignored.
+Note that empty lines, as well as "whitespace" at the start and end of any
+line, are ignored.
 
 If a row on the board contains **no** pieces, this can be shown with a single
 ``.``.

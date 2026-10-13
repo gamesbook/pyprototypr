@@ -1066,6 +1066,7 @@ class AbstractGameObject(BaseShape):
             if isinstance(_piece[1], str):
                 # try to use existing, defined piece
                 # e.g. checkers_black, or chess_white_rook
+                # NOTE use of kwargs to, for example, scale the piece size
                 parts = _piece[1].split("_")
                 game = _lower(parts[0])
                 if game not in ("go", "checkers", "chess"):
@@ -1097,9 +1098,13 @@ class AbstractGameObject(BaseShape):
                         case "checkers":
                             match pcolor:
                                 case "black":
-                                    pg_pieces[piece_id] = piece_shape("kR", "checkers")
+                                    pg_pieces[piece_id] = piece_shape(
+                                        "kR", "checkers", **kwargs
+                                    )
                                 case "white":
-                                    pg_pieces[piece_id] = piece_shape("kW", "checkers")
+                                    pg_pieces[piece_id] = piece_shape(
+                                        "kW", "checkers", **kwargs
+                                    )
                         case "chess":
                             if pname not in (
                                 "pawn",
@@ -1117,16 +1122,24 @@ class AbstractGameObject(BaseShape):
                             match pcolor:
                                 case "black":
                                     pcode = NAMED_CHESS_BLACK[pname]
-                                    pg_pieces[piece_id] = piece_shape(pcode, "chess")
+                                    pg_pieces[piece_id] = piece_shape(
+                                        pcode, "chess", **kwargs
+                                    )
                                 case "white":
                                     pcode = NAMED_CHESS_WHITE[pname]
-                                    pg_pieces[piece_id] = piece_shape(pcode, "chess")
+                                    pg_pieces[piece_id] = piece_shape(
+                                        pcode, "chess", **kwargs
+                                    )
                         case "go":
                             match pcolor:
                                 case "black":
-                                    pg_pieces[piece_id] = piece_shape("gB", "go")
+                                    pg_pieces[piece_id] = piece_shape(
+                                        "gB", "go", **kwargs
+                                    )
                                 case "white":
-                                    pg_pieces[piece_id] = piece_shape("gW", "go")
+                                    pg_pieces[piece_id] = piece_shape(
+                                        "gW", "go", **kwargs
+                                    )
                         case "shogi":
                             if pname not in SHOGI_NAMES:
                                 feedback(
@@ -1137,10 +1150,14 @@ class AbstractGameObject(BaseShape):
                             match pcolor:
                                 case "black":
                                     pcode = NAMED_SHOGI_BLACK[pname]
-                                    pg_pieces[piece_id] = piece_shape(pcode, "shogi")
+                                    pg_pieces[piece_id] = piece_shape(
+                                        pcode, "shogi", **kwargs
+                                    )
                                 case "white":
                                     pcode = NAMED_SHOGI_WHITE[pname]
-                                    pg_pieces[piece_id] = piece_shape(pcode, "shogi")
+                                    pg_pieces[piece_id] = piece_shape(
+                                        pcode, "shogi", **kwargs
+                                    )
                         case "shogi_int":
                             if pname not in SHOGI_NAMES:
                                 feedback(
@@ -1151,10 +1168,14 @@ class AbstractGameObject(BaseShape):
                             match pcolor:
                                 case "black":
                                     pcode = NAMED_SHOGI_INT_BLACK[pname]
-                                    pg_pieces[piece_id] = piece_shape(pcode, "shogi")
+                                    pg_pieces[piece_id] = piece_shape(
+                                        pcode, "shogi", **kwargs
+                                    )
                                 case "white":
                                     pcode = NAMED_SHOGI_INT_WHITE[pname]
-                                    pg_pieces[piece_id] = piece_shape(pcode, "shogi")
+                                    pg_pieces[piece_id] = piece_shape(
+                                        pcode, "shogi", **kwargs
+                                    )
                         case _:
                             feedback(
                                 "The AbstractGame name for the piece must be chosen"
