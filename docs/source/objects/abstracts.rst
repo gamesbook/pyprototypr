@@ -43,7 +43,7 @@ designed to be drawn |dash| it can be thought of as the game being
 The ``AbstractState`` command will, when supplied with a previously defined
 ``AbstractGame``, allow for a position in that game |dash| at any point from
 the setup through to its end state |dash| to be shown in diagrammatic form
-and also, optionally, annotated.
+and also, optionally, annotated or marked.
 
 A series of ``AbstractState`` commands, all using the same ``AbstractGame``
 command could, if required, depict an entire game but this is not the primary
@@ -55,6 +55,11 @@ intended use of the ``AbstractState`` command.
   Tracking and processing moves is beyond the scope of **protograf**.
   The *markers* property for the AbstractState can be used to show
   how a piece might move with, for example, the aid of a line or arrow.
+
+  For interest, its possible to integrate other Python libraries to
+  support tracking and visualisation of game moves; an example for
+  Chess is shown in ``abstracts_chess_animation.py``` which loads and
+  processes a ``.pgn`` file to generate an animated game.
 
 
 .. _abstractgame-command:
@@ -450,7 +455,7 @@ Note that empty lines and "whitespace" at the start and end of a pattern will
 be ignored; as is any whitespace on a line.
 
 If a row on the board contains only hexagons, this can be shown with a
-single ``O``.
+single ``O`` (capital "oh").
 
 
 .. |ah4| image:: ../images/objects/abstracts_hexagons_pattern.png
@@ -765,7 +770,42 @@ Note that empty lines, as well as "whitespace" at the start and end of any
 line, are ignored.
 
 If a row on the board contains **no** pieces, this can be shown with a single
-``.``.
+``.`` (dot or full stop).
+
+
+.. |sp1| image:: ../images/objects/abstracts_chess_positions.png
+   :width: 330
+
+===== ======
+|sp1| This example shows an ``AbstractGame`` constructed using these commands:
+
+      .. code:: python
+
+        agcp = AbstractGame(name="chess")
+        AbstractState(
+            board=agcp,
+            positions="""
+            r..qr.k.
+            p....pbp
+            bp...np.
+            ...p....
+            .
+            BPN.P.P.
+            P.Q.NnBP
+            R..R..K.
+            """
+        )
+
+      In this example the type of board is set via its *name* property to
+      ``chess``.  This results in the default grid with alternating colored
+      squares.
+
+      The *positions* property of AbstractState is used to show the Chess
+      pieces on the board; in this case, the "state" at the end of move 15
+      in the 1963/64 USA Chess Championship with R.J. Fischer (Black) playing
+      R.E. Byrne (White).
+
+===== ======
 
 
 .. _abstractStateAnnotations:
@@ -774,12 +814,89 @@ AbstractState Annotations
 -------------------------
 `^ <abstractstate-command_>`_
 
-An annotation is typically a thing that needs to be drawn to customise the
-board in some way |dash| this can be via text, shape or image.  For example,
-a cross can be drawn in the centre square of the board.
+An annotation is typically an :ref:`element <element-concept>` that needs to
+be drawn to customise the board in some way |dash| this can be via text,
+a shape or an image.  For example, a cross can be drawn in the centre square
+of the board.
 
 Annnotations are always drawn **before** any `AbstractState Markers`_ or
 any pieces that may appear on the board.
+
+.. _abstractStateLocations:
+
+Annnotations Locations
+~~~~~~~~~~~~~~~~~~~~~~
+
+Although it is possible to use the **protograf** absolute
+:ref:`positioning <position-concept>` notation to annotate the board, a more
+convenient way is to use a **board.reference.position** notation.  In this
+notation, the name assigned to the board is used first, followed by a dot,
+then the grid reference as set by the labelling method, followed by a dot,
+and then the position on the cell at that grid reference.
+
+For example, given a Chess board, the lower left square, occupied by the
+White Rook at the start of the game, is usually referred to as ``a1``.
+So the position |dash| the x- and y- coordinates |dash| of the centre of
+that square, for an ``AbstractBoard`` named ``chess_game`` would be
+``chess_game.a1.c``.
+
+The various positions for a square cell follow those of the abbreviated
+:ref:`compass-directions <termsDirection>`;  n (north), s (south), e (east),
+w (west), ne (north-east), nw (north-west), sw (south-west), and
+se (south-east), as well as c (centre/center).
+
+Similarly for a hexagonal cell, there are  n (north), s (south),
+ne (north-east), nw (north-west), sw (south-west), and se (south-east),
+as well as c (centre/center).
+
+
+.. |sp2| image:: ../images/objects/abstracts_grid_annotations.png
+   :width: 330
+
+===== ======
+|sp2| This example shows an ``AbstractState`` constructed using these commands:
+
+      .. code:: python
+
+        aga = AbstractGame(
+            label=True,
+            rows=6, cols=6,
+            default=thick
+        )
+        cross = Common(
+            side=aga.a6.ht,
+            stroke_width=0.5,
+            hatches='d',
+            hatches_count=2,
+            hatches_stroke='red',
+            hatches_stroke_width=1.5)
+        annotations = [
+            square(cxy=aga.a6.c, common=cross),
+            square(cxy=aga.f6.c, common=cross),
+            square(cxy=aga.a1.c, common=cross),
+            square(cxy=aga.f1.c, common=cross),
+            circle(cxy=aga.c3.ne,
+                   fill_stroke="red",
+                   transparency=50),
+        ]
+        AbstractState(
+            board=aga,
+            annotations=annotations,
+        )
+
+      In this example, *annotations* for the board are defined with a list
+      of shapes: a :ref:`circle <circle-command>` and four
+      :ref:`squares <square-command>`.  These have some styling added |dash|
+      color and transparency for the circle and :ref:`hatches <rectHatches>`
+      for the squares.
+
+      The centre locations of the shapes being used for the annotations are
+      set with their *cxy* property.  This property's value uses the
+      **board.reference.position** notation described earlier to place the
+      shape on the board.  For example, the circle's centre is set to the
+      north-east corner of cell ``c3``.
+
+===== ======
 
 
 .. _abstractStateMarkers:
@@ -788,10 +905,11 @@ AbstractState Markers
 ---------------------
 `^ <abstractstate-command_>`_
 
-A marker is typically a thing that needs to be shown to draw attention to some
-aspect of the current state of the board and its pieces |dash| this can be via
-text, shape or image.   For example, an arrow can be drawn to show how a piece
-can, or should, move from one square to another.
+A marker is typically an :ref:`element <element-concept>` that needs to be
+shown to draw attention to some aspect of the current state of the board and
+its pieces |dash| this can be via text, a shape or an image.   For example,
+an arrow can be drawn to show how a piece can, or should, move from one
+square to another.
 
 Markers are always drawn **after** any `AbstractState Annotations`_ or
 any pieces that may appear on the board.

@@ -340,7 +340,7 @@ agm = AbstractGame(
     default=thick
 )
 markers = [
-    line(xy=agm.b2.c, xy1=agm.d4.c, stroke_width=1, arrow=True),
+    line(xy=agm.b2.c, xy1=agm.d4.c, stroke_width=2, arrow=True),
     text(agm.d4.name, xy=agm.d4.c),
 ]
 annotations = [
@@ -350,6 +350,33 @@ AbstractState(
     board=agm,
     annotations=annotations,
     markers=markers,
+)
+
+# ---- Abstract Game Grid - annotations
+PageBreak()
+Text(common=header, text="Grid Board: annotations")
+aga = AbstractGame(
+    label=True,
+    rows=6, cols=6,
+    default=thick
+)
+cross = Common(
+    side=aga.a6.ht,
+    stroke_width=0.5,
+    hatches='d',
+    hatches_count=2,
+    hatches_stroke='red',
+    hatches_stroke_width=1.5)
+annotations = [
+    square(cxy=aga.a6.c, common=cross),
+    square(cxy=aga.f6.c, common=cross),
+    square(cxy=aga.a1.c, common=cross),
+    square(cxy=aga.f1.c, common=cross),
+    circle(cxy=aga.c3.ne, fill_stroke="red", transparency=50),
+]
+AbstractState(
+    board=aga,
+    annotations=annotations,
 )
 
 
@@ -377,5 +404,6 @@ Save(
         'abstracts_grid_pieces',
         'abstracts_grid_pieces_numbered',
         'abstracts_grid_markers',
+        'abstracts_grid_annotations',
     ]
 )
