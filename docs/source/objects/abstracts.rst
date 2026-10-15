@@ -106,12 +106,13 @@ The key properties that can be set for an AbstractGame are:
 * *pieces*: details of pieces that will be placed on the board; these
   pieces can:
 
-  * make use of the full set available from a pre-defined game (``chess``,
-    ``checkers``, ``go``, ``shogi``, ``shogi-int``) by using
-    *pieces_type* property (see below); or
+  * make use of the full set available from a pre-defined game |dash|
+    ``chess``, ``checkers``, ``go``, ``shogi``, ``shogi-int`` |dash| by
+    using the *pieces_type* property ; or
   * each be chosen individually and **independently** of the board name from
     any of the pre-existing sets: ``chess``, ``checkers``, ``go``,
-    ``shogi``, ``shogi-int``; or
+    ``shogi``, ``shogi-int`` (see below for
+    `Reusing built-in pieces from a game`_); or
   * be defined with a customised list of piece names and shapes; see below
     for `AbstractGame Pieces`_
 * *cols*: if no game *name* has been set, then this is the number of cells,
@@ -131,24 +132,27 @@ rows and columns for that game; for example, a *Shogi* board has 9 rows and
     the number of rows and columns as well the cell *height*.  The reason for
     this is to support both square and hexagonal cells with a single property.
 
-    In the examples used, if *height* is **not** set, then its value is
-    calculated by sizing the board to occupy as much of the page as possible.
+    In the examples used, if *height* is **not** provided to **protograf**,
+    then its value is determined by first sizing the board to occupy as much
+    of the page as possible and calculating the cell *height* based on the
+    number of rows and columns.
 
 Other useful properties that can be set for an AbstractGame are:
 
+* *areas*: a list of one or more shapes that will make-up the cells of the
+  board; this provides an alternative to using the normal squares or hexagons
+  |dash| see `Example 4: Board with custom areas`_ for how this works
 * *fills*: a list of one or more :ref:`colors <basic-color>` in which to draw
   one or more alternating board spaces; the default is to draw all cells
   ``white`` |dash| other cell properties can be set with the normal *stroke*
   and *stroke_width*
-* *frame*: if ``True``, draw a frame around a gridded board's outlines; use the
+* *frame*: if ``True``, draw a frame around a gridded board's outline; use the
   normal styling options to customize it |dash| *frame_width*, *frame_stroke*,
   *frame_fill*, *frame_dotted*, and/or *frame_dashed*
 * *height*: sets the height of a single cell (the "edge-to-edge" distance for a
   hexagon)
 * *hexes*: a value, only used for hexhex board, which sets the number of
   hexagons along each edge of the board; see `Example 2: Hex Game Grid`_
-* *pattern*: an on/off design showing which cells should be blank i.e. unused
-  |dash| see `Example 4: Pattern Grid`_ for how this works
 * *intersections*: if ``True``, draw pieces on **grid intersections**, not
   grid spaces, and label the lines, not the spaces
 * *label*: if ``True``, draw labels around the board's edges; use the
@@ -164,12 +168,11 @@ Other useful properties that can be set for an AbstractGame are:
   *top-right*.
 * *label_offset*: how far away label are drawn from the board edge(s); if not
   set, this is calculated based on the label's font size
+* *pattern*: an on/off design showing which cells should be blank i.e. unused
+  |dash| see `Example 4: Pattern Grid`_ for how this works
 * *pieces_type*: choose a predefined set of pieces from various abstract
   games; possible choices are: ``chess``, ``checkers``, ``go``, ``shogi`` or
   ``shogi-int`` (International, or Westernised, Shogi)
-* *pieces_resize*: a fractional value by which to resize the built-in piece
-  shapes or images; this defaults to ``1`` |dash| note that this does **not**
-  apply to custom-made shapes
 
 
 .. NOTE::
@@ -208,12 +211,13 @@ the section on the `AbstractState Command`_.
 
 Example 1: Default Board
 ~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <abstractGameGrid_>`_
 
 .. |ab1| image:: ../images/objects/abstracts_default.png
    :width: 330
 
 ===== ======
-|ab1| This example shows an ``AbstractBoard`` constructed using these commands:
+|ab1| This example shows an ``AbstractGame`` constructed using these commands:
 
       .. code:: python
 
@@ -231,12 +235,13 @@ Example 1: Default Board
 
 Example 2: Board Size and Position
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <abstractGameGrid_>`_
 
 .. |ab2| image:: ../images/objects/abstracts_size_position.png
    :width: 330
 
 ===== ======
-|ab2| This example shows ``AbstractBoard`` used with these commands:
+|ab2| This example shows ``AbstractGame`` used with these commands:
 
       .. code:: python
 
@@ -262,24 +267,25 @@ Example 2: Board Size and Position
       set their position on the page.
 
       The board on the lower-right also has the *name* set to ``hexagons``
-      in order to change its layou; more example of these types can be
+      in order to change its layout; more example of these types can be
       seen in :ref:`Hexagonal AbstractGame Boards <abstractGameHexagonal>`.
 
-      As can be seen, the boards are drawn when referenced by the *board*
-      property of the ``AbstractState`` commands (``agsp`` and ``ahsp``
-      respectively).
+      As can be seen, the boards are drawn when the name assigned to them is
+      referenced by the *board* property of the ``AbstractState`` commands
+      (``agsp`` and ``ahsp`` respectively).
 
 ===== ======
 
 
 Example 3: Styled Board
 ~~~~~~~~~~~~~~~~~~~~~~~
+`^ <abstractGameGrid_>`_
 
 .. |ab3| image:: ../images/objects/abstracts_styled.png
    :width: 330
 
 ===== ======
-|ab3| This example shows an ``AbstractBoard`` constructed using these commands:
+|ab3| This example shows an ``AbstractGame`` constructed using these commands:
 
       .. code:: python
 
@@ -297,15 +303,15 @@ Example 3: Styled Board
         AbstractState(board=ags)
 
       The default board size is a 8x8 ``grid`` of square cells; in this
-      example the type of board is explicitly set via its *name* property.
+      example the type of board is explicitly set by its *name* property.
 
       In this case, the board is further styled by setting:
 
       - *fills* - a list one or more colors; in this case just a single one
       - *stroke* - the color of the grid lines
-      - *stroke_width* - the thickness of the grid lines
+      - *stroke_width* - the thickness of the grid lines (in point units)
       - *frame* - if ``True``, the frame will be drawn
-      - *frame_width* - the thickness of the frame (in point units)
+      - *frame_width* - the thickness of the frame lines (in point units)
       - *frame_stroke* - the color of the frame
       - *label* - if ``True``, the labels will be drawn
       - *label_stroke* - the color of the labels
@@ -315,8 +321,64 @@ Example 3: Styled Board
       letters for the columns go from left to right along the bottom edge
       and numbers for the rows increase from ``1`` up along the left edge.
 
-      As can be seen, the board is drawn when it is referenced by the *board*
-      property of an ``AbstractState`` command.
+      As can be seen, the board is drawn when the name assigned to it
+      (``ags``) is referenced by the *board* property of an
+      ``AbstractState`` command.
+
+===== ======
+
+
+Example 4: Board with custom areas
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <abstractGameGrid_>`_
+
+.. |ab4| image:: ../images/objects/abstracts_chess_custom_board.png
+   :width: 330
+
+===== ======
+|ab4| This example shows an ``AbstractGame`` constructed using these commands:
+
+      .. code:: python
+
+        htch = Default(
+            hatches='ne',
+            hatches_count=15,
+            hatches_stroke_width=1,
+            hatches_stroke="dimgray")
+        sqr = Default(
+            fill="white",
+            stroke=None,
+            height=1,
+            width=1)
+
+        agcb = AbstractGame(
+            name="chess",
+            areas=[
+                rectangle(default=sqr),
+                rectangle(default=[sqr, htch])
+            ]
+        )
+        AbstractState(board=agcb)
+
+      In this example the type of ``AbstractGame`` board is set by its
+      *name* property to ``chess``.
+
+      This board appears as a square layout of 8 rows by 8 columns
+      such is used for a regular game of Chess.
+
+      In addition, the *areas* for the board are supplied as a list of
+      two customised rectangles.  These are drawn in turn at alternating
+      positions on the underlying row/column grid.
+
+      Each rectangle has the same shape, as set by the
+      :ref:`Default() <the-default-command>` command named ``sqr``, but
+      the second one also contains a series of :ref:`hatches <rectHatches>`,
+      as set by the :ref:`Default() <the-default-command>` command
+      named ``htch``.
+
+      Because the Chess tiling pattern is a snake-like one, starting at the
+      upper-left and then wrapping around at the end of each row, these
+      rectangle shapes appear at different positions on alternating rows.
 
 ===== ======
 
@@ -334,12 +396,13 @@ board's *name* property.
 
 Example 1: Rectangular Hexagonal Grid
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <abstractGameHexagonal_>`_
 
 .. |ah1| image:: ../images/objects/abstracts_hexagons_default.png
    :width: 330
 
 ===== ======
-|ah1| This example shows an ``AbstractBoard`` constructed using these commands:
+|ah1| This example shows an ``AbstractGame`` constructed using these commands:
 
       .. code:: python
 
@@ -364,12 +427,13 @@ Example 1: Rectangular Hexagonal Grid
 
 Example 2: Hex Game Grid
 ~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <abstractGameHexagonal_>`_
 
 .. |ah2| image:: ../images/objects/abstracts_hexagons_hexgame.png
    :width: 330
 
 ===== ======
-|ah2| This example shows an ``AbstractBoard`` constructed using these commands:
+|ah2| This example shows an ``AbstractGame`` constructed using these commands:
 
       .. code:: python
 
@@ -393,6 +457,7 @@ Example 2: Hex Game Grid
 
 Example 3: HexHex Grid
 ~~~~~~~~~~~~~~~~~~~~~~
+`^ <abstractGameHexagonal_>`_
 
 The term "hexhex" refers to a hexagonal grid that itself appears to look like
 a hexagon.
@@ -406,14 +471,14 @@ This type of board is constructed by:
 
 .. NOTE::
 
-    The *rows* and *cols* properties used by other ``AbstractBoard``
+    The *rows* and *cols* properties used by other ``AbstractGame``
     layouts are **not** applicable to a ``hexhex`` layout.
 
 .. |ah3| image:: ../images/objects/abstracts_hexagons_hexhex.png
    :width: 330
 
 ===== ======
-|ah3| This example shows an ``AbstractBoard`` constructed using these commands:
+|ah3| This example shows an ``AbstractGame`` constructed using these commands:
 
       .. code:: python
 
@@ -430,8 +495,10 @@ This type of board is constructed by:
 
 ===== ======
 
+
 Example 4: Pattern Grid
 ~~~~~~~~~~~~~~~~~~~~~~~
+`^ <abstractGameHexagonal_>`_
 
 If a hexagonal grid for a game contains a custom number of hexagons,
 that may vary across the rows of the board, then a pattern design,
@@ -462,7 +529,7 @@ single ``O`` (capital "oh").
    :width: 330
 
 ===== ======
-|ah4| This example shows an ``AbstractBoard`` constructed using these commands:
+|ah4| This example shows an ``AbstractGame`` constructed using these commands:
 
       .. code:: python
 
@@ -503,13 +570,14 @@ AbstractGame Pieces
 `^ <abstractgame-command_>`_
 
 *protograf's* library includes pieces from well-known games available as
-SVG images sourced from the internet. These can be used as a set or as
-individually referenced pieces.
+SVG images sourced from the internet; see `Abstract Resources`_. These can
+be used as a set or as individually referenced pieces.
 
 You can also define your own set of shapes to be used with a game.
 
 Built-in pieces for a known game
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <abstractGamePieces_>`_
 
 If you have chosen an existing "named" game, the default set of pieces
 corresponding to that game will automatically be selected.
@@ -518,7 +586,7 @@ corresponding to that game will automatically be selected.
    :width: 330
 
 ===== ======
-|ap1| This example shows an ``AbstractBoard`` constructed using these commands:
+|ap1| This example shows an ``AbstractGame`` constructed using these commands:
 
       .. code:: python
 
@@ -538,8 +606,9 @@ corresponding to that game will automatically be selected.
 ===== ======
 
 
-Reusing built-in pieces for a game
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Reusing built-in pieces from a game
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <abstractGamePieces_>`_
 
 It is possible to select a piece, or pieces, from any of the built-in games.
 
@@ -550,7 +619,7 @@ King from Chess is referenced by ``chess_white_king``.
    :width: 330
 
 ===== ======
-|ap2| This example shows an ``AbstractBoard`` constructed using these commands:
+|ap2| This example shows an ``AbstractGame`` constructed using these commands:
 
       .. code:: python
 
@@ -583,8 +652,9 @@ King from Chess is referenced by ``chess_white_king``.
 
 ===== ======
 
-Defining custom pieces
-~~~~~~~~~~~~~~~~~~~~~~
+Defining and using custom pieces
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <abstractGamePieces_>`_
 
 Custom pieces can either be designed with **protograf**'s built-in shapes,
 or by referencing a pre-created image.
@@ -598,7 +668,7 @@ or by referencing a pre-created image.
    :width: 330
 
 ===== ======
-|ap3| This example shows an ``AbstractBoard`` constructed using these commands:
+|ap3| This example shows an ``AbstractGame`` constructed using these commands:
 
       .. code:: python
 
@@ -709,17 +779,18 @@ The *positions* property of an AbstractState indicates where the pieces |dash|
 as defined for the AbstractGame by the shapes, icons or images associated with
 a character |dash| are placed.
 
-The notation for doing this is by providing a string of characters.
-There are two options available.
+The notation for doing this is by providing a string of characters in one
+of two different notational styles.
 
 FEN-like Notation
 ~~~~~~~~~~~~~~~~~
+`^ <abstractStatePositions_>`_
 
 This notation is based on the Chess notation called "FEN" (see:
 https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation)
 in which the characters, representing pieces, are separated by a combination
 of numbers, to represent consecutive blank cells, and/or ``/`` (forward slash)
-characters to mark the end of row.
+characters to mark the end of a row.
 
 For example:
 
@@ -727,11 +798,11 @@ For example:
 
    positions = "rnbqkbnr/pppppppp/8"
 
-would represent the Black pieces at the start of a Chess game, as well as the
-unoccupied row in front of the pawns.
+would represent three rows |dash| the Black pieces as setup at the start of
+a Chess game, as well as the unoccupied row in front of the Black pawns.
 
 If there are more than nine adjacent blank cells in a row, as there might be in
-a game of Go, then use multiple numbers, For example:
+a game of Go, then use multiple numbers, for example:
 
 .. code:: python
 
@@ -747,12 +818,13 @@ The FEN-like notation is converted internally by **protograf** into
 
 Piece-and-Dot Notation
 ~~~~~~~~~~~~~~~~~~~~~~
+`^ <abstractStatePositions_>`_
 
 This notation represents each row as separate line, and each blank cell
 with a ``.`` (dot or full stop).
 
-The best way to represent multi-line list of characters such as this is by
-starting and ending with triple quotes |dash| ``"""``.
+The best way to represent a multi-line list of characters such as this is
+by starting and ending all the lines with triple quotes |dash| ``"""``.
 
 For example:
 
@@ -837,7 +909,7 @@ and then the position on the cell at that grid reference.
 For example, given a Chess board, the lower left square, occupied by the
 White Rook at the start of the game, is usually referred to as ``a1``.
 So the position |dash| the x- and y- coordinates |dash| of the centre of
-that square, for an ``AbstractBoard`` named ``chess_game`` would be
+that square, for an ``AbstractGame`` named ``chess_game`` would be
 ``chess_game.a1.c``.
 
 The various positions for a square cell follow those of the abbreviated
@@ -922,8 +994,120 @@ AbstractState Examples
 `^ <abstractstate-command_>`_
 
 
-.. _abstract-resources:
+Example 1: Colored Chess Board
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. |ax1| image:: ../images/objects/abstracts_chess_customised.png
+   :width: 330
+
+===== ======
+|ax1| This example shows the use of ``AbstractGame`` and ``AbstractState``:
+
+      .. code:: python
+
+        agcs = AbstractGame(
+            name="chess",
+            fills=["#FFCE9E", "#D18B47"],  # browns
+            frame=True,
+            frame_width=15,
+            frame_stroke="brown",
+            label=True,
+            label_stroke="#FFCE9E",
+            label_offset_row=0.275,
+            label_offset_col=0.25,
+        )
+        AbstractState(board=agcs, setup=True)
+
+      This example shows ...
+
+===== ======
+
+
+Example 2: Checkers Board: Setup
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. |ax2| image:: ../images/objects/abstracts_checkers_setup.png
+   :width: 330
+
+===== ======
+|ax2| This example shows the use of ``AbstractGame`` and ``AbstractState``:
+
+      .. code:: python
+
+        agks = AbstractGame(name="checkers")
+        AbstractState(board=agks, setup=True)
+
+      This example shows a Checkers game setup, using the pieces which are
+      predefined with **protograf** |dash| in this case, simple red and and
+      white :ref:`circles <circle-command>`.
+
+===== ======
+
+
+Example 3: Shogi Board: Setup
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. |ax3| image:: ../images/objects/abstracts_shogi_setup.png
+   :width: 330
+
+===== ======
+|ax3| This example shows the use of ``AbstractGame`` and ``AbstractState``:
+
+      .. code:: python
+
+        agss = AbstractGame(
+          name="shogi",
+          label=True)
+        AbstractState(board=agss, setup=True)
+
+      This example shows a Shogi game setup, using the pieces whose images are
+      available with **protograf**.
+
+===== ======
+
+
+Example 4: Shogi Board: Positions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. |ax4| image:: ../images/objects/abstracts_shogi_positions.png
+   :width: 330
+
+===== ======
+|ax4| This example shows the use of ``AbstractGame`` and ``AbstractState``:
+
+      .. code:: python
+
+        agcp = AbstractGame(
+            name="shogi",
+            fills=['#D8A300'],
+            stroke_width=1.5,
+            stroke="white",
+            pieces_type="shogi-int")
+        AbstractState(
+            board=agcp,
+            positions="""
+            L..R..K..
+            P.S.NnB.P
+            B..PN.P.P
+            .........
+            ...s.....
+            ....p....
+            p....pb.p
+            bp...n.p.
+            l...r.k..
+            """
+        )
+
+      This example shows a Shogi game setup, using an "international style"
+      of piece types, referenced as ``shogi-int``, whose images are available
+      with **protograf**.
+
+      In addition, the board itself is styled with a different color of cells
+      and thicker, white lines.
+
+===== ======
+
+.. _abstract-resources:
 
 Abstract Resources
 ==================

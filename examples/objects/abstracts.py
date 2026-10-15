@@ -101,9 +101,9 @@ Text("Fischer(B) vs Byrne(W);"
      " end move 15",
      x=0, y=8.5, font_size=7, align="left")
 
-# ---- Chess - custom board areas
+# ---- Chess Grid - custom board areas
 PageBreak()
-Text("Chess Game: Custom Squares", common=header)
+Text("Grid (Chess): Custom Squares", common=header)
 htch = Default(
     hatches='ne',
     hatches_count=15,
@@ -120,9 +120,9 @@ sqLite = rectangle(default=sqr)
 agcb = AbstractGame(
     name="chess",
     areas=[sqLite, sqDark],
-    label=True,
 )
-AbstractState(board=agcb, setup=True)
+AbstractState(board=agcb)
+
 
 # ---- Shogi - setup
 PageBreak()

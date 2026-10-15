@@ -99,12 +99,6 @@ class AbstractGameObject(BaseShape):
         self.pieces_type = (
             self._commons("pieces_type") or kwargs.get("pieces_type") or None
         )  # Shogi can change!
-        self.pieces_resize = (
-            self._commons("pieces_resize") or kwargs.get("pieces_resize") or 1.0
-        )
-        self.pieces_resize = tools.as_float(
-            self.pieces_resize, "pieces_resize"
-        )  # TODO - process this!
         self.hexes = (
             self._commons("hexes") or kwargs.get("hexes") or 2
         )  # override default in base.py
@@ -399,13 +393,6 @@ class AbstractGameObject(BaseShape):
                     True,
                     True,
                 )
-        if not isinstance(self.pieces_resize, (type(None), float, int)):
-            feedback(
-                "The AbstractGame 'pieces_resize' property must be a number, "
-                f" not a '{type(self.pieces_resize).__name__}'.",
-                True,
-                True,
-            )
         if not isinstance(self.name, (type(None), str)):
             feedback(
                 "The AbstractGame 'name' property must be a string, "
