@@ -154,6 +154,18 @@ AbstractState(
     """
 )
 
+# ---- Go- positions
+PageBreak()
+Text("Go Game: Positions", common=header)
+aggp = AbstractGame(default=thick,
+    name="go",
+    label=True, 
+    fill='#D8A300')
+AbstractState(
+    board=aggp,
+    positions="99/"*7 + ".B.B.W..W.BBB..B.W/" + "99/"*10
+)
+
 # ---- Checkers - setup
 PageBreak()
 Text("Checkers Game: Setup", common=header)
@@ -394,6 +406,7 @@ Save(
         'abstracts_chess_custom_board',
         'abstracts_shogi_setup',
         'abstracts_shogi_positions',
+        'abstracts_go_positions',
         'abstracts_checkers_setup',
         'abstracts_hexagons_default',
         'abstracts_hexagons_hexgame',
