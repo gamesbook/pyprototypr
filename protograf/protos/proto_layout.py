@@ -204,7 +204,7 @@ class LayoutGrid:
                             )
                             height = next_row_loc.y - loc.y
                             width = next_col_loc.x - loc.x
-                            cxy = Point(loc.x + width / 2.0, loc.y + height / 2.0)
+                            # cxy = Point(loc.x + width / 2.0, loc.y + height / 2.0)
                             Rectangle(
                                 x=loc.x,
                                 y=loc.y,

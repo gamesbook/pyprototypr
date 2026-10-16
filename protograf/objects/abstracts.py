@@ -108,6 +108,7 @@ class AbstractGameObject(BaseShape):
         self.board_type = AbstractBoardType.GRID
         self.label_lower = not self.label_uppercase
         self.orientation = HexOrientationName.POINTY.value  # set for HexHex & Hex Grid
+        self.grid_kwargs = {}  # used when drawing intersections lines
         # ---- calculated properties
         # ---- cell dimensions: side of square; hexagon/triangle height; circle diameter
         if self._commons("height") or kwargs.get("height"):
@@ -126,7 +127,7 @@ class AbstractGameObject(BaseShape):
         self.hexgrid_diagonals = None  # hexes in a diagonal
         self.hexgrid_alpha_coords = None  # grid coordinates dict, keyed on (col,row)
         # ---- add in defaults from games
-        self.set_options_by_game()
+        self.set_options_by_game()  # MUST be before call to validate!
         self._validate_choices()
         # ---- setup pieces
         # _pieces = kwargs.get("pieces", [])  # custom, define by user
@@ -432,13 +433,13 @@ class AbstractGameObject(BaseShape):
             case "hexagons" | "hexagonal":
                 if not self.cols:
                     feedback(
-                        'Missing number of cols for AbstractBoard of type "hexagons"',
+                        'Missing number of cols for AbstractBoard of type "hexagons."',
                         True,
                         True,
                     )
                 if not self.rows:
                     feedback(
-                        'Missing number of rows for AbstractBoard of type "hexagons"',
+                        'Missing number of rows for AbstractBoard of type "hexagons."',
                         True,
                         True,
                     )
@@ -446,7 +447,7 @@ class AbstractGameObject(BaseShape):
                 if not self.hexes:
                     feedback(
                         "Missing 'hexes' value (hexagons along an edge)"
-                        " for AbstractBoard of type 'hexhex'",
+                        " for AbstractBoard of type 'hexhex'.",
                         True,
                         True,
                     )
@@ -454,7 +455,7 @@ class AbstractGameObject(BaseShape):
                     if not self.hexes.is_integer():
                         feedback(
                             "The 'hexes' value (hexagons along an edge) must be an"
-                            " integer for an AbstractBoard of type 'hexhex'",
+                            " integer for an AbstractBoard of type 'hexhex'.",
                             True,
                             True,
                         )
@@ -462,12 +463,18 @@ class AbstractGameObject(BaseShape):
                     if self.hexes < 2:
                         feedback(
                             "The 'hexes' value (hexagons along an edge) must be more"
-                            " than 2 for an AbstractBoard of type 'hexhex'",
+                            " than 2 for an AbstractBoard of type 'hexhex'.",
                             True,
                             True,
                         )
             case _:
                 pass
+        if self.board_type == AbstractBoardType.HEXAGONAL and self.intersections:
+            feedback(
+                "Use of intersections is not supported for hexagonal type boards.",
+                True,
+                True,
+            )
 
         return True
 
@@ -541,20 +548,20 @@ class AbstractGameObject(BaseShape):
             match self.label_start:
                 case Corner.BOTTOM_RIGHT:
                     x = adjacent_cell.sw.x
-                    y = adjacent_cell.s.y + shift * loffset_col * 1.5
+                    y = adjacent_cell.s.y + shift * lbl_offset_col * 1.5
                 case Corner.BOTTOM_LEFT:
                     x = adjacent_cell.se.x
-                    y = adjacent_cell.s.y + shift * loffset_col * 1.5
+                    y = adjacent_cell.s.y + shift * lbl_offset_col * 1.5
                 case Corner.TOP_RIGHT:
                     x = adjacent_cell.nw.x + (
                         adjacent_cell.n.x - adjacent_cell.nw.x
                     ) * (1.0 / 3.0)
-                    y = adjacent_cell.n.y  # + shift * loffset_col
+                    y = adjacent_cell.n.y  # + shift * lbl_offset_col
                 case Corner.TOP_LEFT:
                     x = adjacent_cell.ne.x - (
                         adjacent_cell.ne.x - adjacent_cell.n.x
                     ) * (1.0 / 3.0)
-                    y = adjacent_cell.n.y  # + shift * loffset_col
+                    y = adjacent_cell.n.y  # + shift * lbl_offset_col
                 case _:
                     raise NotImplementedError(
                         "Cannot process label_start of {self.label_start}"
@@ -584,14 +591,21 @@ class AbstractGameObject(BaseShape):
             # ---- label settings
             _label_col = self._p2v(self.label_size) * 0.5  # user-units
             _label_row = self._p2v(self.label_size) * 0.75  # user-units
-            loffset = self.label_offset if self.label_offset else None
-            if loffset:
-                _label_col, _label_col = loffset, loffset
+            lbl_intersect = 0  # user-units
+            lbl_offset = self.label_offset if self.label_offset else None
+            if lbl_offset:
+                _label_col, _label_col = lbl_offset, lbl_offset
             else:
                 _label_col = self._p2v(self.label_size) * 0.5  # user-units
                 _label_row = self._p2v(self.label_size) * 0.75  # user-units
-            loffset_col = self.label_offset_col if self.label_offset_col else _label_col
-            loffset_row = self.label_offset_row if self.label_offset_row else _label_row
+                if self.intersections:
+                    lbl_intersect = 0.5 * self.cell_size  # user-units
+            lbl_offset_col = (
+                self.label_offset_col if self.label_offset_col else _label_col
+            )
+            lbl_offset_row = (
+                self.label_offset_row if self.label_offset_row else _label_row
+            )
             lkeys = {}
             lkeys["font_name"] = self.label_font
             lkeys["font_size"] = self.label_size
@@ -630,10 +644,14 @@ class AbstractGameObject(BaseShape):
                     x, y = 0, 0
                     if self.label_start in [Corner.BOTTOM_RIGHT, Corner.BOTTOM_LEFT]:
                         x = adjacent_cell.s.x
-                        y = adjacent_cell.s.y + shift * loffset_col * 1.5
+                        y = (
+                            adjacent_cell.s.y
+                            + shift * lbl_offset_col * 1.5
+                            - lbl_intersect
+                        )
                     elif self.label_start in [Corner.TOP_RIGHT, Corner.TOP_LEFT]:
                         x = adjacent_cell.n.x
-                        y = adjacent_cell.n.y + shift * loffset_col
+                        y = adjacent_cell.n.y + shift * lbl_offset_col + lbl_intersect
                     else:
                         raise NotImplementedError(
                             "Cannot process label_start of {self.label_start}"
@@ -702,17 +720,17 @@ class AbstractGameObject(BaseShape):
                 adjacent_cell = self.board_layout.cells[(col_no, row_no)]
                 if self.board_type == AbstractBoardType.GRID:
                     if self.label_start in [Corner.TOP_LEFT, Corner.BOTTOM_LEFT]:
-                        x = adjacent_cell.w.x + shift * loffset_row
+                        x = adjacent_cell.w.x + shift * lbl_offset_row + lbl_intersect
                         y = adjacent_cell.w.y + (self.label_size * 0.5) / globals.units
                     else:
-                        x = adjacent_cell.e.x + shift * loffset_row
+                        x = adjacent_cell.e.x + shift * lbl_offset_row - lbl_intersect
                         y = adjacent_cell.e.y + (self.label_size * 0.5) / globals.units
                 elif self.board_type == AbstractBoardType.HEXAGONAL:
                     if self.label_start in [Corner.TOP_LEFT, Corner.BOTTOM_LEFT]:
-                        x = adjacent_cell.w.x + shift * loffset_row
+                        x = adjacent_cell.w.x + shift * lbl_offset_row
                         y = adjacent_cell.w.y + (self.label_size * 0.5) / globals.units
                     else:
-                        x = adjacent_cell.e.x + shift * loffset_row
+                        x = adjacent_cell.e.x + shift * lbl_offset_row
                         y = adjacent_cell.e.y + (self.label_size * 0.5) / globals.units
                 elif self.board_type == AbstractBoardType.TRIANGULAR:
                     raise NotImplementedError("No labels for Triangle grids!")
@@ -745,7 +763,19 @@ class AbstractGameObject(BaseShape):
                 )
                 # print(f'&&& GRID BOARD {self.board_layout.cells.keys()=}')
                 if self.intersections:
-                    Layout(self.board_layout, draw_lines=True, _draw_grid=False)
+                    self.grid_kwargs["gridlines_ends"] = self.stroke_ends
+                    self.grid_kwargs["gridlines_fill"] = self.fill
+                    self.grid_kwargs["gridlines_stroke"] = self.stroke
+                    self.grid_kwargs["gridlines_stroke_width"] = self.stroke_width
+                    self.grid_kwargs["gridlines_dotted"] = self.dotted
+                    self.grid_kwargs["gridlines_dashed"] = self.dashed
+                    self.grid_kwargs["gridlines_transparency"] = self.transparency
+                    Layout(
+                        self.board_layout,
+                        draw_lines=True,
+                        _draw_grid=False,
+                        **self.grid_kwargs,
+                    )
                 else:
                     if self.areas:
                         pass
@@ -1492,7 +1522,7 @@ class AbstractStateObject(BaseShape):
                         shapes=None,
                         # debug="colrow",  (for testing only!)
                         draw_lines=True,
-                        **kwargs,
+                        **self.board.grid_kwargs,
                     )
                 else:
                     Layout(

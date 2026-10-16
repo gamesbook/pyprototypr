@@ -135,7 +135,8 @@ rows and columns for that game; for example, a *Shogi* board has 9 rows and
     In the examples used, if *height* is **not** provided to **protograf**,
     then its value is determined by first sizing the board to occupy as much
     of the page as possible and calculating the cell *height* based on the
-    number of rows and columns.
+    number of rows and columns.  Boards with intersections occupy slightly
+    space in this automated process.
 
 Other useful properties that can be set for an AbstractGame are:
 
