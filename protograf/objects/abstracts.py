@@ -1458,18 +1458,187 @@ class AbstractStateObject(BaseShape):
                     )
                 anno.draw()
 
-    def draw_markers(self):
-        """Draw marker elements on the board."""
-        for mark in self.markers:
-            # TODO - handle self.markers_shapes
-            if not isinstance(mark, BaseShape):
+    def draw_single_marker(self, mark: str, grid_refs: list):
+        """Draw one marker element on the board."""
+        from protograf.protos import Circle, Dot, Hexagon, Line, Square
+        from protograf.shapes import HexShape, RectangleShape
+
+        def check_grid(grid_refs: list, name: str = "line", points: float = 2):
+            """Ensure enough grid points to draw the shape."""
+            if len(grid_refs) < points:
                 feedback(
-                    "The AbstractGame 'markers' property must be a list of shapes, "
-                    f" not a '{type(mark).__name__}'.",
+                    f'The AbstractGame "markers" shortcut for a {name}'
+                    f" needs {points} grid references.",
                     True,
                     True,
                 )
-            mark.draw()
+
+        cntr0 = grid_refs[0].centre
+        ht = grid_refs[0].height
+        rd = ht / 2.0
+        ht_pts = float(ht) * self.units
+
+        # default props
+        stroke = "yellow"
+        stroke_width = ht_pts / 10.0
+        offset = tools.points(stroke_width) / 2.0
+        def_kwargs = {
+            "stroke": stroke,
+            "stroke_width": stroke_width,
+        }
+        # user props
+        usr_kwargs = {}
+        # If duplicate keys, the last dictionary unpacked overwrites previous values.
+
+        match mark.lower():
+            case "a":  # arrow
+                check_grid(grid_refs, "arrow (a)", 2)
+                cntr1 = grid_refs[1].centre
+                akwargs = {
+                    "x": cntr0.x,
+                    "y": cntr0.y,
+                    "x1": cntr1.x,
+                    "y1": cntr1.y,
+                    "arrow": True,
+                }
+                kwargs = {**def_kwargs, **usr_kwargs, **akwargs}
+                Line(**kwargs)
+            case "c":  # circle
+                ckwargs = {
+                    "x": cntr0.x,
+                    "y": cntr0.y,
+                    "cxy": cntr0,
+                    "radius": rd - offset,
+                    "orientation": "pointy",
+                }
+                kwargs = {**def_kwargs, **usr_kwargs, **ckwargs}
+                Circle(**kwargs)
+            case "d":  # dot
+                dkwargs = {
+                    "x": cntr0.x,
+                    "y": cntr0.y,
+                    "cxy": cntr0,
+                    "dot_width": stroke_width,
+                }
+                kwargs = {**def_kwargs, **usr_kwargs, **dkwargs}
+                Dot(**kwargs)
+            case "h":  # hexagon
+                hkwargs = {
+                    "x": None,
+                    "y": None,
+                    "cxy": cntr0,
+                    "height": ht - 2 * offset,
+                    "orientation": "pointy",
+                }
+                kwargs = {**def_kwargs, **usr_kwargs, **hkwargs}
+                Hexagon(**kwargs)
+            case "s":  # square
+                skwargs = {
+                    "x": None,
+                    "y": None,
+                    "cxy": cntr0,
+                    "height": ht - 2 * offset,
+                    "width": ht - 2 * offset,
+                }
+                kwargs = {**def_kwargs, **usr_kwargs, **skwargs}
+                Square(**kwargs)
+            case "l":  # line
+                check_grid(grid_refs, "line (l)", 2)
+                cntr1 = grid_refs[1].centre
+                lkwargs = {
+                    "x": cntr0.x,
+                    "y": cntr0.y,
+                    "x1": cntr1.x,
+                    "y1": cntr1.y,
+                }
+                kwargs = {**def_kwargs, **usr_kwargs, **lkwargs}
+                Line(**kwargs)
+            case "x":  # cross "X"
+                print(grid_refs[0])
+                if grid_refs[0].type in ["HexShape", HexShape]:
+                    xkwargs = {
+                        "x": grid_refs[0].sw.x,
+                        "y": grid_refs[0].sw.y,
+                        "x1": grid_refs[0].ne.x,
+                        "y1": grid_refs[0].ne.y,
+                    }
+                    kwargs = {**def_kwargs, **usr_kwargs, **xkwargs}
+                    Line(**kwargs)
+                    zkwargs = {
+                        "x": grid_refs[0].nw.x,
+                        "y": grid_refs[0].nw.y,
+                        "x1": grid_refs[0].se.x,
+                        "y1": grid_refs[0].se.y,
+                    }
+                    kwargs = {**def_kwargs, **usr_kwargs, **zkwargs}
+                    Line(**kwargs)
+                elif grid_refs[0].type in ["RectangleShape", RectangleShape]:
+                    xkwargs = {
+                        "x": grid_refs[0].sw.x,
+                        "y": grid_refs[0].sw.y,
+                        "x1": grid_refs[0].ne.x,
+                        "y1": grid_refs[0].ne.y,
+                    }
+                    kwargs = {**def_kwargs, **usr_kwargs, **xkwargs}
+                    Line(**kwargs)
+                    zkwargs = {
+                        "x": grid_refs[0].nw.x,
+                        "y": grid_refs[0].nw.y,
+                        "x1": grid_refs[0].se.x,
+                        "y1": grid_refs[0].se.y,
+                    }
+                    kwargs = {**def_kwargs, **usr_kwargs, **zkwargs}
+                    Line(**kwargs)
+                pass
+
+    def draw_markers(self):
+        """Draw marker elements on the board."""
+        allowed_marks = ["a", "c", "d", "h", "x", "s", "l"]
+        for mark in self.markers:
+            if isinstance(mark, str):
+                marks = tools.sequence_split(mark, sep=" ", to_int=False, unique=False)
+                if marks[0].lower() not in allowed_marks:
+                    feedback(
+                        'The AbstractGame "markers" shortcut must start with one of'
+                        f' "{allowed_marks}" not "{marks[0]}".',
+                        True,
+                        True,
+                    )
+                if len(marks) < 2:
+                    feedback(
+                        'The AbstractGame "markers" shortcut must contain a letter,'
+                        f' followed by one or more grid references, not "{mark}".',
+                        True,
+                        True,
+                    )
+                # breakpoint()
+                grid_refs = []
+                for _grid_mark in marks[1:]:
+                    try:
+                        _grid = getattr(self.board, _grid_mark.lower())
+                        grid_refs.append(_grid)
+                    except AttributeError:
+                        try:
+                            _grid = getattr(self.board, _grid_mark.upper())
+                            grid_refs.append(_grid)
+                        except AttributeError:
+                            feedback(
+                                'The AbstractGame "markers" shortcut grid reference'
+                                f' "{_grid_mark}" is a not valid for this game.',
+                                True,
+                                True,
+                            )
+                if grid_refs:
+                    self.draw_single_marker(marks[0], grid_refs)
+            elif isinstance(mark, BaseShape):
+                mark.draw()
+            else:
+                feedback(
+                    "The AbstractGame 'markers' property must be a list of shapes, "
+                    f" or shortcut strings, not a '{type(mark).__name__}'.",
+                    True,
+                    True,
+                )
 
     def draw_pieces(self):
         """Draw the piece shapes on a given canvas using their character IDs."""

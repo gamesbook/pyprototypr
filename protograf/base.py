@@ -2727,7 +2727,7 @@ class BaseShape:
             feedback(f'Unable to convert value "{value}" to points!', True)
 
     def _p2v(self, value: float, decimals: int = 4) -> float:
-        """Convert point value to a rounded, units-based value using user units."""
+        """Convert value in points to a rounded, units-based value using user units."""
         try:
             return round(float(value) / self.units, decimals)
         except Exception as err:
@@ -2737,11 +2737,13 @@ class BaseShape:
                 True,
             )
 
-    def _l2v(self, values: list, decimals: int = 4, margin_offset: bool = False):
-        """Convert Points list to rounded, units-based values using user units.
+    def _l2v(
+        self, values: list, decimals: int = 4, margin_offset: bool = False
+    ) -> list:
+        """Convert Points list to rounded, units-based values list using user units.
 
         Args:
-            values: list of Points to be convetrted
+            values: list of Points to be converted
             decimals: number of decimals to be rounded
             margin_offset: if True, values should be offset from page margins
         """

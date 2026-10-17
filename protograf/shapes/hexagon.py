@@ -218,8 +218,11 @@ class HexShape(BaseShape):
             #        \ /
             #         .
             # x and y are at the bottom-left corner of the box around the hex
-            x = self._u.x + self._o.delta_x
-            y = self._u.y + self._o.delta_y
+            x, y = None, None
+            if self._u.x is not None:
+                x = self._u.x + self._o.delta_x
+            if self._u.y is not None:
+                y = self._u.y + self._o.delta_y
             # ---- ^ draw pointy by row/col
             if self.row is not None and self.col is not None and self.is_cards:
                 x = (
@@ -281,8 +284,14 @@ class HexShape(BaseShape):
                 else:
                     feedback(f"Unknown hex_offset value {self.hex_offset}", True)
             # ----  ^ set hex centre relative to x,y
-            self.x_d = x + geo.half_flat
-            self.y_d = y + geo.side
+            self.x_d, self.y_d = None, None
+            if x is not None and y is not None:
+                self.x_d = x + geo.half_flat
+                self.y_d = y + geo.side
+            else:
+                if self._u.cx and self._u.cy:
+                    self.x_d = self._u.cx
+                    self.y_d = self._u.cy
             # ---- ^ recalculate hex centre
             if self.use_abs_c:
                 # create x_d, y_d as the unit-formatted hex centre
@@ -310,8 +319,11 @@ class HexShape(BaseShape):
             #        \__/
             #
             # x and y are at the bottom-left corner of the box around the hex
-            x = self._u.x + self._o.delta_x
-            y = self._u.y + self._o.delta_y
+            x, y = None, None
+            if self._u.x is not None:
+                x = self._u.x + self._o.delta_x
+            if self._u.y is not None:
+                y = self._u.y + self._o.delta_y
             # feedback(f"*** P~: {geo=} {self._u.spacing_x=}")
             # ---- ~ draw flat by row/col
             if self.row is not None and self.col is not None and self.is_cards:
@@ -355,8 +367,14 @@ class HexShape(BaseShape):
                     feedback(f"Unknown hex_offset value {self.hex_offset}", True)
 
             # ----  ~ set hex centre relative to x,y
-            self.x_d = x + geo.side
-            self.y_d = y + geo.half_flat
+            self.x_d, self.y_d = None, None
+            if x is not None and y is not None:
+                self.x_d = x + geo.side
+                self.y_d = y + geo.half_flat
+            else:
+                if self._u.cx and self._u.cy:
+                    self.x_d = self._u.cx
+                    self.y_d = self._u.cy
             # ----  ~ recalculate centre if preset
             if self.use_abs_c:
                 # create x_d, y_d as the unit-formatted hex centre
