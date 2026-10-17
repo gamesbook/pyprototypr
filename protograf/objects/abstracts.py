@@ -1254,6 +1254,15 @@ class AbstractStateObject(BaseShape):
         self.setup = tools.as_bool(self.setup, False)
         self.moves = self._commons("moves") or kwargs.get("moves") or None
         self.markers = self._commons("markers") or kwargs.get("markers") or None
+        self.markers_stroke = (
+            self._commons("markers_stroke") or kwargs.get("markers_stroke") or "yellow"
+        )
+        self.markers_fraction = (
+            self._commons("markers_fraction") or kwargs.get("markers_fraction") or 0.1
+        )
+        self.markers_fraction = tools.as_float(
+            self.markers_fraction, "markers_fraction", minimum=0
+        )
         self.markers_shapes = (
             self._commons("markers_shapes") or kwargs.get("markers_shapes") or None
         )
@@ -1479,8 +1488,8 @@ class AbstractStateObject(BaseShape):
         ht_pts = float(ht) * self.units
 
         # default props
-        stroke = "yellow"
-        stroke_width = ht_pts / 10.0
+        stroke = self.markers_stroke
+        stroke_width = ht_pts * self.markers_fraction
         offset = tools.points(stroke_width) / 2.0
         def_kwargs = {
             "stroke": stroke,
@@ -1554,7 +1563,6 @@ class AbstractStateObject(BaseShape):
                 kwargs = {**def_kwargs, **usr_kwargs, **lkwargs}
                 Line(**kwargs)
             case "x":  # cross "X"
-                print(grid_refs[0])
                 if grid_refs[0].type in ["HexShape", HexShape]:
                     xkwargs = {
                         "x": grid_refs[0].sw.x,
@@ -1589,7 +1597,10 @@ class AbstractStateObject(BaseShape):
                     }
                     kwargs = {**def_kwargs, **usr_kwargs, **zkwargs}
                     Line(**kwargs)
-                pass
+                else:
+                    raise NotImplementedError(
+                        f"Unable to handle cell type {grid_refs[0].type}"
+                    )
 
     def draw_markers(self):
         """Draw marker elements on the board."""

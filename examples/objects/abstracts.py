@@ -268,7 +268,7 @@ AbstractState(
 
 # ---- Hexagons - custom pieces
 PageBreak()
-Text(common=header, text="Grid: custom pieces")
+Text("Grid: custom pieces", common=header)
 
 red_pieces = Common(
     radius=0.4, fill="red",
@@ -307,7 +307,7 @@ AbstractState(
 
 # ---- Grid - stacked pieces
 PageBreak()
-Text(common=header, text='Grid: "stacked" pieces')
+Text('Grid: "stacked" pieces', common=header)
 blak_pieces = Common(
     radius=0.4, fill="black",
     label_size=14,
@@ -361,7 +361,7 @@ AbstractState(
 
 # ---- Abstract Game Grid - markers
 PageBreak()
-Text(common=header, text="Grid Board: markers and annotations")
+Text("Grid Board: markers and annotations", common=header)
 agm = AbstractGame(
     x=2, y=1,
     height=1,
@@ -384,7 +384,7 @@ AbstractState(
 
 # ---- Abstract Game Grid - annotations
 PageBreak()
-Text(common=header, text="Grid Board: annotations")
+Text("Grid Board: annotations", common=header)
 aga = AbstractGame(
     label=True,
     rows=6, cols=6,
@@ -409,6 +409,51 @@ AbstractState(
     annotations=annotations,
 )
 
+# ---- Abstract Hexagons - markers shortcut
+PageBreak()
+Text("HexHex: markers shortcuts", common=header)
+
+aml = AbstractGame(default=thick,
+    name="hexhex",
+    hexes=3,
+    label=True,
+)
+AbstractState(
+    board=aml,
+    markers=[
+        'a a1 c2',
+        'd a3',
+        'l b4 e5',
+        'c c3',
+        'h e4',
+        's d2',
+        'x a2',
+    ]
+)
+
+# ---- Abstract Game Grid - markers shortcut
+PageBreak()
+Text("Grid: markers shortcuts", common=header)
+
+amg = AbstractGame(default=thick,
+    name="grid",
+    cols=5, rows=5,
+    label=True,
+)
+AbstractState(
+    board=amg,
+    markers_stroke="red",
+    markers_fraction=0.05,
+    markers=[
+        'a a1 c2',
+        'd a3',
+        'l b4 e5',
+        'c c3',
+        'h e4',
+        's d2',
+        'x a2',
+    ]
+)
 
 
 Save(
@@ -438,5 +483,7 @@ Save(
         'abstracts_grid_pieces_numbered',
         'abstracts_grid_markers',
         'abstracts_grid_annotations',
+        'abstracts_hexagons_markers_shortcuts',
+        'abstracts_grid_markers_shortcuts',
     ]
 )

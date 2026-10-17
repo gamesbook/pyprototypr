@@ -1038,6 +1038,112 @@ square to another.
 Markers are always drawn **after** any `AbstractState Annotations`_ or
 any pieces that may appear on the board.
 
+Markers are supplied as a list of **protograf** shapes, whose position is
+set in the same way as :ref:`Annnotations Locations <abstractStateLocations>`.
+
+
+.. _abstractStateMarkersShortcuts:
+
+AbstractState Markers Shortcuts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Although the above method for setting markers is very flexible, its also a
+little cumbersome, particularly if only relatively simple markers need to be
+used; for example, drawing a line or an arrow between cells or highlighting
+the outline of a cell.
+
+The "shortcut" approach provides a limited set of shapes, and restrict their
+position to align with the cell centres; all shapes are sized to just fit
+inside the cell (except for the dot).
+
+The shortcuts, referenced by a single letter are:
+
+- ``a``: draw an arrow between two cells
+- ``l``: draw a line between two cells
+- ``c``: draw a circle inside a cell
+- ``d``: draw a dot inside a cell
+- ``s``: draw a square inside a cell
+- ``h``: draw a hexagon inside a cell
+- ``x``: draw an "X" inside a cell (between diagonally opposite vertices)
+
+Along with this letter, there also needs to be the reference for a cell or,
+in the case of line or arrow, a reference for a second cell.  These appear
+together in a string, and a list of these strings is then assigned to the
+*markers* property and drawn in that order.
+
+Some basic customisation is possible:
+
+- *markers_stroke*: sets the color of all the shortcut markers; this defaults
+  to ``yellow``
+- *markers_fraction*: sets the width of all the shortcut markers lines as a
+  fraction of the cell size; this defaults to ``0.1`` (one tenth)
+
+The two different styles of creating markers can be mixed together in the
+same list.
+
+
+.. |sp4| image:: ../images/objects/abstracts_hexagons_markers_shortcuts.png
+   :width: 330
+
+===== ======
+|sp4| This example shows an ``AbstractGame`` constructed using these commands:
+
+      .. code:: python
+
+        aml = AbstractGame(
+            name="hexhex",
+            hexes=3,
+            label=True,
+        )
+        AbstractState(
+            board=aml,
+            markers=[
+                'a a1 c2',
+                'd a3',
+                'l b4 e5',
+                'c c3',
+                'h e4',
+                's d2',
+                'x a2',
+            ]
+        )
+
+      In this example
+
+===== ======
+
+.. |sp5| image:: ../images/objects/abstracts_grid_markers_shortcuts.png
+   :width: 330
+
+===== ======
+|sp5| This example shows an ``AbstractGame`` constructed using these commands:
+
+      .. code:: python
+
+        amg = AbstractGame(
+            name="grid",
+            cols=5, rows=5,
+            label=True,
+        )
+        AbstractState(
+            board=amg,
+            markers_stroke="red",
+            markers_fraction=0.05,
+            markers=[
+                'a a1 c2',
+                'd a3',
+                'l b4 e5',
+                'c c3',
+                'h e4',
+                's d2',
+                'x a2',
+            ]
+        )
+
+      In this example
+
+===== ======
+
 
 .. _abstractStateExamples:
 
