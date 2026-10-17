@@ -142,7 +142,12 @@ Other useful properties that can be set for an AbstractGame are:
 
 * *areas*: a list of one or more shapes that will make-up the cells of the
   board; this provides an alternative to using the normal squares or hexagons
-  |dash| see `Example 4: Board with custom areas`_ for how this works
+  |dash| see `Example 4. Board with custom areas`_ for how this works
+* *cell_shape*: a shape, one which has a centre, which must be drawn as well
+  as the default square or hexagon |dash| this is **not** auto-sized so will
+  need to be set to the correct dimension(s) for the grid size, as determined
+  by the *height* property (see below); see `Example 5. Board with cell shape`_
+  for how this could be used
 * *fills*: a list of one or more :ref:`colors <basic-color>` in which to draw
   one or more alternating board spaces; the default is to draw all cells
   ``white`` |dash| other cell properties can be set with the normal *stroke*
@@ -153,11 +158,12 @@ Other useful properties that can be set for an AbstractGame are:
 * *height*: sets the height of a single cell (the "edge-to-edge" distance for a
   hexagon)
 * *hexes*: a value, only used for hexhex board, which sets the number of
-  hexagons along each edge of the board; see `Example 2: Hex Game Grid`_
+  hexagons along each edge of the board; see `Example 2. Hex Game Grid`_
 * *intersections*: if ``True``, draw pieces on **grid intersections**, not
   grid spaces, and label the lines, not the spaces
 * *label*: if ``True``, draw labels around the board's edges; use the
-  normal styling options for a label; *label_font*, *label_stroke* etc.
+  normal styling options for a label; *label_font*, *label_size*,
+  *label_stroke* etc.
 * *label_type*: the type of label, drawn on the board edges, which is
   used to identify a row or column; it can be  either *alpha-numeric*,
   or ``AN`` (the default), which is the labelling used for Chess boards;
@@ -170,7 +176,7 @@ Other useful properties that can be set for an AbstractGame are:
 * *label_offset*: how far away label are drawn from the board edge(s); if not
   set, this is calculated based on the label's font size
 * *pattern*: an on/off design showing which cells should be blank i.e. unused
-  |dash| see `Example 4: Pattern Grid`_ for how this works
+  |dash| see `Example 4. Pattern Grid`_ for how this works
 * *pieces_type*: choose a predefined set of pieces from various abstract
   games; possible choices are: ``chess``, ``checkers``, ``go``, ``shogi`` or
   ``shogi-int`` (International, or Westernised, Shogi)
@@ -210,7 +216,7 @@ or on their intersection points |dash| **protograf** terms these locations
 Below are some examples of gridded boards.  There are further examples in
 the section on the `AbstractState Command`_.
 
-Example 1: Default Board
+Example 1. Default Board
 ~~~~~~~~~~~~~~~~~~~~~~~~
 `^ <abstractGameGrid_>`_
 
@@ -234,7 +240,7 @@ Example 1: Default Board
 ===== ======
 
 
-Example 2: Board Size and Position
+Example 2. Board Size and Position
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 `^ <abstractGameGrid_>`_
 
@@ -278,7 +284,7 @@ Example 2: Board Size and Position
 ===== ======
 
 
-Example 3: Styled Board
+Example 3. Styled Board
 ~~~~~~~~~~~~~~~~~~~~~~~
 `^ <abstractGameGrid_>`_
 
@@ -329,7 +335,7 @@ Example 3: Styled Board
 ===== ======
 
 
-Example 4: Board with custom areas
+Example 4. Board with custom areas
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 `^ <abstractGameGrid_>`_
 
@@ -384,6 +390,40 @@ Example 4: Board with custom areas
 ===== ======
 
 
+Example 5. Board with cell shape
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`^ <abstractGameGrid_>`_
+
+.. |ab5| image:: ../images/objects/abstracts_hexagons_cell_shape.png
+   :width: 330
+
+===== ======
+|ab5| This example shows an ``AbstractGame`` constructed using these commands:
+
+      .. code:: python
+
+        ags = AbstractGame(
+            name="hexhex",
+            hexes=4,
+            label=True,
+            cell_shape=circle(
+                radius=0.56,
+                stroke="red",
+                stroke_width=1),
+            stroke="white",
+            label_stroke="grey",
+        )
+        AbstractState(board=ags)
+
+      The *cell_shape* property is assigned to another shape |dash| one which
+      has a centre |dash| and this is drawn at the centre of each hexagon.
+
+      By setting the *stroke* to white, the hexagonal grid becomes "invisible",
+      effectively leaving the circles as the only visible grid cells.
+
+===== ======
+
+
 .. _abstractGameHexagonal:
 
 AbstractGame Board: Hexagonal
@@ -395,7 +435,7 @@ different styles, or type of hexagonal grids, all referenced through the
 board's *name* property.
 
 
-Example 1: Rectangular Hexagonal Grid
+Example 1. Rectangular Hexagonal Grid
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 `^ <abstractGameHexagonal_>`_
 
@@ -426,7 +466,7 @@ Example 1: Rectangular Hexagonal Grid
 ===== ======
 
 
-Example 2: Hex Game Grid
+Example 2. Hex Game Grid
 ~~~~~~~~~~~~~~~~~~~~~~~~
 `^ <abstractGameHexagonal_>`_
 
@@ -456,7 +496,7 @@ Example 2: Hex Game Grid
 ===== ======
 
 
-Example 3: HexHex Grid
+Example 3. HexHex Grid
 ~~~~~~~~~~~~~~~~~~~~~~
 `^ <abstractGameHexagonal_>`_
 
@@ -485,7 +525,10 @@ This type of board is constructed by:
 
         aghh = AbstractGame(
             name="hexhex",
-            hexes=4)
+            hexes=4,
+            label_font='Courier',
+            label_size=16,
+        )
         AbstractState(board=aghh)
 
       In this example the type of board is set via its *name* property to
@@ -494,10 +537,13 @@ This type of board is constructed by:
       The *hexes* property is set to ``4`` |dash| this results in a grid with
       7 rows; and 7 columns in the centre row.
 
+      The labels are styled by setting their font name and size |dash|
+      ``Courier`` and ``16``.
+
 ===== ======
 
 
-Example 4: Pattern Grid
+Example 4. Pattern Grid
 ~~~~~~~~~~~~~~~~~~~~~~~
 `^ <abstractGameHexagonal_>`_
 
@@ -783,6 +829,8 @@ a character |dash| are placed.
 The notation for doing this is by providing a string of characters in one
 of two different notational styles.
 
+.. _abstractStateFEN:
+
 FEN-like Notation
 ~~~~~~~~~~~~~~~~~
 `^ <abstractStatePositions_>`_
@@ -816,6 +864,9 @@ total.
 
 The FEN-like notation is converted internally by **protograf** into
 `Piece-and-Dot Notation`_.
+
+
+.. _abstractStatePieceDot:
 
 Piece-and-Dot Notation
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -995,8 +1046,8 @@ AbstractState Examples
 `^ <abstractstate-command_>`_
 
 
-Example 1: Colored Chess Board
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Example 1. Chess Board: Colored
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. |ax1| image:: ../images/objects/abstracts_chess_customised.png
    :width: 330
@@ -1019,12 +1070,17 @@ Example 1: Colored Chess Board
         )
         AbstractState(board=agcs, setup=True)
 
-      This example shows ...
+      This example shows a Chess board using custom *fills* colors for the
+      alternating squares.
+
+      A frame is drawn; the styled labels, with a
+      custom offset distance for both row and column labels, are drawn last
+      and therefore appear on top of the frame.
 
 ===== ======
 
 
-Example 2: Checkers Board: Setup
+Example 2. Checkers Board: Setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. |ax2| image:: ../images/objects/abstracts_checkers_setup.png
@@ -1045,7 +1101,7 @@ Example 2: Checkers Board: Setup
 ===== ======
 
 
-Example 3: Shogi Board: Setup
+Example 3. Shogi Board: Setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. |ax3| image:: ../images/objects/abstracts_shogi_setup.png
@@ -1067,7 +1123,7 @@ Example 3: Shogi Board: Setup
 ===== ======
 
 
-Example 4: Shogi Board: Positions
+Example 4. Shogi Board: Positions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. |ax4| image:: ../images/objects/abstracts_shogi_positions.png
@@ -1107,6 +1163,37 @@ Example 4: Shogi Board: Positions
       and thicker, white lines.
 
 ===== ======
+
+
+Example 5. Go Board: Positions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. |ax5| image:: ../images/objects/abstracts_go_positions.png
+   :width: 330
+
+===== ======
+|ax5| This example shows the use of ``AbstractGame`` and ``AbstractState``:
+
+      .. code:: python
+
+        aggp = AbstractGame(
+            name="go",
+            label=True,
+            fill='#D8A300')
+        AbstractState(
+            board=aggp,
+            positions="99/"*7 + ".B.B.W..W.BBB..B.W/" + "99/"*10
+        )
+
+      This example shows a Go game with a few stones placed on it, using the
+      :ref:`"FEN-like" notation <abstractStateFEN>`.
+
+      In addition, the board itself is styled with a different color of cells,
+      and the labelling activated.
+
+===== ======
+
+
 
 .. _abstract-resources:
 

@@ -22,7 +22,7 @@ from protograf.utils.structures import (
 from protograf.utils.abstracts import ProtografGrid
 
 # local
-from . import utils  # globals_set, validate_globals, margins
+# from . import utils, globals_set, validate_globals, margins
 
 
 class Hexagons(ProtografGrid):
@@ -46,9 +46,10 @@ class Hexagons(ProtografGrid):
         if kwargs.get("hidden"):
             self.hidden = tools.integer_pairs(kwargs.get("hidden"), "hidden")
         self._draw_grid = kwargs.get("_draw_grid", True)
-        self.hex_layout = kwargs.get("hex_layout", "")  # default to rectangular
+        self.hex_layout = kwargs.get("hex_layout", "")  # default is rectangular
         self.pattern = kwargs.get("pattern", None)  # used by AbstractGame
         self.user = kwargs.get("user", "Hexagons")  # the calling Shape
+        self.hex_shape = kwargs.get("hex_shape", None)  # use another shape...
         # ---- custom properties
         self.is_blank = False  # track if a cell is blank
         self.locales = []  # will be created by specific draw_* method
@@ -129,7 +130,7 @@ class Hexagons(ProtografGrid):
                     True,
                 )
         for key, row in enumerate(pattern_list):
-            if row == "O" or row == "o":
+            if row in ["O", "o", "0"]:
                 row = "O" * int(hex_cols)
                 pattern_list[key] = row
             if len(row) != hex_cols:
@@ -174,35 +175,42 @@ class Hexagons(ProtografGrid):
                     pass
                 else:
                     col = ccol - 1
-                    hxgn = hexagon(
-                        row=row,
-                        col=col,
-                        hex_rows=rows,
-                        hex_cols=cols,
-                        **self.kwargs,
-                    )
+                    if self.hex_shape:
+                        the_shape = self.hex_shape(
+                            row=row,
+                            col=col,
+                            **self.kwargs,
+                        )
+                    else:
+                        the_shape = hexagon(
+                            row=row,
+                            col=col,
+                            hex_rows=rows,
+                            hex_cols=cols,
+                            **self.kwargs,
+                        )
                     self.is_blank = False
                     if hex_pattern:  # test if current col/row in pattern
                         if hex_pattern[row][col] == ".":
                             self.is_blank = True
                     # test if blank AND if skip drawing
                     if self._draw_grid and not self.is_blank:
-                        hxgn.draw()
-                    shape_geo = self.get_geometry(hxgn)
+                        the_shape.draw()
+                    shape_geo = self.get_geometry(the_shape)
                     _locale = Locale(
                         col=ccol - 1,
                         row=row,
-                        x=hxgn.grid.x,
-                        y=hxgn.grid.y,
-                        cxy=Point(hxgn.grid.x, hxgn.grid.y),
+                        x=the_shape.grid.x,
+                        y=the_shape.grid.y,
+                        cxy=Point(the_shape.grid.x, the_shape.grid.y),
                         geo=shape_geo,
                         is_blank=self.is_blank,
                         id=f"{ccol - 1}:{row}",
                         sequence=sequence,
-                        label=hxgn.grid.label,
+                        label=the_shape.grid.label,
                         page=globals.page_count + 1,
                     )
-                    # print(f'$$$ locale {ccol=} {_row=} / {hxgn.grid.x=} {hxgn.grid.y=}')
+                    # print(f'$$$ locale {ccol=} {_row=} / {the_shape.grid.x=} {the_shape.grid.y=}')
                     self.cells[(col, row)] = shape_geo  # 1-based for cells
                     # feedback(f'$$$ Hexagons.cells {col=},{row=} {shape_geo.blank=}')
                     locales.append(_locale)
@@ -264,25 +272,37 @@ class Hexagons(ProtografGrid):
                 if self.hidden and (row + 1, col + 1) in self.hidden:
                     pass
                 else:
-                    hxgn = hexagon(
-                        row=row,
-                        col=col,
-                        hex_rows=self.rows,
-                        hex_cols=self.cols,
-                        **self.kwargs,
-                    )
+                    if self.hex_shape:
+                        # feedback(f'$$$ Hexagons.cells {col+1=},{row+1=} {self.hex_shape=}')
+                        the_shape = hexagon(
+                            row=row,
+                            col=col,
+                            hex_rows=self.rows,
+                            hex_cols=self.cols,
+                            centre_shapes=[self.hex_shape],  # used by AbstractGame
+                            **self.kwargs,
+                        )
+                    else:
+                        # breakpoint()
+                        the_shape = hexagon(
+                            row=row,
+                            col=col,
+                            hex_rows=self.rows,
+                            hex_cols=self.cols,
+                            **self.kwargs,
+                        )
                     self.is_blank = False
                     if hex_pattern:  # test if current col/row in pattern
                         if hex_pattern[row][col] == ".":
                             self.is_blank = True
                     # test if blank AND skip drawing
                     if self._draw_grid and not self.is_blank:
-                        hxgn.draw()
-                    shape_geo = self.get_geometry(hxgn)
-                    if hxgn.grid:
-                        _x = hxgn.grid.x
-                        _y = hxgn.grid.y
-                        _label = hxgn.grid.label
+                        the_shape.draw()
+                    shape_geo = self.get_geometry(the_shape)
+                    if the_shape.grid:
+                        _x = the_shape.grid.x
+                        _y = the_shape.grid.y
+                        _label = the_shape.grid.label
                     else:
                         _x = shape_geo.center.x
                         _y = shape_geo.center.y

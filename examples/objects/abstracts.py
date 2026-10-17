@@ -142,7 +142,7 @@ agcp = AbstractGame(
 AbstractState(
     board=agcp,
     positions="""
-    L..R..K..
+    L..R....K
     P.S.NnB.P
     B..PN.P.P
     .........
@@ -159,7 +159,7 @@ PageBreak()
 Text("Go Game: Positions", common=header)
 aggp = AbstractGame(default=thick,
     name="go",
-    label=True, 
+    label=True,
     fill='#D8A300')
 AbstractState(
     board=aggp,
@@ -188,7 +188,12 @@ AbstractState(board=aghg)
 # ---- Hexagons - hex game
 PageBreak()
 Text("Hexagons: hexhex", common=header)
-aghh = AbstractGame(name="hexhex", hexes=4, default=thick)
+aghh = AbstractGame(default=thick,
+    name="hexhex",
+    hexes=4,
+    label_font='Courier',
+    label_size=16,
+)
 AbstractState(board=aghh)
 
 # ---- Hexagons - pattern
@@ -227,6 +232,20 @@ aghpp = AbstractGame(default=thick,
 AbstractState(
     board=aghpp,
     positions="B2W/B4W/B3W/B4W/B2W")  # SHOULD ignore blank cells!!
+
+
+# ---- Hexagons - cell shape
+PageBreak()
+Text("Hexagons: custom cell shape", common=header)
+ags = AbstractGame(
+    name="hexhex",
+    hexes=4,
+    label=True,
+    cell_shape=circle(radius=0.56, stroke="red", stroke_width=1),
+    stroke="white",
+    label_stroke="grey",
+)
+AbstractState(board=ags)
 
 # ---- Grid - reuse Chess pieces
 PageBreak()
@@ -340,7 +359,6 @@ AbstractState(
     12345"""
 )
 
-
 # ---- Abstract Game Grid - markers
 PageBreak()
 Text(common=header, text="Grid Board: markers and annotations")
@@ -392,6 +410,7 @@ AbstractState(
 )
 
 
+
 Save(
     output='png',
     dpi=300,
@@ -413,6 +432,7 @@ Save(
         'abstracts_hexagons_hexhex',
         'abstracts_hexagons_pattern',
         'abstracts_hexagons_pattern_pieces',
+        'abstracts_hexagons_cell_shape',
         'abstracts_grid_chess_pieces',
         'abstracts_grid_pieces',
         'abstracts_grid_pieces_numbered',

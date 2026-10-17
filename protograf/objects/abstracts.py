@@ -20,6 +20,9 @@ from protograf.shapes import (
     RectangularLocations,
 )
 from protograf.utils import tools, colrs, geoms
+from protograf.utils.constants import (
+    GRID_SHAPES_WITH_CENTRE,
+)
 from protograf.utils.messaging import feedback
 from protograf.utils.structures import (  # named tuples; enums
     AbstractBoardType,
@@ -60,6 +63,9 @@ class AbstractGameObject(BaseShape):
         # )  # a new Page/Shape may now exist
         # ---- unique properties
         self.name = self._commons("name") or kwargs.get("name") or "grid"
+        self.cell_shape = (
+            self._commons("cell_shape") or kwargs.get("cell_shape") or None
+        )
         self.cell_size = self._commons("height") or kwargs.get("height") or 1
         self.cell_size = tools.as_float(self.cell_size, "height")
         self.areas = (
@@ -401,6 +407,23 @@ class AbstractGameObject(BaseShape):
                 True,
                 True,
             )
+        if self.cell_shape:
+            _type = type(self.cell_shape).__name__
+            if not isinstance(self.cell_shape, BaseShape):
+                feedback(
+                    f"A shape is required for the cell_shape '{self.cell_shape}',"
+                    f" not a {_type}.",
+                    True,
+                    True,
+                )
+            cshape_name = self.cell_shape.__class__.__name__
+            if cshape_name not in GRID_SHAPES_WITH_CENTRE:
+                feedback(
+                    "A shape with a defined centre is required for the cell_shape"
+                    f" - this cannot be a {cshape_name}.",
+                    True,
+                    True,
+                )
         if self.fills:
             if isinstance(self.fills, str):
                 self.fills = [self.fills]  # "auto-correct" for user
@@ -836,7 +859,6 @@ class AbstractGameObject(BaseShape):
 
             # ---- setup Hexagonal boards
             case AbstractBoardType.HEXAGONAL:
-                # TODO - pass 'shapes' into Hexagons for drawing e.g. circles
                 top_x = self.x if self.kwargs.get("x") else 0
                 top_y = self.y if self.kwargs.get("y") else 0
                 colr = self.fills[0] if self.fills else "white"
@@ -855,8 +877,10 @@ class AbstractGameObject(BaseShape):
                     user="AbstractGame",
                     # single hexagon properties:-
                     height=self.cell_size,
+                    stroke=self.stroke,
                     stroke_width=self.stroke_width,
                     fill=colr,
+                    hex_shape=self.cell_shape,  # insert centre_image into hex
                 )
                 # print(f'&&& HEXES BOARD {self.board_layout.cells.keys()=}')
 
@@ -1230,6 +1254,9 @@ class AbstractStateObject(BaseShape):
         self.setup = tools.as_bool(self.setup, False)
         self.moves = self._commons("moves") or kwargs.get("moves") or None
         self.markers = self._commons("markers") or kwargs.get("markers") or None
+        self.markers_shapes = (
+            self._commons("markers_shapes") or kwargs.get("markers_shapes") or None
+        )
         self.annotations = (
             self._commons("annotations") or kwargs.get("annotations") or None
         )
@@ -1317,6 +1344,14 @@ class AbstractStateObject(BaseShape):
                     True,
                     True,
                 )
+        if self.markers_shapes is not None:
+            if not isinstance(self.markers_shapes, (list, tuple)):
+                feedback(
+                    "The AbstractState 'markers_shapes' property must be a list of elements, "
+                    f" not a '{type(self.markers_shapes).__name__}'.",
+                    True,
+                    True,
+                )
         if self.annotations is not None:
             if not isinstance(self.annotations, (list, tuple)):
                 feedback(
@@ -1360,11 +1395,12 @@ class AbstractStateObject(BaseShape):
         elif "\n" in self.positions:
             _position_list = self.positions.split("\n")
         else:
-            feedback(
-                "Neither '/' or line-break were specified for AbstractState 'positions',"
-                " so only a single row will be processed.",
-                False,
-            )
+            if self.positions != ".":  # the default - used internally
+                feedback(
+                    "Neither '/' or line-break were specified for AbstractState 'positions',"
+                    " so only a single row will be processed.",
+                    False,
+                )
             _position_list = self.positions
         # ---- clean list
         position_list = [row.strip() for row in _position_list if row]
@@ -1372,19 +1408,20 @@ class AbstractStateObject(BaseShape):
         # ---- validate list of item positions
         # TODO - improve these checks for hexhex board as well as irregular hexagonal
         if position_list and len(position_list) != self.board.rows:
-            if len(position_list) < self.board.rows:
-                feedback(
-                    f"Not all rows have been set for the AbstractState 'positions'"
-                    f" ({len(position_list)} vs {self.board.rows}).",
-                    False,
-                )
-            if len(position_list) > self.board.rows:
-                feedback(
-                    f"There are too many rows for the AbstractState 'positions'"
-                    f" ({len(position_list)} vs {self.board.rows}).",
-                    True,
-                    True,
-                )
+            if self.positions != ".":  # the default - internal use
+                if len(position_list) < self.board.rows:
+                    feedback(
+                        f"Not all rows have been set for the AbstractState 'positions'"
+                        f" ({len(position_list)} vs {self.board.rows}).",
+                        False,
+                    )
+                if len(position_list) > self.board.rows:
+                    feedback(
+                        f"There are too many rows for the AbstractState 'positions'"
+                        f" ({len(position_list)} vs {self.board.rows}).",
+                        True,
+                        True,
+                    )
         for key, row in enumerate(position_list):
             if row == ".":
                 row = "." * int(self.board.cols)
@@ -1424,6 +1461,7 @@ class AbstractStateObject(BaseShape):
     def draw_markers(self):
         """Draw marker elements on the board."""
         for mark in self.markers:
+            # TODO - handle self.markers_shapes
             if not isinstance(mark, BaseShape):
                 feedback(
                     "The AbstractGame 'markers' property must be a list of shapes, "
@@ -1445,18 +1483,18 @@ class AbstractStateObject(BaseShape):
         #     print(f'&&& cells_non_blank {index=} {row=}')
 
         # swop start and end of position matrix
-        if self.board.label_start in [Corner.TOP_LEFT, Corner.TOP_RIGHT]:
-            self.position_matrix.reverse()
+        # if self.board.label_start in [Corner.TOP_LEFT, Corner.TOP_RIGHT]:
+        #     self.position_matrix.reverse()
         # print(f'&&& {self.position_matrix=}')
 
         for row_no, row in enumerate(self.position_matrix):
             for col_no, col in enumerate(row):
-                # print(f'&&& AbstractState {row_no=},{col_no=} :', col)
                 if col == ".":
                     # print(f'&&& AbstractState {row_no=},{col_no=} : BLANK')
                     continue  # no piece here; move along, move along
                 kwargs = {}
                 piece_shp = self.board.pieces.get(col, None)
+                # print(f'&&& AbstractState {row_no=},{col_no=} :', piece_shp)
                 # ---- NULL shape
                 if piece_shp is None:
                     feedback(
