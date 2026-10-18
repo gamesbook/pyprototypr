@@ -1494,22 +1494,35 @@ class AbstractStateObject(BaseShape):
         def_kwargs = {
             "stroke": stroke,
             "stroke_width": stroke_width,
+            #"transparency": 50,  # TODO - support pmupdf "stoke_opacity"
         }
         # user props
         usr_kwargs = {}
         # If duplicate keys, the last dictionary unpacked overwrites previous values.
 
+        # multiple grid_refs => used for line or arrow
+        links = []
+        if len(grid_refs) > 2:
+            links = [link.centre for link in grid_refs]
+
         match mark.lower():
             case "a":  # arrow
                 check_grid(grid_refs, "arrow (a)", 2)
-                cntr1 = grid_refs[1].centre
-                akwargs = {
-                    "x": cntr0.x,
-                    "y": cntr0.y,
-                    "x1": cntr1.x,
-                    "y1": cntr1.y,
-                    "arrow": True,
-                }
+                if links:
+                    akwargs = {
+                        "links": links,
+                        "stroke_ends": "rounded"
+                    }
+                else:
+                    cntr1 = grid_refs[1].centre
+                    akwargs = {
+                        "x": cntr0.x,
+                        "y": cntr0.y,
+                        "x1": cntr1.x,
+                        "y1": cntr1.y,
+                        "arrow": True,
+                        "stroke_ends": "rounded",
+                    }
                 kwargs = {**def_kwargs, **usr_kwargs, **akwargs}
                 Line(**kwargs)
             case "c":  # circle
@@ -1553,47 +1566,55 @@ class AbstractStateObject(BaseShape):
                 Square(**kwargs)
             case "l":  # line
                 check_grid(grid_refs, "line (l)", 2)
-                cntr1 = grid_refs[1].centre
-                lkwargs = {
-                    "x": cntr0.x,
-                    "y": cntr0.y,
-                    "x1": cntr1.x,
-                    "y1": cntr1.y,
-                }
+                if links:
+                    lkwargs = {"links": links, "stroke_ends": "rounded"}
+                else:
+                    cntr1 = grid_refs[1].centre
+                    lkwargs = {
+                        "x": cntr0.x,
+                        "y": cntr0.y,
+                        "x1": cntr1.x,
+                        "y1": cntr1.y,
+                        "stroke_ends": "rounded",
+                    }
                 kwargs = {**def_kwargs, **usr_kwargs, **lkwargs}
                 Line(**kwargs)
             case "x":  # cross "X"
                 if grid_refs[0].type in ["HexShape", HexShape]:
                     xkwargs = {
-                        "x": grid_refs[0].sw.x,
-                        "y": grid_refs[0].sw.y,
-                        "x1": grid_refs[0].ne.x,
-                        "y1": grid_refs[0].ne.y,
+                        "x": grid_refs[0].sw.x + offset,
+                        "y": grid_refs[0].sw.y - offset,
+                        "x1": grid_refs[0].ne.x - offset,
+                        "y1": grid_refs[0].ne.y + offset,
+                        "stroke_ends": "rounded",
                     }
                     kwargs = {**def_kwargs, **usr_kwargs, **xkwargs}
                     Line(**kwargs)
                     zkwargs = {
-                        "x": grid_refs[0].nw.x,
-                        "y": grid_refs[0].nw.y,
-                        "x1": grid_refs[0].se.x,
-                        "y1": grid_refs[0].se.y,
+                        "x": grid_refs[0].nw.x + offset,
+                        "y": grid_refs[0].nw.y + offset,
+                        "x1": grid_refs[0].se.x - offset,
+                        "y1": grid_refs[0].se.y - offset,
+                        "stroke_ends": "rounded",
                     }
                     kwargs = {**def_kwargs, **usr_kwargs, **zkwargs}
                     Line(**kwargs)
                 elif grid_refs[0].type in ["RectangleShape", RectangleShape]:
                     xkwargs = {
-                        "x": grid_refs[0].sw.x,
-                        "y": grid_refs[0].sw.y,
-                        "x1": grid_refs[0].ne.x,
-                        "y1": grid_refs[0].ne.y,
+                        "x": grid_refs[0].sw.x + offset,
+                        "y": grid_refs[0].sw.y - offset,
+                        "x1": grid_refs[0].ne.x - offset,
+                        "y1": grid_refs[0].ne.y + offset,
+                        "stroke_ends": "rounded",
                     }
                     kwargs = {**def_kwargs, **usr_kwargs, **xkwargs}
                     Line(**kwargs)
                     zkwargs = {
-                        "x": grid_refs[0].nw.x,
-                        "y": grid_refs[0].nw.y,
-                        "x1": grid_refs[0].se.x,
-                        "y1": grid_refs[0].se.y,
+                        "x": grid_refs[0].nw.x + offset,
+                        "y": grid_refs[0].nw.y + offset,
+                        "x1": grid_refs[0].se.x - offset,
+                        "y1": grid_refs[0].se.y - offset,
+                        "stroke_ends": "rounded",
                     }
                     kwargs = {**def_kwargs, **usr_kwargs, **zkwargs}
                     Line(**kwargs)

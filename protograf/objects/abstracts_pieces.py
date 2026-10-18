@@ -31,6 +31,8 @@ NAMED_CHESS_WHITE = {
 NAMED_GO = {
     "white": "gW",
     "black": "gB",
+    "grey": "gG",
+    "red": "gR",
 }
 NAMED_SHOGI_BLACK = {
     "osho": "sk",
@@ -139,6 +141,8 @@ def piece_shape(key: str, name: str = "", **kwargs) -> object:
         # ---- go
         "gB": image(files("protograf").joinpath(f"{RESOURCES}/go/black.png"), **kwargs),
         "gW": image(files("protograf").joinpath(f"{RESOURCES}/go/white.png"), **kwargs),
+        "gR": image(files("protograf").joinpath(f"{RESOURCES}/go/red.png"), **kwargs),
+        "gG": image(files("protograf").joinpath(f"{RESOURCES}/go/grey.png"), **kwargs),
         # ---- chess
         "cK": image(
             files("protograf").joinpath(f"{RESOURCES}/chess/Chess_klt45.svg"), **kwargs

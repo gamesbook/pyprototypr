@@ -423,7 +423,7 @@ AbstractState(
     markers=[
         'a a1 c2',
         'd a3',
-        'l b4 e5',
+        'l b4 c5 c4 e5',
         'c c3',
         'h e4',
         's d2',
@@ -447,7 +447,7 @@ AbstractState(
     markers=[
         'a a1 c2',
         'd a3',
-        'l b4 e5',
+        'l b4 c5 e5',
         'c c3',
         'h e4',
         's d2',
