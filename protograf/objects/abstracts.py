@@ -133,7 +133,7 @@ class AbstractGameObject(BaseShape):
         self.hexgrid_diagonals = None  # hexes in a diagonal
         self.hexgrid_alpha_coords = None  # grid coordinates dict, keyed on (col,row)
         # ---- add in defaults from games
-        self.set_options_by_game()  # MUST be before call to validate!
+        self.set_options_by_game(**kwargs)  # MUST be before call to validate!
         self._validate_choices()
         # ---- setup pieces
         # _pieces = kwargs.get("pieces", [])  # custom, define by user
@@ -194,12 +194,16 @@ class AbstractGameObject(BaseShape):
             True,
         )
 
-    def set_options_by_game(self):
+    def set_options_by_game(self, **kwargs):
         """Set properties according to preset, known, game."""
         _max_cells = None
         match _lower(self.name):
             case "grid":  # default
-                self.pieces_type = "checkers"
+                self.pieces_type = (
+                    self._commons("pieces_type")
+                    or kwargs.get("pieces_type")
+                    or "checkers"
+                )
                 if self.fills is None:
                     self.fills = ("white",)
                 if self.stroke is None:
@@ -213,7 +217,9 @@ class AbstractGameObject(BaseShape):
                 if self.label_type is None:
                     self.label_type = "AN"
             case "chess":
-                self.pieces_type = "chess"
+                self.pieces_type = (
+                    self._commons("pieces_type") or kwargs.get("pieces_type") or "chess"
+                )
                 self.intersections = False
                 if self.fills is None:
                     self.fills = ("white", "silver")
@@ -227,7 +233,11 @@ class AbstractGameObject(BaseShape):
                 self.label_start = Corner.BOTTOM_LEFT
                 self.label_type = "AN"
             case "checkers" | "draughts":
-                self.pieces_type = "checkers"
+                self.pieces_type = (
+                    self._commons("pieces_type")
+                    or kwargs.get("pieces_type")
+                    or "checkers"
+                )
                 self.intersections = False
                 if self.fills is None:
                     self.fills = ("firebrick", "black")
@@ -241,7 +251,9 @@ class AbstractGameObject(BaseShape):
                 self.label_start = Corner.BOTTOM_LEFT
                 self.label_type = "AN"
             case "go":
-                self.pieces_type = "go"
+                self.pieces_type = (
+                    self._commons("pieces_type") or kwargs.get("pieces_type") or "go"
+                )
                 self.intersections = True
                 if self.fills is None:
                     self.fills = ("#D9A359",)
@@ -254,7 +266,9 @@ class AbstractGameObject(BaseShape):
                 self.label_start = Corner.BOTTOM_LEFT
                 self.label_type = "AN"
             case "shogi":
-                self.pieces_type = self.pieces_type or "shogi"
+                self.pieces_type = (
+                    self._commons("pieces_type") or kwargs.get("pieces_type") or "shogi"
+                )
                 self.intersections = False
                 if self.fills is None:
                     self.fills = ("white",)
@@ -267,6 +281,7 @@ class AbstractGameObject(BaseShape):
                 self.label_start = Corner.TOP_RIGHT
                 self.label_type = "NN"
             case "hex":
+                self._commons("pieces_type") or kwargs.get("pieces_type") or "default"
                 if self.fills is None:
                     self.fills = ("white",)
                 if self.stroke is None:
@@ -1494,7 +1509,7 @@ class AbstractStateObject(BaseShape):
         def_kwargs = {
             "stroke": stroke,
             "stroke_width": stroke_width,
-            #"transparency": 50,  # TODO - support pmupdf "stoke_opacity"
+            # "transparency": 50,  # TODO - support pmupdf "stoke_opacity"
         }
         # user props
         usr_kwargs = {}
@@ -1509,10 +1524,7 @@ class AbstractStateObject(BaseShape):
             case "a":  # arrow
                 check_grid(grid_refs, "arrow (a)", 2)
                 if links:
-                    akwargs = {
-                        "links": links,
-                        "stroke_ends": "rounded"
-                    }
+                    akwargs = {"links": links, "stroke_ends": "rounded"}
                 else:
                     cntr1 = grid_refs[1].centre
                     akwargs = {

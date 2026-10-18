@@ -28,7 +28,7 @@ Overview
 ========
 `↑ <abstractIndex_>`_
 
-Abstract games are the ancestors of many modern games.  They continue to be
+Abstract games are the ancestors of many modern games.  They are
 played and appreciated by gamers of all ages across many societies.
 In addition, many new abstract games continue to be designed and tested.
 
@@ -43,7 +43,7 @@ designed to be drawn |dash| it can be thought of as the game being
 The ``AbstractState`` command will, when supplied with a previously defined
 ``AbstractGame``, allow for a position in that game |dash| at any point from
 the setup through to its end state |dash| to be shown in diagrammatic form
-and also, optionally, annotated or marked.
+and, optionally, annotated or marked.
 
 A series of ``AbstractState`` commands, all using the same ``AbstractGame``
 command could, if required, depict an entire game but this is not the primary
@@ -58,8 +58,9 @@ intended use of the ``AbstractState`` command.
 
   For interest, its possible to integrate other Python libraries to
   support tracking and visualisation of game moves; an example for
-  Chess is shown in ``abstracts_chess_animation.py``` which loads and
-  processes a ``.pgn`` file to generate an animated game.
+  **Chess** is shown in ``abstracts_chess_animation.py``` which makes
+  use of the `python-chess <https://github.com/niklasf/python-chess>`_
+  library to load ``.pgn`` file and then generate an animated game.
 
 
 .. _abstractgame-command:
@@ -78,6 +79,11 @@ There are two primary types of board:
 
 For both type, the **size** of the board is usually set by a combination of
 rows and columns.
+
+.. NOTE::
+
+  The locations are on the board, whether squares or hexagons or intersection
+  points, are termed **cells** in this document.
 
 A board can also be specified either by referring to an existing abstract game
 by name |dash| for example, Chess, Checkers (aka Draughts), Go or Shogi.
@@ -100,7 +106,7 @@ AbstractGame Properties
 
 The key properties that can be set for an AbstractGame are:
 
-* *name*: the name of a type of board; which can chosen from  one of:
+* *name*: the name of the type of board; which can chosen from  one of:
   ``chess``, ``checkers``, ``go``, ``shogi``, ``hex``, ``hexhex``,
   ``hexagonal``; if omitted, the default type is a ``grid``
 * *pieces*: details of pieces that will be placed on the board; these
@@ -115,14 +121,14 @@ The key properties that can be set for an AbstractGame are:
     `Reusing built-in pieces from a game`_); or
   * be defined with a customised list of piece names and shapes; see below
     for `AbstractGame Pieces`_
-* *cols*: if no game *name* has been set, then this is the number of cells,
-  in the horizontal direction, for a regular grid; a default of ``8`` is used
-* *rows*: if no game *name* has been set, then this is the number of cells,
-  in the vertical direction, for a regular grid; a default of ``8`` is used
+* *cols*: this is the number of cells in the horizontal direction, for a
+  regular layout; a default of ``8`` is used
+* *rows*: then this is the number of cells, in the vertical direction,
+  for a regular layout; a default of ``8`` is used
 
 Using the name of an existing game will also select the associated number of
-rows and columns for that game; for example, a *Shogi* board has 9 rows and
-9 columns.
+rows and columns for that game; for example, a **Shogi** board has 9 rows
+and 9 columns.  This can be changed by setting *cols* and/or *rows* values.
 
 .. IMPORTANT::
 
@@ -134,20 +140,20 @@ rows and columns for that game; for example, a *Shogi* board has 9 rows and
 
     In the examples used, if *height* is **not** provided to **protograf**,
     then its value is determined by first sizing the board to occupy as much
-    of the page as possible and calculating the cell *height* based on the
-    number of rows and columns.  Boards with intersections occupy slightly
-    space in this automated process.
+    of the page as possible and then calculating the cells' *height* based on
+    the number of rows and columns.  Boards with intersections occupy slightly
+    less space when using this automated process.
 
 Other useful properties that can be set for an AbstractGame are:
 
 * *areas*: a list of one or more shapes that will make-up the cells of the
   board; this provides an alternative to using the normal squares or hexagons
   |dash| see `Example 4. Board with custom areas`_ for how this works
-* *cell_shape*: a shape, one which has a centre, which must be drawn as well
-  as the default square or hexagon |dash| this is **not** auto-sized so will
-  need to be set to the correct dimension(s) for the grid size, as determined
-  by the *height* property (see below); see `Example 5. Board with cell shape`_
-  for how this could be used
+* *cell_shape*: a shape, one which has a centre, which must be drawn in
+  addition to the default square or hexagon |dash| this is **not** auto-sized
+  so will need to be set to the correct dimension(s) for the grid size, as
+  determined by the cells' *height* property (see below); see
+  `Example 5. Board with cell shape`_ for how this could be used
 * *fills*: a list of one or more :ref:`colors <basic-color>` in which to draw
   one or more alternating board spaces; the default is to draw all cells
   ``white`` |dash| other cell properties can be set with the normal *stroke*
@@ -155,10 +161,10 @@ Other useful properties that can be set for an AbstractGame are:
 * *frame*: if ``True``, draw a frame around a gridded board's outline; use the
   normal styling options to customize it |dash| *frame_width*, *frame_stroke*,
   *frame_fill*, *frame_dotted*, and/or *frame_dashed*
-* *height*: sets the height of a single cell (the "edge-to-edge" distance for a
-  hexagon)
-* *hexes*: a value, only used for hexhex board, which sets the number of
-  hexagons along each edge of the board; see `Example 2. Hex Game Grid`_
+* *height*: sets the height of a single cell (the "edge-to-edge" distance
+  across a hexagon)
+* *hexes*: a value, only used for a ``hexhex`` board, which sets the number
+  of hexagons along each edge of the board; see `Example 2. Hex Game Grid`_
 * *intersections*: if ``True``, draw pieces on **grid intersections**, not
   grid spaces, and label the lines, not the spaces
 * *label*: if ``True``, draw labels around the board's edges; use the
@@ -166,12 +172,12 @@ Other useful properties that can be set for an AbstractGame are:
   *label_stroke* etc.
 * *label_type*: the type of label, drawn on the board edges, which is
   used to identify a row or column; it can be  either *alpha-numeric*,
-  or ``AN`` (the default), which is the labelling used for Chess boards;
-  or *numeric*, or ``NN``, which is the labelling used for Shogi boards
+  or ``AN`` (the default), which is the labelling used for **Chess** boards;
+  or *numeric*, or ``NN``, which is the labelling used for **Shogi** boards
 * *label_start*: the corner of the board at which the labelling starts; this
   can be: *bottom-left* (``BL``), *bottom-right* (``BR``), *top-left* (``TL``),
   or *top-right* (``TR``). Chess board labels start at the *bottom-left*
-  |dash| which is the default |dash| while Shogi board labels start at the
+  |dash| which is the default |dash| while **Shogi** board labels start at the
   *top-right*.
 * *label_offset*: how far away label are drawn from the board edge(s); if not
   set, this is calculated based on the label's font size
@@ -231,7 +237,7 @@ Example 1. Default Board
          agd = AbstractGame()
          AbstractState(board=agd)
 
-      The default settings for a board are those for a 8x8 grid of square cells.
+      The default settings for a board are those of a 8x8 grid of square cells.
 
       As can be seen, the board is drawn when it is referenced by the *board*
       property of an ``AbstractState`` command.  In short: the ``AbstractGame``
@@ -490,7 +496,7 @@ Example 2. Hex Game Grid
       This board appears as a rhombus shaped layout of 11 rows by 11 columns
       and is used for the game called **Hex**.
 
-      The game of  **Hex**, was created by Piet Hein in 1942; see
+      The game of  **Hex** was created by Piet Hein in 1942; see
       https://en.wikipedia.org/wiki/Hex_(board_game)
 
 ===== ======
@@ -526,6 +532,7 @@ This type of board is constructed by:
         aghh = AbstractGame(
             name="hexhex",
             hexes=4,
+            label=True,
             label_font='Courier',
             label_size=16,
         )
@@ -537,8 +544,8 @@ This type of board is constructed by:
       The *hexes* property is set to ``4`` |dash| this results in a grid with
       7 rows; and 7 columns in the centre row.
 
-      The labels are styled by setting their font name and size |dash|
-      ``Courier`` and ``16``.
+      The labels are activated by setting ``label=True`` and then styled by
+      setting their font name and size |dash| ``Courier`` and ``16``.
 
 ===== ======
 
@@ -597,7 +604,7 @@ single ``O`` (capital "oh").
       ``hexagons``.
 
       The *pattern* property shows, in string format, an arrangement of
-      hexagons (``O``) and spaces (``.``).
+      hexagonal cells (``O``) and empty cells (``.``).
 
       Note that the spaces in the pattern are ignored when constructing the
       board; they are just used to help visualise the pattern being created.
@@ -605,7 +612,7 @@ single ``O`` (capital "oh").
       .. NOTE::
 
           It is important that the correct number of *rows* and *cols* are
-          set; the pattern has to fit exactly in these dimensions.
+          set; the pattern has to fit **exactly** into these dimensions.
 
 ===== ======
 
@@ -659,8 +666,8 @@ Reusing built-in pieces from a game
 
 It is possible to select a piece, or pieces, from any of the built-in games.
 
-This is done by using a ``game_color_piece`` notation; for example, the White
-King from Chess is referenced by ``chess_white_king``.
+This can be done by using a ``game_color_piece`` notation; for example, the White
+King from **Chess** is referenced by ``chess_white_king``.
 
 .. |ap2| image:: ../images/objects/abstracts_grid_chess_pieces.png
    :width: 330
@@ -670,12 +677,11 @@ King from Chess is referenced by ``chess_white_king``.
 
       .. code:: python
 
-        knights = [
-            ('K', 'chess_white_knight'),
-            ('J', 'chess_black_knight')]
         agcp = AbstractGame(default=thick,
             rows=4, cols=4,
-            pieces=knights,
+            pieces=[
+                ('K', 'chess_white_knight'),
+                ('J', 'chess_black_knight')]
             )
         AbstractState(
             board=agcp,
@@ -689,15 +695,52 @@ King from Chess is referenced by ``chess_white_king``.
       In this example the type of board is set via its *name* property to
       ``grid`` of size 4 rows by 4 columns.
 
-      The ``knights`` value is assigned to a list of pieces; with each letter
-      |dash| one that you choose to represent the pieces for the purpose of
-      displaying it on the board |dash| is paired with an existing piece;
-      in this case the Knights from Chess.
+      The AbstractGame's *pieces* property is assigned to a list of pieces;
+      in which each letter |dash| one that *you* choose to represent the piece
+      for the purpose of displaying it on the board |dash| is paired with an
+      existing piece from a built-in game;  in this case the Black and White
+      Knights from **Chess**, using the ``game_color_piece`` notation.
 
       The use of the *positions* property is described in
       :ref:`AbstractState Positions <abstractStatePositions>`.
 
 ===== ======
+
+It is also possible to use *all* the pieces from any of the built-in games.
+
+This can be done by using a ``pieces_type`` property; for example, the
+pieces from the game **Go** can be used with ``pieces_type='go'``.
+
+.. |ap3| image:: ../images/objects/abstracts_grid_chess_go_pieces.png
+   :width: 330
+
+===== ======
+|ap3| This example shows an ``AbstractGame`` constructed using these commands:
+
+      .. code:: python
+
+        amcg = AbstractGame(
+            name="chess",
+            pieces_type='go'
+        )
+        AbstractState(
+            board=amcg,
+            positions='8/8/8/3BW3/3WB3/8/8/8'
+        )
+
+      In this example the type of board is set via its *name* property to
+      ``chess`` i.e. checkered style with 8 rows by 8 columns.
+
+      However, for this game, the *pieces_type* is set to ``go``, a game which
+      uses black and white pieces (aka "stones"), which are referenced by the
+      first letter color of their color - ``B`` or ``W``.
+
+      The example shows two stones of each color placed at the centre of the
+      board using the *positions* property; this is described in
+      :ref:`AbstractState Positions <abstractStatePositions>`.
+
+===== ======
+
 
 Defining and using custom pieces
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -711,11 +754,11 @@ or by referencing a pre-created image.
     If you use an image for a shape, ensure that it is square so as to fit
     properly into a standard grid cell |dash| square or hexagon.
 
-.. |ap3| image:: ../images/objects/abstracts_grid_pieces.png
+.. |ap4| image:: ../images/objects/abstracts_grid_pieces.png
    :width: 330
 
 ===== ======
-|ap3| This example shows an ``AbstractGame`` constructed using these commands:
+|ap4| This example shows an ``AbstractGame`` constructed using these commands:
 
       .. code:: python
 
@@ -835,23 +878,23 @@ FEN-like Notation
 ~~~~~~~~~~~~~~~~~
 `^ <abstractStatePositions_>`_
 
-This notation is based on the Chess notation called "FEN" (see:
+This notation is based on the **Chess** notation called "FEN" (see:
 https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation)
 in which the characters, representing pieces, are separated by a combination
 of numbers, to represent consecutive blank cells, and/or ``/`` (forward slash)
 characters to mark the end of a row.
 
-For example:
+For example, a **Chess** game might have:
 
 .. code:: python
 
    positions = "rnbqkbnr/pppppppp/8"
 
-would represent three rows |dash| the Black pieces as setup at the start of
-a Chess game, as well as the unoccupied row in front of the Black pawns.
+to represent three rows |dash| the Black pieces as setup at the start of
+the game |dash| as well as the unoccupied row in front of the Black pawns.
 
 If there are more than nine adjacent blank cells in a row, as there might be in
-a game of Go, then use multiple numbers, for example:
+a game of **Go**, then use multiple numbers, for example:
 
 .. code:: python
 
@@ -859,21 +902,21 @@ a game of Go, then use multiple numbers, for example:
 
 This represents a situation where the first row has 9 empty points, a Black
 stone, and then 9 empty points; whereas the second row has a Black stone,
-followed by 9 empty points, and then another 9 empty points |dash| 18 in
-total.
+followed by 9 empty points, and then another 9 empty points |dash| 18
+empty points in total.
 
 The FEN-like notation is converted internally by **protograf** into
-`Piece-and-Dot Notation`_.
+`Row-and-Dot Notation`_.
 
 
-.. _abstractStatePieceDot:
+.. _abstractStateRowDot:
 
-Piece-and-Dot Notation
-~~~~~~~~~~~~~~~~~~~~~~
+Row-and-Dot Notation
+~~~~~~~~~~~~~~~~~~~~
 `^ <abstractStatePositions_>`_
 
-This notation represents each row as separate line, and each blank cell
-with a ``.`` (dot or full stop).
+This notation represents each **row** as separate line, and each blank
+cell with a ``.`` (**dot** or full stop).
 
 The best way to represent a multi-line list of characters such as this is
 by starting and ending all the lines with triple quotes |dash| ``"""``.
@@ -887,8 +930,8 @@ For example:
    .ppppppp
    """
 
-would show two rows near the start of a Chess game where Black has moved
-both Knights and one Pawn.
+would show two rows near the start of a **Chess** game where Black has
+moved both Knights and one Pawn.
 
 Note that empty lines, as well as "whitespace" at the start and end of any
 line, are ignored.
@@ -924,7 +967,7 @@ If a row on the board contains **no** pieces, this can be shown with a single
       ``chess``.  This results in the default grid with alternating colored
       squares.
 
-      The *positions* property of AbstractState is used to show the Chess
+      The *positions* property of AbstractState is used to show **Chess**
       pieces on the board; in this case, the "state" at the end of move 15
       in the 1963/64 USA Chess Championship with R.J. Fischer (Black) playing
       R.E. Byrne (White).
@@ -958,8 +1001,8 @@ notation, the name assigned to the board is used first, followed by a dot,
 then the grid reference as set by the labelling method, followed by a dot,
 and then the position on the cell at that grid reference.
 
-For example, given a Chess board, the lower left square, occupied by the
-White Rook at the start of the game, is usually referred to as ``a1``.
+For example, given a **Chess** board, the lower left square, occupied by
+the White Rook at the start of the game, is usually referred to as ``a1``.
 So the position |dash| the x- and y- coordinates |dash| of the centre of
 that square, for an ``AbstractGame`` named ``chess_game`` would be
 ``chess_game.a1.c``.
@@ -1035,12 +1078,55 @@ its pieces |dash| this can be via text, a shape or an image.   For example,
 an arrow can be drawn to show how a piece can, or should, move from one
 square to another.
 
-Markers are always drawn **after** any `AbstractState Annotations`_ or
-any pieces that may appear on the board.
+Markers are always drawn **after** any `AbstractState Annotations`_ and
+**after** any pieces that may appear on the board.
 
 Markers are supplied as a list of **protograf** shapes, whose position is
 set in the same way as :ref:`Annnotations Locations <abstractStateLocations>`.
 
+
+.. |sp3| image:: ../images/objects/abstracts_grid_chess_markers.png
+   :width: 330
+
+===== ======
+|sp3| This example shows an ``AbstractGame`` constructed using these commands:
+
+      .. code:: python
+
+        amca = AbstractGame(
+            name="chess",
+            label=True
+        )
+        AbstractState(
+            board=amca,
+            positions='8/8/8/8/3N4/8/8/8',
+            markers=[
+                dot(cxy=amca.d4.c, fill_stroke="red", dot_width=5),
+                line(
+                    links=[amca.d4.c, amca.d6.c, amca.e6.w],
+                    stroke="red",
+                    stroke_width=2),
+                square(
+                    cxy=amca.e6.c,
+                    height=0.9,
+                    width=0.9,
+                    stroke="red",
+                    stroke_width=2),
+            ]
+        )
+
+      In this example, a **Chess** game shows three markers being used:
+
+      1. The **dot** shape appears at the centre of the Knight's square,
+      2. The **line** shape uses the *links* property to join the centre
+         of the two squares making up the first part of the Knight's move
+         and ending at the west-edge of square ``e6``.
+      3. The **square** shape is drawn with its centre in square ``e6``.
+
+      All shapes are given a *stroke* color of ``red``, and the line and
+      square are drawn with a *stroke_width* of 2.
+
+===== ======
 
 .. _abstractStateMarkersShortcuts:
 
@@ -1052,19 +1138,19 @@ little cumbersome, particularly if only relatively simple markers need to be
 used; for example, drawing a line or an arrow between cells or highlighting
 the outline of a cell.
 
-The "shortcut" approach provides a limited set of shapes, and restrict their
-position to align with the cell centres; all shapes are sized to just fit
-inside the cell (except for the dot).
+The "shortcut" approach provides a limited set of shapes, and restricts their
+position to align with the cell centres; all shapes (except for the dot) are
+sized to just fit inside the cell.
 
 The shortcuts, referenced by a single letter are:
 
-- ``a``: draw an arrow between two cells
-- ``l``: draw a line between two cells
-- ``c``: draw a circle inside a cell
-- ``d``: draw a dot inside a cell
-- ``s``: draw a square inside a cell
-- ``h``: draw a hexagon inside a cell
-- ``x``: draw an "X" inside a cell (between diagonally opposite vertices)
+- ``a``: draw an **arrow** between two cells
+- ``l``: draw a **line** between two cells
+- ``c``: draw a **circle** inside a cell
+- ``d``: draw a **dot** inside a cell
+- ``s``: draw a **square** inside a cell
+- ``h``: draw a **hexagon** inside a cell
+- ``x``: draw an **X** inside a cell (between diagonally opposite vertices)
 
 Along with this letter, there also needs to be the reference for a cell or,
 in the case of line or arrow, a reference for a second cell.  These appear
@@ -1100,7 +1186,7 @@ same list.
             markers=[
                 'a a1 c2',
                 'd a3',
-                'l b4 e5',
+                'l b4 c5 c4 e5',
                 'c c3',
                 'h e4',
                 's d2',
@@ -1108,7 +1194,17 @@ same list.
             ]
         )
 
-      In this example
+      In this example, markers are drawn with default color and stroke
+      thickness.
+
+      Markers are drawn on a ``hexhex`` board; as can be seen, the square
+      marker does not really suit this style of cell.
+
+      In this example, the *l* (line) marker has a number of different
+      grid references included |dash| this means that a continuous line
+      is drawn between the centre of each cell in the sequence.  This
+      drawing method is making use of a Line's
+      :ref:`Links <lineLinksShapes>` property.
 
 ===== ======
 
@@ -1140,7 +1236,12 @@ same list.
             ]
         )
 
-      In this example
+      In this example, the markers styles are changed: *markers_stroke*
+      (their color) is set to ``red``; while the *markers_fraction is set to
+      ``0.05`` |dash| the line thickness relative to the cell size.
+
+      Markers are drawn on a ``grid`` board; as can be seen, the hexagon
+      marker does not really suit this style of cell.
 
 ===== ======
 
@@ -1165,7 +1266,7 @@ Example 1. Chess Board: Colored
 
         agcs = AbstractGame(
             name="chess",
-            fills=["#FFCE9E", "#D18B47"],  # browns
+            fills=["#FFCE9E", "#D18B47"],
             frame=True,
             frame_width=15,
             frame_stroke="brown",
@@ -1176,12 +1277,12 @@ Example 1. Chess Board: Colored
         )
         AbstractState(board=agcs, setup=True)
 
-      This example shows a Chess board using custom *fills* colors for the
-      alternating squares.
+      This example shows a **Chess** board using custom *fills* colors
+      of shades of brown for the alternating squares.
 
-      A frame is drawn; the styled labels, with a
-      custom offset distance for both row and column labels, are drawn last
-      and therefore appear on top of the frame.
+      A frame is drawn; the styled labels, with a custom offset distance
+      for both row and column labels, are drawn last and therefore appear
+      drawn over the frame.
 
 ===== ======
 
@@ -1223,8 +1324,8 @@ Example 3. Shogi Board: Setup
           label=True)
         AbstractState(board=agss, setup=True)
 
-      This example shows a Shogi game setup, using the pieces whose images are
-      available with **protograf**.
+      This example shows a **Shogi** game setup, using the pieces whose images
+      are available with **protograf**.
 
 ===== ======
 
@@ -1261,9 +1362,10 @@ Example 4. Shogi Board: Positions
             """
         )
 
-      This example shows a Shogi game setup, using an "international style"
-      of piece types, referenced as ``shogi-int``, whose images are available
-      with **protograf**.
+      This example shows a **Shogi** game in progress, using the
+      "international style" of pieces types, as set with
+      ``pieces_type="shogi-int"``, whose images are available as
+      part of **protograf**.
 
       In addition, the board itself is styled with a different color of cells
       and thicker, white lines.
@@ -1291,11 +1393,11 @@ Example 5. Go Board: Positions
             positions="99/"*7 + ".B.B.W..W.BBB..B.W/" + "99/"*10
         )
 
-      This example shows a Go game with a few stones placed on it, using the
-      :ref:`"FEN-like" notation <abstractStateFEN>`.
+      This example shows a **Go** game with a few stones placed on it, using
+      the :ref:`"FEN-like" notation <abstractStateFEN>`.
 
       In addition, the board itself is styled with a different color of cells,
-      and the labelling activated.
+      and the labels have been activated.
 
 ===== ======
 
@@ -1311,7 +1413,7 @@ Chess
 -----
 
 The following are the SVG images, sourced from Wikipedia Commons, available
-for use in constructing abstract games.
+for use in constructing  **Chess** games |dash| or games using those pieces.
 
 The pieces are referenced, using the notation described above, via the letter
 in the last column of the table.
@@ -1374,7 +1476,7 @@ Shogi
 -----
 
 The following are the SVG images, sourced from Wikipedia Commons, available
-for use in constructing abstract games.
+for use in constructing **Shogi** games |dash| or games using those pieces.
 
 The pieces are referenced, using the notation described above, via the letter
 in the last column of the table.
@@ -1384,8 +1486,14 @@ In Japanese the two opposing sides are called *Sente* ("earlier move") and
 with Black being the first to play, with pieces shown as upright, on the
 nearer/closer side of the board.
 
-As in Chess, uppercase letters are used for White pieces; lowercase letters
-for Black.
+As with **Chess**, uppercase letters are used for White pieces; lowercase
+letters for Black.
+
+.. NOTE::
+
+    Because **protograf** only allows a single character per piece, the usual
+    abbreviation cannot always be used and so alternate letters have been
+    assigned to them.
 
  .. |icon-osho| image:: ../../../protograf/resources/abstracts/shogi/Shogi_osho(svg).svg
        :width: 35px

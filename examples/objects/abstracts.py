@@ -185,12 +185,13 @@ Text("Hexagons: Hex Game", common=header)
 aghg = AbstractGame(name="hex", label=True, label_size=7, default=thick)
 AbstractState(board=aghg)
 
-# ---- Hexagons - hex game
+# ---- Hexagons - hexhex grid
 PageBreak()
 Text("Hexagons: hexhex", common=header)
 aghh = AbstractGame(default=thick,
     name="hexhex",
     hexes=4,
+    label=True,
     label_font='Courier',
     label_size=16,
 )
@@ -266,7 +267,19 @@ AbstractState(
     .
     """)
 
-# ---- Hexagons - custom pieces
+# ---- Grid - Chess with Go pieces
+PageBreak()
+Text("Chess: Go pieces", common=header)
+amcg = AbstractGame(
+    name="chess",
+    pieces_type='go'
+)
+AbstractState(
+    board=amcg,
+    positions='8/8/8/3BW3/3WB3/8/8/8'
+)
+
+# ---- Grid - custom pieces
 PageBreak()
 Text("Grid: custom pieces", common=header)
 
@@ -359,7 +372,33 @@ AbstractState(
     12345"""
 )
 
-# ---- Abstract Game Grid - markers
+# ---- Abstract Grid - chess markers
+PageBreak()
+Text("Chess: Markers", common=header)
+amca = AbstractGame(
+    name="chess",
+    label=True
+)
+AbstractState(
+    board=amca,
+    positions='8/8/8/8/3N4/8/8/8',
+    markers=[
+        dot(cxy=amca.d4.c, fill_stroke="red", dot_width=5),
+        line(
+            links=[amca.d4.c, amca.d6.c, amca.e6.w],
+            stroke="red",
+            stroke_width=2),
+        square(
+            cxy=amca.e6.c,
+            height=0.9,
+            width=0.9,
+            stroke="red",
+            stroke_width=2),
+    ]
+)
+
+
+# ---- Abstract Grid - markers & annotations
 PageBreak()
 Text("Grid Board: markers and annotations", common=header)
 agm = AbstractGame(
@@ -382,7 +421,7 @@ AbstractState(
     markers=markers,
 )
 
-# ---- Abstract Game Grid - annotations
+# ---- Abstract Grid - annotations
 PageBreak()
 Text("Grid Board: annotations", common=header)
 aga = AbstractGame(
@@ -409,6 +448,32 @@ AbstractState(
     annotations=annotations,
 )
 
+# ---- Abstract Grid - Chess markers
+PageBreak()
+Text("Chess: Markers", common=header)
+amca = AbstractGame(
+    name="chess",
+    label=True
+)
+AbstractState(
+    board=amca,
+    positions='8/8/8/8/3N4/8/8/8',
+    markers=[
+        dot(cxy=amca.d4.c, fill_stroke="red", dot_width=5),
+        line(
+            links=[amca.d4.c, amca.d6.c, amca.e6.w],
+            stroke="red",
+            stroke_width=2),
+        square(
+            cxy=amca.e6.c,
+            height=0.9,
+            width=0.9,
+            stroke="red",
+            stroke_width=2),
+    ]
+)
+
+
 # ---- Abstract Hexagons - markers shortcut
 PageBreak()
 Text("HexHex: markers shortcuts", common=header)
@@ -431,7 +496,7 @@ AbstractState(
     ]
 )
 
-# ---- Abstract Game Grid - markers shortcut
+# ---- Abstract Grid - markers shortcut
 PageBreak()
 Text("Grid: markers shortcuts", common=header)
 
@@ -447,7 +512,7 @@ AbstractState(
     markers=[
         'a a1 c2',
         'd a3',
-        'l b4 c5 e5',
+        'l b4 e5',
         'c c3',
         'h e4',
         's d2',
@@ -456,6 +521,7 @@ AbstractState(
 )
 
 
+# ---- *Save* images
 Save(
     output='png',
     dpi=300,
@@ -479,10 +545,13 @@ Save(
         'abstracts_hexagons_pattern_pieces',
         'abstracts_hexagons_cell_shape',
         'abstracts_grid_chess_pieces',
+        'abstracts_grid_chess_go_pieces',
         'abstracts_grid_pieces',
-        'abstracts_grid_pieces_numbered',
-        'abstracts_grid_markers',
+        'abstracts_grid_pieces_numbered',  # "stacked" pieces
+        'abstracts_grid_chess_markers',
+        'abstracts_grid_markers_and_annotations',
         'abstracts_grid_annotations',
+        'abstracts_grid_markers',
         'abstracts_hexagons_markers_shortcuts',
         'abstracts_grid_markers_shortcuts',
     ]
