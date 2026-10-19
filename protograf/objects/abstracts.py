@@ -7,7 +7,7 @@ Notes:
 """
 
 # lib
-# import os
+import math
 import re
 
 # third party
@@ -1521,7 +1521,7 @@ class AbstractStateObject(BaseShape):
             links = [link.centre for link in grid_refs]
 
         match mark.lower():
-            case "a":  # arrow
+            case "a" | "ac":  # arrow / curved
                 check_grid(grid_refs, "arrow (a)", 2)
                 if links:
                     akwargs = {"links": links, "stroke_ends": "rounded"}
@@ -1535,6 +1535,12 @@ class AbstractStateObject(BaseShape):
                         "arrow": True,
                         "stroke_ends": "rounded",
                     }
+                    if mark.lower() == "ac":
+                        curve_height = (
+                            math.dist((cntr0.x, cntr0.y), (cntr1.x, cntr1.y)) * 0.2
+                        )
+                        akwargs["curve"] = curve_height
+
                 kwargs = {**def_kwargs, **usr_kwargs, **akwargs}
                 Line(**kwargs)
             case "c":  # circle
@@ -1576,7 +1582,7 @@ class AbstractStateObject(BaseShape):
                 }
                 kwargs = {**def_kwargs, **usr_kwargs, **skwargs}
                 Square(**kwargs)
-            case "l":  # line
+            case "l" | "lc":  # line / curve
                 check_grid(grid_refs, "line (l)", 2)
                 if links:
                     lkwargs = {"links": links, "stroke_ends": "rounded"}
@@ -1589,6 +1595,12 @@ class AbstractStateObject(BaseShape):
                         "y1": cntr1.y,
                         "stroke_ends": "rounded",
                     }
+                    if mark.lower() == "lc":
+                        curve_height = (
+                            math.dist((cntr0.x, cntr0.y), (cntr1.x, cntr1.y)) * 0.2
+                        )
+                        lkwargs["curve"] = curve_height
+
                 kwargs = {**def_kwargs, **usr_kwargs, **lkwargs}
                 Line(**kwargs)
             case "x":  # cross "X"
@@ -1637,7 +1649,7 @@ class AbstractStateObject(BaseShape):
 
     def draw_markers(self):
         """Draw marker elements on the board."""
-        allowed_marks = ["a", "c", "d", "h", "x", "s", "l"]
+        allowed_marks = ["a", "ac", "c", "d", "h", "x", "s", "l", "lc"]
         for mark in self.markers:
             if isinstance(mark, str):
                 marks = tools.sequence_split(mark, sep=" ", to_int=False, unique=False)
@@ -1650,7 +1662,7 @@ class AbstractStateObject(BaseShape):
                     )
                 if len(marks) < 2:
                     feedback(
-                        'The AbstractGame "markers" shortcut must contain a letter,'
+                        'The AbstractGame "markers" shortcut must contain a key,'
                         f' followed by one or more grid references, not "{mark}".',
                         True,
                         True,

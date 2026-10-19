@@ -1142,17 +1142,19 @@ The "shortcut" approach provides a limited set of shapes, and restricts their
 position to align with the cell centres; all shapes (except for the dot) are
 sized to just fit inside the cell.
 
-The shortcuts, referenced by a single letter are:
+The shortcuts, prefixed by one or two letters are:
 
 - ``a``: draw an **arrow** between two cells
+- ``ac``: draw an **arrow**, with a curve, between two cells
 - ``l``: draw a **line** between two cells
+- ``lc``: draw a **line**, with a curve, between two cells
 - ``c``: draw a **circle** inside a cell
 - ``d``: draw a **dot** inside a cell
 - ``s``: draw a **square** inside a cell
 - ``h``: draw a **hexagon** inside a cell
 - ``x``: draw an **X** inside a cell (between diagonally opposite vertices)
 
-Along with this letter, there also needs to be the reference for a cell or,
+Along with this prefix, there also needs to be the reference for a cell or,
 in the case of line or arrow, a reference for a second cell.  These appear
 together in a string, and a list of these strings is then assigned to the
 *markers* property and drawn in that order.
@@ -1184,9 +1186,11 @@ same list.
         AbstractState(
             board=aml,
             markers=[
-                'a a1 c2',
+                'a a1 c1',
+                'ac a1 c2',
                 'd a3',
-                'l b4 c5 c4 e5',
+                'l b4 b3 c5 c4',
+                'lc c4 e5',
                 'c c3',
                 'h e4',
                 's d2',
@@ -1226,9 +1230,11 @@ same list.
             markers_stroke="red",
             markers_fraction=0.05,
             markers=[
-                'a a1 c2',
+                'a a1 c1',
+                'ac a1 c2',
                 'd a3',
-                'l b4 e5',
+                'l b4 a5 b5 c4',
+                'lc c4 e5',
                 'c c3',
                 'h e4',
                 's d2',
