@@ -145,8 +145,8 @@ Example 2. Grid and Margin Display
 ===== ======
 |cr1| Here is an example of a customised ``Create`` command, for an A8-sized
       page in portrait mode, with margins being 0.5 cm each. A thin grid with
-      a spacing of 0.5 cm and a thicker grid with a spacing of 2.0 cm are
-      both displayed, and the margins are shown as dotted lines.
+      a spacing of 0.25 cm and a thicker/darker grid with a spacing of 1.0 cm
+      are both displayed, and the margins are shown as dotted lines.
 
       This type of setup is useful when working on a design but is typically
       not shown as part of a final product.
@@ -157,8 +157,9 @@ Example 2. Grid and Margin Display
             filename="blank.pdf",
             paper='A8',
             margin=0.5,
-            page_grid=0.5,
-            page_grid_dark=2,
+            stroke_width=0.5,
+            page_grid=0.25,
+            page_grid_dark=1,
             margin_debug=True,
         )
 

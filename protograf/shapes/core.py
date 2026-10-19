@@ -3584,7 +3584,7 @@ class StarShape(BaseShape):
         _type = type(self)
         cntr = self._shape_centre
         cntr_u = self.as_point(cntr, self.units, cntr, self.rotation)
-        radius = self.as_point(self._u.radius, self.units, self.as_point, 0)
+        radius = self._u.radius / self.units
         vtcs = self._shape_vertexes
         vtcs_user = [
             self.as_point(value, self.units, cntr, self.rotation) for value in vtcs

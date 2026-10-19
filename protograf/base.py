@@ -2697,6 +2697,10 @@ class BaseShape:
         rotation: float | None = None,
     ) -> Point:
         """Create a Point in user units already offset from page margins."""
+        if not xy:
+            return None
+        if not isinstance(xy, (Point, muPoint)):
+            raise TypeError(f"The value {xy} is a not a Point and cannot be converted.")
         margin_left = globals.margins.left
         margin_top = globals.margins.top
         # print(f'as_point() {margin_left=} {margin_top=} {x=} {y=}')
