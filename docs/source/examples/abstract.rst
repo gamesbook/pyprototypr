@@ -44,6 +44,7 @@ Screenshot  .. image:: images/boards/abstract/chessboard.png
                :width: 90%
 =========== ==================================================================
 
+
 =========== ==================================================================
 Title       *Chess Board - Brown*
 ----------- ------------------------------------------------------------------
@@ -62,6 +63,27 @@ Discussion  This example shows how to construct a regular Chess board with
 ----------- ------------------------------------------------------------------
 Screenshot  .. image:: images/boards/abstract/chessboard_brown.png
                :width: 70%
+=========== ==================================================================
+
+
+=========== ==================================================================
+Title       *Chess - Visualising a Game*
+----------- ------------------------------------------------------------------
+Script      `abstracts_chess_animation.py <https://github.com/gamesbook/protograf/blob/master/examples/objects/abstracts_chess_animation.py>`_
+----------- ------------------------------------------------------------------
+Discussion  This example shows how to integrate **protograf** with a Python
+            library that can access and process ``.pgn`` files, in which
+            complete Chess games are recorded in a standard notation.
+
+            The code uses a Python loop function to read each turn and then
+            the board's position is supplied to an ``AbstractState()``
+            command to render the board on a new page.  All the pages are
+            then joined together into a GIF, using the settings supplied to
+            the ``Save()`` command.
+
+----------- ------------------------------------------------------------------
+Screenshot  .. image:: images/boards/abstract/chess_game.gif
+               :width: 80%
 =========== ==================================================================
 
 
