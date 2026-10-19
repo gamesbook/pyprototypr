@@ -22,7 +22,7 @@ copyright = '2025-2026, Derek R. Hohls'
 author = 'Derek R. Hohls'
 
 # The full version, including alpha/beta/rc tags
-release = '0.5.8'
+release = '0.6.0'
 
 
 # ---- General configuration
@@ -36,6 +36,17 @@ extensions = [
     'sphinx.ext.autosectionlabel',
     'sphinx_copybutton',
 ]
+
+# verbatimwrapslines=true: Tells Sphinx to wrap lines in standard code for PDF
+# verbatimforcewraps=true: Targets extreme line lengths and aggressively breaks
+#                          code tokens when they encounter rigid cell borders.
+latex_elements = {
+    'sphinxsetup': (
+        'verbatimwrapslines=true, '
+        'verbatimforcewraps=true, '
+        'sphinxVerbatimintable=true'
+    ),
+}
 
 # https://docs.readthedocs.io/en/stable/guides/cross-referencing-with-sphinx.html#automatically-label-sections
 # Make sure the target is unique

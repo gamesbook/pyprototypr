@@ -5,7 +5,6 @@ General purpose utility functions for protograf
 
 # lib
 from collections.abc import Iterable
-import collections
 import copy
 from functools import lru_cache
 from itertools import zip_longest
@@ -17,7 +16,7 @@ import re
 import string
 from string import ascii_uppercase, digits
 import sys
-from typing import Any, LiteralString, cast, Dict
+from typing import Any, LiteralString, cast
 from urllib.parse import urlparse
 
 # third-party
@@ -36,6 +35,7 @@ from protograf.utils.fonts import builtin_font, FontInterface
 from protograf.utils.messaging import feedback
 from protograf.utils.support import to_units
 from protograf.utils.structures import (
+    Corner,
     DirectionGroup,
     GlobalDocument,
     Point,
@@ -94,10 +94,16 @@ def boolean_join(items):
 
     Doc Test:
 
+    >>> items = [True, 'and', False]
+    >>> boolean_join(items)
+    False
     >>> items = [True, '+', False]
     >>> boolean_join(items)
     False
     >>> items = [True, '|', False]
+    >>> boolean_join(items)
+    True
+    >>> items = [True, 'or', False]
     >>> boolean_join(items)
     True
     >>> items = [True, None]
@@ -108,9 +114,9 @@ def boolean_join(items):
         return None
     expr = ""
     for item in items:
-        if item == "&" or item == "and" or item == "+":
+        if item in ["&", "and", "+"]:
             expr += " and "
-        elif item == "|" or item == "or":
+        elif item in ["|", "or"]:
             expr += " or "
         elif item is not None:
             expr += f"{item}"
@@ -156,8 +162,8 @@ def _lower(value) -> str | None:
         return None
     try:
         return str(value).lower().strip()
-    except Exception:
-        raise ValueError(f"Cannot convert {value} into a string!")
+    except Exception as exc:
+        raise ValueError(f"Cannot convert {value} into a string!") from exc
 
 
 def _p2v(value: Point, decimals: int = 4) -> tuple:
@@ -170,7 +176,7 @@ def _p2v(value: Point, decimals: int = 4) -> tuple:
     """
     try:
         _units = globals.units
-    except:
+    except Exception:
         _units = 28.3465
     try:
         return (
@@ -197,7 +203,7 @@ def _u2p(value: Point) -> tuple:
     """
     try:
         _units = globals.units
-    except:
+    except Exception:
         _units = 28.3465
     try:
         return Point(float(value.x) * _units, float(value.y) * _units)
@@ -283,7 +289,7 @@ def as_bool(value, allow_none: bool = True) -> bool | None:
     >>> as_bool(value='Y')
     True
     """
-    trues = ["yes", "y", "ya", "yep", "yeah", "ja", "oui", "si", "true", "t", "1"]
+    trues = ["yes", "y", "ya", "yep", "yeah", "da", "ja", "oui", "si", "true", "t", "1"]
     if value is None and allow_none:
         return value
     # _label = f" for {label}" if label else " of"
@@ -343,6 +349,29 @@ def as_float(
         if stop:
             feedback(f'The value "{value}"{_label} is not a valid float number!', True)
     return default
+
+
+def as_excel(num: int, lower: bool = False) -> str:
+    """Convert a number to its corresponding Excel column letter.
+
+    Doc Test:
+
+    >>> as_excel(1)
+    'A'
+    >>> as_excel(27)
+    'AA'
+    >>> as_excel(1, True)
+    'a'
+    """
+    if num < 1:
+        raise ValueError("num must be >= 1")
+    result = ""
+    while num:
+        num, rem = divmod(num - 1, 26)
+        result = chr(ord("A") + rem) + result
+    if lower:
+        result = result.lower()
+    return result
 
 
 def as_point(value) -> list | Point:
@@ -1113,8 +1142,8 @@ def column_from_string(col: str) -> int:
     for letter, power in zip(list(_col), __powers):
         try:
             pos = __alpha_to_decimal.get(cast(LiteralString, letter))
-        except KeyError:
-            raise ValueError(error_msg)
+        except KeyError as exc:
+            raise ValueError(error_msg) from exc
         if pos is not None:
             idx += pos * power
     if not 0 < idx < 18279:
@@ -1122,6 +1151,7 @@ def column_from_string(col: str) -> int:
     return idx
 
 
+@lru_cache(maxsize=None)
 def coordinate_to_tuple(coordinate: str, zeroed: bool = False) -> tuple | None:
     """Convert Excel style coordinate to 1-based (column, row) tuple
 
@@ -1345,7 +1375,6 @@ def eval_template(strng: str, data: dict | None = None):
 
 def valid_directions(
     direction_group: DirectionGroup,
-    label: str = "",
     vertex_count: int = 0,
 ) -> dict | set:
     """."""
@@ -1461,7 +1490,7 @@ def validated_gridlines(
                 )
     # ---- validate all directions
     values_set = set(clean_values)
-    valid = valid_directions(direction_group, label, 0)
+    valid = valid_directions(direction_group, 0)
     if values_set.issubset(valid):
         # NOTE in some cases, we need to ignore `vertex_count` because not yet known...
         return clean_values
@@ -1515,7 +1544,7 @@ def validated_directions(
             )
         values = [str(val).lower().strip() for val in value]
     values_set = set(values)
-    valid = valid_directions(direction_group, label, vertex_count)
+    valid = valid_directions(direction_group, vertex_count)
     if "all" in values or "*" in values:
         values = list(valid)
         if direction_group in [DirectionGroup.POLYGONAL, DirectionGroup.STAR]:
@@ -1644,7 +1673,7 @@ def is_url_valid(url: str, qualifying=MIN_ATTRIBUTES):
     >>> is_url_valid('http://localhost:8080')
     True
     """
-    tokens = urlparse(url)
+    tokens = urlparse(str(url))
     if tokens.scheme and tokens.scheme not in ["http", "https"]:
         return False
     if tokens.netloc:
@@ -1735,15 +1764,16 @@ def points(item, units: str | None = None, skip_none: bool = False, label: str =
     log.debug("units %s :: label: %s", units, label)
     if item is None and skip_none:
         return None
-    _units = to_units(units) if units is not None else globals.unit
+    _units = to_units(units) if units is not None else globals.units
     try:
         _item = as_float(item, label)
+        # print("tools.py~points() - units %s :: item: %s", _units, _item)
         if _item is not None and _units is not None:
             return _item / _units
     except (TypeError, ValueError):
         _label = f" {label}" if label else ""
         feedback(
-            f"Unable to set points value for{_label}: {item}."
+            f"Unable to set unit-based value from points for{_label}: {item}."
             " Please check that this is a valid value.",
             stop=True,
         )
@@ -1768,7 +1798,7 @@ def get_property_spacing(the_property: object, property_name: str = "Property") 
             if the_property < 2:
                 feedback(f"{property_name} value must be a minimum of 2.", True)
             lane_sum = 0.0
-            for count in range(0, the_property - 1):
+            for _ in range(0, the_property - 1):
                 lane_sum += 1 / the_property
                 fractions.append(lane_sum)
         elif isinstance(the_property, (list, tuple)):

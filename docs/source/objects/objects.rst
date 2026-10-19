@@ -26,6 +26,7 @@ own particular properties.
 
 The compound objects available are:
 
+- `AbstractGame`_ - a simple way to define and use boards for abstract games
 - `CardBox`_ - a template to be cut-out and folded to create a box
 - `Cube`_ - a 3D depiction of a shaded cube
 - `Dice`_ - a top-down view of a "square" with dice pips
@@ -36,6 +37,18 @@ The compound objects available are:
 - `Tetromino`_ - another type of polyomino; each is composed of 4 squares
   in one of 5 unique patterns
 - `RaceTrack`_ - a pathway composed of Rectangles and Bands
+
+
+AbstractGame
+============
+`^ <objects-overview_>`_
+
+The aim of the ``AbstractGame`` and ``AbstractState`` commands is to allow
+diagrams for many types of existing and new abstract games |dash| the kind
+that are similar to well-known ones such Chess, Shogi, Hex and Go |dash| to
+be easily created.
+
+For more details, see the :doc:`Abstracts <abstracts>` section.
 
 
 CardBox

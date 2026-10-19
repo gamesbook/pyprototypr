@@ -47,7 +47,7 @@ data. In gaming, playing cards have been popular both in China and
 Europe, coming into more widespread use somewhere in the 9th and 14th
 centuries respectively.
 
-The massive rise in popularity of a card game like
+The massive rise in popularity of a complex card game like
 `Magic the Gathering <https://en.wikipedia.org/wiki/Magic:_The_Gathering>`_,
 from the early 1990s onwards, has inspired the much greater use of cards in
 all aspects of the modern board gaming experience, with cards or tiles
@@ -120,7 +120,7 @@ needed for creating one or more cards.
 
 Using its properties, you can specify aspects such type, size and the expected
 number of cards, as well as any spacing and color swathes between them, that
-will be used to create the "frames", or placeholders, that are used for each and
+will be used to create the "frames", or placeholders, that are used for
 all of the cards in the deck.
 
 All of these properties have defaults; for example, the default card size is
@@ -134,7 +134,8 @@ Card Command
 ------------
 
 A ``Card()`` command is used, usually **many times** per script, to specify
-part of the design for a card, or a range of cards, in a deck.
+part of the design for a single card, a range of cards, or all of the cards
+in a deck.
 
 A card design typically makes use of various shapes and text elements |dash|
 some of which may have already been defined elsewhere in the script |dash| to
@@ -174,7 +175,8 @@ be text, but can also be the names of icons, or images filenames, or the
 names of colors to be used to draw shapes, in the ``Card()`` designs.
 
 The source of the data can be from places such as: an Excel or CSV file;
-or a Google sheet.  Data can also be stored directly in the script.
+or a Google sheet.  Data can also be stored directly in the script. For
+advanced uses, its possible to source data from an API.
 
 All such data is **column-based** data; the names of the columns will be cross-
 referenced by the cards; and each data record (the "row of a spreadsheet")
@@ -318,6 +320,7 @@ Batch Card Maker         Multi   Python     https://github.com/p-dimi/Batch-Card
 Card Creatr Studio       Multi   Electron   https://cardcreatr.sffc.xyz/
 Card Editor              Windows Java       https://bitbucket.org/mattsinger/card-editor/src/release/
 CardFoldr                Multi   JavaScript https://foosel.github.io/cardfoldr/
+Card Forge Studio        Multi   Lua        https://github.com/CentauriSoldier/Card-Forge-Studio
 CardMaker                Multi   C#         https://github.com/nhmkdev/cardmaker
 DeCard64                 Windows Delphi     https://github.com/Dimon-II/DeCard64
 Forge of Cards           Online  JavaScript https://forgeofcards.com/#/

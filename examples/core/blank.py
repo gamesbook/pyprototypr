@@ -11,7 +11,8 @@ Create(filename="blank.pdf",
        paper='A8',
        margin=0.5,
        stroke_width=0.5,
-       page_grid=0.5,
+       page_grid=0.25,
+       page_grid_dark=1,
        margin_debug=True,
 )
 

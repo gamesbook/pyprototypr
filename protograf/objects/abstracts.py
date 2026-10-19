@@ -1,0 +1,1843 @@
+# -*- coding: utf-8 -*-
+"""
+protograf Abstract game shapes
+
+Notes:
+    * all arrays, such the cells of a board, are (col,row) with 1-based values
+"""
+
+# lib
+import math
+import re
+
+# third party
+
+# module
+from protograf import globals
+from protograf.base import BaseShape
+from protograf.shapes import (
+    ImageShape,
+    RectangularLocations,
+)
+from protograf.utils import tools, colrs, geoms
+from protograf.utils.constants import (
+    GRID_SHAPES_WITH_CENTRE,
+)
+from protograf.utils.messaging import feedback
+from protograf.utils.structures import (  # named tuples; enums
+    AbstractBoardType,
+    Corner,
+    HexOrientationName,
+    Point,
+    ShapeGeometry,
+)
+from protograf.utils.tools import _lower
+
+# local
+from .abstracts_pieces import (
+    piece_shape,
+    NAMED_CHESS_BLACK,
+    NAMED_CHESS_WHITE,
+    NAMED_SHOGI_BLACK,
+    NAMED_SHOGI_WHITE,
+    NAMED_SHOGI_INT_WHITE,
+    NAMED_SHOGI_INT_BLACK,
+    SHOGI_NAMES,
+)
+
+
+class AbstractGameObject(BaseShape):
+    """Create an AbstractGame for a given canvas.
+
+    Ref:
+
+    """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+
+        super().__init__(_object=_object, canvas=canvas, **kwargs)
+        # self.kwargs = kwargs
+        # self.set_unit_properties()
+        # self.cnv = (
+        #     canvas if canvas else globals.canvas
+        # )  # a new Page/Shape may now exist
+        # ---- unique properties
+        self.name = self._commons("name") or kwargs.get("name") or "grid"
+        self.cell_shape = (
+            self._commons("cell_shape") or kwargs.get("cell_shape") or None
+        )
+        self.cell_size = self._commons("height") or kwargs.get("height") or 1
+        self.cell_size = tools.as_float(self.cell_size, "height")
+        self.areas = (
+            self._commons("areas") or kwargs.get("areas") or None
+        )  # MUST be none; set by user
+        self.fills = (
+            self._commons("fills") or kwargs.get("fills") or None
+        )  # MUST be none; set by user OR game
+        self.frame = self._commons("frame") or kwargs.get("frame") or False
+        self.pattern = self._commons("pattern") or kwargs.get("pattern") or None
+        self.intersections = (
+            self._commons("intersections") or kwargs.get("intersections") or False
+        )
+        # if not self.label
+        self.label = self._commons("label") or kwargs.get("label") or None
+        self.label_start = (
+            self._commons("label_start") or kwargs.get("label_start") or None
+        )
+        self.label_type = (
+            self._commons("label_type") or kwargs.get("label_type") or None
+        )
+        self.label_uppercase = (
+            self._commons("label_uppercase") or kwargs.get("label_uppercase") or False
+        )
+
+        self.label_offset = tools.as_float(
+            kwargs.get("label_offset", 0), "label_offset"
+        )
+        self.label_offset_col = tools.as_float(
+            kwargs.get("label_offset_col", self.label_offset), "label_offset_col"
+        )
+        self.label_offset_row = tools.as_float(
+            kwargs.get("label_offset_row", self.label_offset), "label_offset_row"
+        )
+
+        self.pieces = self._commons("pieces") or kwargs.get("pieces") or []
+        self.pieces_type = (
+            self._commons("pieces_type") or kwargs.get("pieces_type") or None
+        )  # Shogi can change!
+        self.hexes = (
+            self._commons("hexes") or kwargs.get("hexes") or 2
+        )  # override default in base.py
+        self.hexes = tools.as_int(self.hexes, "hexes", minimum=2, allow_none=True)
+        # ---- custom / internal properties
+        self.board_pattern = "default"
+        self.board_type = AbstractBoardType.GRID
+        self.label_lower = not self.label_uppercase
+        self.orientation = HexOrientationName.POINTY.value  # set for HexHex & Hex Grid
+        self.grid_kwargs = {}  # used when drawing intersections lines
+        # ---- calculated properties
+        # ---- cell dimensions: side of square; hexagon/triangle height; circle diameter
+        if self._commons("height") or kwargs.get("height"):
+            self.auto_size = False
+            self.page_width = None
+            self.page_height = None
+        else:
+            self.auto_size = True
+            self.page_width = (
+                globals.page.width - globals.margins.left - globals.margins.right
+            )
+            self.page_height = (
+                globals.page.height - globals.margins.top - globals.margins.bottom
+            )
+        self.cells_non_blank = []  # (col,row) pairs of non-blank cells PER ROW
+        self.hexgrid_diagonals = None  # hexes in a diagonal
+        self.hexgrid_alpha_coords = None  # grid coordinates dict, keyed on (col,row)
+        # ---- add in defaults from games
+        self.set_options_by_game(**kwargs)  # MUST be before call to validate!
+        self._validate_choices()
+        # ---- setup pieces
+        # _pieces = kwargs.get("pieces", [])  # custom, define by user
+        self.pieces = self.setup_pieces(self.pieces_type, self.pieces)
+        # ---- setup board
+        self.setup_board()
+
+    def hexhex_size(self, text) -> int:
+        """Find one or more digits at the end of the string."""
+        match = re.search(r"\d+$", text)
+        if match:
+            number = match.group()
+            return int(number)
+
+    def hexhex_pattern(self, side: int = 2) -> str:
+        """Create a O-and-. pattern layout for a hexhex board.
+
+        Args:
+            side (int): number of hexagons along an edge
+        """
+
+        def _split_gap(number: int):
+            if number % 2 != 0:  # odd
+                return number // 2, number // 2 + 1
+            return number // 2, number // 2  # even
+
+        width = side * 2 - 1
+        row_size = side
+        add = True
+        hexes = ""
+        even = 0
+        while True:
+            gap = width - row_size
+            small, big = _split_gap(gap)
+            prefix = " " if even else ""
+            if side % 2 != 0:  # odd side
+                hexes += prefix + ". " * small + "O " * row_size + ". " * big + "\n"
+            else:  # even side
+                hexes += prefix + ". " * big + "O " * row_size + ". " * small + "\n"
+            even = 1 if even != 1 else 0
+            if add:
+                row_size += 1
+            else:
+                row_size -= 1
+            if row_size == width:
+                add = False
+            if row_size < side:
+                break
+        # print(f'&&& {hexes=}')
+        return hexes
+
+    def game_name_error(self):
+        """Generate feedback if incorrect game name used."""
+        feedback(
+            "The AbstractGame 'name' property must be one of the following: "
+            f" Chess, Go, Checkers, Shogi, Hex, HexHex, or grid (not '{self.name}').",
+            True,
+            True,
+        )
+
+    def set_options_by_game(self, **kwargs):
+        """Set properties according to preset, known, game."""
+        _max_cells = None
+        match _lower(self.name):
+            case "grid":  # default
+                self.pieces_type = (
+                    self._commons("pieces_type")
+                    or kwargs.get("pieces_type")
+                    or "checkers"
+                )
+                if self.fills is None:
+                    self.fills = ("white",)
+                if self.stroke is None:
+                    self.stroke = "black"
+                if not self.rows:
+                    self.rows = 8
+                if not self.cols:
+                    self.cols = 8
+                if self.label_start is None:
+                    self.label_start = Corner.BOTTOM_LEFT
+                if self.label_type is None:
+                    self.label_type = "AN"
+            case "chess":
+                self.pieces_type = (
+                    self._commons("pieces_type") or kwargs.get("pieces_type") or "chess"
+                )
+                self.intersections = False
+                if self.fills is None:
+                    self.fills = ("white", "silver")
+                if self.stroke is None:
+                    self.stroke = None
+                if not self.rows:
+                    self.rows = 8
+                if not self.cols:
+                    self.cols = 8
+                self.board_pattern = "snake"
+                self.label_start = Corner.BOTTOM_LEFT
+                self.label_type = "AN"
+            case "checkers" | "draughts":
+                self.pieces_type = (
+                    self._commons("pieces_type")
+                    or kwargs.get("pieces_type")
+                    or "checkers"
+                )
+                self.intersections = False
+                if self.fills is None:
+                    self.fills = ("firebrick", "black")
+                if self.stroke is None:
+                    self.stroke = None
+                if not self.rows:
+                    self.rows = 8
+                if not self.cols:
+                    self.cols = 8
+                self.board_pattern = "snake"
+                self.label_start = Corner.BOTTOM_LEFT
+                self.label_type = "AN"
+            case "go":
+                self.pieces_type = (
+                    self._commons("pieces_type") or kwargs.get("pieces_type") or "go"
+                )
+                self.intersections = True
+                if self.fills is None:
+                    self.fills = ("#D9A359",)
+                if self.stroke is None:
+                    self.stroke = "black"
+                if not self.rows:
+                    self.rows = 18
+                if not self.cols:
+                    self.cols = 18
+                self.label_start = Corner.BOTTOM_LEFT
+                self.label_type = "AN"
+            case "shogi":
+                self.pieces_type = (
+                    self._commons("pieces_type") or kwargs.get("pieces_type") or "shogi"
+                )
+                self.intersections = False
+                if self.fills is None:
+                    self.fills = ("white",)
+                if self.stroke is None:
+                    self.stroke = "black"
+                if not self.rows:
+                    self.rows = 9
+                if not self.cols:
+                    self.cols = 9
+                self.label_start = Corner.TOP_RIGHT
+                self.label_type = "NN"
+            case "hex":
+                self._commons("pieces_type") or kwargs.get("pieces_type") or "default"
+                if self.fills is None:
+                    self.fills = ("white",)
+                if self.stroke is None:
+                    self.stroke = "black"
+                self.rows = 11
+                self.cols = 16
+                if self.label_start is None:
+                    self.label_start = Corner.BOTTOM_LEFT
+                if self.label_type is None:
+                    self.label_type = "AN"
+                self.board_type = AbstractBoardType.HEXAGONAL
+                self.pattern = """
+                O O O O O O O O O O O . . . . .
+                 O O O O O O O O O O O . . . . .
+                . O O O O O O O O O O O . . . .
+                 . O O O O O O O O O O O . . . .
+                . . O O O O O O O O O O O . . .
+                 . . O O O O O O O O O O O . . .
+                . . . O O O O O O O O O O O . .
+                 . . . O O O O O O O O O O O . .
+                . . . . O O O O O O O O O O O .
+                 . . . . O O O O O O O O O O O .
+                . . . . . O O O O O O O O O O O
+                """
+            case "hexhex":
+                if self.fills is None:
+                    self.fills = ("white",)
+                if self.stroke is None:
+                    self.stroke = "black"
+                if self.auto_size:
+                    _available = min(self.page_height, self.page_width)
+                    _max_cells = self.hexes * 2 - 1
+                    self.cell_size = _available / _max_cells  # / 0.866
+                self.board_type = AbstractBoardType.HEXAGONAL
+                if self.label_start is None:
+                    self.label_start = Corner.BOTTOM_LEFT
+                if self.label_type is None:
+                    self.label_type = "AN"
+                self.rows = self.hexes * 2 - 1
+                self.cols = self.hexes * 2 - 1
+                self.pattern = self.hexhex_pattern(side=self.hexes)
+            case "hexagons" | "hexagonal":
+                if self.fills is None:
+                    self.fills = ("white",)
+                if self.stroke is None:
+                    self.stroke = "black"
+                if not self.rows:
+                    self.rows = 8
+                if not self.cols:
+                    self.cols = 8
+                self.board_type = AbstractBoardType.HEXAGONAL
+                if self.label_start is None:
+                    self.label_start = Corner.BOTTOM_LEFT
+                if self.label_type is None:
+                    self.label_type = "AN"
+            case "tri" | "triangle" | "triangular":
+                self.board_type = AbstractBoardType.TRIANGULAR
+                if self.fills is None:
+                    self.fills = ("white",)
+                if self.stroke is None:
+                    self.stroke = "black"
+                raise NotImplementedError(
+                    "Sorry, a triangular board is not available yet."
+                )
+            case None:
+                # can ignore the name for this AB
+                if self.fills is None:
+                    self.fills = ("white",)
+                if self.stroke is None:
+                    self.stroke = "black"
+                if self.label_start is None:
+                    self.label_start = Corner.BOTTOM_LEFT
+                if self.label_type is None:
+                    self.label_type = "AN"
+            case _:
+                self.game_name_error()
+        # ---- calculate "auto" cell_size
+        # do for gridded boards NOT already calculated
+        if self.auto_size and not _max_cells:
+            _available = min(self.page_height, self.page_width)
+            match self.board_type:
+                case AbstractBoardType.GRID:
+                    _max_cells = max(self.rows, self.cols)
+                    self.cell_size = _available / _max_cells
+                case AbstractBoardType.HEXAGONAL:
+                    _max_cells = max(self.rows, self.cols)
+                    self.cell_size = _available / _max_cells
+                case AbstractBoardType.TRIANGULAR:
+                    raise NotImplementedError(
+                        "Sorry, a triangular board is not available yet to calculate cell size."
+                    )
+                case _:
+                    feedback(
+                        "Cannot auto-calculate cell size for a '{self.name}' AbstractGame.",
+                        alert=True,
+                    )
+
+    def _validate_choices(self) -> bool:
+        """Check and reset user choices for valid selections."""
+        if self.label and self.label_type is None:
+            self.label_type = "AN"
+        if self.label_type is not None and self.label_type not in ["AN", "NN"]:
+            feedback(
+                "The AbstractGame 'label_type' property must be 'AN' or 'NN'; "
+                f" not '{self.label_type}'.",
+                True,
+                True,
+            )
+        if self.label_start is not None:
+            match self.label_start:
+                case "TL" | Corner.TOP_LEFT:
+                    self.label_start = Corner.TOP_LEFT
+                case "TR" | Corner.TOP_RIGHT:
+                    self.label_start = Corner.TOP_RIGHT
+                case "BL" | Corner.BOTTOM_LEFT:
+                    self.label_start = Corner.BOTTOM_LEFT
+                case "BR" | Corner.BOTTOM_RIGHT:
+                    self.label_start = Corner.BOTTOM_RIGHT
+                case _:
+                    feedback(
+                        "The AbstractGame 'label_start' property must be one of: "
+                        f"'TL', 'TR', 'BL', or 'BR'; not '{self.label_start}'.",
+                        True,
+                        True,
+                    )
+        if self.pieces is not None:
+            if not isinstance(self.pieces, (list, tuple)):
+                feedback(
+                    "The AbstractGame 'pieces' property must be a list of pieces, "
+                    f" not a '{type(self.pieces).__name__}'.",
+                    True,
+                    True,
+                )
+        if not isinstance(self.name, (type(None), str)):
+            feedback(
+                "The AbstractGame 'name' property must be a string, "
+                f" not a '{type(self.name).__name__}'.",
+                True,
+                True,
+            )
+        if self.cell_shape:
+            _type = type(self.cell_shape).__name__
+            if not isinstance(self.cell_shape, BaseShape):
+                feedback(
+                    f"A shape is required for the cell_shape '{self.cell_shape}',"
+                    f" not a {_type}.",
+                    True,
+                    True,
+                )
+            cshape_name = self.cell_shape.__class__.__name__
+            if cshape_name not in GRID_SHAPES_WITH_CENTRE:
+                feedback(
+                    "A shape with a defined centre is required for the cell_shape"
+                    f" - this cannot be a {cshape_name}.",
+                    True,
+                    True,
+                )
+        if self.fills:
+            if isinstance(self.fills, str):
+                self.fills = [self.fills]  # "auto-correct" for user
+            if not isinstance(self.fills, (list, tuple)):
+                feedback(
+                    "The AbstractGame 'fills' property must be a list of colors, "
+                    f" not a '{type(self.fills).__name__}'.",
+                    True,
+                    True,
+                )
+            for col in self.fills:
+                colrs.get_color(col)  # validate each color
+        if self.areas:
+            if not isinstance(self.areas, (list, tuple)):
+                feedback(
+                    "The AbstractGame 'areas' property must be a list of shapes, "
+                    f" not a '{type(self.areas).__name__}'.",
+                    True,
+                    True,
+                )
+            for area in self.areas:
+                if not isinstance(area, BaseShape):
+                    feedback(
+                        "The AbstractGame 'areas' property must contain a list of shapes, "
+                        f" it cannot contain a '{type(area).__name__}'.",
+                        True,
+                        True,
+                    )
+        match _lower(self.name):
+            case "hexagons" | "hexagonal":
+                if not self.cols:
+                    feedback(
+                        'Missing number of cols for AbstractBoard of type "hexagons."',
+                        True,
+                        True,
+                    )
+                if not self.rows:
+                    feedback(
+                        'Missing number of rows for AbstractBoard of type "hexagons."',
+                        True,
+                        True,
+                    )
+            case "hexhex":
+                if not self.hexes:
+                    feedback(
+                        "Missing 'hexes' value (hexagons along an edge)"
+                        " for AbstractBoard of type 'hexhex'.",
+                        True,
+                        True,
+                    )
+                else:
+                    if not self.hexes.is_integer():
+                        feedback(
+                            "The 'hexes' value (hexagons along an edge) must be an"
+                            " integer for an AbstractBoard of type 'hexhex'.",
+                            True,
+                            True,
+                        )
+                    self.hexes = int(self.hexes)
+                    if self.hexes < 2:
+                        feedback(
+                            "The 'hexes' value (hexagons along an edge) must be more"
+                            " than 2 for an AbstractBoard of type 'hexhex'.",
+                            True,
+                            True,
+                        )
+            case _:
+                pass
+        if self.board_type == AbstractBoardType.HEXAGONAL and self.intersections:
+            feedback(
+                "Use of intersections is not supported for hexagonal type boards.",
+                True,
+                True,
+            )
+
+        return True
+
+    @property
+    def shape_centre(self) -> Point:
+        """Centre of AbstractGameObject."""
+        return None
+
+    @property
+    def geo(self) -> ShapeGeometry:
+        """Geometry of AbstractGameObject in user units."""
+        return ShapeGeometry()
+
+    @property
+    def geometry(self) -> ShapeGeometry:
+        """Geometry of AbstractGameObject - alias for geo."""
+        return self.geo
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw the AbstractGameObject on a given canvas."""
+        kwargs = self.kwargs | kwargs
+        cnv = cnv if cnv else globals.canvas  # a new Page/Shape may now exist
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+
+    def draw_frame(self):
+        """Draw the board's frame on a given canvas."""
+        match _lower(self.name):
+            case "grid" | "chess" | "checkers" | "go" | "shogi":  # default name is grid
+                total_width = self.cols * self.cell_size
+                total_height = self.rows * self.cell_size
+                top_left = self.board_layout.cells[(1, 1)].bbox.tl
+                x_left = tools.unit(top_left.x + globals.margins.left)
+                y_top = tools.unit(top_left.y + globals.margins.top)
+                # ---- offset frame as a rectangle
+                rect = (
+                    x_left - self.frame_width / 2.0,
+                    y_top - self.frame_width / 2.0,
+                    x_left + tools.unit(total_width) + self.frame_width / 2.0,
+                    y_top + tools.unit(total_height) + self.frame_width / 2.0,
+                )
+                rkwargs = {}  # copy.copy(kwargs)
+                rkwargs["fill"] = self.frame_fill
+                rkwargs["stroke"] = self.frame_stroke
+                rkwargs["stroke_width"] = self.frame_width
+                rkwargs["dashed"] = self.frame_dashed
+                rkwargs["dotted"] = self.frame_dotted
+                pymu_props = tools.get_pymupdf_props(**rkwargs)
+                globals.doc_page.draw_rect(
+                    rect,
+                    width=pymu_props.width,
+                    color=pymu_props.color,
+                    fill=pymu_props.fill,
+                    lineCap=pymu_props.lineCap,
+                    dashes=pymu_props.dashes,
+                    fill_opacity=pymu_props.fill_opacity,
+                    # radius=None,
+                )
+            case _:
+                feedback(
+                    f"No available logic to draw a frame for AbstractBoard '{self.name}'",
+                    True,
+                    True,
+                )
+
+    def draw_labels(self):
+        """Draw labels around the board."""
+        from protograf.protos import Text
+
+        def hex_col_label():
+            x, y = 0, 0
+            ajc = adjacent_cell
+            match self.label_start:
+                case Corner.BOTTOM_RIGHT:
+                    tr = geoms.fraction_along_line(ajc.ne, ajc.n, 0.5)
+                    bl = geoms.fraction_along_line(ajc.s, ajc.sw, 0.5)
+                    distance = self.label_size / self.units * 1.0
+                    lbc = geoms.point_beyond_line(tr, bl, distance)
+                    x, y = lbc.x, lbc.y
+                case Corner.BOTTOM_LEFT:
+                    tl = geoms.fraction_along_line(ajc.nw, ajc.n, 0.5)
+                    br = geoms.fraction_along_line(ajc.s, ajc.se, 0.5)
+                    distance = self.label_size / self.units * 1.0
+                    lbc = geoms.point_beyond_line(tl, br, distance)
+                    x, y = lbc.x, lbc.y
+                case Corner.TOP_RIGHT:
+                    x = ajc.nw.x + (ajc.n.x - ajc.nw.x) * (1.0 / 3.0)
+                    y = ajc.n.y  # + shift * lbl_offset_col
+                case Corner.TOP_LEFT:
+                    x = ajc.ne.x - (ajc.ne.x - ajc.n.x) * (1.0 / 3.0)
+                    y = ajc.n.y  # + shift * lbl_offset_col
+                case _:
+                    raise NotImplementedError(
+                        "Cannot process label_start of {self.label_start}"
+                    )
+            return x, y
+
+        # ---- label ranges
+        if self.label:
+            match self.label_start:
+                case Corner.TOP_RIGHT:  # eg. Shogi
+                    start_col, start_row = self.cols, 1
+                    delta_row, delta_col = 1, -1
+                    end_col, end_row = 0, self.rows + 1
+                case Corner.TOP_LEFT:  # eg. Hex
+                    start_col, start_row = 1, 1
+                    delta_row, delta_col = 1, 1
+                    end_col, end_row = self.cols + 1, self.rows + 1
+                case Corner.BOTTOM_RIGHT:  # eg. ???
+                    start_col, start_row = self.cols, self.rows
+                    delta_row, delta_col = -1, -1
+                    end_col, end_row = 0, 0
+                case Corner.BOTTOM_LEFT:  # eg. Chess (default)
+                    start_col, start_row = 1, self.rows
+                    delta_row, delta_col = -1, 1
+                    end_col, end_row = self.cols + 1, 0
+
+            # ---- label settings
+            _label_col = self._p2v(self.label_size) * 0.5  # user-units
+            _label_row = self._p2v(self.label_size) * 0.75  # user-units
+            lbl_intersect = 0  # user-units
+            lbl_offset = self.label_offset if self.label_offset else None
+            if lbl_offset:
+                _label_col, _label_col = lbl_offset, lbl_offset
+            else:
+                _label_col = self._p2v(self.label_size) * 0.5  # user-units
+                _label_row = self._p2v(self.label_size) * 0.75  # user-units
+                if self.intersections:
+                    lbl_intersect = 0.5 * self.cell_size  # user-units
+            lbl_offset_col = (
+                self.label_offset_col if self.label_offset_col else _label_col
+            )
+            lbl_offset_row = (
+                self.label_offset_row if self.label_offset_row else _label_row
+            )
+            lkeys = {}
+            lkeys["font_name"] = self.label_font
+            lkeys["font_size"] = self.label_size
+            lkeys["stroke"] = self.label_stroke
+
+            # ---- column label settings
+            if self.label_start in [Corner.TOP_RIGHT, Corner.TOP_LEFT]:
+                label_row = 1
+                shift = -1
+            elif self.label_start in [Corner.BOTTOM_RIGHT, Corner.BOTTOM_LEFT]:
+                label_row = self.rows
+                shift = 1
+            else:
+                raise NotImplementedError(
+                    "Cannot process label_start of {self.label_start}"
+                )
+
+            # ---- grid column labels
+            if self.board_type == AbstractBoardType.GRID:
+                col_num = 1
+                for col_no in range(start_col, end_col, delta_col):
+                    # skip blank columns at start OR end of row
+                    active_cells = self.cells_non_blank[label_row - 1]
+                    col_exists = any(
+                        len(tup) > 1 and tup[0] == col_no for tup in active_cells
+                    )
+                    if not col_exists:
+                        continue
+                    col_value = str(col_num)
+                    if self.label_type in ["AN", "AA"]:
+                        col_value = tools.alpha_column(col_num, lower=self.label_lower)
+                    else:
+                        col_value = str(col_num)
+                    # get cell geo to use for label position
+                    adjacent_cell = self.board_layout.cells[(col_no, label_row)]
+                    x, y = 0, 0
+                    if self.label_start in [Corner.BOTTOM_RIGHT, Corner.BOTTOM_LEFT]:
+                        x = adjacent_cell.s.x
+                        y = (
+                            adjacent_cell.s.y
+                            + shift * lbl_offset_col * 1.5
+                            - lbl_intersect
+                        )
+                    elif self.label_start in [Corner.TOP_RIGHT, Corner.TOP_LEFT]:
+                        x = adjacent_cell.n.x
+                        y = adjacent_cell.n.y + shift * lbl_offset_col + lbl_intersect
+                    else:
+                        raise NotImplementedError(
+                            "Cannot process label_start of {self.label_start}"
+                        )
+                    Text(col_value, x=x, y=y, **lkeys)
+                    col_num += 1
+            # ---- hex column labels
+            elif self.board_type == AbstractBoardType.HEXAGONAL:
+                non_blank_col_no = 1  # do NOT label blank diagonals
+                for _, dcells in self.hexgrid_diagonals.items():
+                    # print(f'&&& {dcells=} {non_blank_col_no=}')
+                    for value in dcells:
+                        col_no, row_no = value[0], value[1]
+                        col_value = tools.as_excel(non_blank_col_no, self.label_lower)
+                        adjacent_cell = self.board_layout.cells[(col_no, row_no)]
+                        if not adjacent_cell.blank:
+                            x, y = hex_col_label()
+                            Text(col_value, x=x, y=y, **lkeys)
+                            # print(f'&&& {col_value=} {col_no=} {row_no=}')
+                            non_blank_col_no += 1
+                            break  # label done; next diagonal, please!
+            # ---- tri column labels
+            elif self.board_type == AbstractBoardType.TRIANGULAR:
+                raise NotImplementedError(f"No labels for {self.board_type} grid!")
+            else:
+                raise NotImplementedError(
+                    "No labels can be drawn for this type of board!"
+                )
+            # print('&&& col label', ltype, col_value, x, y)
+
+            # ---- row labels
+            if self.label_start in [Corner.TOP_LEFT, Corner.BOTTOM_LEFT]:
+                label_col = 1
+                shift = -1
+                col_shift = 1
+            elif self.label_start in [Corner.BOTTOM_RIGHT, Corner.TOP_RIGHT]:
+                label_col = self.cols
+                shift = 1
+                col_shift = -1
+            else:
+                raise NotImplementedError(
+                    "Cannot process label_start of {self.label_start}"
+                )
+
+            row_num = 1
+            for row_no in range(start_row, end_row, delta_row):
+                if self.label_type in ["AA", "NA"]:
+                    row_value = tools.alpha_column(row_num, lower=self.label_lower)
+                else:
+                    row_value = str(row_num)
+                col_no = label_col  # label col can be at start or end
+                # print(f"{row_no=} {col_no=}") ; breakpoint()
+                # skip blank columns at start of a hexagonal grid row
+                if self.board_type == AbstractBoardType.HEXAGONAL:
+                    active_cells = self.cells_non_blank[row_no - 1]
+                    while True:
+                        col_exists = any(
+                            len(tup) > 1 and tup[0] == col_no for tup in active_cells
+                        )
+                        if col_exists:
+                            break
+                        col_no += col_shift
+                        if col_no < 1 or col_no > self.cols:
+                            col_no = label_col  # give up and use default ...
+                            break
+                # get cell geo to use for label position
+                adjacent_cell = self.board_layout.cells[(col_no, row_no)]
+                if self.board_type == AbstractBoardType.GRID:
+                    if self.label_start in [Corner.TOP_LEFT, Corner.BOTTOM_LEFT]:
+                        x = adjacent_cell.w.x + shift * lbl_offset_row + lbl_intersect
+                        y = adjacent_cell.w.y + (self.label_size * 0.5) / globals.units
+                    else:
+                        x = adjacent_cell.e.x + shift * lbl_offset_row - lbl_intersect
+                        y = adjacent_cell.e.y + (self.label_size * 0.5) / globals.units
+                elif self.board_type == AbstractBoardType.HEXAGONAL:
+                    if self.label_start in [Corner.TOP_LEFT, Corner.BOTTOM_LEFT]:
+                        x = adjacent_cell.w.x + shift * lbl_offset_row
+                        y = adjacent_cell.w.y + (self.label_size * 0.5) / globals.units
+                    else:
+                        x = adjacent_cell.e.x + shift * lbl_offset_row
+                        y = adjacent_cell.e.y + (self.label_size * 0.5) / globals.units
+                elif self.board_type == AbstractBoardType.TRIANGULAR:
+                    raise NotImplementedError("No labels for Triangle grids!")
+                # print('&&& row label', ltype, row_value, x, y)
+                Text(row_value, x=x, y=y, **lkeys)
+                row_num += 1
+
+    def setup_board(self):
+        """Create board_layout for the required grid"""
+        from protograf.protos import Layout, rectangle, Hexagons
+
+        # ---- game-based defaults
+        board_start = "NW"
+        board_direction = "east"
+        # Point(top_x, top_x) is the top-left point of the VirtualLocations (grid points)
+        match self.board_type:
+            # ---- setup Grid boards
+            case AbstractBoardType.GRID:
+                top_x = self.x if self.kwargs.get("x") else self.cell_size / 2.0
+                top_y = self.y if self.kwargs.get("y") else self.cell_size / 2.0
+                self.board_layout = RectangularLocations(  # VirtualLocations
+                    cols=self.cols,
+                    rows=self.rows,
+                    x=top_x,
+                    y=top_y,
+                    interval=self.cell_size,
+                    start=board_start,
+                    direction=board_direction,
+                    pattern=self.board_pattern,
+                )
+                # print(f'&&& GRID BOARD {self.board_layout.cells.keys()=}')
+                if self.intersections:
+                    self.grid_kwargs["gridlines_ends"] = self.stroke_ends
+                    self.grid_kwargs["gridlines_fill"] = self.fill
+                    self.grid_kwargs["gridlines_stroke"] = self.stroke
+                    self.grid_kwargs["gridlines_stroke_width"] = self.stroke_width
+                    self.grid_kwargs["gridlines_dotted"] = self.dotted
+                    self.grid_kwargs["gridlines_dashed"] = self.dashed
+                    self.grid_kwargs["gridlines_transparency"] = self.transparency
+                    Layout(
+                        self.board_layout,
+                        draw_lines=True,
+                        _draw_grid=False,
+                        **self.grid_kwargs,
+                    )
+                else:
+                    if self.areas:
+                        pass
+                    else:
+                        self.areas = []
+                        for colr in self.fills:
+                            self.areas.append(
+                                rectangle(
+                                    height=self.cell_size,
+                                    width=self.cell_size,
+                                    stroke=self.stroke,
+                                    stroke_width=self.stroke_width,
+                                    fill=colr,
+                                )
+                            )
+                    Layout(self.board_layout, shapes=self.areas, _draw_grid=False)
+
+                # ---- * default cell attributes (plus label); track non-blank cells
+
+                # ---- * label direction
+                for row in range(1, self.rows + 1, 1):
+                    non_blank = []
+                    for col in range(1, self.cols + 1, 1):
+                        # alter ID according to direction
+                        match self.label_start:
+                            case Corner.TOP_LEFT:
+                                col_no = col
+                                row_no = row
+                            case Corner.BOTTOM_RIGHT:
+                                col_no = self.cols - col + 1
+                                row_no = self.rows - row + 1
+                            case Corner.TOP_RIGHT:
+                                col_no = self.cols - col + 1
+                                row_no = row
+                            case Corner.BOTTOM_LEFT:
+                                col_no = col
+                                row_no = self.rows - row + 1
+                        if self.label_type == "AN":  # alpha-numeric
+                            col_id = tools.sheet_column(col_no, lower=self.label_lower)
+                            row_id = str(row_no)
+                            id_prefix = ""
+                        elif self.label_type == "NN":  # numeric-numeric
+                            col_id = str(col_no)
+                            row_id = str(row_no)
+                            id_prefix = "_"
+                        else:
+                            raise NotImplementedError(
+                                f"Cannot process label_type {self.label_type}"
+                            )
+                        cell_id = f"{id_prefix}{col_id}{row_id}"
+                        cell_geo = self.board_layout.cells[(col, row)]
+                        if not cell_geo.blank:
+                            non_blank.append((col, row))
+                        # print(f"&&& GRID {col=} {row=}",  cell_id)
+                        cell_geo_label = cell_geo._replace(name=cell_id)
+                        setattr(self, cell_id, cell_geo_label)
+                    self.cells_non_blank.append(non_blank)  # per-row list of non-blank
+
+            # ---- setup Hexagonal boards
+            case AbstractBoardType.HEXAGONAL:
+                top_x = self.x if self.kwargs.get("x") else 0
+                top_y = self.y if self.kwargs.get("y") else 0
+                colr = self.fills[0] if self.fills else "white"
+                x_offset = 0
+                # x_offset = -0.5 * self.cell_size
+                if self.name == "hexhex" and self.auto_size and self.hexes % 2 == 0:
+                    x_offset = -self.cell_size * 0.5
+                self.board_layout = Hexagons(
+                    cols=self.cols,
+                    rows=self.rows,
+                    x=top_x + x_offset,
+                    y=top_y,
+                    orientation=HexOrientationName.POINTY.value,  # hard-coded: HexGrid
+                    _draw_grid=False,
+                    pattern=self.pattern,
+                    user="AbstractGame",
+                    # single hexagon properties:-
+                    height=self.cell_size,
+                    stroke=self.stroke,
+                    stroke_width=self.stroke_width,
+                    fill=colr,
+                    hex_shape=self.cell_shape,  # insert centre_image into hex
+                )
+                # print(f'&&& HEXES BOARD {self.board_layout.cells.keys()=}')
+
+                # ---- * get hexgrid in alpha-numeric form
+                self.hexgrid_diagonals = geoms.hexgrid_diagonal_cells(
+                    cols=self.cols, rows=self.rows, start_cell=self.label_start
+                )
+                self.hexgrid_alpha_coords = geoms.hexgrid_alphanumeric(
+                    diagonal_dict=self.hexgrid_diagonals,
+                    start_cell=self.label_start,
+                    lower=self.label_lower,
+                )
+
+                # ---- * track non-blank cells
+                for row in range(1, self.rows + 1):
+                    non_blank = []
+                    for col in range(1, self.cols + 1):
+                        try:
+                            cell_geo = self.board_layout.cells[(col, row)]
+                            if not cell_geo.blank:
+                                non_blank.append((col, row))
+                        except Exception as err:
+                            feedback(
+                                f"Unable to set properties for {col=}/{row=} ({err})",
+                                True,
+                                True,
+                            )
+                    self.cells_non_blank.append(non_blank)  # per-row list of non-blank
+
+                # ---- * set cell attributes (plus label)
+                non_blank_col_no = 0  # do NOT label **fully blank** diagonal
+                for _, dcells in self.hexgrid_diagonals.items():
+                    # print(f'\n&&& {diagonal=} {dcells=}')
+                    use_diagonal = False
+                    for value in dcells:
+                        target_cell = self.board_layout.cells[(value[0], value[1])]
+                        if not target_cell.blank:
+                            use_diagonal = True
+                            break
+                    if use_diagonal:
+                        non_blank_col_no += 1
+                        for value in dcells:
+                            # print(f'&&& {diagonal=} {non_blank_col_no=} {value=}')
+                            try:
+                                col, row = value[0], value[1]
+                                if self.label_start in [
+                                    Corner.BOTTOM_LEFT,
+                                    Corner.BOTTOM_RIGHT,
+                                ]:
+                                    row_num = self.rows - row + 1
+                                else:
+                                    row_num = row
+                                cell_geo = self.board_layout.cells[(col, row)]
+                                col_alpha = tools.as_excel(
+                                    non_blank_col_no, self.label_lower
+                                )
+                                cell_id = f"{col_alpha}{row_num}"
+                                cell_geo_label = cell_geo._replace(name=cell_id)
+                                # print(f"&&& HEX {value=} name={cell_id}")
+                                setattr(self, cell_id, cell_geo_label)
+                            except Exception as err:
+                                feedback(
+                                    f"Unable to process hex cell: col={value[0]}, "
+                                    f"row={value[1]} ({err})",
+                                    True,
+                                    True,
+                                )
+
+            # ---- setup Triangular boards
+            case AbstractBoardType.TRIANGULAR:
+                raise NotImplementedError(
+                    "Sorry, a triangular board is not available yet."
+                )
+            case _:
+                self.game_name_error()
+
+    def setup_pieces(self, pieces_type: str = None, pieces_list: list = None) -> dict:
+        """Return pieces mapped as character:shape(s)."""
+        if pieces_type is None and not pieces_list:
+            pieces_type = None  # Default!
+        pg_pieces = {}
+        kwargs = {}
+        kwargs["height"] = self.cell_size
+        kwargs["width"] = self.cell_size
+        kwargs["radius"] = self.cell_size / 2.0 * 0.8
+        # ---- pre-defined piece types
+        match pieces_type:
+            case "checkers" | "draughts":
+                pg_pieces = {
+                    "R": piece_shape("kR", "Red", **kwargs),
+                    "W": piece_shape("kW", "White", **kwargs),
+                }
+            case "chess":
+                pg_pieces = {
+                    "B": piece_shape("cB", "White Bishop", **kwargs),
+                    "b": piece_shape("cb", "Black Bishop", **kwargs),
+                    "K": piece_shape("cK", "White King", **kwargs),
+                    "k": piece_shape("ck", "Black King", **kwargs),
+                    "N": piece_shape("cN", "White Knight", **kwargs),
+                    "n": piece_shape("cn", "Black Knight", **kwargs),
+                    "P": piece_shape("cP", "White Pawn", **kwargs),
+                    "p": piece_shape("cp", "Black Pawn", **kwargs),
+                    "Q": piece_shape("cQ", "White Queen", **kwargs),
+                    "q": piece_shape("cq", "Black Queen", **kwargs),
+                    "R": piece_shape("cR", "White Rook", **kwargs),
+                    "r": piece_shape("cr", "Black Rook", **kwargs),
+                }
+            case "go":
+                pg_pieces = {
+                    "B": piece_shape("gB", "Black Stone", **kwargs),
+                    "W": piece_shape("gW", "White Stone", **kwargs),
+                }
+            case "shogi":
+                pg_pieces = {
+                    "A": piece_shape("sA", "White Lance: Promoted", **kwargs),
+                    "a": piece_shape("sa", "Black Lance: Promoted", **kwargs),
+                    "B": piece_shape("sB", "White Bishop", **kwargs),
+                    "b": piece_shape("sb", "Black Bishop", **kwargs),
+                    "D": piece_shape("sD", "White Rook: Promoted (Dragon)", **kwargs),
+                    "d": piece_shape("sd", "Black Rook: Promoted (Dragon)", **kwargs),
+                    "G": piece_shape("sG", "White Gold General", **kwargs),
+                    "g": piece_shape("sg", "Black Gold General", **kwargs),
+                    "H": piece_shape("sH", "White Bishop: Promoted (Horse)", **kwargs),
+                    "h": piece_shape("sh", "Black Bishop: Promoted (Horse)", **kwargs),
+                    "J": piece_shape("sJ", "White King (challenger)", **kwargs),
+                    "j": piece_shape("sj", "Black King (challenger)", **kwargs),
+                    "K": piece_shape("sK", "White King (champion)", **kwargs),
+                    "k": piece_shape("sk", "Black King (champion)", **kwargs),
+                    "l": piece_shape("sl", "Black Lance", **kwargs),
+                    "L": piece_shape("sL", "White Lance", **kwargs),
+                    "N": piece_shape("sN", "White Knight", **kwargs),
+                    "n": piece_shape("sn", "Black Knight", **kwargs),
+                    "P": piece_shape("sP", "White Pawn", **kwargs),
+                    "p": piece_shape("sp", "Black Pawn", **kwargs),
+                    "R": piece_shape("sR", "White Rook", **kwargs),
+                    "r": piece_shape("sr", "Black Rook", **kwargs),
+                    "S": piece_shape("sS", "White Silver General", **kwargs),
+                    "s": piece_shape("ss", "Black Silver General", **kwargs),
+                    "T": piece_shape("sT", "White Knight: Promoted", **kwargs),
+                    "t": piece_shape("st", "Black Knight: Promoted", **kwargs),
+                    "W": piece_shape("sV", "White Pawn: Promoted", **kwargs),
+                    "w": piece_shape("sv", "Black Pawn: Promoted", **kwargs),
+                    "V": piece_shape("sW", "White Silver General: Promoted", **kwargs),
+                    "v": piece_shape("sw", "Black Silver General: Promoted", **kwargs),
+                }
+            case "shogi_int" | "shogi-int":
+                pg_pieces = {
+                    "A": piece_shape("iA", "White Lance: Promoted", **kwargs),
+                    "a": piece_shape("ia", "Black Lance: Promoted", **kwargs),
+                    "B": piece_shape("iB", "White Bishop", **kwargs),
+                    "b": piece_shape("ib", "Black Bishop", **kwargs),
+                    "D": piece_shape("iD", "White Rook: Promoted (Dragon)", **kwargs),
+                    "d": piece_shape("id", "Black Rook: Promoted (Dragon)", **kwargs),
+                    "G": piece_shape("iG", "White Gold General", **kwargs),
+                    "g": piece_shape("ig", "Black Gold General", **kwargs),
+                    "H": piece_shape("iH", "White Bishop: Promoted (Horse)", **kwargs),
+                    "h": piece_shape("ih", "Black Bishop: Promoted (Horse)", **kwargs),
+                    "J": piece_shape("iJ", "White King (challenger)", **kwargs),
+                    "j": piece_shape("ij", "Black King (challenger)", **kwargs),
+                    "K": piece_shape("iK", "White King (champion)", **kwargs),
+                    "k": piece_shape("ik", "Black King (champion)", **kwargs),
+                    "l": piece_shape("il", "Black Lance", **kwargs),
+                    "L": piece_shape("iL", "White Lance", **kwargs),
+                    "N": piece_shape("iN", "White Knight", **kwargs),
+                    "n": piece_shape("in", "Black Knight", **kwargs),
+                    "P": piece_shape("iP", "White Pawn", **kwargs),
+                    "p": piece_shape("ip", "Black Pawn", **kwargs),
+                    "R": piece_shape("iR", "White Rook", **kwargs),
+                    "r": piece_shape("ir", "Black Rook", **kwargs),
+                    "S": piece_shape("iS", "White Silver General", **kwargs),
+                    "s": piece_shape("is", "Black Silver General", **kwargs),
+                    "T": piece_shape("iT", "White Knight: Promoted", **kwargs),
+                    "t": piece_shape("it", "Black Knight: Promoted", **kwargs),
+                    "W": piece_shape("iV", "White Pawn: Promoted", **kwargs),
+                    "w": piece_shape("iv", "Black Pawn: Promoted", **kwargs),
+                    "V": piece_shape("iW", "White Silver General: Promoted", **kwargs),
+                    "v": piece_shape("iw", "Black Silver General: Promoted", **kwargs),
+                }
+            case None:
+                pg_pieces = {
+                    "B": piece_shape("B", "Black", **kwargs),  # plain circle
+                    "W": piece_shape("W", "White", **kwargs),  # plain circle
+                }
+            case _:
+                raise NotImplementedError(
+                    f'Pieces Type "{pieces_type}" is not available.'
+                )
+        # ---- convert PG and User lists to dict
+        if not pieces_list:
+            pieces_list = []
+        for _piece in pieces_list:
+            if not isinstance(_piece, (list, tuple)):
+                feedback(
+                    "The AbstractGame 'pieces' property must contain a list of lists,"
+                    f" not a '{type(self.name).__name__}'.",
+                    True,
+                    True,
+                )
+            if len(_piece) < 2:
+                feedback(
+                    "Each item in the AbstractGame 'pieces' property must"
+                    " contain a piece identity and its pattern,"
+                    f" so not '{_piece}'.",
+                    True,
+                    True,
+                )
+            piece_id = _piece[0]
+            if not isinstance(piece_id, str) or _piece == ".":
+                feedback(
+                    "Each item in the AbstractGame 'pieces' property must"
+                    " have a single character piece identity,"
+                    f" not '{piece_id}'.",
+                    True,
+                    True,
+                )
+            if len(piece_id) != 1:
+                feedback(
+                    "Each item in the AbstractGame 'pieces' property must"
+                    " have a single character piece identity,"
+                    f" not '{piece_id}'.",
+                    True,
+                    True,
+                )
+            if isinstance(_piece[1], str):
+                # try to use existing, defined piece
+                # e.g. checkers_black, or chess_white_rook
+                # NOTE use of kwargs to, for example, scale the piece size
+                parts = _piece[1].split("_")
+                game = _lower(parts[0])
+                if game not in ("go", "checkers", "chess"):
+                    feedback(
+                        "A named piece type must start with a matching game, "
+                        f" not '{parts[0]}'.",
+                        True,
+                        True,
+                    )
+                if len(parts) < 2:
+                    feedback(
+                        "A named piece type must start with a matching game, followed by a color, "
+                        f" not '{parts}'.",
+                        True,
+                        True,
+                    )
+                pcolor = _lower(parts[1])
+                if pcolor not in ("black", "white"):
+                    feedback(
+                        "A named piece type color must be either black or white, "
+                        f" not '{parts[1]}'.",
+                        True,
+                        True,
+                    )
+                if len(parts) > 2:
+                    pname = _lower(parts[2])
+
+                    match game:
+                        case "checkers":
+                            match pcolor:
+                                case "black":
+                                    pg_pieces[piece_id] = piece_shape(
+                                        "kR", "checkers", **kwargs
+                                    )
+                                case "white":
+                                    pg_pieces[piece_id] = piece_shape(
+                                        "kW", "checkers", **kwargs
+                                    )
+                        case "chess":
+                            if pname not in (
+                                "pawn",
+                                "queen",
+                                "king",
+                                "rook",
+                                "bishop",
+                                "knight",
+                            ):
+                                feedback(
+                                    f"A piece's Chess name cannot be '{parts[2]}'.",
+                                    True,
+                                    True,
+                                )
+                            match pcolor:
+                                case "black":
+                                    pcode = NAMED_CHESS_BLACK[pname]
+                                    pg_pieces[piece_id] = piece_shape(
+                                        pcode, "chess", **kwargs
+                                    )
+                                case "white":
+                                    pcode = NAMED_CHESS_WHITE[pname]
+                                    pg_pieces[piece_id] = piece_shape(
+                                        pcode, "chess", **kwargs
+                                    )
+                        case "go":
+                            match pcolor:
+                                case "black":
+                                    pg_pieces[piece_id] = piece_shape(
+                                        "gB", "go", **kwargs
+                                    )
+                                case "white":
+                                    pg_pieces[piece_id] = piece_shape(
+                                        "gW", "go", **kwargs
+                                    )
+                        case "shogi":
+                            if pname not in SHOGI_NAMES:
+                                feedback(
+                                    f"A piece's Shogi name cannot be '{parts[2]}'.",
+                                    True,
+                                    True,
+                                )
+                            match pcolor:
+                                case "black":
+                                    pcode = NAMED_SHOGI_BLACK[pname]
+                                    pg_pieces[piece_id] = piece_shape(
+                                        pcode, "shogi", **kwargs
+                                    )
+                                case "white":
+                                    pcode = NAMED_SHOGI_WHITE[pname]
+                                    pg_pieces[piece_id] = piece_shape(
+                                        pcode, "shogi", **kwargs
+                                    )
+                        case "shogi_int":
+                            if pname not in SHOGI_NAMES:
+                                feedback(
+                                    f"A piece's Shogi International name cannot be '{parts[2]}'.",
+                                    True,
+                                    True,
+                                )
+                            match pcolor:
+                                case "black":
+                                    pcode = NAMED_SHOGI_INT_BLACK[pname]
+                                    pg_pieces[piece_id] = piece_shape(
+                                        pcode, "shogi", **kwargs
+                                    )
+                                case "white":
+                                    pcode = NAMED_SHOGI_INT_WHITE[pname]
+                                    pg_pieces[piece_id] = piece_shape(
+                                        pcode, "shogi", **kwargs
+                                    )
+                        case _:
+                            feedback(
+                                "The AbstractGame name for the piece must be chosen"
+                                " from one of the following games: "
+                                f" Chess, Go, Shogi, or Checkers (not '{self.name}').",
+                                True,
+                                True,
+                            )
+
+            else:
+                # user-defined piece; could be single shape or list of shapes
+                pg_pieces[piece_id] = _piece[1]
+
+        return pg_pieces
+
+
+class AbstractStateObject(BaseShape):
+    """Draw AbstractState composite shape on a given canvas.
+
+    Reference:
+
+    """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super().__init__(_object=_object, canvas=canvas, **kwargs)
+        # self.kwargs = kwargs
+        # self.set_unit_properties()
+        # self.cnv = (
+        #     canvas if canvas else globals.canvas
+        # )  # a new Page/Shape may now exist
+        # ---- unique properties
+        self.board = self._commons("board") or kwargs.get("board") or None
+        self.positions = self._commons("positions") or kwargs.get("positions") or "."
+        self.setup = self._commons("setup") or kwargs.get("setup") or False
+        self.setup = tools.as_bool(self.setup, False)
+        self.moves = self._commons("moves") or kwargs.get("moves") or None
+        self.markers = self._commons("markers") or kwargs.get("markers") or None
+        self.markers_stroke = (
+            self._commons("markers_stroke") or kwargs.get("markers_stroke") or "yellow"
+        )
+        self.markers_fraction = (
+            self._commons("markers_fraction") or kwargs.get("markers_fraction") or 0.1
+        )
+        self.markers_fraction = tools.as_float(
+            self.markers_fraction, "markers_fraction", minimum=0
+        )
+        self.markers_shapes = (
+            self._commons("markers_shapes") or kwargs.get("markers_shapes") or None
+        )
+        self.annotations = (
+            self._commons("annotations") or kwargs.get("annotations") or None
+        )
+        # --- internal properties
+        self.position_shapes = []
+        self._validate_choices()
+        # ---- set positions
+        self.positions = self.initialise_pieces()
+        self.position_matrix = self.process_positions()
+
+    def initialise_pieces(self) -> str:
+        """Create initial positions."""
+        if self.setup:
+            match _lower(self.board.name):
+                case "chess":  # white at the bottom
+                    return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+                case "checkers" | "draughts":  # white at the bottom
+                    return "1R1R1R1R/R1R1R1R1/1R1R1R1R/8/8/W1W1W1W1/1W1W1W1W/W1W1W1W1"
+                case "go":
+                    return ""
+                case "shogi" | "shogi-int":  # white at the top
+                    return "LNSGKGSNL/1R5B1/PPPPPPPPP/9/9/9/ppppppppp/1b5r1/lnsgkgsnl"
+                case _:
+                    if self.board.name:
+                        feedback(
+                            "The AbstractGame does not have a setup for '{self.board.name}'.",
+                            True,
+                            True,
+                        )
+                    else:
+                        feedback(
+                            "The AbstractGame does not have the 'name' property set;"
+                            " so no predefined setup can be used.",
+                            True,
+                            True,
+                        )
+                    return ""
+        return self.positions  # leave "as set by user" for processing
+
+    def _validate_choices(self) -> bool:
+        """Check user choices for valid selections."""
+        if self.board is None:
+            feedback(
+                "The AbstractState 'board' property must be set!",
+                True,
+                True,
+            )
+        if not isinstance(self.board, AbstractGameObject):
+            feedback(
+                "The AbstractGame 'board' property must be an AbstractGame shape, "
+                f" not a '{type(self.board.name).__name__}'.",
+                True,
+                True,
+            )
+            if self.board.pieces is not None:
+                if not isinstance(self.board.pieces, (list, tuple)):
+                    feedback(
+                        "The AbstractGame 'pieces' property must be a list of pieces, "
+                        f" not a '{type(self.board.pieces).__name__}'.",
+                        True,
+                        True,
+                    )
+        if self.positions is not None:
+            if not isinstance(self.positions, str):
+                feedback(
+                    "The AbstractState 'positions' property must"
+                    " be a string with positions setting or layout, "
+                    f" not a '{type(self.positions).__name__}'.",
+                    True,
+                    True,
+                )
+        if self.moves is not None:
+            if not isinstance(self.moves, (list, tuple)):
+                feedback(
+                    "The AbstractState 'moves' property must be a list of moves, "
+                    f" not a '{type(self.moves).__name__}'.",
+                    True,
+                    True,
+                )
+        if self.markers is not None:
+            if not isinstance(self.markers, (list, tuple)):
+                feedback(
+                    "The AbstractState 'markers' property must be a list of elements, "
+                    f" not a '{type(self.markers).__name__}'.",
+                    True,
+                    True,
+                )
+        if self.markers_shapes is not None:
+            if not isinstance(self.markers_shapes, (list, tuple)):
+                feedback(
+                    "The AbstractState 'markers_shapes' property must be a list of elements, "
+                    f" not a '{type(self.markers_shapes).__name__}'.",
+                    True,
+                    True,
+                )
+        if self.annotations is not None:
+            if not isinstance(self.annotations, (list, tuple)):
+                feedback(
+                    "The AbstractState 'annotations' property must be a list of elements, "
+                    f" not a '{type(self.annotations).__name__}'.",
+                    True,
+                    True,
+                )
+        return True
+
+    @property
+    def shape_centre(self) -> Point:
+        """Centre of AbstractStateObject."""
+        return None
+
+    @property
+    def geo(self) -> ShapeGeometry:
+        """Geometry of AbstractStateObject in user units."""
+        return None
+
+    @property
+    def geometry(self) -> ShapeGeometry:
+        """Geometry of AbstractStateObject - alias for geo."""
+        return self.geo
+
+    def process_positions(self) -> list:
+        """Convert positions into a list of AbstractPiece objects."""
+        if self.positions is None or self.positions == "":
+            return []
+        if "/" in self.positions and "\n" in self.positions:
+            feedback(
+                "Do not mix '/' and line-breaks for AbstractState 'positions'.",
+                True,
+                True,
+            )
+            return []
+        # ---- get list of item positions
+        if "/" in self.positions:
+            position_std = re.sub(r"\d", lambda m: "." * int(m.group()), self.positions)
+            _position_list = position_std.split("/")
+        elif "\n" in self.positions:
+            _position_list = self.positions.split("\n")
+        else:
+            if self.positions != ".":  # the default - used internally
+                feedback(
+                    "Neither '/' or line-break were specified for AbstractState 'positions',"
+                    " so only a single row will be processed.",
+                    False,
+                )
+            _position_list = self.positions
+        # ---- clean list
+        position_list = [row.strip() for row in _position_list if row]
+        position_list = [row for row in position_list if row]
+        # ---- validate list of item positions
+        # TODO - improve these checks for hexhex board as well as irregular hexagonal
+        if position_list and len(position_list) != self.board.rows:
+            if self.positions != ".":  # the default - internal use
+                if len(position_list) < self.board.rows:
+                    feedback(
+                        f"Not all rows have been set for the AbstractState 'positions'"
+                        f" ({len(position_list)} vs {self.board.rows}).",
+                        False,
+                    )
+                if len(position_list) > self.board.rows:
+                    feedback(
+                        f"There are too many rows for the AbstractState 'positions'"
+                        f" ({len(position_list)} vs {self.board.rows}).",
+                        True,
+                        True,
+                    )
+        for key, row in enumerate(position_list):
+            if row == ".":
+                row = "." * int(self.board.cols)
+                position_list[key] = row
+            if len(row) != self.board.cols:
+                non_blanks = len(self.board.cells_non_blank[key])
+                if len(row) < non_blanks:
+                    feedback(
+                        "Not all columns have been set for available cells"
+                        f" in row#{key + 1} of the"
+                        f" AbstractState 'positions' ({len(row)} vs {non_blanks}).",
+                        False,
+                    )
+                if len(row) > non_blanks:
+                    feedback(
+                        "There are too many columns for available cells"
+                        f" in row#{key + 1} of the AbstractState"
+                        f" 'positions' ({len(row)} vs {non_blanks}).",
+                        True,
+                        True,
+                    )
+        return position_list
+
+    def draw_annotations(self):
+        """Draw annotation elements on the board."""
+        if self.annotations:
+            for anno in self.annotations:
+                if not isinstance(anno, BaseShape):
+                    feedback(
+                        "The AbstractState 'annotations' property must be a list of shapes, "
+                        f" not a '{type(anno).__name__}'.",
+                        True,
+                        True,
+                    )
+                anno.draw()
+
+    def draw_single_marker(self, mark: str, grid_refs: list):
+        """Draw one marker element on the board."""
+        from protograf.protos import Circle, Dot, Hexagon, Line, Square
+        from protograf.shapes import HexShape, RectangleShape
+
+        def check_grid(grid_refs: list, name: str = "line", points: float = 2):
+            """Ensure enough grid points to draw the shape."""
+            if len(grid_refs) < points:
+                feedback(
+                    f'The AbstractGame "markers" shortcut for a {name}'
+                    f" needs {points} grid references.",
+                    True,
+                    True,
+                )
+
+        cntr0 = grid_refs[0].centre
+        ht = grid_refs[0].height
+        rd = ht / 2.0
+        ht_pts = float(ht) * self.units
+
+        # default props
+        stroke = self.markers_stroke
+        stroke_width = ht_pts * self.markers_fraction
+        offset = tools.points(stroke_width) / 2.0
+        def_kwargs = {
+            "stroke": stroke,
+            "stroke_width": stroke_width,
+            # "transparency": 50,  # TODO - support pmupdf "stoke_opacity"
+        }
+        # user props
+        usr_kwargs = {}
+        # If duplicate keys, the last dictionary unpacked overwrites previous values.
+
+        # multiple grid_refs => used for line or arrow
+        links = []
+        if len(grid_refs) > 2:
+            links = [link.centre for link in grid_refs]
+
+        match mark.lower():
+            case "a" | "ac":  # arrow / curved
+                check_grid(grid_refs, "arrow (a)", 2)
+                if links:
+                    akwargs = {"links": links, "stroke_ends": "rounded"}
+                else:
+                    cntr1 = grid_refs[1].centre
+                    akwargs = {
+                        "x": cntr0.x,
+                        "y": cntr0.y,
+                        "x1": cntr1.x,
+                        "y1": cntr1.y,
+                        "arrow": True,
+                        "stroke_ends": "rounded",
+                    }
+                    if mark.lower() == "ac":
+                        curve_height = (
+                            math.dist((cntr0.x, cntr0.y), (cntr1.x, cntr1.y)) * 0.2
+                        )
+                        akwargs["curve"] = curve_height
+
+                kwargs = {**def_kwargs, **usr_kwargs, **akwargs}
+                Line(**kwargs)
+            case "c":  # circle
+                ckwargs = {
+                    "x": cntr0.x,
+                    "y": cntr0.y,
+                    "cxy": cntr0,
+                    "radius": rd - offset,
+                    "orientation": "pointy",
+                }
+                kwargs = {**def_kwargs, **usr_kwargs, **ckwargs}
+                Circle(**kwargs)
+            case "d":  # dot
+                dkwargs = {
+                    "x": cntr0.x,
+                    "y": cntr0.y,
+                    "cxy": cntr0,
+                    "dot_width": stroke_width,
+                }
+                kwargs = {**def_kwargs, **usr_kwargs, **dkwargs}
+                Dot(**kwargs)
+            case "h":  # hexagon
+                hkwargs = {
+                    "x": None,
+                    "y": None,
+                    "cxy": cntr0,
+                    "height": ht - 2 * offset,
+                    "orientation": "pointy",
+                }
+                kwargs = {**def_kwargs, **usr_kwargs, **hkwargs}
+                Hexagon(**kwargs)
+            case "s":  # square
+                skwargs = {
+                    "x": None,
+                    "y": None,
+                    "cxy": cntr0,
+                    "height": ht - 2 * offset,
+                    "width": ht - 2 * offset,
+                }
+                kwargs = {**def_kwargs, **usr_kwargs, **skwargs}
+                Square(**kwargs)
+            case "l" | "lc":  # line / curve
+                check_grid(grid_refs, "line (l)", 2)
+                if links:
+                    lkwargs = {"links": links, "stroke_ends": "rounded"}
+                else:
+                    cntr1 = grid_refs[1].centre
+                    lkwargs = {
+                        "x": cntr0.x,
+                        "y": cntr0.y,
+                        "x1": cntr1.x,
+                        "y1": cntr1.y,
+                        "stroke_ends": "rounded",
+                    }
+                    if mark.lower() == "lc":
+                        curve_height = (
+                            math.dist((cntr0.x, cntr0.y), (cntr1.x, cntr1.y)) * 0.2
+                        )
+                        lkwargs["curve"] = curve_height
+
+                kwargs = {**def_kwargs, **usr_kwargs, **lkwargs}
+                Line(**kwargs)
+            case "x":  # cross "X"
+                if grid_refs[0].type in ["HexShape", HexShape]:
+                    xkwargs = {
+                        "x": grid_refs[0].sw.x + offset,
+                        "y": grid_refs[0].sw.y - offset,
+                        "x1": grid_refs[0].ne.x - offset,
+                        "y1": grid_refs[0].ne.y + offset,
+                        "stroke_ends": "rounded",
+                    }
+                    kwargs = {**def_kwargs, **usr_kwargs, **xkwargs}
+                    Line(**kwargs)
+                    zkwargs = {
+                        "x": grid_refs[0].nw.x + offset,
+                        "y": grid_refs[0].nw.y + offset,
+                        "x1": grid_refs[0].se.x - offset,
+                        "y1": grid_refs[0].se.y - offset,
+                        "stroke_ends": "rounded",
+                    }
+                    kwargs = {**def_kwargs, **usr_kwargs, **zkwargs}
+                    Line(**kwargs)
+                elif grid_refs[0].type in ["RectangleShape", RectangleShape]:
+                    xkwargs = {
+                        "x": grid_refs[0].sw.x + offset,
+                        "y": grid_refs[0].sw.y - offset,
+                        "x1": grid_refs[0].ne.x - offset,
+                        "y1": grid_refs[0].ne.y + offset,
+                        "stroke_ends": "rounded",
+                    }
+                    kwargs = {**def_kwargs, **usr_kwargs, **xkwargs}
+                    Line(**kwargs)
+                    zkwargs = {
+                        "x": grid_refs[0].nw.x + offset,
+                        "y": grid_refs[0].nw.y + offset,
+                        "x1": grid_refs[0].se.x - offset,
+                        "y1": grid_refs[0].se.y - offset,
+                        "stroke_ends": "rounded",
+                    }
+                    kwargs = {**def_kwargs, **usr_kwargs, **zkwargs}
+                    Line(**kwargs)
+                else:
+                    raise NotImplementedError(
+                        f"Unable to handle cell type {grid_refs[0].type}"
+                    )
+
+    def draw_markers(self):
+        """Draw marker elements on the board."""
+        allowed_marks = ["a", "ac", "c", "d", "h", "x", "s", "l", "lc"]
+        for mark in self.markers:
+            if isinstance(mark, str):
+                marks = tools.sequence_split(mark, sep=" ", to_int=False, unique=False)
+                if marks[0].lower() not in allowed_marks:
+                    feedback(
+                        'The AbstractGame "markers" shortcut must start with one of'
+                        f' "{allowed_marks}" not "{marks[0]}".',
+                        True,
+                        True,
+                    )
+                if len(marks) < 2:
+                    feedback(
+                        'The AbstractGame "markers" shortcut must contain a key,'
+                        f' followed by one or more grid references, not "{mark}".',
+                        True,
+                        True,
+                    )
+                # breakpoint()
+                grid_refs = []
+                for _grid_mark in marks[1:]:
+                    try:
+                        _grid = getattr(self.board, _grid_mark.lower())
+                        grid_refs.append(_grid)
+                    except AttributeError:
+                        try:
+                            _grid = getattr(self.board, _grid_mark.upper())
+                            grid_refs.append(_grid)
+                        except AttributeError:
+                            feedback(
+                                'The AbstractGame "markers" shortcut grid reference'
+                                f' "{_grid_mark}" is a not valid for this game.',
+                                True,
+                                True,
+                            )
+                if grid_refs:
+                    self.draw_single_marker(marks[0], grid_refs)
+            elif isinstance(mark, BaseShape):
+                mark.draw()
+            else:
+                feedback(
+                    "The AbstractGame 'markers' property must be a list of shapes, "
+                    f" or shortcut strings, not a '{type(mark).__name__}'.",
+                    True,
+                    True,
+                )
+
+    def draw_pieces(self):
+        """Draw the piece shapes on a given canvas using their character IDs."""
+        if not self.board.pieces or not isinstance(self.board.pieces, dict):
+            feedback(
+                "The board's pieces have not been setup correctly!",
+                True,
+                True,
+            )
+        # for index, row in enumerate(self.board.cells_non_blank):
+        #     print(f'&&& cells_non_blank {index=} {row=}')
+
+        # swop start and end of position matrix
+        # if self.board.label_start in [Corner.TOP_LEFT, Corner.TOP_RIGHT]:
+        #     self.position_matrix.reverse()
+        # print(f'&&& {self.position_matrix=}')
+
+        for row_no, row in enumerate(self.position_matrix):
+            for col_no, col in enumerate(row):
+                if col == ".":
+                    # print(f'&&& AbstractState {row_no=},{col_no=} : BLANK')
+                    continue  # no piece here; move along, move along
+                kwargs = {}
+                piece_shp = self.board.pieces.get(col, None)
+                # print(f'&&& AbstractState {row_no=},{col_no=} :', piece_shp)
+                # ---- NULL shape
+                if piece_shp is None:
+                    feedback(
+                        item=f"Unable to find the piece named '{col}'; "
+                        f" please check the 'positions' for '{self.board.name}'.",
+                        warn=False,
+                        alert=True,
+                        stop=True,
+                    )
+                else:
+                    # ---- get cell location
+                    # cell = self.board.board_layout.cells.get((col_no + 1, row_no + 1))
+                    the_cell = self.board.cells_non_blank[row_no][col_no]  # 0-based!
+                    cell_col, cell_row = the_cell[0], the_cell[1]
+                    cell = self.board.board_layout.cells.get((cell_col, cell_row))
+                    # ---- set Image shape props
+                    if isinstance(piece_shp, ImageShape):
+                        bbox = cell.bbox  # geo ~ user units ~ relative to margin
+                        if bbox:
+                            # define absolute position on page
+                            kwargs = {
+                                "_abs_x": tools.unit(bbox.tl.x + globals.margins.left),
+                                "_abs_y": tools.unit(bbox.tl.y + globals.margins.top),
+                            }
+                        else:
+                            feedback(
+                                "Unable to properly draw Images on the board;"
+                                " no BoundingBox is provided!",
+                                True,
+                                True,
+                            )
+                    # ---- set Other shape props
+                    elif isinstance(piece_shp, BaseShape):
+                        cntr = cell.centre  # geo ~ user units ~ relative to margin
+                        kwargs = {
+                            "_abs_cx": tools.unit(cntr.x + globals.margins.left),
+                            "_abs_cy": tools.unit(cntr.y + globals.margins.top),
+                        }
+                    else:
+                        raise NotImplementedError(
+                            f'Unable to draw a piece of type "{type(piece_shp)}"'
+                        )
+                    # print(f'&&& AbstractState {row_no=},{col_no=} P:', type(piece_shp))
+                    # ---- draw shape
+                    piece_shp.draw(**kwargs)
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw the AbstractStateObject on a given canvas."""
+        from protograf.protos import Layout
+
+        kwargs = self.kwargs | kwargs
+        cnv = cnv if cnv else globals.canvas  # a new Page/Shape may now exist
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        # ---- draw the board frame
+        if self.board.frame is True:
+            self.board.draw_frame()
+        # ---- draw the board
+        match _lower(self.board.name):
+            case "grid" | "chess" | "checkers" | "go" | "shogi":  # default name is grid
+                if self.board.intersections:
+                    Layout(
+                        self.board.board_layout,
+                        shapes=None,
+                        # debug="colrow",  (for testing only!)
+                        draw_lines=True,
+                        **self.board.grid_kwargs,
+                    )
+                else:
+                    Layout(
+                        self.board.board_layout,
+                        shapes=self.board.areas,
+                        # debug="colrow",  (for testing only!)
+                        **kwargs,
+                    )
+            case "hexagons" | "hex" | "hexhex" | "hexagonal" | "hexes" | "hex":
+                self.board.board_layout._draw_grid = True
+                self.board.board_layout.draw_layout()
+            case _:
+                feedback(
+                    f"No available logic to draw AbstractState board '{self.board.name}'",
+                    True,
+                    True,
+                )
+        # ---- draw the board labels
+        if self.board.label is True:
+            self.board.draw_labels()
+        # ---- draw the annotations on the board
+        if self.annotations:
+            self.draw_annotations()
+        # ---- draw the pieces
+        if self.board.pieces and self.position_matrix:
+            self.draw_pieces()
+        elif self.board.pieces and not self.position_matrix:
+            feedback(
+                "To draw an AbstractState requires the 'positions' for the pieces",
+                True,
+                True,
+            )
+        elif self.position_matrix and not self.board.pieces:
+            feedback(
+                "To draw an AbstractState requires the board's pieces to be defined.",
+                True,
+                True,
+            )
+        elif not self.position_matrix and not self.board.pieces:
+            feedback(
+                "To draw an AbstractState requires both 'positions' and board pieces.",
+                True,
+                True,
+            )
+        else:
+            raise ValueError(
+                "Unexpected error handling position_matrix and board.pieces!"
+            )
+        # ---- draw the state markers
+        if self.markers:
+            self.draw_markers()

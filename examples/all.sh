@@ -31,6 +31,8 @@ python core/layouts/layouts_sequence.py --no-png -d /tmp/demo
 python core/layouts/layouts_tracks.py --no-png -d /tmp/demo
 python core/layouts/layouts_repeat.py --no-png -d /tmp/demo
 # ---- examples: objects
+python objects/abstracts.py --no-png -d /tmp/demo
+python objects/abstracts_labels.py --no-png -d /tmp/demo
 python objects/cardbox.py --no-png -d /tmp/demo
 python objects/cubes.py --no-png -d /tmp/demo
 python objects/dice_d6.py --no-png -d /tmp/demo
@@ -57,7 +59,7 @@ python boards/abstract/octagons.py --no-png -d /tmp/demo
 python boards/abstract/snex.py --no-png -d /tmp/demo
 python boards/abstract/tictactoe.py --no-png -d /tmp/demo
 echo -e "\nCreating New Classic boards..."
-#python boards/abstract/new_classics.py --no-png -d /tmp/demo
+python boards/abstract/new_classics.py --no-png -d /tmp/demo
 # ---- boards: commercial
 echo -e "\nCreating commercial boards..."
 python boards/commercial/ack_map.py --no-png -d /tmp/demo

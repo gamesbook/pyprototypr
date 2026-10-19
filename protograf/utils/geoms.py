@@ -5,15 +5,18 @@ Mathematical utility functions for protograf
 
 # lib
 import cmath
+from functools import lru_cache
 import logging
 import math
-import numpy as np
 import sys
 from typing import Any, List
 
+# third party
+import numpy as np
+
 # local
 from protograf.utils.messaging import feedback
-from protograf.utils.structures import Point
+from protograf.utils.structures import Point, Corner
 from protograf.utils.support import numbers, round_tiny_float
 
 log = logging.getLogger(__name__)
@@ -155,6 +158,7 @@ def compass_to_angle(direction: str) -> tuple:
         rotation = (450 - compass) % 360.0
         # print(f'compass-angle fn: {compass=}, {rotation=}')
         return round_tiny_float(compass), round_tiny_float(rotation)
+    return None, None
 
 
 def point_in_polygon(point: Point, vertices: List[Point], valid_border=False) -> bool:
@@ -366,9 +370,8 @@ def point_on_circle(point_centre: Point, radius: float, angle: float) -> Point:
         x = math.cos(theta) * radius + point_centre.x
         y = point_centre.y - math.sin(theta) * radius  # + point_centre.y
     except Exception as exc:
-        raise ValueError(
-            f"Cannot calculate point on circle for: {point_centre}, {radius} and {angle}"
-        ) from exc
+        raise ValueError(f"Cannot calculate point on circle for: {
+                point_centre}, {radius} and {angle}") from exc
     return Point(x, y)
 
 
@@ -430,6 +433,50 @@ def fraction_along_line(point_start: Point, point_end: Point, fraction: float) -
         point_start=point_start, point_end=point_end, distance=fraction_length
     )
     return fraction_point
+
+
+def point_beyond_line(point_start: Point, point_end: Point, distance: float) -> Point:
+    """
+    Calculate new Point a specific distance beyond point_end in the same direction
+    as a line segment defined by end Points
+
+    Args:
+        point_start (Point):
+            coordinates of the first point (x1, y1)
+        point_end (Point):
+            coordinates of the second point (x2, y2)
+        distance (float):
+            The distance to extend past point_end
+
+    Returns:
+         Point: coordinates of the extended point (x3, y3)
+
+    Doc Test:
+    >>> point1 = Point(0, 0)
+    >>> point2 = Point(3, 4)
+    >>> point_beyond_line(point1, point2, 10)
+    Point(x=9.0, y=12.0)
+    """
+    x1, y1 = point_start
+    x2, y2 = point_end
+    # direction vector components
+    dx = x2 - x1
+    dy = y2 - y1
+    # total distance between points
+    line_len = math.hypot(dx, dy)
+    # edge case where point_start & point_end are the exact same
+    if line_len == 0:
+        raise ValueError(
+            "point_start & point_end cannot be the same point; direction is undefined."
+        )
+    # normalize the direction vector (make its length 1)
+    ux = dx / line_len
+    uy = dy / line_len
+    # extrapolate from point_end by scaling unit vector by target distance
+    x3 = x2 + (ux * distance)
+    y3 = y2 + (uy * distance)
+
+    return Point(x3, y3)
 
 
 def point_in_direction(
@@ -889,22 +936,19 @@ def bezier_arc_points(
             Point(pt2[0].item(), 2 * invert - pt2[1].item()),
             Point(pt3[0].item(), 2 * invert - pt3[1].item()),
         )
-    else:
-        return (
-            Point(pt0[0].item(), pt0[1].item()),
-            Point(pt1[0].item(), pt1[1].item()),
-            Point(pt2[0].item(), pt2[1].item()),
-            Point(pt3[0].item(), pt3[1].item()),
-        )
+    return (
+        Point(pt0[0].item(), pt0[1].item()),
+        Point(pt1[0].item(), pt1[1].item()),
+        Point(pt2[0].item(), pt2[1].item()),
+        Point(pt3[0].item(), pt3[1].item()),
+    )
 
 
 def circle_angles(radius: float, chord: float) -> tuple:
     """Calculate interior angles of isosceles triangle formed inside a circle.
 
     Args:
-        radius (float): radius of circle    breakpoint()
-    print('!!!', pt0, pt1, pt2, pt3)
-    return pt0, pt1, pt2, pt3
+        radius (float): radius of circle
         chord (float): length of line between two points on circle
 
     Source:
@@ -1130,7 +1174,394 @@ def circle_to_chord(radius: float, chord: float) -> float:
     >>> circle_to_chord(15.0, 24.0)
     6.0
     """
-    return radius - math.sqrt(radius**2 - (chord / 2) ** 2)
+    return radius - math.sqrt(radius**2 - (chord / 2.0) ** 2)
+
+
+def hexhex_label(ring, position, num_rings, rows_from="bottom", lower=True):
+    """
+    Convert ring/position to a column-row label.
+
+    Parameters
+    ----------
+    ring : int
+        Ring number. 0 is the centre.
+
+    position : int
+        Position around the ring.
+        Position 0 is the north-east hex.
+        Positions increase clockwise.
+
+    num_rings : int
+        Number of rings outside the centre.
+
+    rows_from : str, optional
+        "bottom" (default): bottom row is row 1.
+        "top": top row is row 1.
+
+    Returns
+    -------
+    str
+        A label such as "A1", "D4", or "G7".
+
+    The south-west corner is A1 when rows_from="bottom".
+    The north-west corner is A1 when rows_from="top".
+    """
+
+    def number_to_letters(n):
+        """
+        Convert zero-based column number to spreadsheet-style letters:
+        0 -> A, 1 -> B, ..., 25 -> Z, 26 -> AA, etc.
+        """
+        result = ""
+
+        while True:
+            n, remainder = divmod(n, 26)
+            result = chr(ord("A") + remainder) + result
+
+            if n == 0:
+                break
+
+            n -= 1
+
+        return result
+
+    if not 0 <= ring <= num_rings:
+        raise ValueError(f"ring must be between 0 and {num_rings}")
+
+    if rows_from not in ("bottom", "top"):
+        raise ValueError("rows_from must be either 'bottom' or 'top'")
+
+    if ring == 0:
+        if position != 0:
+            raise ValueError("The centre hex has position 0 only")
+
+        col_offset = 0
+        row_offset = 0
+
+    else:
+        if not 0 <= position < 6 * ring:
+            raise ValueError(f"position must be between 0 and {6 * ring - 1}")
+
+        # Position 0 = north-east corner.
+        col_offset = ring
+        row_offset = ring
+
+        # Clockwise directions around the ring.
+        directions = [
+            (0, -1),  # NE -> E
+            (-1, -1),  # E  -> SE
+            (-1, 0),  # SE -> SW
+            (0, 1),  # SW -> W
+            (1, 1),  # W  -> NW
+            (1, 0),  # NW -> NE
+        ]
+
+        side, offset = divmod(position, ring)
+
+        # Move around completed sides.
+        for i in range(side):
+            dc, dr = directions[i]
+            col_offset += dc * ring
+            row_offset += dr * ring
+
+        # Move along current side.
+        dc, dr = directions[side]
+        col_offset += dc * offset
+        row_offset += dr * offset
+
+    # Column numbering is always left-to-right.
+    column_index = num_rings + col_offset
+    column = number_to_letters(column_index)
+    if lower:
+        column = column.lower()
+
+    # Row numbering can run in either direction.
+    if rows_from == "bottom":
+        row = num_rings + row_offset + 1
+    else:
+        row = num_rings - row_offset + 1
+
+    return column, row
+
+
+@lru_cache(maxsize=None)
+def hexgrid_diagonal_cells(cols: int, rows: int, start_cell: Corner) -> dict:
+    """Return dict keyed on diagonals angled away from the start_cell for pointy grid.
+
+    Args:
+        cols (int): number of columns in the hexagonal grid
+        rows (int): number of rows in the hexagonal grid
+        start_cell (Corner): the location of the cell for the first diagonal
+
+    Example:
+
+    For cols=5 rows=5 start_cell='bl', the result is:
+        {1: [[1, 5]],
+         2: [[2, 5], [1, 4], [1, 3]],
+         3: [[3, 5], [2, 4], [2, 3], [1, 2], [1, 1]],
+         4: [[4, 5], [3, 4], [3, 3], [2, 2], [2, 1]],
+         5: [[5, 5], [4, 4], [4, 3], [3, 2], [3, 1]],
+         6: [[5, 4], [5, 3], [4, 2], [4, 1]],
+         7: [[5, 2], [5, 1]]}
+
+    Doc Test:
+
+    >>> hexgrid_diagonal_cells(5, 5, Corner.TOP_LEFT)
+    {1: [[1, 1]], 2: [[2, 1], [1, 2], [1, 3]], 3: [[3, 1], [2, 2], [2, 3], [1, 4], [1, 5]], 4: [[4, 1], [3, 2], [3, 3], [2, 4], [2, 5]], 5: [[5, 1], [4, 2], [4, 3], [3, 4], [3, 5]], 6: [[5, 2], [5, 3], [4, 4], [4, 5]], 7: [[5, 4], [5, 5]]}
+    >>> hexgrid_diagonal_cells(5, 5, Corner.BOTTOM_LEFT)
+    {1: [[1, 5]], 2: [[2, 5], [1, 4], [1, 3]], 3: [[3, 5], [2, 4], [2, 3], [1, 2], [1, 1]], 4: [[4, 5], [3, 4], [3, 3], [2, 2], [2, 1]], 5: [[5, 5], [4, 4], [4, 3], [3, 2], [3, 1]], 6: [[5, 4], [5, 3], [4, 2], [4, 1]], 7: [[5, 2], [5, 1]]}
+    """
+    # validate
+    if start_cell not in [
+        Corner.BOTTOM_LEFT,
+        Corner.TOP_LEFT,
+        Corner.BOTTOM_RIGHT,
+        Corner.TOP_RIGHT,
+    ]:
+        raise ValueError("The start_cell must be of type Corner")
+
+    # setup variables
+    diagonals = {}
+    even_rows = 1 if rows % 2 == 0 else 0
+    even_cols = 1 if cols % 2 == 0 else 0
+    no_of_diagonals = cols + rows // 2 - even_rows + even_cols
+    odd_rows_in_grid = rows % 2 != 0
+    # print(f"!!! {cols=} {rows=} {start_cell=} {no_of_diagonals=} {odd_rows_in_grid=}")
+
+    match start_cell:
+        case Corner.BOTTOM_LEFT:  # direction = "up_and_to_the_left"
+            start_row = rows
+            start_col = 1
+        case Corner.TOP_LEFT:  # direction = "down_and_to_the_left"
+            start_row = 1
+            start_col = 1
+        case Corner.BOTTOM_RIGHT:  # direction = "up_and_to_the_right"
+            start_row = rows
+            start_col = cols
+        case Corner.TOP_RIGHT:  # direction = "down_and_to_the_right"
+            start_row = 1
+            start_col = cols
+        case _:
+            raise ValueError(f"start_cell must be: bl, br, tl, tr; not {start_cell}")
+
+    diagonal = 1
+    row = start_row
+    col = start_col
+    path = []
+
+    while diagonal <= no_of_diagonals:
+        # breakpoint()
+        while True:
+            if (col <= cols and col >= 1) and (row <= rows and row >= 1):
+                path.append([col, row])
+
+            match start_cell:
+                case Corner.BOTTOM_LEFT:
+                    row -= 1
+                    even_row = 1 if row % 2 == 0 else 0
+                    col = col - 1 if even_row else col
+                case Corner.TOP_LEFT:
+                    row += 1
+                    even_row = 1 if row % 2 == 0 else 0
+                    col = col - 1 if even_row else col
+                case Corner.BOTTOM_RIGHT:
+                    row -= 1
+                    odd_row = row % 2 != 0
+                    col = col + 1 if odd_row else col
+                case Corner.TOP_RIGHT:
+                    row += 1
+                    odd_row = row % 2 != 0
+                    col = col + 1 if odd_row else col
+
+            match start_cell:
+                case Corner.BOTTOM_LEFT:
+                    if row < 1 or col < 1:
+                        break
+                case Corner.TOP_LEFT:
+                    if row > rows or col < 1:
+                        break
+                case Corner.BOTTOM_RIGHT:
+                    if row < 1 or col > cols:
+                        break
+                case Corner.TOP_RIGHT:
+                    if row > rows or col > cols:
+                        break
+
+        if path:
+            diagonals[diagonal] = path
+        diagonal += 1
+
+        match start_cell:
+            case Corner.BOTTOM_LEFT | Corner.TOP_LEFT:
+                row = start_row
+                col = diagonal  # shift-to-right
+            case Corner.BOTTOM_RIGHT | Corner.TOP_RIGHT:
+                row = start_row
+                col = cols - diagonal + 1  # shift-to-left
+
+        if col > cols or col < 1:  # CAN'T exceed cols; move up/down row(s) instead
+            match start_cell:
+                case Corner.BOTTOM_LEFT:
+                    row = row - (diagonal - cols) * 2
+                    if odd_rows_in_grid:
+                        row += 1
+                    col = cols
+                case Corner.TOP_LEFT:
+                    row = (diagonal - cols) * 2
+                    col = cols
+                case Corner.BOTTOM_RIGHT:
+                    row = row - (diagonal - cols) * 2
+                    if not odd_rows_in_grid:
+                        row += 1
+                    col = 1
+                case Corner.TOP_RIGHT:
+                    row = (diagonal - cols) * 2 + 1
+                    col = 1
+
+        path = []
+
+    return diagonals
+
+
+# @lru_cache(maxsize=None) - can't hash grid !
+def hexgrid_alphanumeric(
+    diagonal_dict: dict, start_cell: Corner, lower: bool = True
+) -> dict:
+    """
+    Create a dict of (diagonal_column, row_number) values keyed on each (col, row)
+    coordinates value in a pointy-topped, even-offset hex grid
+
+    Args:
+    - diagonal_dict (dict)): a dict with key being a diagonal number;
+      and value being a list of pairs of (col, row) values in that diagonal
+    - start_cell (Corner): the location of the cell for the first diagonal
+    - lower (bool): if True (default), make the diagonal letter lowercase
+
+    Returns:
+        tuple[str, int]: diagonal letter and the 1-based position of the row
+
+    Doc Test:
+    >>> grid = {1: [[1, 5]], 2: [[2, 5], [1, 4], [1, 3]], 3: [[3, 5], [2, 4], [2, 3], [1, 2], [1, 1]], 4: [[4, 5], [3, 4], [3, 3], [2, 2], [2, 1]], 5: [[5, 5], [4, 4], [4, 3], [3, 2], [3, 1]], 6: [[5, 4], [5, 3], [4, 2], [4, 1]], 7: [[5, 2], [5, 1]]}
+    >>> hexgrid_alphanumeric(diagonal_dict=grid, start_cell=Corner.BOTTOM_LEFT)
+    {(1, 5): ('a', 1), (2, 5): ('b', 1), (1, 4): ('b', 2), (1, 3): ('b', 3), (3, 5): ('c', 1), (2, 4): ('c', 2), (2, 3): ('c', 3), (1, 2): ('c', 4), (1, 1): ('c', 5), (4, 5): ('d', 1), (3, 4): ('d', 2), (3, 3): ('d', 3), (2, 2): ('d', 4), (2, 1): ('d', 5), (5, 5): ('e', 1), (4, 4): ('e', 2), (4, 3): ('e', 3), (3, 2): ('e', 4), (3, 1): ('e', 5), (5, 4): ('f', 2), (5, 3): ('f', 3), (4, 2): ('f', 4), (4, 1): ('f', 5), (5, 2): ('g', 4), (5, 1): ('g', 5)}
+    """
+
+    def numbers_to_letters(n: int) -> str:
+        """
+        Convert 0 -> A, 1 -> B, ..., 25 -> Z, 26 -> AA, etc.
+        """
+        result = ""
+        while True:
+            n, remainder = divmod(n, 26)
+            result = chr(ord("A") + remainder) + result
+            if n == 0:
+                return result
+            n -= 1
+
+    result = {}
+    if not diagonal_dict:
+        return result
+    # validate
+    if not isinstance(diagonal_dict, dict):
+        raise ValueError(f"diagonal_dict must be a dict, not a {type(diagonal_dict)}")
+    if start_cell not in [
+        Corner.BOTTOM_LEFT,
+        Corner.TOP_LEFT,
+        Corner.BOTTOM_RIGHT,
+        Corner.TOP_RIGHT,
+    ]:
+        raise ValueError("The start_cell must be of type Corner")
+
+    total_rows = 1
+    for key, value in diagonal_dict.items():
+        for col_row in value:
+            total_rows = col_row[1] if col_row[1] > total_rows else total_rows
+
+    for key, value in diagonal_dict.items():
+        # print(key, value, numbers_to_letters(key - 1))
+        for col_row in value:
+            diagonal_letter = numbers_to_letters(key - 1)
+            letter = numbers_to_letters(key)
+            if lower:
+                letter = diagonal_letter.lower()
+            if start_cell in [Corner.BOTTOM_LEFT, Corner.BOTTOM_RIGHT]:
+                _row = total_rows - col_row[1] + 1
+            else:
+                _row = col_row[1]
+            result[col_row[0], col_row[1]] = (letter, _row)
+
+    return result
+
+
+# @lru_cache(maxsize=None) - can't hash grid !!!
+def hexgrid_diagonal_coords(
+    col: int,
+    row: int,
+    diagonal_dict: dict,
+    number_from_bottom: bool = True,
+    lower: bool = True,
+) -> tuple[str, int]:
+    """
+    Convert a 1-based (row, col) coordinate for a pointy-topped
+    offset hex grid into a (diagonal_column, row_number) identifier.
+
+    Args:
+    - col (int):  1-based column, counted from the LEFT.
+    - row (int): 1-based row, counted from the TOP.
+    - diagonal_dict (dict)): a dict with key being a diagonal number;
+      and value being a list of pairs of (col, row) values in that diagonal
+    - number_from_bottom(bool): if True (default), rows number from 1-upwards
+    - lower (bool): if True (default), make the diagonal letter lowercase
+
+    Returns:
+        tuple[str, int]: diagonal letter and the 1-based position of the row
+
+    Doc Test:
+    >>> grid = {1: [[1, 5]], 2: [[2, 5], [1, 4], [1, 3]], 3: [[3, 5], [2, 4], [2, 3], [1, 2], [1, 1]], 4: [[4, 5], [3, 4], [3, 3], [2, 2], [2, 1]], 5: [[5, 5], [4, 4], [4, 3], [3, 2], [3, 1]], 6: [[5, 4], [5, 3], [4, 2], [4, 1]], 7: [[5, 2], [5, 1]]}
+    >>> hexgrid_diagonal_coords(row=1, col=1, diagonal_dict=grid)
+    ('d', 5)
+    >>> hexgrid_diagonal_coords(row=1, col=4, diagonal_dict=grid)
+    ('g', 5)
+    >>> hexgrid_diagonal_coords(row=5, col=1, diagonal_dict=grid)
+    ('b', 1)
+    >>> hexgrid_diagonal_coords(row=5, col=3, diagonal_dict=grid)
+    ('d', 1)
+    """
+
+    def numbers_to_letters(n: int) -> str:
+        """
+        Convert 0 -> A, 1 -> B, ..., 25 -> Z, 26 -> AA, etc.
+        """
+        result = ""
+        while True:
+            n, remainder = divmod(n, 26)
+            result = chr(ord("A") + remainder) + result
+            if n == 0:
+                return result
+            n -= 1
+
+    if not diagonal_dict:
+        return None
+    if not isinstance(diagonal_dict, dict):
+        raise ValueError(f"diagonal_dict must be a dict, not a {type(diagonal_dict)}")
+
+    total_rows = 1
+    for key, value in diagonal_dict.items():
+        for col_row in value:
+            total_rows = col_row[1] if col_row[1] > total_rows else total_rows
+
+    for key, value in diagonal_dict.items():
+        if [col, row] in value:
+            diagonal_letter = numbers_to_letters(key)
+            if lower:
+                diagonal_letter = diagonal_letter.lower()
+            if number_from_bottom:
+                output_row = total_rows - row + 1
+            else:
+                output_row = row
+            return diagonal_letter, output_row
+
+    return None
 
 
 def equilateral_height(side: Any) -> float:

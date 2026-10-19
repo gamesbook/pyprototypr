@@ -436,7 +436,7 @@ def to_units(value: Any) -> float | int:
     return numeric_units
 
 
-def excel_column(value: int = 1) -> str:
+def excel_column(value: int = 1, name: str = None) -> str:
     """Convert a number into an Excel column letter.
 
     Ref:
@@ -453,11 +453,11 @@ def excel_column(value: int = 1) -> str:
     def converter(num):
         return (
             ""
-            if num == 0
+            if num <= 0
             else converter((num - 1) // 26) + string.ascii_uppercase[(num - 1) % 26]
         )
 
-    num = to_int(value)
+    num = to_int(value, name=name)
     return converter(num)
 
 

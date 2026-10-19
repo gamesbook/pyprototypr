@@ -183,13 +183,10 @@ class BaseCanvas:
         # ---- positions
         self.x = self.defaults.get("x", self.defaults.get("left", 1.0))
         self.y = self.defaults.get("y", self.defaults.get("top", 1.0))
-        self.xy = self.defaults.get(
-            "xy", self.defaults.get("xy", Point(self.x, self.y))
-        )
+        self.xy = self.defaults.get("xy", Point(self.x, self.y))
         self.cx = self.defaults.get("cx", None)  # NB! not 0; needed for internal check
         self.cy = self.defaults.get("cy", None)  # NB! not 0; needed for internal check
         self.cxy = self.defaults.get("cxy", None)
-        self.xy1 = self.defaults.get("xy1", None)
         # ---- to be calculated ...
         self.area = None
         self.vertexes = []
@@ -400,6 +397,7 @@ class BaseCanvas:
         # ---- line / bezier
         self.x_1 = self.defaults.get("x1", 0.0)
         self.y_1 = self.defaults.get("y1", 0.0)
+        self.xy1 = self.defaults.get("xy1", None)  # will be set by BaseShape
         # ---- line / hex
         self.links = self.defaults.get("links", None)
         self.links_style = self.defaults.get("links_style", None)
@@ -479,7 +477,6 @@ class BaseCanvas:
         self.grid = None  # some Shapes can auto-generate a GridShape
         self.rows = self.defaults.get("rows", 0)
         self.cols = self.defaults.get("cols", self.defaults.get("columns", 0))
-        self.frame = self.defaults.get("frame", "rectangle")
         self.offset = self.defaults.get("offset", 0.0)  # from margin
         self.offset_x = self.defaults.get("offset_x", self.offset)
         self.offset_y = self.defaults.get("offset_y", self.offset)
@@ -491,6 +488,15 @@ class BaseCanvas:
         self.grouping_cols = self.defaults.get("grouping_cols", self.grouping)
         self.lines = self.defaults.get("lines", "all")  # which direction to draw
         self.margin_fit = self.defaults.get("margin_fit", True)  # respect margin?
+        # ---- frame
+        self.frame = self.defaults.get("frame", "rectangle")
+        self.frame_stroke = self.defaults.get("frame_stroke", self.stroke)
+        self.frame_fill = self.defaults.get("frame_fill", None)
+        self.frame_width = self.defaults.get("frame_width", self.stroke_width)
+        self.frame_dotted = self.defaults.get("frame_dotted", None)
+        self.frame_dashed = self.defaults.get("frame_dashed", None)  # ---- OTHER
+        # use for pymupdf lineCap: 0 = line ends in sharp edge; 1 = semi-circle at end
+        self.frame_ends = self.defaults.get("frame_ends", None)
         # ---- HexHex grid
         self.rings = self.defaults.get("rings", 1)
         self.locations = self.defaults.get("locations", None)
@@ -1220,7 +1226,6 @@ class BaseShape:
             self.cols = self.kw_int(_cols, "cols")
         else:
             self.cols = _cols
-        self.frame = kwargs.get("frame", base.frame)
         self.offset = self.kw_float(kwargs.get("offset", base.offset))
         self.offset_x = self.kw_float(kwargs.get("offset_x", self.offset))
         self.offset_y = self.kw_float(kwargs.get("offset_y", self.offset))
@@ -1240,6 +1245,14 @@ class BaseShape:
         self.margin_fit = self.kw_bool(
             kwargs.get("margin_fit", base.margin_fit)
         )  # respect margin?
+        # ---- frame
+        self.frame = kwargs.get("frame", base.frame)
+        self.frame_stroke = kwargs.get("frame_stroke", base.frame_stroke)
+        self.frame_fill = kwargs.get("frame_fill", base.frame_fill)
+        self.frame_width = self.kw_float(kwargs.get("frame_width", base.frame_width))
+        self.frame_dashed = kwargs.get("frame_dashed", base.frame_dashed)
+        self.frame_dotted = kwargs.get("frame_dotted", base.frame_dotted)
+        self.frame_ends = kwargs.get("frame_ends", base.frame_ends)
         # ---- HexHex grid
         self.rings = kwargs.get("rings", base.rings)
         self.locations = kwargs.get("locations", base.locations)
@@ -1585,10 +1598,10 @@ class BaseShape:
                     and attr[0] != "_"
                 ):
                     # print(f'### Common {attr=} {base=} {type(base)=} {common_attr=}')
-                    common_attr = getattr(self.common, attr)
-                    base_attr = getattr(base, attr)
-                    # print(f'### Common {attr=} {base_attr=}')
+                    common_attr = getattr(self.common, attr, None)
+                    base_attr = getattr(base, attr, None)
                     if common_attr != base_attr:
+                        # print(f"### Common {attr=} {base_attr=}")
                         setattr(self, attr, common_attr)
 
         # ---- SET offset properties to correct units
@@ -1774,8 +1787,7 @@ class BaseShape:
         #  They are for internal use only and are not expected
         #  to be called by the user.
         #  If set, they should be used to ignore/bypass any other values
-        #  for calculating the starting point or centre point
-        #  for drawing a shape
+        #  for calculating the starting point (or centre) for drawing a shape.
         self._abs_x = kwargs.get("_abs_x", None)
         self._abs_y = kwargs.get("_abs_y", None)
         self._abs_x1 = kwargs.get("_abs_x1", None)
@@ -2200,7 +2212,7 @@ class BaseShape:
         def get_image_from_svg(image_location: str | None = None):
             """Load SVG image and convert to PNG."""
             with open(image_location) as f:
-                svg_code = f.read()
+                svg_code = f.read()  # could alter the SVG string here...
             png_bytes = cairosvg.svg2png(bytestring=svg_code.encode("utf-8"), dpi=300)
             image = Image.open(io.BytesIO(png_bytes))
             return image  # NO embedded filename!
@@ -2210,6 +2222,7 @@ class BaseShape:
 
         img = None
         image_local = image_location
+        image_local = str(image_local)  # convert PosixPath, if needed
 
         if cache_directory:
             if tools.is_url_valid(image_location):
@@ -2251,7 +2264,9 @@ class BaseShape:
                 img = get_image_from_svg(image_local)
             except Exception:
                 feedback(
-                    f'Unable to open and process the image "{image_location}"', True
+                    f'Unable to open and process the image "{image_location}" as SVG',
+                    True,
+                    True,
                 )
                 return None, None
         except IsADirectoryError:
@@ -2678,10 +2693,14 @@ class BaseShape:
         self,
         xy: Point,
         units: float,
-        center: Point,
+        center: Point | None = None,
         rotation: float | None = None,
     ) -> Point:
         """Create a Point in user units already offset from page margins."""
+        if not xy:
+            return None
+        if not isinstance(xy, (Point, muPoint)):
+            raise TypeError(f"The value {xy} is a not a Point and cannot be converted.")
         margin_left = globals.margins.left
         margin_top = globals.margins.top
         # print(f'as_point() {margin_left=} {margin_top=} {x=} {y=}')
@@ -2691,8 +2710,28 @@ class BaseShape:
         ypt = round(xy.y / units - margin_top, 10)
         return Point(xpt, ypt)
 
-    def _p2v(self, value: float, decimals: int = 4):
-        """Convert point value to a rounded, units-based value using user units."""
+    def _commons(self, prop: str) -> object:
+        """re"""
+        if self.common:
+            return vars(self.common).get(prop)
+
+    def _v2p(self, value: Point, margin_offset: bool = True) -> Point:
+        """Convert Point value using user units to a Point using points units."""
+        margin_left, margin_top = 0.0, 0.0
+        if margin_offset:
+            margin_left = globals.margins.left
+            margin_top = globals.margins.top
+        try:
+            return Point(
+                float(value.x) * self.units + margin_left,
+                float(value.y) * self.units + margin_top,
+            )
+        except Exception as err:
+            log.exception(err)
+            feedback(f'Unable to convert value "{value}" to points!', True)
+
+    def _p2v(self, value: float, decimals: int = 4) -> float:
+        """Convert value in points to a rounded, units-based value using user units."""
         try:
             return round(float(value) / self.units, decimals)
         except Exception as err:
@@ -2702,11 +2741,13 @@ class BaseShape:
                 True,
             )
 
-    def _l2v(self, values: list, decimals: int = 4, margin_offset: bool = False):
-        """Convert Points list to rounded, units-based values using user units.
+    def _l2v(
+        self, values: list, decimals: int = 4, margin_offset: bool = False
+    ) -> list:
+        """Convert Points list to rounded, units-based values list using user units.
 
         Args:
-            values: list of Points to be convetrted
+            values: list of Points to be converted
             decimals: number of decimals to be rounded
             margin_offset: if True, values should be offset from page margins
         """

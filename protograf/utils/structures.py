@@ -21,13 +21,34 @@ log = logging.getLogger(__name__)
 # ---- ENUM
 
 
+class AbstractBoardType(Enum):
+    """Constants for each type of Abstract board"""
+
+    GRID = 1
+    HEXAGONAL = 2
+    TRIANGULAR = 3
+
+
 class CardFrame(Enum):
+    """Constants for types of Card frames"""
+
     RECTANGLE = 1
     HEXAGON = 2
     CIRCLE = 3
 
 
+class Corner(Enum):
+    """Constants for each corner of an area"""
+
+    TOP_LEFT = 1
+    TOP_RIGHT = 2
+    BOTTOM_LEFT = 3
+    BOTTOM_RIGHT = 4
+
+
 class DatasetType(Enum):
+    """Constants for allowed sources of data"""
+
     FILE = 1
     DICT = 2
     MATRIX = 3
@@ -36,6 +57,8 @@ class DatasetType(Enum):
 
 
 class DirectionGroup(Enum):
+    """Constants for groups of directions"""
+
     CARDINAL = 1
     COMPASS = 2
     HEX_FLAT = 3  # vertex
@@ -52,12 +75,16 @@ class DirectionGroup(Enum):
 
 
 class ExportFormat(Enum):
+    """Constants for file type being exported"""
+
     GIF = 1
     PNG = 2
     SVG = 3
 
 
 class FontStyleType(Enum):
+    """Constants for styles of a Font"""
+
     REGULAR = 1
     BOLD = 2
     ITALIC = 3
@@ -65,11 +92,22 @@ class FontStyleType(Enum):
 
 
 class HexOrientation(Enum):
+    """Constants for hexagon's upwards orientation"""
+
     FLAT = 1
     POINTY = 2
 
 
+class HexOrientationName(Enum):
+    """Constants for  hexagon's upwards orientation name"""
+
+    FLAT = "flat"
+    POINTY = "pointy"
+
+
 class TriangleType(Enum):
+    """Constants for types of a Triangle"""
+
     EQUILATERAL = 1
     ISOSCELES = 2
     IRREGULAR = 3
@@ -204,6 +242,7 @@ PageMarginsBase = namedtuple(
 
 
 class PageMargins(PageMarginsBase):
+    """Page margin's in Points."""
 
     @property
     def left_u(self):
@@ -292,7 +331,46 @@ UnitProperties = namedtuple(
     ],
 )
 
+# ---- Parent DATACLASS
+
+
+@dataclass
+class BBox:
+    """Spatial bounding box.
+
+    Properties:
+
+    - `tl` is minimum x,y point
+    - `br` is maximum x,y point
+
+    Notes:
+        * Y-values start at top-left of co-ordinate system
+    """
+
+    tl: Point
+    br: Point
+
+    @property
+    def height(self):
+        """Height of Bounding Box."""
+        return self.br.y - self.tl.y
+
+    @property
+    def width(self):
+        """Width of Bounding Box."""
+        return self.br.x - self.tl.x
+
+
 # ---- NAMEDTUPLE CLASS
+
+
+class AbstractPiece(NamedTuple):
+    """Attributes for tracking and displaying a piece for an AbstractGame"""
+
+    col: int | None = None
+    row: int | None = None
+    name: str | None = None
+    shape: object | None = None
 
 
 class CardBleed(NamedTuple):
@@ -353,18 +431,23 @@ class ShapeGeometry(NamedTuple):
     vertices: list | None = None
     p: Point | None = None
     perbii: list | None = None
+    bbox: BBox | None = None
     # lengths
     radius: float | None = None
+    r: float | None = None  # alias for radius
     diameter: float | None = None
     side: float | None = None
     length: float | None = None
     width: float | None = None
+    wd: float | None = None  # alias for width
     height: float | None = None
+    ht: float | None = None  # alias for height
     perimeter: float | None = None
     # other
     area: float | None = None
     sides: int | None = None  # e.g. for a regular Polygon
     # meta
+    blank: bool = False  # signals "no Shape drawn here"
     t: str | None = None
     type: str | None = None
     shapetype: str | None = None
@@ -389,6 +472,7 @@ class Locale(NamedTuple):
     width: float | None = None
     radius: float | None = None
     side: float | None = None
+    is_blank: bool = False
     id: int | None = None
     sequence: int | None = None
     corner: bool = False
@@ -396,32 +480,7 @@ class Locale(NamedTuple):
     page: int | None = None
 
 
-# ---- DATACLASS
-
-
-@dataclass
-class BBox:
-    """Spatial bounding box.
-
-    Properties:
-
-    - `tl` is minimum x,y point
-    - `br` is maximum x,y point
-
-    Notes:
-        * Y-values start at top-left of co-ordinate system
-    """
-
-    tl: Point
-    br: Point
-
-    @property
-    def height(self):
-        return self.br.y - self.tl.y
-
-    @property
-    def width(self):
-        return self.br.x - self.tl.x
+# ---- DATACLASSES
 
 
 @dataclass
@@ -433,6 +492,7 @@ class DocumentPage:
     height: float  # user units
     fill: tuple | None  # color (RGB/CYMK); "white"
     grid: float  # grid interval in user units
+    grid_dark: float  # dark grid interval in user units
     current: int  # current page number (from 0 on)
     gallery: tuple = (MAXIMUM_PAGE_WIDTH, MAXIMUM_PAGE_HEIGHT)  # maximum extent in pts
 

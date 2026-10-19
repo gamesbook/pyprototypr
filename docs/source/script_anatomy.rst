@@ -109,8 +109,11 @@ To customise the command, set its properties as follows:
 - **margin_right** - set the the right margin
 - **margin_debug** - set to ``True`` to show the margin as a dotted blue line
 - **page_grid** - if set to a number, will display a squared grid of thin
-  horizontal and vertical lines, set a distance "unit" apart |dash| where the distance depends on the
-  current *units*
+  horizontal and vertical lines, set a distance "unit" apart |dash| where the
+  distance depends on the current *units*
+- **page_grid_dark** - if set to a number, will display a squared grid of
+  thick horizontal and vertical lines, set a distance "unit" apart |dash|
+  where the distance depends on the current *units*
 - **units** - these can be ``cm`` (centimetres), ``in`` (inches), ``mm``
   (millimetres), or ``points``; the default is ``cm``
 
@@ -141,8 +144,9 @@ Example 2. Grid and Margin Display
 
 ===== ======
 |cr1| Here is an example of a customised ``Create`` command, for an A8-sized
-      page in portrait mode, with margins being 0.5 cm each. A grid of 0.5 cm
-      is displayed and the margins are shown as dotted lines.
+      page in portrait mode, with margins being 0.5 cm each. A thin grid with
+      a spacing of 0.25 cm and a thicker/darker grid with a spacing of 1.0 cm
+      are both displayed, and the margins are shown as dotted lines.
 
       This type of setup is useful when working on a design but is typically
       not shown as part of a final product.
@@ -153,7 +157,9 @@ Example 2. Grid and Margin Display
             filename="blank.pdf",
             paper='A8',
             margin=0.5,
-            page_grid=0.5,
+            stroke_width=0.5,
+            page_grid=0.25,
+            page_grid_dark=1,
             margin_debug=True,
         )
 
@@ -364,10 +370,10 @@ sets of shapes, or to control how and where sets of shapes appear on a page.
 See:
 
 - :doc:`Core Shapes <core_shapes>`
-- :doc:`Object commands (specialised shapes) <objects>`
+- :doc:`Object commands (specialised shapes) <objects/index>`
 - :doc:`Deck and Card commands <card_decks>`
 - :doc:`Further script commands <additional_commands>`
-- :doc:`Layout <layouts>` commands
+- :doc:`Layout <layouts/index>` commands
 - :doc:`Hexagonal Grid <hexagonal_grids>` commands
 
 
@@ -483,7 +489,7 @@ The other way that elements can be laid out on a page is through a
 **grid layout** which can be derived from a built-in shape such ``Hexagons``
 or constructed using a defined set of properties.
 
-These are all described in the :doc:`Layouts <layouts>` section.
+These are all described in the :doc:`Layouts <layouts/index>` section.
 
 There is also a separate section on :doc:`Hexagonal Grids <hexagonal_grids>`
 which describes the variety of these types of grids, as well as some options
@@ -533,8 +539,8 @@ some occasions when you will see a feedback or warning message of some kind.
 
        WARNING:: Track needs at least one Shape assigned to shapes list
 
-  This is not an error, but does act as a reminder about what might still
-  be needed.
+   This is not an error, but does act as a reminder about what might still
+   be needed.
 6. **Missing part of template data** - these warnings can be issued when
    part of the data for a card's  :ref:`Template <the-template-command>` is
    missing or blank; for example, some cards may have images and some not, and

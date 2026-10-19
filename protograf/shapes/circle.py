@@ -1,0 +1,947 @@
+# -*- coding: utf-8 -*-
+"""
+Create Circle shape for protograf
+"""
+
+# lib
+from functools import cached_property, lru_cache
+import logging
+import math
+
+# third party
+from pymupdf import Point as muPoint
+
+# local
+from protograf import globals
+from protograf.shapes.utils import draw_line
+from protograf.utils import colrs, geoms, tools, support
+from protograf.utils.tools import _lower
+from protograf.utils.messaging import feedback
+from protograf.utils.structures import (
+    BBox,
+    ClockGeometry,
+    DirectionGroup,
+    Point,
+    Radius,
+    ShapeGeometry,
+)  # named tuples
+from protograf.base import BaseShape
+
+log = logging.getLogger(__name__)
+DEBUG = False
+
+
+class CircleShape(BaseShape):
+    """
+    Circle on a given canvas.
+    """
+
+    def __init__(self, _object=None, canvas=None, **kwargs):
+        super().__init__(_object=_object, canvas=canvas, **kwargs)
+        # ---- class vars
+        self.calculated_left, self.calculated_top = None, None
+        self.grid = None
+        self.coord_text = None
+        # ---- perform overrides
+        self.radius = self.radius or self.diameter / 2.0
+        if self.cx is not None and self.cy is not None:
+            self.x = self.cx - self.radius
+            self.y = self.cy - self.radius
+        else:
+            self.cx = self.x + self.radius
+            self.cy = self.y + self.radius
+        self.width = 2.0 * self.radius
+        self.height = 2.0 * self.radius
+        self.bbox = None
+        # ---- RESET UNIT PROPS (last!)
+        self.set_unit_properties()
+
+    @property
+    def clock(self) -> ShapeGeometry:
+        """Clock locations on Circle in user units."""
+        return ClockGeometry(
+            h1=self.poc(60),
+            h2=self.poc(30),
+            h3=self.poc(360),
+            h4=self.poc(330),
+            h5=self.poc(300),
+            h6=self.poc(270),
+            h7=self.poc(240),
+            h8=self.poc(210),
+            h9=self.poc(180),
+            h10=self.poc(150),
+            h11=self.poc(120),
+            h12=self.poc(90),
+        )
+
+    @property
+    def geo(self) -> ShapeGeometry:
+        """Geometry of Circle in user units."""
+        _type = type(self)
+        cntr = self._shape_centre
+        cntr_u = self.as_point(cntr, self.units, cntr, self.rotation)  # user units
+        perim = self.points_to_value(math.pi * 2.0 * self._u.radius)
+        radius = self.points_to_value(self._u.radius)
+        area = math.pi * self.points_to_value(self._u.radius) ** 2
+        bbox = BBox(
+            tl=Point(cntr_u.x - radius, cntr_u.y - radius),
+            br=Point(cntr_u.x + radius, cntr_u.y + radius),
+        )
+        return ShapeGeometry(
+            # centre
+            centre=cntr_u,
+            center=cntr_u,
+            c=cntr_u,
+            # compass
+            n=self.poc(90),
+            s=self.poc(270),
+            e=self.poc(0),
+            w=self.poc(180),
+            ne=self.poc(45),
+            se=self.poc(315),
+            sw=self.poc(225),
+            nw=self.poc(135),
+            nnw=self.poc(112.5),
+            nne=self.poc(67.5),
+            sse=self.poc(292.5),
+            ssw=self.poc(247.5),
+            wnw=self.poc(157.5),
+            ene=self.poc(22.5),
+            ese=self.poc(337.5),
+            wsw=self.poc(202.5),
+            # length
+            perimeter=perim,
+            radius=radius,
+            r=radius,
+            diameter=2 * radius,
+            # other
+            bbox=bbox,
+            area=area,
+            sides=1,
+            # meta
+            t=_type,
+            type=_type,
+            shapetype=_type,
+            name=self.simple_name(self),
+        )
+
+    @property
+    def geometry(self) -> ShapeGeometry:
+        """Geometry of Circle - alias for geo."""
+        return self.geo
+
+    @lru_cache(maxsize=360)
+    def poc(self, angle: float) -> Point:
+        """Return Point on the Circle at a given angle - in user units."""
+        _pt = geoms.point_on_circle(self._shape_centre, self._u.radius, angle)
+        return self.as_point(_pt, self.units, self._shape_centre, self.rotation)
+
+    @cached_property
+    def _shape_radius(self) -> float:
+        """Circle radius length"""
+        return self._u.radius
+
+    @property  # do NOT cache because centre needs to be changed!
+    def _shape_centre(self) -> Point:
+        """Circle centre in points."""
+        if self.use_abs_c:
+            self.x_c = self._abs_cx
+            self.y_c = self._abs_cy
+        else:
+            self.x_c = self._u.cx + self._o.delta_x
+            self.y_c = self._u.cy + self._o.delta_y
+        return Point(self.x_c, self.y_c)
+
+    @cached_property
+    def _shape_area(self) -> float:
+        """Circle area in points."""
+        return math.pi * self._u.radius * self._u.radius
+
+    @cached_property
+    def _shape_perimeter(self) -> float:
+        """Circle circumference length in points."""
+        length = math.pi * 2.0 * self._u.radius
+        return length
+
+    def calculate_radii(
+        self, cnv, centre: Point, vertices: list, debug: bool = False
+    ) -> dict:
+        """Calculate radii for each Circle vertex and angles from centre.
+
+        Args:
+            vertices: list of Circle nodes as Points
+            centre: the centre Point of the Circle
+
+        Returns:
+            dict of Radius objects keyed on order of vertices
+        """
+        radii_dict = {}
+        # print(f"*** CIRC radii {centre=} {vertices=}")
+        for key, vertex in enumerate(vertices):
+            compass, angle = geoms.angles_from_points(centre, vertex)
+            mirror_angle = 360 - angle  # inverse flip (y is reversed)
+            _radii = Radius(
+                point=vertex,
+                direction=mirror_angle,
+                compass=compass,
+                angle=mirror_angle,
+            )
+            # print(f"*** CIRC radii {_radii}")
+            radii_dict[key + 1] = _radii
+        return radii_dict
+
+    def draw_hatches(
+        self, cnv, ID, num: int, x_c: float, y_c: float, rotation: float = 0.0
+    ):
+        """Draw parallel line(s) across the Circle
+
+        Args:
+            num: number of lines
+            x_c: x-centre of circle
+            y_c: y-centre of circle
+            rotation: degrees anti-clockwise from horizontal "east"
+        """
+
+        def draw_lines(_dirs, lines):
+            """Draw lines for a given direction."""
+            partial = lines // 2
+            dist = (self._u.radius * 2.0) / (lines + 1)
+            num = lines
+            # calculate relative distances for each line - (x, y) tuples
+            vertical_distances, horizontal_distances = [], []
+            for line_no in range(1, partial + 1):
+                if lines & 1:
+                    dist_h = dist * line_no
+                else:
+                    dist_h = dist * 0.5 if line_no == 1 else dist * line_no - dist * 0.5
+                dist_v = math.sqrt(self._u.radius * self._u.radius - dist_h * dist_h)
+                vertical_distances.append((dist_h, dist_v))
+                horizontal_distances.append((dist_v, dist_h))
+
+            if num >= 1 and lines & 1:  # is odd - draw centre lines
+                if "e" in _dirs or "w" in _dirs or "o" in _dirs:  # horizontal
+                    cnv.draw_line(
+                        Point(x_c + self._u.radius, y_c),
+                        Point(x_c - self._u.radius, y_c),
+                    )
+                if "n" in _dirs or "s" in _dirs or "o" in _dirs:  # vertical
+                    cnv.draw_line(
+                        Point(x_c, y_c + self._u.radius),
+                        Point(x_c, y_c - self._u.radius),
+                    )
+                if "se" in _dirs or "nw" in _dirs or "d" in _dirs:  # diagonal  "down"
+                    poc_top_d = geoms.point_on_circle(
+                        Point(x_c, y_c), self._u.radius, 135
+                    )
+                    poc_btm_d = geoms.point_on_circle(
+                        Point(x_c, y_c), self._u.radius, 315
+                    )
+                    cnv.draw_line(poc_top_d, poc_btm_d)
+                if "ne" in _dirs or "sw" in _dirs or "d" in _dirs:  # diagonal  "up"
+                    poc_top_u = geoms.point_on_circle(
+                        Point(x_c, y_c), self._u.radius, 45
+                    )
+                    poc_btm_u = geoms.point_on_circle(
+                        Point(x_c, y_c), self._u.radius, 225
+                    )
+                    cnv.draw_line(poc_top_u, poc_btm_u)
+
+            if num <= 1:
+                return
+
+            if "e" in _dirs or "w" in _dirs or "o" in _dirs:  # horizontal
+                for dist in horizontal_distances:
+                    cnv.draw_line(  # "above" diameter
+                        Point(x_c - dist[0], y_c + dist[1]),
+                        Point(x_c + dist[0], y_c + dist[1]),
+                    )
+                    cnv.draw_line(  # "below" diameter
+                        Point(x_c - dist[0], y_c - dist[1]),
+                        Point(x_c + dist[0], y_c - dist[1]),
+                    )
+
+            if "n" in _dirs or "s" in _dirs or "o" in _dirs:  # vertical
+                for dist in vertical_distances:
+                    cnv.draw_line(  # "right" of diameter
+                        Point(x_c + dist[0], y_c + dist[1]),
+                        Point(x_c + dist[0], y_c - dist[1]),
+                    )
+                    cnv.draw_line(  # "left" of diameter
+                        Point(x_c - dist[0], y_c + dist[1]),
+                        Point(x_c - dist[0], y_c - dist[1]),
+                    )
+
+            if "se" in _dirs or "nw" in _dirs or "d" in _dirs:  # diagonal  "down"
+                for dist in horizontal_distances:
+                    _angle = math.degrees(math.asin(dist[0] / self._u.radius))
+                    # "above right" of diameter
+                    dal = geoms.point_on_circle(
+                        Point(x_c, y_c), self._u.radius, 45.0 + _angle
+                    )
+                    dar = geoms.point_on_circle(
+                        Point(x_c, y_c), self._u.radius, 45.0 - _angle
+                    )  # + 45.)
+                    cnv.draw_line(dar, dal)
+                    # "below left" of diameter
+                    dbl = geoms.point_on_circle(
+                        Point(x_c, y_c), self._u.radius, 225.0 - _angle
+                    )
+                    dbr = geoms.point_on_circle(
+                        Point(x_c, y_c), self._u.radius, 225.0 + _angle
+                    )
+                    cnv.draw_line(dbr, dbl)
+                    # TEST cnv.circle(dal.x, dal.y, 2, stroke=1, fill=1 if self.fill else 0)
+
+            if "ne" in _dirs or "sw" in _dirs or "d" in _dirs:  # diagonal  "up"
+                for dist in vertical_distances:
+                    _angle = math.degrees(math.asin(dist[0] / self._u.radius))
+                    # "above left" of diameter
+                    poc_top = geoms.point_on_circle(
+                        Point(x_c, y_c), self._u.radius, _angle + 45.0
+                    )
+                    poc_btm = geoms.point_on_circle(
+                        Point(x_c, y_c), self._u.radius, 180.0 - _angle + 45.0
+                    )
+                    cnv.draw_line(poc_top, poc_btm)
+                    # "below right" of diameter
+                    poc_top = geoms.point_on_circle(
+                        Point(x_c, y_c), self._u.radius, 45 - _angle
+                    )
+                    poc_btm = geoms.point_on_circle(
+                        Point(x_c, y_c), self._u.radius, 180.0 + _angle + 45.0
+                    )
+                    cnv.draw_line(poc_top, poc_btm)
+
+        # ---- variable hatches
+        if isinstance(self.hatches, list):
+            for item in self.hatches:
+                if not isinstance(item, tuple) and len(item) < 2:
+                    feedback(
+                        "Circle hatches list must consist of (direction, count) values",
+                        True,
+                    )
+                _dirs = tools.validated_directions(
+                    item[0], DirectionGroup.CIRCULAR, "circle hatches"
+                )
+                lines = tools.as_int(item[1], label="hatch count", minimum=1)
+                draw_lines(_dirs, lines)
+        # ---- common hatches
+        else:
+            _dirs = tools.validated_directions(
+                self.hatches, DirectionGroup.CIRCULAR, "circle hatches"
+            )
+            lines = tools.as_int(num, "hatches_count", minimum=1)
+            draw_lines(_dirs, lines)
+
+        # ---- set canvas
+        self.set_canvas_props(
+            index=ID,
+            stroke=self.hatches_stroke,
+            stroke_width=self.hatches_stroke_width,
+            stroke_ends=self.hatches_ends,
+            dashed=self.hatches_dashed,
+            dotted=self.hatches_dotted,
+            rotation=rotation,
+            rotation_point=muPoint(x_c, y_c),
+        )
+
+    def draw_nested(self, cnv, ID, x_c: float, y_c: float, **kwargs):
+        """Draw concentric circles from the circumference inwards."""
+        if self.nested:
+            intervals = []
+            if isinstance(self.nested, int):
+                if self.nested <= 0:
+                    feedback("The nested value must be greater than zero!", True)
+                interval_size = 1.0 / (self.nested + 1.0)
+                for item in range(1, self.nested + 1):
+                    intervals.append(interval_size * item)
+            elif isinstance(self.nested, list):
+                intervals = [
+                    tools.as_float(item, "a nested fraction") for item in self.nested
+                ]
+                for inter in intervals:
+                    if inter < 0 or inter >= 1:
+                        feedback("The nested list values must be fractions!", True)
+            else:
+                feedback(
+                    "The nested value must either be a whole number"
+                    " or a list of fractions.",
+                    True,
+                )
+            if intervals:
+                intervals.sort(reverse=True)
+                # print(f'*** nested {intervals=}')
+                for inter in intervals:
+                    cnv.draw_circle((x_c, y_c), self._u.radius * inter)
+                    self.set_canvas_props(cnv=cnv, index=ID, **kwargs)
+
+    def draw_radii(self, cnv, ID, x_c: float, y_c: float):
+        """Draw radius lines from the centre outwards to the circumference.
+
+        The offset will start the line a certain distance away; and the length will
+        determine how long the radial line is.  By default it stretches from centre
+        to circumference.
+
+        Args:
+            x_c: x-centre of circle
+            y_c: y-centre of circle
+        """
+        if self.radii:
+            try:
+                if isinstance(self.radii, str):
+                    radii_list = tools.sequence_split(
+                        self.radii, to_int=False, clean=True
+                    )
+                else:
+                    radii_list = self.radii
+                all_radii = [
+                    (
+                        geoms.compass_to_angle(angle)[1]
+                        if isinstance(angle, str)
+                        else angle
+                    )
+                    for angle in radii_list
+                ]
+                _radii = [
+                    float(angle) for angle in all_radii if angle >= 0 and angle <= 360
+                ]
+            except Exception:
+                feedback(
+                    f'The circle radii "{self.radii}" are not valid - '
+                    " must be a list of numbers from 0 to 360, or compass directions",
+                    True,
+                )
+            if self.radii_length and self.radii_offset:
+                outer_radius = self.radii_length + self.radii_offset
+            elif self.radii_length:
+                outer_radius = self.radii_length
+            else:
+                outer_radius = self.radius
+            radius_offset = self.unit(self.radii_offset) or None
+            radius_length = self.unit(outer_radius, label="radius length")
+            # print(f'*** {radius_length=} :: {radius_offset=} :: {outer_radius=}')
+            _radii_labels = [self.radii_labels]
+            if self.radii_labels:
+                if isinstance(self.radii_labels, list):
+                    _radii_labels = self.radii_labels
+                else:
+                    _radii_labels = tools.split(self.radii_labels)
+            _radii_strokes = [self.radii_stroke]  # could be color tuple (or str?)
+            if self.radii_stroke:
+                if isinstance(self.radii_stroke, list):
+                    _radii_strokes = self.radii_stroke
+                else:
+                    _radii_strokes = tools.split(self.radii_stroke, tuple_to_list=True)
+            # print(f'*** {_radii_labels=} {_radii_strokes=}')
+            label_key, stroke_key = 0, 0
+            label_points = []
+
+            # ---- set radii styles
+            lkwargs = {}
+            lkwargs["wave_style"] = self.kwargs.get("radii_wave_style", None)
+            lkwargs["wave_height"] = self.kwargs.get("radii_wave_height", 0)
+            for key, rad_angle in enumerate(_radii):
+                # points based on length of line, offset and the angle in degrees
+                diam_pt = geoms.point_on_circle(
+                    Point(x_c, y_c), radius_length, rad_angle
+                )
+                if radius_offset is not None and radius_offset != 0:
+                    # print(f'***{rad_angle=} {radius_offset=} {diam_pt} {x_c=} {y_c=}')
+                    offset_pt = geoms.point_on_circle(
+                        Point(x_c, y_c), radius_offset, rad_angle
+                    )
+                    end_pt = geoms.point_on_circle(
+                        Point(x_c, y_c), radius_length, rad_angle
+                    )
+                    x_start, y_start = offset_pt.x, offset_pt.y
+                    x_end, y_end = end_pt.x, end_pt.y
+                else:
+                    x_start, y_start = x_c, y_c
+                    x_end, y_end = diam_pt.x, diam_pt.y
+                # ---- track label points
+                label_points.append(
+                    (Point((x_start + x_end) / 2.0, (y_start + y_end) / 2.0), rad_angle)
+                )
+                # ---- draw a radii line
+                draw_line(
+                    cnv, (x_start, y_start), (x_end, y_end), shape=self, **lkwargs
+                )
+                # ---- style radii line
+                _radii_stroke = _radii_strokes[stroke_key]
+                self.set_canvas_props(
+                    index=ID,
+                    stroke=_radii_stroke,
+                    stroke_width=self.radii_stroke_width,
+                    stroke_ends=self.radii_ends,
+                    dashed=self.radii_dashed,
+                    dotted=self.radii_dotted,
+                )
+                stroke_key += 1
+                if stroke_key > len(_radii_strokes) - 1:
+                    stroke_key = 0
+            # ---- draw radii text labels
+            if self.radii_labels:
+                for label_point in label_points:
+                    self.radii_label = _radii_labels[label_key]
+                    # print(f'*** {label_point[1]=}  {self.radii_labels_rotation=}')
+                    self.draw_radii_label(
+                        cnv,
+                        ID,
+                        label_point[0].x,
+                        label_point[0].y,
+                        rotation=label_point[1] + self.radii_labels_rotation,
+                        centred=False,
+                    )
+                    label_key += 1
+                    if label_key > len(_radii_labels) - 1:
+                        label_key = 0
+
+    def draw_petals(self, cnv, ID, x_c: float, y_c: float):
+        """Draw "petals" going outwards from the circumference.
+
+        The offset will start the petals a certain distance away; and the height
+        will determine the size of their peaks. Odd number of petals will have
+        the first one's point aligned with north direction; an even number will
+        have the "valley" aligned with the northern most point of the circle.
+
+        Args:
+            x_c: x-centre of circle
+            y_c: y-centre of circle
+        """
+        if self.petals:
+            center = Point(x_c, y_c)
+            gap = 360.0 / self.petals
+            shift = gap / 2.0 if self.petals & 1 else 0
+            offset = self.unit(self.petals_offset, label="petals offset")
+            height = self.unit(self.petals_height, label="petals height")
+            petals_vertices = []
+            # ---- calculate points
+            angles = support.steps(90 - shift, 450 - shift, gap)
+            # print(f' ^ {self.petals=} {angles=}')
+            for index, angle in enumerate(angles):
+                _angle = angle
+                angle = _angle - 360.0 if _angle > 360.0 else _angle
+                if index == 0:
+                    start_angle = angle
+                else:
+                    if round(start_angle, 3) == round(angle, 3):
+                        break  # avoid a repeat
+                petals_style = _lower(self.petals_style)
+                if petals_style not in ["triangle", "t"]:
+                    if len(angles) < self.petals + 1:
+                        angles.append(angles[-1] + gap)
+                match petals_style:
+                    case "triangle" | "t":
+                        petals_vertices.append(
+                            geoms.point_on_circle(
+                                center,
+                                self._u.radius + offset + height,
+                                angle - gap / 2.0,
+                            )
+                        )
+                        petals_vertices.append(
+                            geoms.point_on_circle(
+                                center, self._u.radius + offset, angle
+                            )
+                        )
+                    case "petal" | "p":
+                        # first half
+                        pt1 = geoms.point_on_circle(
+                            center,
+                            self._u.radius + offset,
+                            angle - gap / 2.0,
+                        )
+                        pt2 = geoms.point_on_circle(
+                            center,
+                            self._u.radius + offset + height,
+                            angle - gap / 2.0,
+                        )
+                        pt3 = geoms.point_on_circle(
+                            center,
+                            self._u.radius + offset + height,
+                            angle,
+                        )
+                        petals_vertices.append((pt1, pt2, pt3))
+                        # second half
+                        pt1 = geoms.point_on_circle(
+                            center,
+                            self._u.radius + offset + height,
+                            angle,
+                        )
+                        pt2 = geoms.point_on_circle(
+                            center,
+                            self._u.radius + offset + height,
+                            angle + gap / 2.0,
+                        )
+                        pt3 = geoms.point_on_circle(
+                            center,
+                            self._u.radius + offset,
+                            angle + gap / 2.0,
+                        )
+                        petals_vertices.append((pt1, pt2, pt3))
+                    case "sun" | "s":
+                        # first half
+                        pt1 = geoms.point_on_circle(
+                            center,
+                            self._u.radius + offset,
+                            angle,
+                        )
+                        pt2 = geoms.point_on_circle(
+                            center, self._u.radius + offset, angle - gap / 2.0
+                        )
+                        pt3 = geoms.point_on_circle(
+                            center,
+                            self._u.radius + offset + height,
+                            angle - gap / 2.0,
+                        )
+                        petals_vertices.append((pt1, pt2, pt3))
+                        # second half
+                        pt1 = geoms.point_on_circle(
+                            center,
+                            self._u.radius + offset + height,
+                            angle - gap / 2.0,
+                        )
+                        pt2 = geoms.point_on_circle(
+                            center, self._u.radius + offset, angle - gap / 2.0
+                        )
+                        pt3 = geoms.point_on_circle(
+                            center,
+                            self._u.radius + offset,
+                            angle - gap,
+                        )
+                        petals_vertices.append((pt1, pt2, pt3))
+                    case _:
+                        feedback(f'Unknown petals_style "{self.petals_style}"', True)
+
+            # ---- draw and fill
+            match self.petals_style:
+                case "triangle" | "t":
+                    petals_vertices.append(petals_vertices[0])
+                    for key, vertex in enumerate(petals_vertices):
+                        if key == len(petals_vertices) - 1:
+                            continue
+                        cnv.draw_line(
+                            (vertex.x, vertex.y),
+                            (petals_vertices[key + 1].x, petals_vertices[key + 1].y),
+                        )
+                case "petal" | "p":
+                    for key, vertex in enumerate(petals_vertices):
+                        # if key == 0:
+                        #     continue  # already have a "start" location on path
+                        cnv.draw_curve(  # was curveTo
+                            (vertex[0].x, vertex[0].y),
+                            (vertex[1].x, vertex[1].y),
+                            (vertex[2].x, vertex[2].y),
+                        )
+                case "sun" | "s":
+                    for key, vertex in enumerate(petals_vertices):
+                        # if key == 0:
+                        #     continue  # already have a "start" location on path
+                        cnv.draw_curve(  # was curveTo
+                            (vertex[0].x, vertex[0].y),
+                            (vertex[1].x, vertex[1].y),
+                            (vertex[2].x, vertex[2].y),
+                        )
+                case _:
+                    feedback(f'Unknown petals_style "{self.petals_style}"', True)
+
+            self.set_canvas_props(
+                index=ID,
+                fill=self.petals_fill,
+                stroke=self.petals_stroke,
+                stroke_width=self.petals_stroke_width,
+                stroke_ends=self.petals_ends,
+                dashed=self.petals_dashed,
+                dotted=self.petals_dotted,
+            )
+
+            # ---- draw 'fill' circles
+            cnv.draw_circle(center, self._u.radius + offset)
+            _color = self.petals_fill or self.fill
+            self.set_canvas_props(
+                index=ID,
+                fill=_color,
+                stroke=_color,
+                stroke_width=0.001,
+                dashed=None,
+                dotted=None,
+            )
+
+    def draw_slices(
+        self, cnv, ID: int, centre: Point, radius: float, rotation: float = 0
+    ):
+        """Draw pie-shaped slices inside the Circle
+
+        Args:
+            ID: unique ID
+            centre: Point at centre of circle
+            radius: length of circle's radius
+            rotation: degrees anti-clockwise from horizontal "east"
+
+        """
+        # ---- get slices color list from string
+        if isinstance(self.slices, str):
+            _slices = tools.split(self.slices.strip())
+        else:
+            _slices = self.slices
+        # ---- validate slices color settings
+        if not isinstance(_slices, list):
+            feedback("Slices must be a list of colors", True)
+        # ---- get slices fractions list from string
+        if isinstance(self.slices_fractions, str):
+            _slices_frac = tools.split(self.slices_fractions.strip())
+        else:
+            _slices_frac = self.slices_fractions or [1] * len(_slices)
+        # ---- validate slices fractions values
+        for _frac in _slices_frac:
+            _frac = _frac or 1
+            if not isinstance(_frac, (float, int)):
+                feedback("The slices_fractions must be a list of values.", True)
+        if len(_slices_frac) != len(_slices):
+            feedback(
+                "The number of slices_fractions must match number of colors.", True
+            )
+        # ---- get slices_angles list from string
+        if isinstance(self.slices_angles, str):
+            _slices_ang = tools.split(self.slices_angles.strip())
+        else:  # degrees "size" of slice
+            _slices_ang = self.slices_angles or [360.0 / len(_slices)] * len(_slices)
+        # ---- validate slices anfle values
+        for _frac in _slices_ang:
+            _frac = _frac or 0
+            if not isinstance(_frac, (float, int)):
+                feedback("The slices_angles must be a list of values.", True)
+        if len(_slices_ang) != len(_slices):
+            feedback("The number of slices_angles must match number of colors.", True)
+        if sum(_slices_ang) > 360.0:
+            feedback("The sum of the slices_angles cannot exceed 360 (degrees).", True)
+        slices_colors = [colrs.get_color(slcolor) for slcolor in _slices]
+        # ---- draw sectors
+        angle = 0.0 + rotation
+        for idx, _color in enumerate(slices_colors):
+            radius_frac = radius * (_slices_frac[idx] or 1)
+            slice_angle = _slices_ang[idx]
+            start = geoms.point_on_circle(centre, radius_frac, angle)
+            if _color:
+                cnv.draw_sector(centre, start, slice_angle, fullSector=True)
+                self.set_canvas_props(
+                    index=ID,
+                    fill=_color,
+                    transparency=self.slices_transparency,
+                    stroke=_color,
+                    stroke_width=0.001,
+                    dashed=None,
+                    dotted=None,
+                )
+            angle += slice_angle
+
+    def draw(self, cnv=None, off_x=0, off_y=0, ID=None, **kwargs):
+        """Draw circle on a given canvas."""
+        kwargs = self.kwargs | kwargs
+        _ = kwargs.pop("ID", None)
+        # feedback(f'@@@ Circ. draw() {kwargs=}')
+        cnv = cnv if cnv else globals.canvas  # a new Page/Shape may now exist
+        super().draw(cnv, off_x, off_y, ID, **kwargs)  # unit-based props
+        is_cards = kwargs.get("is_cards", False)
+        # ---- set centre & area
+        ccentre = self._shape_centre  # self.x_c, self.y_c
+        x, y = ccentre.x, ccentre.y
+        # ---- bleed adjust
+        bleed_radius = self.unit(kwargs.get("bleed_radius", 0.0))
+        # ---- draw by row/col
+        if self.row is not None and self.col is not None and is_cards:
+            if self.kwargs.get("grouping_cols", 1) == 1:
+                x = (
+                    self.col
+                    * (self._u.radius * 2.0 + self._u.spacing_x - 2 * bleed_radius)
+                    + self._o.delta_x
+                    + self._u.radius
+                    + self._u.offset_x
+                ) - bleed_radius
+            else:
+                group_no = self.col // self.kwargs["grouping_cols"]
+                x = (
+                    self.col * self._u.radius * 2.0
+                    + self._u.spacing_x * group_no
+                    + self._o.delta_x
+                    + self._u.radius
+                    + self._u.offset_x
+                )
+            if self.kwargs.get("grouping_rows", 1) == 1:
+                y = (
+                    self.row
+                    * (self._u.radius * 2.0 + self._u.spacing_y - 2 * bleed_radius)
+                    + self._o.delta_y
+                    + self._u.radius
+                    + self._u.offset_y
+                ) - bleed_radius
+            else:
+                group_no = self.row // self.kwargs["grouping_rows"]
+                y = (
+                    self.row * self._u.radius * 2.0
+                    + self._u.spacing_y * group_no
+                    + self._o.delta_y
+                    + self._u.radius
+                    + self._u.offset_y
+                )
+            self.x_c, self.y_c = x, y
+            self.bbox = BBox(
+                tl=Point(self.x_c - self._u.radius, self.y_c - self._u.radius),
+                br=Point(self.x_c + self._u.radius, self.y_c + self._u.radius),
+            )
+        # ---- handle rotation
+        rotation = kwargs.get("rotation", self.rotation)
+        if rotation:
+            self.centroid = muPoint(x, y)
+            kwargs["rotation"] = tools.as_float(rotation, "rotation")
+            kwargs["rotation_point"] = self.centroid
+        else:
+            kwargs["rotation"] = 0
+        # feedback(f'*** Circle: {x=} {y=}')
+        # ---- determine ordering
+        base_ordering = [
+            "petals",
+            "base",
+            "nested",
+            "slices",
+            "hatches",
+            "radii",
+            "radii_shapes",
+            "centre_shape",
+            "centre_shapes",
+            "dot",
+            "cross",
+            "text",
+        ]
+        ordering = base_ordering
+        if self.order_all:
+            ordering = tools.list_ordering(base_ordering, self.order_all, only=True)
+        else:
+            if self.order_first:
+                ordering = tools.list_ordering(
+                    base_ordering, self.order_first, start=True
+                )
+            if self.order_last:
+                ordering = tools.list_ordering(base_ordering, self.order_last, end=True)
+        # feedback(f'*** Circle: {ordering=}')
+
+        # ---- draw in ORDER
+        for item in ordering:
+            if item == "petals":
+                # ---- * draw petals
+                if self.petals:
+                    self.draw_petals(cnv, ID, self.x_c, self.y_c)
+            if item == "base":
+                # ---- * draw circle
+                cnv.draw_circle((x, y), self._u.radius)
+                self.set_canvas_props(cnv=cnv, index=ID, **kwargs)
+            if item == "nested":
+                # ---- * draw nested
+                if self.nested:
+                    self.draw_nested(cnv, ID, x, y, **kwargs)
+            if item == "slices":
+                # ---- * draw slices
+                if self.slices:
+                    self.draw_slices(
+                        cnv,
+                        ID,
+                        Point(self.x_c, self.y_c),
+                        self._u.radius,
+                        rotation=kwargs["rotation"],
+                    )
+            if item == "hatches":
+                # ---- * draw hatches
+                if self.hatches_count or isinstance(self.hatches, list):
+                    self.draw_hatches(
+                        cnv,
+                        ID,
+                        self.hatches_count,
+                        self.x_c,
+                        self.y_c,
+                        rotation=kwargs["rotation"],
+                    )
+            if item == "radii":
+                # ---- * draw radii
+                if self.radii:
+                    self.draw_radii(cnv, ID, self.x_c, self.y_c)
+            if item == "radii_shapes":
+                # ---- * draw radii_shapes
+                if self.radii_shapes:
+                    self.draw_radii_shapes(
+                        cnv,
+                        self.radii_shapes,
+                        self.vertexes,
+                        Point(self.x_c, self.y_c),
+                        radius=self._u.radius,
+                        direction_group=DirectionGroup.CIRCULAR,
+                        rotation=kwargs["rotation"],
+                        rotated=self.radii_shapes_rotated,
+                    )
+            if item in ["centre_shape", "center_shape"]:
+                # ---- * centre shape (with offset)
+                if self.centre_shape:
+                    if self.can_draw_centred_shape(self.centre_shape):
+                        self.centre_shape.draw(
+                            _abs_cx=x + self.unit(self.centre_shape_mx),
+                            _abs_cy=y + self.unit(self.centre_shape_my),
+                        )
+            if item in ["centre_shapes", "center_shapes"]:
+                # ---- * centre shapes (with offsets)
+                if self.centre_shapes:
+                    self.draw_centred_shapes(self.centre_shapes, x, y)
+            if item == "cross":
+                # ---- * cross
+                self.draw_cross(
+                    cnv, self.x_c, self.y_c, rotation=kwargs.get("rotation")
+                )
+            if item == "dot":
+                # ---- * dot
+                self.draw_dot(cnv, self.x_c, self.y_c)
+            if item == "text":
+                # ---- * text
+                self.draw_heading(
+                    cnv, ID, self.x_c, self.y_c - self._u.radius, **kwargs
+                )
+                self.draw_label(cnv, ID, self.x_c, self.y_c, **kwargs)
+                self.draw_title(cnv, ID, self.x_c, self.y_c + self._u.radius, **kwargs)
+
+        # ---- grid marks
+        if self.grid_marks:  # and not kwargs.get("card_back", False):
+            # print(f'*** {self._u.radius=} {self._u.diameter=}')
+            deltag = self.unit(self.grid_marks_length)
+            gx, gy = 0, y - self._u.radius  # left-side
+            cnv.draw_line((gx, gy), (deltag, gy))
+            cnv.draw_line(
+                (0, gy + self._u.radius * 2.0), (deltag, gy + self._u.radius * 2.0)
+            )
+            gx, gy = x - self._u.radius, globals.page.size[1]  # top-side
+            cnv.draw_line((gx, gy), (gx, gy - deltag))
+            cnv.draw_line(
+                (gx + self._u.radius * 2.0, gy),
+                (gx + self._u.radius * 2.0, gy - deltag),
+            )
+            gx, gy = globals.page.size[0], y - self._u.radius  # right-side
+            cnv.draw_line((gx, gy), (gx - deltag, gy))
+            cnv.draw_line(
+                (gx, gy + self._u.radius * 2.0), (gx - deltag, gy + self._u.radius * 2)
+            )
+            gx, gy = x - self._u.radius, 0  # bottom-side
+            cnv.draw_line((gx, gy), (gx, gy + deltag))
+            cnv.draw_line(
+                (gx + self._u.radius * 2.0, gy),
+                (gx + self._u.radius * 2.0, gy + deltag),
+            )
+            # done
+            # gargs = kwargs
+            # gargs["stroke"] = self.grid_marks_stroke
+            # gargs["stroke_width"] = self.grid_marks_stroke_width
+            # self.set_canvas_props(cnv=cnv, index=ID, **gargs)
+            gargs = {}
+            gargs["stroke"] = self.grid_marks_stroke
+            gargs["stroke_width"] = self.grid_marks_stroke_width
+            gargs["dotted"] = self.grid_marks_dotted
+            self.set_canvas_props(cnv=None, index=ID, **gargs)
+        # ---- set calculated top-left in user units
+        self.calculated_left = (self.x_c - self._u.radius) / self.units
+        self.calculated_top = (self.y_c - self._u.radius) / self.units
+        # print(f'*** CIRCLE {self.x_c=} {self.y_c=}')
