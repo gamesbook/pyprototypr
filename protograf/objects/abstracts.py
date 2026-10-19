@@ -583,23 +583,26 @@ class AbstractGameObject(BaseShape):
 
         def hex_col_label():
             x, y = 0, 0
+            ajc = adjacent_cell
             match self.label_start:
                 case Corner.BOTTOM_RIGHT:
-                    x = adjacent_cell.sw.x
-                    y = adjacent_cell.s.y + shift * lbl_offset_col * 1.5
+                    tr = geoms.fraction_along_line(ajc.ne, ajc.n, 0.5)
+                    bl = geoms.fraction_along_line(ajc.s, ajc.sw, 0.5)
+                    distance = self.label_size / self.units * 1.0
+                    lbc = geoms.point_beyond_line(tr, bl, distance)
+                    x, y = lbc.x, lbc.y
                 case Corner.BOTTOM_LEFT:
-                    x = adjacent_cell.se.x
-                    y = adjacent_cell.s.y + shift * lbl_offset_col * 1.5
+                    tl = geoms.fraction_along_line(ajc.nw, ajc.n, 0.5)
+                    br = geoms.fraction_along_line(ajc.s, ajc.se, 0.5)
+                    distance = self.label_size / self.units * 1.0
+                    lbc = geoms.point_beyond_line(tl, br, distance)
+                    x, y = lbc.x, lbc.y
                 case Corner.TOP_RIGHT:
-                    x = adjacent_cell.nw.x + (
-                        adjacent_cell.n.x - adjacent_cell.nw.x
-                    ) * (1.0 / 3.0)
-                    y = adjacent_cell.n.y  # + shift * lbl_offset_col
+                    x = ajc.nw.x + (ajc.n.x - ajc.nw.x) * (1.0 / 3.0)
+                    y = ajc.n.y  # + shift * lbl_offset_col
                 case Corner.TOP_LEFT:
-                    x = adjacent_cell.ne.x - (
-                        adjacent_cell.ne.x - adjacent_cell.n.x
-                    ) * (1.0 / 3.0)
-                    y = adjacent_cell.n.y  # + shift * lbl_offset_col
+                    x = ajc.ne.x - (ajc.ne.x - ajc.n.x) * (1.0 / 3.0)
+                    y = ajc.n.y  # + shift * lbl_offset_col
                 case _:
                     raise NotImplementedError(
                         "Cannot process label_start of {self.label_start}"
@@ -700,7 +703,7 @@ class AbstractGameObject(BaseShape):
             elif self.board_type == AbstractBoardType.HEXAGONAL:
                 non_blank_col_no = 1  # do NOT label blank diagonals
                 for _, dcells in self.hexgrid_diagonals.items():
-                    # print(f'&&& {diagonal=} {non_blank_col_no=}')
+                    # print(f'&&& {dcells=} {non_blank_col_no=}')
                     for value in dcells:
                         col_no, row_no = value[0], value[1]
                         col_value = tools.as_excel(non_blank_col_no, self.label_lower)
@@ -708,6 +711,7 @@ class AbstractGameObject(BaseShape):
                         if not adjacent_cell.blank:
                             x, y = hex_col_label()
                             Text(col_value, x=x, y=y, **lkeys)
+                            # print(f'&&& {col_value=} {col_no=} {row_no=}')
                             non_blank_col_no += 1
                             break  # label done; next diagonal, please!
             # ---- tri column labels

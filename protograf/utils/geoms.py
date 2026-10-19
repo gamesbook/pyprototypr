@@ -435,6 +435,50 @@ def fraction_along_line(point_start: Point, point_end: Point, fraction: float) -
     return fraction_point
 
 
+def point_beyond_line(point_start: Point, point_end: Point, distance: float) -> Point:
+    """
+    Calculate new Point a specific distance beyond point_end in the same direction
+    as a line segment defined by end Points
+
+    Args:
+        point_start (Point):
+            coordinates of the first point (x1, y1)
+        point_end (Point):
+            coordinates of the second point (x2, y2)
+        distance (float):
+            The distance to extend past point_end
+
+    Returns:
+         Point: coordinates of the extended point (x3, y3)
+
+    Doc Test:
+    >>> point1 = Point(0, 0)
+    >>> point2 = Point(3, 4)
+    >>> point_beyond_line(point1, point2, 10)
+    Point(x=9.0, y=12.0)
+    """
+    x1, y1 = point_start
+    x2, y2 = point_end
+    # direction vector components
+    dx = x2 - x1
+    dy = y2 - y1
+    # total distance between points
+    line_len = math.hypot(dx, dy)
+    # edge case where point_start & point_end are the exact same
+    if line_len == 0:
+        raise ValueError(
+            "point_start & point_end cannot be the same point; direction is undefined."
+        )
+    # normalize the direction vector (make its length 1)
+    ux = dx / line_len
+    uy = dy / line_len
+    # extrapolate from point_end by scaling unit vector by target distance
+    x3 = x2 + (ux * distance)
+    y3 = y2 + (uy * distance)
+
+    return Point(x3, y3)
+
+
 def point_in_direction(
     point_start: Point, point_end: Point, distance_factor: float = 1.0
 ) -> Point:
@@ -1282,7 +1326,7 @@ def hexgrid_diagonal_cells(cols: int, rows: int, start_cell: Corner) -> dict:
     even_cols = 1 if cols % 2 == 0 else 0
     no_of_diagonals = cols + rows // 2 - even_rows + even_cols
     odd_rows_in_grid = rows % 2 != 0
-    # print(f"{cols=} {rows=} {start_cell=} {no_of_diagonals=} {odd_rows_in_grid=}")
+    # print(f"!!! {cols=} {rows=} {start_cell=} {no_of_diagonals=} {odd_rows_in_grid=}")
 
     match start_cell:
         case Corner.BOTTOM_LEFT:  # direction = "up_and_to_the_left"
@@ -1358,20 +1402,20 @@ def hexgrid_diagonal_cells(cols: int, rows: int, start_cell: Corner) -> dict:
         if col > cols or col < 1:  # CAN'T exceed cols; move up/down row(s) instead
             match start_cell:
                 case Corner.BOTTOM_LEFT:
-                    row = row - (diagonal - row) * 2
+                    row = row - (diagonal - cols) * 2
                     if odd_rows_in_grid:
                         row += 1
                     col = cols
                 case Corner.TOP_LEFT:
-                    row = (diagonal - rows) * 2
+                    row = (diagonal - cols) * 2
                     col = cols
                 case Corner.BOTTOM_RIGHT:
-                    row = row - (diagonal - row) * 2
+                    row = row - (diagonal - cols) * 2
                     if not odd_rows_in_grid:
                         row += 1
                     col = 1
                 case Corner.TOP_RIGHT:
-                    row = (diagonal - rows) * 2 + 1
+                    row = (diagonal - cols) * 2 + 1
                     col = 1
 
         path = []
@@ -1379,7 +1423,7 @@ def hexgrid_diagonal_cells(cols: int, rows: int, start_cell: Corner) -> dict:
     return diagonals
 
 
-# @lru_cache(maxsize=None) - can't hash grid !!!
+# @lru_cache(maxsize=None) - can't hash grid !
 def hexgrid_alphanumeric(
     diagonal_dict: dict, start_cell: Corner, lower: bool = True
 ) -> dict:

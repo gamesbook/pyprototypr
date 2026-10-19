@@ -1,13 +1,17 @@
 protograf Changes
 =================
 
-2026-00-00 (0.5.9)
+2026-00-00 (0.6.1)
+------------------
+- [PLANNED-1] Upgrade Abstract (hex lines grid; SGF demo)
+- [PLANNED-2] Expand geo coverage for minor shapes
+- [PLANNED-2] Docs: list all props for Hex, Circle, Rectangle, Line
+
+2026-10-00 (0.6.0)
 ------------------
 - Add AbstractBoard and AbstractGame objects
 - Add sets of SVG files for Chess and Shogi pieces
 - Major code restructure; better use of namespaces
-- [PLANNED-1] Expand geo coverage for minor shapes
-- [PLANNED-2] Docs: list all props for Hex, Circle, Rectangle, Line
 
 2026-08-21 (0.5.8)
 ------------------
