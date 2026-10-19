@@ -7,7 +7,7 @@ protograf Changes
 - [PLANNED-2] Expand geo coverage for minor shapes
 - [PLANNED-2] Docs: list all props for Hex, Circle, Rectangle, Line
 
-2026-10-00 (0.6.0)
+2026-10-19 (0.6.0)
 ------------------
 - Add AbstractBoard and AbstractGame objects
 - Add sets of SVG files for Chess and Shogi pieces
