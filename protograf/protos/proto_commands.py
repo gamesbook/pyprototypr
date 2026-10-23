@@ -405,8 +405,16 @@ def Create(**kwargs):
         globals.filename = os.path.join(globals.pargs.directory, _filename)
     except SystemExit:
         print("Ignoring ArgumentParser exit!")
+    except argparse.ArgumentError as err:
+        feedback(
+            f"Unable to run the script with those arguments ({err}).",
+            True,
+        )
     except Exception as err:
-        globals.pargs = None
+        feedback(
+            f"Unable to run the script. Unexpected error: {err}.",
+            True,
+        )
     # ---- pymupdf doc, page, shape/canvas
     globals.document = pymupdf.open()  # pymupdf.Document
     globals.doc_page = globals.document.new_page(
@@ -924,7 +932,7 @@ def Save(**kwargs):
     compression = kwargs.get("compression", 0)  # compress output
 
     # ---- directory
-    if globals.pargs.directory:
+    if globals.pargs and globals.pargs.directory:
         globals.directory = globals.pargs.directory
     elif directory:
         globals.directory = directory
@@ -933,8 +941,8 @@ def Save(**kwargs):
     # print(f'$$$ SAVE {globals.directory=}')
     if not os.path.exists(globals.directory):
         feedback(
-            f'Cannot find the directory "{
-                globals.directory}" - please create this first.',
+            f'Cannot find the directory "{globals.directory}'
+            " - please create this first.",
             True,
         )
 

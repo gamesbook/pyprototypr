@@ -4,13 +4,14 @@ protograf function for drawing lines on a grid
 """
 
 # lib
+import copy
 
 # third party
 from typing import Union
 
 # module
 from protograf import globals
-from protograf.utils import tools, geoms  # , support
+from protograf.utils import tools, geoms, constants_hexagonal  # , support
 from protograf.utils.messaging import feedback
 from protograf.utils.tools import _lower
 from protograf.utils.structures import (
@@ -24,7 +25,8 @@ from protograf.utils.structures import (
 # local
 from .proto_hexagons import Hexagons
 from .proto_shapes import base_shape, line, arc
-from . import utils  # globals_set, validate_globals, margins
+
+# from . import utils  # globals_set, validate_globals, margins
 
 
 def GridLine(
@@ -123,6 +125,76 @@ def GridLine(
         **kwargs,
     ):
         """Draw lines along edges of hexagons in grid."""
+
+        def odd(number: int) -> bool:
+            if number % 2 != 0:
+                return True
+            return False
+
+        def even(number: int) -> bool:
+            if number % 2 == 0:
+                return True
+            return False
+
+        def offset_change(col: int, row: int) -> tuple:
+            """Calculate new row and column for an offset grid.
+
+            Args:
+                col (int): current column (0-based)
+                row (int): current row (0-based)
+
+            NOTE:
+                * Col/Row numbering starts at 0; so first col/row is ODD!
+            """
+            # print(f'{col=} {row=} {current_vertex=} {direction=}')
+            if even(col) and even(row):
+                _col, _row = constants_hexagonal.EVEN_COL_EVEN_ROW_OFFSET[
+                    current_vertex, direction
+                ]
+            elif even(col) and odd(row):
+                _col, _row = constants_hexagonal.EVEN_COL_ODD_ROW_OFFSET[
+                    current_vertex, direction
+                ]
+            elif odd(col) and even(row):
+                _col, _row = constants_hexagonal.ODD_COL_EVEN_ROW_OFFSET[
+                    current_vertex, direction
+                ]
+            elif odd(col) and odd(row):
+                _col, _row = constants_hexagonal.ODD_COL_ODD_ROW_OFFSET[
+                    current_vertex, direction
+                ]
+            return _col, _row
+
+        def non_offset_change(col: int, row: int) -> tuple:
+            """Calculate new row and column for an offset grid.
+
+            Args:
+                col (int): current column (0-based)
+                row (int): current row (0-based)
+
+            NOTE:
+                * Col/Row numbering starts at 0; so first col/row is ODD!
+            """
+            # print(f'{col=} {row=} {current_vertex=} {direction=}')
+            # breakpoint()
+            if even(col) and even(row):
+                _col, _row = constants_hexagonal.EVEN_COL_EVEN_ROW[
+                    current_vertex, direction
+                ]
+            elif even(col) and odd(row):
+                _col, _row = constants_hexagonal.EVEN_COL_ODD_ROW[
+                    current_vertex, direction
+                ]
+            elif odd(col) and even(row):
+                _col, _row = constants_hexagonal.ODD_COL_EVEN_ROW[
+                    current_vertex, direction
+                ]
+            elif odd(col) and odd(row):
+                _col, _row = constants_hexagonal.ODD_COL_ODD_ROW[
+                    current_vertex, direction
+                ]
+            return _col, _row
+
         starts = (
             [
                 start,
@@ -153,95 +225,10 @@ def GridLine(
                     )
 
                 # calculate col/row changes for HexOrientation.FLAT
-                col, row = 0, 0
-                if direction == "e" and current_vertex == "ne":  # middle
-                    col = 2
-                if direction == "w" and current_vertex == "nw":  # middle
-                    col = -2
-                if direction == "nw" and current_vertex == "w":  # middle
-                    col = -1
-                if (
-                    direction == "ne"
-                    and current_vertex == "e"  # middle
-                    and loc.col % 2 == 1
-                ):
-                    col = 1
-                if (
-                    (direction == "e" and current_vertex == "e")
-                    or (direction == "ne" and current_vertex == "ne")
-                    or (direction == "se" and current_vertex == "se")
-                ):
-                    col = 1
-                if (
-                    (direction == "w" and current_vertex == "w")
-                    or (direction == "nw" and current_vertex == "nw")
-                    or (direction == "sw" and current_vertex == "sw")
-                ):
-                    col = -1
-                if (
-                    (direction == "ne" and current_vertex == "ne")
-                    or (direction == "nw" and current_vertex == "nw")
-                    or (direction == "w" and current_vertex == "w")
-                ):
-                    row = -1 if loc.col % 2 == 0 else 0  # even column 0,2,4
-                if (
-                    (direction == "se" and current_vertex == "se")
-                    or (direction == "sw" and current_vertex == "sw")
-                    or (direction == "e" and current_vertex == "e")
-                ):
-                    row = 1 if loc.col % 2 == 1 else 0  # odd column 1,3,5
-                if (
-                    direction == "ne"
-                    and current_vertex == "e"  # middle
-                    and loc.col % 2 == 0
-                ):
-                    row = -1
-                if (
-                    direction == "ne"
-                    and current_vertex == "nw"  # middle
-                    and loc.col % 2 != 0
-                ):  # odd column 1,3,5
-                    row = -1
-                if (
-                    direction == "nw"
-                    and current_vertex == "w"  # middle
-                    and loc.col % 2 == 0
-                ):  # odd column 1,3,5
-                    row = -1
-                if (
-                    direction == "nw"
-                    and current_vertex == "ne"  # middle
-                    # and loc.col % 2 != 0  # odd column 1,3,5
-                ):
-                    row = -1
-                if (
-                    direction == "se"
-                    and current_vertex == "e"  # middle
-                    and loc.col % 2 != 0
-                ):  # odd column 1,3,5
-                    row = 1
-                    col = 1
-                if direction == "sw" and current_vertex == "se":  # middle
-                    row = 1
-                if (
-                    direction == "sw"
-                    and current_vertex == "w"  # middle
-                    and loc.col % 2 != 0
-                ):  # odd column 1,3,5
-                    row = 1
-                    col = -1
-                if (
-                    direction == "se"
-                    and current_vertex == "sw"  # middle
-                    and loc.col % 2 == 0
-                ):  # even 0,2,4
-                    row = 1
-                if (
-                    direction == "ne"
-                    and current_vertex == "e"  # middle
-                    and loc.col % 2 == 0
-                ):
-                    col = 1
+                if grid.kwargs.get("hex_offset", "").lower() == "odd":
+                    col, row = offset_change(col=loc.col, row=loc.row)
+                else:
+                    col, row = non_offset_change(col=loc.col, row=loc.row)
 
                 # print(f'\n>>> curr_{loc.label=} {current_vertex=} {direction=} d{col=}  d{row=}')
                 col = loc.col + col
@@ -506,6 +493,26 @@ def GridLine(
                     from_edge = "ne"
             to_edge = directions[index + 1] if index < (len(directions) - 1) else None
 
+    # ---- common
+    if kwargs.get("common"):
+        ckwargs = kwargs["common"]._common_kwargs
+        grid = ckwargs.get("grid", grid)
+        start = ckwargs.get("start", start)
+        point = ckwargs.get("point", point)
+        locations = ckwargs.get("locations", locations)
+        edges = ckwargs.get("edges", edges)
+        paths = ckwargs.get("paths", paths)
+        fixed_keys = {
+            "grid",
+            "start",
+            "point",
+            "locations",
+            "edges",
+            "paths",
+        }
+        # Create a new kwargs dict without the fixed keys
+        kwargs = {k: v for k, v in ckwargs.items() if k not in fixed_keys}
+
     # ---- validation
     if locations is not None:
         if isinstance(locations, str):  # should be a comma-delimited string
@@ -520,6 +527,7 @@ def GridLine(
             grid = grid.locales
         draw_linked_locations(grid, locations, **kwargs)
 
+    # ---- edges
     if edges is not None:
         if edges and not point:
             feedback("There must be an initial point (vertex) to draw edges!", True)
@@ -546,6 +554,7 @@ def GridLine(
             feedback("There must be a start (hexagon location) to draw edges!", True)
         draw_edges(start, _lower(point), edges, **kwargs)
 
+    # ---- paths
     if paths is not None:
         if paths and not point:
             feedback("There must be an initial point (on an edge) to draw paths!", True)
