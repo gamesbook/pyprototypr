@@ -5,6 +5,7 @@ protograf Changes
 ------------------
 - Add Railway Line example to Objects example
 - Add `wavy` line style for Reactangle
+- Patch error with edge drawing on Hexagons grid
 - [PLANNED-1] Upgrade Abstract (hex lines grid; SGF demo)
 - [PLANNED-2] Expand geo coverage for minor shapes
 - [PLANNED-2] Docs: list all props for Hex, Circle, Rectangle, Line

@@ -2092,11 +2092,11 @@ class RectangleShape(BaseShape):
                     # ---- * draw  - normal
                     else:
                         # feedback(f'*** RECT  normal {radius=} {kwargs=}')
-                        if kwargs.get('wave_style'):
+                        if kwargs.get("wave_style"):
                             # breakpoint()
                             trx = x + self._u.width
                             bry = y + self._u.height
-                            wh = kwargs.get('wave_height') * self.units
+                            wh = kwargs.get("wave_height") * self.units
                             cnv.draw_squiggle((x, y), (trx, y), wh)
                             cnv.draw_squiggle((trx, y), (trx, bry), wh)
                             cnv.draw_squiggle((trx, bry), (x, bry), wh)
@@ -2104,7 +2104,8 @@ class RectangleShape(BaseShape):
                             self.set_canvas_props(cnv=cnv, index=ID, **kwargs)
                         else:
                             cnv.draw_rect(
-                                (x, y, x + self._u.width, y + self._u.height), radius=radius
+                                (x, y, x + self._u.width, y + self._u.height),
+                                radius=radius,
                             )
                             self.set_canvas_props(cnv=cnv, index=ID, **kwargs)
                             self._debug(cnv, vertices=self.vertexes)
