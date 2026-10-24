@@ -136,63 +136,52 @@ def GridLine(
                 return True
             return False
 
-        def offset_change(col: int, row: int) -> tuple:
+        def col_row_change(col: int, row: int, offset: bool) -> tuple:
             """Calculate new row and column for an offset grid.
 
             Args:
                 col (int): current column (0-based)
                 row (int): current row (0-based)
+                offset (bool): if True, top-left hex is shifted down
 
             NOTE:
-                * Col/Row numbering starts at 0; so first col/row is ODD!
+                * Col/Row numbering starts at 0; so first col/row is EVEN!
             """
-            # print(f'{col=} {row=} {current_vertex=} {direction=}')
-            if even(col) and even(row):
-                _col, _row = constants_hexagonal.EVEN_COL_EVEN_ROW_OFFSET[
-                    current_vertex, direction
-                ]
-            elif even(col) and odd(row):
-                _col, _row = constants_hexagonal.EVEN_COL_ODD_ROW_OFFSET[
-                    current_vertex, direction
-                ]
-            elif odd(col) and even(row):
-                _col, _row = constants_hexagonal.ODD_COL_EVEN_ROW_OFFSET[
-                    current_vertex, direction
-                ]
-            elif odd(col) and odd(row):
-                _col, _row = constants_hexagonal.ODD_COL_ODD_ROW_OFFSET[
-                    current_vertex, direction
-                ]
-            return _col, _row
-
-        def non_offset_change(col: int, row: int) -> tuple:
-            """Calculate new row and column for an offset grid.
-
-            Args:
-                col (int): current column (0-based)
-                row (int): current row (0-based)
-
-            NOTE:
-                * Col/Row numbering starts at 0; so first col/row is ODD!
-            """
-            # print(f'{col=} {row=} {current_vertex=} {direction=}')
-            # breakpoint()
-            if even(col) and even(row):
-                _col, _row = constants_hexagonal.EVEN_COL_EVEN_ROW[
-                    current_vertex, direction
-                ]
-            elif even(col) and odd(row):
-                _col, _row = constants_hexagonal.EVEN_COL_ODD_ROW[
-                    current_vertex, direction
-                ]
-            elif odd(col) and even(row):
-                _col, _row = constants_hexagonal.ODD_COL_EVEN_ROW[
-                    current_vertex, direction
-                ]
-            elif odd(col) and odd(row):
-                _col, _row = constants_hexagonal.ODD_COL_ODD_ROW[
-                    current_vertex, direction
-                ]
+            # print(f'{col=} {row=} {current_vertex=} {direction=} {offset=}')
+            if offset:
+                if even(col) and even(row):
+                    _col, _row = constants_hexagonal.EVEN_COL_EVEN_ROW_OFFSET[
+                        current_vertex, direction
+                    ]
+                elif even(col) and odd(row):
+                    _col, _row = constants_hexagonal.EVEN_COL_ODD_ROW_OFFSET[
+                        current_vertex, direction
+                    ]
+                elif odd(col) and even(row):
+                    _col, _row = constants_hexagonal.ODD_COL_EVEN_ROW_OFFSET[
+                        current_vertex, direction
+                    ]
+                elif odd(col) and odd(row):
+                    _col, _row = constants_hexagonal.ODD_COL_ODD_ROW_OFFSET[
+                        current_vertex, direction
+                    ]
+            else:
+                if even(col) and even(row):
+                    _col, _row = constants_hexagonal.EVEN_COL_EVEN_ROW[
+                        current_vertex, direction
+                    ]
+                elif even(col) and odd(row):
+                    _col, _row = constants_hexagonal.EVEN_COL_ODD_ROW[
+                        current_vertex, direction
+                    ]
+                elif odd(col) and even(row):
+                    _col, _row = constants_hexagonal.ODD_COL_EVEN_ROW[
+                        current_vertex, direction
+                    ]
+                elif odd(col) and odd(row):
+                    _col, _row = constants_hexagonal.ODD_COL_ODD_ROW[
+                        current_vertex, direction
+                    ]
             return _col, _row
 
         starts = (
@@ -225,10 +214,10 @@ def GridLine(
                     )
 
                 # calculate col/row changes for HexOrientation.FLAT
-                if grid.kwargs.get("hex_offset", "").lower() == "odd":
-                    col, row = offset_change(col=loc.col, row=loc.row)
+                if grid.hex_offset.lower() == "odd":
+                    col, row = col_row_change(col=loc.col, row=loc.row, offset=True)
                 else:
-                    col, row = non_offset_change(col=loc.col, row=loc.row)
+                    col, row = col_row_change(col=loc.col, row=loc.row, offset=False)
 
                 # print(f'\n>>> curr_{loc.label=} {current_vertex=} {direction=} d{col=}  d{row=}')
                 col = loc.col + col
